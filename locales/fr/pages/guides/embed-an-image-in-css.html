@@ -15,6 +15,13 @@
   </section>
 
   <section>
+    <h2>Une petite icône ou un document qui voyage en un fichier</h2>
+    <p><strong>Une marque décorative réutilisée sur un site.</strong> Choisissez une propriété CSS personnalisée et utilisez-la partout où la marque doit apparaître. Vérifiez le nombre de caractères encodés et l'aperçu avant de coller. Si l'image transmet une information plutôt qu'une décoration, un <code>&lt;img&gt;</code> avec un texte alternatif approprié convient mieux qu'un fond CSS.</p>
+    <p><strong>Un document HTML autonome ou un rapport hors ligne.</strong> Choisissez la sortie en balise image HTML, ajoutez le texte alternatif nécessaire et n'intégrez que les petites ressources indispensables. Ouvrez le document enregistré dans le lecteur prévu sans réseau et confirmez que les images apparaissent. L'aperçu prouve que l'URI fonctionne ici, pas qu'un client e-mail, un moteur Markdown ou la politique de contenu destinataire autorise les images de données. Testez cette destination avant d'en faire la base d'un rapport entier, et examinez les métadonnées avant d'intégrer les octets d'une photo tels quels.</p>
+  </section>
+
+
+  <section>
     <h2>Ce qu'est réellement un data URI</h2>
     <p>
       Une adresse qui contient la chose au lieu de pointer vers elle. Là où une
@@ -120,7 +127,7 @@
 
     <figure class="shot">
       <img src="/screens/embed-an-image-in-css/output.webp" loading="lazy" decoding="async"
-           alt="La carte de sortie&nbsp;: une règle CSS contenant une URI de données en base64, avec à côté la taille du fichier d'origine et celle de l'encodage.">
+           alt="La carte de sortie : une règle CSS contenant une URI de données en base64, avec à côté la taille du fichier d&#x27;origine et celle de l&#x27;encodage.">
       <figcaption>
         La copie encodée est environ un tiers plus grosse que le fichier dont elle vient. C'est le coût dont parle cette section, et il est imprimé plutôt que laissé à découvrir.
       </figcaption>
@@ -128,7 +135,7 @@
   </section>
 
   <section>
-    <h2>Ne passez jamais un SVG en base64</h2>
+    <h2>Préférer l'encodage pour cent pour un SVG UTF-8</h2>
     <p>
       C'est de loin l'erreur la plus courante en matière d'images intégrées, et
       elle est commise par les exporteurs et les greffons de compilation aussi
@@ -147,14 +154,7 @@
       Il reste en outre lisible&nbsp;:
     </p>
     <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      Vous voyez le <code>viewBox</code>. Vous pouvez changer la couleur de
-      remplissage dans votre éditeur sans rien décoder. Passez le même fichier en
-      base64 et cela devient un mur de lettres que plus personne ne touchera
-      jamais. <a href="../../image-en-base64/">Image en data URI</a> le fait
-      automatiquement pour tout ce qui s'avère être un SVG, et propose une case
-      pour la rare chaîne d'outils qui exige <code>;base64</code>.
-    </p>
+    <p>Vous voyez le <code>viewBox</code> et pouvez modifier la couleur de remplissage sans rien décoder. En base64, le même fichier devient un mur de lettres que personne ne retouchera. <a href="../../image-en-base64/">Image en URI de données</a> fait cela automatiquement pour les SVG UTF-8 valides. Un export UTF-16 ou autre, une déclaration d'encodage incohérente ou un UTF-8 invalide utilise plutôt le base64 des octets originaux, avec une raison affichée. Cela préserve l'encodage du fichier plutôt que de le changer silencieusement. Une case sert aussi aux chaînes d'outils qui exigent <code>;base64</code>.</p>
   </section>
 
   <section>
@@ -280,7 +280,7 @@
 
     <figure class="shot">
       <img src="/screens/embed-an-image-in-css/shape.webp" loading="lazy" decoding="async"
-           alt="La carte de forme&nbsp;: des boutons choisissant ce qui doit sortir, une règle de fond CSS, une balise img ou l'URI seule, et un interrupteur base64 ou SVG en clair.">
+           alt="La carte de forme : des boutons choisissant ce qui doit sortir, une règle de fond CSS, une balise img ou l&#x27;URI seule, et un interrupteur base64 ou SVG en clair.">
       <figcaption>
         La destination décide de ce qui sort, la question est donc posée d'abord plutôt que laissée en exercice de copier-coller.
       </figcaption>

@@ -11,7 +11,7 @@ lede = """
     documento. El riesgo vive un paso antes: en el conversor o compresor al
     que acudes porque el formulario pidió «menos de 300&nbsp;KB, JPEG», y
     ese paso es el que nunca hace falta dar."""
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "¿Es seguro subir una foto de tu documento de identidad?"
 og_description = "El paso arriesgado no es el formulario del trámite. Es el desvío para reducir y comprimir justo antes - y ese desvío nunca necesita que el documento salga de tu máquina."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

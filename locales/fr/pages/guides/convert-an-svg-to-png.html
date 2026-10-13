@@ -16,12 +16,19 @@
 
     <figure class="shot">
       <img src="/screens/convert-an-svg-to-png/preview.webp" loading="lazy" decoding="async"
-           alt="La carte d'aperçu&nbsp;: le dessin rendu à la taille demandée, avec ses dimensions en pixels en dessous.">
+           alt="La carte d&#x27;aperçu : le dessin rendu à la taille demandée, avec ses dimensions en pixels en dessous.">
       <figcaption>
         L'outil le dessine avant de l'enregistrer, et à la taille à laquelle il sera enregistré. Ce qui ne va pas dans l'export se voit ici en premier.
       </figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Un logo pour un document ou un ensemble de ressources d'écran</h2>
+    <p><strong>Une présentation ou un document qui refuse le SVG.</strong> Exportez un PNG à la largeur qu'il occupera, avec assez de pixels pour l'écran ou l'impression prévue. Gardez la transparence pour un logo posé sur différentes couleurs de diapositives&nbsp;; choisissez un fond opaque si la destination l'attend. Cherchez dans l'aperçu les polices substituées et illustrations liées manquantes avant d'insérer le téléchargement.</p>
+    <p><strong>Des icônes cohérentes pour différentes densités d'écran.</strong> Donnez à la version 1x sa taille d'affichage prévue et demandez les copies @2x et @3x dans la même opération. Pour des SVG aux dimensions source cohérentes, un multiplicateur préserve leurs proportions relatives&nbsp;; une limite du côté le plus long fait entrer des formes différentes dans la même étendue maximale. Vérifiez les traits qui disparaissent dans la plus petite copie. Un export plus grand ne rend pas un symbole délicat lisible dans un minuscule emplacement.</p>
+  </section>
+
 
   <section>
     <h2>Pourquoi la taille est votre décision et non celle du fichier</h2>
@@ -57,14 +64,7 @@
       <code>@3x</code>, et c'est pourquoi un outil qui les écrit vous évite de
       faire le calcul trois fois.
     </p>
-    <p><strong>Pour une icône d'application, une fiche de boutique ou un
-      favicon.</strong> Le chiffre est publié et il n'y a rien à calculer&nbsp;:
-      ce que dit la page de la boutique, exactement. Pour un favicon, ne
-      rastérisez pas du tout&nbsp;;
-      <a href="../creer-son-favicon/">fabriquez un .ico</a>, qui contient
-      plusieurs tailles dans un fichier, parce qu'un onglet de navigateur, un
-      signet et un raccourci Windows en réclament chacun une différente.
-    </p>
+    <p><strong>Pour une icône d'application, une fiche de boutique ou un favicon.</strong> Le nombre est publié, sans calcul à faire&nbsp;: exactement ce que demande la page de la boutique. Pour un favicon, exportez ensemble les tailles requises et <a href="../creer-son-favicon/">créez un .ico</a>, qui réunit plusieurs tailles, car un onglet, un favori et un raccourci Windows en demandent différentes.</p>
     <p><strong>Pour l'impression.</strong> Multipliez la taille physique en
       pouces par la résolution de l'imprimante. Un logo qui va sur une carte de
       visite sur deux pouces de large à 300&nbsp;DPI fait 600 pixels&nbsp;; le
@@ -88,7 +88,7 @@
 
     <figure class="shot">
       <img src="/screens/convert-an-svg-to-png/size.webp" loading="lazy" decoding="async"
-           alt="La carte de taille&nbsp;: un menu des façons de dire la taille, réglé sur la largeur, avec 1024 saisi et des largeurs prédéfinies à côté.">
+           alt="La carte de taille : un menu des façons de dire la taille, réglé sur la largeur, avec 1024 saisi et des largeurs prédéfinies à côté.">
       <figcaption>
         Cinq façons de dire la même chose. Laquelle est la bonne dépend de si on vous a donné un chiffre ou un endroit où le mettre.
       </figcaption>
@@ -182,13 +182,7 @@
       liseré de moucheture autour de chaque bord franc. Utilisez-le quand quelque
       chose l'exige.
     </p>
-    <p>
-      <strong>Le WebP</strong> fait tout ce que fait le PNG, dans un fichier plus
-      léger, et il est lu par tous les navigateurs actuels. La raison de ne pas
-      s'en servir est ce qui vient après le navigateur&nbsp;: les logiciels plus
-      anciens, certaines imprimeries et un bon nombre de formulaires d'envoi
-      refusent toujours d'en ouvrir un.
-    </p>
+    <p><strong>WebP</strong> garde la transparence et peut produire un fichier plus léger, mais son réglage de qualité peut ajouter des artefacts. Comparez le lettrage et les contours unis avant de remplacer un PNG. Le frein est ce qui se passe après le navigateur&nbsp;: anciens logiciels, certaines imprimeries et de nombreux formulaires refusent encore ce format.</p>
     <p>
       Choisir une couleur de fond avec du PNG est aussi une chose parfaitement
       ordinaire à vouloir. La transparence n'est utile que lorsque ce sur quoi

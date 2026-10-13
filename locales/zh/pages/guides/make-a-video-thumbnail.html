@@ -1,20 +1,12 @@
   <section>
     <h2>简短的答案</h2>
-    <ol>
-      <li>
-        <strong>抓住那一帧。</strong>打开<a href="../../grab-frame/">视频抽帧</a>，把视频拖进去，沿着文件自己的帧列表逐帧走到分毫不差的那个瞬间。存成 PNG：无损的副本，这样什么都还没被决定。
-      </li>
-      <li>
-        <strong>取好景。</strong>把 PNG 带到<a href="../../resize-image/">图片改尺寸</a>：裁成平台的形状 &mdash; YouTube 是 16:9 &mdash; 定好长边；1280 像素才是 YouTube 真正要的数字。
-      </li>
-      <li>
-        <strong>压到上限。</strong>最后交给<a href="../../compress-image/">图片压缩</a>，把平台的限制设成目标 &mdash; YouTube 封面图是 2&nbsp;MB &mdash; JPEG 还是 WebP 让它自己挑。
-      </li>
-    </ol>
+    <ol><li><strong>取帧。</strong>打开<a href="../../grab-frame/">视频取帧工具</a>，放入视频，沿文件实际帧列表定位。保存为 PNG，先避免额外的有损编码。</li><li><strong>安排画面。</strong>把 PNG 放进<a href="../../resize-image/">图片尺寸工具</a>，按平台比例裁切，选择适合原图和目的地的尺寸。YouTube 当前建议普通视频用 16:9，Shorts 用 9:16。下面分别说明。</li><li><strong>满足大小限制。</strong>最后用<a href="../../compress-image/">图片压缩器</a>，以平台当前限制为目标，并留余量。照片型 YouTube 缩略图选 JPEG。目的地要求 JPG 或 PNG 时，不要保留 Auto。</li></ol>
     <p>
       这条链上没有任何一环上传任何东西——视频还没发布时这一点很要紧，而封面图之所以要做，恰恰是因为视频还没公开。
     </p>
   </section>
+
+  <section><h2>在真实大小下能看懂的封面</h2><p>上传视频选能说明内容的帧，例如完成品、抬头的讲者或动作前一刻。来源字幕在小预览里也要清楚。这些工具只捕获、裁剪和压缩，标题或其他图形需在 PNG 捕获和最终压缩之间用图片编辑器加入。</p><p>网页视频同一静图可作播放前海报，匹配播放器形状和显示尺寸，在手机检查是否仍说明内容。演示封面也在实际幻灯片布局测试，观众看到的不一定是全尺寸 PNG。</p></section>
 
   <section>
     <h2>为什么逐帧胜过暂停</h2>
@@ -24,9 +16,7 @@
     <p>
       抽帧工具走的是文件自己的帧列表，双向都能一帧一帧走，交到你手上的是解码出的帧本身，视频的完整分辨率。在那个瞬间前后各找四分之一秒，通常就是封面图住的地方：两帧显眼画面<em>之间</em>的那一帧，动势读得出来，又没有一处糊掉。
     </p>
-    <p>
-      就算最终封面图会是 JPEG 或 WebP，抓到的也先存 PNG。PNG 是那一帧的精确副本；这样一来，所有有损的决定只在最后、在字节预算之内发生一次，而不是发生两次、层层叠加。
-    </p>
+    <p>即使最终缩略图用 JPEG，取帧也先保存为 PNG。PNG 保留画布上的静态像素，不增加一轮有损编码。之后只在最后按大小预算压缩一次，避免损失累积。</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
@@ -39,17 +29,7 @@
 
   <section>
     <h2>平台的算术</h2>
-    <p>
-      先裁再压，理由和<a href="../get-photos-ready-for-the-web/">照片指南</a>里的一样：像素就是预算。从 4K 帧里裁出 16:9、降到 &#x2066;1280&times;720&#x2069;，压缩器就能把那 2&nbsp;MB 花在没人需要眯起眼睛才看得清的画质上。改尺寸工具的裁剪框能锁定 16:9，所以形状是一次拖拽而不是一道算术题；文字和人脸要留在中间三分之二，因为信息流会把四角削圆，还会把时长压在右下角。
-    </p>
-
-    <figure class="shot">
-      <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
-           alt="改尺寸工具里填了宽 1280、高 720，下面是这张静帧会变成什么样的摘要。">
-      <figcaption>
-        接下来就是算术：平台要什么，就当成两个数字填进去。
-      </figcaption>
-    </figure>
+    <p>先裁切再压缩，原因与<a href="../get-photos-ready-for-the-web/">照片指南</a>相同。像素就是预算。裁成 16:9，再缩到 &#x2066;1280&times;720&#x2069;，是一个可用的小尺寸示例，不是 YouTube 当前建议。<a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">缩略图说明</a>现在建议普通视频用 &#x2066;3840&times;2160&#x2069;，Shorts 用 &#x2066;2160&times;3840&#x2069;，可接受格式举例包括 JPG 和 PNG。桌面上传允许最大 50 MB，手机视频缩略图要低于 2 MB。检查实际上传方式的要求，不要只为达到建议数字放大小图。自定义上传需要已验证账号，Shorts 自定义上传当前使用电脑上的 YouTube Studio。</p><p>裁切框可以锁定 16:9 或 9:16，不用自己计算。把文字和脸放在中间三分之二内，因为信息流可能圆角裁边，右下角还会覆盖时长。</p><figure class="shot"><img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async" alt="尺寸工具填写了 1280 宽和 720 高，并显示静态图片的输出摘要。"><figcaption>1280 乘 720 的导出示例。根据目的地当前要求，以及原图实际细节选择尺寸。</figcaption></figure>
   </section>
 
   <section>

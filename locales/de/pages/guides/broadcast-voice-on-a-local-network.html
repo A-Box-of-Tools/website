@@ -1,0 +1,16 @@
+<main id="main">
+  <h2>Auf dem sprechenden Computer beginnen</h2>
+  <p>Laden Sie das lokale ZIP des Werkzeugs herunter, entpacken Sie es und führen Sie in seinem Ordner <code>python helper.py</code> mit Python 3.10 oder neuer aus. Zusätzliche Pakete sind nicht nötig. Lassen Sie das Fenster offen. Öffnen Sie auf diesem Computer die ausgegebene Host-Einladung unter <code>http://localhost:</code>, wählen Sie Start channel und erlauben Sie den Mikrofonzugriff.</p>
+  <h2>Zuhörer einladen</h2>
+  <p>Wählen Sie beim Host die gewünschte Netzwerkadresse und teilen Sie den Zuhörerlink oder QR-Code. Telefone und Computer können über ein erreichbares WLAN oder Ethernet zuhören. Sie fordern niemals Mikrofonzugriff an. Die Wiedergabe startet nach Möglichkeit automatisch. Blockiert der Browser den Ton, startet ihn die vorhandene Schaltfläche Unmute. Mute/Unmute und Leave sind die einzigen Bedienelemente für Zuhörer.</p>
+  <h2>Zum Sprechen gedrückt halten</h2>
+  <p>Halten Sie Talk per Berührung oder Maus gedrückt oder fokussieren Sie die Schaltfläche und halten Sie die Leertaste. Lassen Sie los, um die Sprachübertragung zu stoppen. Tap to talk ermöglicht Start und Stopp per Klick. Die Stummschaltung des Hosts hat bei beiden Vorrang. Lassen Sie die Host-Seite sichtbar und den Computer wach. Wird die Seite verborgen, endet die Mikrofonaufnahme.</p>
+  <p>Bis zu zehn Zuhörer können verbunden sein, einschließlich noch ausstehender Verbindungen. Der Host sendet jedem einen eigenen Stream. Beginnen Sie mit einer kleinen Gruppe und prüfen Sie den vorgesehenen Computer und das Netzwerk.</p>
+  <h2>Nach einem Host-Ausfall fortsetzen</h2>
+  <p>Zuhörer sehen Reconnecting und prüfen die Verbindung auf derselben Seite mit einem angestrebten Abstand von einer Sekunde, solange ihre Seite aktiv ist. Ihre Stummschaltung bleibt erhalten. Öffnen Sie über den weiterhin laufenden Helfer dieselbe Host-Einladung und starten Sie erneut, um fortzusetzen. Browser im Hintergrund und schlafende Geräte können Wiederholungsversuche verzögern.</p>
+  <p>End broadcast gibt das Mikrofon frei und beendet die Sitzung bewusst. Leave beendet den Empfang und die Wiederholungsversuche eines Zuhörers. Ein Neustart des Helfers erzeugt neue Einladungen. Teilen Sie dann seinen neuen Zuhörerlink.</p>
+  <h2>Ein vertrauenswürdiges Netzwerk verwenden</h2>
+  <p>Jeder mit Zuhörerlink und Zugriff auf den Helfer kann beitreten. WebRTC verschlüsselt die Stimme, aber der Helfer verwendet HTTP für Verbindungsaufbau und Einladungszugangsdaten. Ein aktiver Angreifer im LAN kann diesen Aufbau beobachten oder verändern. Das Paket enthält keine entfernten Skripte oder Ressourcen, und der Helfer empfängt kein Audio. Es gibt weder eine Aufzeichnungsfunktion noch ein öffentliches Relay. Empfänger können das Gehörte unabhängig selbst aufzeichnen.</p>
+  <h2>Die Erreichbarkeit prüfen</h2>
+  <p>Prüfen Sie die Firewallfreigabe für private Netzwerke, die ausgewählte LAN-Adresse und die lokalen Netzwerkberechtigungen des Browsers. Gäste-WLAN kann Geräte voneinander isolieren. VPN- und Betriebssystemrouten können Host-Adressen beeinflussen. Übersieht die automatische Erkennung eine Schnittstelle, führen Sie <code>python helper.py --address 192.168.1.20</code> aus und ersetzen das Beispiel durch die tatsächliche private IPv4-Adresse des Computers.</p>
+</main>

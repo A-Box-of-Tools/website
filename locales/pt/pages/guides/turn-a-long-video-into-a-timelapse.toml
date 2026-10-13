@@ -13,7 +13,7 @@ lede = """
     assistir. O trabalho é uma decisão sobre o tempo e outra sobre o destino,
     e tudo roda no seu navegador, sobre um arquivo que nunca sai do seu computador."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Uma hora de filmagem num minuto assistível, sem enviar nada"
 og_description = "Escolha a velocidade ou diga direto quanto deve durar, mantenha o arquivo leve mesmo em 4K, e saiba quando o loop quer ser um GIF."

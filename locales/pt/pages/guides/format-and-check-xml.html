@@ -7,6 +7,12 @@
       <figcaption>O atributo vira @region, a porta continua string e elementos feature repetidos viram um array.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Depure uma resposta, um feed ou uma mudança de configuração</h2>
+    <p>Uma resposta de API ou feed RSS em uma linha é mais fácil de inspecionar com um elemento por linha. Importe o XML, escolha dois espaços e use Ir ao erro se a análise parar. Confira o elemento externo, atributos e entradas repetidas. Um endereço com e comercial precisa de <code>&amp;amp;</code> em texto XML comum ou atributos; o caractere sozinho não serve. Valide o documento corrigido com o aplicativo que o consome: esta página não confere as regras do feed nem um XSD.</p>
+    <p>Para migrar configuração XML para JSON, converta uma cópia e confira atributos <code>@</code>, arrays de elementos repetidos e valores de string antes de comparar com o JSON proposto. Primeiro <a href="../../guias/comparar-dois-arquivos-json/">formate ambas as cópias JSON igualmente</a>. Use em documentos de dados: a conversão perde comentários e a ordem de conteúdo misto, portanto não preserva prosa.</p>
+  </section>
   <section>
     <h2>Siga um erro de análise</h2>
     <p>Uma tag não fechada, fechamento incorreto ou referência de caractere inválida interrompem formatação e conversão. Ir ao erro move o cursor à posição indicada. O documento exige um elemento externo: duas raízes ou texto fora da raiz são recusados.</p>

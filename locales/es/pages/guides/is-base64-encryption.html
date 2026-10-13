@@ -22,6 +22,13 @@
   </section>
 
   <section>
+    <h2>Decodificaciones útiles que no necesitan una clave secreta</h2>
+    <p><strong>Inspeccionar el texto de una API.</strong> Elige decodificar Base64 en el <a href="../../codificar-base64/">codificador y decodificador</a> y compara el UTF-8 resultante con lo que debía enviar la API. Elige Base64 seguro para URL si usa <code>-</code> y <code>_</code>. La comprobación canónica opcional verifica las reglas de escritura de esta herramienta; un protocolo puede usar otro relleno o ajuste de líneas deliberadamente.</p>
+    <p><strong>Encontrar una codificación incorrecta.</strong> Decodifica un parámetro porcentual o cadena con escapes para comprobar acentos, espacios y puntuación. Elige el códec de esa capa y vuelve a codificar para revisar la ida y vuelta. No decodifiques repetidamente toda una URL cuando solo se codificó un parámetro.</p>
+    <p>El cuadro trabaja con texto; no convierte archivos binarios arbitrarios, ni cifra ni verifica firmas JWT. Una credencial decodificada sigue siendo una credencial. Para incorporar imágenes en vez de texto, usa <a href="../incrustar-una-imagen-en-css/">la guía de URI de datos de imágenes</a>.</p>
+  </section>
+
+  <section>
     <h2>Codificación: reversible por cualquiera</h2>
     <p>
       Una codificación cambia cómo se <em>escriben</em> los datos, nunca
@@ -57,18 +64,7 @@
       no en el método: los algoritmos están publicados, normalizados, y
       son más fuertes precisamente por eso.
     </p>
-    <p>
-      Aquí es donde muerde la confusión visual, porque los bytes cifrados
-      se codifican rutinariamente en base64 para poder viajar: revueltos
-      por una clave, y luego disfrazados para el transporte. Dos capas,
-      dos trabajos. El JSON Web Token es el caso de manual: tres trozos de
-      base64 unidos por puntos, de los que los dos primeros se
-      <em>descodifican</em> en JSON legible para cualquiera que lo
-      intente. La gente pega tokens en descodificadores web públicos a
-      diario, habiendo supuesto que el conjunto iba sellado; la
-      descripción honrada es que un JWT es una postal con firma a prueba
-      de falsificaciones, no un sobre.
-    </p>
+    <p>Aquí confunde la apariencia: los bytes cifrados suelen codificarse en base64 para transportarlos. Primero los transforma una clave; después se adaptan al transporte. Son dos capas distintas. Un JSON Web Token firmado habitual tiene tres partes base64url separadas por puntos; cabecera y contenido se decodifican a JSON legible. Decodificarlos no valida la firma. Los JWT también pueden cifrarse o ir sin protección, como explica <a href="https://www.rfc-editor.org/rfc/rfc7519" target="_blank" rel="noopener noreferrer">RFC 7519</a>. No deduzcas confidencialidad o autenticidad de su apariencia ni pegues credenciales activas en un decodificador desconocido.</p>
   </section>
 
   <section>

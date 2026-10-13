@@ -1,19 +1,18 @@
   <section>
     <h2>La réponse courte</h2>
-    <p>
-      Ouvrez le <a href="../../generateur-de-qr-code/">générateur de QR codes et
-      de codes-barres</a>, collez votre lien, laissez le niveau sur
-      <strong>M</strong> et la marge sur <strong>4</strong>, et téléchargez le
-      SVG. Imprimez-le sur au moins deux centimètres de large, sur un support
-      mat, sombre sur clair. Scannez ensuite l'exemplaire imprimé avec un
-      téléphone qui n'est pas le vôtre avant d'en commander mille.
-    </p>
+    <p>Ouvrez le <a href="../../generateur-de-qr-code/">Générateur QR et codes-barres</a>, collez le lien, gardez le niveau <strong>M</strong> et la marge <strong>4</strong>, puis téléchargez le SVG. Pour une carte tenue en main avec lien court, commencez autour de deux ou trois centimètres, sombre sur clair, puis testez le tirage à la distance prévue. Densité, surface et téléphone comptent plus qu'une taille minimale universelle.</p>
     <p>
       Cela couvre à peu près tous les cas. Le reste de cette page est pour les
       autres&nbsp;: un code qui doit survivre à la manipulation, un code avec un
       logo dessus, un code destiné à un petit support, et la seule décision
       facile à rater d'une façon dont vous ne vous apercevrez qu'un an plus tard.
     </p>
+  </section>
+
+  <section>
+    <h2>Accès invités, cartes de contact et étiquettes de matériel</h2>
+    <p>Pour un réseau invité, choisissez <em>Réseau Wi-Fi</em>, entrez nom exact, sécurité et mot de passe, puis examinez la chaîne encodée. Gardez M et quatre modules de marge pour une carte intérieure, exportez le SVG et testez la connexion au réseau prévu avec le tirage. Toute personne qui lit le code retrouve le mot de passe&nbsp;; le changer exige un nouveau code. Pour une carte de visite, choisissez <em>Carte de contact</em> et vérifiez nom, e-mail et numéro enregistrés sur un téléphone.</p>
+    <p>Une étiquette utile sur une imprimante ou un appareil partagé mène au manuel ou à l'installation. Choisissez <em>Texte ou lien</em>, une courte adresse HTTPS stable sous votre contrôle et imprimez le nom du matériel à côté. Q ou H mérite un essai pour les étiquettes sales. Gardez quatre modules de bordure et <a href="../creer-un-code-qr-et-prouver-qu-il-se-scanne/">testez l'étiquette montée</a>, y compris l'ouverture du manuel sur téléphone. La page web exige encore une connexion.</p>
   </section>
 
   <section>
@@ -24,25 +23,12 @@
       rejoindre un réseau ou de proposer d'enregistrer un contact, c'est le
       téléphone qui reconnaît la forme de ce texte et propose d'agir dessus.
     </p>
-    <p>
-      Il n'existe donc pas de &laquo;&nbsp;QR code Wi-Fi&nbsp;&raquo; comme genre
-      de code. Il existe un QR code contenant
-      <code>WIFI:T:WPA;S:My Network;P:the password;;</code>, que tous les
-      téléphones fabriqués depuis dix ans savent lire. Le générateur vous montre
-      la chaîne finie pour exactement cette raison&nbsp;: quand un code ne fait
-      pas ce que vous attendiez, la chaîne est la seule chose qui vaille d'être
-      regardée.
-    </p>
-    <p>
-      Cela veut dire aussi qu'un QR code ne peut pas être changé une fois
-      imprimé, ne peut prévenir personne, et ne peut pas expirer, sauf si
-      quelqu'un y a mis un lien vers son propre serveur, ce qui est le sujet de la
-      dernière section d'ici.
-    </p>
+    <p>Un «&nbsp;QR Wi-Fi&nbsp;» n'est donc pas un type de code distinct. C'est un QR contenant <code>WIFI:T:WPA;S:My Network;P:the password;;</code>, reconnu comme réseau par un téléphone compatible. Testez les téléphones prévus. Le générateur affiche la chaîne finale pour cette raison&nbsp;: si le code ne fait pas ce qui était attendu, elle est l'élément à examiner.</p>
+    <p>Un QR imprimé ne peut pas être modifié, ne fait lui-même aucune requête réseau et son texte n'expire pas. Une page liée peut déménager ou disparaître et un mot de passe changer&nbsp;; le code imprimé garde l'ancienne chaîne.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-qr-code/result.webp" loading="lazy" decoding="async"
-           alt="Un code QR fini avec ses caractéristiques en dessous&nbsp;: la symbologie, la version, le niveau de correction d'erreurs et le nombre de caractères qu'il contient.">
+           alt="Un code QR fini avec ses caractéristiques en dessous : la symbologie, la version, le niveau de correction d&#x27;erreurs et le nombre de caractères qu&#x27;il contient.">
       <figcaption>
         Ce qu'il y a dans le code, dit dans les termes qu'emploie le reste de ce guide. La version grandit avec le contenu, et c'est pour cela que les deux réglages du dessous comptent.
       </figcaption>
@@ -84,7 +70,7 @@
 
     <figure class="shot">
       <img src="/screens/make-a-qr-code/options.webp" loading="lazy" decoding="async"
-           alt="Les options du QR&nbsp;: un menu de niveau de correction d'erreurs réglé sur moyen, et une zone de silence de quatre modules.">
+           alt="Les options du QR : un menu de niveau de correction d&#x27;erreurs réglé sur moyen, et une zone de silence de quatre modules.">
       <figcaption>
         Les deux servent à ce que le code survive au monde réel, un pli, un logo, une mauvaise impression, et les deux se règlent avant qu'il ne soit dessiné.
       </figcaption>
@@ -115,37 +101,9 @@
 
   <section>
     <h2>Décision trois&nbsp;: à quelle taille l'imprimer</h2>
-    <p>
-      La règle empirique qui a survécu au contact du réel est
-      <strong>un pour dix</strong>&nbsp;: un code doit faire environ un dixième
-      de la distance depuis laquelle il sera scanné.
-    </p>
-    <ul>
-      <li>Une carte de visite ou un menu, lus à 30&nbsp;cm&nbsp;: environ
-        2&nbsp;cm de côté.</li>
-      <li>Une affiche lue à deux mètres&nbsp;: environ 20&nbsp;cm.</li>
-      <li>Un abribus ou une vitrine lus à cinq mètres&nbsp;: environ
-        50&nbsp;cm.</li>
-    </ul>
-    <p>
-      Deux centimètres est un plancher plutôt qu'une cible. En dessous d'environ
-      1,5&nbsp;cm, un téléphone ordinaire commence à peiner quelle que soit la
-      qualité de l'impression, parce que les modules individuels approchent la
-      taille d'un pixel de son capteur.
-    </p>
-    <p>
-      Moins de texte veut dire moins de modules, ce qui veut dire un code qui se
-      lit de loin pour une taille imprimée donnée&nbsp;: bonne raison de pointer
-      un code vers <code>example.com/x</code> plutôt que vers une URL avec cent
-      caractères de paramètres de suivi à la fin.
-    </p>
-    <p>
-      Et imprimez depuis le <strong>SVG</strong>. Un QR code est fait de bords, et
-      un PNG a un nombre fixe de pixels pour les faire&nbsp;; agrandissez-en un et
-      chaque bord s'adoucit, ce qui est précisément ce qui gêne un scanner. Un SVG,
-      ce sont les carrés sous forme d'instructions&nbsp;: il ressort net sur une
-      carte de visite comme sur un panneau publicitaire.
-    </p>
+    <p>La taille dépend des modules requis, de leur netteté imprimée, de la distance et de la caméra. Une URL courte peut faire un symbole plus simple qu'une longue adresse de suivi. Deux ou trois centimètres sont un premier essai pour une carte en main, pas une garantie ni un minimum de la norme. Un poster lu à travers une pièce exige un essai plus grand depuis cette distance.</p>
+    <p>L'<a href="https://www.qrcode.com/en/howto/code.html/index.html" target="_blank" rel="noopener noreferrer">exemple de dimensionnement DENSO</a> calcule le symbole selon version et taille imprimée des modules, puis ajoute quatre modules libres de chaque côté. Gardez cette bordure dans la mise en page. Si un code dense peine, raccourcissez la charge ou agrandissez-le plutôt que de couper la bordure.</p>
+    <p>Imprimez depuis le <strong>SVG</strong>&nbsp;: ses contours suivent la taille du layout. Si seul PNG est accepté, utilisez assez de pixels pour la taille finale sans agrandir un petit export. Scannez ensuite le tirage réel&nbsp;; aucun format ne garantit la lecture par un appareil ou une imprimante donnée.</p>
   </section>
 
   <section>
@@ -179,14 +137,7 @@
 
   <section>
     <h2>Un logo au milieu</h2>
-    <p>Un petit logo peut fonctionner, sans garantie sur un pourcentage de surface. Chez DENSO, les quelque 30 % de restauration au niveau H concernent l’ensemble des mots de code, pas des carrés quelconques. Gardez les motifs de repérage et d’alignement libres, choisissez H et testez l’impression avec plusieurs téléphones. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO explique la correction d’erreurs</a>.</p>
-    <p>Choisissez H et un petit logo. Aucun pourcentage de surface n’est garanti : placement, version, répartition des dommages et qualité d’impression comptent. Gardez les motifs de repérage et d’alignement libres et vérifiez la fiabilité sur une épreuve imprimée.</p>
-    <p>
-      Testez-le ensuite sur de vrais téléphones. Un logo fait passer un code de
-      &laquo;&nbsp;marche toujours&nbsp;&raquo; à
-      &laquo;&nbsp;marche avec cette marge-là&nbsp;&raquo;, et le seul moyen de
-      savoir combien de marge il reste est d'essayer.
-    </p>
+    <p>Un petit logo peut fonctionner, mais le générateur ne le place pas. Si vous l'ajoutez dans un éditeur, utilisez H et dégagez les motifs de détection et d'alignement. Aucun pourcentage de surface n'est garanti sûr&nbsp;: <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO définit la restauration selon les mots de code totaux</a>, pas des carrés quelconques. Position, densité et impression comptent. Testez plusieurs téléphones et réduisez ou retirez le logo s'il gêne.</p>
   </section>
 
   <section>

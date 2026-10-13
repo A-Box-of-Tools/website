@@ -14,8 +14,8 @@ lede = """
     tu propio equipo, que es exactamente donde deben estar las fotos con tu
     GPS dentro."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "De fotos de móvil a fotos publicables, sin subir los originales"
-og_description = "HEIC a JPEG, GPS fuera, tamaño para la página, compresión a un presupuesto. Qué herramienta hace cada paso, en qué orden, y por qué los metadatos se resuelven solos."
+og_description = "Convierte, redimensiona y comprime fotos para una web; después inspecciona los metadatos de las copias finales. Qué herramienta hace cada paso y cómo se distinguen los archivos intactos."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

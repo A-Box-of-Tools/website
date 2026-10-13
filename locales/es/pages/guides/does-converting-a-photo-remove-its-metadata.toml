@@ -11,7 +11,7 @@ lede = """
     lienzo lo arranca todo; un conversor cuidadoso lo traslada todo; la
     imagen se ve igual en ambos casos. La única jugada fiable es dejar de
     predecir y mirar el archivo."""
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "¿Convertir una foto borra sus metadatos?"
 og_description = "A veces - y ambos desenlaces sorprenden. Qué operaciones quitan el EXIF, cuáles lo conservan, y cómo comprobar el archivo en vez de suponer."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

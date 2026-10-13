@@ -13,7 +13,7 @@ lede = """
     um editor com uma pasta no meio &mdash; e a pasta é a parte em que você
     edita, com o que já usa para imagens."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Desmonte um GIF, arrume os quadros, monte de volta"
 og_description = "Separe um GIF em PNGs com os tempos guardados, tire ou retoque quadros e reconstrua - tudo no navegador, com os custos da ida e volta escritos com honestidade."

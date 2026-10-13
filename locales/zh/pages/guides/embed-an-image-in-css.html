@@ -17,6 +17,8 @@
     </p>
   </section>
 
+  <section><h2>小图标，或单文件离线文档</h2><p><strong>网站复用的装饰标志。</strong>选 CSS 自定义属性，在各处引用它。粘贴前检查编码字符数和预览。传达信息的图应放进带合适文字替代的 <code>&lt;img&gt;</code>，而非 CSS 背景。</p><p><strong>独立 HTML 讲义或离线报告。</strong>选 HTML 图片标签输出，补上所需替代文字，只嵌入文档必需的小素材。断网后用目标阅读器打开保存文档，确认图片出现。工具预览只能证明 URI 在此能渲染，不能保证邮件客户端、Markdown 渲染器或目标内容策略允许 data 图片。先测试目标环境再做整份报告；逐字节嵌入照片前检查元数据。</p></section>
+
   <section>
     <h2>data URI 到底是什么</h2>
     <p>
@@ -86,22 +88,7 @@
     </figure>
   </section>
 
-  <section>
-    <h2>绝不要给 SVG 上 base64</h2>
-    <p>
-      这是内联图片里最常见的一个错，而且导出插件和构建工具犯得不比人少。
-    </p>
-    <p>
-      SVG 是文本。网址本来就能装文本。只有少数几个字符必须转义，<code>%</code>、<code>#</code>、<code>&lt;</code>、<code>&gt;</code>，还有你用来包住它的那个引号，其余的原样留着就行。这么编出来的 URI，通常比同一个文件的 base64 短五分之一左右，而且之后是按文本压缩的，不是按噪声。
-    </p>
-    <p>
-      它还看得懂：
-    </p>
-    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      <code>viewBox</code> 你看得见。填充色也可以直接在编辑器里改，不用解码任何东西。同一个文件上了 base64，就变成一堵谁也不会再碰的字母墙。<a href="../../image-to-data-uri/">图片转 Data URI</a> 对认出来是 SVG 的文件自动走这条路，另外给个人别工具链留了个勾选框，那种非 <code>;base64</code> 不可的情况才用。
-    </p>
-  </section>
+  <section><h2>UTF-8 SVG 优先用百分号编码</h2><p>内嵌图片最常见的错误是把 SVG 一律转 Base64，导出器和构建插件也常这样做。</p><p>SVG 本来是文字，URL 本来能承载文字。只需转义 <code>%</code>、<code>#</code>、<code>&lt;</code>、<code>&gt;</code> 和外围引号等字符。所得 URI 通常比同一文件的 Base64 短约五分之一，之后还能像文字一样压缩。</p><p>内容也仍可读：</p><pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre><p>你能直接看 <code>viewBox</code>、改填充色，无须解码。<a href="../../image-to-data-uri/">图片转 Data URI</a> 会自动这样处理有效 UTF-8 SVG。UTF-16 等其他编码、声明不一致或无效 UTF-8 改用原字节 Base64，并说明原因，避免悄悄改文件编码。要求 <code>;base64</code> 的工具链也可勾选专用选项。</p></section>
 
   <section>
     <h2>那个只坑 SVG 的引号问题</h2>

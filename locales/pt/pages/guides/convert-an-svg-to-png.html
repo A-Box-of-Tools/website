@@ -23,6 +23,13 @@
   </section>
 
   <section>
+    <h2>Um logotipo para um documento ou imagens para tela</h2>
+    <p><strong>Slides ou documentos que não aceitam SVG.</strong> Exporte um PNG na largura que ocupará, com pixels suficientes para a tela ou impressão. Preserve a transparência se o logo aparecer sobre cores diferentes; escolha fundo opaco se o destino exigir. Confira na prévia letras substituídas ou imagens vinculadas ausentes antes de inserir o arquivo baixado.</p>
+    <p><strong>Ícones correspondentes para diferentes densidades de tela.</strong> Dê à versão 1x o tamanho de exibição e peça as cópias @2x e @3x na mesma operação. Em SVGs com dimensões de origem uniformes, um múltiplo preserva a relação entre eles; limitar o lado maior faz desenhos de formatos diferentes caberem na mesma extensão máxima. Confira se traços somem na menor cópia. Exportar maior não torna um símbolo delicado legível em um espaço minúsculo.</p>
+  </section>
+
+
+  <section>
     <h2>Por que o tamanho é decisão sua e não do arquivo</h2>
     <p>
       Um JPEG é uma grade de pixels medidos, e perguntar de que tamanho ele é tem
@@ -55,13 +62,7 @@
       <code>@3x</code> significam, e é por isso que uma ferramenta que os escreve
       poupa você de fazer a conta três vezes.
     </p>
-    <p><strong>Para um ícone de aplicativo, uma ficha de loja ou um
-      favicon.</strong> O número é publicado e não há o que descobrir: o que a
-      página da loja disser, exatamente. Para um favicon, não rasterize de jeito
-      nenhum. <a href="../criar-um-favicon/">Faça um .ico</a>, que guarda vários
-      tamanhos num arquivo só, porque uma aba de navegador, um favorito e um
-      atalho do Windows pedem tamanhos diferentes.
-    </p>
+    <p><strong>Um ícone de aplicativo, uma página de loja ou um favicon.</strong> O número está publicado: use exatamente o que a loja pede. Para um favicon, exporte os tamanhos necessários juntos e <a href="../criar-um-favicon/">crie um .ico</a> que reúna vários em um arquivo: a aba, o favorito e o atalho do Windows pedem tamanhos diferentes.</p>
     <p><strong>Para impressão.</strong> Multiplique o tamanho físico em polegadas
       pela resolução da impressora. Uma logomarca indo para um cartão de visita
       com cinco centímetros de largura a 300&nbsp;DPI dá 600 pixels, e a mesma
@@ -173,12 +174,7 @@
       pior aparece exatamente nesse tipo de imagem: um anel de sujeirinha em
       volta de cada borda dura. Use quando alguma coisa insistir nele.
     </p>
-    <p>
-      <strong>WebP</strong> faz tudo o que o PNG faz, num arquivo menor, e é lido
-      por todo navegador atual. O motivo para não usar é o que acontece depois do
-      navegador: software mais antigo, algumas gráficas e um bom número de
-      formulários de envio ainda não abrem um.
-    </p>
+    <p><strong>WebP</strong> preserva transparência e pode ficar menor, mas o ajuste de qualidade pode adicionar artefatos. Compare letras e bordas planas antes de substituir um PNG. A desvantagem aparece depois do navegador: softwares antigos, algumas gráficas e muitos formulários ainda não o abrem.</p>
     <p>
       Escolher uma cor de fundo com PNG também é uma coisa perfeitamente comum de
       se querer. Transparência só é útil quando aquilo em que a imagem vai cair é

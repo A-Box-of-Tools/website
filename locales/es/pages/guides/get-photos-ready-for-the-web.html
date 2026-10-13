@@ -29,6 +29,14 @@
   </section>
 
   <section>
+    <h2>Una galería de blog y un catálogo de productos usan los píxeles de forma distinta</h2>
+    <p><strong>Un artículo o galería compartida.</strong> Mide el espacio más ancho donde aparecerá la imagen y elige píxeles suficientes para las densidades de pantalla previstas. Fija un máximo de bytes por imagen y revisa caras, cielos y texturas finas en la página terminada. Los tamaños anteriores son puntos de partida, no límites universales.</p>
+    <p><strong>Tarjetas de productos con encuadre uniforme.</strong> Recorta a la proporción de la tarjeta en el redimensionador y revisa cada imagen: el mismo recorte puede cortar un producto situado de otra forma. Añade margen hasta el marco exacto si deben verse todos los bordes. Conserva una copia mayor para el zoom del producto, en vez de ampliar la miniatura.</p>
+    <p><strong>Diagramas y capturas en el mismo artículo.</strong> Usa PNG o WebP sin pérdida confirmado para texto pequeño y bordes definidos; JPEG o WebP con pérdida para fotos. El convertidor <a href="../../convertir-png-a-webp/">PNG a WebP</a> indica si el navegador escribió realmente sin pérdida. Revisa el texto más pequeño en la página, no solo el tamaño del archivo.</p>
+  </section>
+
+
+  <section>
     <h2>A dónde van los metadatos</h2>
     <p>
       El riesgo silencioso de una foto de móvil no son los píxeles; son las
@@ -37,12 +45,7 @@
       Publícala y puede que estés poniendo tu dirección al alcance de
       cualquiera que mire.
     </p>
-    <p>
-      Lo útil de esta cadena es que se ocupa de las etiquetas por su cuenta.
-      Redimensionar y comprimir redibujan la imagen desde los píxeles, y los
-      píxeles redibujados no llevan etiquetas: lo que sale de los pasos 2 o 3
-      está limpio sin que lo pidas. Los dos casos que piden una decisión:
-    </p>
+    <p>Los archivos realmente redimensionados o comprimidos se redibujan desde píxeles sin copiar etiquetas. Pero ambas herramientas devuelven intacto un archivo ya adecuado: una foto pequeña que no necesita ninguno de los pasos puede conservar EXIF y GPS. Revisa las copias finales antes de publicar y usa el <a href="../../eliminar-datos-exif/">Visor y eliminador de EXIF</a> para limpiar los archivos intactos. Quedan dos decisiones:</p>
     <ul>
       <li>
         <strong>Convertir HEIC:</strong> el conversor puede llevar los

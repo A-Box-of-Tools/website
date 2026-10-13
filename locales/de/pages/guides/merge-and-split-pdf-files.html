@@ -18,6 +18,12 @@
   </section>
 
   <section>
+    <h2>Eine Antragsmappe oder nur angeforderte Seiten</h2>
+    <p>Fügen Sie Anschreiben, Formular und Nachweise nach Checkliste hinzu und wählen ein Dokument als Ausgabe. Prüfen Sie die Herkunft jeder Seite anhand von Quelldatei und Seitennummer auf der Kachel. Das kleine Positionslabel zeigt ihren Zielplatz. Die Kacheln zeigen Formen und Labels, keine Inhalte. Öffnen Sie das fertige PDF und prüfen jede Seite. Prüfen Sie ausgefüllte Formulare besonders bei gemeldeten Feldnamenskollisionen und behalten Sie digital signierte Originale getrennt.</p>
+    <p>Finden Sie für ein Zertifikat oder einen Anhang die physischen Seitenpositionen im Original, fügen das PDF hinzu, geben etwa <code>2-4, 9</code> ein und wählen <em>Nur diese behalten</em>. Der Bereich zählt aktuelle Positionen statt gedruckter Labels wie „iii“. Exportieren und prüfen Sie die vier vorgesehenen Seiten in richtiger Reihenfolge. Das entfernt ganze Seiten. Für privaten Text auf behaltenen Seiten nutzen Sie <a href="../pdf-schwaerzen/">Schwärzen</a>.</p>
+  </section>
+
+  <section>
     <h2>Zwei oder mehr Dokumente zusammenfügen</h2>
     <p>
       Wählen Sie die erste Datei, dann die zweite; die Seiten jeder Datei kommen
@@ -104,24 +110,17 @@
     <p>
       Sobald mehr als ein, zwei Seiten betroffen sind, nehmen Sie stattdessen das
       Bereichsfeld. Es versteht, was Sie auf Papier schreiben würden:
-      <code dir="ltr">1-3, 8, 12-</code>, und ebenso <code>ungerade</code>,
-      <code>gerade</code>, <code>alle</code> und <code>letzte</code>. Die
+      <code dir="ltr">1-3, 8, 12-</code>, und ebenso <code>odd</code>,
+      <code>even</code>, <code>all</code> und <code>last</code>. Die
       behalten, die entfernen oder die drehen. Ein häufiger Fall: Bei einem
       beidseitigen Scan, bei dem jede zweite Seite auf dem Kopf steht, sind das
-      <code>gerade</code> und zwei Drehungen.
+      <code>even</code> und zwei Drehungen.
     </p>
-    <p>
-      Die Nummern auf den Kacheln werden beim Arbeiten neu vergeben, sie bedeuten
-      also immer &bdquo;Position im fertigen Dokument&ldquo; und nicht
-      &bdquo;Seite in der Datei, aus der sie stammt&ldquo;. Geschrieben wird
-      nichts, bis Sie den Knopf drücken, es gibt also nichts rückgängig zu machen
-      &mdash; und &bdquo;zurück in den Zustand beim Laden&ldquo; stellt die
-      ursprüngliche Reihenfolge von allem wieder her.
-    </p>
+    <p>Die große Zahl jeder Kachel ist die Quellseitennummer und bleibt bei der Seite. Das kleine Positionslabel ändert sich und wird vom Bereichsfeld verwendet. Bis zum Knopfdruck wird nichts geschrieben, also muss nichts rückgängig gemacht werden. „Zurück zur ursprünglichen Reihenfolge“ stellt alles wieder her.</p>
 
     <figure class="shot">
       <img src="/screens/merge-and-split-pdf-files/pages.webp" loading="lazy" decoding="async"
-           alt="Das Seitenraster: jede Seite zweier Dokumente als Miniatur, in der Reihenfolge des Ergebnisses, mit Bedienelementen zum Drehen, Umkehren und Entfernen.">
+           alt="Das Seitenraster mit Kacheln aus zwei Dokumenten, Quelllabels und Ausgabepositionen sowie Bedienelementen zum Drehen, Umkehren und Entfernen.">
       <figcaption>
         Beide Dokumente, Seite für Seite. Umsortieren heißt ziehen; das Bereichsfeld darüber ist für die Dokumente, bei denen Ziehen einen ganzen Nachmittag dauern würde.
       </figcaption>
@@ -198,14 +197,7 @@
 
   <section>
     <h2>Passwortgeschützte Dateien</h2>
-    <p>
-      Ein verschlüsseltes PDF wird abgelehnt, auch die Sorte mit leerem Passwort,
-      die viele Bürokopierer erzeugen. Den Schutz eines Dokuments zu entfernen
-      ist eine andere Aufgabe als seine Seiten zu verschieben, und ein Werkzeug,
-      das das still täte, täte etwas, das Sie nicht verlangt haben. Öffnen Sie
-      die Datei mit dem Passwort in einem Leseprogramm und speichern Sie zuerst
-      eine ungeschützte Kopie.
-    </p>
+    <p>Verschlüsselte PDFs werden abgelehnt, auch die mit leerem Passwort aus vielen Bürokopierern. Schutz entfernen ist eine andere Aufgabe als Seiten verschieben. Ein stilles Entfernen wäre nicht beauftragt. Erstellen Sie zuerst mit dem <a href="../pdf-entsperren/">PDF-Entsperrer</a> eine ungeschützte Kopie und geben Sie bei Bedarf ein gültiges Passwort an.</p>
   </section>
 
   <section>

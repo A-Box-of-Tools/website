@@ -14,7 +14,7 @@ lede = """
     que se olha para um, é isso que os controles significam, e é isso que o arquivo
     carrega além da imagem."""
 
-updated = "19 de setembro de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Como abrir um arquivo DCM sem instalar nada"
 og_description = "O que há num disco de hospital, por que os arquivos não têm extensão, e o que um exame .dcm carrega sobre o paciente além da imagem."

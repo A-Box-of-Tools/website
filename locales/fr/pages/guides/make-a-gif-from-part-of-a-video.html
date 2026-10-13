@@ -7,14 +7,7 @@
       trouve entre les marques, il n'y a donc rien à couper d'avance.
       Choisissez une largeur et une cadence, puis exportez.
     </p>
-    <p>
-      Pour tout ce qui dépasse un seul moment &mdash; deux buts du même match,
-      la préparation et la chute &mdash; assemblez d'abord le clip avec le
-      <a href="../../couper-une-video/">Découpeur vidéo</a>, puis confiez le résultat
-      au convertisseur. Le découpeur joint autant de parties marquées que vous
-      voulez en un seul fichier sans les réencoder&nbsp;: ce premier pas ne
-      coûte rien en qualité et quelques secondes en temps.
-    </p>
+    <p>Pour plusieurs moments, deux buts du même match ou la préparation et la chute, assemblez d'abord le clip dans le <a href="../../couper-une-video/">Découpeur vidéo</a>, puis transmettez-le au convertisseur. Il peut joindre des parties compatibles par copie si chaque début ultérieur est une image clé&nbsp;; sinon la méthode exacte indiquée réencode l'image. Lisez ce choix avant l'export.</p>
     <p>
       Le passage se fait en un clic&nbsp;: une fois l'export termin&eacute;,
       une ligne sous le bouton de t&eacute;l&eacute;chargement propose de
@@ -28,6 +21,12 @@
       pourquoi cet ordre compte tellement plus pour un GIF que pour tout ce que
       ce site fabrique d'autre.
     </p>
+  </section>
+
+  <section>
+    <h2>Montrer le problème et l'action qui l'a causé</h2>
+    <p>Pour un rapport de bug, marquez juste avant le clic ou geste, pas seulement le résultat cassé, et terminez après avoir laissé le temps de le reconnaître. Trois secondes à 480 pixels et 12 images par seconde sont un bon premier essai&nbsp;; le petit texte peut demander plus de largeur. Désactivez le tramage pour les aplats d'interface, puis regardez le GIF à la taille affichée dans le suivi des problèmes.</p>
+    <p>La même coupe explique un geste manuel ou une interaction produit plus facile à voir qu'à décrire. Gardez la main ou le curseur qui donne le contexte et utilisez la section unique du convertisseur si elle suffit. Si l'explication dépend de paroles, utilisez la courte vidéo&nbsp;: un GIF ne les porte pas. Pour des étapes séparées, assemblez d'abord et vérifiez tous les raccords avant conversion.</p>
   </section>
 
   <section>
@@ -77,7 +76,7 @@
 
     <figure class="shot">
       <img src="/screens/make-a-gif-from-part-of-a-video/marks.webp" loading="lazy" decoding="async"
-           alt="La carte de section&nbsp;: une image de vidéo avec un code temporel, et des points d'entrée et de sortie marqués à onze et quatorze secondes sur la barre du dessous.">
+           alt="La carte de section : une image de vidéo avec un code temporel, et des points d&#x27;entrée et de sortie marqués à onze et quatorze secondes sur la barre du dessous.">
       <figcaption>
         Le convertisseur a ses propres points d'entrée et de sortie, et pour un morceau de trois secondes tiré d'un plan plus long ils suffisent à eux seuls.
       </figcaption>
@@ -91,13 +90,7 @@
       morceau&nbsp;:
     </p>
     <ul>
-      <li>
-        <strong>Plusieurs moments, un GIF.</strong> Marquez chaque partie avec
-        <kbd>I</kbd> et <kbd>O</kbd> pendant que la vidéo joue, réordonnez si
-        le meilleur passage doit ouvrir, et exportez un seul fichier. Les
-        parties sont copiées, pas réencodées&nbsp;: l'assemblage ne perd
-        rien.
-      </li>
+      <li><strong>Plusieurs moments, un GIF.</strong> Marquez chaque partie avec <kbd>I</kbd> et <kbd>O</kbd> pendant la lecture, réordonnez si le meilleur passage doit venir d'abord et exportez un fichier. Choisissez Copier seulement si la page autorise les débuts ultérieurs&nbsp;; sinon choisissez la méthode exacte et son réencodage.</li>
       <li>
         <strong>Deux vidéos, un GIF.</strong> Le découpeur accepte plusieurs
         fichiers et joint des parties marquées à travers eux &mdash; il copie
@@ -111,11 +104,7 @@
         vidéo se joue.
       </li>
     </ul>
-    <p>
-      Déposez ensuite le clip assemblé dans le convertisseur et ne marquez
-      rien&nbsp;: le fichier entier est désormais exactement le GIF que vous
-      vouliez.
-    </p>
+    <p>Déposez ensuite le clip assemblé sans rien marquer&nbsp;: tout le fichier est la séquence voulue. Si ses modifications de lecture sont refusées, enregistrez une nouvelle vidéo avec ces modifications appliquées dans un éditeur local avant conversion. Ne contournez pas ce refus&nbsp;: des images cachées ne doivent pas réapparaître. Comme un GIF n'a pas de son, retirez-le du montage intermédiaire pour éviter d'y transporter des instructions de lecture audio.</p>
   </section>
 
   <section>

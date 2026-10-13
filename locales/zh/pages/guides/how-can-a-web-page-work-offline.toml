@@ -15,7 +15,7 @@ description = "Service worker 如何缓存浏览器工具，离线操作能证�
 heading = "网页断了网怎么还能用？"
 lede = "Service worker 能保留工具的本地副本。断网完成某次操作是本地处理的证据，不是未来所有数据路径的保证。本页说明缓存机制和检查方法。"
 
-updated = "2026年10月12日"
+updated = "2026年10月13日"
 
 og_title = "网页断了网怎么还能用？"
 og_description = "浏览器工具如何缓存资源，断网处理能证明什么，哪些功能仍需连接。"

@@ -4,6 +4,9 @@ endonym = "Français"
 complete = true
 
 [slugs]
+"guides/broadcast-voice-on-a-local-network" = "guides/diffuser-la-voix-sur-un-reseau-local"
+"guides/arrange-images" = "guides/disposer-des-images"
+"guides/watch-camera-from-another-device" = "guides/voir-la-camera-dun-autre-appareil"
 "receipt-invoice-extractor" = "extraire-recus-factures"
 "guides/extract-receipts-and-invoices" = "guides/extraire-recus-et-factures"
 "compress-image" = "compresser-une-image"

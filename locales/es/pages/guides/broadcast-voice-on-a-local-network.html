@@ -1,0 +1,16 @@
+<main id="main">
+  <h2>Empieza en el dispositivo desde el que hablarás</h2>
+  <p>Descarga el ZIP local de la herramienta, extráelo y ejecuta <code>python helper.py</code> desde su carpeta con Python 3.10 o posterior. No necesita paquetes adicionales. Mantén abierta su ventana. Abre en ese dispositivo la invitación del emisor que muestra <code>http://localhost:</code>, elige Start channel y permite el acceso al micrófono.</p>
+  <h2>Invita a quienes escucharán</h2>
+  <p>Elige en el emisor la dirección de red prevista y comparte el enlace o código QR para oyentes. Los teléfonos y otros dispositivos escuchan por Wi-Fi o Ethernet si pueden conectarse. Nunca solicitan acceso al micrófono. La reproducción se intenta automáticamente; si el navegador bloquea el sonido, el control Unmute lo inicia. Mute/Unmute y Leave son los únicos controles de los oyentes.</p>
+  <h2>Mantén pulsado para hablar</h2>
+  <p>Mantén pulsado Talk con el dedo o el ratón, o sitúa el foco en el botón y mantén pulsada la barra espaciadora. Suelta para dejar de enviar voz. Tap to talk permite iniciar y detener con un clic. El silencio del emisor prevalece sobre ambos modos. Mantén visible la página del emisor y el dispositivo despierto; ocultarla libera la captura.</p>
+  <p>Pueden conectarse hasta diez oyentes, incluidas las conexiones pendientes. El emisor envía una transmisión separada a cada uno. Empieza con un grupo pequeño y comprueba el dispositivo y la red que vas a usar.</p>
+  <h2>Recupera una conexión perdida con el emisor</h2>
+  <p>Los oyentes muestran Reconnecting y comprueban la conexión sin cambiar de página, con un intervalo previsto de un segundo mientras la página está activa. Conservan su elección de silencio. Abre la misma invitación del emisor mediante el servicio local que sigue funcionando e inicia de nuevo para continuar. Los navegadores en segundo plano y los dispositivos dormidos pueden retrasar los intentos.</p>
+  <p>End broadcast libera el micrófono y termina la sesión expresamente. Leave desconecta a un oyente y detiene sus reintentos. Reiniciar el servicio local crea invitaciones nuevas, así que comparte el nuevo enlace para oyentes.</p>
+  <h2>Usa una red de confianza</h2>
+  <p>Cualquiera con el enlace para oyentes y acceso al servicio local puede entrar. WebRTC cifra la voz, pero el servicio usa HTTP para establecer la conexión y transmitir las credenciales de invitación. Un atacante activo en la red local puede observar o alterar ese proceso. El paquete no contiene scripts ni recursos remotos y el servicio local no recibe audio. No hay función de grabación ni relevo público; los receptores pueden grabar por su cuenta lo que oyen.</p>
+  <h2>Comprueba que los dispositivos puedan conectarse</h2>
+  <p>Revisa el permiso del cortafuegos para redes privadas, la dirección local elegida y los permisos de red local del navegador. El Wi-Fi de invitados puede aislar dispositivos; las VPN y las rutas del sistema afectan a las direcciones del emisor. Si la detección automática omite una interfaz, ejecuta <code>python helper.py --address 192.168.1.20</code>, sustituyendo el ejemplo por la dirección IPv4 privada real del dispositivo.</p>
+</main>

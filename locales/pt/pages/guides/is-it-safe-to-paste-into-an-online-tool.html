@@ -20,6 +20,13 @@
   </section>
 
   <section>
+    <h2>Depure uma resposta sem colar o registro inteiro</h2>
+    <p><strong>Uma resposta de API incorreta.</strong> Mantenha chaves, tipos e campo que falha, substitua credenciais e dados pessoais alheios ao problema e use o <a href="../formatar-json/">formatador</a> para localizar o erro. Se depender de um valor específico, reproduza com um fictício do mesmo formato antes de compartilhar. Formatar corretamente não comprova que o aplicativo aceita os dados.</p>
+    <p><strong>Uma regressão de configuração.</strong> Use o mesmo formatador na cópia funcional e na que falha e <a href="../comparar-dois-arquivos-json/">compare</a>. Preserve a ordem dos arrays onde importar. A comparação local revela o campo alterado sem publicar nenhuma configuração.</p>
+    <p>Depois você pode preparar um exemplo pequeno para suporte. Confira o texto salvo além do editor: comentários, URLs, identificadores e resultados copiados podem carregar dados removidos do campo de senha evidente.</p>
+  </section>
+
+  <section>
     <h2>O que um colar realmente carrega</h2>
     <p>
       O que acaba nas ferramentas online raramente é prosa. É o texto de
@@ -104,25 +111,9 @@
       arquivos</a>. A versão curta, em chave de colar:
     </p>
     <ul>
-      <li>
-        <strong>Puxe o cabo.</strong> Carregue a página, desconecte, cole,
-        aperte o botão. Uma ferramenta local continua; uma de servidor
-        para. Trinta segundos, nenhuma perícia, impossível de forjar.
-      </li>
-      <li>
-        <strong>Olhe a aba de Rede enquanto aperta Formatar.</strong> Uma
-        requisição que sai naquele momento, mais ou menos do tamanho do
-        que você colou, é o que você colou saindo. Sem requisição, sem
-        envio.
-      </li>
-      <li>
-        <strong>Desconfie dos extras prestativos.</strong> Um botão de
-        &ldquo;compartilhar este trecho&rdquo;, um histórico dos seus
-        colares sincronizado entre aparelhos, um link para mandar a um
-        colega &mdash; cada um só é possível se o texto foi guardado num
-        servidor. Funcionalidades são confissões: uma página que consegue
-        mostrar o seu colar a outra pessoa ficou com ele.
-      </li>
+      <li><strong>Desconecte.</strong> Carregue a página, desconecte, cole e aperte o botão. Uma ferramenta local continua; uma de servidor para. Concluir prova que esta operação funcionou sem conexão. Não descarta que dados sejam guardados para envio ao reconectar.</li>
+      <li><strong>Observe a aba Rede ao apertar Formatar.</strong> Uma requisição nesse momento merece revisar sua URL e corpo. O tamanho sozinho não identifica o conteúdo; requisições pequenas ou posteriores também podem carregar texto sensível.</li>
+      <li><strong>Confira os recursos adicionais.</strong> Compartilhar um trecho, um histórico entre aparelhos ou um link para um colega envolvem transferência ou armazenamento que você precisa conferir. Alguns serviços guardam texto; <a href="../compartilhar-texto-entre-dispositivos/">compartilhar diretamente entre navegadores</a> o entrega ao leitor escolhido sem armazenamento em servidor. Em qualquer caso, enviar é uma ação diferente de formatar.</li>
     </ul>
     <p>
       E um hábito vale mais que as três verificações: colar menos. Um

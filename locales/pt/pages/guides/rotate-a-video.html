@@ -5,6 +5,12 @@
   </section>
 
   <section>
+    <h2>Corrija a cópia que falha na tela de destino</h2>
+    <p>Se um vídeo de celular aparece certo localmente mas de lado em documento ou apresentação, experimente primeiro o giro de cabeçalho e salve uma cópia. Abra no aplicativo ou computador de destino. Se ignorar o giro, volte ao original e escolha Aplicar aos pixels: grava a imagem orientada com uma recodificação.</p>
+    <p>Uma câmera montada de cabeça para baixo precisa de meia volta. Confira um rosto ou placa na prévia e ouça se o som importar: AAC é copiado; outra faixa decodificável pode ser codificada em AAC ou omitida se não for compatível. Girar muda orientação, não formato. Um recorte vertical de vídeo horizontal está no <a href="../cortar-um-video/">guia de enquadramento</a>.</p>
+  </section>
+
+  <section>
     <h2>Por que o vídeo aparece de lado</h2>
     <p>O sensor da câmera do celular é horizontal. Quando você grava com o aparelho em pé, ele continua capturando uma imagem horizontal deitada, e cada quadro é salvo assim. O celular acrescenta uma instrução ao cabeçalho: uma matriz de exibição de nove números, dizendo por exemplo “mostre com um quarto de volta à direita”. Celulares, navegadores, editores e reprodutores modernos leem essa instrução e giram a imagem na tela. Por isso ela aparece certa no celular.</p>
     <p>Se o vídeo aparece de lado em outro lugar, a instrução foi ignorada ou está errada. A câmera pode ter entendido mal a posição, um conversor pode ter descartado o cabeçalho ou um reprodutor antigo pode não lê-lo. O problema é a orientação registrada, não os quadros.</p>
@@ -12,7 +18,7 @@
 
   <section>
     <h2>A correção pode ser só mudar nove números</h2>
-    <p>Girar pode significar escrever outra orientação. Os quadros continuam intactos, sem decodificação nem recodificação. O resultado ocupa quase o mesmo espaço e fica pronto no tempo de ler o arquivo uma vez. É o padrão da ferramenta para <a href="/pt/girar-video/">girar vídeos</a>: ela combina o giro escolhido com a orientação existente, grava a matriz resultante e copia quadros e pacotes de áudio byte por byte.</p>
+    <p>Girar significa gravar outra indicação. Os quadros ficam intactos, sem decodificar nem recodificar; o arquivo fica quase do mesmo tamanho e leva o tempo de lê-lo. O <a href="../../girar-video/">Rotacionador de vídeo</a> combina por padrão o giro escolhido com o existente, grava a matriz e copia imagens byte por byte. AAC também é copiado; outro codec decodificável vira AAC e o som incompatível é identificado e omitido. Leia a decisão de áudio separada antes de exportar.</p>
     <p>Muitas ferramentas on-line decodificam o vídeo, giram os pixels e codificam tudo de novo. Isso perde uma geração de qualidade, demora o tempo de uma codificação e altera cada quadro para uma tarefa que só precisava de nove números. Programar um caminho que sempre recodifica é mais simples do que manter dois; isso não significa que o arquivo precise dele.</p>
   </section>
 

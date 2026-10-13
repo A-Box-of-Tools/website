@@ -9,7 +9,7 @@ description = "Apilar combina una ráfaga de tomas en una sola imagen. Qué mét
 heading = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
 lede = "Una ráfaga contiene más información que cada toma por separado. La media reduce el ruido aleatorio independiente; el valor central de cada píxel puede quitar lo que aparece en menos de la mitad de las tomas. La elección depende de lo que se movió."
 
-updated = "8 de octubre de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
 og_description = "Promedia una ráfaga para matar el ruido, toma la mediana para vaciar una plaza concurrida, aclara para dejar estelas de estrellas. Qué método resuelve qué problema, y dónde encajan los archivos RAW."

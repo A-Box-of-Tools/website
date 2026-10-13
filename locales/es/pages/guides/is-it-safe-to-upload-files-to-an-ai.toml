@@ -14,7 +14,7 @@ lede = """
     diferencia que importa. Un conversor transforma tu archivo sin que le
     importe lo que contiene. A una IA se le envía el archivo precisamente
     para que algo lo lea."""
-updated = "27 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "¿Es seguro subir archivos a una IA?"
 og_description = "Una ventana de chat es un formulario de subida que no lo parece. Adónde va de verdad el archivo, en qué se diferencia una IA de un conversor, y cómo enviar menos y enviarlo limpio."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

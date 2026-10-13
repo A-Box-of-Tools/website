@@ -25,6 +25,14 @@
   </section>
 
   <section>
+    <h2>Um formulário, um anexo ou uma digitalização legível</h2>
+    <p><strong>Uma inscrição com dimensões e limite de tamanho.</strong> Leia primeiro os formatos aceitos. Recorte e ajuste as dimensões no <a href="../../redimensionar-imagem/">Redimensionador de imagens</a>, informe aqui o máximo de bytes e desative <strong>Pode diminuir a imagem se for necessário</strong>. Escolha JPEG explicitamente se o formulário exigir. Confira dimensões, formato e tamanho na linha do resultado: um arquivo pequeno com dimensões erradas ainda descumpre a regra.</p>
+    <p><strong>Várias fotos em uma mensagem.</strong> A meta vale para cada imagem. Defina um tamanho individual que caiba no limite total de anexos. Um ZIP reúne os resultados; não garante outra grande economia em imagens já comprimidas.</p>
+    <p><strong>Um recibo ou uma captura para suporte.</strong> Comece com PNG se o texto fino importar e confira as menores letras no arquivo baixado. Uma meta muito baixa pode encolhê-las até ficarem ilegíveis. Preserve uma cópia maior ou corte bordas irrelevantes antes de sacrificar mais detalhes.</p>
+  </section>
+
+
+  <section>
     <h2>O que um limite de tamanho está realmente pedindo</h2>
     <p>
       Um JPEG ou um WebP não guarda a sua fotografia. Guarda uma descrição dela,
@@ -33,13 +41,7 @@
       texturas finas viram média, gradientes ganham faixas e as bordas pegam uma
       leve auréola de blocos.
     </p>
-    <p>
-      Ou seja, um limite de tamanho é um orçamento de detalhe. A pergunta útil
-      não é &ldquo;consigo chegar a 500&nbsp;KB?&rdquo;, porque você sempre
-      consegue chegar a qualquer número. A pergunta é quanto da imagem você
-      precisa entregar para chegar lá, e se isso importa para o que você vai
-      fazer com ela.
-    </p>
+    <p>O limite de tamanho é um orçamento de detalhes. A pergunta útil não é “consigo ficar abaixo de 500&nbsp;KB?”, mas “quanto da imagem preciso sacrificar para isso, e afeta o que pretendo fazer com ela?”.</p>
     <p>
       Duas regras de bolso. Uma fotografia de uma cena real, com rostos,
       folhagem e tecido, esconde bem a compressão, porque o olho não tem nenhuma
@@ -165,11 +167,7 @@
         JPEG ou WebP costuma deixar o arquivo de cinco a dez vezes menor sem
         mudança visível.
       </li>
-      <li>
-        <strong>Uma captura de tela ou um diagrama.</strong> Converta para WebP,
-        que também é sem perdas quando você pede, e em geral é menor que o PNG
-        para os mesmos pixels. Ir para JPEG deixa as bordas do texto borradas.
-      </li>
+      <li><strong>Uma captura ou um diagrama.</strong> Experimente o <a href="../../png-para-webp/">conversor de PNG para WebP</a> no modo Sem perdas e confira a economia real. A busca de WebP deste compressor usa perdas; não oferece aquele modo sem perdas. JPEG pode borrar as bordas do texto.</li>
       <li>
         <strong>Uma logomarca com transparência.</strong> O WebP mantém a
         transparência, e o JPEG vai preenchê-la com uma cor sólida, o que quase
@@ -217,18 +215,7 @@
 
   <section>
     <h2>Três coisas que vale saber antes de mandar o arquivo</h2>
-    <p>
-      <strong>Comprimir apaga os metadados.</strong> Recodificar significa
-      decodificar a imagem em pixels e codificar esses pixels de novo, e um
-      canvas cheio de pixels não carrega etiqueta nenhuma, então a posição de
-      GPS, o modelo da câmera, os horários e o resto simplesmente não são
-      escritos no arquivo novo. Em geral isso é um bônus. Se você queria as
-      etiquetas fora mas a imagem intacta, esse é outro trabalho: o
-      <a href="../../remover-dados-exif/">Visualizador e removedor de EXIF</a>
-      reescreve o contêiner sem recomprimir nada, e
-      <a href="../remover-dados-exif-e-gps/">o guia dele</a> explica o que tem
-      lá dentro.
-    </p>
+    <p><strong>Recodificar remove os metadados.</strong> Um arquivo já abaixo da meta é devolvido intacto, incluindo seus metadados. Se precisa de processamento, é decodificado em pixels e codificado novamente. O canvas de pixels não leva etiquetas: GPS, modelo da câmera, datas e outros dados não são gravados no novo arquivo. Geralmente é uma vantagem. Para remover as etiquetas sem alterar a imagem, o <a href="../../remover-dados-exif/">Visualizador e removedor de EXIF</a> reescreve o contêiner sem recomprimir. <a href="../remover-dados-exif-e-gps/">Seu guia</a> explica o que ele contém.</p>
     <p>
       <strong>Nunca comprima o mesmo arquivo duas vezes.</strong> Cada
       codificação com perdas joga detalhe fora em definitivo, e codificar uma

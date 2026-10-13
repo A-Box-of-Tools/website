@@ -13,20 +13,9 @@
         <strong>Imprime uno.</strong> Al tamaño real, en el papel real,
         antes de la tirada de doscientos.
       </li>
-      <li>
-        <strong>Demuéstralo.</strong> Fotografía la prueba con un móvil
-        &mdash; en ángulo, con la luz del sitio &mdash; y suelta la foto en
-        el <a href="../../escanear-codigo-qr/">Lector de QR y códigos de
-        barras</a>. Muestra la carga decodificada y, si es un enlace, el
-        host que alcanza de verdad. Si eso coincide con lo que querías, la
-        tirada va segura.
-      </li>
+      <li><strong>Compruébalo.</strong> Fotografía la prueba impresa con un teléfono, en ángulo y con la luz del lugar, y añádela al <a href="../../escanear-codigo-qr/">Lector QR y de códigos de barras</a>. Muestra el contenido y, en enlaces, el servidor de esa dirección codificada. Si coincide, prueba con los teléfonos que lo usarán y comprueba aparte el destino.</li>
     </ol>
-    <p>
-      Las dos herramientas corren en tu navegador y no mandan nada a ninguna
-      parte, lo que en un código de Wi-Fi significa que la contraseña que
-      lleva dentro nunca se tecleó en la web de nadie.
-    </p>
+    <p>Ambas herramientas funcionan en el navegador sin enviar nada. En un código Wi-Fi, el procesamiento no transmite la contraseña para crearlo o leerlo.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-qr-code-and-prove-it-scans/made.webp" loading="lazy" decoding="async"
@@ -35,6 +24,12 @@
         El código, hecho.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Comprueba el destino además de la impresión</h2>
+    <p>Para un menú, inscripción o manual, pega la URL HTTPS completa, conserva cuatro módulos de margen e incorpora el SVG al diseño final. Imprime al tamaño previsto, monta en la superficie prevista y escanea desde donde estará el visitante. Lee la dirección y abre conscientemente en un teléfono para completar la acción: leer el menú, llegar al formulario o al manual correcto. Una cadena correcta aún puede llevar a una página inaccesible o que pida una sesión inesperada.</p>
+    <p>Las tarjetas de contacto requieren otro paso: tras leer el código impreso, guarda el contacto en un teléfono y revisa nombre, número y correo. En hojas de etiquetas, fotografía cada código aparte: el lector encuentra uno por imagen. Repite la prueba al cambiar URL, colores, tamaño o diseño y usa varios teléfonos antes de una tirada grande.</p>
   </section>
 
   <section>
@@ -54,19 +49,8 @@
         del generador dicen en voz alta lo que cuesta cada uno en
         densidad.
       </li>
-      <li>
-        <strong>Los colores.</strong> Los códigos impresos en claro sobre
-        oscuro escanean; las paletas de marca con poco contraste, muchas
-        veces no. El lector aguanta más que la mayoría de los móviles: si a
-        <em>él</em> le cuesta con la foto, el móvil más viejo del vestíbulo
-        no tiene ninguna opción.
-      </li>
-      <li>
-        <strong>La arruga y el reflejo.</strong> La corrección Reed-Solomon
-        hace que un código a medio tapar siga leyéndose, hasta el nivel que
-        elegiste. Un cartel destinado a la intemperie merece el nivel alto y
-        el código algo más denso que cuesta.
-      </li>
+      <li><strong>Los colores.</strong> Este lector lee códigos invertidos, pero eso no prueba que todos los teléfonos lo hagan. Empieza con módulos oscuros sobre fondo claro y prueba los colores reales de la marca tras imprimir.</li>
+      <li><strong>Pliegues y reflejos.</strong> Reed&ndash;Solomon repara parte de los datos dañados, pero el porcentaje no es un área garantizada que puedas cubrir. Los patrones de detección deben ser legibles. Un cartel a la intemperie merece el nivel mayor y el código algo más denso que supone.</li>
     </ul>
 
     <figure class="shot">
@@ -80,15 +64,7 @@
 
   <section>
     <h2>El mismo lector, para códigos que no son tuyos</h2>
-    <p>
-      Verificar es también la manera segura de abrir el QR que imprimió otro.
-      El lector enseña la dirección entera y el host que alcanza de verdad
-      <em>antes de que nada se abra</em>, y nombra los trucos que disfrazan
-      un enlace: un nombre de usuario delante de la @, un alfabeto gemelo,
-      una redirección. La pegatina del parquímetro merece esa inspección; la
-      acreditación del congreso, también. Nada se abre por ti, y nada de lo
-      que escaneas se manda a ninguna parte.
-    </p>
+    <p>Verificar también permite abrir con más cuidado un QR ajeno. El lector muestra la dirección completa y su servidor <em>antes de abrir nada</em> y señala cosas que revisar: usuario antes de @, letras parecidas o acortador conocido. No sigue redirecciones ni descubre el destino final de un enlace corto. Merece revisarse una pegatina de parquímetro o acreditación de congreso. Nada se abre por ti ni se envía lo escaneado.</p>
   </section>
 
   <section>

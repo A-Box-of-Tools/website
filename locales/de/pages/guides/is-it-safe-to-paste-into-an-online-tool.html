@@ -20,6 +20,13 @@
   </section>
 
   <section>
+    <h2>Eine Antwort untersuchen, ohne den ganzen Datensatz einzufügen</h2>
+    <p><strong>Eine fehlerhafte API-Antwort.</strong> Behalten Sie Klammern, Typen und das fehlerhafte Feld. Ersetzen Sie Zugangsdaten und nicht benötigte persönliche Werte, dann finden Sie das Syntaxproblem mit dem <a href="../json-formatieren/">Formatierer</a>. Hängt der Fehler von einem bestimmten Wert ab, reproduzieren Sie ihn vor dem Teilen mit einem erfundenen Wert gleicher Form. Erfolgreiches Formatieren beweist nicht, dass die Anwendung die Daten annimmt.</p>
+    <p><strong>Eine Konfigurationsregression.</strong> Formatieren Sie funktionierende und fehlerhafte Kopie gleich und <a href="../zwei-json-dateien-vergleichen/">vergleichen Sie sie</a>. Behalten Sie die Arrayreihenfolge, wo sie wichtig ist. Ein lokaler Vergleich zeigt das geänderte Feld, ohne eine der Konfigurationen zu veröffentlichen.</p>
+    <p>Aus diesem Unterschied lässt sich ein kleines Supportbeispiel vorbereiten. Prüfen Sie gespeicherten Text ebenso wie den Editor. Kommentare, URLs, Kennungen und kopierte Ausgaben können Details enthalten, die Sie aus dem offensichtlichen Passwortfeld entfernt haben.</p>
+  </section>
+
+  <section>
     <h2>Was ein eingefügter Text wirklich trägt</h2>
     <p>
       Was in Online-Werkzeugen landet, ist selten Prosa. Es ist der
@@ -105,28 +112,9 @@
       Hochladen</a>. Die Einfüge-Kurzfassung:
     </p>
     <ul>
-      <li>
-        <strong>Ziehen Sie den Stecker.</strong> Seite laden, Verbindung
-        trennen, einfügen, Knopf drücken. Ein lokales Werkzeug macht
-        weiter; ein Server-Werkzeug bleibt stehen. Dreißig Sekunden, keine
-        Vorkenntnisse, nicht zu fälschen.
-      </li>
-      <li>
-        <strong>Beobachten Sie den Netzwerk-Tab, während Sie auf
-        Formatieren drücken.</strong> Eine Anfrage, die in diesem Moment
-        abgeht und ungefähr so groß ist wie Ihr eingefügter Text,
-        <em>ist</em> Ihr eingefügter Text beim Abgehen. Keine Anfrage,
-        kein Upload.
-      </li>
-      <li>
-        <strong>Misstrauen Sie den hilfreichen Extras.</strong> Ein
-        &bdquo;Snippet teilen&ldquo;-Knopf, ein geräteübergreifender
-        Verlauf Ihrer letzten Einfügungen, ein Link für die Kollegin
-        &mdash; jedes davon ist nur möglich, wenn der Text auf einem
-        Server gespeichert wurde. Funktionen sind Behauptungen: Eine
-        Seite, die Ihre Einfügung jemand anderem zeigen kann, hat sie
-        behalten.
-      </li>
+      <li><strong>Verbindung trennen.</strong> Laden Sie die Seite, trennen Sie das Netzwerk, fügen Sie ein und drücken Sie den Knopf. Ein lokales Werkzeug arbeitet weiter, ein Serverwerkzeug stoppt. Ein Abschluss zeigt, dass dieser Vorgang ohne Verbindung funktioniert hat. Er schließt nicht aus, dass Daten gespeichert und nach Wiederverbindung gesendet werden.</li>
+      <li><strong>Beobachten Sie beim Formatieren den Netzwerk-Tab.</strong> Eine Anfrage in diesem Moment ist ein Anlass, URL und Inhalt zu prüfen. Ihre Größe allein identifiziert den Inhalt nicht. Auch kleine oder spätere Anfragen können sensiblen Text tragen.</li>
+      <li><strong>Prüfen Sie hilfreiche Extras.</strong> Eine Schaltfläche zum Teilen eines Ausschnitts, geräteübergreifende Zwischenablagehistorie oder ein Link für Kollegen überschreitet jeweils eine Übertragungs- oder Speichergrenze. Manche Dienste speichern den Text. <a href="../text-zwischen-geraeten-teilen/">Direktes Browserteilen</a> überträgt ihn ohne Serverspeicherung an den gewählten Leser. In beiden Fällen ist Senden eine eigene Handlung neben dem Formatieren.</li>
     </ul>
     <p>
       Und eine Gewohnheit schlägt alle drei Prüfungen: weniger einfügen.

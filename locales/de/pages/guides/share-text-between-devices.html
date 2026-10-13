@@ -12,11 +12,7 @@
       anderen. Schließen Sie den teilenden Tab, ist die Freigabe vorbei,
       überall.
     </p>
-    <p>
-      Hochgeladen wurde dabei zu keinem Zeitpunkt etwas. Das ist keine
-      Richtlinie, sondern die Bauform. Der Rest dieser Seite erklärt, warum
-      das zählt und wo die ehrlichen Grenzen liegen.
-    </p>
+    <p>Kein geteilter Text und keine Datei wurden auf einen Server hochgeladen. Das folgt aus der Bauform. Der Rest erklärt ihre Bedeutung und ehrlichen Grenzen.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
@@ -25,6 +21,13 @@
         Was übergeben wird. In dasselbe Feld passt eine Einkaufsliste ebenso wie ein Dokument, und Markdown ist ein Schalter und kein eigener Modus.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Eine Notiz aufs Telefon übertragen oder eine Workshopdatei übergeben</h2>
+    <p><strong>Vom Laptop zum Telefon.</strong> Legen Sie eine lange Adresse, Anweisungen oder eine Datei in die Teilen-Seite am Laptop. Lassen Sie Privat aktiv, öffnen den kopierten Link am Telefon, genehmigen den erwarteten Leser und kopieren oder laden das Benötigte herunter. Halten Sie den Tab sichtbar und wach bis zum Empfang und beenden das Teilen. Die gespeicherte Telefonkopie bleibt nach Linkende.</p>
+    <p><strong>Ein Liveworkshop oder Supportgespräch.</strong> Teilen Sie Übungsdatei, Beispielkonfiguration oder Diagnoseausschnitt, während beide anwesend sind. Nutzen Sie möglichst erfundene Daten und genehmigen Leser einzeln. Die Liste im auffindbaren Lokalnetzmodus beweist keine Anwesenheit im Raum. Dateien dürfen das Limit von 200 MB pro Datei nicht überschreiten.</p>
+    <p>Testen Sie vor dem Termin im echten Netz. Vereinbaren Sie eine Ausweichlösung für blockierte Direktwege. Es ist eine Liveübergabe. Für unbeaufsichtigte Nachtzustellung braucht es einen Dienst, der Inhalte bewusst speichert.</p>
   </section>
 
   <section>
@@ -53,25 +56,8 @@
 
   <section>
     <h2>Was &bdquo;direkt&ldquo; wirklich heißt</h2>
-    <p>
-      Das Werkzeug benutzt WebRTC, dieselbe Maschinerie wie Videoanrufe im
-      Browser: Zwei Browser öffnen einen verschlüsselten Kanal zueinander
-      und schicken Daten hindurch, ohne Server im Weg. Im selben Netz reisen
-      die Bytes nur durchs lokale Netz &mdash; zwei Laptops im selben WLAN
-      reichen die Datei durchs Zimmer, nicht durchs Internet.
-    </p>
-    <p>
-      Ein ehrliches Sternchen, das auch auf der Werkzeugseite steht: Zwei
-      Browser können einander nicht allein finden. Ein kleiner Server
-      &mdash; der Vermittler &mdash; bringt die Person, die den Namen
-      eingetippt hat, mit der zusammen, die darunter teilt, und trägt ein
-      paar Kilobyte Verbindungsaufbau zwischen ihnen. Er speichert nichts,
-      und der Inhalt läuft nie durch ihn hindurch; sein vollständiger
-      Quelltext ist neben dem des Werkzeugs veröffentlicht. Er ist die
-      Vorstellung, nicht das Gespräch &mdash; und der eine Server, mit dem
-      irgendetwas auf dieser Website spricht, weshalb die Werkzeugseite
-      genau ausbuchstabiert, was er sehen kann und was nicht.
-    </p>
+    <p>Das Werkzeug nutzt WebRTC wie Browservideoanrufe. Zwei Browser öffnen einen verschlüsselten Datenkanal ohne Server im Weg. Eine funktionierende lokale Verbindung überträgt mit Netzgeschwindigkeit. Der Weg hängt auch von VPNs, Browserrichtlinien und Geräteeinstellungen ab.</p>
+    <p>Ein ehrlicher Vorbehalt steht auch auf der Werkzeugseite. Zwei Browser finden sich nicht allein. Ein kleiner Rendezvousserver verbindet Namen und teilt einige Kilobytes Verbindungsaufbau. Er speichert keine geteilten Inhalte und sie durchlaufen ihn nicht. Sein Quellcode liegt neben dem Werkzeug. Er stellt nur vor und führt kein Gespräch. Er listet auch freiwillig sichtbare lokale Linknamen zur Entdeckung auf der Startseite. Diesen Einführungsdienst verwenden dieses Werkzeug und Remote Camera. Optionale Bildabfrage, Belegwechselkurse und Plattformskripte haben eigene Netzgrenzen auf der <a href="../../datenschutz/">Datenschutzseite</a>. Die Teilen-Seite erklärt die Sichtbarkeit für den Dienst.</p>
     <p>
       Direkt heißt auch gegenseitig: Jeder Browser erfährt die Netzadresse
       des anderen, wie bei einem Telefonat. Die lesende Seite erfährt das,
@@ -81,7 +67,15 @@
   </section>
 
   <section>
-    <h2>Der Name ist die Adresse, und das einzige Geheimnis</h2>
+    <h2>Im selben WLAN oder Ethernet teilen</h2>
+    <p>Lokalnetz ist standardmäßig aus. Wählen Sie vor dem Start <em>Lokales Netzwerk ohne Internet-Relay</em>, hängen die Datei an und lassen Privat an für einzelne Leserfreigaben. Auffindbar ist voreingestellt. Öffnen Sie am zweiten Gerät die Werkzeugseite und wählen den Namen unter <em>Lokale Freigaben auf dieser Verbindung</em>. Es öffnet die Zustimmungsseite und bei privater Freigabe Ihre Genehmigungsanfrage. Schalten Sie Auffindbar vor dem Start aus für reine Linkfreigabe. Beide brauchen dasselbe WLAN oder Ethernet. Es gelten weiter 200&nbsp;MB pro Datei und Leser wählen Downloads selbst.</p>
+    <p>Die Liste gruppiert nach öffentlicher IPv4-Adresse oder IPv6-Subnetz, die der Vermittler sieht. Meist ist das ein Router, aber geteilte VPNs oder Provideradressen können andere Netze einschließen. Gemischtes IPv4/IPv6 oder andere Routen können Nachbargeräte verbergen. Lassen Sie Privat in geteilten Netzen an. Listennamen sind für die Gruppe sichtbar und beweisen weder Raum noch Gebäude. Internet ist nötig. Ohne Entdeckung funktioniert der kopierte Link weiterhin.</p>
+    <p>Der Link trägt die Einstellung als <code>?local=1#brave-otter-42</code>. Nennen Sie beim Aussprechen auch Lokalnetz. <code>#brave-otter-42</code> allein verlangt normalen Modus. Bei verschiedenem Leser- und Teilermodus erklärt die Seite es und fragt vor dem Versuch mit dem Teilermodus nach der Wahl.</p>
+    <p>Lokaler Modus nutzt keinen öffentlichen Adressentdeckungsserver und bietet kein Internet-Relay. Der Vermittler braucht weiterhin Internet. Gäste-WLAN isoliert möglicherweise Geräte; Firewalls, VPNs und Browserrichtlinien können Verbindungen blockieren oder umleiten. Der Modus steuert die Direktwegsuche und beweist keine Begrenzung auf ein Gebäude.</p>
+  </section>
+
+  <section>
+    <h2>Der Name ist die Adresse, Privat entscheidet über den Zugang</h2>
     <p>
       Ein Freigabe-Link unterscheidet sich von jedem anderen in einem
       praktischen Punkt: Er übersteht das Aussprechen.
@@ -90,21 +84,11 @@
       eintippen, ohne dass jemandem die Daumen ausgehen. Genau dafür sehen
       die Namen so aus, wie sie aussehen.
     </p>
-    <p>
-      Es schneidet in beide Richtungen: Wer einen lebenden Namen kennt oder
-      errät, kann die Freigabe dahinter öffnen. Geben Sie allem Heiklen
-      entweder einen Namen, den niemand erraten würde, oder stützen Sie sich
-      auf die Voreinstellung &mdash; Freigaben sind <em>privat</em>, solange
-      Sie das Häkchen nicht entfernen: Jeder ankommende Leser muss sich
-      vorstellen, und Sie entscheiden, Nachricht für Nachricht, wer
-      hineinkommt. Die Vorstellung reist über den verschlüsselten
-      Direktkanal, nicht einmal der Vermittler erfährt also, wer gefragt
-      hat.
-    </p>
+    <p>Wer einen aktiven Namen kennt oder errät, kann die Freigabe öffnen. Eine auffindbare lokale Freigabe listet ihn für Browser derselben öffentlichen IPv4-Adresse oder IPv6-Subnetzes. Innerhalb der Gruppe ist er öffentlich. Für Sensibles lassen Sie die Voreinstellung. Freigaben sind <em>privat</em>, bis Sie das Häkchen entfernen. Jeder Leser stellt sich vor und Sie entscheiden einzeln. Die Vorstellung reist verschlüsselt direkt. Nicht einmal der Vermittler erfährt, wer fragt.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/name.webp" loading="lazy" decoding="async"
-           alt="Die zweite Karte: ein Linkname, der thursday-notes lautet, ein Hinweis, dass der Name die Adresse und das einzige Geheimnis ist, und Schalter für privat und einmalig.">
+           alt="Die Linknamenkarte zeigt thursday-notes sowie Schalter für privat und einmalig.">
       <figcaption>
         Der Name ist die ganze Adresse. Privat heißt, dass jeder Lesende fragen muss und Sie ihn hereinlassen; einmalig heißt, dass auch auf diesem Gerät kein Entwurf bleibt.
       </figcaption>
@@ -176,23 +160,7 @@
 
   <section>
     <h2>Wann dies das falsche Werkzeug ist</h2>
-    <p>
-      Beide Enden müssen anwesend sein: Dies ist eine Übergabe, kein
-      Briefkasten. Schläft die andere Person, nehmen Sie etwas, das
-      speichert &mdash; wissentlich. Der teilende Tab muss offen und wach
-      bleiben, was praktisch heißt, dass ein Desktop oder Laptop teilt;
-      Telefone legen Hintergrund-Tabs binnen Sekunden schlafen, lesen eine
-      Freigabe aber tadellos. Offline kann es nicht arbeiten, als einziges
-      Werkzeug dieser Website, denn eine andere Maschine zu erreichen ist
-      ein Netzvorgang &mdash; die Editor-Hälfte funktioniert allerdings ganz
-      ohne Verbindung. Und eine kleine Minderheit von Netzpaaren &mdash;
-      typischerweise ein Ende im Mobilfunknetz eines Anbieters mit geteilten
-      Adressen oder hinter einem strengen Firmennetz &mdash; lässt sich gar
-      nicht direkt verbinden; das Werkzeug sagt das nach zwanzig Sekunden
-      klar und bietet dem Leser ein verschlüsseltes Relais an, das die Bytes
-      weiterreicht, ohne sie lesen zu können, statt stillschweigend auf
-      eines zu wechseln.
-    </p>
+    <p>Beide Seiten müssen anwesend sein. Es ist eine Übergabe, kein Postfach. Schläft der Empfänger, verwenden Sie bewusst einen Speicher. Der Teilentab muss offen und wach bleiben, praktisch auf Desktop oder Laptop. Telefone suspendieren Hintergrundtabs schnell, lesen aber gut. Offline geht Teilen nicht, da es Netzwerk ist. Nur der Editor funktioniert ohne Verbindung. Wenige Netzpaare, etwa Mobilfunk-Sammeladressen oder strikte Firmennetze, verbinden nicht direkt. Nach zwanzig Sekunden sagt das Werkzeug es und bietet im normalen Modus dem Leser ein verschlüsseltes Relay an, das Bytes weiterreicht ohne sie lesen zu können. Es wechselt nicht still. Lokalnetzmodus hat kein Relay und bittet um Netz- und Einstellungsprüfung.</p>
     <p>
       Für alles andere &mdash; die Notiz, das Passwort, die
       Konfigurationsdatei, das 100-MB-Video, das einen WLAN-Sprung entfernt

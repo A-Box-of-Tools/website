@@ -1,0 +1,16 @@
+<main id="main">
+  <h2>Commencer sur l’ordinateur qui parle</h2>
+  <p>Téléchargez le ZIP local de l’outil, extrayez-le et exécutez <code>python helper.py</code> depuis son dossier avec Python 3.10 ou ultérieur. Aucun paquet supplémentaire n’est nécessaire. Gardez sa fenêtre ouverte. Sur cet ordinateur, ouvrez l’invitation hôte affichée sous <code>http://localhost:</code>, choisissez Start channel et autorisez le microphone.</p>
+  <h2>Inviter les auditeurs</h2>
+  <p>Choisissez l’adresse réseau prévue sur l’hôte et partagez son lien d’écoute ou code QR. Téléphones et ordinateurs peuvent écouter sur un Wi-Fi ou Ethernet accessible. Ils ne demandent jamais l’accès au microphone. La lecture est tentée automatiquement&nbsp;; si le navigateur bloque le son, la commande Unmute existante le lance. Mute/Unmute et Leave sont les seules commandes des auditeurs.</p>
+  <h2>Maintenir pour parler</h2>
+  <p>Maintenez Talk avec le doigt ou la souris, ou donnez-lui le focus et maintenez Espace. Relâchez pour arrêter l’envoi de la voix. Tap to talk permet de démarrer et d’arrêter par clic. Le mode muet de l’hôte prime sur les deux. Gardez la page hôte visible et l’ordinateur éveillé&nbsp;; masquer la page libère la capture du microphone.</p>
+  <p>Jusqu’à dix auditeurs peuvent se connecter, connexions en attente comprises. L’hôte envoie un flux distinct à chacun. Commencez par un petit groupe et vérifiez l’ordinateur et le réseau prévus.</p>
+  <h2>Reprendre après la perte de l’hôte</h2>
+  <p>Les auditeurs affichent Reconnecting et vérifient la connexion sur leur page avec un intervalle visé d’une seconde tant que leur page est active. Leur choix muet reste inchangé. Ouvrez la même invitation hôte via le service auxiliaire toujours en cours et redémarrez pour reprendre. Les navigateurs en arrière-plan et appareils en veille peuvent retarder les tentatives.</p>
+  <p>End broadcast libère le microphone et termine volontairement la session. Leave arrête un auditeur et ses nouvelles tentatives. Redémarrer le service auxiliaire crée de nouvelles invitations&nbsp;: partagez alors son nouveau lien d’écoute.</p>
+  <h2>Utiliser un réseau de confiance</h2>
+  <p>Toute personne possédant le lien d’écoute et un accès au service auxiliaire peut rejoindre le canal. WebRTC chiffre la voix, mais le service utilise HTTP pour la configuration et les identifiants d’invitation. Un attaquant actif sur le réseau local peut observer ou modifier cette configuration. Le paquet ne contient aucun script ni ressource distante, et le service auxiliaire ne reçoit aucun audio. Il n’y a ni fonction d’enregistrement ni relais public&nbsp;; les destinataires peuvent enregistrer eux-mêmes ce qu’ils entendent.</p>
+  <h2>Vérifier l’accessibilité</h2>
+  <p>Vérifiez l’autorisation du pare-feu pour réseau privé, l’adresse locale choisie et les permissions réseau local du navigateur. Le Wi-Fi invité peut isoler les appareils&nbsp;; les routes VPN et du système peuvent influencer les adresses hôte. Si la découverte automatique manque une interface, exécutez <code>python helper.py --address 192.168.1.20</code> en remplaçant l’exemple par la véritable adresse IPv4 privée de l’ordinateur.</p>
+</main>

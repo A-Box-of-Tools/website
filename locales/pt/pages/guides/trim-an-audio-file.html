@@ -1,17 +1,17 @@
   <section>
     <h2>A resposta curta</h2>
-    <p>
-      Abra o <a href="../../cortar-audio/">Cortador de áudio</a>, solte a gravação
-      lá dentro, aperte <kbd>I</kbd> e <kbd>O</kbd> para marcar cada trecho que
-      você quer &mdash; quantos quiser &mdash; e exporte. Todo corte cai na amostra
-      exata que você marcou, as amostras guardadas saem como entraram, e as emendas
-      ganham uma queda de cinco milissegundos para não conseguirem estalar.
-    </p>
+    <p>Abra o <a href="../../cortar-audio/">Cortador de áudio</a>, adicione a gravação, marque quantas partes quiser com <kbd>I</kbd> e <kbd>O</kbd> e exporte. Cada corte cai na amostra indicada, copia amostras decodificadas entre cortes e aplica uma transição de cinco milissegundos nas junções para suavizar bordas. Escolha Float32 se precisar evitar o arredondamento final para PCM de 16 bits.</p>
     <p>
       O trabalho é esse. O resto desta página é sobre por que essa exatidão é real
       e não conversa de propaganda, e sobre a única coisa que de fato dá errado
       quando você junta dois pedaços de som.
     </p>
+  </section>
+
+  <section>
+    <h2>Uma tomada limpa, uma citação ou um trecho de ensaio</h2>
+    <p>Para narração, marque a tomada limpa e deixe silêncio ao redor da primeira respiração e última palavra. Em entrevistas, preserve pergunta suficiente para entender a resposta. Reproduza linhas antes de exportar e ouça cada junção no WAV final. Cinco milissegundos evitam uma borda abrupta, mas não recuperam uma sílaba cortada.</p>
+    <p>Um ensaio ou prática de idioma pode reunir várias seções da mesma gravação na ordem desejada. Salve as marcas para voltar depois. Só carrega um arquivo de origem por vez; juntar gravações diferentes precisa de outro editor. Grava WAV, não MP3 pequeno: escolha 16 bits para ouvir ou Float32 para editar e confira o aplicativo receptor e limite de tamanho.</p>
   </section>
 
   <section>

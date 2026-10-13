@@ -9,6 +9,13 @@
   </section>
 
   <section>
+    <h2>Dale al agente una tarea que pueda comprobar</h2>
+    <p><strong>Preparar los archivos de una solicitud.</strong> Indica al agente las dimensiones, el formato admitido y el máximo de bytes de cada archivo. Pídele que conserve los originales y entregue copias terminadas por separado. Por ejemplo: «Convierte estas tres fotos en JPEG de menos de 200 KB cada una; muéstrame las dimensiones, los tamaños reales y vistas previas legibles antes de enviarlas». Que la descarga funcione no demuestra que el formulario la acepte.</p>
+    <p><strong>Preparar la documentación de gastos.</strong> Un agente puede seguir el <a href="../extraer-recibos-facturas-de-fotos/">procedimiento para recibos</a>, pero hay que comparar el comercio, la fecha, la moneda, el total y el recorte con cada imagen. Pide que prepare el informe y los archivos para revisarlos. Elegir un destinatario o enviarlos es una acción aparte.</p>
+    <p>Este enfoque también sirve para una tarea mensual: reutiliza el resultado esperado y las comprobaciones de las instrucciones con los nuevos archivos. Confirma dónde se ejecuta el navegador del agente y cómo trata los datos cada vez que cambie el entorno.</p>
+  </section>
+
+  <section>
     <h2>Dos clases de agente, una distinción</h2>
     <p>
       Los agentes que usan herramientas vienen en dos formas, y la
@@ -18,7 +25,7 @@
       <strong>Un navegador controlado localmente</strong> lee y procesa en ese dispositivo. La herramienta local no añade una subida para procesar. El agente aún puede enviar instrucciones, capturas o contexto al proveedor según su implementación y ajustes.
     </p>
     <p>
-      <strong>Un navegador en la nube</strong> se ejecuta en el ordenador del proveedor. Si adjuntas un archivo para usarlo allí, ya ha salido de tu dispositivo. Estas herramientas lo procesan en ese navegador y no deshacen la transferencia anterior. Compartir y entregar a aplicaciones son acciones adicionales en ambos entornos.
+      <strong>Un navegador en la nube</strong> se ejecuta en el dispositivo del proveedor. Si adjuntas un archivo para usarlo allí, ya ha salido de tu dispositivo. Estas herramientas lo procesan en ese navegador y no deshacen la transferencia anterior. Compartir y entregar a aplicaciones son acciones adicionales en ambos entornos.
     </p>
     <p>
       Especifica un navegador local cuando importe mantener allí el procesamiento, revisa el propio agente y autoriza los envíos deliberados por separado. <a href="../../extraer-recibos-facturas/">Cambio y entrega al correo</a>, <a href="../../imagenes-a-video/">importación por URL</a>, <a href="../../compartir-texto/">compartir</a> y <a href="../../remote-camera/">cámara</a> documentan sus límites de red.
@@ -77,17 +84,7 @@
       parte, la misma regla que las guías de esas herramientas le dan a un
       operador humano.
     </p>
-    <p>
-      <strong>Abrir lo leído.</strong> El lector de códigos QR de este sitio
-      se niega a abrir lo que descodifica, porque leer y seguir son actos
-      distintos. La misma separación merece imponérsele a un agente: un
-      agente que lee un código, un enlace o una dirección en un archivo debe
-      informar de ella, no visitarla. Y un agente que conduce tu propio
-      navegador sostiene todo aquello en lo que ese navegador tiene la
-      sesión iniciada &mdash; una razón para mirarlo con el mismo ojo
-      crítico que a cualquier herramienta, que es de lo que va la sección
-      siguiente.
-    </p>
+    <p><strong>Abrir lo que se ha leído.</strong> El lector QR de este sitio nunca sigue automáticamente una dirección decodificada: leer y visitar son actos distintos. Conviene exigir lo mismo a un agente: si lee un código, enlace o dirección en un archivo, debe comunicarlo, no visitarlo. Un agente que controla el navegador también tiene acceso a sus sesiones iniciadas. Por eso merece el mismo examen que cualquier herramienta, como explica la siguiente sección.</p>
   </section>
 
   <section>

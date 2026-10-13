@@ -8,24 +8,20 @@
         genauen Augenblick. Sichern Sie als PNG, die verlustfreie Kopie,
         damit noch nichts entschieden ist.
       </li>
-      <li>
-        <strong>Das Bild rahmen.</strong> Bringen Sie das PNG in den
-        <a href="../../bildgroesse-aendern/">Bildgrößen-Änderer</a>: auf das Format
-        der Plattform zuschneiden, 16:9 für YouTube, und die lange Kante
-        setzen; 1280 Pixel sind die Zahl, die YouTube tatsächlich verlangt.
-      </li>
-      <li>
-        <strong>Die Obergrenze treffen.</strong> Zum Schluss in den
-        <a href="../../bild-komprimieren/">Bildverkleinerer</a>, mit dem Limit
-        der Plattform als Ziel, 2&nbsp;MB bei einem YouTube-Thumbnail, und
-        lassen Sie ihn JPEG oder WebP wählen.
-      </li>
+      <li><strong>Den Frame rahmen.</strong> Übernehmen Sie PNG in den <a href="../../bildgroesse-aendern/">Bildskalierer</a>. Beschneiden Sie auf die Plattformform und wählen Maße passend zu Quelle und Ziel. YouTube empfiehlt derzeit 16:9 für Videos und 9:16 für Shorts. Unten stehen die Unterschiede.</li>
+      <li><strong>Unter dem Limit bleiben.</strong> Beenden Sie im <a href="../../bild-komprimieren/">Bildkompressor</a> mit dem aktuellen Plattformlimit als Ziel und etwas Abstand darunter. Wählen Sie JPEG für ein fotografisches YouTube-Vorschaubild. Lassen Sie das Format nicht auf Auto, wenn das Ziel JPG oder PNG verlangt.</li>
     </ol>
     <p>
       Nichts in der Kette lädt irgendetwas hoch. Das zählt, wenn das Video
       unveröffentlicht ist, und ein Thumbnail entsteht ja gerade deshalb,
       weil das Video noch nicht öffentlich ist.
     </p>
+  </section>
+
+  <section>
+    <h2>Ein Titelbild in seiner echten Darstellungsgröße lesbar machen</h2>
+    <p>Wählen Sie für einen Videoupload einen erklärenden Frame, etwa den fertigen Gegenstand, den aufblickenden Sprecher oder den Moment vor der Handlung. Halten Sie Quellbeschriftungen in kleiner Vorschau lesbar. Diese Werkzeuge erfassen, beschneiden und komprimieren. Titel oder weitere Grafik brauchen einen Bildeditor zwischen PNG-Aufnahme und endgültiger Kompression.</p>
+    <p>Für Websitevideos dient dasselbe Standbild als Poster vor der Wiedergabe. Passen Sie Form und Größe dem Player an und prüfen die Erklärung am Telefon. Auch Präsentationstitelbilder sind nützlich. Testen Sie das echte Folienlayout statt die volle PNG-Größe als Publikumsansicht anzunehmen.</p>
   </section>
 
   <section>
@@ -44,12 +40,7 @@
       das Bild <em>zwischen</em> den zwei offensichtlichen, auf dem die
       Bewegung lesbar ist und nichts verwischt.
     </p>
-    <p>
-      Sichern Sie den Griff als PNG, auch wenn das fertige Thumbnail JPEG
-      oder WebP wird. Das PNG ist eine exakte Kopie des Bildes; jede
-      verlustbehaftete Entscheidung passiert dann einmal, am Ende, innerhalb
-      eines Byte-Budgets, statt zweimal und sich aufschaukelnd.
-    </p>
+    <p>Speichern Sie den Frame als PNG, auch wenn das endgültige Vorschaubild JPEG wird. PNG erhält das gezeichnete Standbild ohne weitere verlustbehaftete Kodierung. Die spätere Kompressionsentscheidung erfolgt dann einmal am Ende innerhalb des Bytebudgets statt zweimal mit kumulierten Verlusten.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
@@ -62,24 +53,13 @@
 
   <section>
     <h2>Das Rechnen der Plattform</h2>
-    <p>
-      Zuschneiden vor dem Komprimieren, aus demselben Grund, den der
-      <a href="../fotos-fuers-web-vorbereiten/">Foto-Ratgeber</a> nennt:
-      Pixel sind das Budget. Ein 16:9-Zuschnitt eines 4K-Bildes, auf
-      &#x2066;1280&times;720&#x2069; gebracht, lässt den Verkleinerer seine 2&nbsp;MB für
-      Qualität ausgeben, nach der niemand schielen muss. Der Zuschneiderahmen
-      des Größen-Änderers rastet auf 16:9 ein, das Format ist also ein Ziehen
-      statt einer Rechnung; Text und Gesichter wollen ins mittlere
-      Zweidrittel, weil Feeds die Ecken runden und rechts unten die Dauer
-      einblenden.
-    </p>
+    <p>Beschneiden Sie vor dem Komprimieren, wie im <a href="../fotos-fuers-web-vorbereiten/">Fotoleitfaden</a>, denn Pixel sind das Budget. Ein 16:9-Export mit &#x2066;1280&times;720&#x2069; ist ein nützliches kleines Beispiel, nicht YouTubes aktuelle Empfehlung. Die <a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">Vorschaubildanleitung</a> empfiehlt jetzt &#x2066;3840&times;2160&#x2069; für Videos und &#x2066;2160&times;3840&#x2069; für Shorts, etwa als JPG oder PNG. Desktopuploads erlauben bis 50 MB, mobile Videovorschaubilder müssen unter 2 MB bleiben. Prüfen Sie den genutzten Uploadweg und vergrößern keine detailarme Quelle nur für die Empfehlung. Eigene Uploads brauchen ein verifiziertes Konto; eigene Shorts-Uploads nutzen derzeit YouTube Studio am Computer.</p>
+    <p>Der Skalierrahmen sperrt auf 16:9 oder 9:16, sodass Ziehen statt Rechnen genügt. Text und Gesichter gehören in die mittleren zwei Drittel, weil Feeds Ecken abrunden und unten rechts die Dauer überlagern.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
            alt="Der Skalierer mit einer Breite von 1280 und einer Höhe von 720, dazu eine Übersicht des Ergebnisses.">
-      <figcaption>
-        Und dann die Rechnerei: was auch immer die Plattform verlangt, als zwei Zahlen eingetragen.
-      </figcaption>
+      <figcaption>Ein Beispielexport mit 1280 mal 720. Wählen Sie Maße nach aktuellen Zielvorgaben und dem tatsächlichen Quelldetail.</figcaption>
     </figure>
   </section>
 

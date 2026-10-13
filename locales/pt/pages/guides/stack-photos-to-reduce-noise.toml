@@ -9,7 +9,7 @@ description = "Empilhar junta uma sequência de quadros numa imagem só. Qual m�
 heading = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
 lede = "Uma sequência de fotos tem mais informação que cada quadro sozinho. A média reduz ruído aleatório independente; o valor central de cada pixel pode remover o que aparece em menos da metade dos quadros. A escolha depende do que se mexeu."
 
-updated = "8 de outubro de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
 og_description = "Tire a média de uma sequência para matar o ruído, use a mediana para esvaziar uma praça movimentada, clareie para rastros de estrelas. Qual método resolve qual problema, e onde os arquivos RAW entram."

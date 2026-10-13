@@ -1,11 +1,7 @@
   <section>
     <h2>La respuesta corta</h2>
     <ol>
-      <li>
-        <strong>Corta el momento.</strong> Abre el
-        <a href="../../cortar-video/">Cortador de video</a>, marca el segundo o
-        dos que deben ir y volver, y expórtalos como clip propio.
-      </li>
+      <li><strong>Recorta el momento.</strong> Abre el <a href="../../cortar-video/">Recortador de vídeo</a>, marca el segundo o dos que irán y volverán, elige el método indicado y exporta un clip aparte. Copiar puede conservar fotogramas iniciales ocultos; un corte exacto aún puede llevar ajustes de audio. Para un bucle silencioso, omite sonido en este clip intermedio. Si el inversor rechaza su línea de tiempo, aplica los ajustes en una exportación local nueva antes de continuar.</li>
       <li>
         <strong>Invierte una copia.</strong> Suelta ese clip en el
         <a href="../../invertir-video/">Inversor de video</a>, deja el sonido
@@ -35,13 +31,14 @@
   </section>
 
   <section>
+    <h2>Elige un movimiento que funcione al volver</h2>
+    <p>Un salto o salpicadura son habituales. Un producto que gira, un cajón que se abre o una mano que coloca algo hacen útil el mismo bucle en una demostración. Elige un movimiento claro en una toma estable, con el sujeto visible en ambos sentidos. Una panorámica o alguien saliendo del cuadro suelen dar una sacudida molesta al volver.</p>
+    <p>Silencia ambas mitades si quieres un bucle sin sonido: desactívalo en el primer recorte y en la inversión. Tras unir, revisa el giro y el regreso al principio y prueba si el destino repite el MP4. La repetición de la vista previa no introduce esa instrucción en el archivo. Si necesitas otra forma, recorta el encuadre del clip corto hacia delante antes de invertirlo.</p>
+  </section>
+
+  <section>
     <h2>Por qué cortar primero</h2>
-    <p>
-      Invertir tiene que decodificar y recodificar cada fotograma que toca;
-      la <a href="../invertir-un-video/">guía de inversión</a> explica por qué
-      no hay manera más barata. Cortar, en cambio, es casi gratis: el
-      cortador pasa los fotogramas enteros sin recodificarlos.
-    </p>
+    <p>Invertir obliga a decodificar y recodificar todos los fotogramas; la <a href="../invertir-un-video/">guía de inversión</a> explica por qué. Recortar cuesta poco cuando se puede copiar; los cortes exactos recodifican la imagen. La <a href="../cortar-un-video/">guía de recorte</a> explica la elección.</p>
     <p>
       Así que el orden es todo el truco. Invierte un clip de dos segundos y el
       paso caro trabaja sobre dos segundos; invierte el original y trabaja
@@ -67,14 +64,7 @@
 
   <section>
     <h2>Qué hacer con el sonido</h2>
-    <p>
-      Déjalo fuera, y hazlo en el paso de invertir: el inversor tiene una
-      casilla exactamente para eso. El audio de un boomerang sonaría hacia
-      delante y luego hacia atrás; el sonido invertido resulta
-      inconfundiblemente raro, y casi todos los sitios donde acaba un
-      boomerang lo reproducen mudo de todos modos. Sin sonido, además,
-      invertir va más rápido y los dos archivos pesan menos.
-    </p>
+    <p>Quita sonido de ambas mitades: el recortador y el inversor ofrecen esa opción. Quitar solo al invertir deja sonido en la mitad hacia delante. En un búmeran sonaría primero normal y luego al revés; resulta extraño y casi siempre se reproduce silenciado. Omitir audio también acelera la inversión y reduce ambos archivos.</p>
     <p>
       Si aun así lo conservas, el cortador unirá los dos clips igualmente;
       pero la costura que el ojo perdona, el oído no la perdona.
@@ -96,12 +86,7 @@
       vuelta. Un boomerang que empieza por el retorno se lee como un
       error.
     </p>
-    <p>
-      Un refinamiento que vale sus diez segundos: recorta un fotograma del
-      principio del clip invertido antes de unir. El último fotograma de la
-      ida y el primero de la vuelta son la misma imagen, y mostrarla dos veces
-      deja el giro colgado un instante.
-    </p>
+    <p>Un refinamiento útil: marca la mitad invertida desde su segundo fotograma antes de unir y elige el método exacto si ese inicio no es un fotograma clave. El último fotograma normal y el primero invertido son iguales; mostrarlo dos veces detiene un instante el giro.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-boomerang-video/reverse.webp" loading="lazy" decoding="async"

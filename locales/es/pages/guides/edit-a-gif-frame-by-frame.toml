@@ -13,7 +13,7 @@ lede = """
     fotogramas son un editor con una carpeta en medio, y la carpeta es la
     parte donde editas tú, con lo que ya uses para imágenes."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Desarma un GIF, arregla los fotogramas, vuélvelo a montar"
 og_description = "Parte un GIF en PNG con los tiempos guardados, quita o retoca fotogramas y reconstruye, todo en el navegador, con los costes del viaje escritos con honestidad."
