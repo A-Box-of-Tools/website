@@ -244,14 +244,14 @@ title = "Kostenlose Browser-Tools &mdash; lokale Dateiverarbeitung | abox.tools"
 # Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
 description = "Kostenlose Tools verarbeiten Dateien im Browser: Bilder zu PDF oder MP4, auf eine Zielgröße komprimieren, Videos zuschneiden, EXIF entfernen."
-heading = "Werkzeuge, die Dateien in Ihrem Browser verarbeiten"
+heading = "Kostenlose Werkzeuge. Lokale Verarbeitung."
 og_title = "A Box of Tools &mdash; Dateien lokal im Browser verarbeiten"
 og_description = "Kleine Werkzeuge verarbeiten Dateien auf Ihrem Gerät. Bewusstes Teilen und optionale Onlinefunktionen werden dort erklärt, wo Sie sie nutzen."
 og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
 schema_description = "Kleine Browser-Werkzeuge für lokale Dateiverarbeitung, ohne Upload zur Verarbeitung und ohne Konto. Netzwerkfunktionen werden auf ihren Seiten erklärt."
 schema_about = "Browser-Werkzeuge für lokale Dateiverarbeitung und bewusstes Teilen zwischen Browsern"
 
-lede = "Kleine Werkzeuge für je eine Aufgabe, die Dateien auf Ihrem eigenen Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto. Funktionen zum Abrufen oder Teilen erklären vor der Nutzung, was den Browser verlässt."
+lede = "Dateien im Browser verarbeiten. Kein Upload zur Verarbeitung, keine Anmeldung."
 
 support_note = """
       Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit
@@ -259,6 +259,12 @@ support_note = """
       etwas bittet."""
 
 # Drei nachprüfbare Tatsachen, kein Versprechen - genau wie im Englischen.
+privacy_heading = "Ihre Dateien bleiben bei Ihnen."
+
+privacy_lede = "Die lokale Dateiverarbeitung funktioniert offline, sobald das Werkzeug gespeichert ist. Abrufen und Teilen benötigen eine Verbindung."
+
+support_heading = "Kostenlos, dank Ihrer Unterstützung."
+
 [[hub.guarantees]]
 title = "Ihre Dateien werden auf Ihrem Gerät verarbeitet"
 body = "Ihr Browser öffnet, liest und bearbeitet die ausgewählten Dateien. Zur Verarbeitung wird nichts hochgeladen. Text und Dateien teilen sowie Remote-Kamera senden bewusst Inhalte an einen anderen Browser; ihre Seiten erklären die Verbindung."
@@ -274,21 +280,25 @@ body = "Warten Sie, bis die Offline-Anzeige bereit meldet, und verarbeiten Sie d
 [[hub.categories]]
 id = "images"
 name = "Bilder"
+short_name = "Bilder"
 note = "Verkleinern, in der Größe ändern oder herausnehmen, was ein Foto still über Sie verrät. Nichts davon wird verschickt."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; Animation"
+short_name = "Video &amp; GIFs"
 note = "Schneiden, umwandeln oder aus Einzelbildern bauen, ohne dass die Aufnahme Ihr Gerät verlässt."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Dokumente &amp; Audio"
+short_name = "PDF &amp; Audio"
 note = "Ein Dokument umsortieren oder eine Aufnahme kürzen, ohne eines von beiden zum Verarbeiten wegzuschicken."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Text, Codes &amp; Passwörter"
+short_name = "Text &amp; Codes"
 note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei und kein Passwort landet auf einem fremden Server."
 
 #
@@ -457,6 +467,10 @@ guarantees_note = """
     nennt vier Prüfungen, die Sie selbst durchführen können, auf dieser Seite
     wie auf jeder anderen."""
 
+hub_categories_label = "Werkzeugkategorien"
+hub_view_all = "Alle anzeigen"
+hub_show_fewer = "Weniger anzeigen"
+hub_privacy_details = "So bleiben Ihre Dateien privat"
 hub_filter_label = "Werkzeug suchen"
 hub_filter_none = "Kein Werkzeug passt dazu. Versuche weniger Wörter oder ein Dateiformat wie PDF oder PNG."
 

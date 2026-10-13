@@ -312,17 +312,16 @@ title = "Free Browser Tools &mdash; Local File Processing | abox.tools"
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
 description = "Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data."
-heading = "A box of tools that process files in your browser"
+heading = "Free tools. Local processing."
 og_title = "A Box of Tools &mdash; local file processing in your browser"
 og_description = "Small, single-purpose tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
 og_image_alt = "abox.tools - browser tools for local file processing"
 schema_description = "Small browser utilities for local file processing, with no processing uploads or account required. Network features are described on their own pages."
 schema_about = "Browser utilities for local file processing and intentional browser-to-browser sharing"
 
-# "tools" rather than "utilities": this is the first line of body copy on the
-# site and the only place the phrase people actually search for can appear
-# early without being forced. The sentence is otherwise unchanged.
-lede = "Small, single-purpose tools that process files on your own device. No processing uploads, no account to make. Features that fetch or share something say what leaves the browser before you use them."
+# Keep the introduction brief so a phone reaches the catalogue quickly.
+# Network use and the limits of offline processing stay in the details below.
+lede = "Process files in your browser. No processing uploads, no sign-in."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is
@@ -331,6 +330,12 @@ support_note = """
 # The distinction is local processing versus a deliberate transfer. Networking
 # features name their payloads and limits where they are used; a global claim
 # must not erase those exceptions or treat CSP as proof of every data path.
+privacy_heading = "Your files stay yours."
+
+privacy_lede = "Local file processing works offline after the tool is saved. Fetching and sharing require a connection."
+
+support_heading = "Free, with your support."
+
 [[hub.guarantees]]
 title = "Your files are processed on your device"
 body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files and Remote Camera deliberately send content to another browser; their own pages explain the connection."
@@ -360,6 +365,7 @@ body = "Wait for a tool's offline indicator to say ready, then disconnect and us
 [[hub.categories]]
 id = "images"
 name = "Images"
+short_name = "Images"
 note = "Resize one, shrink one, take out what it quietly records about you, or draw one from nothing - none of it sent anywhere."
 order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-to-jpg", "png-to-webp", "avif-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image", "image-to-svg", "compare-heights", "business-profile-preview"]
 
@@ -370,6 +376,7 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; animation"
+short_name = "Video &amp; GIFs"
 note = "Edit video and animation in your browser, or watch an approved camera on another device."
 order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
@@ -380,6 +387,7 @@ order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "i
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documents &amp; audio"
+short_name = "PDF &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
 order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
@@ -393,6 +401,7 @@ order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pd
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
+short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
 order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
@@ -719,6 +728,11 @@ guarantees_note = """
 # The label is used twice on one control - as the placeholder a sighted reader
 # sees and as the <label> a screen reader hears - so it has to read as an
 # instruction rather than as a heading. "Find a tool", not "Search".
+hub_categories_label = "Tool categories"
+hub_view_all = "View all"
+hub_show_fewer = "Show fewer"
+hub_privacy_details = "How it stays private"
+
 hub_filter_label = "Find a tool"
 hub_filter_none = "No tool matches that. Try fewer words or a file format, such as PDF or PNG."
 

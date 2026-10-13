@@ -202,14 +202,14 @@ title = "Ferramentas de navegador grátis &mdash; processamento local | abox.too
 # Abaixo de 155 caracteres, como no inglês: o Google corta a descrição por ali,
 # e aqui o final é a parte que vende o site.
 description = "Ferramentas grátis processam arquivos no navegador: imagens em PDF ou MP4, compressão para um tamanho alvo, recorte de vídeo e remoção de EXIF."
-heading = "Ferramentas que processam arquivos no seu navegador"
+heading = "Ferramentas grátis. Processamento local."
 og_title = "A Box of Tools &mdash; processamento local no navegador"
 og_description = "Ferramentas para uma tarefa que processam arquivos no seu dispositivo. Compartilhamento e funções online opcionais são explicados onde aparecem."
 og_image_alt = "abox.tools - ferramentas de navegador para processamento local de arquivos"
 schema_description = "Utilitários de navegador para processamento local de arquivos, sem envio para processamento nem conta. As funções de rede são explicadas nas próprias páginas."
 schema_about = "Utilitários de navegador para processamento local e compartilhamento deliberado entre navegadores"
 
-lede = "Ferramentas para uma tarefa que processam arquivos no seu dispositivo. Sem envio para processamento e sem conta. Funções que buscam ou compartilham algo explicam o que sai do navegador antes do uso."
+lede = "Processe arquivos no navegador. Sem envio para processamento nem login."
 
 support_note = """
       Estas ferramentas são grátis e vão continuar assim. Se alguma poupou
@@ -217,6 +217,12 @@ support_note = """
       você."""
 
 # Três fatos verificáveis em vez de uma promessa, igual ao inglês.
+privacy_heading = "Seus arquivos continuam seus."
+
+privacy_lede = "O processamento local funciona sem internet depois que a ferramenta é salva. Buscar e compartilhar conteúdo exige conexão."
+
+support_heading = "Grátis, com seu apoio."
+
 [[hub.guarantees]]
 title = "Seus arquivos são processados no seu dispositivo"
 body = "Seu navegador abre, lê e edita os arquivos escolhidos. Não há envio para processamento. Compartilhar texto e arquivos e Câmera remota enviam conteúdo deliberadamente a outro navegador; as próprias páginas explicam a conexão."
@@ -232,21 +238,25 @@ body = "Espere o indicador offline mostrar que está pronto, desconecte e use ar
 [[hub.categories]]
 id = "images"
 name = "Imagens"
+short_name = "Imagens"
 note = "Reduza, mude o tamanho ou tire o que a foto conta de você sem avisar. Nada disso é mandado para lugar nenhum."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vídeo e animação"
+short_name = "Vídeo &amp; GIFs"
 note = "Corte, converta ou monte a partir de fotos, sem que a gravação saia do seu computador."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documentos e áudio"
+short_name = "PDF &amp; áudio"
 note = "Reorganize um documento ou corte uma gravação, sem mandar nenhum dos dois para ser processado fora."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texto, códigos e senhas"
+short_name = "Texto &amp; códigos"
 note = "Leia, confira ou crie aqui. Nenhum token, nenhum arquivo de configuração e nenhuma senha vai parar no servidor dos outros."
 
 #
@@ -398,6 +408,10 @@ guarantees_note = """
     traz quatro verificações que você mesmo pode fazer, aqui ou em qualquer
     outro site."""
 
+hub_categories_label = "Categorias de ferramentas"
+hub_view_all = "Ver todas"
+hub_show_fewer = "Ver menos"
+hub_privacy_details = "Como seus arquivos ficam privados"
 hub_filter_label = "Encontrar uma ferramenta"
 hub_filter_none = "Nenhuma ferramenta corresponde. Tente menos palavras ou um formato de arquivo, como PDF ou PNG."
 

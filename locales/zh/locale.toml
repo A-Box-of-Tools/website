@@ -69,20 +69,26 @@ complete = true
 title = "免费浏览器工具箱 | 本地处理文件 | abox.tools"
 # 中文搜索结果大约在这个长度截断。
 description = "免费工具，在浏览器里就地处理文件。图片合成 PDF 或 MP4、按目标大小压缩、裁剪视频、删除 EXIF 数据。"
-heading = "在你的浏览器里处理文件的一箱工具"
+heading = "免费工具，本地处理。"
 og_title = "A Box of Tools &mdash; 在浏览器里就地处理文件"
 og_description = "一个工具只做一件事，在你的设备上处理文件。主动分享和可选联网功能，都在使用处说明。"
 og_image_alt = "abox.tools - 在浏览器里就地处理文件的工具"
 schema_description = "在浏览器里就地处理文件的小工具，无须上传处理，也无须账号。联网功能各自在页面上说明。"
 schema_about = "在浏览器里就地处理文件，以及主动在浏览器之间分享的工具"
 
-lede = "一个工具只做一件事，在你自己的设备上处理文件。无须上传处理，也无须注册账号。需要获取或分享内容的功能，会在使用前说明什么会离开浏览器。"
+lede = "文件在浏览器里处理。无须上传处理，无须登录。"
 
 support_note = """
       这些工具免费，以后也一样。要是哪个真帮你省了事，全站开口跟你要点什么\
       的地方，就这一处。"""
 
 # 不是承诺，是三条你自己就能验证的事实（与英文版一致）。
+privacy_heading = "你的文件，始终归你。"
+
+privacy_lede = "工具保存后，本地文件处理可离线使用。获取和分享内容需要联网。"
+
+support_heading = "工具免费，感谢你的支持。"
+
 [[hub.guarantees]]
 title = "文件在你的设备上处理"
 body = "你的浏览器打开、读取和编辑你选的文件，处理过程不需要上传。文本与文件分享、远程摄像头会主动把内容传给另一个浏览器；连接方式在各自页面上说明。"
@@ -98,21 +104,25 @@ body = "等工具的离线状态显示就绪，再断网处理设备上的文件
 [[hub.categories]]
 id = "images"
 name = "图片"
+short_name = "图片"
 note = "压缩、改尺寸，或者抹掉照片悄悄记下的那些信息，全都不出这台机器。"
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "视频与动画"
+short_name = "视频与 GIF"
 note = "剪片、转格式，或者用照片拼一段，素材都不出这台机器。"
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "文档与音频"
+short_name = "PDF 与音频"
 note = "拼文档、剪录音，两样都不用送出去处理。"
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "文本、编码与密码"
+short_name = "文本与编码"
 note = "看一看、核一核，或者就在这里生成。令牌、配置文件和密码都不会落到别人的服务器上。"
 
 #
@@ -252,6 +262,10 @@ guarantees_note = """
       怎么判断一个工具是不是真需要你的文件</a>\
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
+hub_categories_label = "工具分类"
+hub_view_all = "查看全部"
+hub_show_fewer = "收起"
+hub_privacy_details = "隐私是如何保护的"
 hub_filter_label = "查找工具"
 hub_filter_none = "没有匹配的工具。试试减少关键词，或输入 PDF、PNG 等文件格式。"
 
