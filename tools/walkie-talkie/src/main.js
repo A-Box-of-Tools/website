@@ -265,6 +265,7 @@ function activateLocalChannel() {
   ui.hold.addEventListener('pointerup', releaseHeld);
   ui.hold.addEventListener('pointercancel', releaseHeld);
   ui.hold.addEventListener('lostpointercapture', releaseHeld);
+  ui.hold.addEventListener('blur', releaseHeld);
   ui.hold.addEventListener('contextmenu', event => event.preventDefault());
   document.addEventListener('keydown', event => {
     if (role !== 'host' || !hostActive || microphoneMuted || event.repeat) return;
