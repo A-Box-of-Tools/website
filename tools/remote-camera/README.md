@@ -61,7 +61,12 @@ inherit automatic acceptance, and an accepted viewer remains connected when
 the setting changes. One active slot is reserved synchronously before its
 acknowledgement; the four-pending cap and busy refusals remain in place.
 Source Stop, page hide, page close and signaling loss stop capture, peers and
-socket. Viewer Disconnect closes its own peer while the source retains preview.
+socket. Manual Source Stop asks for confirmation while any viewer peer is
+attached, including before its approval request arrives. Keep sharing or Escape
+leaves capture, invitation and connections intact. The native dialog does not
+block lifecycle handling: page hide, page close, capture failure and signaling
+loss cancel it and clean up immediately. Viewer Disconnect closes its own peer
+while the source retains preview.
 A best-effort screen wake lock is released on cleanup, including a late grant.
 
 Camera access requires trusted HTTPS and user permission. Video uses native
@@ -76,6 +81,10 @@ Build the scoped page with `python build.py --only remote-camera --locale en
 observes zero senders before approval, denies a request, approves a fresh
 request and observes video frames advancing. Confirm that Stop releases all
 tracks and clears the viewer, and that a late camera grant after Stop closes.
+Check that manual Stop asks while a viewer is connecting, waiting for approval
+or watching; Keep sharing and Escape preserve the same invitation and stream.
+Hide the source while the confirmation is open and verify that cleanup happens
+without accepting the confirmation. With no viewer, Stop ends sharing directly.
 
 The website's capture, protocol and session tests run in CI. Functional browser
 coverage lives in the sibling `A-Box-of-Tools/qa` repository. Do not run the

@@ -24,6 +24,12 @@
 .camera-status { margin: 0.8rem 0; min-height: 1.6em; font-weight: 600; }
 .camera-status.warn { color: var(--danger); }
 .run-row .big { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.run-row .big.danger { background: color-mix(in srgb, var(--danger) 12%, var(--surface)); color: var(--danger); border-color: var(--danger); font-weight: 600; }
+.camera-stop-dialog { max-width: min(32rem, calc(100% - 2rem)); padding: 1.5rem; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); }
+.camera-stop-dialog::backdrop { background: rgb(0 0 0 / 45%); }
+.camera-stop-dialog h2 { margin-top: 0; }
+.camera-stop-dialog p { line-height: 1.65; }
+.camera-stop-dialog .run-row { margin-top: 1.25rem; }
 .camera-video-panel { margin: 1rem 0; }
 .camera-video-panel video { display: block; width: 100%; max-height: 32rem; min-height: 12rem; aspect-ratio: 16 / 9; object-fit: contain; background: #101418; border: 1px solid var(--border); border-radius: var(--radius); }
 .camera-invite { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 1.25rem; align-items: center; margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
