@@ -1,0 +1,123 @@
+<main id="main">
+<section class="wt-setup" id="wt-setup" aria-labelledby="wt-setup-title">
+  <h2 id="wt-setup-title">One voice, nearby listeners</h2>
+  <p>Broadcast your microphone to phones and computers on the same Wi-Fi or local network. One host speaks; everyone else listens, with only Mute and Leave controls.</p>
+  <div class="wt-setup-card">
+    <h3>Start on the host computer</h3>
+    <ol>
+      <li>Download and extract the local broadcast package.</li>
+      <li>Install Python 3.10 or newer if it is not already available.</li>
+      <li>Open a terminal in the extracted folder and run <code>python helper.py</code>.</li>
+      <li>Open the host address printed by the helper, start the channel, and share its listener link or QR code.</li>
+    </ol>
+    <a class="wt-download" href="walkie-talkie.zip" download>Download local broadcast package</a>
+  </div>
+  <p class="wt-note">Keep the helper running on the host computer. Receivers need only their browser. The helper handles setup on the host computer; voice goes directly between browsers. There is no public introduction or audio relay, and no accounts or recordings.</p>
+  <details class="wt-details">
+    <summary>What to expect on a local network</summary>
+    <p>Devices must be able to reach one another. Guest Wi-Fi and networks with device isolation may prevent connections. Each listener uses a separate connection from the host, so start with a small group.</p>
+    <p>Use a trusted local network. The helper uses HTTP for connection setup, so others on the network may be able to observe invitation tokens and setup messages. Anyone with a listener link can join while the channel is open. Live audio is encrypted between browsers.</p>
+    <p>Receivers start listening automatically. If a browser blocks audio, the same Unmute button starts playback. A receiver retries a missing host every second while its browser is active; background tabs and sleeping devices may retry more slowly.</p>
+    <p>The host microphone stops when its page is hidden or the channel ends. Bring the host page back and choose Start channel to resume. Restarting the helper creates new invitation links.</p>
+  </details>
+</section>
+
+<section class="wt-local" id="wt-local" hidden aria-labelledby="wt-channel-title">
+  <div class="wt-channel-heading">
+    <h2 id="wt-channel-title">Local broadcast</h2>
+    <span class="wt-role" id="wt-role"></span>
+  </div>
+  <div class="wt-status" aria-live="polite" aria-atomic="true">
+    <span class="wt-status-dot" id="wt-status-dot" aria-hidden="true"></span>
+    <p id="wt-status-text">Connecting to the local helper…</p>
+  </div>
+  <div class="wt-error" id="wt-error" hidden role="alert">
+    <p id="wt-error-text"></p>
+    <button type="button" id="wt-retry">Try again</button>
+  </div>
+
+  <div id="wt-host" hidden>
+    <div class="wt-host-summary">
+      <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
+      <button type="button" id="wt-start">Start channel</button>
+    </div>
+    <div id="wt-transmit" hidden>
+      <button class="wt-talk" type="button" id="wt-hold" aria-pressed="false" aria-describedby="wt-talk-help">Hold to talk</button>
+      <p class="wt-note wt-talk-help" id="wt-talk-help">Hold this button or the space bar to speak. Release to listen. For hands-free control, use Start talking below.</p>
+      <div class="wt-host-actions">
+        <button type="button" id="wt-toggle" aria-pressed="false">Start talking</button>
+        <button type="button" id="wt-microphone" aria-pressed="false">Mute microphone</button>
+        <button type="button" class="wt-secondary" id="wt-end">End broadcast</button>
+      </div>
+      <p class="wt-note" id="wt-microphone-note" hidden>The microphone is muted. Unmute it before talking.</p>
+    </div>
+
+    <section class="wt-invite" id="wt-invite" hidden aria-labelledby="wt-invite-title">
+      <div class="wt-invite-fields">
+        <h3 id="wt-invite-title">Invite listeners</h3>
+        <p class="wt-note">Share this link or scan the QR code from a device on the same network.</p>
+        <label for="wt-address">Host network address</label>
+        <select id="wt-address"></select>
+        <label for="wt-link">Listener link</label>
+        <div class="wt-link-row">
+          <input id="wt-link" type="text" readonly spellcheck="false" autocomplete="off">
+          <button type="button" id="wt-copy">Copy link</button>
+        </div>
+        <p class="wt-note wt-invite-feedback" id="wt-invite-feedback" aria-live="polite"></p>
+      </div>
+      <div class="wt-qr">
+        <canvas id="wt-qr" width="220" height="220" role="img" aria-label="QR code for the listener link"></canvas>
+        <p class="wt-note" id="wt-qr-error" hidden>The QR code is unavailable. Use the listener link instead.</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="wt-listener" hidden>
+    <div class="wt-listening" id="wt-listening" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <p class="wt-note" id="wt-playback-note" hidden>Your browser paused audio. Choose Unmute to hear the host.</p>
+    <div class="wt-listener-actions">
+      <button type="button" id="wt-mute" aria-pressed="false">Mute</button>
+      <button type="button" class="wt-secondary" id="wt-leave">Leave</button>
+    </div>
+    <p class="wt-note" id="wt-listener-help">You are a receiver. Your microphone is never requested. Keep this page open to hear the host.</p>
+    <audio id="wt-audio" aria-label="Live host audio" autoplay playsinline></audio>
+  </div>
+</section>
+
+<div id="phrases" hidden>
+  <span data-phrase="offline.ready">setup page cached. Download and extract the local bundle before going offline; keep the host's local helper running.</span>
+  <span data-phrase="config-connecting">Connecting to the local helper…</span>
+  <span data-phrase="host-role">Host</span>
+  <span data-phrase="listener-role">Receiver</span>
+  <span data-phrase="host-idle">Ready to start your local channel.</span>
+  <span data-phrase="host-starting">Starting the channel and checking your microphone…</span>
+  <span data-phrase="host-ready">Channel open. Hold to talk when you are ready.</span>
+  <span data-phrase="host-talking">You are broadcasting.</span>
+  <span data-phrase="host-reconnecting">Reconnecting to the local helper…</span>
+  <span data-phrase="host-hidden">The microphone stopped because this page was hidden. Start the channel to resume.</span>
+  <span data-phrase="listener-connecting">Connecting to the host…</span>
+  <span data-phrase="listener-listening">Connected. Waiting for the host to speak.</span>
+  <span data-phrase="listener-talking">The host is speaking.</span>
+  <span data-phrase="listener-reconnecting">Host unavailable. Retrying every second…</span>
+  <span data-phrase="broadcast-ended">The host ended this broadcast.</span>
+  <span data-phrase="listener-left">You left the broadcast.</span>
+  <span data-phrase="error-access">This invitation is invalid or has expired. Use a link from the running local helper.</span>
+  <span data-phrase="error-full">This channel has reached its listener limit.</span>
+  <span data-phrase="error-microphone">The microphone could not start. Allow microphone access in your browser and try again.</span>
+  <span data-phrase="error-connection">The local helper could not be reached. Keep it running and check that your devices share a local network.</span>
+  <span data-phrase="host-count">{count} listeners connected</span>
+  <span data-phrase="host-count-one">1 listener connected</span>
+  <span data-phrase="hold-talk">Hold to talk</span>
+  <span data-phrase="hold-talking">Release to listen</span>
+  <span data-phrase="toggle-start">Start talking</span>
+  <span data-phrase="toggle-stop">Stop talking</span>
+  <span data-phrase="microphone-mute">Mute microphone</span>
+  <span data-phrase="microphone-unmute">Unmute microphone</span>
+  <span data-phrase="listener-mute">Mute</span>
+  <span data-phrase="listener-unmute">Unmute</span>
+  <span data-phrase="copy-success">Listener link copied.</span>
+  <span data-phrase="copy-error">Select and copy the listener link above.</span>
+</div>
+</main>

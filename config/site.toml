@@ -13,7 +13,7 @@
 name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-10-12"     # the hub page's own sitemap date
+lastmod = "2026-10-13"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -389,7 +389,7 @@ id = "documents-and-audio"
 name = "Documents &amp; audio"
 short_name = "PDF &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
+order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio", "walkie-talkie"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -580,6 +580,7 @@ order = [
   "format-json-without-uploading-it",
   "share-text-between-devices",
   "watch-camera-from-another-device",
+  "broadcast-voice-on-a-local-network",
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
