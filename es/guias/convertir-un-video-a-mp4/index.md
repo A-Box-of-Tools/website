@@ -1,0 +1,51 @@
+# Cómo convertir un video a un MP4 compatible
+
+Cuando un archivo se rechaza porque «no es MP4», el problema puede estar en tres lugares. Solo uno exige perder calidad para resolverlo. Aquí explicamos qué significa el rechazo, qué necesita cada archivo y cómo convertirlo sin subir primero el que no aceptaron.
+
+[Abrir Conversor a MP4](https://abox.tools/es/convertir-a-mp4/): La grabación de pantalla, el MKV o el vídeo de cámara, en H.264 y AAC dentro de un MP4. Copia lo compatible y recodifica solo lo necesario.
+
+Última actualización 12 de septiembre de 2026
+
+## La respuesta corta
+
+Abre el [convertidor a MP4](https://abox.tools/es/convertir-a-mp4/), arrastra el archivo y lee las dos frases que aparecen: una para la imagen y otra para el sonido. Cada una indica si la pista ya es compatible y se copiará intacta, o qué formato tiene y a cuál se volverá a codificar. Pulsa el botón. El dispositivo escribirá un MP4 con H.264 y AAC, y lo abrirá de nuevo para comprobar la duración. No se sube nada.
+
+El resto de esta guía explica por qué se rechazó el archivo. «Tiene que ser MP4» puede describir tres problemas diferentes, y solo uno implica una pérdida de calidad al resolverlo.
+
+## Tres cosas tienen que ser compatibles
+
+Un archivo de video es un contenedor con dos flujos: imagen codificada con un códec y sonido codificado con otro. «MP4» solo nombra el contenedor. Cuando un formulario, una aplicación de mensajería o un cliente de correo pide MP4, normalmente espera la combinación que reproduce cualquier dispositivo: contenedor MP4, imagen H.264 y sonido AAC. Basta con que falle una de las tres para que algún programa lo rechace. El mensaje suele nombrar el contenedor porque es la parte visible para el usuario.
+
+El archivo puede tener códecs compatibles en otro contenedor, el contenedor correcto con otros códecs, o una combinación incompatible por completo. La solución cambia según el caso. La diferencia está en si hace falta volver a codificar.
+
+## Los archivos que suelen llegar al convertidor
+
+**Una grabación de pantalla del navegador** suele ser WebM: imagen VP8 o VP9 y sonido Opus. Para un destino que exige MP4, las tres partes son incompatibles y hay que volver a codificar ambas pistas. La imagen se decodifica y se codifica como H.264; el audio, como AAC. Es uno de los casos más comunes y el que más cuesta convertir, porque no se pueden copiar las pistas tal como están.
+
+**Un MKV extraído o descargado** suele tener los códecs adecuados dentro de otro contenedor: H.264 y AAC en Matroska. Esa conversión no pierde nada. Los fotogramas y paquetes se copian byte por byte a un MP4, sin decodificar siquiera la imagen. El resultado solo cambia de contenedor. Un MKV con HEVC es otro caso: hay que volver a codificar la imagen; el sonido suele ser AAC y se copia.
+
+**Un MOV de iPhone** suele tener el audio adecuado en un contenedor muy parecido, pero desde 2017 puede llevar imagen HEVC. Ocupa menos que H.264 y es menos compatible. Se vuelve a codificar la imagen, se copia el AAC y se cambia MOV por MP4, dos variantes del mismo diseño. Un MOV de un teléfono antiguo o una cámara que ya lleve H.264 solo necesita el cambio de contenedor: las pistas se copian.
+
+**Un MP4 que también se rechaza** suele llevar HEVC, VP9 o AV1: el contenedor era correcto, pero el códec de imagen no. Hay que volver a codificarla. A veces es un MP4 fragmentado, como los que producen algunas grabaciones de transmisiones, y ciertos editores no lo abren. Reescribirlo como MP4 normal con el índice al principio resuelve ese caso sin tocar ningún fotograma.
+
+## Por qué copiar no pierde nada y volver a codificar sí
+
+Los fotogramas H.264 de un MKV y los de un MP4 son los mismos bytes. Moverlos se parece a cambiar un archivo de carpeta: cambia el contenedor, pero la imagen queda exactamente igual. Con AAC ocurre lo mismo. Si un convertidor decodifica y vuelve a codificar esas pistas de todos modos —muchos lo hacen porque resulta más sencillo programarlo así—, pierde una generación de calidad sin necesidad.
+
+Si la imagen no es H.264, hay que decodificarla a píxeles y volver a codificarla. Toda codificación pierde algo, por bueno que sea el codificador. La pérdida depende de la tasa de bits elegida y de lo que necesitaba el códec anterior: un archivo VP9 a dos megabits por segundo puede necesitar unos tres en H.264 para verse parecido, porque VP9 comprime mejor. La herramienta parte de la tasa original, la ajusta según los códecs y aplica un mínimo y un máximo por píxel. Así no mantiene una tasa insuficiente ni conserva un gasto excesivo. Antes de empezar, indica la tasa elegida.
+
+La herramienta copia todo lo que puede copiar y nunca introduce un códec de imagen distinto de H.264 en el resultado, aunque MP4 pueda contenerlo. Un HEVC dentro de MP4 puede abrirse en menos sitios que el HEVC del MKV original; producirlo empeoraría el problema que se pretendía resolver.
+
+## ¿Qué ocurre con el sonido?
+
+Opus, Vorbis, MP3 y FLAC no sirven para obtener un MP4 que reproduzca cualquier destino. Se decodifican y se codifican como AAC a 160 kbit/s, más que suficiente para el sonido de un micrófono o un juego. Si hay más de dos canales, se mezclan en estéreo, como hace cualquier reproductor con dos altavoces. Si el navegador no puede decodificar el sonido —sobre todo el PCM sin comprimir de algunas cámaras—, la página lo identifica y lo omite; la imagen se convierte igualmente. También puedes marcar la casilla para quitar el sonido si el destino lo reproducirá en silencio.
+
+## Lo extraño es tener que subirlo
+
+Los convertidores en línea suelen pedir el archivo primero. Hay que subir una grabación de pantalla de un gigabyte o una película para descargar otro archivo después. La subida suele tardar más que la conversión, antes incluso de plantearse quién conserva el contenido y durante cuánto tiempo. Los códecs que hacen el trabajo ya están en el navegador: los que reproducen video pueden decodificarlo, y los recientes pueden codificar H.264 y AAC. El servidor no aporta nada necesario para esta tarea.
+
+El [convertidor a MP4](https://abox.tools/es/convertir-a-mp4/) usa esos códecs. Lee el archivo del disco por partes, separa sus pistas, las copia o vuelve a codificarlas en el dispositivo y escribe el resultado en memoria. La política de seguridad de la página enumera las direcciones que puede contactar, y ninguna pertenece a este sitio. Sigue funcionando al desconectar la red: es la comprobación más sencilla.
+
+## Revísalo antes de enviarlo
+
+Un convertidor puede producir un MP4 incorrecto: un segundo más corto, con una pista de audio vacía o con un códec distinto del prometido. La herramienta vuelve a abrir el resultado con el mismo lector que usa para el original y comprueba tres cosas: la duración, que la imagen sea H.264 y que incluya el sonido anunciado. Después lo reproduce desde la memoria bajo la descarga. Mira y escucha el último segundo antes de guardarlo. Conserva el original en cualquier caso: una imagen recodificada queda una generación más lejos de la cámara.

@@ -1,0 +1,26 @@
+{
+  "id": "/fr/remote-camera/",
+  "name": "Remote Camera",
+  "short_name": "Remote Camera",
+  "description": "Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/tr/boy-karsilastirma/",
+  "name": "Boy Kar\u015f\u0131la\u015ft\u0131rma",
+  "short_name": "Boy Kar\u015f\u0131la\u015ft\u0131rma",
+  "description": "Boylar\u0131 yaz\u0131n, resmi al\u0131n. Onu \u00e7izmek i\u00e7in hi\u00e7bir \u015fey g\u00f6nderilmez.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

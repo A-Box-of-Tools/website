@@ -1,0 +1,26 @@
+{
+  "id": "/pt/formatar-xml/",
+  "name": "Formatador de XML",
+  "short_name": "Formatador de XML",
+  "description": "XML organizado para ler ou espremido para publicar, e convertido em JSON nos dois sentidos. Nada disso \u00e9 colado no servidor de outra pessoa.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

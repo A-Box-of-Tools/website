@@ -1,0 +1,624 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase,fill}from'./shared/phrases.js?v=0335816041';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js?v=0335816041';
+import{sizeText,durationText}from'./shared/format.js?v=0335816041';
+import{openInPlayer}from'./shared/media.js?v=0335816041';
+import{messageBox}from'./shared/message-box.js?v=0335816041';
+import{wireFilePicker}from'./shared/file-picker.js?v=0335816041';
+import{demux,UnsupportedFile,UnsupportedTimeline}from'./shared/mp4-reader.js?v=0335816041';
+import{cropExact,grabFrame}from'./transcode.js?v=0335816041';
+import{cropByRecording}from'./record.js?v=0335816041';
+import{Cropper}from'./shared/cropper.js?v=0335816041';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js?v=0335816041';
+import{makeExample}from'./example.js?v=0335816041';
+function why(fallback,absent){
+return phrase(fallback?.key??absent,fallback?.values);
+}
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcFrame:$('src-frame'),
+srcLength:$('src-length'),
+srcCodec:$('src-codec'),
+srcAudio:$('src-audio'),
+pathNote:$('path-note'),
+cropCard:$('crop-card'),
+stage:$('stage'),
+preview:$('preview'),
+still:$('still'),
+stageBusy:$('stage-busy'),
+stageNote:$('stage-note'),
+transport:$('transport'),
+stepBack:$('step-back'),
+play:$('play'),
+stepOn:$('step-on'),
+scrub:$('scrub'),
+atTime:$('at-time'),
+atLength:$('at-length'),
+aspectRow:document.querySelector('.aspect-row'),
+swapAspect:$('swap-aspect'),
+cropX:$('crop-x'),
+cropY:$('crop-y'),
+cropW:$('crop-w'),
+cropH:$('crop-h'),
+cropMax:$('crop-max'),
+cropCentre:$('crop-centre'),
+cropReset:$('crop-reset'),
+exportCard:$('export-card'),
+format:$('format'),
+formatNote:$('format-note'),
+quality:$('quality'),
+keepAudio:$('keep-audio'),
+audioNote:$('audio-note'),
+sumSize:$('sum-size'),
+sumKept:$('sum-kept'),
+sumLength:$('sum-length'),
+sumPath:$('sum-path'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultVideo:$('result-video'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+};
+const{show:showError,clear:clearError}=messageBox(el.error);
+const formatBytes=(n)=>sizeText(n,phrase,{kb:0,mb:1,gb:'size.gb'});
+const formatDuration=(seconds)=>durationText(seconds,phrase);
+let file=null;
+let objectUrl=null;
+let media=null;
+let fallbackReason=null;
+let source={width:0,height:0};
+let duration=0;
+let fps=30;
+let canCropExactly=false;
+let canRecord=false;
+let playable=false;
+let playing=false;
+let position=0;
+let wantedTime=-1;
+let shownTime=-1;
+let stillRequest=null;
+let loadId=0;
+let loading=false;
+let ready=false;
+let exporting=false;
+let abortController=null;
+let lastResultUrl=null;
+const cropper=new Cropper(el.stage,{
+onChange:onCropChanged,
+label:phrase('crop.aria'),
+minSize:16,
+evenSizes:true,
+});
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[file]=files;
+if(file)loadFile(file);
+},
+example:makeExample,
+});
+async function loadFile(picked){
+if(!picked||exporting)return;
+clearError();
+releaseFile();
+const mine=loadId;
+loading=true;
+file=picked;
+picker.busy(phrase('step.reading'));
+try{
+objectUrl=URL.createObjectURL(picked);
+const played=await openInPlayer(el.preview,objectUrl);
+if(mine!==loadId)return;
+let found=null;
+let refused=null;
+try{
+found=await demux(picked);
+}catch(error){
+if(mine!==loadId)return;
+if(error instanceof UnsupportedTimeline)throw error;
+refused=error instanceof UnsupportedFile
+?{key:error.reason,values:error.values}
+:{key:error.message||'read.unreadable'};
+}
+if(mine!==loadId)return;
+let decodable=false;
+if(found&&hasWebCodecs()){
+decodable=await canDecode(decoderConfig(found.video));
+if(mine!==loadId)return;
+if(!decodable){
+refused={key:'read.nodecoder',values:{codec:found.video.codec}};
+}
+}else if(found&&!hasWebCodecs()){
+refused={key:'read.nowebcodecs'};
+}
+if(decodable&&played.ok
+&&(played.width!==found.video.displayWidth||played.height!==found.video.displayHeight)){
+decodable=false;
+refused={key:'read.turned'};
+}
+const recordable=played.ok&&hasMediaRecorder();
+if(!decodable&&!recordable){
+showError(played.ok
+?phrase('open.norecord')
+:phrase('open.failed',{reason:why(refused,'read.notplayed')}));
+resetView();
+return;
+}
+media=found;
+fallbackReason=refused;
+canCropExactly=decodable;
+canRecord=recordable;
+source=decodable
+?{width:found.video.displayWidth,height:found.video.displayHeight}
+:{width:played.width,height:played.height};
+duration=played.duration||(found?found.duration:0);
+fps=found?averageFps(found.video):30;
+playable=played.ok;
+loading=false;
+ready=true;
+showPreview();
+setUpTransport();
+goTo(0);
+describeSource(played);
+cropper.setSource(source.width,source.height);
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+updateFormatOptions();
+updateSummary();
+setSourceControls(true);
+}catch(error){
+if(mine!==loadId)return;
+console.error(error);
+showError(error?.message
+?phrase(error.message,fill(error.values)):phrase('open.notopened'));
+resetView();
+el.exportCard.inert=false;
+}finally{
+if(mine===loadId)picker.done();
+}
+}
+function showPreview(){
+el.stage.style.aspectRatio=`${source.width} / ${source.height}`;
+el.stage.style.maxWidth=`calc(62vh * ${source.width / source.height})`;
+el.preview.hidden=!playable;
+el.still.hidden=true;
+el.stageNote.hidden=playable;
+if(!playable){
+el.stageNote.textContent=phrase('preview.still');
+}
+}
+function describeSource(played){
+el.source.hidden=false;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcFrame.textContent=phrase('size.plain',
+{width:source.width,height:source.height});
+el.srcLength.textContent=duration?formatDuration(duration):phrase('len.unknown');
+if(media){
+el.srcCodec.textContent=media.video.rotation
+?phrase('src.codec.turned',{
+codec:media.video.codec,
+entry:media.video.entryType,
+degrees:media.video.rotation,
+})
+:phrase('src.codec',{codec:media.video.codec,entry:media.video.entryType});
+el.srcAudio.textContent=media.audio
+?phrase(media.audio.channels===1?'src.audio.one':'src.audio.many',{
+entry:media.audio.entryType,
+n:media.audio.channels,
+rate:Math.round(media.audio.sampleRate),
+})
+:phrase('src.audio.none');
+}else{
+el.srcCodec.textContent=phrase(played.ok?'src.byplayer':'src.unknown');
+el.srcAudio.textContent=phrase('src.audio.whatever');
+}
+el.pathNote.hidden=canCropExactly;
+if(!canCropExactly){
+el.pathNote.textContent=phrase('path.record',{
+reason:why(fallbackReason,'read.layout'),
+});
+}
+}
+function releaseFile(){
+loadId+=1;
+stillRequest?.controller.abort();
+stillRequest=null;
+loading=false;
+ready=false;
+playing=false;
+playable=false;
+el.preview.pause();
+el.play.textContent='▶';
+el.play.setAttribute('aria-label',phrase('play.play'));
+position=0;
+wantedTime=-1;
+shownTime=-1;
+source={width:0,height:0};
+duration=0;
+fps=30;
+canCropExactly=false;
+canRecord=false;
+fallbackReason=null;
+el.source.hidden=true;
+el.pathNote.hidden=true;
+el.transport.hidden=true;
+el.preview.hidden=true;
+el.still.hidden=true;
+el.stageBusy.hidden=true;
+el.stageNote.hidden=true;
+if(objectUrl){
+el.preview.removeAttribute('src');
+el.preview.load();
+URL.revokeObjectURL(objectUrl);
+objectUrl=null;
+}
+media=null;
+file=null;
+setSourceControls(false);
+clearResult();
+}
+function resetView(){
+releaseFile();
+picker.done();
+picker.waiting();
+}
+function setSourceControls(enabled){
+el.cropCard.inert=!enabled;
+el.exportCard.inert=!enabled;
+el.exportBtn.disabled=!enabled;
+cropper.setEnabled(enabled);
+setTransportEnabled(enabled);
+}
+function clearResult(){
+el.result.hidden=true;
+el.resultVideo.pause();
+el.resultVideo.removeAttribute('src');
+el.resultVideo.load();
+el.download.removeAttribute('href');
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=null;
+}
+const playTitle=el.play.title;
+function setUpTransport(){
+el.transport.hidden=false;
+el.scrub.min='0';
+el.scrub.max=String(Math.max(1,Math.round(duration*1000)));
+el.scrub.step=String(Math.max(1,Math.round(1000/(fps||30))));
+el.scrub.value='0';
+el.scrub.disabled=!duration;
+el.play.disabled=!playable;
+el.play.title=playable?playTitle:phrase('play.cannot');
+el.atLength.textContent=duration?`/ ${clockTime(duration)}`:'';
+}
+function goTo(seconds){
+if(!ready||loading)return;
+position=Math.max(0,Math.min(seconds,duration||seconds));
+el.scrub.value=String(Math.round(position*1000));
+el.atTime.textContent=clockTime(position);
+if(playable)el.preview.currentTime=position;
+else drawStill(position);
+}
+function step(frames){
+if(!ready||loading||exporting)return;
+pause();
+goTo(position+frames/(fps||30));
+}
+function play(){
+if(!ready||loading||exporting||!playable||playing)return;
+playing=true;
+el.play.textContent='⏸';
+el.play.setAttribute('aria-label',phrase('play.pause'));
+const mine=loadId;
+el.preview.play().catch(()=>{if(mine===loadId)pause();});
+follow(mine);
+}
+function pause(){
+if(!playing)return;
+playing=false;
+el.play.textContent='▶';
+el.play.setAttribute('aria-label',phrase('play.play'));
+el.preview.pause();
+goTo(el.preview.currentTime);
+}
+function follow(mine){
+if(!playing||mine!==loadId)return;
+position=el.preview.currentTime;
+el.scrub.value=String(Math.round(position*1000));
+el.atTime.textContent=clockTime(position);
+requestAnimationFrame(()=>follow(mine));
+}
+async function drawStill(seconds){
+if(!ready||loading||playable||!media||!file)return;
+wantedTime=seconds;
+if(stillRequest?.loadId===loadId)return;
+const request={loadId,controller:new AbortController()};
+const ownerFile=file;
+const ownerMedia=media;
+stillRequest=request;
+const current=()=>stillRequest===request&&request.loadId===loadId;
+try{
+while(current()&&ready&&wantedTime!==shownTime){
+const target=wantedTime;
+const slow=setTimeout(()=>{
+if(current())el.stageBusy.hidden=false;
+},120);
+try{
+const canvas=await grabFrame({
+file:ownerFile,media:ownerMedia,atSeconds:target,
+signal:request.controller.signal,
+});
+if(!current()||wantedTime!==target)continue;
+el.still.width=canvas.width;
+el.still.height=canvas.height;
+el.still.getContext('2d').drawImage(canvas,0,0);
+el.still.hidden=false;
+shownTime=target;
+}finally{
+clearTimeout(slow);
+if(current())el.stageBusy.hidden=true;
+}
+}
+}catch(error){
+if(!current()||request.controller.signal.aborted)return;
+el.still.hidden=true;
+el.stageNote.textContent=phrase('preview.none',
+{why:phrase(error.message,fill(error.values))});
+}finally{
+if(current()){
+stillRequest=null;
+el.stageBusy.hidden=true;
+}
+}
+}
+el.play.addEventListener('click',()=>(playing?pause():play()));
+el.stepBack.addEventListener('click',()=>step(-1));
+el.stepOn.addEventListener('click',()=>step(1));
+el.scrub.addEventListener('input',()=>{
+pause();
+goTo(Number(el.scrub.value)/1000);
+});
+el.preview.addEventListener('pause',()=>{if(el.preview.paused)pause();});
+el.preview.addEventListener('ended',()=>{if(el.preview.ended)pause();});
+let aspect=null;
+function onCropChanged(rect){
+if(!ready||loading||exporting)return;
+el.cropX.value=String(rect.x);
+el.cropY.value=String(rect.y);
+el.cropW.value=String(rect.width);
+el.cropH.value=String(rect.height);
+el.cropX.max=String(Math.max(0,source.width-rect.width));
+el.cropY.max=String(Math.max(0,source.height-rect.height));
+el.cropW.max=String(source.width);
+el.cropH.max=String(source.height);
+updateSummary();
+}
+function setAspect(value,button){
+if(!ready||loading||exporting)return;
+for(const other of el.aspectRow.querySelectorAll('[data-aspect]')){
+other.classList.toggle('active',other===button);
+}
+if(value==='free')aspect=null;
+else if(value==='source')aspect=source.width/source.height;
+else{
+const[w,h]=value.split(':').map(Number);
+aspect=w/h;
+}
+cropper.setAspect(aspect);
+}
+el.aspectRow.addEventListener('click',(event)=>{
+const button=event.target.closest('[data-aspect]');
+if(button)setAspect(button.dataset.aspect,button);
+});
+el.swapAspect.addEventListener('click',()=>{
+if(!ready||loading||exporting||!aspect)return;
+aspect=1/aspect;
+cropper.setAspect(aspect);
+});
+el.cropMax.addEventListener('click',()=>{
+if(ready&&!loading&&!exporting)cropper.maximize();
+});
+el.cropCentre.addEventListener('click',()=>{
+if(ready&&!loading&&!exporting)cropper.centre();
+});
+el.cropReset.addEventListener('click',()=>{
+if(!ready||loading||exporting)return;
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+cropper.reset();
+});
+for(const input of[el.cropX,el.cropY,el.cropW,el.cropH]){
+input.addEventListener('change',()=>{
+if(!ready||loading||exporting)return;
+if(aspect&&(input===el.cropW||input===el.cropH)){
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+}
+cropper.setRect({
+x:Number(el.cropX.value)||0,
+y:Number(el.cropY.value)||0,
+width:Number(el.cropW.value)||16,
+height:Number(el.cropH.value)||16,
+});
+});
+}
+function usingExact(){
+return el.format.value==='mp4'&&canCropExactly;
+}
+function updateFormatOptions(){
+const mp4=el.format.querySelector('option[value="mp4"]');
+const webm=el.format.querySelector('option[value="webm"]');
+mp4.disabled=!canCropExactly;
+webm.disabled=!canRecord;
+el.format.value=canCropExactly?'mp4':'webm';
+updateFormatNote();
+}
+function updateFormatNote(){
+if(!ready||loading||exporting)return;
+el.formatNote.textContent=phrase(usingExact()?'note.exact':'note.record');
+el.audioNote.textContent=phrase(usingExact()?'note.audio.exact'
+:'note.audio.record');
+updateSummary();
+}
+el.format.addEventListener('change',updateFormatNote);
+el.quality.addEventListener('change',updateSummary);
+el.keepAudio.addEventListener('change',updateSummary);
+function updateSummary(){
+const rect=cropper.rect;
+if(!ready||loading||exporting||!source.width)return;
+el.sumSize.textContent=phrase('size.from',{
+width:rect.width,
+height:rect.height,
+fromWidth:source.width,
+fromHeight:source.height,
+});
+const kept=(rect.width*rect.height)/(source.width*source.height);
+el.sumKept.textContent=kept>=0.999
+?phrase('kept.whole')
+:phrase('kept.part',{percent:Math.round(kept*100)});
+el.sumLength.textContent=duration?formatDuration(duration):phrase('len.unknown');
+el.sumPath.textContent=phrase(usingExact()?'out.exact'
+:(el.format.value==='webm'?'out.record.webm':'out.record.mp4'));
+}
+function setProgress({phase,done,total,realtime}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+if(phase==='preparing'){
+el.progressLabel.textContent=phrase('step.preparing');
+}else if(phase==='finishing'){
+el.progressLabel.textContent=phrase('step.finishing');
+}else if(realtime){
+el.progressLabel.textContent=phrase('step.realtime',{
+done:formatDuration(done),
+total:formatDuration(total),
+percent:Math.round(fraction*100),
+});
+}else{
+el.progressLabel.textContent=phrase('step.frame',{
+done:done.toLocaleString(),
+total:total.toLocaleString(),
+percent:Math.round(fraction*100),
+});
+}
+}
+function outputFilename(extension){
+const base=(file?.name??'video').replace(/\.[^.]+$/,'');
+return`${base}-cropped.${extension}`;
+}
+function clockTime(seconds){
+const whole=Math.max(0,seconds);
+const minutes=Math.floor(whole/60);
+const rest=whole-minutes*60;
+return`${minutes}:${rest.toFixed(3).padStart(6, '0')}`;
+}
+async function runExport(){
+if(exporting||loading||!ready||!file||(!canCropExactly&&!canRecord))return;
+const crop=cropper.rect;
+if(crop.width<16||crop.height<16){
+showError(phrase('crop.toosmall'));
+return;
+}
+clearError();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progress.hidden=false;
+el.result.hidden=true;
+cropper.setEnabled(false);
+el.cropCard.inert=true;
+pause();
+setTransportEnabled(false);
+setProgress({phase:'preparing',done:0,total:1});
+const quality=el.quality.value;
+const keepAudio=el.keepAudio.checked;
+try{
+const result=usingExact()
+?await cropExact({
+file,media,crop,quality,keepAudio,
+onProgress:setProgress,signal:abortController.signal,
+})
+:await cropByRecording({
+src:objectUrl,crop,quality,keepAudio,fps,
+onProgress:setProgress,signal:abortController.signal,
+});
+if(result.warnings?.length){
+showError(result.warnings.map((key)=>phrase(key))
+.reduce((a,b)=>phrase('join.sentences',{a,b})));
+}
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(result.blob);
+el.resultVideo.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename(result.extension);
+el.resultInfo.textContent=[
+result.extension.toUpperCase(),
+phrase('size.plain',{width:crop.width,height:crop.height}),
+formatBytes(result.blob.size),
+result.codec,
+].reduce((a,b)=>phrase('join.dot',{a,b}));
+el.result.hidden=false;
+el.progress.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progress.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message
+?phrase(error.message,fill(error.values)):phrase('export.failed'));
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+const enabled=ready&&!loading;
+el.exportBtn.disabled=!enabled;
+el.cropCard.inert=!enabled;
+cropper.setEnabled(enabled);
+setTransportEnabled(enabled);
+onCropChanged(cropper.rect);
+}
+}
+function setTransportEnabled(enabled){
+for(const control of[el.play,el.stepBack,el.stepOn,el.scrub]){
+control.disabled=!enabled;
+}
+if(enabled){
+el.play.disabled=!playable;
+el.scrub.disabled=!duration;
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+if(!hasWebCodecs()&&!hasMediaRecorder()){
+showError(phrase('nocodec.page'));
+}
+setSourceControls(false);
+picker.waiting();
+document.getElementById('boot-warning')?.remove();

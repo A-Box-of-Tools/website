@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-10-13T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">How to watch a camera from another device</title>
+    <id>https://abox.tools/guides/watch-camera-from-another-device/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/watch-camera-from-another-device/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Reuse a phone for nursery checks, pets, entryways or DIY inspections. Connect two browsers on a reachable home network and approve the live viewer.</summary>
+  </entry>
+  <entry>
+    <title type="html">Remote Camera</title>
+    <id>https://abox.tools/remote-camera/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/remote-camera/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Watch a phone or computer camera from another browser on a reachable local network. Direct encrypted video, optional viewer approval, camera switching, no microphone or recording.</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIF to JPG</title>
+    <id>https://abox.tools/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/avif-to-jpg/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convert AVIF images to JPG in your browser. Your browser already decodes AVIF, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Editor</title>
+    <id>https://abox.tools/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Trimmer</title>
+    <id>https://abox.tools/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/trim-audio/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64 Encoder &amp; Decoder</title>
+    <id>https://abox.tools/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Business Profile Preview</title>
+    <id>https://abox.tools/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/business-profile-preview/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">See how your Google Business Profile will look before it goes live: the knowledge panel, the phone card and the search result, drawn from the name, category, hours, rating and photo you type. Import an existing listing by pasting it. Download as PNG or SVG. It all happens in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Can an AI agent use these tools?</title>
+    <id>https://abox.tools/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">An agent can operate these browser tools. Check browser location, the agent vendor’s data handling, required permissions and any deliberate network feature.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM Viewer</title>
+    <id>https://abox.tools/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">A free DCM file opener: open .dcm scans &amp;mdash; CT, MR, X-ray and ultrasound &amp;mdash; in your browser, with nothing to install. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF Viewer &amp; Remover</title>
+    <id>https://abox.tools/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. JPEG, PNG and WebP stay unencoded; AVIF cleaning converts to a new PNG. Nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract Audio from Video</title>
+    <id>https://abox.tools/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/extract-audio-from-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Analyzer</title>
+    <id>https://abox.tools/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Maker</title>
+    <id>https://abox.tools/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG, WebP or AVIF images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Splitter</title>
+    <id>https://abox.tools/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC to JPG</title>
+    <id>https://abox.tools/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/heic-to-jpg/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convert iPhone HEIC and AVIF photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along. The metadata checkbox and metadata preview apply only to HEIC; AVIF metadata is always left out.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hash &amp; Checksum</title>
+    <id>https://abox.tools/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
+  </entry>
+  <entry>
+    <title type="html">Height Comparison Chart</title>
+    <id>https://abox.tools/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compare-heights/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Compare heights side by side. Add a man, a woman, a boy, a girl and objects &amp;mdash; a door, a window, a whiteboard, a vending machine &amp;mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">How can a web page work with the wi-fi off?</title>
+    <id>https://abox.tools/guides/how-can-a-web-page-work-offline/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/how-can-a-web-page-work-offline/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">How a service worker caches browser tools, what an offline operation proves about local processing, and the network features and limits to check.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to Compress an Image Under a File-Size Limit</title>
+    <id>https://abox.tools/guides/compress-an-image-to-a-target-size/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/compress-an-image-to-a-target-size/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">An upload form wants 500 KB and your photo is 4 MB. What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to compress a video to a size that will send</title>
+    <id>https://abox.tools/guides/compress-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/compress-a-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">What a size limit actually costs a video, where the megabytes go, why the frame size drops before the picture goes to mud, how to lose as little as the number allows, and how to do it in your browser without the upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to convert between YAML and JSON</title>
+    <id>https://abox.tools/guides/convert-yaml-and-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-yaml-and-json/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convert a supported YAML subset to JSON, or JSON to YAML, in your browser. Check comment loss, unsupported constructs and exact number text before reuse.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to extract the sound from a video</title>
+    <id>https://abox.tools/guides/extract-audio-from-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/extract-audio-from-a-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Extract a video soundtrack locally as WAV. Choose PCM16 or Float32, keep the channels or mix to mono, and check the result before saving.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to format and check XML</title>
+    <id>https://abox.tools/guides/format-and-check-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/format-and-check-xml/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Format, minify and check XML locally. Follow parser errors and understand the attribute, text and array mapping before converting XML to JSON.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to make a QR code that still scans on somebody else's phone</title>
+    <id>https://abox.tools/guides/make-a-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-qr-code/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Which error-correction level to pick, why the white margin around a QR code is part of the code, how big to print it, and what a free generator's 'dynamic' code costs you later.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to make a height comparison chart</title>
+    <id>https://abox.tools/guides/make-a-height-comparison-chart/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-height-comparison-chart/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Turn a list of heights into a side-by-side picture: how to write the heights, which figure to pick for a child, why one familiar object does more than a third person, and how to get the chart out as a PNG or an SVG.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to resize an image without wrecking it</title>
+    <id>https://abox.tools/guides/resize-an-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/resize-an-image/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">What changes when you resize: fine detail lost when shrinking, interpolation when enlarging, fitting a different shape, and choosing when to crop.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to unlock a PDF, and which kind of locked it is</title>
+    <id>https://abox.tools/guides/unlock-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/unlock-a-pdf/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">A PDF that will not print and a PDF that will not open are two different problems with one name. What each of them actually is, why one comes off in a click and the other cannot come off at all, and how to tell which you have.</summary>
+  </entry>
+  <entry>
+    <title type="html">ID Photo Maker</title>
+    <id>https://abox.tools/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Prepare passport or visa photos for supported countries: published sizes, marked crop guidance, head and eye overlays, background checks, printable sheets and JPEG upload presets. Your photo stays in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Compressor</title>
+    <id>https://abox.tools/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Compress a JPEG, PNG, WebP or AVIF to fit a file-size limit, such as 100 KB or 2 MB. The result aims at or below your target, not an exact byte count. No upload, works offline.</summary>
+  </entry>
+</feed>

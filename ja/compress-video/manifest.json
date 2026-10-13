@@ -1,0 +1,26 @@
+{
+  "id": "/ja/compress-video/",
+  "name": "\u52d5\u753b\u5727\u7e2e\u30c4\u30fc\u30eb",
+  "short_name": "\u52d5\u753b\u5727\u7e2e\u30c4\u30fc\u30eb",
+  "description": "\u5bb9\u91cf\u306e\u4e0a\u9650\u3092\u6307\u5b9a\u3059\u308b\u3068\u3001\u8a2d\u5b9a\u3092\u8a08\u7b97\u3057\u3001\u7d50\u679c\u3092\u5b9f\u6e2c\u3057\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

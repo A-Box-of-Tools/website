@@ -1,0 +1,26 @@
+{
+  "id": "/hi/extract-audio-from-video/",
+  "name": "\u0935\u0940\u0921\u093f\u092f\u094b \u0938\u0947 \u0911\u0921\u093f\u092f\u094b \u0928\u093f\u0915\u093e\u0932\u0947\u0902",
+  "short_name": "\u0935\u0940\u0921\u093f\u092f\u094b \u0938\u0947 \u0911\u0921\u093f\u092f\u094b \u0928\u093f\u0915\u093e\u0932\u0947\u0902",
+  "description": "\u0935\u0940\u0921\u093f\u092f\u094b \u091b\u094b\u0921\u093c\u093f\u090f \u0914\u0930 \u0906\u0935\u093e\u091c\u093c \u0928\u093f\u0915\u093e\u0932 \u0932\u0940\u091c\u093f\u090f\u0964 \u0924\u0938\u094d\u0935\u0940\u0930 \u0915\u092d\u0940 \u0921\u093f\u0915\u094b\u0921 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u0940, \u0914\u0930 \u0915\u0941\u091b \u092d\u0940 \u0905\u092a\u0932\u094b\u0921 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u093e\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

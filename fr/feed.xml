@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Outils gratuits traitant vos fichiers dans le navigateur : images en PDF ou MP4, compression vers une taille cible, recadrage vidéo, suppression EXIF.</subtitle>
+  <id>https://abox.tools/fr/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/fr/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/fr/"/>
+  <updated>2026-10-12T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/fr/</uri>
+  </author>
+  <entry>
+    <title type="html">AVIF en JPG</title>
+    <id>https://abox.tools/fr/convertir-avif-en-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-avif-en-jpg/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convertissez des images AVIF en JPG dans votre navigateur. Aucun envoi, aucun compte, fonctionnement hors ligne. Choisissez la couleur qui remplace la transparence.</summary>
+  </entry>
+  <entry>
+    <title type="html">Analyseur de GIF</title>
+    <id>https://abox.tools/fr/analyser-un-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/analyser-un-gif/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Démontez un GIF dans votre navigateur&amp;nbsp;: chaque image avec sa durée et son effacement, les tables de couleurs, le nombre de boucles, et le détail octet par octet de la taille du fichier. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Aperçu de fiche d’établissement</title>
+    <id>https://abox.tools/fr/apercu-fiche-etablissement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/apercu-fiche-etablissement/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Prévisualisez panneau d’informations, carte téléphone et résultat de recherche depuis nom, catégorie, horaires, note et photo. Collez une fiche existante pour l’importer. Téléchargez en PNG ou SVG. Tout reste dans votre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Caviardage d'image</title>
+    <id>https://abox.tools/fr/caviarder-une-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/caviarder-une-image/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Recouvrez un nom, une adresse ou un numéro de compte sur une photo ou une capture, puis réenregistrez l'image&amp;nbsp;: les pixels masqués disparaissent du fichier au lieu de rester sous un rectangle. Tout se passe dans le navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ce que 20 convertisseurs en ligne font de votre fichier</title>
+    <id>https://abox.tools/fr/guides/ce-que-20-convertisseurs-font-de-vos-fichiers/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/ce-que-20-convertisseurs-font-de-vos-fichiers/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Nous avons envoyé le même fichier à 20 convertisseurs gratuits en ligne et observé le réseau. Dix-neuf l’ont envoyé à un serveur. Lesquels, où, à quel moment et ce que leurs politiques de confidentialité promettent.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment compresser une image sous une limite de taille</title>
+    <id>https://abox.tools/fr/guides/compresser-une-image-a-une-taille-precise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/compresser-une-image-a-une-taille-precise/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Un formulaire d'envoi veut 500 KB et votre photo en fait 4 MB. Ce qu'une limite de taille coûte vraiment, quel réglage déplacer en premier, et pourquoi un PNG ne maigrit pas comme un JPEG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment compresser une vidéo à une taille qui passe</title>
+    <id>https://abox.tools/fr/guides/compresser-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/compresser-une-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Ce qu’une limite de taille coûte à une vidéo, où passent les mégaoctets, pourquoi les dimensions baissent avant que l’image ne se dégrade et comment limiter les pertes dans votre navigateur sans envoyer le fichier.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment convertir entre YAML et JSON</title>
+    <id>https://abox.tools/fr/guides/convert-yaml-and-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/convert-yaml-and-json/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convertissez un sous-ensemble YAML en JSON ou inversement dans le navigateur. Vérifiez commentaires perdus, constructions refusées et texte numérique avant réutilisation.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment créer un QR code qui se scanne encore sur le téléphone d'un autre</title>
+    <id>https://abox.tools/fr/guides/creer-un-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-un-qr-code/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Quel niveau de correction d'erreurs choisir, pourquoi la marge blanche autour d'un QR code fait partie du code, à quelle taille l'imprimer, et ce que le code &amp;laquo;&amp;nbsp;dynamique&amp;nbsp;&amp;raquo; d'un générateur gratuit vous coûtera plus tard.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment déverrouiller un PDF, et reconnaître son type de verrouillage</title>
+    <id>https://abox.tools/fr/guides/deverrouiller-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/deverrouiller-un-pdf/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Un PDF qui refuse l’impression et un PDF qui refuse de s’ouvrir sont deux problèmes différents portant le même nom. Ce que chacun signifie, pourquoi l’un se retire en un clic tandis que l’autre ne peut pas être retiré sans son mot de passe, et comment les distinguer.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment extraire le son d’une vidéo</title>
+    <id>https://abox.tools/fr/guides/extract-audio-from-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/extract-audio-from-a-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Extrayez une piste vidéo localement en WAV. Choisissez PCM16 ou Float32, gardez les canaux ou passez en mono et vérifiez avant d’enregistrer.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment faire un graphique de comparaison de tailles</title>
+    <id>https://abox.tools/fr/guides/faire-un-graphique-de-tailles/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/faire-un-graphique-de-tailles/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Transformer une liste de tailles en une image côte à côte : comment écrire les tailles, quelle figure choisir pour un enfant, pourquoi un objet familier fait plus qu'une troisième personne, et comment sortir le graphique en PNG ou en SVG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment formater et vérifier XML</title>
+    <id>https://abox.tools/fr/guides/format-and-check-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/format-and-check-xml/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Formatez, minimisez et vérifiez XML localement. Suivez les erreurs et comprenez la conversion des attributs, textes et tableaux avant de passer en JSON.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment redimensionner une image sans l'abîmer</title>
+    <id>https://abox.tools/fr/guides/redimensionner-une-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/redimensionner-une-image/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Ce qui change au redimensionnement : détails perdus à la réduction, interpolation à l’agrandissement, adaptation des proportions et choix du recadrage.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment une page web peut-elle marcher sans le wifi ?</title>
+    <id>https://abox.tools/fr/guides/comment-une-page-web-peut-elle-fonctionner-hors-ligne/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/comment-une-page-web-peut-elle-fonctionner-hors-ligne/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Comment les service workers conservent les outils, ce que démontre le traitement hors ligne et les fonctions réseau et limites à vérifier.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparateur de tailles</title>
+    <id>https://abox.tools/fr/comparer-des-tailles/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-tailles/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille et des objets &amp;mdash; une porte, une fenêtre, un tableau blanc, un distributeur &amp;mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparateur de textes</title>
+    <id>https://abox.tools/fr/comparer-des-textes/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compresseur d'images</title>
+    <id>https://abox.tools/fr/compresser-une-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/compresser-une-image/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Compressez un JPEG, PNG, WebP ou AVIF sous une limite comme 100 Ko ou 2 Mo. Le résultat vise la taille cible ou moins, pas un nombre exact d’octets. Sans envoi, fonctionne hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compresseur de PDF</title>
+    <id>https://abox.tools/fr/compresser-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/compresser-un-pdf/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Alléger un PDF sans l'envoyer. Votre navigateur lit, recompresse et réécrit le fichier lui-même, après vous avoir montré où se trouve vraiment son poids.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compression vidéo</title>
+    <id>https://abox.tools/fr/compresser-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/compresser-une-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Réduisez une vidéo sous 8, 16, 25 Mo ou le poids choisi dans votre navigateur. L’outil calcule dimensions et débit, encode puis mesure. Aucun envoi, son copié intact.</summary>
+  </entry>
+  <entry>
+    <title type="html">Convertisseur YAML vers JSON</title>
+    <id>https://abox.tools/fr/convertir-du-yaml-en-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-du-yaml-en-json/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Convertissez un sous-ensemble pris en charge de YAML 1.2 en JSON et inversement dans le navigateur. Ancres, alias, balises et documents multiples sont refusés ; JSON perd les commentaires. Aucun envoi.</summary>
+  </entry>
+  <entry>
+    <title type="html">Coupeur de vidéos</title>
+    <id>https://abox.tools/fr/couper-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-une-video/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Marquez les passages à garder et enregistrez-les dans une vidéo dans votre navigateur. La copie conserve les images encodées ; les coupes exactes et l’enregistrement réencodent. Sans envoi, fonctionne hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Créateur de GIF</title>
+    <id>https://abox.tools/fr/creer-un-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/creer-un-gif/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Transformez des images JPG, PNG, WebP ou AVIF en GIF animé, gratuitement et entièrement dans le navigateur. Vous fixez l'ordre, la vitesse et la taille. Rien n'est envoyé, et cela marche hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Créateur de timelapse</title>
+    <id>https://abox.tools/fr/faire-un-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/faire-un-timelapse/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Transformez une longue vidéo en timelapse&amp;nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Découpeur audio</title>
+    <id>https://abox.tools/fr/couper-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Découpeur de GIF</title>
+    <id>https://abox.tools/fr/decouper-un-gif-en-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/decouper-un-gif-en-images/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Découpez un GIF animé en ses images et enregistrez chacune en PNG, gratuitement et entièrement dans le navigateur. La transparence et les durées sont conservées. Rien n'est envoyé, et cela marche hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Déverrouillage PDF</title>
+    <id>https://abox.tools/fr/deverrouiller-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/deverrouiller-un-pdf/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Retirez localement les restrictions de permissions d’un PDF ou le mot de passe d’ouverture que vous fournissez. La page identifie la protection avant de demander un mot de passe. Aucun envoi ni recherche de mot de passe.</summary>
+  </entry>
+  <entry>
+    <title type="html">Empileur d'images</title>
+    <id>https://abox.tools/fr/empiler-des-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/empiler-des-images/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Combinez une rafale de photographies en une seule&amp;nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Encodeur &amp; décodeur Base64</title>
+    <id>https://abox.tools/fr/encoder-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Est-il sûr d'envoyer ses fichiers à un convertisseur en ligne&amp;nbsp;?</title>
+    <id>https://abox.tools/fr/guides/est-il-sur-d-envoyer-ses-fichiers/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/est-il-sur-d-envoyer-ses-fichiers/"/>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary type="html">La plupart des convertisseurs en ligne envoient votre fichier à un serveur. Ce que cela veut dire, ce qui lui arrive là-bas, et quatre vérifications qui disent si un outil en a vraiment besoin.</summary>
+  </entry>
+</feed>

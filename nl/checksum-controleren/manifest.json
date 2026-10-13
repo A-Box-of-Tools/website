@@ -1,0 +1,26 @@
+{
+  "id": "/nl/checksum-controleren/",
+  "name": "Hash en checksum",
+  "short_name": "Hash en checksum",
+  "description": "Controleer een download tegen het getal dat de maker erbij zette, zonder hem naar iemand te sturen.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

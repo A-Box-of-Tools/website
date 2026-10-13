@@ -1,0 +1,26 @@
+{
+  "id": "/ko/\uc774\ubbf8\uc9c0-svg-\ubcc0\ud658/",
+  "name": "\uc774\ubbf8\uc9c0\ub97c SVG\ub85c",
+  "short_name": "\uc774\ubbf8\uc9c0\ub97c SVG\ub85c",
+  "description": "\ud615\ud0dc \ud558\ub098, \uc724\uacfd\uc120 \ud558\ub098. \uc788\uc73c\uba74 \uc548 \ub418\ub294 \uac83\uc740 \uac00\ub9ac\ud0a4\uae30\ub9cc \ud558\uc138\uc694.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

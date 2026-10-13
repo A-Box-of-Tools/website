@@ -1,0 +1,26 @@
+{
+  "id": "/de/zeitraffer-erstellen/",
+  "name": "Zeitraffer-Generator",
+  "short_name": "Zeitraffer-Generator",
+  "description": "Eine Stunde Aufnahme in zwanzig Sekunden.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

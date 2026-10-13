@@ -1,0 +1,31 @@
+{
+  "id": "/zh/",
+  "name": "A Box of Tools",
+  "short_name": "A Box of Tools",
+  "description": "\u4e00\u4e2a\u5de5\u5177\u53ea\u505a\u4e00\u4ef6\u4e8b\uff0c\u5728\u4f60\u7684\u8bbe\u5907\u4e0a\u5904\u7406\u6587\u4ef6\u3002\u4e3b\u52a8\u5206\u4eab\u548c\u53ef\u9009\u8054\u7f51\u529f\u80fd\uff0c\u90fd\u5728\u4f7f\u7528\u5904\u8bf4\u660e\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

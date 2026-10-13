@@ -1,0 +1,26 @@
+{
+  "id": "/fr/photo-d-identite/",
+  "name": "Photo d'identit\u00e9",
+  "short_name": "Photo d'identit\u00e9",
+  "description": "Choisissez un pays et un document pris en charge. Exigences et rep\u00e8res sont distingu\u00e9s.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/nl/exif-gegevens-verwijderen/",
+  "name": "EXIF-lezer & -wisser",
+  "short_name": "EXIF-lezer & -wisser",
+  "description": "Zie wat een foto over je vertelt. Haal het er daarna uit.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
