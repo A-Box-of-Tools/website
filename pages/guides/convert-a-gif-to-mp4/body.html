@@ -9,8 +9,28 @@
       of the size.
     </p>
     <p>
-      The rest of this is about why that is not a loss, and about the two
+      The rest of this is about why the video can be smaller, and about the two
       things that do change on the way.
+    </p>
+  </section>
+
+  <section>
+    <h2>A demonstration that belongs in a video player</h2>
+    <p>
+      A screen-recorded tutorial, a product animation or a loop for a
+      presentation is a good reason to try MP4 when the destination accepts
+      video. Convert the GIF, compare the measured sizes, and watch a complete
+      pass: the long pause on an instruction and the join back to the
+      beginning are the places to check. A very small GIF can already be the
+      smaller file.
+    </p>
+    <p>
+      For a website animation, set looping in the website player; the
+      converter cannot put that instruction into the MP4. Pick the background
+      colour that the animation will sit on before converting a transparent
+      GIF. For a slide deck, test slideshow playback on the presentation
+      computer too. Keep the GIF if you also need an animated image in an
+      email or a document whose video support is uncertain.
     </p>
   </section>
 
@@ -20,10 +40,11 @@
       A GIF stores each frame as a complete picture, with at most 256
       colours, and has no idea what the frame before it looked like. A
       video codec stores what changed between frames, at full colour, and
-      H.264 has had thirty years of practice at that. The same animation
-      comes out at a tenth of the size, often much less, and looks better,
-      because it is no longer limited to 256 colours and no longer dithered
-      to hide that it was.
+      H.264 has had thirty years of practice at that. The decoded animation often comes out much smaller because repeated
+      pictures can be described more efficiently. It cannot recover the
+      colours the GIF already discarded or remove dithering baked into its
+      pixels; H.264 also re-encodes those pictures. Compare the result rather
+      than expecting a restoration of the original video.
     </p>
     <p>
       That is why every social platform, chat app and content system either

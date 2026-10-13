@@ -2,8 +2,9 @@
     <h2>The short answer</h2>
     <p>
       Open the <a href="../../video-to-gif/">Video to GIF converter</a>, drop the
-      clip in, mark the seconds you want, and leave the width at 480 and the rate
-      at 12 frames a second. That is the setting most GIFs want. If the file
+      clip in, mark the seconds you want, and start with a modest width and
+      12 frames a second. The desktop preference is 480 pixels; a phone
+      may start at 240 to keep the estimated buffers within its budget. If the file
       comes out too big, take the width down before you touch anything else
       &mdash; it is the setting that pays twice.
     </p>
@@ -11,6 +12,26 @@
       The rest of this page is about why, because &ldquo;my GIF is 14 MB&rdquo;
       is the problem everybody actually has, and which knob to turn is not
       obvious.
+    </p>
+  </section>
+
+  <section>
+    <h2>A short instruction or a repeatable bug</h2>
+    <p>
+      A three-second screen recording can show a menu action, a drag gesture
+      or a bug more clearly than a paragraph. Mark just before the action and
+      finish after the result is visible. Start at 12 frames a second, use
+      enough width to read the important label, and turn dithering off for
+      flat interface colours. View the export inside the intended issue,
+      document or page rather than judging only its large preview.
+    </p>
+    <p>
+      For a reaction or a craft movement, the same approach works with less
+      text and often a smaller width. The page may start at 240 pixels on a
+      phone to keep the working buffers manageable. If the plan is over its
+      memory budget, shorten the section or use the offered smaller width; the
+      source decoder still needs memory too. GIF carries no audio, so keep a
+      video when the spoken explanation matters.
     </p>
   </section>
 
@@ -182,8 +203,8 @@
     <p>
       Where the sound matters, the question answers itself: GIF has never had
       audio and never will. Cut the video instead &mdash; the
-      <a href="../../trim-video/">Video Cutter</a> takes a section out without
-      re-encoding a frame of it.
+      <a href="../../trim-video/">Video Cutter</a> can copy a suitable
+      section, or use its labelled exact method when the cut needs it.
     </p>
   </section>
 
@@ -194,13 +215,16 @@
       order of how much they bite:
     </p>
     <ul>
-      <li><strong>Email</strong> &mdash; 10 to 25 MB for the whole message, and
-        an attachment near that gets stripped or bounced by something in the
-        middle. Aim well under.</li>
-      <li><strong>Chat and forums</strong> &mdash; commonly 8 to 10 MB, sometimes
-        much less for an inline preview rather than a download.</li>
-      <li><strong>A GitHub README</strong> &mdash; 10 MB per file, and anything
-        over a couple of megabytes makes the page feel broken on a phone.</li>
+      <li><strong>Email</strong> &mdash; check the sending and receiving
+        service's allowance for the combined message and attachments. Leave
+        room for the rest of the message rather than treating a GIF target
+        as a universal email limit.</li>
+      <li><strong>Chat and forums</strong> &mdash; check the current attachment
+        and inline-preview limits for the particular account and app. They
+        need not be the same limit.</li>
+      <li><strong>A README or documentation page</strong> &mdash; image hosting
+        and editor-upload limits differ. Keep the GIF small enough to load
+        comfortably on a phone, and test the rendered page.</li>
       <li><strong>Sticker and emoji slots</strong> &mdash; often a few hundred
         kilobytes, which means a small width and a short section, not a lower
         frame rate.</li>

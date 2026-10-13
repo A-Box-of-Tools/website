@@ -14,6 +14,28 @@
   </section>
 
   <section>
+    <h2>Check a copied file, or a whole selection</h2>
+    <p>
+      Before moving a large archive to a USB drive or another computer, select
+      SHA-256, hash the source, and save its tagged checksum. After copying,
+      choose the destination file and paste that saved value into the comparison
+      box. Wait for the explicit match before deleting your source copy. A
+      rename does not change the bytes; an edit, conversion or re-saved document
+      does. Hash the copied file itself, rather than assuming that an archive
+      and the files extracted from it should share a digest.
+    </p>
+    <p>
+      For a group of release files or backup copies, select several files and
+      paste the corresponding manifest. Inspect each row for a match, a missing
+      filename, a mismatch or a read failure; one matching file does not clear
+      the batch. The browser supplies basenames rather than directory paths,
+      so two files called <code>report.pdf</code> from different folders need
+      separate identification. A matching checksum checks bytes, not whether
+      the file is safe or its publisher trustworthy.
+    </p>
+  </section>
+
+  <section>
     <h2>What the number under the download link is</h2>
     <p>
       It is the output of a hash function: a calculation that reads every byte of

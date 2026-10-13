@@ -29,6 +29,32 @@
   </section>
 
   <section>
+    <h2>A blog gallery and a product catalogue spend their pixels differently</h2>
+    <p>
+      <strong>A blog post or shared gallery.</strong> Measure the widest place
+      the picture will be displayed, then choose enough pixels for the screen
+      densities you serve. Set a per-image byte budget and inspect
+      faces, skies and fine texture in the finished page. The sizes
+      above are starting points, not universal limits.
+    </p>
+    <p>
+      <strong>Product cards with consistent framing.</strong> Crop to the card's
+      ratio in the resizer, then look through every picture; one shared crop can
+      cut the edge off a differently positioned product. Pad to an exact frame
+      when every edge must stay visible. Keep a separate larger copy for the
+      product's zoom view rather than stretching the thumbnail.
+    </p>
+    <p>
+      <strong>Diagrams and screenshots in the same post.</strong> Use PNG or
+      confirmed lossless WebP for small text and hard edges, and JPEG or lossy
+      WebP for photographs. The <a href="../../png-to-webp/">PNG to WebP</a>
+      converter reports whether the browser actually wrote lossless coding.
+      Check the smallest text on the page, not just the file's size.
+    </p>
+  </section>
+
+
+  <section>
     <h2>Where the metadata goes</h2>
     <p>
       The quiet risk in a phone photo is not the pixels; it is the tags. EXIF
@@ -38,10 +64,12 @@
       read.
     </p>
     <p>
-      The useful fact about this pipeline is that it deals with the tags on
-      its own. Resizing and compressing both redraw the image from pixels, and
-      redrawn pixels carry no tags &mdash; so anything that comes out of steps
-      2 or 3 is clean without you asking. The two cases that need a decision:
+      Files that are actually resized or compressed are redrawn from pixels
+      without copying the original tags. But both tools return an already
+      suitable file unchanged: a small photo that needs neither step can still
+      carry its EXIF and GPS. Inspect the final copies before publishing, and
+      use the <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a> when
+      you need to clean those unchanged files. Two decisions remain:
     </p>
     <ul>
       <li>

@@ -15,8 +15,8 @@
       </li>
     </ol>
     <p>
-      What lights up now is real: a value that changed, a key that appeared, an
-      entry that went. The formatting differences and the reordered keys that
+      The result is much easier to read: a value that changed, a key that
+      appeared, an entry that went. The formatting differences and the reordered keys that
       would have drowned an ordinary diff are gone, because both sides were
       spelled the same way before the comparison started.
     </p>
@@ -24,6 +24,29 @@
       Neither page has any network feature at all &mdash; worth knowing, since
       the JSON people compare is so often config files with credentials still
       inside.
+    </p>
+  </section>
+
+  <section>
+    <h2>Configuration changes and API regressions</h2>
+    <p>
+      To compare staging with production, keep the originals and format a copy
+      of each with two spaces and sorted object keys. Put staging on the left
+      and production on the right, leave Ignore case and Ignore whitespace
+      off, and review endpoints, feature flags and limits. Spaces inside a
+      string and the case of a key can be meaningful. Download the patch only
+      after confirming which environment is on which side.
+    </p>
+    <p>
+      The same recipe checks an API response before and after a change. Use
+      the same request inputs, and account for timestamps or generated IDs
+      separately. Arrays keep their order: a reordered list still differs,
+      as it should for an ordered JSON sequence. Equivalent number spellings
+      such as <code>1</code> and <code>1.0</code>, or differently escaped
+      strings, can also differ here. This is a comparison of formatted text,
+      not a schema check or a test of every JSON value's equivalence.
+      <a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">The JSON standard</a>
+      distinguishes unordered objects from ordered arrays.
     </p>
   </section>
 
@@ -49,7 +72,7 @@
       <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
            alt="The comparison options: a side-by-side or inline view, a switch for showing only the lines that changed, and switches for ignoring whitespace, case and blank lines.">
       <figcaption>
-        These are what stop a diff reporting every line because one file was saved with different line endings.
+        Use the ignore switches carefully: they affect the view, while the downloaded patch keeps every input difference, including line endings.
       </figcaption>
     </figure>
   </section>
@@ -104,10 +127,12 @@
       what a review wants anyway: the change, without the reformatting.
     </p>
     <p>
-      The same recipe works for anything else both pages speak. YAML and XML
-      canonicalise the same way; and for two files of the same shape from
-      different sources, the diff's ignore switches &mdash; whitespace, case,
-      blank lines &mdash; are a lighter version of the same idea.
+      The same format-then-compare approach can make YAML or XML easier to
+      review, but their whitespace and conversion rules differ from JSON's.
+      Keep the original language when layout is all you need to change. The
+      diff's ignore switches affect its view; the patch compares the actual
+      input strings. Here those inputs are your formatted copies, so that
+      patch is not a patch against the untouched originals.
     </p>
 
     <figure class="shot">

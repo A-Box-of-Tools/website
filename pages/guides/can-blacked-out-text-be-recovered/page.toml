@@ -27,9 +27,9 @@ lede = """
     catalogue of the ways that happens, and what removal has to mean
     instead."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Can blacked-out text be recovered?"
 og_description = "Often with nothing more than select-and-copy. Why a drawn rectangle is not a redaction, why a mosaic can be read back, and what removing something from a file actually takes."

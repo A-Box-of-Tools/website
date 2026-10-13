@@ -21,10 +21,10 @@ lede = """
     platform's byte limit, is a three-step chain that runs entirely in your
     browser."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-27"
+lastmod = "2026-10-13"
 
 og_title = "The exact frame, at the platform's size, under the byte limit"
-og_description = "Step frame by frame to the right instant, save it losslessly, crop to 16:9, and compress to the platform's ceiling - without uploading the footage."
+og_description = "Choose a clear still, match the destination's shape and current upload limit, or make a website poster and presentation cover without uploading the footage."
 og_image_alt = "abox.tools - tools that never touch a server"

@@ -10,20 +10,41 @@
       <li>
         <strong>Frame the frame.</strong> Take the PNG to the
         <a href="../../resize-image/">Image Resizer</a>: crop to the
-        platform's shape &mdash; 16:9 for YouTube &mdash; and size the long
-        edge, 1280 pixels being the number YouTube actually asks for.
+        platform's shape and choose dimensions that suit the source and
+        destination. YouTube currently recommends 16:9 for videos and
+        9:16 for Shorts; the details below distinguish the two.
       </li>
       <li>
         <strong>Hit the ceiling.</strong> Finish in the
         <a href="../../compress-image/">Image Compressor</a> with the
-        platform's limit as the target &mdash; 2&nbsp;MB for a YouTube
-        thumbnail &mdash; and let it pick JPEG or WebP.
+        platform's current limit as the target, with some room below it.
+        Choose JPEG for a photographic YouTube thumbnail; do not leave
+        format on Auto when the destination requires JPG or PNG.
       </li>
     </ol>
     <p>
       Nothing in the chain uploads anything &mdash; worth having when the
       video is unpublished, and the thumbnail is being made precisely because
       the video is not public yet.
+    </p>
+  </section>
+
+  <section>
+    <h2>A cover people can read at its real size</h2>
+    <p>
+      For a video upload, choose a frame that tells the viewer what they will
+      see: the finished object, the speaker looking up or the moment before
+      the action. Keep any caption in the source clear at a small preview
+      size. These tools capture, crop and compress; adding a title or other
+      artwork needs an image editor between the PNG capture and the final
+      compression.
+    </p>
+    <p>
+      For a website video, the same still can be the poster image shown before
+      playback. Match the player's shape and displayed size, then check that
+      the result still explains the clip on a phone. A presentation cover is
+      another useful destination: test it in the actual slide layout rather
+      than assuming the full-size PNG is the view the audience gets.
     </p>
   </section>
 
@@ -45,8 +66,9 @@
       nothing is blurred.
     </p>
     <p>
-      Save the grab as PNG even though the final thumbnail will be JPEG or
-      WebP. The PNG is an exact copy of the frame; every lossy decision then
+      Save the grab as PNG even when the final thumbnail will be JPEG.
+      The PNG preserves the drawn still without another lossy encode; each
+      later compression decision then
       happens once, at the end, inside a byte budget &mdash; rather than
       twice, compounding.
     </p>
@@ -65,10 +87,22 @@
     <p>
       Crop before you compress, for the same reason the
       <a href="../get-photos-ready-for-the-web/">photo guide</a> gives:
-      pixels are the budget. A 16:9 crop of a 4K frame carried to &#x2066;1280&times;720&#x2069;
-      lets the compressor spend its 2&nbsp;MB on quality nobody has to
-      squint at. The resizer's crop box locks to 16:9, so the shape is a
-      drag rather than a calculation; text and faces want to sit inside the
+      pixels are the budget. A 16:9 crop reduced to
+      &#x2066;1280&times;720&#x2069; is one
+      useful small export, not the current YouTube recommendation. Its
+      <a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">thumbnail instructions</a>
+      now recommend &#x2066;3840&times;2160&#x2069; for videos and
+      &#x2066;2160&times;3840&#x2069; for Shorts, with JPG or PNG as examples
+      of accepted formats. Desktop uploads allow up to 50 MB; mobile video
+      thumbnails must stay under 2 MB. Check the instructions for the
+      upload route you use, and avoid enlarging a small still merely to
+      reach a recommended number.
+      Custom uploads require a verified account; custom Shorts uploads
+      currently use YouTube Studio on a computer.
+    </p>
+    <p>
+      The resizer's crop box locks to 16:9 or 9:16, so the shape is a
+      drag rather than a calculation. Text and faces want to sit inside the
       middle two-thirds, because feeds round the corners and overlay
       durations on the bottom right.
     </p>
@@ -77,7 +111,8 @@
       <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
            alt="The resizer with a width of 1280 and a height of 720 entered, and a summary of what the still will come out as.">
       <figcaption>
-        And then the arithmetic: whatever the platform asks for, typed in as two numbers.
+        A 1280 by 720 example export. Choose dimensions from the current
+        destination requirements and the detail your source actually holds.
       </figcaption>
     </figure>
   </section>

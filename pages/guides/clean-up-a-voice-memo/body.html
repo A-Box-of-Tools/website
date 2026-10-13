@@ -5,8 +5,9 @@
         <strong>Cut.</strong> Open the
         <a href="../../trim-audio/">Audio Trimmer</a>, drop the memo in, and
         mark the parts worth keeping with <kbd>I</kbd> and <kbd>O</kbd> as it
-        plays. The waveform shows the silences and the false starts as flat
-        stretches, so most of the cutting happens by eye. Export one file.
+        plays. The waveform shows quiet gaps as flat stretches. Listen to
+        distinguish a spoken false start from the take worth keeping, then
+        use the waveform to place the cuts. Export one file.
       </li>
       <li>
         <strong>Lift.</strong> Take that file to the
@@ -33,6 +34,25 @@
         What the tool works out before you touch anything. The peak level is the number that decides whether turning the recording up is safe.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>A memo to send, or a passage to practise</h2>
+    <p>
+      For a message to a colleague or a family recording, keep the sentence
+      with its breath and a little room tone on either side. Cut the false
+      start, normalise, then listen to the whole downloaded WAV at ordinary
+      playback speed. Check the first word, the joins and the ending; a louder
+      memo with a clipped consonant is still a worse message.
+    </p>
+    <p>
+      The same chain makes a language-practice or rehearsal excerpt. Keep one
+      short passage in the trimmer, then choose 0.75&times; in the editor with
+      the pitch kept. Preview a difficult phrase before exporting, and leave
+      speed at 1&times; for the version you send as the original speaker. Peak
+      normalising raises the whole passage together; it cannot make one quiet
+      speaker match a loud one.
+    </p>
   </section>
 
   <section>
@@ -66,12 +86,13 @@
       works as well on a rambling memo.
     </p>
     <p>
-      The editor writes WAV &mdash; exact samples, no encoder in the loop
-      &mdash; so the file is bigger than the compressed original. For a memo
+      The editor writes WAV rather than another compressed audio format.
+      Its default 16-bit PCM rounds the samples; choose 32-bit float to keep
+      the edited float values. The file is bigger than the compressed original. For a memo
       measured in minutes that is a fair price for never stacking a second
-      lossy encode on top of the phone's first one; whatever messenger sends
-      it will compress it once more anyway, and that should be the only
-      time.
+      lossy encode on top of the phone's first one; check that the messenger accepts WAV and its file size before sending.
+      Some services re-encode attachments, so keep the WAV as your edited
+      master rather than relying on the received copy.
     </p>
 
     <figure class="shot">

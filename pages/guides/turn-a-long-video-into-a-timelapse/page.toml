@@ -23,9 +23,9 @@ lede = """
     is one decision about time and one about where it is going, and the whole
     of it runs in your browser, on a file that never leaves your machine."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-27"
+lastmod = "2026-10-13"
 
 og_title = "An hour of footage into a watchable minute, without uploading it"
 og_description = "Choose the speed or just say how long the result should be, keep the file readable at 4K, and know when the loop wants to be a GIF."

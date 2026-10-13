@@ -11,9 +11,9 @@
       For anything more than one moment &mdash; two goals from the same match,
       the setup and the punchline &mdash; assemble the clip first with the
       <a href="../../trim-video/">Video Cutter</a>, then hand the result to the
-      converter. The cutter joins any number of marked parts into one file
-      without re-encoding them, so that first step costs nothing in quality
-      and a few seconds in time.
+      converter. The cutter can join compatible parts by copying when every later
+      start falls on a keyframe; other selections need the labelled exact
+      method, which re-encodes the picture. Read that choice before exporting.
     </p>
     <p>
       Handing it over is one click: after the cutter exports, a row under its
@@ -25,6 +25,26 @@
       Either way the order is the same: decide the seconds first, spend the
       settings second. The rest of this page is why that order matters so much
       more for a GIF than for anything else this site makes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Show the problem, including the action that caused it</h2>
+    <p>
+      For a bug report, mark just before the click or gesture, not only the
+      broken result, and finish after the viewer has had time to recognise it.
+      A three-second capture at 480 pixels and 12 frames a second is a useful
+      first attempt; small interface text may need more width. Turn dithering
+      off for flat interface colours, then view the exported GIF at the size
+      the issue tracker displays it.
+    </p>
+    <p>
+      The same cut can explain a craft step or a product interaction that is
+      easier to see than describe. Keep the hand or cursor that gives the
+      movement context, and use the converter's single section when that is
+      enough. If the explanation depends on spoken words, use the short video
+      instead: a GIF cannot carry them. For separate steps, assemble first and
+      check every join before converting.
     </p>
   </section>
 
@@ -87,8 +107,8 @@
       <li>
         <strong>Several moments, one GIF.</strong> Mark each part with
         <kbd>I</kbd> and <kbd>O</kbd> as the video plays, reorder them if the
-        best bit belongs first, and export one file. The parts are copied,
-        not re-encoded, so nothing is lost in the assembly.
+        best bit belongs first, and export one file. Choose Copy only when the page permits those later starts; otherwise
+        choose the exact method and accept its re-encode.
       </li>
       <li>
         <strong>Two videos, one GIF.</strong> The cutter takes more than one
@@ -104,7 +124,12 @@
     </ul>
     <p>
       Then drop the assembled clip into the converter and mark nothing &mdash;
-      the whole file is now exactly the GIF you meant.
+      the whole file is now the sequence you meant. If a trimmed result is
+      refused for its playback edits, save a new video with those edits
+      applied in a local editor before converting. Do not bypass that
+      refusal: hidden footage must not reappear in the GIF. Since a GIF has no
+      soundtrack, leave sound out of the intermediate trim to avoid carrying
+      audio playback edits into this step.
     </p>
   </section>
 
