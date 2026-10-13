@@ -138,14 +138,20 @@ complete = true
 [hub]
 title = "Outils de navigateur gratuits &mdash; traitement local | abox.tools"
 description = "Outils gratuits traitant vos fichiers dans le navigateur : images en PDF ou MP4, compression vers une taille cible, recadrage vidéo, suppression EXIF."
-heading = "Des outils qui traitent vos fichiers dans le navigateur"
+heading = "Outils gratuits. Traitement local."
 og_title = "A Box of Tools &mdash; traitement local dans le navigateur"
 og_description = "De petits outils traitent les fichiers sur votre appareil. Le partage volontaire et les fonctions en ligne facultatives sont expliqués là où ils apparaissent."
 og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
 schema_description = "Utilitaires de navigateur pour traiter les fichiers localement, sans envoi pour traitement ni compte. Les fonctions réseau sont expliquées sur leurs pages."
 schema_about = "Utilitaires de navigateur pour le traitement local et le partage volontaire entre navigateurs"
-lede = "De petits outils, chacun pour une tâche, qui traitent les fichiers sur votre appareil. Aucun envoi pour traitement, aucun compte. Les fonctions qui récupèrent ou partagent du contenu expliquent ce qui quitte le navigateur avant leur utilisation."
+lede = "Traitez vos fichiers dans le navigateur. Aucun envoi pour traitement, aucun compte."
 support_note = "Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une corvée, voici la seule chose, sur tout ce site, qui vous demande quelque chose."
+
+privacy_heading = "Vos fichiers restent les vôtres."
+
+privacy_lede = "Le traitement local fonctionne hors ligne une fois l’outil enregistré. Récupérer et partager du contenu nécessite une connexion."
+
+support_heading = "Des outils gratuits, grâce à votre soutien."
 
 [[hub.guarantees]]
 title = "Vos fichiers sont traités sur votre appareil"
@@ -162,21 +168,25 @@ body = "Attendez que l’indicateur hors ligne signale que l’outil est prêt, 
 [[hub.categories]]
 id = "images"
 name = "Images"
+short_name = "Images"
 note = "La réduire, la redimensionner ou lui retirer ce qu'elle raconte de vous sans le dire. Rien de tout cela n'est envoyé ailleurs."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vidéo &amp; animation"
+short_name = "Vidéo &amp; GIF"
 note = "La couper, la convertir ou la fabriquer à partir de photos, sans que les rushes quittent votre machine."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documents &amp; audio"
+short_name = "PDF &amp; audio"
 note = "Réorganiser un document ou couper un enregistrement, sans envoyer ni l'un ni l'autre se faire traiter ailleurs."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texte, codes &amp; mots de passe"
+short_name = "Texte &amp; codes"
 note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de configuration et aucun mot de passe sur le serveur d'un inconnu."
 
 [guides]
@@ -254,6 +264,10 @@ md_copied = "Copié"
 md_failed = "Impossible de copier"
 md_view = "Voir en Markdown"
 guarantees_note = "Rien de tout cela n'est à croire sur parole. <a href=\"{{ base }}{{ links.safety_guide }}/\"> Comment savoir si un outil a vraiment besoin de vos fichiers</a> présente quatre vérifications que vous pouvez mener vous-même, sur ce site comme sur n'importe quel autre."
+hub_categories_label = "Catégories d'outils"
+hub_view_all = "Tout afficher"
+hub_show_fewer = "Afficher moins"
+hub_privacy_details = "Comment vos fichiers restent privés"
 hub_filter_label = "Trouver un outil"
 hub_filter_none = "Aucun outil ne correspond. Essayez avec moins de mots ou avec un format de fichier, comme PDF ou PNG."
 hub_guides_note = "Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte&nbsp;? <a href=\"{{ base }}{{ links.guides }}/\">Il y a un guide pour chaque outil</a>."

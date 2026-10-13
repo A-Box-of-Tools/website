@@ -32,6 +32,10 @@ export class CameraSession {
     this.onState(key, this.role);
   }
 
+  // Stopping also interrupts viewers whose connection has not reached the
+  // approval request yet, so the active video slot alone is not enough.
+  get hasViewers() { return this.role === 'camera' && this.peers.size > 0; }
+
   setApprovalRequired(value) {
     this.requireApproval = Boolean(value);
     if (this.role === 'camera' && this.active === null) this.state('camera.waiting');

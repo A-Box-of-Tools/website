@@ -205,20 +205,26 @@ title = "Herramientas de navegador gratis &mdash; procesamiento local | abox.too
 # Por debajo de 155 caracteres, como en inglés: Google corta la descripción más
 # o menos ahí, y aquí el final es la parte que vende el sitio.
 description = "Herramientas gratis que procesan archivos en el navegador: imágenes a PDF o MP4, compresión a un tamaño objetivo, recorte de vídeo y borrado de EXIF."
-heading = "Herramientas que procesan archivos en tu navegador"
+heading = "Herramientas gratis. Procesamiento local."
 og_title = "A Box of Tools &mdash; procesamiento local en tu navegador"
 og_description = "Herramientas para una sola tarea que procesan archivos en tu dispositivo. Las funciones para compartir o conectarse se explican donde se usan."
 og_image_alt = "abox.tools - herramientas de navegador para procesar archivos localmente"
 schema_description = "Utilidades de navegador para procesar archivos localmente, sin subirlos para procesarlos ni crear una cuenta. Las funciones de red se explican en sus páginas."
 schema_about = "Utilidades de navegador para procesar archivos localmente y compartir entre navegadores de forma deliberada"
 
-lede = "Herramientas para una sola tarea que procesan archivos en tu dispositivo. Sin subirlos para procesarlos, sin crear una cuenta. Las funciones que obtienen o comparten contenido explican qué sale del navegador antes de usarlas."
+lede = "Procesa archivos en tu navegador. Sin subirlos para procesarlos ni iniciar sesión."
 
 support_note = """
       Estas herramientas son gratis y lo van a seguir siendo. Si alguna te ha
       sacado de un apuro, esto es lo único que este sitio te pide."""
 
 # Tres hechos comprobables en lugar de una promesa, igual que en inglés.
+privacy_heading = "Tus archivos siguen siendo tuyos."
+
+privacy_lede = "El procesamiento local funciona sin conexión una vez guardada la herramienta. Obtener y compartir contenido requiere conexión."
+
+support_heading = "Gratis, con tu apoyo."
+
 [[hub.guarantees]]
 title = "Tus archivos se procesan en tu dispositivo"
 body = "Tu navegador abre, lee y edita los archivos que eliges. No se suben para procesarlos. Compartir texto y archivos y Cámara remota envían contenido deliberadamente a otro navegador; sus páginas explican la conexión."
@@ -234,21 +240,25 @@ body = "Espera a que el indicador diga que está listo para funcionar sin conexi
 [[hub.categories]]
 id = "images"
 name = "Imágenes"
+short_name = "Imágenes"
 note = "Redúcela, cámbiale el tamaño o quítale lo que cuenta de ti sin que lo sepas. Nada de eso se manda a ninguna parte."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vídeo y animación"
+short_name = "Vídeo &amp; GIF"
 note = "Córtalo, conviértelo o móntalo a partir de fotos, sin que la grabación salga de tu dispositivo."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documentos y audio"
+short_name = "PDF &amp; audio"
 note = "Reordena un documento o recorta una grabación, sin mandar ninguno de los dos a procesar fuera."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texto, códigos y contraseñas"
+short_name = "Texto &amp; códigos"
 note = "Léelo, compruébalo o créalo aquí. Ningún token, ningún archivo de configuración y ninguna contraseña acaban en el servidor de otro."
 
 #
@@ -403,6 +413,10 @@ guarantees_note = """
     propone cuatro comprobaciones que puedes hacer tú, aquí o en cualquier otro
     sitio."""
 
+hub_categories_label = "Categorías de herramientas"
+hub_view_all = "Ver todas"
+hub_show_fewer = "Ver menos"
+hub_privacy_details = "Cómo se protegen tus archivos"
 hub_filter_label = "Buscar una herramienta"
 hub_filter_none = "Ninguna herramienta coincide. Prueba con menos palabras o con un formato de archivo, como PDF o PNG."
 

@@ -81,6 +81,44 @@ async function requestViewer(f, id, note = 'My viewer') {
   peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note }); await settle();
   return peer;
 }
+
+test('host Stop counts viewers throughout negotiation, approval and video until they leave', async (t) => {
+  const f = fixture(t), stream = sourceStream();
+  assert.equal(f.session.hasViewers, false);
+  await f.session.startHost(stream, CODE);
+  assert.equal(f.session.hasViewers, false);
+
+  signal(f.sockets[0], 'v:1', { dial: true }); await settle();
+  const peer = f.peers[0];
+  assert.equal(f.session.peers.get('v:1').pending, false);
+  assert.equal(f.session.active, null);
+  assert.equal(f.session.hasViewers, true);
+
+  peer.channel.open(); peer.channel.receive('hello');
+  peer.channel.receive('request', { note: 'Laptop' }); await settle();
+  assert.equal(f.session.hasViewers, true);
+  f.session.approve('v:1');
+  assert.equal(f.session.hasViewers, true);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+  assert.equal(f.session.hasViewers, true);
+
+  f.sockets[0].receive({ type: 'leave', id: 'v:1' });
+  assert.equal(f.session.hasViewers, false);
+  assert.equal(stream.video.readyState, 'live');
+  assert.equal(f.sockets[0].closed, false);
+  f.session.stop();
+  assert.equal(f.session.hasViewers, false);
+});
+
+test('a viewer connection does not count as a host with viewers', async (t) => {
+  const f = fixture(t);
+  await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  assert.equal(f.session.peers.size, 1);
+  assert.equal(f.session.hasViewers, false);
+});
+
 test('an introduced viewer receives no video sender before approval', async (t) => {
   const f = fixture(t), stream = sourceStream();
   await f.session.startHost(stream, CODE);

@@ -14,7 +14,7 @@ category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
 js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names"]
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a phone or computer camera from another browser on a reachable local network. Direct encrypted video, optional viewer approval, camera switching, no microphone or recording."
 og_title = "Watch another device's camera"
@@ -127,8 +127,11 @@ body = """
 title = "Stop releases the camera and ends the invitation."
 body = """
       Stop on the source closes its tracks, peers and introduction connection.
+      If viewers are connected or connecting, choosing Stop first asks you to
+      confirm; Keep sharing leaves the camera and connections running.
       Hiding or closing its page does the same, as does losing the introduction
-      connection. A permission granted after Stop is immediately released.
+      connection, without waiting for confirmation. A permission granted after
+      Stop is immediately released.
       Disconnect on the viewer ends its connection while the source keeps its
       local preview available for a new request. Codes and notes are not saved
       by this tool."""
@@ -153,7 +156,7 @@ title = "Connect the viewer."
 body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback."
 [[howto]]
 title = "Keep the source visible, then stop."
-body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera. Switching away from the source page also stops it."
+body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel. Switching away from the source page also stops it."
 
 [[faq]]
 q = "Must both devices use the same Wi-Fi?"
