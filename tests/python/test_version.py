@@ -329,7 +329,9 @@ class TheCheckoutTheDeployRunsOn(unittest.TestCase):
             '\n          }')[0]
         self.assertIn('if ! gh release view "$version"', ensure)
         self.assertIn('gh release create "$version" --verify-tag', ensure)
-        self.assertIn('--notes-from-tag', ensure)
+        self.assertIn('--notes-file "$RUNNER_TEMP/notes.md"', ensure)
+        self.assertIn('--generate-notes', ensure)
+        self.assertIn('--notes-start-tag "$previous"', ensure)
         for condition in ('if [ ! -s "$RUNNER_TEMP/next" ]; then',
                           'if git ls-remote --exit-code --tags origin '
                           '"refs/tags/$version" >/dev/null 2>&1; then'):
