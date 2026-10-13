@@ -7,11 +7,12 @@ const MAX_PEERS = 4;
 
 export class CameraSession {
   constructor({
-    PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket,
+    PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
+    this.MediaStream = MediaStream;
     this.onState = onState;
     this.onRequests = onRequests;
     this.onStream = onStream;
@@ -191,11 +192,19 @@ export class CameraSession {
     });
     pc.addEventListener('track', (event) => {
       if (!this.current(entry)) return;
-      if (this.role !== 'viewer' || !entry.approved || event.track.kind !== 'video') return this.peerFailed(entry, 'connection.invalid');
-      const stream = new MediaStream([event.track]);
+      if (this.role !== 'viewer' || !entry.approved || !['video', 'audio'].includes(event.track.kind)) return this.peerFailed(entry, 'connection.invalid');
+      const stream = entry.received ??= new this.MediaStream();
+      if (stream.getTracks().includes(event.track)) return;
+      stream.addTrack(event.track);
+      this.stream = stream;
       this.onStream(stream);
       event.track.addEventListener('ended', () => {
-        if (this.current(entry)) this.stop('connection.ended');
+        if (!this.current(entry)) return;
+        if (event.track.kind === 'video') this.stop('connection.ended');
+        else {
+          stream.removeTrack(event.track);
+          this.onStream(stream);
+        }
       });
     });
     pc.addEventListener('connectionstatechange', () => {
@@ -249,7 +258,7 @@ export class CameraSession {
       try {
         // Both sides identify the tool over the encrypted channel; approval
         // and the viewer's note never become signalling messages.
-        this.control(entry, 'hello');
+        this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {});
       } catch { this.peerFailed(entry, 'connection.direct-failed'); }
     };
     channel.addEventListener('open', opened);
@@ -264,6 +273,7 @@ export class CameraSession {
       if (message.type === 'hello') {
         if (entry.hello) return;
         entry.hello = true;
+        entry.receiveAudio = message.receiveAudio === true;
         for (const timer of entry.timers) clearTimeout(timer);
         entry.timers.clear();
         if (this.role === 'viewer') {
@@ -346,6 +356,10 @@ export class CameraSession {
       // Approval and SDP use different transports. The acknowledgement proves
       // the viewer processed approval before a video offer can overtake it.
       entry.sender = entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] }).sender;
+      // Older viewers reject audio events, so their hello keeps this link
+      // video-only even when the owner has enabled the microphone.
+      const audio = entry.receiveAudio && this.stream?.getAudioTracks?.().find((item) => item.readyState === 'live');
+      if (audio) entry.audioSender = entry.pc.addTransceiver(audio, { direction: 'sendonly', streams: [this.stream] }).sender;
       entry.video = true;
     } catch {
       this.peerFailed(entry, 'connection.ended');
@@ -453,7 +467,8 @@ export class CameraSession {
   stop(key = 'connection.stopped') {
     const role = this.role;
     this.revision += 1;
-    this.cameraChange?.candidate?.getTracks().forEach((track) => {
+    const tracks = new Set([...(this.cameraChange?.candidate?.getTracks() ?? []), ...(this.stream?.getTracks() ?? [])]);
+    tracks.forEach((track) => {
       if (track.readyState !== 'ended') track.stop();
     });
     this.cameraChange = null;
@@ -464,7 +479,6 @@ export class CameraSession {
     this.role = null;
     for (const id of [...this.peers.keys()]) this.removePeer(id);
     this.active = null;
-    this.stream?.getTracks().forEach((track) => track.stop());
     this.stream = null;
     socket?.close();
     if (role === 'viewer') this.onStream(null);

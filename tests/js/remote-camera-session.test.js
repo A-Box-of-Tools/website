@@ -15,10 +15,23 @@ class Channel extends Events {
   send(value) { assert.equal(this.readyState, 'open'); this.sent.push(JSON.parse(value)); }
   close() { this.closed = true; this.readyState = 'closed'; }
 }
-function sourceStream() {
-  const track = (kind) => ({ kind, readyState: 'live', stops: 0, stop() { this.readyState = 'ended'; this.stops += 1; } });
-  const video = track('video'), other = track('audio');
-  return { video, other, getTracks: () => [video, other], getVideoTracks: () => [video] };
+class Track extends Events {
+  readyState = 'live'; stops = 0;
+  constructor(kind) { super(); this.kind = kind; }
+  stop() { this.readyState = 'ended'; this.stops += 1; }
+  end() { this.readyState = 'ended'; this.emit('ended'); }
+}
+class Stream {
+  constructor(tracks = []) { this.tracks = [...tracks]; }
+  getTracks() { return [...this.tracks]; }
+  getVideoTracks() { return this.tracks.filter((track) => track.kind === 'video'); }
+  getAudioTracks() { return this.tracks.filter((track) => track.kind === 'audio'); }
+  addTrack(track) { if (!this.tracks.includes(track)) this.tracks.push(track); }
+  removeTrack(track) { this.tracks = this.tracks.filter((item) => item !== track); }
+}
+function sourceStream(audio = false) {
+  const video = new Track('video'), other = new Track(audio ? 'audio' : 'other');
+  return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
 function fixture(t) {
@@ -49,7 +62,7 @@ function fixture(t) {
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); } });
   t.after(() => session.stop());
   return { session, sockets, peers, requests, streams, publications, states };
 }
@@ -74,13 +87,113 @@ test('camera discovery accepts only its own live room and namespace acknowledgem
   assert.equal(f.publications.length, 1);
 });
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
-async function requestViewer(f, id, note = 'My viewer') {
+async function requestViewer(f, id, note = 'My viewer', hello = {}) {
   signal(f.sockets[0], id, { dial: true }); await settle();
   const peer = f.peers.at(-1);
   signal(f.sockets[0], id, { description: { type: 'answer', sdp: SDP } }); await settle();
-  peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note }); await settle();
+  peer.channel.open(); peer.channel.receive('hello', hello); peer.channel.receive('request', { note }); await settle();
   return peer;
 }
+async function readyViewer(f) {
+  await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel }); channel.open(); channel.receive('hello'); await settle();
+  return { peer, channel };
+}
+
+test('opted-in microphone media waits for approval and acknowledgement beside video', async (t) => {
+  const f = fixture(t), stream = sourceStream(true); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1', 'Audio viewer', { receiveAudio: true });
+  assert.equal(peer.transceivers.length, 0);
+  f.session.approve('v:1'); await settle();
+  assert.equal(peer.transceivers.length, 0); assert.equal(stream.other.readyState, 'live');
+  peer.channel.receive('approval-ack'); await settle();
+  assert.deepEqual(peer.getSenders().map((sender) => sender.track), [stream.video, stream.other]);
+  assert.ok(peer.transceivers.every((transceiver) => transceiver.direction === 'sendonly'));
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 2);
+  f.session.stop(); assert.equal(stream.other.stops, 1);
+});
+
+test('an audio-enabled host sends only video to a legacy viewer', async (t) => {
+  const f = fixture(t), stream = sourceStream(true); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  assert.deepEqual(peer.getSenders().map((sender) => sender.track), [stream.video]);
+  assert.equal(stream.other.readyState, 'live');
+});
+
+test('audio capability cannot create a microphone sender when capture is video-only', async (t) => {
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1', 'Viewer', { receiveAudio: true });
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  assert.deepEqual(peer.getSenders().map((sender) => sender.track), [stream.video]);
+});
+
+test('viewer advertises audio support and rejects audio before approval', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  assert.deepEqual(channel.sent.find((message) => message.type === 'hello'), { protocol: PROTOCOL, type: 'hello', receiveAudio: true });
+  peer.emit('track', { track: new Track('audio') });
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.deepEqual(f.streams, [null]); assert.equal(f.states.at(-1), 'connection.invalid');
+});
+
+test('approved audio and video use one stable received stream and losing audio keeps video', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  channel.receive('approved'); await settle();
+  const audio = new Track('audio'), video = new Track('video');
+  peer.emit('track', { track: audio });
+  const received = f.streams.at(-1); assert.equal(f.session.stream, received);
+  assert.deepEqual(received.getTracks(), [audio]);
+  peer.emit('track', { track: video });
+  assert.equal(f.streams.at(-1), received); assert.deepEqual(received.getTracks(), [audio, video]);
+  peer.emit('track', { track: audio }); assert.equal(f.streams.length, 2);
+  audio.end();
+  assert.equal(f.streams.at(-1), received); assert.equal(f.streams.length, 3);
+  assert.deepEqual(received.getTracks(), [video]); assert.equal(video.readyState, 'live');
+  assert.equal(f.session.role, 'viewer'); assert.equal(peer.closed, false);
+  video.end(); assert.equal(f.session.role, null); assert.equal(f.streams.at(-1), null);
+});
+
+test('viewer Stop releases received audio and video and ignores late audio events', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  channel.receive('approved'); await settle();
+  const video = new Track('video'), audio = new Track('audio');
+  peer.emit('track', { track: video }); peer.emit('track', { track: audio });
+  f.session.stop(); const notifications = f.streams.length;
+  assert.equal(video.stops, 1); assert.equal(audio.stops, 1); assert.equal(f.streams.at(-1), null);
+  audio.end(); peer.emit('track', { track: new Track('audio') });
+  assert.equal(f.streams.length, notifications); assert.equal(f.session.stream, null);
+});
+
+test('camera replacement preserves the microphone sender and does not renegotiate audio', async (t) => {
+  const f = fixture(t), original = sourceStream(true); await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1', 'Audio viewer', { receiveAudio: true });
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  const entry = f.session.peers.get('v:1'), audioSender = entry.audioSender, video = new Track('video');
+  const next = new Stream([video, original.other]), offers = t.mock.method(peer, 'createOffer');
+  assert.equal(await f.session.prepareCameraChange().commit(next), true); await settle();
+  assert.equal(entry.audioSender, audioSender); assert.equal(audioSender.track, original.other);
+  assert.equal(entry.sender.track, video); assert.equal(original.other.stops, 0);
+  assert.equal(peer.transceivers.length, 2); assert.equal(offers.mock.callCount(), 0);
+  assert.equal(f.sockets.length, 1); assert.equal(f.peers.length, 1);
+  original.video.stop(); f.session.stop();
+  assert.equal(original.other.stops, 1); assert.equal(video.stops, 1);
+});
+
+test('Stop during sender replacement closes shared audio and both camera tracks once', async (t) => {
+  const f = fixture(t), original = sourceStream(true); await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1', 'Audio viewer', { receiveAudio: true });
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  const sender = f.session.peers.get('v:1').sender; let release;
+  sender.replaceTrack = (track) => new Promise((resolve) => { release = () => { sender.track = track; resolve(); }; });
+  const video = new Track('video'), candidate = new Stream([video, original.other]);
+  const changing = f.session.prepareCameraChange().commit(candidate);
+  f.session.stop(); release(); assert.equal(await changing, false);
+  assert.equal(original.other.stops, 1); assert.equal(original.video.stops, 1); assert.equal(video.stops, 1);
+  assert.equal(f.session.stream, null); assert.equal(f.session.role, null);
+});
 
 test('host Stop counts viewers throughout negotiation, approval and video until they leave', async (t) => {
   const f = fixture(t), stream = sourceStream();

@@ -9,7 +9,7 @@ viewer fragment so the URL no longer suggests a different camera.
 
 One browser opens a camera and accepts one viewer. Approval is on by default;
 turning it off accepts new requests through the same encrypted acknowledgement
-flow. The camera track is added only after that acknowledgement; the initial WebRTC offer has a control channel and no
+flow. Video and enabled audio are added only after that acknowledgement; the initial WebRTC offer has a control channel and no
 media. The viewer note, hello and approval travel that encrypted channel.
 This makes approval a transport boundary rather than a hidden video element.
 
@@ -45,14 +45,18 @@ tool from text sharing. The source holds at most four pending peer connections
 and one approved viewer. Notes are bounded to 80 characters and rendered with
 `textContent`; signal queues and messages are bounded too.
 
-Capture requests `{video: true, audio: false}` so the browser chooses its camera. `CameraCapture` invalidates pending
+Capture defaults to `{video: true, audio: false}` so the browser chooses its camera.
+The source may opt into microphone audio before starting. That choice requests
+`audio: true`; it is locked while sharing, and Stop releases both track kinds. `CameraCapture` invalidates pending
 permission requests on Stop; a late successful grant has every track closed.
 After permission, enumerateDevices exposes a selector when several video
 devices exist. Camera switching holds new approvals and video acknowledgements
 until the selected capture is ready, replaces the active sender track without
 renegotiating, and keeps the invitation, discovery lease and peer connection.
-The old capture stays alive until adoption where hardware permits. Exclusive
-devices release it and retry once; a failed retry attempts to restore the old
+A live microphone track is carried into each video replacement and rollback.
+Video-only acquisition and replacement cleanup leave that microphone running.
+The old video stays alive until adoption where hardware permits. Exclusive
+devices release that video and retry once; a failed retry attempts to restore the old
 device. Stop invalidates both acquisition and replacement, including late
 streams. A failure with no usable camera ends the invitation.
 
@@ -73,6 +77,40 @@ Camera access requires trusted HTTPS and user permission. Video uses native
 WebRTC encryption, with no recording feature. This provides a browser view,
 not an OS webcam for meeting apps. Both pages must remain open and the source
 visible. A viewer can independently capture their screen.
+
+## Audio and viewer alerts
+
+New viewers advertise `receiveAudio: true` in their existing hello. Hosts send
+enabled audio only to such viewers after acceptance is acknowledged, so older
+video-only tabs keep working. Received video and audio share one stable stream;
+audio arrival or loss does not restart video. The local source preview and remote
+video start muted. Listening is a separate viewer gesture and does not control
+whether local sound detection can analyze the received track.
+
+`src/alerts.js` checks notification support and an active registration at the
+exact tool scope without waiting indefinitely for `serviceWorker.ready`. It
+uses service-worker notifications, including on browsers that cannot construct
+`Notification` directly. Permission is requested only when the viewer enables
+an alert. Motion compares small grayscale frames; sound analyzes received audio
+through a Web Audio analyzer with no speaker output. Sustained thresholds,
+hysteresis, cold baselines and a shared cooldown reduce repeat notices. Neither
+detector records or sends data. Disconnect invalidates pending permission work,
+closes its audio context, clears timers and closes only its own notifications.
+These notices contain generic activity text, never frames, audio or room names.
+
+The viewer page must remain open and runnable. Browser freezing, device sleep,
+lighting changes and threshold choices can miss activity or trigger false
+alerts; this is not a safety monitor. Notification controls remain hidden when
+unsupported; sound controls also require Web Audio. iOS notification support
+may require a Home Screen app. Browser behavior follows
+[MDN notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification),
+[WebKit Home Screen support](https://webkit.org/blog/13878/), and
+[the browser page lifecycle](https://developer.chrome.com/docs/web-platform/page-lifecycle-api).
+
+The tracked Permissions-Policy now allows same-origin microphone requests for
+preview hosts. GitHub Pages ignores `_headers`: before releasing this feature,
+apply the matching `microphone=(self)` directive to the existing Cloudflare
+response-header rule. This PR does not change the live account rule.
 
 ## Checking a change
 

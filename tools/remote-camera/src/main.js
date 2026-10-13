@@ -3,6 +3,7 @@ import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
+import { alertCapabilities, ViewerAlerts } from './alerts.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 
 const $ = (id) => document.getElementById(id);
@@ -16,6 +17,13 @@ let discoveryState = 'connecting';
 let foundCameras = [];
 let hostCode = null;
 let devicesRevision = 0;
+let viewerAlerts = null;
+let alertsRevision = 0;
+let alertsTimer = null;
+let alertsAttempts = 0;
+let viewerAudioTrack = null;
+let hostAudioObserver = null;
+let viewerSoundSupported = false;
 const capture = new CameraCapture({ getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints) });
 
 const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
@@ -26,11 +34,15 @@ function showStatus(key, role = mode) {
 }
 
 function idleCamera() {
+  hostAudioObserver?.track.removeEventListener('ended', hostAudioObserver.ended);
+  hostAudioObserver = null;
   $('camera-start').disabled = false;
   $('camera-start').hidden = false;
   $('camera-name').disabled = false;
   $('camera-suggest').disabled = false;
   $('camera-discoverable').disabled = false;
+  $('camera-audio').disabled = false;
+  $('camera-audio-status').textContent = '';
   $('camera-stop').hidden = true;
   $('camera-invite').hidden = true;
   $('camera-approval').hidden = true;
@@ -51,6 +63,7 @@ function idleCamera() {
 }
 
 function idleViewer() {
+  resetViewerAlerts();
   $('viewer-connect').disabled = false;
   $('viewer-connect').hidden = false;
   $('viewer-code').disabled = false;
@@ -58,6 +71,12 @@ function idleViewer() {
   $('viewer-stop').hidden = true;
   $('viewer-video-panel').hidden = true;
   $('remote-video').srcObject = null;
+  $('remote-video').muted = true;
+  viewerAudioTrack = null;
+  $('viewer-listen').hidden = true;
+  $('viewer-listen').setAttribute('aria-pressed', 'false');
+  $('viewer-listen').textContent = phrase('viewer.listen');
+  $('viewer-audio-status').textContent = '';
   $('viewer-play').hidden = true;
 }
 
@@ -112,9 +131,16 @@ const session = new CameraSession({
     }
   },
   onStream(stream) {
-    $('remote-video').srcObject = stream;
-    $('viewer-video-panel').hidden = stream === null;
-    if (stream) playVideo();
+    const previous = $('remote-video').srcObject;
+    if (previous !== stream) $('remote-video').srcObject = stream;
+    const hasVideo = stream?.getVideoTracks().some((track) => track.readyState === 'live');
+    $('viewer-video-panel').hidden = !hasVideo;
+    if (stream) {
+      if (previous !== stream) $('remote-video').muted = true;
+      updateViewerAudio();
+      viewerAlerts?.attach(stream);
+      if (hasVideo) { refreshViewerAlerts(); playVideo(); }
+    } else resetViewerAlerts();
   },
   onDiscovery({ code, lease }) {
     if (hostCode === code && $('camera-discoverable').checked) discovery?.publish(code, lease);
@@ -261,6 +287,104 @@ function captureError(error) {
   return 'camera.busy';
 }
 
+function resetViewerAlerts() {
+  alertsRevision += 1;
+  clearTimeout(alertsTimer);
+  alertsTimer = null;
+  alertsAttempts = 0;
+  viewerSoundSupported = false;
+  viewerAlerts?.disconnect();
+  viewerAlerts = null;
+  $('viewer-alert-options').hidden = true;
+  $('viewer-motion-alert').checked = false;
+  $('viewer-sound-alert').checked = false;
+  $('viewer-alert-status').textContent = '';
+  $('viewer-alert-status').classList.remove('warn');
+}
+
+function updateViewerAudio() {
+  const video = $('remote-video');
+  const track = video.srcObject?.getAudioTracks().find((item) => item.readyState === 'live');
+  if (track && track !== viewerAudioTrack) {
+    track.addEventListener('ended', () => {
+      if (video.srcObject?.getAudioTracks().includes(track)) updateViewerAudio();
+    });
+  }
+  viewerAudioTrack = track ?? null;
+  $('viewer-listen').hidden = !track;
+  if (!track) video.muted = true;
+  const listening = Boolean(track) && !video.muted;
+  $('viewer-listen').setAttribute('aria-pressed', String(listening));
+  $('viewer-listen').textContent = phrase(listening ? 'viewer.mute' : 'viewer.listen');
+  $('viewer-audio-status').textContent = phrase(track ? listening ? 'viewer.audio-listening' : 'viewer.audio-available' : 'viewer.audio-none');
+  $('viewer-audio-status').classList.remove('warn');
+  $('viewer-sound-alert').disabled = !viewerSoundSupported || (!track && !$('viewer-sound-alert').checked);
+}
+
+async function listenToAudio() {
+  const video = $('remote-video');
+  if (!viewerAudioTrack || activeRole !== 'viewer') return;
+  const stream = video.srcObject;
+  video.muted = !video.muted;
+  updateViewerAudio();
+  if (video.muted) return;
+  try { await video.play(); }
+  catch {
+    if (video.srcObject !== stream) return;
+    video.muted = true;
+    updateViewerAudio();
+    $('viewer-audio-status').textContent = phrase('viewer.audio-blocked');
+    $('viewer-audio-status').classList.add('warn');
+  }
+}
+
+async function refreshViewerAlerts() {
+  const stream = $('remote-video').srcObject;
+  if (!stream?.getVideoTracks().some((track) => track.readyState === 'live') || activeRole !== 'viewer') return;
+  if (viewerAlerts) return;
+  const current = epoch, revision = ++alertsRevision;
+  const capabilities = await alertCapabilities().catch(() => ({ supported: false }));
+  if (current !== epoch || revision !== alertsRevision || $('remote-video').srcObject !== stream) return;
+  if (!capabilities.supported) {
+    // A fresh visit may not have activated its tool worker when media arrives.
+    // Retry briefly without leaving serviceWorker.ready pending indefinitely.
+    if (globalThis.Notification?.requestPermission && ++alertsAttempts < 4) {
+      clearTimeout(alertsTimer);
+      alertsTimer = setTimeout(refreshViewerAlerts, 1000);
+    }
+    return;
+  }
+  const monitor = new ViewerAlerts({
+    video: $('remote-video'), registration: capabilities.registration,
+    title: phrase('alerts.title'), motionBody: phrase('alerts.motion-body'), soundBody: phrase('alerts.sound-body'),
+    onStatus(key) {
+      if (current !== epoch || viewerAlerts !== monitor) return;
+      $('viewer-alert-status').textContent = phrase(key);
+      $('viewer-alert-status').classList.toggle('warn', key === 'alerts.denied' || key === 'alerts.failed');
+      if (key === 'alerts.denied' || key === 'alerts.failed') {
+        $('viewer-motion-alert').checked = false;
+        $('viewer-sound-alert').checked = false;
+      }
+    },
+  });
+  viewerAlerts = monitor;
+  viewerSoundSupported = capabilities.sound;
+  monitor.attach(stream);
+  $('viewer-sound-option').hidden = !capabilities.sound;
+  $('viewer-motion-alert').disabled = !capabilities.motion;
+  $('viewer-sound-alert').disabled = !viewerAudioTrack || !capabilities.sound;
+  $('viewer-alert-options').hidden = false;
+  $('viewer-alert-status').textContent = phrase('alerts.off');
+}
+
+function changeViewerAlerts() {
+  if (!viewerAlerts || activeRole !== 'viewer') return;
+  const options = { motion: $('viewer-motion-alert').checked, sound: $('viewer-sound-alert').checked };
+  updateViewerAudio();
+  if (!options.motion && !options.sound) viewerAlerts.disable();
+  else viewerAlerts.enable(options).catch(() => {});
+}
+
 function showApprovalPolicy() {
   const required = $('camera-require-approval').checked;
   $('camera-approval-policy').textContent = phrase(required ? 'camera.approval-required' : 'camera.open-access');
@@ -273,6 +397,19 @@ function showCameraStream(stream, current) {
   $('camera-preview-panel').hidden = false;
   $('camera-preview').play().catch(() => {});
   if (alreadyShown) return;
+  const audio = stream.getAudioTracks().find((track) => track.readyState === 'live');
+  $('camera-audio-status').textContent = audio ? phrase('camera.audio-on') : $('camera-audio').checked ? phrase('camera.audio-ended') : '';
+  if (hostAudioObserver?.track !== audio) {
+    hostAudioObserver?.track.removeEventListener('ended', hostAudioObserver.ended);
+    hostAudioObserver = null;
+    if (audio) {
+      const ended = () => {
+        if (current === epoch && capture.stream?.getAudioTracks().includes(audio)) $('camera-audio-status').textContent = phrase('camera.audio-ended');
+      };
+      audio.addEventListener('ended', ended);
+      hostAudioObserver = { track: audio, ended };
+    }
+  }
   for (const track of stream.getVideoTracks()) {
     track.addEventListener('ended', () => {
       // Opening another camera can end the old hardware track. The switch
@@ -356,11 +493,12 @@ async function startCamera() {
   $('camera-name').disabled = true;
   $('camera-suggest').disabled = true;
   $('camera-discoverable').disabled = true;
+  $('camera-audio').disabled = true;
   $('camera-stop').hidden = false;
   $('camera-stop').focus();
   showStatus('camera.permission', 'camera');
   try {
-    const stream = await capture.start();
+    const stream = await capture.start({ video: true, audio: $('camera-audio').checked });
     if (current !== epoch || stream === null) return;
     showCameraStream(stream, current);
     hostCode = code;
@@ -439,6 +577,10 @@ $('camera-stop-confirm').addEventListener('click', () => {
 $('viewer-connect').addEventListener('click', connectViewer);
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', playVideo);
+$('viewer-listen').addEventListener('click', listenToAudio);
+$('viewer-motion-alert').addEventListener('change', changeViewerAlerts);
+$('viewer-sound-alert').addEventListener('change', changeViewerAlerts);
+navigator.serviceWorker?.addEventListener('controllerchange', refreshViewerAlerts);
 $('viewer-fullscreen').addEventListener('click', async () => {
   try { await $('remote-video').requestFullscreen(); }
   catch { showStatus('viewer.fullscreen-failed', 'viewer'); }

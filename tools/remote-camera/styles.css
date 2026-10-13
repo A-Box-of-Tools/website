@@ -15,6 +15,10 @@
 .camera-discoverable { display: flex; gap: 0.6rem; align-items: baseline; }
 .camera-policy, .camera-switch-status { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
 .camera-policy.warn, .camera-switch-status.warn { color: var(--danger); }
+.viewer-alert-options { margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; }
+.viewer-alert-options legend { font-weight: 600; padding: 0 0.4rem; }
+.viewer-alert-options label { margin-bottom: 0.65rem; }
+#viewer-alert-status.warn, #viewer-audio-status.warn { color: var(--danger); }
 .camera-device-field { max-width: 32rem; margin-bottom: 0.75rem; }
 .camera-device-field select { width: 100%; }
 .camera-discovery-note { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
