@@ -16,14 +16,15 @@
         <strong>Prove it.</strong> Photograph the test print with a phone
         &mdash; at an angle, in the venue's light &mdash; and drop the photo
         on the <a href="../../qr-barcode-reader/">QR &amp; Barcode
-        Reader</a>. It shows the decoded payload and, for a link, the host it
-        really reaches. If that matches what you meant, the run is safe.
+        Reader</a>. It shows the decoded payload and, for a link, the host in that
+        encoded address. If that matches what you meant, test the code with
+        the phones that will use it and check the destination separately.
       </li>
     </ol>
     <p>
       Both tools run in your browser and send nothing anywhere &mdash; which
-      for a Wi-Fi code means the password in it was never typed into
-      someone's website.
+      for a Wi-Fi code means the tool's processing does not send the
+      password away to make or decode it.
     </p>
 
     <figure class="shot">
@@ -33,6 +34,27 @@
         The code, made.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Check the destination as well as the print</h2>
+    <p>
+      For a menu, event sign-up or equipment manual, paste the complete HTTPS
+      URL into the generator, keep a four-module margin, and put the SVG into
+      the final layout. Print that layout at its intended size, mount it on the
+      intended surface, and scan from where a visitor will stand. Read the
+      decoded address, then deliberately open it on a phone and complete the
+      intended action: read the menu, reach the form or find the right manual.
+      A correct string can still lead to an unavailable page or one requiring
+      an unexpected sign-in.
+    </p>
+    <p>
+      Contact cards need an extra check: after reading the printed code, use
+      a phone to save the contact and inspect the name, number and email.
+      For a sheet of labels, photograph each code separately; the reader finds
+      one code per picture. Repeat the proof after changing the URL, colours,
+      size or layout, and try more than one phone before a large print run.
+    </p>
   </section>
 
   <section>
@@ -52,15 +74,14 @@
         in density.
       </li>
       <li>
-        <strong>The colours.</strong> Codes printed light on dark scan, but
-        low-contrast brand palettes often do not. The reader copes with more
-        than most phones &mdash; so if <em>it</em> struggles with the photo,
-        the lobby's oldest phone has no chance.
+        <strong>The colours.</strong> This reader can read inverted codes, but
+        that does not establish that every phone will. Start with dark modules
+        on a light background and test the actual brand colours after printing.
       </li>
       <li>
         <strong>The crease and the glare.</strong> Reed&ndash;Solomon
-        correction means a partly covered code still reads &mdash; up to the
-        level you chose. A poster destined for weather deserves the higher
+        correction can repair some damaged data, but the percentage is not a
+        guaranteed area you can cover. Detection patterns must remain readable. A poster destined for weather deserves the higher
         level and the slightly denser code it costs.
       </li>
     </ul>
@@ -78,10 +99,11 @@
     <h2>The same reader, for codes that are not yours</h2>
     <p>
       Verification is also the safe way to open a QR code somebody else
-      printed. The reader shows the whole address and the host it really
-      reaches <em>before anything opens</em>, and it names the tricks that
-      disguise a link &mdash; a username in front of the @, a lookalike
-      alphabet, a redirect. A parking meter sticker deserves that inspection;
+      printed. The reader shows the whole encoded address and its host
+      <em>before anything opens</em>, and it names signs worth inspecting
+      &mdash; a username in front of the @, a lookalike alphabet, or a known
+      link shortener. It does not follow redirects or discover the final
+      destination behind a short link. A parking meter sticker deserves that inspection;
       so does a conference lanyard. Nothing is opened on your behalf, and
       nothing you scan is sent anywhere.
     </p>

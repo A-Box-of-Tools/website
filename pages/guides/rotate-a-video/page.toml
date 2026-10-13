@@ -28,9 +28,9 @@ lede = """
     note. Here is what the note says, why fixing it should take seconds and
     cost nothing, and when it is worth paying for the other way."""
 
-updated = "13 September 2026"
+updated = "13 October 2026"
 published = "2026-09-13"
-lastmod = "2026-09-13"
+lastmod = "2026-10-13"
 
 og_title = "How to rotate a video without losing quality"
 og_description = "A sideways clip needs nine numbers changed in its header, not a re-encode. What the header does, when to bake the turn in, and how to do it in your browser without the upload."

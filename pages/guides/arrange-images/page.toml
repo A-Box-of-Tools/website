@@ -21,9 +21,9 @@ lede = """
     the shape they fit into, and whether filling that shape is allowed to cut
     off an edge."""
 
-updated = "8 October 2026"
+updated = "13 October 2026"
 published = "2026-10-08"
-lastmod = "2026-10-08"
+lastmod = "2026-10-13"
 og_title = "How to arrange multiple images into one picture"
 og_description = "Grid or strip, crop or keep whole, solid or transparent: the choices behind a collage or contact sheet made entirely in your browser."
 og_image_alt = "abox.tools - tools that never touch a server"

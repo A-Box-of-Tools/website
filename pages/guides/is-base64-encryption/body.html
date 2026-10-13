@@ -22,6 +22,31 @@
   </section>
 
   <section>
+    <h2>Useful decoding jobs that do not need a secret</h2>
+    <p>
+      <strong>Inspecting an API's text payload.</strong> Choose Base64 decoding
+      in the <a href="../../base64/">encoder and decoder</a> and compare the
+      resulting UTF-8 text with what the API was meant to send. Choose URL-safe
+      Base64 for a payload using <code>-</code> and <code>_</code>. The optional
+      canonical check tests this tool's spelling rules; a protocol may
+      deliberately use different padding or wrapping.
+    </p>
+    <p>
+      <strong>Finding an encoding mismatch.</strong> A percent-encoded query
+      value or escaped string can be decoded to check whether accents, spaces
+      and punctuation survived. Choose the codec for that layer and encode it
+      back to inspect the round trip. Do not repeatedly decode an entire URL
+      when only one parameter was encoded.
+    </p>
+    <p>
+      The box handles text, not arbitrary binary-file conversion, encryption or
+      JWT signature verification. A decoded credential remains a credential. For
+      an embedded image rather than a text payload, use <a
+      href="../embed-an-image-in-css/">the image data-URI guide</a>.
+    </p>
+  </section>
+
+  <section>
     <h2>Encoding: reversible by everyone</h2>
     <p>
       An encoding changes how data is <em>written</em>, never what it says.
@@ -59,12 +84,13 @@
     <p>
       This is where the visual confusion bites, because encrypted bytes are
       routinely base64-encoded so they can travel &mdash; scrambled by a
-      key, then costumed for transport. Two layers, doing different jobs. A
-      JSON Web Token is the classic case: three base64 pieces joined by
-      dots, of which the first two <em>decode</em> into readable JSON for
-      anyone who tries. People paste tokens into public web decoders daily,
-      having assumed the whole thing was sealed; the honest framing is that
-      a JWT is a postcard with a tamper-proof signature, not an envelope.
+      key, then costumed for transport. Two layers, doing different jobs.
+      A commonly used signed JSON Web Token has three base64url parts joined
+      by dots; its header and payload decode into readable JSON. Decoding them
+      does not validate its signature. JWTs can also use encryption or be
+      unsecured, as <a href="https://www.rfc-editor.org/rfc/rfc7519" target="_blank" rel="noopener noreferrer">RFC 7519</a>
+      explains. Do not infer confidentiality or authenticity from a token's
+      encoded appearance, or paste a live credential into an unfamiliar decoder.
     </p>
   </section>
 

@@ -31,9 +31,9 @@ lede = """
     reason listings go out with the town bolted onto the end of the name and no
     phone number on them. Here is how to see it first, and what to look at."""
 
-updated = "7 September 2026"
+updated = "13 October 2026"
 published = "2026-09-07"
-lastmod = "2026-09-07"
+lastmod = "2026-10-13"
 
 og_title = "Previewing a Google Business Profile"
 og_description = "How much of your name survives, why the category does more work than the description, and which fields turn into buttons."

@@ -20,6 +20,32 @@
   </section>
 
   <section>
+    <h2>Debug a response without pasting the whole record</h2>
+    <p>
+      <strong>A broken API response.</strong> Keep the braces, types and failing
+      field, replace credentials and unrelated personal values, then use the <a
+      href="../format-json-without-uploading-it/">formatter</a> to locate the
+      syntax problem. If the failure depends on a particular value, reproduce it
+      with a fictional value of the same shape before sharing the example
+      elsewhere. Successful formatting is not proof that the application accepts
+      the data.
+    </p>
+    <p>
+      <strong>A configuration regression.</strong> Put the working and failing
+      copies through the same formatter, then <a
+      href="../compare-two-json-files/">compare them</a>. Keep array order
+      intact where order matters. A local comparison can tell you which field
+      changed without publishing either configuration.
+    </p>
+    <p>
+      A useful follow-on is preparing a small support example from that
+      difference. Check the saved text as well as the editor: comments, URLs,
+      identifiers and copied output can carry details you removed from the
+      obvious password field.
+    </p>
+  </section>
+
+  <section>
     <h2>What a paste actually carries</h2>
     <p>
       The pastes that end up in online tools are rarely prose. They are the
@@ -101,20 +127,23 @@
       <li>
         <strong>Pull the plug.</strong> Load the page, disconnect, paste,
         press the button. A local tool carries on; a server tool stops.
-        Thirty seconds, no expertise, no way to fake it.
+        Completion establishes that this operation worked while disconnected.
+        It does not rule out data being stored and sent after reconnection.
       </li>
       <li>
         <strong>Watch the Network tab while you press Format.</strong> A
-        request that leaves at that moment, roughly the size of your paste,
-        is your paste leaving. No request, no upload.
+        request at that moment is a reason to inspect its URL and body.
+        Size alone does not identify the payload, and small or later requests
+        can carry sensitive text too.
       </li>
       <li>
         <strong>Beware the helpful extras.</strong> A &ldquo;share this
         snippet&rdquo; button, a history of your recent pastes across
-        devices, a link you can send a colleague &mdash; each of those is
-        only possible if the text was stored on a server. Features are
-        claims: a page that can show your paste to somebody else has kept
-        it.
+        devices, a link you can send a colleague &mdash; each of those
+        involves a transfer or storage boundary to check. Some services store
+        the text; <a href="../share-text-between-devices/">direct browser
+        sharing</a> transfers it to the chosen reader without server storage.
+        Either way, sending a snippet is a separate action from formatting it.
       </li>
     </ul>
     <p>

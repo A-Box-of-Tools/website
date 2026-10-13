@@ -16,9 +16,9 @@ lede = """
     missing transaction. Check it against the statement, using the printed
     balances to test the numbers and the original rows to check the rest."""
 
-updated = "29 September 2026"
+updated = "13 October 2026"
 published = "2026-09-29"
-lastmod = "2026-09-29"
+lastmod = "2026-10-13"
 
 og_title = "How to check a bank statement CSV before you trust it"
 og_description = "A tidy spreadsheet can still be wrong. Work through a running-balance check, catch misread dates and missing rows, and know what a matching total cannot prove."

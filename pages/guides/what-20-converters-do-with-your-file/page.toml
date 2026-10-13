@@ -31,9 +31,9 @@ lede = """
     file we went looking for afterwards was still sitting on a public
     address."""
 
-updated = "12 October 2026"
+updated = "13 October 2026"
 published = "2026-09-17"
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 
 og_title = "What 20 online converters do with your file"
 og_description = "The same file, twenty converters, reported request-body sizes. 19 of 20 uploaded it - and 13 did it before the Convert button was pressed."

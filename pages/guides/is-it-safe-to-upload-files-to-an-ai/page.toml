@@ -32,9 +32,9 @@ lede = """
     your file without caring what is in it. An AI is sent the file
     precisely so that something will read it."""
 
-updated = "27 August 2026"
+updated = "13 October 2026"
 published = "2026-08-27"
-lastmod = "2026-08-27"
+lastmod = "2026-10-13"
 
 og_title = "Is it safe to upload files to an AI?"
 og_description = "A chat window is an upload form that does not look like one. Where the file actually goes, what makes an AI different from a converter, and how to send less and send it clean."

@@ -27,9 +27,9 @@ lede = """
     if it was edited a certain common way, every earlier version of itself,
     deletions included. None of it shows on screen."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "What a PDF remembers"
 og_description = "Author names, the Word file it used to be, comments, attachments - sometimes every earlier version of itself. Where the memory lives, and how to send a PDF without it."

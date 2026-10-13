@@ -30,9 +30,9 @@ lede = """
     the file everything takes without first uploading the one that was
     refused."""
 
-updated = "12 September 2026"
+updated = "13 October 2026"
 published = "2026-09-12"
-lastmod = "2026-09-12"
+lastmod = "2026-10-13"
 
 og_title = "How to convert a video to the MP4 that uploads"
 og_description = "Why a WebM, MKV or MOV gets refused, which conversions lose nothing, and how to do it in your browser without uploading the file."
