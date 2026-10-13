@@ -22,7 +22,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [WebP to JPG](webp-to-jpg/) | `/webp-to-jpg/` | The pictures the web saves, in the format everything still takes. |
 | [PNG to WebP](png-to-webp/) | `/png-to-webp/` | The same picture, often a third off, with the see-through parts intact. |
 | [AVIF to JPG](avif-to-jpg/) | `/avif-to-jpg/` | The format websites save now, in the one everything has always taken. |
-| [ID Photo Maker](id-photo/) | `/id-photo/` | Pick the country. It applies that country's rule, exactly. |
+| [ID Photo Maker](id-photo/) | `/id-photo/` | Choose a supported country and document. Published rules and guidance are marked. |
 | [Image Stacker](stack-images/) | `/stack-images/` | Twenty frames into one, without twenty uploads or a RAW converter. |
 | [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
@@ -33,6 +33,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
+| [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted. |
 | [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
 | [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged. |
@@ -49,12 +50,12 @@ browser and uploads nothing; how the site around them is built is in the
 | [GIF Analyzer](gif-analyzer/) | `/gif-analyzer/` | Frames, delays, palettes, and where every byte went. |
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
-| [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Most locked PDFs need no password at all. This one says which kind you have before it touches it. |
+| [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Permission restrictions and open passwords are different. This page tells you which your PDF uses. |
 | [PDF Protector](protect-pdf/) | `/protect-pdf/` | Lock a document you would rather not hand to a website in order to lock it. |
 | [PDF Watermark](watermark-pdf/) | `/watermark-pdf/` | A scan that says where it went is a scan that cannot quietly go somewhere else. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
-| [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
-| [Receipt & Invoice Extractor](receipt-invoice-extractor/) | `/receipt-invoice-extractor/` | Read the photos, check the fields and crops, then email compressed images with each amount and the totals. |
+| [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Turn detected text-based PDF tables into rows a spreadsheet can open. |
+| [Receipt & Invoice Extractor](receipt-invoice-extractor/) | `/receipt-invoice-extractor/` | Read photos, review fields and crops, then prepare compressed attachments and totals for your email app. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
 | [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Extract Audio from Video](extract-audio-from-video/) | `/extract-audio-from-video/` | Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded. |

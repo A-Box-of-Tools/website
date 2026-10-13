@@ -902,6 +902,8 @@ async function offerFormats() {
 }
 
 refreshControls();
+// The picker runs before the controller locks its source-dependent cards.
+picker.waiting();
 updateFormatNote();
 offerFormats();
 

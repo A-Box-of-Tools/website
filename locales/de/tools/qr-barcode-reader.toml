@@ -92,14 +92,7 @@ body = """
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
-body = """
- Es gibt weder
-      <code>fetch</code> noch <code>XMLHttpRequest</code> noch
-      <code>sendBeacon</code> irgendwo in <code>src/</code>, und die
-      <code>Content-Security-Policy</code> der Seite lässt keine Adresse übrig,
-      an die diese Domain überhaupt senden könnte. Genau deshalb kann Ihnen diese
-      Seite nicht sagen, wo ein gekürzter Link endet: das herauszufinden hieße zu
-      fragen, und sie fragt nicht."""
+body = "Decodierter Text und Links werden lokal angezeigt, nie automatisch geöffnet. Das Werkzeug löst Kurzlinks nicht auf, weil es dafür das Ziel kontaktieren müsste. Prüfen Sie Verarbeitungscode und Aufrufe von <code>fetch</code>, <code>XMLHttpRequest</code> oder <code>sendBeacon</code> auf übergebene Daten. Die <code>Content-Security-Policy</code> begrenzt Ziele einschließlich erlaubter Plattformhosts; sie behauptet nicht, dass es keine Netzwerkziele gibt, und beweist keine Nutzdaten."
 
 [[privacy]]
 title = "Sie zeigt Ihnen die Adresse. Sie öffnet sie nie."
@@ -261,20 +254,12 @@ a = """
 
 [[faq]]
 q = "Kann sie einen beschädigten oder teilweise verdeckten Code lesen?"
-a = """
-        Oft ja, und das ist das Format, das wie geplant funktioniert, nicht
-        irgendein Kunststück von uns. Jeder QR-Code trägt Reed-Solomon-Prüfdaten,
-        und ein auf Stufe H erzeugtes Symbol kann rund 30 % seiner Module
-        verlieren und wird trotzdem exakt wiederhergestellt. Unter &bdquo;Wie das
-        hier gelesen wurde&ldquo; steht, wie viele Codewörter repariert werden
-        mussten, sodass Sie sehen, wie knapp es war. Was sie nicht tut, ist
-        raten: ein Symbol, das über das hinaus beschädigt ist, was die Prüfdaten
-        tragen können, wird als unlesbar gemeldet und nicht falsch beantwortet."""
+a = "Manchmal. Reed-Solomon kann beschädigte Codewörter innerhalb der Korrekturkapazität wiederherstellen. Die rund 30 % bei H beziehen sich auf alle Codewörter, nicht auf beliebige Module oder Bildfläche; beschädigte Suchmuster können die Erkennung ganz verhindern. Die Reparaturzahl unter dem Ergebnis zeigt die tatsächliche Korrektur. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO erklärt die Stufen</a>."
 
 [[faq]]
-q = "Warum sagt sie, sie könne mir nicht verraten, wohin ein bit.ly-Link führt?"
+q = "Warum sagt sie, sie könne mir nicht verraten, wohin ein <code>bit.ly</code>-Link führt?"
 a = """
-        Weil das hieße, bit.ly zu fragen, und das wäre eine Netzanfrage. Jede
+        Weil das hieße, <code>bit.ly</code> zu fragen, und das wäre eine Netzanfrage. Jede
         andere Aussage auf dieser Seite beruht darauf, dass es hier keinen Code
         gibt, der irgendetwas kontaktiert, und dafür stillschweigend eine
         Ausnahme zu machen wäre weniger wert als die Antwort. Also wird der

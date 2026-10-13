@@ -39,8 +39,8 @@ mark = "&#10003;"
 text = "Código aberto"
 
 [[privacy]]
-title = "Não existe para onde o que você digita possa ir."
-body = "A Content-Security-Policy lista todos os endereços que esta página pode contatar, e nenhum pertence a este site. Não há destino para coletar endereço ou telefone, nem código para enviá-los."
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui busca coisa alguma."

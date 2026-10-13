@@ -206,6 +206,43 @@ test('IPv4 discovery keeps its exact address and original hash input', async () 
   assert.notEqual(ipv6.deserializeAttachment().scope, expected);
 });
 
+test('camera and text rooms can share a name while their discovery leases stay separate', async () => {
+  const s = system(), address = '1.2.3.4';
+  const text = await edgeSocket(s, '/ws/kitchen?role=host&local=1&discover=1', address);
+  const camera = await edgeSocket(s, '/ws/kitchen?role=host&local=1&discover=1&tool=remote-camera', address);
+  const textList = await edgeSocket(s, '/discover', address);
+  const cameraList = await edgeSocket(s, '/discover?tool=remote-camera', address);
+  const textScope = textList.deserializeAttachment().scope;
+  const cameraScope = cameraList.deserializeAttachment().scope;
+  assert.notEqual(cameraScope, textScope);
+  assert.equal(publication(camera).tool, 'remote-camera');
+  await publish(s, textList, publication(text), textScope);
+  await publish(s, cameraList, publication(text), cameraScope);
+  assert.deepEqual(shares(cameraList).list, []);
+  await publish(s, cameraList, publication(camera), cameraScope);
+  assert.deepEqual(shares(cameraList), { type: 'shares', tool: 'remote-camera', list: [{ code: 'kitchen', local: true }] });
+  assert.deepEqual(shares(textList), { type: 'shares', list: [{ code: 'kitchen', local: true }] });
+  assert.equal((await check(s, 'remote-camera:kitchen', { ...publication(camera), scope: cameraScope, tool: 'share-text' })).status, 403);
+  await withdraw(s, { ...publication(camera), tool: 'share-text' }, cameraScope);
+  assert.equal(shares(cameraList).list.length, 1);
+  camera.close(1000, 'done');
+  s.room('remote-camera:kitchen').instance.webSocketClose(camera);
+  await s.room('remote-camera:kitchen').ctx.flush();
+  assert.deepEqual(shares(cameraList).list, []);
+  assert.equal(shares(textList).list.length, 1);
+});
+
+test('unknown tool namespaces never reach a room or discovery object', async () => {
+  const s = system();
+  for (const tool of ['', 'unknown', 'REMOTE-CAMERA']) {
+    for (const path of ['/discover', '/ws/kitchen?role=host']) {
+      const separator = path.includes('?') ? '&' : '?';
+      assert.equal((await worker.fetch(edgeRequest(`${path}${separator}tool=${tool}`, '1.2.3.4'), s.env)).status, 400);
+    }
+  }
+  assert.equal(s.calls.length, 0);
+});
+
 test('Cloudflare Pseudo IPv4 overwrite mode joins the preserved public IPv6 /64', async () => {
   const s = system();
   const offered = await edgeSocket(s, '/ws/pseudo-room?role=host&local=1&discover=1', '240.16.0.1', {

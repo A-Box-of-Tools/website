@@ -35,10 +35,10 @@ lede = """
     honour. Telling them apart takes a second and decides everything that
     follows."""
 
-updated = "10 September 2026"
+updated = "12 October 2026"
 published = "2026-09-10"
-lastmod = "2026-09-10"
+lastmod = "2026-10-12"
 
 og_title = "How to unlock a PDF: password vs restrictions"
-og_description = "Why most \"protected\" PDFs need no password at all, why a lost open password is genuinely lost, and how to tell which kind you are holding."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "How permission restrictions differ from a required open password, which one this tool can remove without a password, and why it does not guess a missing one."
+og_image_alt = "abox.tools - browser tools for local file processing"

@@ -24,12 +24,7 @@ og_title = "Apila una ráfaga de fotografías, con archivos RAW incluidos"
 og_description = "Media, mediana, recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas primero. Los archivos RAW se abren desde la vista previa JPEG que incluye la cámara, si está disponible, sin decodificar los datos del sensor. No se sube nada."
 og_image_alt = "Apilador de imágenes - varias tomas combinadas en una, en el navegador"
 
-pledge = """
-    El navegador abre, decodifica, alinea, combina y escribe cada toma en tu
-    propio equipo. Una pila de veinte archivos RAW de 60&nbsp;MB es alrededor de
-    un gigabyte de fotografías, y no se mueve ni un byte: la herramienta no
-    tiene ninguna función de red, y los archivos los lee directamente de tu
-    disco un worker que no tiene adónde mandar nada."""
+pledge = "El navegador abre, decodifica, alinea, combina y escribe cada toma en tu propio equipo. Una pila de veinte archivos RAW de 60&nbsp;MB es alrededor de un gigabyte de fotografías, y no se mueve ni un byte: la herramienta no tiene ninguna función de red, y los archivos los lee directamente de tu disco un worker que los procesa localmente sin subirlos."
 
 live_hint = """
       No hace falta que nos creas: abre las DevTools, mira la pestaña Red y apila
@@ -69,14 +64,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Tus fotografías no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es nuestra. Aquí no hay ningún destino donde recoger
-      tus archivos, ni código que los enviaría si lo hubiera: no hay
-      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
-      <code>sendBeacon</code>, ni en <code>src/</code> ni en el worker."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Las vistas previas RAW se leen en este dispositivo."
@@ -84,15 +73,7 @@ body = "Muchos archivos RAW contienen una vista previa JPEG creada por la cámar
 
 [[privacy]]
 title = "El trabajo ocurre en un Worker de este equipo, no en un servidor."
-body = """
- Es la única herramienta de
-      aquí que usa uno, porque apilar son minutos de aritmética en vez de
-      segundos, y una página congelada no puede enseñar el progreso ni dejarse
-      cancelar. Un Worker es un segundo hilo dentro de este mismo navegador
-      &mdash; mira <code>src/worker.js</code>. Se le entregan los archivos en sí,
-      lo cual es gratis, porque un descriptor de archivo no son los bytes; y
-      tiene exactamente la misma Content-Security-Policy que la página, es decir,
-      ningún sitio adonde mandarlos."""
+body = "Apilar puede durar minutos; un Worker calcula mientras la página responde, muestra progreso y permite cancelar. Es otro hilo del navegador: <code>src/worker.js</code>. Recibe referencias locales sin subir los bytes. El código del Worker lee y combina archivos en el dispositivo. Revisa ese código, sin tratar la política de destinos de la página como prueba de sus rutas."
 
 [[privacy]]
 title = "No se informa a ninguna parte de nada sobre el conjunto."

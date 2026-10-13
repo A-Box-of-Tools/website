@@ -42,6 +42,7 @@ reason to write its template then, and not to guess at it now.
 
 import json
 import re
+from urllib.parse import urlsplit
 
 from buildlib.site import ConfigError, to_text
 from buildlib.template import escape
@@ -87,6 +88,17 @@ def load(tool):
         if entry['id'] in seen:
             raise ConfigError(f'{path}: two entries are called {entry["id"]!r}')
         seen.add(entry['id'])
+        source_url = entry.get('source_url', '')
+        if not isinstance(source_url, str) or re.search(r'[\s<>"\x00-\x1f\x7f]', source_url):
+            raise ConfigError(f'{path}: {entry["id"]} needs an HTTPS source_url')
+        try:
+            source = urlsplit(source_url)
+            source.port
+        except ValueError:
+            raise ConfigError(f'{path}: {entry["id"]} has an invalid source_url') from None
+        if (source.scheme != 'https' or not source.hostname or source.username
+                or source.password or any(char.isspace() for char in source_url)):
+            raise ConfigError(f'{path}: {entry["id"]} needs an HTTPS source_url')
     return entries
 
 
@@ -200,6 +212,7 @@ def pages(tool, entries, table):
                       for term, value in entry['facts']],
             'notes': [resolve({'key': note}, table) for note in entry['notes']],
             'source': resolve(entry['source'], table),
+            'source_url': escape(entry['source_url']),
             'checked': entry['checked'],
             'text': text,
         })

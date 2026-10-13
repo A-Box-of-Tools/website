@@ -57,6 +57,14 @@ the visitor, and a `dev` that has to be merged forward whenever `main` moves
 without it — a hotfix taken straight to `main`, which is the one occasion to go
 round this rather than through it.
 
+Every version release includes the reason its number moved and an automatically
+generated summary of the changes, with links to the merged pull requests,
+contributors and the full changelog. The summary starts at the highest version
+tag below the one being released, using the same ordering as the version rule,
+so a bundle describes all its changes rather than just the final merge from
+`dev`. The first release has no previous tag. If creating the release page fails
+after its tag was pushed, a rerun creates it with the same summary.
+
 The gates are unchanged in kind and doubled in number. A pull request builds
 without publishing, so a change that breaks the build is caught before it
 reaches `dev`; and the pull request from `dev` to `main` builds the bundle,

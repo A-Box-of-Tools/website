@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cleanShares, watchDiscovery } from '../../tools/share-text/src/discovery.js';
 
-function fixture() {
+function fixture(tool = null) {
   const sockets = [];
   const scheduled = new Map();
   const states = [], lists = [], publications = [];
@@ -27,7 +27,7 @@ function fixture() {
     }
     clock = until;
   };
-  const controller = watchDiscovery('wss://rendezvous.example/discover', {
+  const controller = watchDiscovery('wss://rendezvous.example/discover' + (tool ? `?tool=${tool}` : ''), {
     status: (state) => states.push(state),
     list: (list) => lists.push(list),
     publication: (state) => publications.push(state),
@@ -37,6 +37,21 @@ function fixture() {
 }
 
 const lease = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+
+test('camera discovery waits for a matching namespace before listing or publishing', () => {
+  const f = fixture('remote-camera');
+  f.sockets[0].open();
+  f.controller.publish('kitchen', lease);
+  f.sockets[0].message(f.shares(['text-room']));
+  f.sockets[0].message({ ...f.shares(['text-room']), tool: 'share-text' });
+  assert.deepEqual(f.lists, []);
+  assert.deepEqual(f.sockets[0].sent, []);
+  f.sockets[0].message({ ...f.shares([]), tool: 'remote-camera' });
+  assert.equal(JSON.parse(f.sockets[0].sent.at(-1)).publish.code, 'kitchen');
+  f.sockets[0].message({ ...f.shares(['kitchen']), tool: 'remote-camera' });
+  assert.equal(f.publications.at(-1), 'published');
+  f.controller.close();
+});
 
 test('untrusted listings accept only bounded unique local link names', () => {
   assert.deepEqual(cleanShares(null), []);

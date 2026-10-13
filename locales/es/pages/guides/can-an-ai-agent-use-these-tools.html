@@ -1,21 +1,10 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Sí. Cada herramienta de aquí es una página web corriente: un selector
-      de archivos, unos controles etiquetados, un botón de descarga. No hay
-      cuenta en la que entrar, ni captcha que resolver, ni paso alguno que
-      exija a un humano en particular. Un agente de IA con navegador maneja
-      estas páginas igual que maneja cualquier otra &mdash; y varias cosas
-      que este sitio ya hace por las personas les sirven a los agentes de
-      regalo; la última sección las enumera.
+      Un agente con control del navegador puede usar estas páginas normales: controles etiquetados, selección de archivos y descargas, sin cuenta del sitio. Su entorno debe admitir acceso a archivos, API y permisos necesarios. La cámara o el panel de compartir pueden necesitar tu participación.
     </p>
     <p>
-      Pero «¿puede pulsar los botones?» es la pregunta pequeña. La que
-      merece una página es qué pasa con la promesa de este sitio &mdash;
-      <em>tu archivo nunca sale de tu máquina</em> &mdash; cuando la máquina
-      que pulsa los botones no eres tú. La respuesta es que la promesa
-      sobrevive a la delegación por completo, o no sobrevive nada, según una
-      sola cosa: <strong>dónde corre el navegador del agente.</strong>
+      Para procesar archivos, la primera pregunta es <strong>dónde se ejecuta el navegador</strong>. Revisa también qué recibe el servicio del agente y si la función obtiene o comparte datos deliberadamente. Un navegador local no resuelve las tres preguntas.
     </p>
   </section>
 
@@ -26,34 +15,13 @@
       diferencia entre ellas pesa más que todo lo demás de esta página.
     </p>
     <p>
-      <strong>Un agente local</strong> corre en tu máquina: un asistente
-      instalado en tu equipo, o uno que conduce el navegador que tienes
-      delante. Cuando un agente así abre aquí una herramienta y le tiende tu
-      archivo, el trabajo ocurre donde ocurre siempre con estas páginas
-      &mdash; en un navegador, sobre tu hardware. El archivo se lee de tu
-      disco, se procesa en la memoria de tu navegador y se escribe de vuelta
-      en tu disco. La delegación no ha cambiado nada del camino que
-      recorren los bytes. Una IA eligió los ajustes; el archivo siguió sin
-      salir.
+      <strong>Un navegador controlado localmente</strong> lee y procesa en ese dispositivo. La herramienta local no añade una subida para procesar. El agente aún puede enviar instrucciones, capturas o contexto al proveedor según su implementación y ajustes.
     </p>
     <p>
-      <strong>Un agente en la nube</strong> ejecuta un navegador en un
-      equipo de su proveedor. Tú adjuntas un archivo a un chat, el agente
-      trabaja en una máquina virtual en otra parte, y todo lo que haga con
-      estas herramientas ocurre allí. Las herramientas siguen cumpliendo
-      exactamente lo prometido &mdash; el archivo no va más allá del
-      navegador en el que está &mdash;, pero ese navegador no es el tuyo, y
-      la subida ya ocurrió en el momento en que adjuntaste el archivo, antes
-      de que se abriera herramienta alguna. Ninguna página puede deshacer
-      una subida que la precedió.
+      <strong>Un navegador en la nube</strong> se ejecuta en el ordenador del proveedor. Si adjuntas un archivo para usarlo allí, ya ha salido de tu dispositivo. Estas herramientas lo procesan en ese navegador y no deshacen la transferencia anterior. Compartir y entregar a aplicaciones son acciones adicionales en ambos entornos.
     </p>
     <p>
-      Así que la pregunta que este sitio no deja de hacer &mdash; ¿este
-      trabajo necesita que mi archivo salga? &mdash; no desaparece cuando el
-      trabajo lo hace un agente. Solo se adelanta un paso, a la elección del
-      agente. Un agente local conduciendo una herramienta que vive entera en
-      el navegador es el arreglo raro en el que delegar no cuesta ninguna
-      privacidad: la IA hace el trabajo, y el archivo se queda en casa.
+      Especifica un navegador local cuando importe mantener allí el procesamiento, revisa el propio agente y autoriza los envíos deliberados por separado. <a href="../../extraer-recibos-facturas/">Cambio y entrega al correo</a>, <a href="../../imagenes-a-video/">importación por URL</a>, <a href="../../compartir-texto/">compartir</a> y <a href="../../remote-camera/">cámara</a> documentan sus límites de red.
     </p>
   </section>
 
@@ -91,24 +59,14 @@
         agente que parezca dudar con un ajuste se le puede decir que lea
         primero la guía &mdash; el mismo consejo que recibiría una persona.
       </li>
-      <li>
-        <strong>Las cadenas funcionan.</strong> Los trabajos que las guías
-        de flujos de este sitio describen para personas &mdash; escanear y
-        luego combinar en un <a href="../../imagenes-a-pdf/">PDF</a>; quitar
-        los datos <a href="../../eliminar-datos-exif/">EXIF</a> y luego
-        redimensionar &mdash; son los trabajos en los que los agentes
-        destacan, porque la salida de cada paso es la entrada del siguiente
-        y nada entre medias pide criterio.
-      </li>
+      <li><strong>Indica comprobaciones entre pasos.</strong> Para escanear a PDF o limpiar imágenes, pide revisar orden, recorte, legibilidad y tamaño. OCR, censura y decidir qué compartir requieren criterio y revisión del resultado.</li>
     </ul>
   </section>
 
   <section>
     <h2>Qué no delegar</h2>
     <p>
-      Un agente puede manejar todas las herramientas de aquí. Hay dos
-      lugares donde manejar no es todo el trabajo, y el resto debería
-      quedarse contigo.
+      Operar controles es solo una parte. Revisa decisiones que cambian lo que otros ven o reciben. Dos ejemplos:
     </p>
     <p>
       <strong>Decidir qué no debe verse.</strong> Las herramientas de
@@ -149,25 +107,9 @@
       propia página</a>.
     </p>
     <p>
-      Lo que este sitio hace por un agente lo hace a propósito y para todo
-      el mundo: cada control está etiquetado, porque los lectores de
-      pantalla necesitan nombres y un agente lee esos mismos nombres; las
-      páginas no tienen cuentas, ni ventanas emergentes, ni muros de
-      consentimiento que sortear; el código es público y se sirve sin paso
-      de compilación, de modo que el código que un agente audita es el que
-      corre; y
-      <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
-      es la caja entera en una petición. Nada de eso se añadió para las
-      máquinas. Una página legible para una persona con lector de pantalla
-      resulta legible para todo lo demás también.
+      Hay controles etiquetados, <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a> y copias Markdown. El código, módulos compartidos y motores son públicos. La compilación genera y minifica las páginas; compárala con la publicación para auditar. DevTools y diagnósticos WebRTC dependen del entorno del agente.
     </p>
     <p>
-      Un límite honesto: esta página trata de agentes que usan estas
-      herramientas, no de los agentes en sí. Lo que ve el proveedor de un
-      agente &mdash; tus instrucciones, tus capturas, a veces tus archivos
-      &mdash; es una pregunta aparte, y la costumbre a la que este grupo de
-      guías vuelve una y otra vez es también la lente correcta para ella:
-      pregúntate qué necesita salir de verdad de tu máquina, y en qué
-      estado.
+      Esta guía no garantiza la privacidad de un proveedor de agentes. Instrucciones, capturas y a veces archivos pueden enviarse aunque el navegador sea local. Incluye esas rutas y las funciones de red en la tarea; la ubicación del navegador no las prueba.
     </p>
   </section>

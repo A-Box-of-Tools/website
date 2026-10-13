@@ -1,0 +1,27 @@
+  <section>
+    <h2>Cole ou importe o XML</h2>
+    <p>Abra o formatador e cole XML ou escolha um arquivo de texto. Use dois espaços, quatro ou uma tabulação para indentar, ou a saída minificada. Copie ou baixe o resultado válido. Digitar invalida a saída anterior enquanto a nova entrada é conferida.</p>
+    <p>O parser roda localmente. Confere a sintaxe, mas não valida XSD ou DTD, não prova que a configuração serve à sua aplicação nem acessa URLs citadas no texto.</p>
+    <figure class="shot">
+      <img src="/screens/format-and-check-xml/mapping.webp" alt="Entrada XML e conversão JSON com atributo, string e elementos repetidos.">
+      <figcaption>O atributo vira @region, a porta continua string e elementos feature repetidos viram um array.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Siga um erro de análise</h2>
+    <p>Uma tag não fechada, fechamento incorreto ou referência de caractere inválida interrompem formatação e conversão. Ir ao erro move o cursor à posição indicada. O documento exige um elemento externo: duas raízes ou texto fora da raiz são recusados.</p>
+    <pre><code>&lt;settings&gt;
+  &lt;port&gt;8080&lt;/port&gt;
+&lt;/settings&gt;</code></pre>
+    <p>O texto DOCTYPE é preservado literalmente. Entidades externas não são resolvidas; citar arquivo ou site numa declaração não o carrega.</p>
+  </section>
+  <section>
+    <h2>Entenda os espaços antes de indentar</h2>
+    <p>Valores de texto, CDATA e elementos de conteúdo misto mantêm seu texto. Espaços só entre elementos filhos são tratados como layout, salvo com <code>xml:space="preserve"</code>. Isso facilita ler configurações, mas se a aplicação usa esses espaços como dados, confira antes de reutilizar.</p>
+  </section>
+  <section>
+    <h2>O que XML para JSON muda</h2>
+    <p>Escolha a direção antes de ler o resultado. Atributos viram chaves com <code>@</code>, elementos repetidos viram arrays e texto junto a outros conteúdos usa <code>#text</code>. Valores XML continuam strings: <code>&lt;port&gt;8080&lt;/port&gt;</code> não vira um número inferido.</p>
+    <p>A conversão JSON perde comentários e a ordem intercalada de texto misto e elementos filhos. Voltar não promete o documento original. Guarde uma cópia e compare os campos usados pela aplicação.</p>
+    <p>Para formatar JSON sem essa conversão, use o <a href="../../formatar-json/">formatador JSON</a>.</p>
+  </section>

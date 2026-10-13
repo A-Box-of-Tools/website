@@ -6,16 +6,8 @@
       are in, and they are not close to each other:
     </p>
     <ul>
-      <li>
-        <strong>The document opens, but will not print or copy.</strong> No
-        password is needed. Press the button and the restrictions are gone.
-        This is by far the commoner case.
-      </li>
-      <li>
-        <strong>The document asks for a password before it will open.</strong>
-        You need that password. Nothing on that page &mdash; or on any honest
-        page &mdash; will find it for you.
-      </li>
+      <li><strong>The document opens, but will not print or copy.</strong> If it has permission restrictions only, no password is needed here. Press the button to remove those restrictions.</li>
+      <li><strong>The document asks for a password before it will open.</strong> Supply a working user or owner password. This tool does not guess or recover one.</li>
     </ul>
     <p>
       The rest of this explains why those two are so different, which is worth
@@ -29,21 +21,8 @@
       A PDF has room for two passwords, and readers present them almost
       identically, which is where all the confusion comes from.
     </p>
-    <p>
-      The <strong>user password</strong> &mdash; usually called the open
-      password &mdash; is real. The contents of the file are genuinely
-      enciphered, the key is derived from that password, and the password is
-      not written down anywhere in the document. Without it, nobody reads the
-      file: not you, not a website, not the program that made it.
-    </p>
-    <p>
-      The <strong>owner password</strong> is a different thing wearing similar
-      clothes. It controls the <em>restrictions</em>: no printing, no copying,
-      no editing, no filling in the form. And a document very commonly has an
-      owner password with no user password at all &mdash; which is exactly the
-      file that opens the moment you double-click it and then refuses to
-      print.
-    </p>
+    <p>The <strong>user password</strong>, also called the open password, is used to decrypt a document that requires it. A working user or owner password can unlock it here. Without either, this tool leaves it closed; it does not search for a password or a key.</p>
+    <p>The <strong>owner password</strong> controls <em>permissions</em>: printing, copying, editing or filling in forms. A file may have an owner password with an empty user password, so it opens without a prompt while a reader enforces those restrictions.</p>
     <p>
       Here is the part almost nobody is told. A file that opens without asking
       you for anything <em>must contain everything needed to derive its own
@@ -54,11 +33,7 @@
       because they have agreed to. Adobe documented it that way from the
       beginning. It is a request, not a barrier.
     </p>
-    <p>
-      That is why removing restrictions is instant and removing an open
-      password is impossible. They are not two strengths of the same lock. One
-      is a lock and one is a note on the door.
-    </p>
+    <p>Removing permission restrictions from a file that already opens needs no password search. Removing a required open password here needs a working password you supply. Those are different operations, and the page identifies the case before proceeding.</p>
   </section>
 
   <section>
@@ -133,20 +108,8 @@
 
   <section>
     <h2>If you have lost the open password</h2>
-    <p>
-      Then the document is lost, and it is worth hearing that plainly rather
-      than working through a series of sites that will each take your file
-      first.
-    </p>
-    <p>
-      Search results for this are full of &ldquo;PDF password recovery&rdquo;
-      tools. What they do is guess: a dictionary, then patterns, then every
-      combination, which is fast for a short password and never finishes for a
-      long one. Some of them run on your machine, most of them upload your
-      document to a server that guesses for you, and a great many take payment
-      before telling you whether it worked. If the file was made in the last
-      few years with a real password, none of them will get in.
-    </p>
+    <p>This tool cannot recover a lost open password. First ask the sender for the password or an accessible copy, and keep the original while you investigate.</p>
+    <p>Password-recovery tools try candidates or attack weak, obsolete protection. Success depends on the password and encryption: a short or predictable password is different from a strong password under modern encryption. Some tools run locally and some require an upload. None of that search is performed by the PDF Unlocker here.</p>
     <p>
       The <a href="../../unlock-pdf/">PDF Unlocker</a> does not guess, and does
       not offer to. There is no dictionary and no loop in it anywhere &mdash;

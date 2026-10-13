@@ -84,10 +84,19 @@ agree, because a transcription error is the one bug in this tool that no amount
 of correct code would catch — and the failure mode is a letter six weeks later,
 not an exception.
 
-Every entry also carries `source.authority`, `source.document` and
-`source.checked`, and the page prints all three. Governments change these. A
+Every cited entry also carries `source.authority`, `source.document`, an HTTPS
+`source.url` and `source.checked`. The page links the citation to the official
+publication and prints the date the figures were read. Adding or repairing a
+URL does not move that date: finding the publication again is not a recheck of
+every number. Move it when the transcribed facts or attribution are rechecked.
+Governments change these. A
 tool that quietly applies a rule from three years ago is worse than one that
 admits it is a transcription and says when it was made.
+
+A preferred pixel size is stored with `digital.advisory: true`. The exporter
+still writes that preset, but the chooser, facts and landing metadata mark it
+as guidance. The byte limits remain requirements. A note names the distinction
+and directs the applicant to their current form or examination notice.
 
 ### The four points are found, and there is still no face model
 
@@ -264,9 +273,9 @@ at 4 and 3 the same sheet holds six photographs instead of eight.
 
 ## The page each rule has to itself
 
-`/id-photo/us-passport/`, `/id-photo/de-passport/` and forty-seven like them,
+`/id-photo/us-passport/`, `/id-photo/de-passport/` and the other sourced portraits,
 in every language the tool is published in. The tool's own page is one address
-holding sixty-seven rules behind a menu, so it can answer "Canada passport photo
+holding the rulebook behind a menu, so it can answer "Canada passport photo
 size" for nobody who has not already opened it. A landing page is that answer
 somewhere it can be found: the figures, the notes, who published them and the
 day they were read - and then a button to `../#ca-passport`, which
@@ -340,10 +349,10 @@ key the English block lacks and on a key a translation lacks, in that order.
 
 The citation is the other half, and it is a separate file because it is
 somebody else's writing rather than ours: the authority, the title of the
-document, the date it was read, and `native` where the document's own name for
+document, its official HTTPS address, the date it was read, and `native` where the document's own name for
 itself is a different word from the one this site prints.
-`tests/js/id-photo-sources.test.js` keeps that file a table of names — nothing
-long, nothing that reads like a sentence — which is what pays for its exemption
+`tests/js/id-photo-sources.test.js` keeps that file a table of names and URLs —
+short names, no sentences, and HTTPS links without credentials — which is what pays for its exemption
 from the count in `tests/python/test_english_in_js.py`.
 
 Then run `landing/emit.mjs` - see the section above - so the country's page

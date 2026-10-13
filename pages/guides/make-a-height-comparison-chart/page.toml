@@ -26,10 +26,10 @@ lede = """
     charts exist. Here is how to make one that is right as well as
     convincing."""
 
-updated = "30 August 2026"
+updated = "12 October 2026"
 published = "2026-08-30"
-lastmod = "2026-08-30"
+lastmod = "2026-10-12"
 
 og_title = "Making a height comparison chart"
 og_description = "How to write the heights, which figure to pick, and why one familiar object on the chart does more than a third person."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

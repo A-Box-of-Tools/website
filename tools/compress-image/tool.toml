@@ -11,7 +11,7 @@ slug = "compress-image"
 name = "Image Compressor"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
-heading = "Image&nbsp;Compressor <span class=\"h1-kw\">&mdash; compress to an exact size</span>"
+heading = "Image&nbsp;Compressor <span class=\"h1-kw\">&mdash; fit an image under a size limit</span>"
 tagline = "Name the size. It works out the rest."
 icon = "&#128476;&#65039;"          # the mark beside the page heading
 favicon = "&#128476;"      # the tab icon, drawn into an inline SVG
@@ -40,12 +40,12 @@ js_parts = ["image-input", "file-picker", "zip", "crc32", "message-box", "downlo
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["images-to-pdf"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Compress Image to a Target Size &mdash; Free, No Upload"
-description = "Compress a JPEG, PNG, WebP or AVIF to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline."
+description = "Compress a JPEG, PNG, WebP or AVIF to fit a file-size limit, such as 100 KB or 2 MB. The result aims at or below your target, not an exact byte count. No upload, works offline."
 og_title = "Compress an image to a size you choose"
 og_description = "Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image Compressor - name a size, keep the quality"
@@ -125,13 +125,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "Your images have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your files
-      could be collected at, and nothing in the code that would send them if there
-      were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -211,14 +206,8 @@ a = """
         none of which belongs to this site."""
 
 [[faq]]
-q = "How does it hit an exact size?"
-a = """
-        By trying. There is no formula that turns a quality setting into a byte
-        count &mdash; it depends entirely on the picture &mdash; so the tool encodes
-        the image several times and searches for the answer. It starts at the top of
-        the quality range and narrows in by halving, which finds the highest quality
-        that fits in about eight encodes. Every size you see on the page is a real
-        encoded file, not an estimate."""
+q = "How does it fit a file-size limit?"
+a = "It encodes and measures several candidates, then searches for the highest quality that fits. The result is at or below the target when a fitting candidate can be produced, not necessarily the exact number of bytes you entered. A file already under the limit stays unchanged. If quality alone cannot fit, the tool reduces the dimensions; inspect the result before using it."
 
 [[faq]]
 q = "What does \"minimal loss\" actually mean here?"
@@ -278,7 +267,7 @@ description = "Compress JPEG, PNG and WebP images to a size you name. The tool s
 features = [
   "Compresses to a target file size you choose, not a quality number you have to guess",
   "Keeps full resolution where it can, and resizes only when quality alone cannot reach the target",
-  "Spends the whole budget: the result lands just under the target rather than far below it",
+  "Searches near the limit without promising an exact byte count",
   "Measures the result against the original with SSIM and PSNR",
   "Leaves files that are already under the target completely untouched",
   "JPEG, PNG and WebP, with an automatic format choice",

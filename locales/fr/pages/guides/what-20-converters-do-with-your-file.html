@@ -1,11 +1,8 @@
   <section>
     <h2>La réponse courte</h2>
+    <p>Le 17 septembre 2026, nous avons confié le même fichier à vingt convertisseurs gratuits et enregistré les tailles des corps de requête avec les mécanismes décrits ci-dessous. <strong>Dix-neuf sur vingt l&rsquo;ont envoyé.</strong> Un ne l&rsquo;a pas fait.</p>
     <p>
-      Le 17 septembre 2026, nous avons donné le même fichier à vingt convertisseurs gratuits en ligne et mesuré chaque octet quittant le navigateur.
-      <strong>Dix-neuf l’ont envoyé.</strong> Un ne l’a pas fait.
-    </p>
-    <p>
-      Ce résultat était assez prévisible. Trois constats l’étaient moins : <strong>onze des dix-neuf ont envoyé le fichier dès sa sélection</strong>, avant le clic sur Convertir et avant toute possibilité de changer d’avis ;
+      Ce résultat était assez prévisible. Trois constats l’étaient moins : <strong>treize des dix-neuf ont envoyé le fichier dès sa sélection</strong>, avant le clic sur Convertir et avant toute possibilité de changer d’avis ;
       <strong>chaque fichier terminé recherché ensuite restait accessible à une simple adresse web</strong>, sans cookie, connexion ou session ; et <strong>deux services plaçaient le nom du fichier dans cette adresse</strong>.
     </p>
     <p>
@@ -20,17 +17,10 @@
     </p>
 
     <h3>Le fichier</h3>
-    <p>
-      Un PNG de 450&nbsp;&times;&nbsp;350 rempli de pixels aléatoires, environ 542&nbsp;Ko, nommé <code>abox-probe-9471.png</code>. Le bruit aléatoire ne se compresse pas : sa taille reste stable et révèle clairement une requête qui le transporte. Le nom distinctif permet de le retrouver dans une URL, ce qui s’est avéré utile.
-    </p>
+    <p>Un PNG de &#x2066;450 x 350&#x2069; pixels aléatoires, environ 542&nbsp;Ko, nommé <code>abox-probe-9471.png</code>. Le bruit aléatoire se compresse difficilement. Une charge de taille proche est un indice, mais il faut inspecter le corps de requête pour établir ce qui a été envoyé. Le nom distinctif permettait de retrouver le fichier dans une URL ensuite.</p>
 
     <h3>La mesure</h3>
-    <p>
-      Avant de fournir le fichier, chaque moyen d’envoi de données du navigateur a été remplacé par une version qui enregistre la taille reçue puis effectue l’opération normale : <code>fetch</code>,
-      <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>,
-      <code>WebSocket.send</code>, et &mdash; point essentiel &mdash;
-      <code>HTMLFormElement.submit</code>. Le fichier a ensuite été placé dans le champ de la page, qui est restée inactive dix secondes, puis l’enregistrement a été lu.
-    </p>
+    <p>Avant de fournir le fichier, nous avons instrumenté ces API de requête pour enregistrer la taille des données reçues, puis effectuer leur action normale&nbsp;: <code>fetch</code>, <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>, <code>WebSocket.send</code> et, surtout, <code>HTMLFormElement.submit</code>. Le fichier a ensuite été placé dans le sélecteur de la page, puis nous avons attendu dix secondes et lu l&rsquo;enregistrement.</p>
     <p>
       L’interception du formulaire est essentielle. Plusieurs services envoient par un formulaire HTML plutôt que par script, ce qui échappe aux interceptions de
       <code>fetch</code> et <code>XMLHttpRequest</code> habituellement utilisées. PicResize affiche localement l’image depuis une adresse
@@ -48,9 +38,7 @@
 
   <section>
     <h2>Le tableau</h2>
-    <p>
-      Chaque nombre d’octets ci-dessous a été mesuré sur le réseau le 17 septembre 2026. La dernière colonne résume la politique publiée par le site ce jour-là.
-    </p>
+    <p>Les tailles ci-dessous sont les mesures de corps de requête rapportées le 17 septembre 2026&nbsp;; les valeurs manquantes le restent. La dernière colonne conserve les résumés de politiques rapportés ce jour-là. Les liens pointent vers des pages de référence actuelles, vérifiées le 12 octobre 2026, pas vers des preuves archivées de la rédaction antérieure.</p>
 
     <figure class="data">
       <div class="scroll">
@@ -65,25 +53,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>Squoosh</td><td>Non</td><td>0</td><td>&mdash;</td><td>rien à conserver</td></tr>
-            <tr><td>TinyPNG</td><td>Oui, dès la sélection</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 heures</td></tr>
-            <tr><td>iLoveIMG</td><td>Oui, dès la sélection</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 heures</td></tr>
-            <tr><td>iLovePDF</td><td>Oui, dès la sélection</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 heures</td></tr>
-            <tr><td>Sejda</td><td>Oui, dès la sélection</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>après traitement ; liens partagés 7 jours</td></tr>
-            <tr><td>PDF24</td><td>Oui, dès la sélection</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>&ldquo;généralement&rdquo; 1 heure</td></tr>
-            <tr><td>PDF Candy</td><td>Oui, dès la sélection</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 heures</td></tr>
-            <tr><td>jpg2pdf.com</td><td>Oui, dès la sélection</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 heure, dans les conditions</td></tr>
-            <tr><td>Img2Go</td><td>Oui, dès la sélection</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</td></tr>
-            <tr><td>Online-Convert</td><td>Oui, dès la sélection</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 heures</td></tr>
-            <tr><td>PDF2Go</td><td>Oui, dès la sélection</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</td></tr>
-            <tr><td>Compress2Go</td><td>Oui, dès la sélection</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</td></tr>
-            <tr><td>PicResize</td><td>Oui, dès la sélection</td><td>542,568</td><td><code>picresize.com/en/edit</code>, formulaire POST</td><td>20 minutes</td></tr>
-            <tr><td>ResizePixel</td><td>Oui, dès la sélection</td><td>formulaire POST</td><td><code>resizepixel.com/</code></td><td>sous 1 heure</td></tr>
-            <tr><td>CloudConvert</td><td>Oui, à la conversion</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 heures</td></tr>
-            <tr><td>Convertio</td><td>Oui, à la conversion</td><td>non capturé</td><td><code>convertio.co/process/&hellip;</code></td><td>24 heures</td></tr>
-            <tr><td>Ezgif</td><td>Oui, à la conversion</td><td>542,483</td><td><code>ezgif.com/optimize</code>, formulaire POST</td><td>1 heure après la dernière utilisation</td></tr>
-            <tr><td>Aconvert</td><td>Oui, à la conversion</td><td>formulaire POST</td><td><code>aconvert.com/results.php</code></td><td>2 heures</td></tr>
-            <tr><td>Online2PDF</td><td>Oui, à la conversion</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>&ldquo;immédiatement&rdquo;</td></tr>
+            <tr><td>Squoosh</td><td><a href="https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md" target="_blank" rel="noopener noreferrer">Non</td><td>0</td><td>&mdash;</td><td>rien à conserver</a></td></tr>
+            <tr><td>TinyPNG</td><td><a href="https://tinypng.com/terms" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 heures</a></td></tr>
+            <tr><td>iLoveIMG</td><td><a href="https://www.iloveimg.com/help/terms" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 heures</a></td></tr>
+            <tr><td>iLovePDF</td><td><a href="https://www.ilovepdf.com/help/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 heures</a></td></tr>
+            <tr><td>Sejda</td><td><a href="https://www.sejda.com/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>après traitement ; liens partagés 7 jours</a></td></tr>
+            <tr><td>PDF24</td><td><a href="https://www.pdf24.org/en/privacy-policy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>&ldquo;généralement&rdquo; 1 heure</a></td></tr>
+            <tr><td>PDF Candy</td><td><a href="https://pdfcandy.com/help.html" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 heures</a></td></tr>
+            <tr><td>jpg2pdf.com</td><td><a href="https://jpg2pdf.com/terms" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 heure, dans les conditions</a></td></tr>
+            <tr><td>Img2Go</td><td><a href="https://www.img2go.com/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</a></td></tr>
+            <tr><td>Online-Convert</td><td><a href="https://www.online-convert.com/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 heures</a></td></tr>
+            <tr><td>PDF2Go</td><td><a href="https://www.pdf2go.com/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</a></td></tr>
+            <tr><td>Compress2Go</td><td><a href="https://www.compress2go.com/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 heures</a></td></tr>
+            <tr><td>PicResize</td><td><a href="https://picresize.com/en/privacypolicy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>542,568</td><td><code>picresize.com/en/edit</code>, formulaire POST</td><td>20 minutes</a></td></tr>
+            <tr><td>ResizePixel</td><td><a href="https://www.resizepixel.com/en/privacy" target="_blank" rel="noopener noreferrer">Oui, dès la sélection</td><td>formulaire POST</td><td><code>resizepixel.com/</code></td><td>sous 1 heure</a></td></tr>
+            <tr><td>CloudConvert</td><td><a href="https://cloudconvert.com/privacy" target="_blank" rel="noopener noreferrer">Oui, à la conversion</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 heures</a></td></tr>
+            <tr><td>Convertio</td><td><a href="https://convertio.co/privacy/" target="_blank" rel="noopener noreferrer">Oui, à la conversion</td><td>non capturé</td><td><code>convertio.co/process/&hellip;</code></td><td>24 heures</a></td></tr>
+            <tr><td>Ezgif</td><td><a href="https://ezgif.com/privacy" target="_blank" rel="noopener noreferrer">Oui, à la conversion</td><td>542,483</td><td><code>ezgif.com/optimize</code>, formulaire POST</td><td>1 heure après la dernière utilisation</a></td></tr>
+            <tr><td>Aconvert</td><td><a href="https://www.aconvert.com/privacy.html" target="_blank" rel="noopener noreferrer">Oui, à la conversion</td><td>formulaire POST</td><td><code>aconvert.com/results.php</code></td><td>2 heures</a></td></tr>
+            <tr><td>Online2PDF</td><td><a href="https://online2pdf.com/privacy" target="_blank" rel="noopener noreferrer">Oui, à la conversion</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>&ldquo;immédiatement&rdquo;</a></td></tr>
             <tr><td>IMGonline</td><td>Oui, à la conversion</td><td>542,633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>aucune politique trouvée</td></tr>
           </tbody>
         </table>
@@ -95,19 +83,27 @@
   </section>
 
   <section>
-    <h2>Onze envoient avant le moindre clic</h2>
+    <h2>Les observations et leurs limites</h2>
+    <p>Le tableau publié est disponible en <a href="/data/converter-observations-2026-09-17.json">JSON avec provenance et limites</a> et en <a href="/data/converter-observations-2026-09-17.csv">lignes CSV</a>. Ces fichiers transcrivent l&rsquo;article&nbsp;; ce n&rsquo;est pas un nouveau test. Le tableau compte treize envois à la sélection, corrigeant les onze précédemment annoncés dans le texte.</p>
+    <p>Les requêtes originales, la version du navigateur, le fichier aléatoire exact et les copies historiques des politiques n&rsquo;ont pas été conservés avec l&rsquo;article. Les chiffres restent donc des observations rapportées, pas des données brutes vérifiables indépendamment. Les mécanismes ne couvrent pas tous les transferts&nbsp;: navigation de formulaires, autres cadres, workers et WebRTC demandent une inspection séparée. Un zéro signifie que ce test n&rsquo;a enregistré aucun envoi, pas qu&rsquo;aucun transfert n&rsquo;est possible.</p>
+    <p>Pour refaire la comparaison, créez un nouveau fichier synthétique, notez ses octets exacts et son SHA-256, puis utilisez un nouveau profil de navigateur. Conservez une capture réseau avec les corps de requête et les navigations préservées&nbsp;; inspectez sélection et conversion séparément. Notez version du navigateur, URL, heure, action, destination, taille du corps et présence du fichier de test dans celui-ci. Retirez identifiants et liens privés de résultats avant de partager. Conservez texte de politique, URL et date, et consignez les tests inachevés à part.</p>
+    <p>Une URL de fichier qui répond sans session établit l&rsquo;accès pour qui possède cette URL au moment du contrôle. Vérifiez à nouveau après le délai annoncé avant d&rsquo;affirmer que la suppression a échoué. Ni ce contrôle ni une capture réseau n&rsquo;établit ce qui reste dans les journaux ou sauvegardes internes.</p>
+  </section>
+
+  <section>
+    <h2>Treize envoient avant le moindre clic</h2>
     <p>
-      Nous ne nous attendions pas à un résultat aussi déséquilibré. Dans onze des dix-neuf cas, le fichier partait déjà vers un serveur alors que la page affichait encore un bouton Convertir non utilisé.
+      Nous ne nous attendions pas à un résultat aussi déséquilibré. Dans treize des dix-neuf cas, le fichier partait déjà vers un serveur alors que la page affichait encore un bouton Convertir non utilisé.
     </p>
     <p>
       Chez iLoveIMG, la page affichait <em>Compresser les IMAGES</em>, en attente du démarrage, alors que 542 816 octets étaient déjà partis vers
       <code>api9.iloveimg.com</code>. Même comportement chez iLovePDF, PDF24, PDF Candy, Sejda, TinyPNG, jpg2pdf et les quatre sites de la plateforme décrite plus bas.
     </p>
     <p>
-      La raison technique est valable : envoyer pendant la lecture des options rend la conversion presque immédiate après confirmation. Cela améliore la rapidité, mais retire discrètement une étape supposée acquise. Choisir un fichier ressemble à l’ouvrir ; cliquer sur Convertir, à l’envoyer. Sur onze de ces vingt sites, ces deux moments n’en font qu’un, le premier.
+      La raison technique est valable : envoyer pendant la lecture des options rend la conversion presque immédiate après confirmation. Cela améliore la rapidité, mais retire discrètement une étape supposée acquise. Choisir un fichier ressemble à l’ouvrir ; cliquer sur Convertir, à l’envoyer. Sur treize de ces vingt sites, ces deux moments n’en font qu’un, le premier.
     </p>
     <p>
-      Conséquence précise : sur ces onze sites, remarquer le mauvais fichier &mdash; brouillon non expurgé, fiche de paie, photo à recadrer &mdash; n’est possible qu’après son départ.
+      Conséquence précise : sur ces treize sites, remarquer le mauvais fichier &mdash; brouillon non expurgé, fiche de paie, photo à recadrer &mdash; n’est possible qu’après son départ.
     </p>
   </section>
 
@@ -134,10 +130,7 @@
         <code>srv2.imgonline.com.ua/result_img/&hellip;</code> a rendu un JPEG de 128 179 octets.
       </li>
     </ul>
-    <p>
-      C’est une pratique web ordinaire, pas une intrusion : les adresses comportent une longue partie aléatoire impossible à deviner en pratique. Mais précisons ce qui protège le fichier : ni mot de passe, ni compte.
-      <strong>C’est le secret de l’URL</strong> &mdash; et une URL est peu secrète sur le Web. Elle passe dans l’historique, les captures de la barre d’adresse, un en-tête <code>Referer</code> vers la page suivante, les éventuels proxys et les messages où l’on partage le lien plutôt que le fichier.
-    </p>
+    <p>Les adresses testées contenaient des éléments difficiles à deviner. Toute personne les connaissant pouvait récupérer le résultat au moment du contrôle. Un lien peut circuler par historique, capture d&rsquo;écran, message ou référent lorsque la politique de la page le permet. HTTPS cache le chemin à un intermédiaire réseau ordinaire&nbsp;; la politique de référent détermine ce qu&rsquo;un autre site reçoit ensuite. L&rsquo;observation porte sur ces quatre liens, pas sur toutes les méthodes de téléchargement d&rsquo;un convertisseur.</p>
     <p>
       Aconvert avertit sur sa page de résultat que les fichiers ne restent pas plus de deux heures et qu’il ne faut pas créer de liens depuis d’autres sites. C’est le bon avertissement, au bon endroit et au bon moment. C’est aussi le seul des quatre à le donner.
     </p>
@@ -192,10 +185,7 @@
       Deux sites méritent d’être cités pour la raison inverse.
       <strong>jpg2pdf.com</strong> n’a pas de politique de confidentialité à l’adresse habituelle : le seul lien juridique est <code>/terms</code>, où la promesse d’une heure figure dans un document &ldquo;Conditions et confidentialité&rdquo;. Bonne promesse, emplacement étrange. Pour <strong>IMGonline</strong> nous n’avons trouvé aucune politique : ni lien en page d’accueil anglaise, ni document aux adresses habituelles, ni indication de stockage ou suppression dans l’outil. Ses résultats restent accessibles à toute personne ayant le lien.
     </p>
-    <p>
-      Le nombre d’heures n’est pourtant pas le point essentiel du tableau.
-      <strong>Aucune de ces promesses ne peut être réfutée depuis votre position.</strong> Vous ne voyez ni la suppression, ni son application aux sauvegardes, journaux, rapports d’erreur contenant la requête ou réseaux de diffusion ayant mis le résultat en cache. Vous ne voyez pas leur devenir lors d’un rachat ou d’une intrusion. La politique décrit l’intention d’inconnus sur une machine inaccessible ; les politiques honnêtes et malhonnêtes peuvent employer les mêmes mots.
-    </p>
+<p>Le nombre d&rsquo;heures ne dit pas tout. <strong>Un lien public qui renvoie encore le fichier après le délai annoncé peut révéler une suppression manquée.</strong> Un lien expiré ne prouve pas que toutes les copies internes ont disparu. Vous ne voyez pas si la suppression a atteint les sauvegardes, journaux, rapports d&rsquo;erreur contenant le corps de requête ou le réseau qui a mis le résultat en cache. Le devenir de ces copies après un rachat ou une intrusion reste invisible. Une politique énonce des intentions sur des systèmes que vous ne pouvez inspecter&nbsp;; les promesses honnêtes et malhonnêtes peuvent employer les mêmes mots.</p>
     <p>
       Voilà l’intérêt d’un outil incapable d’envoyer le fichier : cela ne signifie pas que les entreprises mentent, mais qu’avec aucun envoi, il n’y a rien à promettre ni à croire sur parole.
     </p>
@@ -203,9 +193,7 @@
 
   <section>
     <h2>Celui qui n’a rien envoyé</h2>
-    <p>
-      Squoosh, le compresseur Google, a reçu, affiché et comprimé le fichier sans <strong>aucune requête réseau</strong>. Pas une requête réduite ou hachée : zéro octet, selon la méthode qui avait détecté les 542 566 octets de TinyPNG une minute avant.
-    </p>
+    <p>Squoosh, le compresseur de Google, a reçu, affiché et comprimé le fichier, et <strong>ce test n&rsquo;a enregistré aucun envoi du fichier</strong>. Zéro octet d&rsquo;envoi rapporté, avec la même mesure qui avait enregistré 542&nbsp;566 octets quittant TinyPNG une minute auparavant.</p>
     <p>
       C’est le témoin de l’expérience : la mesure peut être négative, donc les dix-neuf résultats positifs ne viennent pas d’une méthode qui trouve toujours quelque chose. Il prouve aussi que le même travail et les mêmes formats fonctionnent dans un navigateur sans serveur, contrairement à l’idée qu’une conversion exige un envoi.
     </p>
@@ -231,17 +219,12 @@
 
   <section>
     <h2>Vérifiez vous-même</h2>
-    <p>
-      La méthode est publiée pour que chacun puisse reconstruire le tableau et contester nos résultats. Le test le plus rapide ne demande aucun outil :
-    </p>
+    <p>Les enregistrements originaux ne sont pas disponibles&nbsp;: le tableau historique ne peut donc pas être vérifié à partir des requêtes brutes. La méthode ci-dessus permet une nouvelle comparaison. La version rapide ne demande aucun outil particulier&nbsp;:</p>
     <ul>
       <li>
         <strong>Débranchez.</strong> Chargez l’outil, coupez le Wi-Fi puis utilisez-le. Le travail local continue ; le travail distant s’arrête. Aucun texte publicitaire ne peut répondre à ce test.
       </li>
-      <li>
-        <strong>Observez l’onglet Réseau.</strong> Ouvrez les outils de développement, choisissez Réseau, triez par taille et utilisez l’outil. Si une photo de 4&nbsp;Mo est partie, une requête de 4&nbsp;Mo apparaît en haut. Regardez
-        <em>avant</em> le clic sur Convertir aussi bien qu’après &mdash; c’est tout le constat expliqué plus haut.
-      </li>
+      <li><strong>Regardez l&rsquo;onglet Réseau.</strong> Ouvrez les outils de développement, choisissez Réseau, triez par taille et utilisez le convertisseur. Inspectez les charges des requêtes, pas seulement la colonne de taille transférée, qui décrit souvent les réponses. Une miniature, un envoi par morceaux ou un fichier encodé peut avoir une autre taille. Regardez <em>avant</em> et après le clic sur Convertir.</li>
       <li>
         <strong>Lisez la <code>connect-src</code>.</strong> Dans le code de la page, la <code>Content-Security-Policy</code> liste les adresses autorisées. Votre navigateur l’applique quelles que soient les tentatives du code. Une adresse appartenant au site permet d’y envoyer votre fichier.
       </li>
@@ -255,39 +238,34 @@
   <section>
     <h2>Comment ce site répond à la même question</h2>
     <p>
-      Après avoir mesuré vingt sites, il serait étrange de nous dispenser du même test. Voici les mêmes colonnes :
+      Le code de ce site est une preuve distincte des mesures historiques ci-dessus. L’implémentation actuelle fait les affirmations suivantes ; vérifiez la fonction voulue avec les <a href="../est-il-sur-d-envoyer-ses-fichiers/">quatre contrôles</a>.
     </p>
     <ul>
       <li>
-        <strong>Octets envoyés : zéro.</strong> Chaque outil travaille dans votre navigateur. Aucune requête ne transporte fichier, miniature, nom, taille ou contenu extrait.
+        <strong>Hors ligne.</strong> Le traitement local fonctionne avec ressources chargées et cache prêt. Images web, taux en ligne et présentation des navigateurs nécessitent leurs connexions.
       </li>
       <li>
-        <strong>Destination : aucune.</strong> Aucun serveur ne peut le recevoir. Le site ne contient que des fichiers statiques ; la <code>connect-src</code> de sa Content-Security-Policy nomme les services publicitaires et de mesure Google et le bouton de don, et <strong>aucune adresse de cette liste n’appartient à ce site</strong>.
+        <strong>Requêtes.</strong> Le code de traitement n’envoie pas les fichiers choisis. Vues de pages et réponses fixes facultatives sont distinctes. Les taux transmettent devises et date ; les fonctions entre pairs envoient volontairement du contenu au navigateur choisi. <strong>Politique.</strong> La plupart héritent des destinations de plateforme. Les reçus ajoutent Frankfurter ; partage et caméra ajoutent le rendez-vous. La politique limite des destinations, sans prouver chaque donnée.
       </li>
       <li>
-        <strong>Conservation : sans objet</strong>, la seule réponse qui n’exige aucune promesse. Rien n’arrive, donc aucun délai de suppression à croire.
+        <strong>Conservation.</strong> abox.tools ne reçoit pas les fichiers pour traitement ; cette opération ne crée donc pas de copie serveur à supprimer. Les données locales, journaux de rendez-vous de sept jours et copies gardées par les destinataires de partage ou messagerie sont des chemins distincts décrits dans Confidentialité.
       </li>
       <li>
-        <strong>Vérifiable : oui.</strong> Chaque ligne est
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">publique</a>, le build retire seulement commentaires et espaces superflus. Vous pouvez l’exécuter et comparer le résultat à la version servie.
+        <strong>Code.</strong> Le <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">code est public</a>. Compilez et comparez le résultat, composants partagés et moteurs inclus compris.
       </li>
     </ul>
     <p>
-      Les exceptions sont explicites : publicités Google et compteur de visites contactent Google sans rien recevoir sur vos fichiers ; l’outil
-      <a href="../../images-en-video/">Images en vidéo</a> peut récupérer une image depuis l’adresse collée, dont le serveur voit alors votre IP ; et <a href="../../partager-du-texte/">Partager du texte</a> ouvre une connexion pour présenter deux navigateurs, sans stockage ni transport de votre contenu. La <a href="../../confidentialite/">page Confidentialité</a> explique les trois en détail.
+      La <a href="../../confidentialite/">page de confidentialité</a> décrit les limites : <a href="../../images-en-video/">imports par URL</a>, <a href="../../extraire-recus-factures/">taux facultatifs et remise aux applications</a>, <a href="../../partager-du-texte/">partage entre navigateurs</a> et <a href="../../remote-camera/">caméra distante</a>, ainsi que publicité, Analytics et avis fixes. Transférer volontairement est distinct d’envoyer pour traitement.
     </p>
     <p>
-      Si vous cherchiez un des vingt sites, nos équivalents sont un <a href="../../compresser-une-image/">compresseur d'images</a> qui atteint la taille demandée, <a href="../../images-en-pdf/">images en PDF</a>,
-      <a href="../../fusionner-des-pdf/">fusionneur PDF</a>, un
-      <a href="../../compresser-un-pdf/">compresseur de PDF</a>, et un
-      <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur EXIF</a> pour les données cachées décrites plus haut. Gratuits, sans compte et sans destination où envoyer vos fichiers.
+      Exemples locaux : <a href="../../compresser-une-image/">compresser vers une taille cible</a>, <a href="../../recadrer-une-video/">recadrer une vidéo</a>, <a href="../../supprimer-les-donnees-exif/">supprimer EXIF et GPS</a> et <a href="../../images-en-pdf/">créer un PDF à partir d’images</a>. Vérifiez formats et résultat. Ces tâches n’exigent ni envoi pour traitement ni compte.
     </p>
   </section>
 
   <section>
     <h2>Utiliser ces chiffres</h2>
     <p>
-      Vous pouvez citer et reproduire les mesures. Pour un article, les faits utiles sont : vingt convertisseurs gratuits mesurés le 17 septembre 2026 ; dix-neuf ont envoyé le fichier ; onze l’ont fait avant le bouton Convertir ; les quatre résultats testés étaient accessibles à une adresse publique sans session.
+      Vous pouvez citer et reproduire les mesures. Pour un article, les faits utiles sont : vingt convertisseurs gratuits mesurés le 17 septembre 2026 ; dix-neuf ont envoyé le fichier ; treize l’ont fait avant le bouton Convertir ; les quatre résultats testés étaient accessibles à une adresse publique sans session.
     </p>
     <p>
       Un lien vers cette page est apprécié, sans obligation. Si une reproduction donne un autre résultat &mdash; les sites évoluent et ceci photographie un après-midi &mdash; signalez-le. La <a href="../../contact/">page de contact</a> permet de nous joindre ; une correction accompagnée d’un nombre d’octets sera publiée ici.

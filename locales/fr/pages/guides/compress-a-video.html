@@ -19,7 +19,7 @@
     <p>Une vidéo compressée est réencodée. L’image est décodée, redessinée plus petite puis écrite au nouveau débit : elle s’éloigne d’une génération de l’appareil d’origine. Le son n’est pas modifié : ses échantillons sont copiés exactement. La perte dépend de la limite : diviser la taille par deux perd peu ; réduire 900 Mo à 25 Mo supprime la plupart des bits, et cela se verra.</p>
     <ul>
       <li><strong>Demandez la taille nécessaire, pas moins.</strong> Si la limite est 25 Mo, choisissez 25 Mo ; 8 Mo supprime inutilement les deux tiers du budget de l’image.</li>
-      <li><strong>Coupez d’abord.</strong> La durée est l’autre facteur. Dix secondes inutiles consomment un débit qui aurait pu profiter à chaque seconde conservée. L’outil de <a href="../couper-une-video/">découpe vidéo</a> coupe sans réencoder : faites-le avant de compresser.</li>
+      <li><strong>Coupez d’abord.</strong> Retirer le temps inutile laisse plus de place à chaque seconde restante. Le <a href="../couper-une-video/">découpeur vidéo</a> copie les sélections compatibles sans réencoder ; les coupes exactes réencodent l’image. Choisissez le mode indiqué avant de compresser.</li>
       <li><strong>Retirez le son s’il est inutile.</strong> Une minute stéréo pèse environ un mégaoctet. Avec une limite serrée, ce mégaoctet peut faire la différence entre une image nette et brouillée.</li>
       <li><strong>Gardez l’original.</strong> La compression ne peut pas être annulée. Compressez une copie, envoyez la copie et gardez le fichier de l’appareil.</li>
     </ul>
@@ -36,5 +36,5 @@
   </section>
   <section>
     <h2>Les formats écrits et lus</h2>
-    <p>L’outil écrit un MP4 avec vidéo H.264, la combinaison lisible par tous les téléphones, navigateurs, messageries et clients de courrier. Il n’écrit pas WebM, HEVC ou AV1, plus petits à qualité égale mais illisibles chez une partie des destinataires. Il lit MP4 et MOV, produits par les téléphones, appareils photo et enregistreurs d’écran, avec tout codec décodable par votre navigateur. Une vidéo HEVC d’iPhone s’ouvre sur la plupart des ordinateurs. WebM, MKV et AVI ne sont pas encore lus ; la page le signale.</p>
+    <p>Il écrit un MP4 avec vidéo H.264 et audio original copié. H.264 en MP4 est largement pris en charge, mais le destinataire doit accepter le codec audio et le profil vidéo. Testez le fichier dans l’application prévue. Il lit MP4 et MOV avec des codecs décodables par le navigateur ; pas WebM, MKV ni AVI. Il n’écrit pas de WebM, HEVC ni AV1.</p>
   </section>

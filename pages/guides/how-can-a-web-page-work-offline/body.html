@@ -1,22 +1,10 @@
   <section>
     <h2>The short answer</h2>
     <p>
-      A web page normally lives and dies by its connection because every
-      visit refetches it. But a page may ship a small program called a
-      <em>service worker</em>, which the browser installs alongside the
-      page and puts in charge of its network traffic. On the first visit,
-      that worker stores a complete copy of everything the page is made of
-      &mdash; markup, styles, scripts &mdash; in a cache on your machine.
-      From then on, requests are answered from that copy. When the wi-fi
-      dies, nothing changes, because nothing was being fetched anyway.
+      A service worker can store the resources a page needs in a cache on your device and answer later requests from that copy. This site caches each tool's page, scripts and local engines. Caching must finish first, browsers can refuse or evict a cache, and updates may require a connection. Check the tool's offline indicator before relying on the stored copy.
     </p>
     <p>
-      There is no magic and no special permission in any of this; it is
-      standard browser machinery, shipping in every major browser for
-      about a decade. What is unusual is a site leaning on it as hard as
-      this one does &mdash; because for a site whose whole promise is that
-      your files never leave, offline is not a convenience feature. It is
-      the proof.
+      A ready cache lets a local processing operation run without a connection. That demonstrates where that operation ran; it is not a guarantee about every feature or about what might be sent later. A service worker is caching machinery, not a privacy boundary by itself.
     </p>
   </section>
 
@@ -34,12 +22,7 @@
       its code might wish.
     </p>
     <p>
-      No privacy policy can offer that. A policy describes intentions and
-      can change; a page doing its job in airplane mode is physics. That
-      is why every tool on this site works offline and carries a live
-      indicator telling you whether you currently are &mdash; so you can
-      watch it flip as you toggle the connection, and run the strongest
-      check there is in about ten seconds.
+      Local processing tools show whether the offline copy is ready and whether a connection is available. Try the particular operation with a file from your device. Image imports, online rates, sharing and remote camera introductions have network steps and explain them beside their controls.
     </p>
   </section>
 
@@ -83,22 +66,8 @@
       plainly as its strength:
     </p>
     <ul>
-      <li>
-        <strong>It proves the moment, not the future.</strong> Work done
-        offline stayed on your machine, full stop. A page could in
-        principle hold data and send it after the connection returns
-        &mdash; so for the sharpest files, close the tab before
-        reconnecting, or check the other direction too: watch the Network
-        tab as the connection comes back.
-      </li>
-      <li>
-        <strong>It proves this page, not the site.</strong> Each page
-        answers for itself. The one here that does use the network says
-        so on its own page: the
-        <a href="../../share-text/">text-sharing tool</a>, whose whole job is
-        moving something between two devices, and which explains exactly
-        what its one connection carries.
-      </li>
+      <li><strong>It proves the operation while disconnected.</strong> A page could store data and send it later. Closing a tab alone does not erase persistent site storage. Inspect source, storage and requests after reconnection if you need evidence about the whole data path.</li>
+      <li><strong>It applies to a feature, not the entire site.</strong> <a href="../../share-text/">Sharing</a> and <a href="../../remote-camera/">Remote Camera</a> need introductions through the public rendezvous. Local network mode still needs that internet connection. <a href="../../images-to-video/">Image URL imports</a> and optional <a href="../../receipt-invoice-extractor/">online exchange rates</a> need their respective servers, while the local processing portions can work disconnected.</li>
       <li>
         <strong>It does not hide you.</strong> Loading the page in the
         first place told the site your address, like every page load on
@@ -106,11 +75,6 @@
       </li>
     </ul>
     <p>
-      Those limits are why the upload guide teaches four checks rather
-      than one &mdash; the Network tab, the security policy in the page
-      source, and the readable code cover what the plug-pull cannot. But
-      as first filters go, none is faster: if a tool cannot do its job
-      with the network gone, you have learned where the job happens, and
-      no further reading is required.
+      Use offline completion together with request inspection, policy and source review. A completed disconnected operation shows it did not need server processing at that moment. Failure alone cannot tell you why a connection was needed, and neither result replaces checking a feature's documented boundaries.
     </p>
   </section>

@@ -240,21 +240,18 @@ complete = true
 #
 
 [hub]
-privacy_heading = "Ihre Dateien bleiben bei Ihnen."
-privacy_lede = "Die Werkzeuge verarbeiten Ihre Dateien auf Ihrem Gerät. Einmal geöffnet, funktionieren sie auch offline weiter."
-support_heading = "Kostenlos, dank Ihrer Unterstützung."
-title = "Kostenlose Browser-Tools &mdash; ohne Upload, ohne Anmeldung | abox.tools"
+title = "Kostenlose Browser-Tools &mdash; lokale Dateiverarbeitung | abox.tools"
 # Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
-description = "Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 zusammenfügen, exakt komprimieren, Videos zuschneiden, EXIF entfernen."
-heading = "Kostenlose Werkzeuge. Dateien bleiben privat."
-og_title = "A Box of Tools &mdash; Werkzeuge, die ohne Server auskommen"
-og_description = "Kleine Werkzeuge für je eine Aufgabe, die vollständig in Ihrem Browser laufen. Ihre Dateien verlassen Ihr Gerät nicht."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
-schema_description = "Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit im Browser erledigen. Nichts wird hochgeladen, und ein Konto brauchen Sie nicht."
-schema_about = "Browser-Werkzeuge für Dateien, die lokal verarbeitet und nicht hochgeladen werden"
+description = "Kostenlose Tools verarbeiten Dateien im Browser: Bilder zu PDF oder MP4, auf eine Zielgröße komprimieren, Videos zuschneiden, EXIF entfernen."
+heading = "Kostenlose Werkzeuge. Lokale Verarbeitung."
+og_title = "A Box of Tools &mdash; Dateien lokal im Browser verarbeiten"
+og_description = "Kleine Werkzeuge verarbeiten Dateien auf Ihrem Gerät. Bewusstes Teilen und optionale Onlinefunktionen werden dort erklärt, wo Sie sie nutzen."
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
+schema_description = "Kleine Browser-Werkzeuge für lokale Dateiverarbeitung, ohne Upload zur Verarbeitung und ohne Konto. Netzwerkfunktionen werden auf ihren Seiten erklärt."
+schema_about = "Browser-Werkzeuge für lokale Dateiverarbeitung und bewusstes Teilen zwischen Browsern"
 
-lede = "Alles läuft in Ihrem Browser. Kein Upload, keine Anmeldung."
+lede = "Dateien im Browser verarbeiten. Kein Upload zur Verarbeitung, keine Anmeldung."
 
 support_note = """
       Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit
@@ -262,28 +259,23 @@ support_note = """
       etwas bittet."""
 
 # Drei nachprüfbare Tatsachen, kein Versprechen - genau wie im Englischen.
-[[hub.guarantees]]
-title = "Ihre Dateien verlassen Ihr Gerät nie"
-body = """
-        Ihr eigener Browser öffnet, liest und verarbeitet sie, auf Ihrer eigenen
-        Hardware. In der <code>Content-Security-Policy</code> jedes Werkzeugs
-        steht jede Adresse, die es überhaupt kontaktieren darf, und keine davon
-        gehört uns."""
+privacy_heading = "Ihre Dateien bleiben bei Ihnen."
+
+privacy_lede = "Die lokale Dateiverarbeitung funktioniert offline, sobald das Werkzeug gespeichert ist. Abrufen und Teilen benötigen eine Verbindung."
+
+support_heading = "Kostenlos, dank Ihrer Unterstützung."
 
 [[hub.guarantees]]
-title = "Über Ihre Dateien wird nichts verschickt"
-body = """
-        Nicht die Datei, nicht das Vorschaubild, nicht der Name, die Größe oder
-        die Anzahl. Keines der Werkzeuge hier liest so etwas aus, und am anderen
-        Ende sitzt auch kein Server, der es entgegennehmen könnte."""
+title = "Ihre Dateien werden auf Ihrem Gerät verarbeitet"
+body = "Ihr Browser öffnet, liest und bearbeitet die ausgewählten Dateien. Zur Verarbeitung wird nichts hochgeladen. Text und Dateien teilen sowie Remote-Kamera senden bewusst Inhalte an einen anderen Browser; ihre Seiten erklären die Verbindung."
 
 [[hub.guarantees]]
-title = "Es funktioniert offline"
-body = """
-        Öffnen Sie ein Werkzeug einmal, trennen Sie die Internetverbindung, und
-        es arbeitet unverändert an Ihren Dateien weiter. Vortäuschen lässt sich
-        das kaum, denn ein Werkzeug, das Ihre Dateien zum Verarbeiten
-        wegschickt, bliebe an dieser Stelle einfach stehen."""
+title = "Ihre Dateien gehen nicht an die Besuchsstatistik"
+body = "Seitenaufrufe und freiwillige feste Feedback-Antworten werden gezählt. Dabei werden weder Datei noch Name, Größe oder Inhalt übergeben. Optionale Bildimporte und Wechselkursabfragen für Belege erklären ihre übermittelten Angaben neben den Bedienelementen."
+
+[[hub.guarantees]]
+title = "Lokale Verarbeitung funktioniert offline"
+body = "Warten Sie, bis die Offline-Anzeige bereit meldet, und verarbeiten Sie dann ohne Verbindung Dateien von Ihrem Gerät. Webbilder, Onlinekurse und Verbindungen zwischen Browsern benötigen ein Netzwerk."
 
 [[hub.categories]]
 id = "images"
@@ -320,14 +312,10 @@ nav = "Alle Ratgeber"
 title = "Ratgeber &mdash; wie es geht und was jede Einstellung kostet"
 description = "Verständliche Ratgeber zum Komprimieren, Skalieren, Zuschneiden und Umwandeln eigener Dateien. Was die Einstellungen bedeuten, was sie kosten, warum kein Upload nötig ist."
 heading = "Ratgeber"
-lede = """
-    Zu jedem Werkzeug ein Ratgeber. Geschrieben für alle, denen jemand eine
-    Größe oder ein Format vorgegeben hat und die vorher wissen möchten, was der
-    Regler eigentlich tut, den sie gleich bewegen. Alles, was hier beschrieben
-    wird, passiert auf Ihrem eigenen Gerät."""
+lede = "Ratgeber zu den Werkzeugen und zu Aufgaben mit mehreren Schritten: was eine Einstellung bewirkt, was sie kostet und was am Ergebnis zu prüfen ist. Lokale Verarbeitung und bewusste Netzwerkfunktionen werden jeweils erklärt."
 og_title = "Die Ratgeber von abox.tools"
 og_description = "Komprimieren, skalieren, zuschneiden, kürzen, umwandeln. Und was jede Einstellung kostet. Ganz ohne Upload."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
 
 [[guides.groups]]
 id = "doing-the-job"
@@ -356,13 +344,9 @@ note = "Was wirklich passiert, wenn Sie eine Datei an eine Website übergeben, u
 [roadmap]
 nav = "Roadmap"
 title = "Roadmap &mdash; was abox.tools als Nächstes baut"
-description = "Alle geplanten Werkzeuge für abox.tools, offen und nach Gruppen sortiert, dazu die bereits fertigen. Alle laufen im Browser und laden nichts hoch."
+description = "Alle geplanten und fertigen Werkzeuge von abox.tools, offen und nach Gruppen geordnet. Dateien werden im Browser verarbeitet."
 heading = "Was als Nächstes kommt"
-lede = """
-    Alles auf beiden Listen erledigt seine Arbeit in Ihrem Browser und lädt
-    nichts hoch. Diese Regel muss ein Name bestehen, bevor er überhaupt hier
-    landet. Die Zahlen stehen nirgends geschrieben; der Build zählt sie an den
-    beiden Listen ab."""
+lede = "Alle Werkzeuge auf beiden Listen verarbeiten Dateien im Browser, ohne Upload zur Verarbeitung. Eine Funktion, die ein Netzwerk braucht, muss es auf ihrer Seite erklären. Die Zahlen werden beim Build aus den Listen ermittelt."
 
 intro_heading = "Wie diese Liste entstanden ist"
 intro = """
@@ -392,8 +376,8 @@ intro = """
 planned_heading = "Jede Art von Datei und was sich damit machen lässt"
 
 og_title = "Die Roadmap von abox.tools"
-og_description = "Was fertig ist und was als Nächstes kommt. Alles läuft im Browser und lädt nichts hoch."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_description = "Was fertig ist und was folgt. Lokale Dateiverarbeitung; erforderliche Netzwerkfunktionen werden erklärt."
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
 
 #
 # ---------------------------------------------------------------------------
@@ -408,10 +392,10 @@ og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 
 [not_found]
 title = "Seite nicht gefunden &mdash; abox.tools"
-description = "Diese Adresse gibt es auf abox.tools nicht. Hier stehen die Werkzeuge, die es gibt. Alle kostenlos, und keines lädt Ihre Dateien irgendwohin."
+description = "Diese Adresse gibt es auf abox.tools nicht. Hier sind die kostenlosen Browser-Werkzeuge zur Dateiverarbeitung auf Ihrem Gerät."
 heading = "Diese Seite gibt es hier nicht"
 tools_heading = "Alle Werkzeuge auf einen Blick"
-tools_note = "Alle kostenlos, alle im Browser, keines lädt irgendetwas hoch."
+tools_note = "Alle kostenlos, alle verarbeiten Dateien im Browser."
 
 lede = """
     Entweder steckt in der Adresse ein Tippfehler, oder was dort einmal lag, ist
@@ -504,6 +488,9 @@ guides_all_note = """
     läuft: <a href="{{ base }}">alle ansehen</a>."""
 
 [ui.tool]
+pairing_version_help = "Über die Werkzeugversion"
+pairing_version_hint = "Vergleichen Sie diesen Wert auf beiden Geräten. Wenn er unterschiedlich ist, laden Sie beide Seiten neu, bevor Sie eine neue Freigabe starten."
+pairing_version = "Version:"
 view_source = "Quellcode ansehen"
 how_verified = "So lässt sich das nachprüfen"
 live_check = "Live-Prüfung:"
@@ -515,11 +502,7 @@ related_heading = "Auch im Werkzeugkasten"
 handoff_lead = "Das Ergebnis direkt weiterreichen an:"
 privacy_heading = "So lässt sich das Datenschutzversprechen nachprüfen"
 
-md_note = """
-    Diese Seite ist ein interaktives Werkzeug, das vollständig in Ihrem Browser
-    läuft, unter {{ tool.url }} &mdash; nichts, was Sie ihm geben, wird
-    hochgeladen. Es folgt alles, was die Seite in Worten über das Werkzeug
-    sagt; um es zu benutzen, öffnen Sie die Adresse."""
+md_note = "Dies ist ein interaktives Browser-Werkzeug unter {{ tool.url }}. Dateien werden auf dem Gerät verarbeitet, auf dem dieser Browser läuft. Bewusstes Teilen und optionale Netzwerkfunktionen werden auf der Seite erklärt. Hier folgt die schriftliche Erklärung; zum Benutzen öffnen Sie die Adresse."
 
 card_waiting = "Öffnet sich, sobald Sie oben eine Datei auswählen."
 example_load = "Ein Beispiel probieren"
@@ -527,8 +510,7 @@ example_busy = "Beispiel wird erstellt&hellip;"
 example_failed = "Dieser Browser konnte das Beispiel nicht erstellen. Wählen Sie stattdessen eine Datei."
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,
 # warum dieser Satz als Ganzes übersetzt wird und nicht in zwei Hälften.
-pledge_line = """
-    Ihre {{ tool.words.plural }} werden <strong>nie hochgeladen</strong>. Es gibt keinen Server."""
+pledge_line = "Ihre {{ tool.words.plural }} werden <strong>in Ihrem Browser verarbeitet</strong>. Kein Upload zur Verarbeitung."
 
 boot_title = "Der Code dieser Seite ist nicht gestartet."
 boot_body = """
@@ -565,15 +547,7 @@ read_first_lead = """
       Zuerst lesenswert sind <code>config/site.toml</code> für die
       Content-Security-Policy"""
 
-dlp_note = """
-      <strong>Wenn die Sicherheitssoftware Ihres Arbeitgebers vor einem Upload
-      warnt.</strong> Sie beobachtet den Moment, in dem im Browser eine Datei
-      ausgewählt wird, und kann nicht wissen, ob die Seite sie senden will
-      &mdash; also warnt sie beim Auswählen. Hier wird nichts gesendet: öffnen
-      Sie die Entwicklerwerkzeuge, wechseln Sie zu Netzwerk und wählen Sie eine
-      Datei. Es gibt keine Anfrage, die sie trägt, und überhaupt keine außer
-      der lokalen Vorschau der Seite. Dieselbe Prüfung schafft Ihre IT in einer
-      halben Minute."""
+dlp_note = "<strong>Wenn die Sicherheitssoftware Ihres Arbeitgebers vor einem Upload warnt.</strong> Eine Warnung bei der Dateiauswahl beweist keine Übertragung. Prüfen Sie bei einer lokalen Verarbeitung die Anfrageadressen und Nutzdaten im Netzwerk-Reiter und vergleichen Sie sie mit dem Quelltext dieser Seite. Optionales Abrufen und bewusstes Teilen werden gesondert erklärt. Ihre IT kann dieselbe Prüfung durchführen."
 
 [ui.feedback]
 # Die Beschriftungen der Daumen sind nur für Screenreader und den Tooltip - die
@@ -602,12 +576,7 @@ open_tool = "{{ tool.name | e }} öffnen"
 # Das Substantiv aus [picker.urls] des Werkzeugs steht hier im Singular, und die
 # Sätze sind um ein sächliches Substantiv herum gebaut - siehe den Kommentar in
 # tools/images-to-video.toml, dem einzigen Werkzeug, das diese Tafel hat.
-warning = """
-      <strong>Das ist die einzige Funktion hier, die ins Netz geht.</strong>
-      Rufen Sie eine Adresse ab, erfährt der Server dort Ihre IP-Adresse und welches {{ tool.picker.urls.noun }} Sie
-      angefordert haben. Beim Eintreffen landet das {{ tool.picker.urls.noun }} im lokalen Speicher und wird nie
-      erneut angefordert. Von Ihnen geht dabei nichts hinaus, denn hochladen kann
-      diese Seite nach wie vor nichts."""
+warning = "<strong>Diese Adresse abzurufen nutzt das Netzwerk.</strong> Der Server sieht Ihre IP-Adresse und die angefragte Adresse des {{ tool.picker.urls.noun }}, einschließlich Abfrageparametern. Das Bild wird nach dem Empfang im lokalen Speicher gehalten. Dateien von Ihrem Gerät werden bei diesem Import nicht gesendet."
 label = "Eine Adresse pro Zeile"
 note = """
       Der Server muss erlauben, dass eine fremde Website sein {{ tool.picker.urls.noun }} lädt. Viele

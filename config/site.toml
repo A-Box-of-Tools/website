@@ -13,7 +13,7 @@
 name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-08-27"     # the hub page's own sitemap date
+lastmod = "2026-10-12"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -296,10 +296,10 @@ purpose = "maskable"
 
 [not_found]
 title = "Page not found &mdash; abox.tools"
-description = "That address does not exist on abox.tools. Here are the tools that do - all of them free, and none of them uploading your files anywhere."
+description = "That address does not exist on abox.tools. Here are the free browser tools for processing files on your device."
 heading = "That page is not here"
 tools_heading = "Every tool, in one place"
-tools_note = "All free, all running in your browser, none of them uploading anything."
+tools_note = "All free, all processing files in your browser."
 
 lede = """
     Either the address has a typo in it, or something that used to be at that
@@ -307,56 +307,46 @@ lede = """
     this site has never held anything of yours to lose."""
 
 [hub]
-title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
+title = "Free Browser Tools &mdash; Local File Processing | abox.tools"
 # Kept under 155 characters. Google truncates a description around there, and
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
-description = "Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data."
-heading = "Free tools. Private files."
-og_title = "A Box of Tools &mdash; tools that never touch a server"
-og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
-og_image_alt = "abox.tools - tools that never touch a server"
-schema_description = "Small, single-purpose utilities that do all of their work inside your browser. Nothing is uploaded and no account is needed."
-schema_about = "Browser-based file utilities that process files locally without uploading them"
+description = "Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data."
+heading = "Free tools. Local processing."
+og_title = "A Box of Tools &mdash; local file processing in your browser"
+og_description = "Small, single-purpose tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
+og_image_alt = "abox.tools - browser tools for local file processing"
+schema_description = "Small browser utilities for local file processing, with no processing uploads or account required. Network features are described on their own pages."
+schema_about = "Browser utilities for local file processing and intentional browser-to-browser sharing"
 
-# The opening gives the premise in one breath; the checkable details live
-# below the catalogue so they do not put a phone's first tool off screen.
-lede = "Everything runs in your browser. No uploads, no sign-in."
-
-privacy_heading = "Your files stay yours."
-privacy_lede = "Tools process your files on your device. Open one once and it keeps working offline."
-support_heading = "Free, with your support."
+# Keep the introduction brief so a phone reaches the catalogue quickly.
+# Network use and the limits of offline processing stay in the details below.
+lede = "Process files in your browser. No processing uploads, no sign-in."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is
       the only thing on the site that asks you for anything."""
 
-# The guarantee, stated as three checkable facts rather than a promise. Every
-# tool here is expected to hold all three; if one ever cannot, it says so on its
-# own page instead of quietly weakening this claim.
-# Receipt OCR stays local; its optional historical-rate button sends only a
-# currency pair and date to Frankfurter. That exception and the later email
-# handoff are explained on the receipt tool, beside the controls that use them.
-[[hub.guarantees]]
-title = "Your files never leave your machine"
-body = """
-        They are opened, read, and processed by your own browser, using your own
-        hardware. Each tool's <code>Content-Security-Policy</code> names every
-        address it may contact, and not one of them belongs to us."""
+# The distinction is local processing versus a deliberate transfer. Networking
+# features name their payloads and limits where they are used; a global claim
+# must not erase those exceptions or treat CSP as proof of every data path.
+privacy_heading = "Your files stay yours."
+
+privacy_lede = "Local file processing works offline after the tool is saved. Fetching and sharing require a connection."
+
+support_heading = "Free, with your support."
 
 [[hub.guarantees]]
-title = "Nothing about your files is sent anywhere"
-body = """
-        Not the file, not a thumbnail, not the name, the size, or how many you
-        chose. No tool here reads any of that out. There is no server on the
-        other end of these tools to read it."""
+title = "Your files are processed on your device"
+body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files and Remote Camera deliberately send content to another browser; their own pages explain the connection."
 
 [[hub.guarantees]]
-title = "It works offline"
-body = """
-        Open a tool once, disconnect from the internet, and it keeps working on
-        your files exactly as before. That is hard to fake: a tool that sent your
-        files somewhere to be processed would simply stop."""
+title = "Your files are not given to analytics"
+body = "Page visits and optional fixed feedback answers are counted. Neither is given your file, its name, its size or its contents. Optional image imports and receipt exchange-rate requests name the information they send beside their controls."
+
+[[hub.guarantees]]
+title = "Local processing works offline"
+body = "Wait for a tool's offline indicator to say ready, then disconnect and use files from your device. Fetching a web image, looking up an online rate and connecting two browsers require a network."
 
 # Categories the shipped tools are grouped under. A tool joins one by naming its
 # id in `category` in its own tool.toml; the order of tools within a category is
@@ -387,8 +377,8 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 id = "video-and-animation"
 name = "Video &amp; animation"
 short_name = "Video &amp; GIFs"
-note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
-order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+note = "Edit video and animation in your browser, or watch an approved camera on another device."
+order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -464,17 +454,13 @@ order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64
 [roadmap]
 slug = "roadmap"
 nav = "Roadmap"
-lastmod = "2026-08-20"
+lastmod = "2026-10-12"
 
 title = "Roadmap &mdash; what abox.tools is building next"
-description = "Every tool planned for abox.tools, grouped and in the open, plus the ones already finished. All of them run in your browser and upload nothing."
+description = "Every tool planned for abox.tools, grouped and in the open, plus the ones already finished. File processing happens in your browser."
 
 heading = "What is coming next"
-lede = """
-    Everything on both lists below does its work inside your browser and
-    uploads nothing &mdash; that is the rule a name has to pass before it goes
-    on here at all. The counts are not written down anywhere; the build reads
-    them off the two lists."""
+lede = "Everything on both lists below processes files inside your browser, without a processing upload. A feature whose job needs networking must explain it on its own page. The counts are not written down anywhere; the build reads the lists."
 
 intro_heading = "How this list was drawn up"
 intro = """
@@ -501,8 +487,8 @@ intro = """
 planned_heading = "Every kind of file, and what can be done to it"
 
 og_title = "abox.tools roadmap"
-og_description = "What is built, and what is next. Everything runs in your browser and uploads nothing."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "What is built, and what is next. Local file processing, with networking explained where a feature needs it."
+og_image_alt = "abox.tools - browser tools for local file processing"
 
 #
 # ---------------------------------------------------------------------------
@@ -530,20 +516,17 @@ slug = "guides"
 # than listed one by one, which is what stops that column growing by a line
 # every time one is written.
 nav = "All guides"
-lastmod = "2026-08-27"
+lastmod = "2026-10-12"
 
 title = "Guides &mdash; how to do the job, and what each choice costs"
 description = "Plain guides to compressing, resizing, cropping, trimming and converting your own files - what the settings mean, what they cost, and why none of it needs an upload."
 
 heading = "Guides"
-lede = """
-    One guide per tool, written for the person who has been told to hit a size
-    or a shape and would like to know what the setting they are about to move
-    actually does. Everything described here happens on your own machine."""
+lede = "Guides to the tools and the jobs that join them together: what each setting does, what it costs, and what to check in the result. Local processing and deliberate network features are described separately."
 
 og_title = "abox.tools guides"
 og_description = "How to compress, resize, crop, trim and convert your own files - and what each setting costs. No uploads involved."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"
 
 [[guides.groups]]
 id = "doing-the-job"
@@ -584,6 +567,7 @@ order = [
   "crop-a-video",
   "reverse-a-video",
   "grab-a-frame-from-a-video",
+  "extract-audio-from-a-video",
   "trim-an-audio-file",
   "make-a-qr-code",
   "verify-a-file-checksum",
@@ -591,8 +575,11 @@ order = [
   "convert-a-gif-to-mp4",
   "split-a-gif-into-frames",
   "whats-inside-a-gif",
+  "convert-yaml-and-json",
+  "format-and-check-xml",
   "format-json-without-uploading-it",
   "share-text-between-devices",
+  "watch-camera-from-another-device",
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
@@ -767,6 +754,9 @@ guides_all_note = """
 #
 
 [ui.tool]
+pairing_version_help = "About the tool version"
+pairing_version_hint = "Compare this value on both devices. If it differs, reload both pages before starting a new share."
+pairing_version = "Version:"
 view_source = "View source"
 how_verified = "How this is verified"
 live_check = "Live check:"
@@ -791,11 +781,7 @@ privacy_heading = "How the privacy claim is verifiable"
 # written half of the page and none of the interface, so the one thing it has
 # to say for itself is that the page it stands for is a tool, where that tool
 # is, and that the promise holds there. Plain text: the twin is a text file.
-md_note = """
-    This page is an interactive tool that runs entirely in your browser, at
-    {{ tool.url }} &mdash; nothing you give it is uploaded. What follows is
-    everything the page says about the tool in words; to use it, open the
-    address."""
+md_note = "This is an interactive browser tool at {{ tool.url }}. Files are processed on the device running that browser. Any deliberate sharing or optional network feature is described on the page. What follows is its written explanation; open the address to use it."
 
 # What a step says while it is still waiting. Every tool's last card is on the
 # page from the start and dimmed, so the whole job can be read before anything
@@ -834,8 +820,7 @@ example_failed = "This browser could not build the example. Choose a file instea
 # The headline claim. The noun in the middle is this tool's own - "files",
 # "pictures", "clips" - and the sentence is written round it rather than in two
 # pieces either side of it, so a language that puts the verb last can.
-pledge_line = """
-    Your {{ tool.words.plural }} are <strong>never uploaded</strong>. There is no server."""
+pledge_line = "Your {{ tool.words.plural }} are <strong>processed in your browser</strong>. No processing upload."
 
 boot_title = "This page's code did not start."
 boot_body = """
@@ -915,14 +900,7 @@ read_first_lead = """
 # Written to be shown to whoever raised it: it says what the monitor saw, why
 # it is not what it looks like, and how to check in the one place both sides
 # can look at together.
-dlp_note = """
-      <strong>If your employer's security software warns about an upload.</strong>
-      It is watching the moment a file is chosen in a browser, and it cannot
-      know whether the page intends to send it &mdash; so it warns on the
-      choosing. Nothing is sent here: open your browser's developer tools,
-      switch to Network, and choose a file. There is no request carrying it,
-      and no request at all beyond the page's own local preview. That is the
-      same check anyone in your IT team can run in half a minute."""
+dlp_note = "<strong>If your employer's security software warns about an upload.</strong> A warning when a file is selected does not establish that it was sent. For a local processing action, inspect request URLs and payloads in your browser's Network tab, and compare them with this page's source. Optional fetching and intentional sharing have their own explanations. Your IT team can run the same check."
 
 #
 # The one question this site asks, on the tool page, after a download. Its own
@@ -982,12 +960,7 @@ open_tool = "Open the {{ tool.name | e }}"
 #
 
 [ui.picker]
-warning = """
-      <strong>This is the one feature that touches the network.</strong>
-      Fetching an address tells that server your IP address and which {{ tool.picker.urls.noun }} you
-      asked for. The {{ tool.picker.urls.noun }} is copied to local memory on arrival and never
-      requested again. Nothing of yours is ever sent out &mdash; this page still
-      cannot make an upload of any kind."""
+warning = "<strong>Fetching this address uses the network.</strong> That server sees your IP address and the address of the {{ tool.picker.urls.noun }} you request, including any query string. The image is copied into local memory on arrival. Files you choose from your device are not sent as part of this import."
 label = "One address per line"
 note = """
       The server must permit cross-origin use of its {{ tool.picker.urls.noun }}s. Many sites do not,
@@ -1064,45 +1037,20 @@ licence = """
 [llms]
 # The blockquote directly under the H1. One sentence: some readers take this and
 # nothing else.
-summary = """
-Free single-purpose file tools - compress, resize, crop, trim, convert, inspect
-- that run entirely inside the visitor's own browser. No upload, no server, no
-account. Each tool explains its supported formats and practical limits."""
+summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Every tool listed below is a static page and a few ES modules. A file chosen on
-one of them is decoded, edited and written back by the browser it was chosen in.
-There is no endpoint on this site it could be sent to, which is what makes these
-worth suggesting for a file somebody cannot hand to a stranger: a passport scan,
-a signed contract, a recording, a config file with a token in it.
+Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files and Remote Camera deliberately transmit content between browsers. Their public rendezvous carries setup and discovery metadata, not shared content. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
 
-They need a browser to run. There is no API, no CLI and no upload endpoint here,
-and there will not be one - a promise that nothing leaves the machine and a
-server to send files to cannot both be true. So: if you are answering for a
-person at a keyboard, link them the page. If you are writing code, read on.
+The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
 
-The code is MIT licensed and meant to be reused. Each tool is one folder under
-`tools/` in the repository, with a README saying what it does and why, and its
-work in dependency-free ES modules under `src/` - EXIF and TIFF parsing, the
-JPEG, PNG and WebP container walks, a PDF object reader and rewriter, three MP4
-writers, a GIF LZW codec, a QR encoder and a ZIP writer among them. They have no
-imports to install and `node --test` already runs them outside a browser.
-Copying one is almost always cheaper than writing it again.
+The code is MIT licensed. Each tool has a folder under `tools/`, a README and ES modules under `src/`; common parsers and writers live under `shared/js/`. Some tools also ship a licensed third-party JavaScript or WebAssembly engine under `vendor/`. The site's build copies shared parts into each built tool and minifies first-party code. Node can import suitable leaf modules; imports of a tool's `./shared/` parts need the repository's `tests/js/resolve-shared.mjs` resolve hook. Browser APIs remain browser APIs.
 
-The words on these pages are licensed separately, CC BY 4.0: quote them, adapt
-them, translate them, commercially or not, provided A Box of Tools is credited
-with a link and any changes are noted. Both licence files sit at the root of the
-repository.
+The prose is licensed separately under CC BY 4.0. Reuse it with a credit and link to A Box of Tools and a note of changes. Both licence files are at the repository root.
 
-Every page linked below is also served as Markdown: add `index.md` to its
-address - https://abox.tools/compress-image/index.md is the image compressor's
-page as text, and https://abox.tools/de/bild-komprimieren/index.md the German
-one. A tool's twin is the written half of its page: what it does, the steps,
-the questions and the privacy claims, without the interface. A guide's is the
-guide.
+Every linked page also has a Markdown copy: append `index.md` to its address, for example https://abox.tools/compress-image/index.md. A tool's copy contains its explanations, steps, questions and privacy details, without the interface. A guide's copy contains the guide. Both are generated from the same source as the HTML.
 
-This file is generated by the site's build from the same configuration as the
-pages themselves, so it cannot fall behind the tools that actually exist."""
+This index is generated from the site's configuration and page metadata. It describes available tools; it does not measure whether an AI search system has indexed or cited them."""
 
 guides_note = """
 Written for the person doing the job rather than for the tool: what each setting
@@ -1117,10 +1065,6 @@ Background rather than answers. Skip these if you are short of room."""
 
 # The two entries under "Optional" that are not pages of this site, and so have
 # no description of their own anywhere else to borrow.
-source_note = """
-Every page and every tool here. One folder per tool, each with a README and its
-work in dependency-free ES modules under src/. The code is MIT, the prose is
-CC BY 4.0, and LICENSE at the root sets out which is which."""
+source_note = "The site source, tool READMEs, shared parsers and writers, and any bundled engine licences. First-party code is MIT; prose is CC BY 4.0. No JavaScript package installation is needed to build the site."
 
-sitemap_note = """
-Every page of every language, with the date each last changed."""
+sitemap_note = "Pages offered for indexing in maintained languages, with their last modification dates. Frozen, unfinished and deliberately excluded pages are not listed."

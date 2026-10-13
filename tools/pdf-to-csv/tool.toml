@@ -28,8 +28,8 @@ slug = "pdf-to-csv"
 name = "PDF to CSV"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
-heading = "PDF&nbsp;to&nbsp;CSV <span class=\"h1-kw\">&mdash; every table in it, bank statements included</span>"
-tagline = "Finds every table in a PDF and turns it into rows a spreadsheet can open."
+heading = "PDF&nbsp;to&nbsp;CSV <span class=\"h1-kw\">&mdash; extract text-based tables</span>"
+tagline = "Turn detected text-based PDF tables into rows a spreadsheet can open."
 icon = "&#128202;"                  # the bar chart, beside the page heading
 favicon = "&#128202;"      # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -54,20 +54,20 @@ css_parts = ["form", "notes", "results"]
 # writes a PDF, and listing a part a tool never calls would ship it to every
 # visitor for nothing.
 js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-content", "pdf-base14", "pdf-fonts", "pdf-strings", "pdf-text", "message-box", "download", "format", "example-pdf", "pdf-page-writer", "example-statement"]
-lastmod = "2026-09-10"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "PDF to CSV &mdash; Every Table, Bank Statements Too, Free, No Upload"
-description = "Turn the tables in a PDF into a CSV: bank and card statements, invoices, price lists, reports. Every table on every page is found from where its text sits, and printed running balances are compared where possible. Nothing is uploaded."
-og_title = "PDF to CSV, every table in it, without uploading the file"
-og_description = "Most PDF-to-CSV converters want your file on their server. This one finds every table in the document in your own browser, and reports which comparisons of a statement's running balance agree."
+title = "PDF to CSV &mdash; Text-Based Tables and Statements, No Upload"
+description = "Extract text-based PDF tables to CSV in your browser: statements, invoices, price lists and reports. Detection uses readable text positions and may miss unusual layouts; scanned pages need OCR first. Nothing is uploaded."
+og_title = "PDF tables to CSV, without uploading the file"
+og_description = "Extract text-based PDF tables to CSV in your browser: statements, invoices, price lists and reports. Detection uses readable text positions and may miss unusual layouts; scanned pages need OCR first. Nothing is uploaded."
 og_image_alt = "Convert the tables in a PDF to CSV in your browser"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
 # card's heading is `name` above and its footer is the same line on every
 # card, so this is the only part of it that belongs to this tool.
-og_card = "Every table in a PDF, as rows a spreadsheet can open."
+og_card = "Text-based PDF tables, as rows a spreadsheet can open."
 
 # --- the pledge block --------------------------------------------------------
 
@@ -100,12 +100,7 @@ howto_heading = "How to turn the tables in a PDF into a CSV"
 
 # --- the card on the hub page ------------------------------------------------
 
-card = """
-            Turn the tables in a PDF into a spreadsheet &mdash; a bank or card
-            statement, an invoice, a price list, a report. Every table on every
-            page is found from where its text sits, a cell that wrapped onto a
-            second line is put back together, and a statement's running balance
-            is compared where the amounts and balances are readable."""
+card = "Extract text-based PDF tables to CSV in your browser: statements, invoices, price lists and reports. Detection uses readable text positions and may miss unusual layouts; scanned pages need OCR first. Nothing is uploaded."
 
 # The nouns this tool uses for the things it works on.
 [words]
@@ -233,24 +228,11 @@ body = """
 
 [[howto]]
 title = "Look at the tables it found."
-body = """
- Every table on every page, each
-      with its own columns and its own headings where the page printed any. A
-      table that runs across two sections or two pages under the same headings
-      is one table, and the headings are not repeated in the middle of it. A
-      cell that wrapped onto a second line is folded back into its row. Totals,
-      subtotals and labels come through as the rows they are on the page."""
+body = "Review each detected table with its columns and any recovered headings. Tables continuing across pages may be joined and wrapped cells folded into their rows. Check for missed tables, merged rows and layout errors against the original before saving the CSV."
 
 [[howto]]
 title = "Pick one, or take them all."
-body = """
- When there is more than one
-      table, the control above them chooses which goes into the CSV &mdash; all
-      of them, one after another, or just the one you came for. If a table
-      carries a running balance, the line above the tables reports agreeing
-      comparisons and rows it could not check. Dates that carry their year come out as YYYY-MM-DD and
-      amounts as plain signed numbers; a date with no year is left exactly as
-      it was printed, because the year it belongs to would be a guess."""
+body = " When there is more than one\n      table, the control above them chooses which goes into the CSV &mdash; all\n      of them, one after another, or just the one you came for. If a table\n      carries a running balance, the line above the tables reports agreeing\n      comparisons and rows it could not check. Dates that carry their year come out as YYYY-MM-DD and\n      amounts as plain signed numbers; a date with no year is left exactly as\n      it was printed, because the year it belongs to would be a guess."
 
 [[howto]]
 title = "Take the CSV."
@@ -389,9 +371,9 @@ a = """
 
 [schema]
 category = "BusinessApplication"
-description = "Convert the tables in a PDF to CSV in your browser - bank and card statements, invoices, price lists and reports. Every table on every page is found from where its text sits, and a statement's running balance is compared where the amounts and balances are readable. Nothing is uploaded."
+description = "Extract text-based PDF tables to CSV in your browser: statements, invoices, price lists and reports. Detection uses readable text positions and may miss unusual layouts; scanned pages need OCR first. Nothing is uploaded."
 features = [
-  "Finds every table in a PDF, each with its own columns and headings",
+  "Detects text-based tables from recoverable text positions",
   "Splits off a sidebar of small print rather than mixing it into the table",
   "Joins a table that runs across sections or pages, without repeating its headings",
   "Folds a cell that wrapped onto a second line back into its row",

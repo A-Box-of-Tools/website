@@ -1,23 +1,10 @@
   <section>
     <h2>La réponse courte</h2>
     <p>
-      Oui. Chaque outil ici est une page web ordinaire&nbsp;: un sélecteur
-      de fichier, quelques commandes étiquetées, un bouton de
-      téléchargement. Il n'y a aucun compte où se connecter, aucun captcha à
-      résoudre, aucune étape qui exige un humain en particulier. Un agent IA
-      muni d'un navigateur pilote ces pages comme il pilote n'importe
-      quelle autre &mdash; et plusieurs choses que ce site fait déjà pour
-      les personnes servent aux agents par surcroît&nbsp;; la dernière
-      section en fait la liste.
+      Un agent contrôlant un navigateur peut utiliser ces pages ordinaires : commandes nommées, choix de fichiers et téléchargements, sans compte du site. Son environnement doit permettre l’accès aux fichiers, API et permissions nécessaires. Caméra ou feuille de partage peuvent exiger votre participation.
     </p>
     <p>
-      Mais &laquo;&nbsp;peut-il appuyer sur les boutons&nbsp;&raquo; est la
-      petite question. Celle qui mérite une page&nbsp;: que devient la
-      promesse de ce site &mdash; <em>votre fichier ne quitte jamais votre
-      machine</em> &mdash; quand la machine qui appuie sur les boutons n'est
-      pas vous&nbsp;? La réponse est que la promesse survit parfaitement à
-      la délégation, ou pas du tout, selon une seule chose&nbsp;:
-      <strong>l'endroit où tourne le navigateur de l'agent.</strong>
+      Pour traiter les fichiers, la première question est <strong>où le navigateur contrôlé s’exécute</strong>. Vérifiez aussi ce que reçoit le service de l’agent et les récupérations ou partages volontaires. Un navigateur local ne résout pas ces trois questions.
     </p>
   </section>
 
@@ -28,34 +15,13 @@
       différence entre elles pèse plus que tout le reste de cette page.
     </p>
     <p>
-      <strong>Un agent local</strong> tourne sur votre machine&nbsp;: un
-      assistant installé sur votre ordinateur, ou un agent qui conduit le
-      navigateur que vous avez sous les yeux. Quand un agent de cette sorte
-      ouvre un outil ici et lui tend votre fichier, le travail se fait là où
-      il se fait toujours avec ces pages &mdash; dans un navigateur, sur
-      votre matériel. Le fichier est lu depuis votre disque, traité dans la
-      mémoire de votre navigateur, réécrit sur votre disque. La délégation
-      n'a rien changé au chemin des octets. Une IA a choisi les
-      réglages&nbsp;; le fichier, lui, n'est jamais parti.
+      <strong>Un navigateur contrôlé localement</strong> lit et traite sur cet appareil. L’outil local n’ajoute pas d’envoi pour traitement. L’agent peut néanmoins transmettre instructions, captures ou contexte à son prestataire selon son implémentation et ses réglages.
     </p>
     <p>
-      <strong>Un agent en nuage</strong> fait tourner un navigateur sur
-      l'ordinateur de son fournisseur. Vous joignez un fichier à une
-      conversation, l'agent travaille dans une machine virtuelle quelque
-      part ailleurs, et tout ce qu'il fait avec ces outils se passe là-bas.
-      Les outils tiennent encore exactement leur promesse &mdash; le fichier
-      ne va pas plus loin que le navigateur où il se trouve &mdash; mais ce
-      navigateur n'est pas le vôtre, et l'envoi a déjà eu lieu à l'instant
-      où vous avez joint le fichier, avant qu'aucun outil ne soit ouvert.
-      Aucune page ne peut défaire un envoi qui l'a précédée.
+      <strong>Un navigateur cloud</strong> s’exécute chez le prestataire. Un fichier joint pour l’utiliser là a déjà quitté votre appareil. Les outils le traitent dans ce navigateur et n’annulent pas l’envoi antérieur. Partage et remise aux applications sont des actions supplémentaires dans les deux environnements.
     </p>
     <p>
-      La question que ce site pose sans cesse &mdash; ce travail exige-t-il
-      que mon fichier parte&nbsp;? &mdash; ne disparaît donc pas quand un
-      agent fait le travail. Elle recule d'un cran, vers le choix de
-      l'agent. Un agent local pilotant un outil qui tient tout entier dans
-      le navigateur est l'arrangement rare où déléguer ne coûte aucune vie
-      privée&nbsp;: l'IA fait le travail, et le fichier reste à la maison.
+      Précisez un navigateur local si le traitement doit rester sur l’appareil, vérifiez l’agent et autorisez séparément les transferts volontaires. <a href="../../extraire-recus-factures/">Taux et remise à la messagerie</a>, <a href="../../images-en-video/">imports par URL</a>, <a href="../../partager-du-texte/">partage</a> et <a href="../../remote-camera/">caméra</a> documentent leurs limites réseau.
     </p>
   </section>
 
@@ -94,24 +60,14 @@
         semble hésiter sur un réglage, on peut dire de lire d'abord le
         guide &mdash; le conseil qu'on donnerait à une personne.
       </li>
-      <li>
-        <strong>Les chaînes fonctionnent.</strong> Les travaux que les
-        guides d'enchaînement de ce site décrivent aux personnes &mdash;
-        numériser puis assembler en
-        <a href="../../images-en-pdf/">PDF</a>&nbsp;; retirer les données
-        <a href="../../supprimer-les-donnees-exif/">EXIF</a> puis
-        redimensionner &mdash; sont ceux où les agents excellent, parce que
-        la sortie de chaque étape est l'entrée de la suivante et que rien
-        entre les deux ne demande de jugement.
-      </li>
+      <li><strong>Précisez les contrôles entre étapes.</strong> Pour scanner en PDF ou nettoyer des images, demandez ordre, recadrage, lisibilité et taille. OCR, masquage et choix des données à partager exigent jugement et contrôle du résultat.</li>
     </ul>
   </section>
 
   <section>
     <h2>Ce qu'il ne faut pas déléguer</h2>
     <p>
-      Un agent peut piloter chaque outil d'ici. À deux endroits, piloter
-      n'est pas tout le travail, et le reste devrait demeurer chez vous.
+      Les commandes ne sont qu’une partie de la tâche. Vérifiez les décisions qui changent ce qu’un autre peut voir ou recevoir. Deux exemples :
     </p>
     <p>
       <strong>Décider ce qui ne doit pas être vu.</strong> Les outils de
@@ -151,25 +107,9 @@
       propre page</a>.
     </p>
     <p>
-      Ce que ce site fait pour un agent, il le fait exprès et pour tout le
-      monde&nbsp;: chaque commande est étiquetée, parce que les lecteurs
-      d'écran ont besoin de noms et qu'un agent lit les mêmes noms&nbsp;;
-      les pages n'ont ni comptes, ni fenêtres surgissantes, ni murs de
-      consentement à contourner&nbsp;; le source est public et servi sans
-      étape de compilation, si bien que le code qu'un agent audite est le
-      code qui tourne&nbsp;; et
-      <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
-      est toute la boîte en une requête. Rien de tout cela n'a été ajouté
-      pour les machines. Une page lisible pour une personne équipée d'un
-      lecteur d'écran se révèle lisible pour tout le reste aussi.
+      Les commandes sont nommées ; <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a> et copies Markdown aident la lecture. Code, composants et moteurs sont publics. La compilation génère et minifie les pages ; comparez-la à la publication pour auditer. DevTools et diagnostics WebRTC dépendent de l’environnement de l’agent.
     </p>
     <p>
-      Une limite honnête&nbsp;: cette page parle des agents qui utilisent
-      ces outils, pas des agents eux-mêmes. Ce que voit le fournisseur d'un
-      agent &mdash; vos consignes, vos captures d'écran, parfois vos
-      fichiers &mdash; est une question à part, et l'habitude à laquelle ce
-      groupe de guides revient sans cesse est le bon prisme pour elle
-      aussi&nbsp;: demandez-vous ce qui doit réellement quitter votre
-      machine, et dans quel état.
+      Ce guide ne garantit pas la confidentialité d’un prestataire d’agent. Instructions, captures et parfois fichiers peuvent partir même avec un navigateur local. Incluez ces chemins et les fonctions réseau dans la tâche ; le lieu du navigateur ne les prouve pas.
     </p>
   </section>

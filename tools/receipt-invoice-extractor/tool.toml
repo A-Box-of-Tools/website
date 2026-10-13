@@ -17,7 +17,7 @@
 slug = "receipt-invoice-extractor"
 name = "Receipt & Invoice Extractor"
 heading = "Receipt&nbsp;&amp;&nbsp;Invoice Extractor <span class=\"h1-kw\">&mdash; photos to a report you review</span>"
-tagline = "Read the photos, check the fields and crops, then email compressed images with each amount and the totals."
+tagline = "Read photos, review fields and crops, then prepare compressed attachments and totals for your email app."
 icon = "&#129534;"
 favicon = "&#129534;"
 glyph = "scan-text"
@@ -26,12 +26,12 @@ roadmap_group = "documents"
 
 css_parts = ["form", "notes", "results", "cropper"]
 js_parts = ["file-picker", "download", "errors", "cropper", "zip", "crc32", "document-detect", "document-geometry", "image-input", "help-tooltip"]
-lastmod = "2026-10-05"
+lastmod = "2026-10-12"
 
 title = "Receipt &amp; Invoice Extractor &mdash; Photos to CSV and Email, No Upload"
-description = "Read receipt and invoice photos locally, review crops and amounts, then convert each document into one email currency using manual or historical online rates. Email compressed images, individual values and a grand total."
+description = "Read receipt and invoice photos locally, review amounts and convert currencies with manual or optional historical rates. Prepare compressed attachments and totals for a share sheet or email file; you review and send."
 og_title = "Receipt and invoice photos to a report you can email"
-og_description = "Read photos locally, check each document, choose manual or historical exchange rates, and email cropped images with individual converted values, the document count and a grand total."
+og_description = "Read receipt and invoice photos locally, review amounts and convert currencies with manual or optional historical rates. Prepare compressed attachments and totals for a share sheet or email file; you review and send."
 og_image_alt = "Receipt & Invoice Extractor - read photos locally and prepare an email report"
 og_card = "Photos to a report: each document, each amount, and totals for your email app."
 

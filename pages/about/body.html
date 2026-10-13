@@ -8,12 +8,7 @@
       for.
     </p>
     <p>
-      The unusual part is not what they do. It is where they do it. Every one of
-      them runs entirely inside your web browser, on your own hardware, using
-      the decoders and encoders your browser already ships with. Nothing you
-      open is transmitted anywhere. There is no server behind these pages to
-      transmit it to: the whole site is static files, and the tools are plain
-      JavaScript modules served alongside them.
+      Every tool processes files inside the browser running it, on that device's hardware. Most use native browser codecs; others include local JavaScript or WebAssembly engines, such as the HEIC decoder and receipt OCR. Files are not uploaded for processing. The site serves static pages and their code; intentional sharing and optional online features have separate boundaries explained below.
     </p>
     <p>
       That is the product. Everything else on this page is about why it is worth
@@ -45,19 +40,10 @@
   <section>
     <h2>Why it is built this way</h2>
     <p>
-      The ordinary way to build these tools is to upload the file, do the work
-      on a server, and send the result back. It is easier, it works on any
-      device, and it is what almost every &ldquo;free online converter&rdquo;
-      does.
+      Many online converters upload a file, process it on a server and return the result. Others can work locally. The useful distinction is where the work happens, and whether the job needs your file to leave the browser.
     </p>
     <p>
-      It also means handing a stranger your file. That is a small thing for a
-      meme and a serious thing for a passport scan, a medical image, a contract
-      with a signature on it, or a photograph with your home address in its
-      metadata. Once the file is on someone else&rsquo;s machine, what happens
-      to it is a matter of their policy and their competence, and you have no
-      way to audit either. The privacy policy of a site like that is a promise.
-      It is not a constraint.
+      Server processing means handing the provider a copy of your file. For a passport scan, medical image, signed contract or photograph with location metadata, that is a decision worth checking. Published policies, security documentation, audits and observable behaviour can provide evidence. The webpage alone cannot show you every internal copy, backup or access after upload. A privacy policy describes the provider’s handling; it is not the same constraint as completing a local operation without a connection.
     </p>
     <p>
       Browsers got good enough to make the promise unnecessary. They can decode
@@ -77,43 +63,24 @@
   <section>
     <h2>How to check, rather than trust</h2>
     <p>
-      Every claim above is meant to be tested. Four ways, in ascending order of
-      effort:
+      Four checks give different kinds of evidence. Use them together, and check the feature you actually plan to use:
     </p>
     <ul>
       <li>
-        <strong>Unplug the internet.</strong> Load any tool page, disconnect,
-        and use it anyway. It keeps working, because there was never a network
-        step in it. A tool that sent your file away to be processed would stop.
+        <strong>Disconnect for a local processing job.</strong> Let the tool finish loading, wait for its offline indicator to say ready, then process a file from your device. Completion proves that operation ran locally while disconnected. It does not establish what a page might send after reconnection.
       </li>
       <li>
-        <strong>Watch the network.</strong> Open DevTools, go to the Network
-        tab, and process a file. Not one request carries your file, a thumbnail
-        of it, its name, or a byte of its contents. What you will see is the
-        page, its scripts, the advertising and the visit counter.
+        <strong>Inspect network requests.</strong> Check URLs, request bodies and WebSocket messages, rather than relying on transfer size. Local processing does not send your files. Page assets, platform scripts, optional lookups and deliberate sharing are different traffic and are described on their pages.
       </li>
       <li>
-        <strong>Read the policy the page enforces on itself.</strong> Every page
-        carries a <code>Content-Security-Policy</code> naming every address it
-        is allowed to contact, and not one of them belongs to this site. Even a
-        mistake in the code could not send a file somewhere, because the browser
-        would refuse the connection.
+        <strong>Read the Content-Security-Policy.</strong> It limits permitted resources and connection destinations. It does not inspect payloads, prevent data being sent to allowed hosts, or describe WebRTC peer traffic. Compare it with the source and observed behaviour.
       </li>
       <li>
-        <strong>Read the code.</strong> It is
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">all
-        public</a>, with no build step and no bundler: what is in the repository
-        is byte for byte what your browser runs. Each tool has a README
-        explaining how it works, and each tool page names the particular files
-        worth reading first.
+        <strong>Read the source and the built result.</strong> The <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a> contains the templates, modules, shared parts and bundled engines. The build generates the pages and minifies first-party code. Each tool names the files worth reading first; you can build the site and compare it with the published output.
       </li>
     </ul>
     <p>
-      There is exactly one deliberate exception to &ldquo;no network&rdquo;, and
-      it is stated on its own page at length: <a href="../share-text/">Share
-      Text</a> moves text between two of your own devices, which cannot be done
-      without one. It opens a single connection to a relay that stores nothing
-      and is only ever told that two browsers would like to be introduced.
+      The network features are intentional. <a href="../images-to-video/">Images to Video</a> can fetch an image URL. <a href="../receipt-invoice-extractor/">Receipt &amp; Invoice Extractor</a> can request a currency pair and date from Frankfurter and hand a report to an email or sharing app you choose. <a href="../share-text/">Share Text &amp; Files</a> and <a href="../remote-camera/">Remote Camera</a> transfer content between browsers. Their rendezvous carries discovery and connection metadata, never the shared files or camera video. These features need a connection; their pages and the <a href="../privacy/">Privacy page</a> explain what each participant sees.
     </p>
   </section>
 
@@ -129,12 +96,7 @@
       wrote the bug will not find.
     </p>
     <p>
-      Underneath that there is an automated suite covering both halves: the
-      generator that builds the site, and the modules the browser runs. It runs
-      on every change, and nothing is published past a failure. Where the same
-      piece of work appears in more than one tool &mdash; several of them read
-      MP4 files &mdash; a test asserts that the copies still agree, so a fix to
-      one cannot quietly leave the others wrong.
+      An automated suite covers the generator and the modules the browser runs. It runs in CI, and publication stops on a failure. Common parsers and writers, such as the MP4 reader, live in shared modules copied into each built tool. A duplicate-code check prevents separate copies from drifting apart.
     </p>
     <p>
       The guides are written the same way. Their screenshots are captured from
@@ -151,20 +113,10 @@
       does and does not involve.
     </p>
     <p>
-      <strong>There is nothing to buy.</strong> No account, no sign-up, no free
-      tier with a paid one above it, no watermark to remove, no file-size cap,
-      no daily limit, and no feature held back. What is on the site is the whole
-      thing.
+      <strong>There is nothing to buy.</strong> No account, no paid tier, no watermark to remove and no feature held back for payment. Format support, browser memory and deliberate limits still matter; each tool explains them.
     </p>
     <p>
-      <strong>Your files are not part of the deal.</strong> The advertising is
-      Google&rsquo;s and the visit counting is Google Analytics, and neither is
-      given anything about what you open, what you make, what it was called, or
-      how big it was &mdash; because neither script is ever handed it, and the
-      page&rsquo;s security policy would refuse to send it if either tried.
-      Exactly what those two do collect, and how to switch each off, is set out
-      on the <a href="../privacy/">Privacy page</a>. Every tool keeps working
-      with both of them blocked.
+      <strong>Your files are not part of the deal.</strong> Advertising and visit counting use Google services. Optional feedback sends the tool name, a fixed up or down answer and a fixed reason; it sends no file, filename, size or contents. The source does not pass file data to those services. Their permitted endpoints are still network destinations, so the security policy alone is not a guarantee about payloads. The <a href="../privacy/">Privacy page</a> describes collection and blocking. Local processing works with these scripts blocked.
     </p>
     <p>
       <strong>The tools are not written for the advertising.</strong> No tool
@@ -180,13 +132,7 @@
   <section>
     <h2>Languages</h2>
     <p>
-      The site is published in fifteen languages. Each is a real translation
-      rather than a machine pass left where it landed: the tool names, the
-      explanations, the guides and the addresses themselves are all translated,
-      and a page is listed in a language only once that language has actually
-      been written. A language still being worked on stays readable but is kept
-      out of the sitemap and the language switcher, so nobody is invited to a
-      page that is half in English.
+      English, Simplified Chinese, German, Spanish, Brazilian Portuguese, French and Japanese are maintained here. Eight earlier translations remain readable as archived pages and do not receive current changes. Maintained pages are offered in the sitemap and language switcher only once translated; unfinished pages remain readable without being advertised as translations.
     </p>
     <p>
       Correspondence is answered in English, which is the one honest thing to
@@ -197,8 +143,8 @@
   <section>
     <h2>What this site will not do</h2>
     <ul>
-      <li>Ask you to create an account, or for your email address.</li>
-      <li>Upload, store, inspect or retain a file you open with it.</li>
+      <li>Require an account or an email address to process a file.</li>
+      <li>Receive or retain files on a server for processing.</li>
       <li>Put a watermark on a result, or hold a feature back for a paid tier.</li>
       <li>Add a network step to a tool that does not need one.</li>
       <li>

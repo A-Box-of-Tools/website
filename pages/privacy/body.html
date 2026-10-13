@@ -1,28 +1,24 @@
   <section>
     <h2>Your files</h2>
     <p>
-      Every tool on this site does its work inside your own browser, on your own
-      hardware. When you choose a file, it is read by the page you already have
-      open. It is not sent to us, because there is no server of ours for it to be
-      sent to &mdash; this site is a set of static files, with no backend, no
-      database, and no storage.
+      Files selected for processing are read, edited and written inside the browser on your device. abox.tools has no file-processing upload endpoint or database of those files. Downloads are assembled locally. Sharing, remote camera viewing and handing a receipt report to another app are deliberate transfers, described below.
     </p>
     <p>
-      That means we never receive, see, store, log, or process:
+      Local processing does not give us:
     </p>
     <ul>
-      <li>your files, in whole or in part</li>
-      <li>thumbnails or previews of them</li>
-      <li>their names, sizes, dimensions, or formats</li>
-      <li>how many you chose, or what you did with them</li>
-      <li>anything read out of them, including EXIF and GPS data</li>
+      <li>
+        your files or their previews
+      </li>
+      <li>
+        their filenames, sizes, dimensions or formats
+      </li>
+      <li>
+        their contents, including EXIF, GPS and recognised document text
+      </li>
     </ul>
     <p>
-      This is not a promise about our intentions. Each page carries a
-      <code>Content-Security-Policy</code> that names every address the page is
-      allowed to contact, and the browser enforces it. None of those addresses
-      belong to us. You can read the policy at the top of any page's source, or
-      open your browser's Network tab and watch: no request carries your file.
+      Each page carries a <code>Content-Security-Policy</code> that limits permitted resources and destinations. Some tool policies add the rendezvous or the optional exchange-rate API. A policy does not inspect the data sent to an allowed host, and <code>connect-src</code> does not describe WebRTC peer traffic. Read it alongside the source and observe the feature you are using, rather than treating the host list as proof of every payload.
     </p>
     <p>
       Files you produce with a tool are handed to your browser's own download
@@ -32,19 +28,15 @@
   </section>
 
   <section>
-    <h2>The one exception, and where it applies</h2>
+    <h2>Features that deliberately use a connection</h2>
     <p>
-      The <a href="../images-to-video/">Images to Video</a> tool has an
-      &ldquo;add from a web address&rdquo; feature. If you paste an address into
-      it, your browser fetches that image from whatever server you named, and
-      <strong>that server sees your IP address</strong> and which file you asked
-      for. That is unavoidable, and it is the whole nature of the feature.
+      <a href="../images-to-video/">Images to Video</a> can fetch an image from a web address you supply. That server receives your IP address and the requested URL, including query parameters. The image is copied into local memory and re-encoded for processing. This request does not send files selected from your device.
     </p>
     <p>
-      It only ever happens for addresses you type in yourself, it is built so
-      that images can come in but data cannot go out, and that tool's own page
-      explains it in more detail. No other tool on this site can make an outbound
-      request with anything of yours in it.
+      <a href="../receipt-invoice-extractor/">Receipt &amp; Invoice Extractor</a> reads photos and recognises text locally. Its optional historical-rate button requests a currency pair and your chosen date from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. The date may be the date printed on a receipt. The provider sees your IP address and request; the request omits credentials and referrers and contains no photo, filename, merchant, amount or email address. Manual rates require no request.
+    </p>
+    <p>
+      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
     </p>
   </section>
 
@@ -80,11 +72,7 @@
       device and browser type, and the site that referred you.
     </p>
     <p>
-      It is configured to do nothing else, and the configuration is a file you
-      can read: <code>analytics.js</code> beside each page sets up a page-view
-      counter and contains no custom events at all. Nothing on this site passes
-      it a file, a filename, a dimension or a count &mdash; there is no code here
-      that could.
+      <code>analytics.js</code> configures page views. <code>feedback.js</code> also sends an optional <code>tool_feedback</code> event after you answer: the tool slug, a fixed up or down verdict and a fixed reason. There is no free-text field and no file, filename, size, dimension, count, format or file contents in that event. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available.
     </p>
 
     <h3>Buy Me a Coffee &mdash; the donate button</h3>
@@ -107,32 +95,21 @@
       per-visitor logs from either of them.
     </p>
 
-    <h3>The share tool&rsquo;s rendezvous</h3>
+    <h3>Remote Camera and browser introductions</h3>
     <p>
-      <a href="../share-text/">Share Text &amp; Files</a> moves text and
-      files directly between browsers. Its start page automatically connects
-      to our rendezvous to list discoverable local link names; sharing opens
-      another connection for browser introductions. The list groups names by
-      public IPv4 address or IPv6 subnet, and page origin &mdash; a hint of
-      a shared gateway rather
-      than proof of the same physical network. A shared VPN or ISP address
-      can include other networks. Mixed IPv4 and IPv6 connections or
-      different routes can leave nearby browsers out of the list. The
-      server never receives the shared text
-      or files, which travel over an encrypted browser connection. Directory
-      names live only on open connections and are not written to durable
-      storage. The server sees names, connection times and IP addresses;
-      Cloudflare still keeps connection logs for seven days. These remain
-      the only per-visitor logs on this site that we can read. The tool page
-      describes this in full, and the entire server source is in the repository.
+      <a href="../remote-camera/">Remote Camera</a> opens a discovery WebSocket when its page loads; Start camera, Connect or choosing an online camera adds a room connection to our rendezvous. Choosing a listed name requests a connection immediately and exchanges network addresses. Opening a viewer link still waits for Connect. Viewer approval is on by default and controls video, not address exchange. The rendezvous sees codes, addresses, timings and setup messages, never video or viewer notes. Video uses an encrypted direct browser connection with no configured STUN server or TURN relay, no microphone and no recording feature. Internet is still required for introductions. Routing can be affected by VPNs and operating-system policy; local mode does not prove a physical network boundary. The tool page explains these limits and how page scripts can read the viewer-link address.
+    </p>
+
+    <h3>Share Text &amp; Files and the rendezvous</h3>
+    <p>
+      <a href="../share-text/">Share Text &amp; Files</a> opens a discovery connection on its start page and another connection when sharing. Names are grouped by public IPv4 address or IPv6 subnet and page origin; this is a discovery hint, not proof of the same physical network. The rendezvous sees names, IP addresses, connection times and negotiation messages, never shared text or files. Advertised names live on open connections without durable storage. Ordinary mode uses public STUN servers from Google and Cloudflare; a reader may explicitly retry through a Cloudflare TURN relay, which forwards encrypted traffic without its decryption keys. Local network mode omits STUN and TURN, but still needs the public rendezvous. Cloudflare keeps seven-day connection metadata logs for the share and camera rendezvous; these are per-visitor service logs we can read. Content copied or downloaded by a recipient remains theirs after the source tab closes.
     </p>
   </section>
 
   <section>
     <h2>Cookies</h2>
     <p>
-      We do not set any cookies of our own. We have no login and no session, and
-      there is only one preference we ever remember.
+      We set no login or session cookies. Google scripts may set cookies and identifiers as described above. The site also uses local browser storage for preferences and temporary work.
     </p>
     <p>
       <strong>The language you choose.</strong> If you pick a language from the
@@ -145,9 +122,10 @@
       matched on the spot and forgotten again.
     </p>
     <p>
-      Every cookie or similar identifier you may find here belongs to Google and
-      is set by the advertising and analytics scripts described above. They are
-      used to measure visits, and to select and cap ads.
+      <strong>Other local storage.</strong> Feedback stores an answer or dismissal timestamp to avoid asking again. Tools may keep settings or an optional sharing draft locally. A language switch or an explicit carry-on action can temporarily store files and settings in IndexedDB so another local tool page can pick them up. These records are not cookies and are not sent to us; clearing site data removes them. The relevant tool explains persistent drafts.
+    </p>
+    <p>
+      Google's cookies and identifiers are used to measure visits and to select and cap ads. They are distinct from the local site records described above.
     </p>
     <h3>How to switch it off</h3>
     <ul>
@@ -165,33 +143,24 @@
       </li>
     </ul>
     <p>
-      Blocking all of it is fine by us. <strong>Every tool on this site works
-      with the scripts blocked, and works with the network disconnected
-      entirely.</strong> Nothing here is held back behind an ad.
+      Blocking advertising, Analytics and the donate button leaves local processing available. Once a tool's offline cache is ready, its local processing works disconnected. Web-image imports, online rates, browser introductions and delivery through another app need their respective connections. No processing feature is withheld behind an ad.
     </p>
   </section>
 
   <section>
     <h2>Your rights over the data</h2>
     <p>
-      We hold no personal data about you, so there is nothing for us to show you,
-      correct, export, or delete &mdash; a request to us would come back empty,
-      honestly.
+      We do not hold files you process. Analytics reports and the rendezvous connection metadata described above are different data. Questions or requests about the site's handling of these can go to <a href="mailto:hi@abox.tools">hi@abox.tools</a>; identify the page and approximate date, without attaching a private file.
     </p>
     <p>
-      The data described above is held by Google, who act as their own controller
-      for it. Requests about it have to go to them, through
-      <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">your Google account</a>
-      or their privacy contacts.
+      For data in your Google account, use <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">your account controls</a> or Google's privacy contacts. Optional exchange-rate, donation and email providers handle their own services and requests.
     </p>
   </section>
 
   <section>
     <h2>Children</h2>
     <p>
-      This site is not directed at children and asks nobody for their age,
-      because it asks nobody for anything. We knowingly collect no personal data
-      from anyone, of any age.
+      This site is not directed at children and does not request an age or a user account. The automatic page and connection information described above applies to visitors of any age.
     </p>
   </section>
 

@@ -63,13 +63,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Tus imágenes no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger tus archivos, ni una línea de código que los mandara
-      si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada le pide nada a la red."
@@ -267,15 +262,7 @@ a = """
 
 [[faq]]
 q = "¿Hay algún límite de tamaño en un data URI?"
-a = """
-        Ninguno con el que te vayas a topar en CSS ni en una etiqueta
-        <code>&lt;img&gt;</code>, porque los navegadores modernos no ponen ahí
-        ningún tope práctico. Lo que sí limitan es teclear un data URI en la barra
-        de direcciones, cosa que casi todos ya rechazan para cualquier cosa que no
-        sea trivial, por motivos de seguridad que nada tienen que ver con este
-        uso. El límite de verdad es el de más arriba: mucho antes de que se rompa
-        nada técnico, la página que lo lleva se ha vuelto más lenta de lo que
-        habría sido con un archivo de imagen normal."""
+a = "Sí. Los navegadores tienen límites finitos para las URL de datos, distintos según la implementación; la aplicación o política de destino puede imponer otros menores. CSS y un <code>&lt;img&gt;</code> pueden usarlas, pero la barra de direcciones tiene restricciones de seguridad aparte. Usa imágenes pequeñas y prueba el destino. <a href=\"https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data\">MDN documenta los límites</a>."
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"

@@ -15,11 +15,10 @@
   build, and the deployed site is built from the sources, not from this file.
 -->
 <!--
-  This tool has no network feature of its own, so the only origins named below
-  are Google's ad and measurement endpoints and the donate button, which are the
-  price of the site being free. There is no origin here under this site's
-  control, so a file dropped on this page has nowhere to go even if something
-  tried to send it.
+  The site-wide policy names ad and measurement endpoints and the donate
+  button. A tool with its own network feature adds the origins it needs in
+  its metadata and explains the feature on its page. Those additions and their
+  purpose are included below.
 
   The list is not written here. It comes from config/site.toml, which every page
   on the site is built from, so the pages cannot drift apart: a tool missing an
@@ -225,6 +224,14 @@
     <div>
       <h1>{{ tool.heading }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
+{% if tool.requires_pairing %}      <div class="pairing-version" data-pairing-version="{{ js_v }}">
+        <span>{{ ui.tool.pairing_version }}</span> <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code id="tool-version" dir="ltr">{{ js_v }}</code></span>
+        <details id="tool-version-help" class="tool-version-help info-fold">
+          <summary aria-describedby="tool-version-note"><span class="visually-hidden">{{ ui.tool.pairing_version_help }}</span></summary>
+          <p id="tool-version-note" role="tooltip" class="tool-version-note">{{ ui.tool.pairing_version_hint }}</p>
+        </details>
+      </div>
+{% endif %}
     </div>
   </div>
   <div class="topbar-actions">
@@ -286,7 +293,7 @@
     <!-- Live, measured, and wrong-provable: this is the part that turns the
          claim above into something a sceptical visitor can check. Filled in
          by src/shared/trust.js, loaded at the foot of the page. data-expected
-         names the hosts this tool's own CSP lets it talk to - share-text's
+         names the hosts this tool's own CSP lets it talk to - its declared
          rendezvous - which the check counts and does not report, because the
          page has already declared them. -->
     <div class="pledge-live">
@@ -329,25 +336,6 @@
 </section>
 
 {{ body }}
-
-{% include "partials/feedback.html" %}
-{% if handoff %}{% include "partials/handoff.html" %}
-{% endif %}<!-- On every tool page, not only the senders: the receiving half reads
-     the parked file and feeds it through the file input. -->
-<script src="{{ handoff_href }}" defer></script>
-
-<!--
-  What a language switch carries with it: the files this page was given and the
-  settings the visitor moved, parked while the page changes and handed back on
-  the other side. Every tool page in every language, because either side of a
-  switch can be the one doing the carrying.
-
-  `defer` rather than a module, and deliberately above src/main.js: it listens
-  on the file input, and it has to be listening BEFORE the picker does - the
-  first thing the picker does with a chosen file is clear the input, which
-  would leave nothing to carry. See shared/lang-keep.js.
--->
-<script src="{{ keep_href }}" defer></script>
 
 <!--
   ============================================================================
@@ -462,7 +450,7 @@
   `tagline` is not, because it is the same authored line the tool's own
   header renders above.
 -->
-{% if related %}<section class="tool-next" aria-labelledby="related-h">
+{% if related %}<section data-indexnow-ignore class="tool-next" aria-labelledby="related-h">
   <h2 id="related-h">{{ ui.tool.related_heading }}</h2>
   <ul class="tool-related">
 {% for other in related %}    <li>
@@ -503,6 +491,27 @@
     </details>
 {% endfor %}  </div>
 </section>
+
+</main>
+
+{% include "partials/feedback.html" %}
+{% if handoff %}{% include "partials/handoff.html" %}
+{% endif %}<!-- On every tool page, not only the senders: the receiving half reads
+     the parked file and feeds it through the file input. -->
+<script src="{{ handoff_href }}" defer></script>
+
+<!--
+  What a language switch carries with it: the files this page was given and the
+  settings the visitor moved, parked while the page changes and handed back on
+  the other side. Every tool page in every language, because either side of a
+  switch can be the one doing the carrying.
+
+  `defer` rather than a module, and deliberately above src/main.js: it listens
+  on the file input, and it has to be listening BEFORE the picker does - the
+  first thing the picker does with a chosen file is clear the input, which
+  would leave nothing to carry. See shared/lang-keep.js.
+-->
+<script src="{{ keep_href }}" defer></script>
 
 {% include "partials/footer.html" %}
 

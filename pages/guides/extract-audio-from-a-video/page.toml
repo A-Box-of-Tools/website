@@ -1,0 +1,17 @@
+# The guide names the current workflow and its limits before a reader reuses a result.
+
+slug = "guides/extract-audio-from-a-video"
+kind = "guide"
+nav = "Extract audio from a video"
+group = "doing-the-job"
+tool = "extract-audio-from-video"
+title = "How to Extract Audio from a Video as WAV"
+description = "Extract a video soundtrack locally as WAV. Choose PCM16 or Float32, keep the channels or mix to mono, and check the result before saving."
+heading = "How to extract the sound from a video"
+lede = "Choose a video and save its decoded soundtrack as WAV in your browser. The output is audio only; its size and precision depend on the depth and channel choices."
+updated = "12 October 2026"
+published = "2026-10-12"
+lastmod = "2026-10-12"
+og_title = "How to extract the sound from a video"
+og_description = "Extract a video soundtrack locally as WAV. Choose PCM16 or Float32, keep the channels or mix to mono, and check the result before saving."
+og_image_alt = "abox.tools - browser tools for local file processing"

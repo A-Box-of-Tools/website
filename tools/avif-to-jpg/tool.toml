@@ -52,7 +52,7 @@ css_parts = ["file-list", "progress", "results", "form", "notes"]
 js_parts = ["file-picker", "image-convert", "image-batch", "zip", "crc32", "message-box", "download", "format"]
 # The tool to offer next, on the carry-on row under the result.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-09-17"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -144,13 +144,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "Your pictures have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your
-      files could be collected at, and nothing in the code that would send them
-      if there were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "The decoder is already in your browser, which is the whole trick."
@@ -176,15 +171,8 @@ body = """
       stays out of the way."""
 
 [[privacy]]
-title = "What a JPEG cannot carry over from an AVIF."
-body = """
- AVIF can hold more
-      colours than a JPEG can and can describe brighter highlights &mdash; ten
-      or twelve bits a channel, and HDR. A JPEG is eight bits and no HDR, so a
-      picture that used any of that arrives flattened to ordinary range. On the
-      overwhelming majority of pictures there is nothing to flatten and you will
-      see no difference; on a screenshot of an HDR photo you may. It is said
-      here rather than discovered later."""
+title = "What this conversion does not preserve."
+body = "This tool writes an ordinary 8-bit SDR JPEG from a browser canvas. Extra AVIF bit depth and HDR information are not preserved, and colours or bright highlights may change. Keep the original for archiving."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -281,14 +269,7 @@ a = """
 
 [[faq]]
 q = "What about HDR and 10-bit colour?"
-a = """
-        They do not survive, because a JPEG cannot hold them. AVIF can store ten
-        or twelve bits a channel and describe highlights brighter than a normal
-        screen shows; a JPEG is eight bits with no such notion. So an HDR AVIF
-        comes out as an ordinary picture &mdash; which is what you wanted if the
-        goal was a file that opens everywhere, and a real loss if you were
-        archiving. Almost nothing saved from an ordinary web page is HDR, so for
-        almost everybody this costs nothing."""
+a = "This tool writes an ordinary 8-bit SDR JPEG from a browser canvas. Extra AVIF bit depth and HDR information are not preserved, and colours or bright highlights may change. Keep the original for archiving. JPEG-based HDR formats do exist: <a href=\"https://developer.android.com/media/platform/hdr-image-format\">Android’s Ultra HDR specification</a> describes a gain map, which this tool does not create."
 
 [[faq]]
 q = "Is the picture re-compressed?"
@@ -302,14 +283,7 @@ a = """
 
 [[faq]]
 q = "Can you convert the other way, JPG to AVIF?"
-a = """
-        Not here, and the reason is worth knowing: no browser will write one. Ask
-        a canvas for an AVIF and it quietly hands back a PNG with the wrong type
-        on it &mdash; so a page claiming to write AVIF in your browser is either
-        wrong or is sending your picture to a server to be encoded. Doing it
-        properly without a server means shipping an encoder, and that is a real
-        piece of work that is on <a href=\"../../roadmap/\">the roadmap</a> rather
-        than pretended at here."""
+a = "Not here. This tool uses the browser’s canvas encoder and ships no AVIF encoder. An unsupported canvas output type falls back to PNG, so changing the file extension would not create an AVIF. Other tools can encode AVIF locally with a separate encoder; that does not require uploading. <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob\">Canvas output rules</a> explain the fallback."
 
 [[faq]]
 q = "Does it keep the date, camera and location?"
@@ -363,7 +337,7 @@ accept = "image/avif,image/*,.avif"
 multiple = true
 title = "Drop AVIF pictures here"
 hint = "or click to browse &mdash; .avif files, whatever they happen to be named"
-# Real AVIF bytes in src/example-data.js, because no browser will encode one -
+# Real AVIF bytes in src/example-data.js, because this tool ships no AVIF encoder -
 # which is the whole reason this tool exists. Only the HEIC converter's example
 # is the same kind of thing, and for the opposite reason.
 example = true

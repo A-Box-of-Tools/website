@@ -1,0 +1,21 @@
+id,language,intent,question,target
+1,en,private image compression,"How can I compress a photo under 200 KB without uploading it?",/compress-image/
+2,en,resize constraints,"How do I resize a photo to exact dimensions in my browser?",/resize-image/
+3,en,AVIF conversion,"Can I convert an AVIF image to JPEG locally and keep its HDR?",/avif-to-jpg/
+4,en,video trimming,"Can I trim an MP4 without re-encoding it and choose an exact cut?",/trim-video/
+5,en,video audio,"How do I extract a video soundtrack as WAV without uploading it?",/extract-audio-from-video/
+6,en,audio precision,"When should I choose 32-bit float instead of 16-bit PCM for extracted audio?",/guides/extract-audio-from-a-video/
+7,en,PDF text tables,"How can I turn a text-based PDF bank statement into CSV locally?",/pdf-to-csv/
+8,en,PDF limits,"Can a browser PDF-to-CSV tool read tables in a scanned PDF?",/pdf-to-csv/
+9,en,PDF unlocking,"What is the difference between a PDF open password and copying restrictions?",/unlock-pdf/
+10,en,YAML subset,"How do I convert YAML to JSON without rounding a large integer?",/yaml-to-json/
+11,en,YAML unsupported features,"Can a browser YAML-to-JSON converter handle aliases and multiple documents?",/guides/convert-yaml-and-json/
+12,en,XML mapping,"What changes when XML is converted to JSON?",/guides/format-and-check-xml/
+13,en,QR recovery,"Does high QR error correction mean any 30 percent of the image can be covered?",/qr-barcode/
+14,en,QR verification,"How can I make a QR code and check that it scans?",/guides/make-a-qr-code-and-prove-it-scans/
+15,en,passport sources,"What are the US passport photo dimensions and the official source?",/id-photo/us-passport/
+16,en,preferred photo settings,"Are IBPS recruitment photo pixel dimensions mandatory or preferred?",/id-photo/in-exam-photo/
+17,en,converter evidence,"Do online image converters upload a file before I press Convert?",/guides/what-20-converters-do-with-your-file/
+18,en,local privacy checks,"How can I check whether a website uploads the files I choose?",/guides/is-it-safe-to-upload-files/
+19,en,encoding safety,"Is Base64 encryption?",/guides/is-base64-encryption/
+20,en,network disclosure,"Which abox.tools features make network connections and what do they send?",/privacy/

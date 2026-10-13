@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Code ouvert"
 
 [[privacy]]
-title = "Vos images ne peuvent être envoyées nulle part."
-body = "La Content-Security-Policy énumère les adresses que cette page peut contacter, dont aucune n’appartient à ce site. Aucun point de collecte ne reçoit vos fichiers et aucun code ne les enverrait s’il existait."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Le décodeur est déjà dans votre navigateur."
@@ -44,8 +44,8 @@ title = "Les zones transparentes et leur fond."
 body = "AVIF peut contenir un canal alpha, JPEG non. Cette page vous demande une couleur, blanche par défaut, seulement si les pixels décodés montrent réellement de la transparence. La plupart des AVIF du Web sont des photos opaques&nbsp;: le réglage reste alors masqué."
 
 [[privacy]]
-title = "Ce que JPEG ne peut pas reprendre d’AVIF."
-body = "AVIF peut offrir dix ou douze bits par canal et des hautes lumières HDR. JPEG se limite à huit bits sans HDR&nbsp;: ces couleurs sont ramenées à la plage ordinaire. La plupart des images n’utilisent pas ces possibilités, mais une photo HDR peut changer d’aspect."
+title = "Ce que cette conversion ne conserve pas."
+body = "Cet outil écrit un JPEG SDR classique de 8 bits depuis le canvas du navigateur. La profondeur supplémentaire et les informations HDR de l’AVIF ne sont pas conservées ; les couleurs ou hautes lumières peuvent changer. Gardez l’original pour l’archivage."
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu’il ne reçoit pas."
@@ -85,7 +85,7 @@ a = "Elle est remplacée par la couleur que vous choisissez. JPEG n’a pas de c
 
 [[faq]]
 q = "Et le HDR et les couleurs sur 10 bits&nbsp;?"
-a = "Ils ne sont pas conservés. AVIF peut contenir dix ou douze bits par canal et des hautes lumières HDR&nbsp;; JPEG a huit bits et une plage ordinaire. Le résultat convient pour la compatibilité mais perd ces données pour l’archivage. Les images des pages web ordinaires sont rarement HDR."
+a = "Cet outil écrit un JPEG SDR classique de 8 bits depuis le canvas du navigateur. La profondeur supplémentaire et les informations HDR de l’AVIF ne sont pas conservées ; les couleurs ou hautes lumières peuvent changer. Gardez l’original pour l’archivage. Des formats HDR basés sur JPEG existent : <a href=\"https://developer.android.com/media/platform/hdr-image-format\">la spécification Ultra HDR d’Android</a> décrit une carte de gain que cet outil ne crée pas."
 
 [[faq]]
 q = "L’image est-elle recomprimée&nbsp;?"
@@ -93,7 +93,7 @@ a = "Oui&nbsp;: AVIF et JPEG sont des codecs différents. Chaque convertisseur d
 
 [[faq]]
 q = "Peut-on convertir dans l’autre sens, JPG en AVIF&nbsp;?"
-a = "Pas ici&nbsp;: aucun navigateur ne sait écrire AVIF. Un canevas auquel on le demande renvoie silencieusement un PNG. Le faire sans serveur demande un encodeur à fournir&nbsp;: ce travail figure sur <a href=\"../feuille-de-route/\">la feuille de route</a>."
+a = "Pas ici. Cet outil utilise l’encodeur du canvas et n’inclut aucun encodeur AVIF. Un type de sortie non pris en charge revient au PNG ; changer l’extension ne crée pas d’AVIF. D’autres outils peuvent encoder l’AVIF localement avec un encodeur distinct, sans envoi. <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob\">Les règles de sortie du canvas</a> expliquent ce repli."
 
 [[faq]]
 q = "Conserve-t-il la date, l’appareil et la localisation&nbsp;?"

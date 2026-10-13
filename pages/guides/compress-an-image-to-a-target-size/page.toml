@@ -15,20 +15,20 @@ nav = "Compressing an image"
 group = "doing-the-job"
 tool = "compress-image"
 
-title = "How to Compress an Image to an Exact File Size"
+title = "How to Compress an Image Under a File-Size Limit"
 description = "An upload form wants 500 KB and your photo is 4 MB. What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does."
 
-heading = "How to compress an image to an exact file size"
+heading = "How to Compress an Image Under a File-Size Limit"
 lede = """
     Someone has told you a number &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
     &mdash; and your photo is nowhere near it. This is what that number costs,
     what to spend it on, and how to tell whether the result is still good
     enough to send."""
 
-updated = "26 August 2026"
+updated = "12 October 2026"
 published = "2026-08-20"
-lastmod = "2026-08-26"
+lastmod = "2026-10-12"
 
-og_title = "Compressing an image to an exact file size"
+og_title = "How to Compress an Image Under a File-Size Limit"
 og_description = "What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

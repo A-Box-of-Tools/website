@@ -1,16 +1,16 @@
 name = "PDF en CSV"
-heading = "PDF&nbsp;en&nbsp;CSV <span class=\"h1-kw\">&mdash; tous ses tableaux, relevés bancaires compris</span>"
-tagline = "Repère tous les tableaux d’un PDF et les transforme en lignes lisibles par un tableur."
-title = "PDF en CSV &mdash; Tous les tableaux et relevés bancaires, gratuit, sans envoi"
-description = "Transformez les tableaux d’un PDF en CSV : relevés bancaires et de carte, factures, tarifs, rapports. Chaque tableau de chaque page est repéré grâce à la position du texte ; les soldes courants imprimés sont comparés lorsque c’est possible. Aucun envoi."
-og_title = "PDF en CSV, tous ses tableaux, sans envoyer le fichier"
-og_description = "La plupart des convertisseurs PDF en CSV demandent votre fichier sur leur serveur. Celui-ci repère tous les tableaux dans votre navigateur et indique quelles comparaisons du solde courant d’un relevé concordent."
+heading = "PDF&nbsp;en&nbsp;CSV <span class=\"h1-kw\">&mdash; extraire les tableaux contenant du texte</span>"
+tagline = "Transformez les tableaux détectés de PDF contenant du texte en lignes pour un tableur."
+title = "PDF en CSV &mdash; tableaux contenant du texte et relevés, sans envoi"
+description = "Extrayez les tableaux de PDF contenant du texte en CSV dans le navigateur : relevés, factures, tarifs et rapports. La détection utilise les positions du texte lisible et peut manquer des dispositions inhabituelles ; les scans nécessitent d’abord un OCR. Aucun envoi."
+og_title = "Tableaux PDF en CSV, sans envoyer le fichier"
+og_description = "Extrayez les tableaux de PDF contenant du texte en CSV dans le navigateur : relevés, factures, tarifs et rapports. La détection utilise les positions du texte lisible et peut manquer des dispositions inhabituelles ; les scans nécessitent d’abord un OCR. Aucun envoi."
 og_image_alt = "Convertissez les tableaux d’un PDF en CSV dans votre navigateur"
 pledge = "Le PDF choisi est ouvert et lu dans la mémoire de cette machine avec le code servi depuis cette adresse ; le CSV est écrit de la même manière. Rien ici ne peut envoyer de fichier, et aucun serveur ne peut en recevoir. Le contenu des tableaux &mdash; numéro de compte, solde, bénéficiaires, prix d’un client &mdash; reste dans l’onglet."
 live_hint = "Vérifiez par vous-même : ouvrez les outils de développement, surveillez l’onglet Réseau et convertissez un PDF. Aucune requête ne transporte de page, de ligne, de nombre ou de nom de fichier. Ou déconnectez Internet et convertissez quand même."
 read_first = ", <code>src/layout.js</code> pour la séparation de la page en zones sans lignes tracées, <code>src/tables.js</code> pour le repérage des tableaux et colonnes, <code>src/rows.js</code> pour l’assemblage des lignes, et <code>src/check.js</code> pour les calculs comparant les soldes. Aucun de ces modules n’accède au réseau, pas plus que leur lecteur sous-jacent."
 howto_heading = "Comment transformer les tableaux d’un PDF en CSV"
-card = "Transformez les tableaux d’un PDF en feuille de calcul &mdash; relevé bancaire ou de carte, facture, tarifs, rapport. Chaque tableau est repéré selon la position du texte, les cellules sur plusieurs lignes sont réunies, et le solde courant d’un relevé est comparé lorsque les montants et soldes sont lisibles."
+card = "Extrayez les tableaux de PDF contenant du texte en CSV dans le navigateur : relevés, factures, tarifs et rapports. La détection utilise les positions du texte lisible et peut manquer des dispositions inhabituelles ; les scans nécessitent d’abord un OCR. Aucun envoi."
 
 [words]
 plural = "documents"
@@ -69,7 +69,7 @@ body = "Un fichier à la fois. Le navigateur lit directement toutes ses pages su
 
 [[howto]]
 title = "Regardez les tableaux repérés."
-body = "Chaque tableau de chaque page conserve ses colonnes et ses en-têtes, si la page en possède. Un tableau continuant dans deux sections ou sur deux pages avec les mêmes en-têtes est réuni sans répéter ceux-ci au milieu. Les cellules sur plusieurs lignes sont rassemblées. Totaux, sous-totaux et libellés restent des lignes à part entière."
+body = "Vérifiez chaque tableau détecté, ses colonnes et en-têtes récupérés. Les suites entre pages peuvent être jointes et les cellules sur plusieurs lignes regroupées. Avant d’enregistrer le CSV, cherchez tableaux manqués, lignes fusionnées et erreurs de mise en page en comparant à l’original."
 
 [[howto]]
 title = "Choisissez-en un ou prenez-les tous."
@@ -124,8 +124,8 @@ q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = "Oui. Chargez une fois la page, puis déconnectez Internet : elle continue de fonctionner. C’est aussi une preuve simple qu’aucun fichier n’est envoyé ; un convertisseur distant s’arrêterait aussitôt."
 
 [schema]
-description = "Convertissez les tableaux d’un PDF en CSV dans votre navigateur : relevés bancaires et de carte, factures, tarifs et rapports. Chaque tableau est repéré selon la position du texte ; le solde courant est comparé si les montants et soldes sont lisibles. Aucun envoi."
-features = ["Repère tous les tableaux d’un PDF avec leurs propres colonnes et en-têtes", "Sépare une colonne de petits caractères au lieu de la mélanger au tableau", "Réunit les tableaux sur plusieurs sections ou pages sans répéter les en-têtes", "Réunit les cellules sur plusieurs lignes", "Compare les soldes courants d’un relevé et indique les lignes non vérifiées", "Lit 1.240,00 et 1,240.00 et résout les dates ambiguës depuis le document", "Explique lorsqu’un PDF est un scan ou est protégé par mot de passe, et propose une solution", "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune limite de taille"]
+description = "Extrayez les tableaux de PDF contenant du texte en CSV dans le navigateur : relevés, factures, tarifs et rapports. La détection utilise les positions du texte lisible et peut manquer des dispositions inhabituelles ; les scans nécessitent d’abord un OCR. Aucun envoi."
+features = ["Détecte les tableaux contenant du texte à partir de positions récupérables", "Sépare une colonne de petits caractères au lieu de la mélanger au tableau", "Réunit les tableaux sur plusieurs sections ou pages sans répéter les en-têtes", "Réunit les cellules sur plusieurs lignes", "Compare les soldes courants d’un relevé et indique les lignes non vérifiées", "Lit 1.240,00 et 1,240.00 et résout les dates ambiguës depuis le document", "Explique lorsqu’un PDF est un scan ou est protégé par mot de passe, et propose une solution", "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune limite de taille"]
 
 [picker]
 title = "Déposez votre PDF ici"

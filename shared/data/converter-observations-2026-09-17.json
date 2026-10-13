@@ -1,0 +1,247 @@
+{
+  "study_date": "2026-09-17",
+  "transcribed": "2026-10-12",
+  "provenance": "Structured transcription of the observations already published in this article; not a new run or independently verified raw capture.",
+  "limitations": [
+    "Original instrumented request logs, browser version, exact fixture bytes and historical policy snapshots were not retained with the article.",
+    "Reported byte counts are hook/body measurements; they are not a complete wire capture and do not prove the absence of every possible transfer.",
+    "Current reference links were checked on 2026-10-12; their contents may differ from the reported 2026-09-17 policy summaries.",
+    "Nine attempted sites have no completed result. File retrieval without a session was checked for four results only."
+  ],
+  "summary": {
+    "completed_sites": 20,
+    "reported_uploads": 19,
+    "reported_uploads_on_selection": 13,
+    "results_retrieved_without_session": 4,
+    "incomplete_sites": 9
+  },
+  "fixture_reported": {
+    "name": "abox-probe-9471.png",
+    "width": 450,
+    "height": 350,
+    "contents": "random pixels",
+    "approximate_size_kb": 542
+  },
+  "observations": [
+    {
+      "converter": "Squoosh",
+      "reported_upload": false,
+      "reported_timing": "none",
+      "reported_bytes": 0,
+      "measurement_label": "0",
+      "endpoint_pattern": "—",
+      "reported_retention": "nothing to keep",
+      "current_reference_url": "https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "TinyPNG",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542566,
+      "measurement_label": "542,566",
+      "endpoint_pattern": "tinypng.com/backend/opt/store",
+      "reported_retention": "48 hours",
+      "current_reference_url": "https://tinypng.com/terms",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "iLoveIMG",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542816,
+      "measurement_label": "542,816",
+      "endpoint_pattern": "api9.iloveimg.com/v1/upload",
+      "reported_retention": "2 hours",
+      "current_reference_url": "https://www.iloveimg.com/help/terms",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "iLovePDF",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542801,
+      "measurement_label": "542,801",
+      "endpoint_pattern": "api4.ilovepdf.com/v1/upload",
+      "reported_retention": "2 hours",
+      "current_reference_url": "https://www.ilovepdf.com/help/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Sejda",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542537,
+      "measurement_label": "542,537",
+      "endpoint_pattern": "sejda.com/api/files/upload",
+      "reported_retention": "after processing; shared links 7 days",
+      "current_reference_url": "https://www.sejda.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "PDF24",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542531,
+      "measurement_label": "542,531",
+      "endpoint_pattern": "filetools24.pdf24.org/client.php",
+      "reported_retention": "“usually” 1 hour",
+      "current_reference_url": "https://www.pdf24.org/en/privacy-policy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "PDF Candy",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542522,
+      "measurement_label": "542,522",
+      "endpoint_pattern": "s35.api.pdfcandy.com/uploadcbc/…",
+      "reported_retention": "2 hours",
+      "current_reference_url": "https://pdfcandy.com/help.html",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "jpg2pdf.com",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542570,
+      "measurement_label": "542,570",
+      "endpoint_pattern": "jpg2pdf.com/api/upload",
+      "reported_retention": "1 hour, stated in Terms",
+      "current_reference_url": "https://jpg2pdf.com/terms",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Img2Go",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542589,
+      "measurement_label": "542,589",
+      "endpoint_pattern": "www21.img2go.com/v2/dl/web7/…",
+      "reported_retention": "72 hours",
+      "current_reference_url": "https://www.img2go.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Online-Convert",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542423,
+      "measurement_label": "542,423",
+      "endpoint_pattern": "www8.online-convert.com/v2/dl/web7/…",
+      "reported_retention": "72 hours",
+      "current_reference_url": "https://www.online-convert.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "PDF2Go",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542542,
+      "measurement_label": "542,542",
+      "endpoint_pattern": "www15.pdf2go.com/v2/dl/web7/…",
+      "reported_retention": "72 hours",
+      "current_reference_url": "https://www.pdf2go.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Compress2Go",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542492,
+      "measurement_label": "542,492",
+      "endpoint_pattern": "www6.compress2go.com/v2/dl/web7/…",
+      "reported_retention": "72 hours",
+      "current_reference_url": "https://www.compress2go.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "PicResize",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": 542568,
+      "measurement_label": "542,568",
+      "endpoint_pattern": "picresize.com/en/edit, form post",
+      "reported_retention": "20 minutes",
+      "current_reference_url": "https://picresize.com/en/privacypolicy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "ResizePixel",
+      "reported_upload": true,
+      "reported_timing": "selection",
+      "reported_bytes": null,
+      "measurement_label": "form post",
+      "endpoint_pattern": "resizepixel.com/",
+      "reported_retention": "within 1 hour",
+      "current_reference_url": "https://www.resizepixel.com/en/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "CloudConvert",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": 543218,
+      "measurement_label": "543,218",
+      "endpoint_pattern": "eu-central.storage.cloudconvert.com/…",
+      "reported_retention": "24 hours",
+      "current_reference_url": "https://cloudconvert.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Convertio",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": null,
+      "measurement_label": "not captured",
+      "endpoint_pattern": "convertio.co/process/…",
+      "reported_retention": "24 hours",
+      "current_reference_url": "https://convertio.co/privacy/",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Ezgif",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": 542483,
+      "measurement_label": "542,483",
+      "endpoint_pattern": "ezgif.com/optimize, form post",
+      "reported_retention": "1 hour after last use",
+      "current_reference_url": "https://ezgif.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Aconvert",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": null,
+      "measurement_label": "form post",
+      "endpoint_pattern": "aconvert.com/results.php",
+      "reported_retention": "2 hours",
+      "current_reference_url": "https://www.aconvert.com/privacy.html",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "Online2PDF",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": 547330,
+      "measurement_label": "547,330",
+      "endpoint_pattern": "online2pdf.com/conversion/frame",
+      "reported_retention": "“immediately”",
+      "current_reference_url": "https://online2pdf.com/privacy",
+      "reference_link_checked": "2026-10-12"
+    },
+    {
+      "converter": "IMGonline",
+      "reported_upload": true,
+      "reported_timing": "conversion",
+      "reported_bytes": 542633,
+      "measurement_label": "542,633",
+      "endpoint_pattern": "imgonline.com.ua/eng/…-result.php",
+      "reported_retention": "no policy found",
+      "current_reference_url": null,
+      "reference_link_checked": null
+    }
+  ]
+}

@@ -41,7 +41,7 @@ body = "Une photo que vous déposez ici est décodée sur un canvas de cette pag
 
 [[privacy]]
 title = "Rien ici ne va chercher quoi que ce soit."
-body = "Il n'y a ni <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni <code>sendBeacon</code> nulle part dans <code>src/</code>, et la <code>Content-Security-Policy</code> de la page ne laisse aucune adresse vers laquelle cette origine pourrait envoyer quelque chose, même s'il y en avait. C'est pour cela que cette page ne peut pas vous dire où aboutit un lien raccourci&nbsp;: le savoir voudrait dire demander, et elle ne demande rien."
+body = "Texte et liens décodés s’affichent localement sans ouverture automatique. L’outil ne résout pas les liens courts car cela contacterait la destination. Vérifiez le code et les appels à <code>fetch</code>, <code>XMLHttpRequest</code> ou <code>sendBeacon</code> pour connaître les données reçues. La <code>Content-Security-Policy</code> limite les destinations, hôtes de plateforme autorisés compris ; elle n’affirme pas leur absence et ne prouve pas chaque contenu."
 
 [[privacy]]
 title = "Elle vous montre l'adresse. Elle ne l'ouvre jamais."
@@ -105,11 +105,11 @@ a = "Neuf fois sur dix, c'est l'une de trois choses. La marge blanche est rogné
 
 [[faq]]
 q = "Peut-il lire un code abîmé ou partiellement recouvert&nbsp;?"
-a = "Souvent oui, et c'est le format qui fonctionne comme prévu, pas une habileté d'ici. Tout QR code porte des données de contrôle Reed-Solomon, et un symbole fait au niveau H peut perdre environ 30&nbsp;% de ses modules et être quand même reconstruit à l'identique. La page indique combien de mots de code elle a dû réparer, sous &laquo;&nbsp;comment celui-ci a été lu&nbsp;&raquo;, pour que vous voyiez à quel point c'était juste. Ce qu'elle ne fait pas, c'est deviner&nbsp;: un symbole abîmé au-delà de ce que le contrôle peut porter est signalé illisible plutôt que répondu de travers."
+a = "Parfois. Reed-Solomon restaure des mots de code endommagés dans la limite du symbole. Les quelque 30 % de H concernent le total des mots de code, pas des modules quelconques ni la surface ; des motifs de repérage abîmés peuvent empêcher toute détection. Le compteur du résultat indique les corrections effectuées. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explique les niveaux</a>."
 
 [[faq]]
-q = "Pourquoi dit-il qu'il ne peut pas savoir où mène un lien bit.ly&nbsp;?"
-a = "Parce que le savoir voudrait dire demander à bit.ly, et c'est une requête réseau. Tout le reste de ce que cette page affirme repose sur le fait qu'aucun code ici ne contacte quoi que ce soit, et faire discrètement une exception vaudrait moins que la réponse. Alors le raccourcisseur est nommé, et ce qu'il cache est honnêtement laissé inconnu. Si vous voulez le résoudre, collez-le dans quelque chose qui accepte, lui, de demander."
+q = "Pourquoi dit-il qu'il ne peut pas savoir où mène un lien <code>bit.ly</code>&nbsp;?"
+a = "Parce que le savoir voudrait dire demander à <code>bit.ly</code>, et c'est une requête réseau. Tout le reste de ce que cette page affirme repose sur le fait qu'aucun code ici ne contacte quoi que ce soit, et faire discrètement une exception vaudrait moins que la réponse. Alors le raccourcisseur est nommé, et ce qu'il cache est honnêtement laissé inconnu. Si vous voulez le résoudre, collez-le dans quelque chose qui accepte, lui, de demander."
 
 [[faq]]
 q = "Est-ce risqué de scanner un QR code&nbsp;?"

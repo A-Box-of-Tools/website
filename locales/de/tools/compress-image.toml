@@ -8,11 +8,11 @@
 name = "Bildkompressor"
 # Der Zusatz ist der Ausdruck, nach dem gesucht wird. Wie im Englischen bleibt
 # der Produktname die laute Hälfte.
-heading = "Bild&nbsp;komprimieren <span class=\"h1-kw\">&mdash; auf eine exakte Größe</span>"
+heading = "Bild&nbsp;komprimieren <span class=\"h1-kw\">&mdash; unter eine Größengrenze</span>"
 tagline = "Sie nennen die Größe. Den Rest rechnet es aus."
 
-title = "Bild auf exakte Größe komprimieren &mdash; kostenlos, ohne Upload"
-description = "JPEG, PNG oder WebP auf eine exakte Größe komprimieren, ob 100 KB oder 2 MB. Läuft komplett im Browser: kein Upload, kein Konto, auch offline."
+title = "Bild unter eine Zielgröße komprimieren &mdash; kostenlos, ohne Upload"
+description = "JPEG, PNG, WebP oder AVIF unter eine Dateigrößengrenze wie 100 KB oder 2 MB bringen. Das Ergebnis soll höchstens die Zielgröße haben, nicht eine exakte Bytezahl. Kein Upload, auch offline."
 og_title = "Ein Bild auf eine Größe Ihrer Wahl komprimieren"
 og_description = "Nennen Sie eine Zielgröße. Das Werkzeug findet die geringste Kompression, die dorthin reicht, und misst anschließend, was sie gekostet hat. Läuft auf Ihrem Gerät, nichts wird hochgeladen."
 og_image_alt = "Bildkompressor - Größe nennen, Qualität behalten"
@@ -64,13 +64,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Ihre Bilder haben keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -148,15 +143,8 @@ a = """
         sie kontaktieren darf, und keine davon gehört uns."""
 
 [[faq]]
-q = "Wie kommt es auf eine exakte Größe?"
-a = """
-        Durch Ausprobieren. Eine Formel, die eine Qualitätseinstellung in eine
-        Byte-Zahl umrechnet, gibt es nicht, denn das hängt vollständig vom Bild
-        ab. Also kodiert das Werkzeug das Bild mehrfach und sucht die Antwort.
-        Es beginnt am oberen Ende des Qualitätsbereichs und halbiert sich heran,
-        sodass es die höchste passende Qualität in etwa acht Durchgängen findet.
-        Jede Größe, die Sie auf der Seite sehen, gehört zu einer echten
-        kodierten Datei und ist keine Schätzung."""
+q = "Wie passt es unter eine Dateigrößengrenze?"
+a = "Es kodiert und misst mehrere Kandidaten und sucht dann die höchste Qualität, die passt. Wenn ein passendes Ergebnis möglich ist, liegt es höchstens bei der Zielgröße, nicht unbedingt bei der eingegebenen Bytezahl. Dateien unter der Grenze bleiben unverändert. Reicht Qualität allein nicht, verkleinert es die Abmessungen; prüfen Sie das Ergebnis."
 
 [[faq]]
 q = "Was heißt hier eigentlich &bdquo;minimaler Verlust&ldquo;?"
@@ -218,7 +206,7 @@ description = "JPEG-, PNG- und WebP-Bilder auf eine von Ihnen genannte Größe k
 features = [
   "Komprimiert auf eine Zieldateigröße Ihrer Wahl statt auf eine zu erratende Qualitätszahl",
   "Behält die volle Auflösung, wo es geht, und verkleinert nur, wenn Qualität allein die Zielgröße nicht erreicht",
-  "Nutzt das Budget aus: Das Ergebnis landet knapp unter der Zielgröße statt weit darunter",
+  "Sucht nahe der Grenze, ohne eine exakte Bytezahl zu versprechen",
   "Misst das Ergebnis mit SSIM und PSNR gegen das Original",
   "Lässt Dateien, die bereits unter der Zielgröße liegen, vollständig unangetastet",
   "JPEG, PNG und WebP, mit automatischer Formatwahl",

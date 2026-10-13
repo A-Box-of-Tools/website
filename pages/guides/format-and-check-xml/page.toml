@@ -1,0 +1,17 @@
+# The guide names the current workflow and its limits before a reader reuses a result.
+
+slug = "guides/format-and-check-xml"
+kind = "guide"
+nav = "Format and check XML"
+group = "doing-the-job"
+tool = "xml-formatter"
+title = "How to Format XML and Convert It to JSON Locally"
+description = "Format, minify and check XML locally. Follow parser errors and understand the attribute, text and array mapping before converting XML to JSON."
+heading = "How to format and check XML"
+lede = "Reindent XML without uploading it, follow a parser error to its source, and understand what changes when you convert the document to JSON."
+updated = "12 October 2026"
+published = "2026-10-12"
+lastmod = "2026-10-12"
+og_title = "How to format and check XML"
+og_description = "Format, minify and check XML locally. Follow parser errors and understand the attribute, text and array mapping before converting XML to JSON."
+og_image_alt = "abox.tools - browser tools for local file processing"

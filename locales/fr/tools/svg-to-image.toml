@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Open source"
 
 [[privacy]]
-title = "Votre dessin n'a nulle part où aller."
-body = "La Content-Security-Policy énumère toutes les adresses que cette page peut contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y enverrait s'il en existait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Rien ici ne va rien chercher."

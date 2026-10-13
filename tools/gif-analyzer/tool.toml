@@ -38,7 +38,7 @@ css_parts = ["notes"]
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box", "example-gif", "example-photo", "gif-working-budget", "cooperative-work", "errors"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -115,14 +115,8 @@ mark = "&#10003;"
 text = "Files stay on your device"
 
 [[privacy]]
-title = "Your GIF has nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your file
-      could be collected at, and nothing in the code that would send it if there
-      were. This used to read <code>connect-src 'none'</code>, which was absolute;
-      adding advertising cost that, and saying so is part of the deal."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "The reader is four files in this repository."
@@ -137,13 +131,7 @@ body = """
 
 [[privacy]]
 title = "Comments and metadata are shown to you, and to nobody else."
-body = """
-
-      A GIF can carry a comment block, an XMP packet describing an edit, or a
-      colour profile, and this page prints all of them out. They are put on the
-      screen in front of you and go nowhere else: there is no analytics event in
-      this repository that carries any of it, and the page could not send one if
-      there were."""
+body = "A GIF can carry a comment block, an XMP packet describing an edit, or a colour profile, and this page prints all of them out. They are put on the screen in front of you and go nowhere else: there is no analytics event in this repository that carries any of it. Optional feedback reports only the tool slug, a fixed vote and a fixed reason, never the metadata read from your file."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."

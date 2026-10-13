@@ -113,19 +113,22 @@ def tool_jsonld(site, tool):
     graph = [
         {
             '@type': 'SoftwareApplication',
-            'name': tool['name'],
+            '@id': tool['url'] + '#app',
+            'name': to_text(tool['name']),
             'url': tool['url'],
             'applicationCategory': tool['schema']['category'],
             'operatingSystem': 'Any (runs in a web browser)',
             'browserRequirements': tool['schema'].get(
                 'browser_requirements', 'Requires JavaScript.'),
-            'description': tool['schema']['description'],
+            'description': to_text(tool['schema']['description']),
+            'dateModified': tool['lastmod'],
             'inLanguage': site['lang'],
             'isAccessibleForFree': True,
             'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
-            'featureList': tool['schema']['features'],
+            'featureList': [to_text(feature) for feature in tool['schema']['features']],
             'publisher': {
                 '@type': 'Organization',
+                '@id': site['domain'] + '#publisher',
                 'name': site['name'],
                 'url': site['domain'],
             },
@@ -136,7 +139,7 @@ def tool_jsonld(site, tool):
                 {'@type': 'ListItem', 'position': 1,
                  'name': site['name'], 'item': site['home']},
                 {'@type': 'ListItem', 'position': 2,
-                 'name': tool['name'], 'item': tool['url']},
+                 'name': to_text(tool['name']), 'item': tool['url']},
             ],
         },
         {
@@ -179,7 +182,7 @@ def roadmap_jsonld(site):
     return dumps_ld(graph)
 
 
-def page_jsonld(site, page):
+def page_jsonld(site, page, body=''):
     """Structured data for a prose page, or nothing for a legal one.
 
     A guide is an Article and says so; a privacy policy is not, and inventing
@@ -220,6 +223,7 @@ def page_jsonld(site, page):
     graph = [
         {
             '@type': 'Article',
+            '@id': page['url'] + '#article',
             'headline': to_text(page['heading']),
             'description': to_text(page['description']),
             'url': page['url'],
@@ -229,11 +233,13 @@ def page_jsonld(site, page):
             'mainEntityOfPage': {'@type': 'WebPage', '@id': page['url']},
             'author': {
                 '@type': 'Organization',
+                '@id': site['domain'] + '#publisher',
                 'name': site['name'],
                 'url': site['domain'],
             },
             'publisher': {
                 '@type': 'Organization',
+                '@id': site['domain'] + '#publisher',
                 'name': site['name'],
                 'url': site['domain'],
             },
@@ -255,6 +261,17 @@ def page_jsonld(site, page):
             ],
         },
     ]
+    # Use pictures actually present in this language's body. A screenshot
+    # absent from a translation is not an image of that translated article.
+    images = []
+    for src in dict.fromkeys(re.findall(r'<img\b[^>]*src="(/screens/[^"]+)"', body)):
+        if src in page.get('shots', {}):
+            width, height = page['shots'][src]
+            images.append({'@type': 'ImageObject',
+                           'url': urllib.parse.urljoin(site['domain'], src),
+                           'width': width, 'height': height})
+    if images:
+        graph[0]['image'] = images
     return dumps_ld(graph)
 
 
@@ -277,8 +294,7 @@ def landing_jsonld(site, tool, page):
             'inLanguage': site['lang'],
             'dateModified': page['lastmod'],
             'isPartOf': {'@id': site['home'] + '#website'},
-            'about': {'@type': 'SoftwareApplication', 'name': to_text(tool['name']),
-                      'url': tool['url']},
+            'about': {'@id': tool['url'] + '#app'},
         },
         {
             '@type': 'BreadcrumbList',
@@ -502,6 +518,13 @@ def load_tool(path, site):
     if tool['slug'] != path.parent.name:
         raise ConfigError(
             f'{path}: slug is {tool["slug"]!r} but the folder is {path.parent.name!r}')
+
+    pairing = tool.get('requires_pairing', False)
+    if not isinstance(pairing, bool):
+        raise ConfigError(f'{path}: requires_pairing must be true or false')
+    # The existing pairing transport implies the display even when a future
+    # tool forgets to ask. Other pairing transports can opt in explicitly.
+    tool['requires_pairing'] = pairing or 'peer-network' in tool.get('js_parts', [])
 
     for key in ('plural', 'choose'):
         if key not in tool['words']:

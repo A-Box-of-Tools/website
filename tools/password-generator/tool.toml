@@ -31,13 +31,13 @@ category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
-lastmod = "2026-08-27"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Strong Random Password &amp; Passphrase Generator &mdash; Nothing Uploaded"
 description = "Make a strong random password, or a diceware passphrase from a bundled 7,776-word list. Drawn by your browser's own cryptographic generator, never sent anywhere, never stored. Free, no sign-up."
-og_title = "A password generator that could not send your password anywhere"
+og_title = "Passwords generated locally, without a processing upload"
 og_description = "Random passwords and diceware passphrases, drawn by crypto.getRandomValues in your own browser from a wordlist that ships with the page. No server, no account, no history, and an honest count of how strong the result actually is."
 og_image_alt = "Password & Passphrase Generator - strong random passwords, nothing uploaded"
 
@@ -129,7 +129,7 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "The password is made where you are reading this."
+title = "Processing happens in this browser."
 body = """
  It is drawn in this
       page, by this page, out of the randomness your own operating system
@@ -251,15 +251,7 @@ body = """
 
 [[faq]]
 q = "Are the passwords sent anywhere, or stored?"
-a = """
-        Neither. They are made in your browser, on your own hardware, and this
-        tool has no network feature of any kind &mdash; it never fetches
-        anything and never sends anything. Nothing is written to storage
-        either: no localStorage, no cookie, no history. Reload the page and
-        every password it has shown you is gone, from the screen and from its
-        own memory. The page's <code>Content-Security-Policy</code> names every
-        address it may contact and none of them is ours, so there is nowhere for
-        a password to be collected even if something tried."""
+a = "Generated passwords are made in this browser and the tool’s code does not upload them or write a password history. Copying or saving is your choice. The shared page frame can retain local preferences and temporary language-switch settings, but the generated secret output is not included. CSP limits permitted destinations; it does not itself prove what an allowed request contains. Read the code and inspect the operation’s traffic."
 
 [[faq]]
 q = "Where does the randomness come from?"

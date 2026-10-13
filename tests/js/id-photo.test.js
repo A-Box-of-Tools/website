@@ -106,7 +106,7 @@ test('specs: the ICAO geometry is the one Doc 9303 publishes', () => {
   assert.equal(icao.print.heightMm, 45);
 });
 
-test('specs: the two Indian form rules are the ones the notices state', () => {
+test('specs: the IBPS presets preserve the cited preferred sizes and byte bands', () => {
   const photo = specById('in-exam-photo');
   assert.deepEqual(portalPixels(photo), { width: 200, height: 230 });
   assert.deepEqual(portalBytes(photo), { min: 20 * 1024, max: 50 * 1024 });
@@ -122,6 +122,9 @@ test('portalPixels: a range is written at its smallest allowed size', () => {
   // for detail nobody looks at on a form.
   assert.deepEqual(portalPixels(specById('us-passport')), { width: 600, height: 600 });
   assert.deepEqual(portalPixels(specById('uk-passport')), { width: 600, height: 750 });
+  assert.deepEqual(portalPixels(specById('in-visa')), { width: 350, height: 350 });
+  assert.equal(specById('in-visa').digital.width.max, 1000);
+  assert.equal(specById('us-visa').digital.width.max, 1200);
   assert.equal(portalPixels(specById('schengen')), null);
 });
 
@@ -261,7 +264,7 @@ test('docSize: the shape of the thing, and the pixels where a form wants them', 
     'doc.size.both doc.size.mm 35 45 doc.size.px 600 750');
   assert.equal(docSize(specById('schengen'), say), 'doc.size.mm 35 45',
     'a rule with no upload should not claim a pixel size');
-  assert.equal(docSize(specById('in-exam-photo'), say), 'doc.size.px 200 230',
+  assert.equal(docSize(specById('in-exam-photo'), say), 'band.guidance doc.size.px 200 230',
     'a rule with nothing to print should not claim a print size');
 });
 

@@ -247,6 +247,7 @@ class StructuredData(unittest.TestCase):
     def test_a_tool_graph_has_the_three_types(self):
         tool = {
             'name': 'Widget', 'url': 'https://example.test/widget/',
+            'lastmod': '2026-01-01',
             'schema': {'category': 'UtilitiesApplication', 'description': 'd',
                        'features': ['a']},
             'faq': [{'q': '<b>Why?</b>', 'a': 'Because &amp; so.'}],
@@ -260,6 +261,7 @@ class StructuredData(unittest.TestCase):
         # each other.
         tool = {
             'name': 'Widget', 'url': 'https://example.test/widget/',
+            'lastmod': '2026-01-01',
             'schema': {'category': 'C', 'description': 'd', 'features': []},
             'faq': [{'q': '<b>Why?</b>', 'a': 'Because &amp; <i>so</i>.'}],
         }
@@ -384,6 +386,18 @@ class LoadTool(TempTree):
         self.assertEqual(tool['words']['analytics_extra'], '')
         self.assertEqual(tool['csp_note'], '')
         self.assertEqual(tool['csp'], {})
+        self.assertFalse(tool['requires_pairing'])
+
+    def test_the_shared_pairing_transport_always_gets_a_version_display(self):
+        body = 'js_parts = ["peer-network"]\nrequires_pairing = false\n' + TOOL_TOML
+        tool = sitelib.load_tool(self.tool_at('widget', body), SITE)
+        self.assertTrue(tool['requires_pairing'])
+
+    def test_another_pairing_transport_can_ask_for_the_version_display(self):
+        tool = sitelib.load_tool(self.tool_at('widget', 'requires_pairing = true\n' + TOOL_TOML), SITE)
+        self.assertTrue(tool['requires_pairing'])
+        with self.assertRaisesRegex(sitelib.ConfigError, 'requires_pairing'):
+            sitelib.load_tool(self.tool_at('widget', 'requires_pairing = "true"\n' + TOOL_TOML), SITE)
 
     def test_a_missing_key_is_named(self):
         body = TOOL_TOML.replace('tagline = "Does a thing"\n', '')

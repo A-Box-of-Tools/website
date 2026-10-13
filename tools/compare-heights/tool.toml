@@ -48,7 +48,7 @@ category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -144,14 +144,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "A list of people is not a small thing to hand over."
-body = """
- Most
-      height charts want an account, and the ones that do not still have a
-      server that sees every name and number you type. What you are typing here
-      is who is in your family and how tall each of them is, often with a
-      child's age implied by the figure beside the name. None of it is sent
-      anywhere, because there is nowhere here for it to go."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -395,17 +389,7 @@ a = """
 
 [[faq]]
 q = "Why is there no toddler or baby?"
-a = """
-        Because nobody has drawn one and put it in the public domain. Wikimedia
-        Commons has exactly one usable free child &mdash; the girl &mdash; and
-        the NIH BioArt library the boy; below school age the search comes back
-        empty, and every coherent free set of people is a restroom pictogram the
-        same shape at every age, which is the mistake this whole tool is built
-        to avoid. There was a toddler built by this page's own code for a while,
-        and it was the only figure on the chart nobody had drawn: it looked it,
-        standing next to four that somebody had. For anybody smaller than the
-        boy or the girl, set one of them to the real height &mdash; the ruler is
-        what carries the comparison, and it will be right."""
+a = "We did not find toddler or baby artwork that met this tool’s public-domain licensing and drawing requirements. The shipped child figures are a boy and a girl, not a complete catalogue of children’s artwork. For a younger child, set either figure to the measured height or add a suitable picture of your own; the ruler carries the measurement."
 
 [[faq]]
 q = "How many people can I put on one chart?"

@@ -48,7 +48,7 @@ js_parts = ["file-picker", "image-convert", "image-batch", "zip", "crc32", "mess
 # The tool to offer next, on the carry-on row under the result. A JPEG that has
 # just been written is the thing people most often need smaller.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -141,13 +141,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "Your pictures have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your
-      files could be collected at, and nothing in the code that would send them
-      if there were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "There is no decoder to ship, which is why there is no server."

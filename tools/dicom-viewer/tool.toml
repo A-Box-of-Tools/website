@@ -46,7 +46,7 @@ css_parts = ["notes"]
 # set to accept many files because a CT is three hundred of them and dropping a
 # folder is the only sane way to open one.
 js_parts = ["file-picker", "message-box", "example-dicom"]
-lastmod = "2026-09-19"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -130,14 +130,8 @@ mark = "&#10003;"
 text = "Files stay on your device"
 
 [[privacy]]
-title = "Your scan has nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your file
-      could be collected at, and nothing in the code that would send it if there
-      were. This used to read <code>connect-src 'none'</code>, which was absolute;
-      adding advertising cost that, and saying so is part of the deal."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "This matters more here than on the other pages."
@@ -164,13 +158,7 @@ body = """
 
 [[privacy]]
 title = "The identifiers are listed for you, and for nobody else."
-body = """
-
-      The page prints out every field in your file that names or narrows down the
-      person it is of, because that is a question somebody about to share a slice
-      needs answered and no viewer answers it. It is put on the screen in front of
-      you and goes nowhere else: there is no analytics event in this repository
-      that carries any of it, and the page could not send one if there were."""
+body = "The page prints out every field in your file that names or narrows down the person it is of, because that is a question somebody about to share a slice needs answered and no viewer answers it. It is put on the screen in front of you and goes nowhere else: there is no analytics event in this repository that carries any of it. Optional feedback reports only the tool slug, a fixed vote and a fixed reason, never the metadata read from your file."
 
 [[privacy]]
 title = "It reads. It does not write."

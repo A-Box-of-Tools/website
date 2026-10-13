@@ -12,6 +12,19 @@ const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
 
+const DEFAULT_TOOL = "share-text";
+const TOOLS = new Set([DEFAULT_TOOL, "remote-camera"]);
+
+export function rendezvousTool(value) {
+  return value == null ? DEFAULT_TOOL : TOOLS.has(value) ? value : null;
+}
+
+// Existing text rooms keep their identifiers, including sockets that are
+// hibernating when the camera namespace is deployed.
+export function roomName(code, tool = DEFAULT_TOOL) {
+  return tool === DEFAULT_TOOL ? code : `${tool}:${code}`;
+}
+
 export function pageOrigin(value) {
   if (typeof value !== "string") return null;
   try {
@@ -80,12 +93,14 @@ function networkAddress(request) {
 // CF-Connecting-IP is supplied by the edge, but a same-zone Worker may
 // override it in a subrequest. Cross-zone Workers also share one fixed IPv6
 // address. Neither is a browser gateway and neither may select a group.
-export async function discoveryScope(request) {
-  if (request.headers.has("CF-Worker")) return null;
+export async function discoveryScope(request, requestedTool = DEFAULT_TOOL) {
+  const tool = rendezvousTool(requestedTool);
+  if (tool === null || request.headers.has("CF-Worker")) return null;
   const address = networkAddress(request);
   const origin = pageOrigin(request.headers.get("Origin"));
   if (address === null || origin === null) return null;
-  const bytes = new TextEncoder().encode(`${origin}\n${address}`);
+  const source = tool === DEFAULT_TOOL ? `${origin}\n${address}` : `${origin}\n${address}\n${tool}`;
+  const bytes = new TextEncoder().encode(source);
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
   return [...digest].map((n) => n.toString(16).padStart(2, "0")).join("");
 }
@@ -115,10 +130,11 @@ export class Discovery {
     // Only Room stubs call this path; the public Worker never forwards it.
     if (url.pathname === "/_discovery/withdraw" && request.method === "POST") {
       const publication = await privateBody(request);
-      if (!validPublication(publication)) return new Response(null, { status: 400 });
+      const tool = rendezvousTool(publication?.tool);
+      if (!validPublication(publication) || tool === null) return new Response(null, { status: 400 });
       for (const ws of this.ctx.getWebSockets("observer")) {
         const who = ws.deserializeAttachment();
-        if (who?.publication?.code === publication.code && who.publication.lease === publication.lease) {
+        if ((who?.tool ?? DEFAULT_TOOL) === tool && who?.publication?.code === publication.code && who.publication.lease === publication.lease) {
           ws.serializeAttachment({ ...who, generation: who.generation + 1, publication: null });
         }
       }
@@ -129,7 +145,8 @@ export class Discovery {
       return new Response(null, { status: 404 });
     }
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
-    if (!validScope(scope)) return new Response(null, { status: 403 });
+    const tool = rendezvousTool(url.searchParams.get("tool"));
+    if (!validScope(scope) || tool === null) return new Response(null, { status: 403 });
     const { 0: client, 1: server } = new WebSocketPair();
     if (this.observers().length >= MAX_OBSERVERS) {
       server.accept();
@@ -137,7 +154,7 @@ export class Discovery {
       return new Response(null, { status: 101, webSocket: client });
     }
     this.ctx.acceptWebSocket(server, ["observer"]);
-    server.serializeAttachment({ scope, generation: 0, updates: 0, publication: null });
+    server.serializeAttachment({ scope, tool, generation: 0, updates: 0, publication: null });
     server.send(this.snapshot());
     return new Response(null, { status: 101, webSocket: client });
   }
@@ -147,13 +164,17 @@ export class Discovery {
   }
 
   snapshot() {
+    const observers = this.observers();
+    const tool = observers[0]?.deserializeAttachment().tool ?? DEFAULT_TOOL;
     const codes = new Set();
-    for (const ws of this.observers()) {
-      const publication = ws.deserializeAttachment().publication;
+    for (const ws of observers) {
+      const who = ws.deserializeAttachment();
+      if ((who.tool ?? DEFAULT_TOOL) !== tool) continue;
+      const publication = who.publication;
       if (publication?.verified) codes.add(publication.code);
     }
     const list = [...codes].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true }));
-    return JSON.stringify({ type: "shares", list });
+    return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL ? {} : { tool }), list });
   }
 
   broadcast() {
@@ -170,13 +191,13 @@ export class Discovery {
     if (lostShare) this.broadcast();
   }
 
-  async verify(publication, scope) {
+  async verify(publication, scope, tool = DEFAULT_TOOL) {
     try {
-      const room = this.env.ROOMS.get(this.env.ROOMS.idFromName(publication.code));
+      const room = this.env.ROOMS.get(this.env.ROOMS.idFromName(roomName(publication.code, tool)));
       const result = await room.fetch("https://room.internal/_discovery/check", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ code: publication.code, lease: publication.lease, scope }),
+        body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool }),
       });
       return result.status === 204;
     } catch {
@@ -189,14 +210,15 @@ export class Discovery {
       .filter(({ who }) => who.publication?.verified);
     const checks = new Map();
     for (const { who } of entries) {
-      const key = `${who.publication.code}:${who.publication.lease}:${who.scope}`;
-      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope));
+      const tool = who.tool ?? DEFAULT_TOOL;
+      const key = `${tool}:${who.publication.code}:${who.publication.lease}:${who.scope}`;
+      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool));
     }
     // Rechecking a manual refresh repairs a missed withdrawal without a
     // polling loop. Deduplicating leases bounds the binding calls to the list.
     await Promise.all(checks.values());
     for (const { ws, who } of entries) {
-      const key = `${who.publication.code}:${who.publication.lease}:${who.scope}`;
+      const key = `${who.tool ?? DEFAULT_TOOL}:${who.publication.code}:${who.publication.lease}:${who.scope}`;
       if (await checks.get(key)) continue;
       const current = ws.deserializeAttachment();
       if (current !== null && current.generation === who.generation
@@ -231,7 +253,7 @@ export class Discovery {
     ws.serializeAttachment({ ...who, generation, updates: who.updates + 1, publication });
     if (who.publication?.verified || publication === null) this.broadcast();
     if (publication === null) return;
-    let valid = await this.verify(publication, who.scope);
+    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL);
     const current = ws.deserializeAttachment();
     if (ws.readyState !== 1 || current === null || current.generation !== generation
         || current.publication?.code !== publication.code || current.publication.lease !== publication.lease) return;

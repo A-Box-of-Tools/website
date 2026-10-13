@@ -8,12 +8,7 @@
       para as quais elas servem.
     </p>
     <p>
-      O incomum não é o que elas fazem, e sim onde fazem. Todas rodam
-      inteiramente dentro do navegador, no computador de quem está usando, com
-      os decodificadores e codificadores que o navegador já traz. Nada do que
-      você abre é transmitido para lugar nenhum. Também não existe servidor
-      atrás destas páginas para receber: o site inteiro são arquivos estáticos,
-      e as ferramentas são módulos JavaScript comuns servidos ao lado deles.
+      Cada ferramenta processa arquivos no navegador que a executa, usando o hardware daquele dispositivo. A maioria usa codecs nativos; outras incluem motores locais de JavaScript ou WebAssembly, como o decodificador HEIC e o OCR de recibos. Os arquivos não são enviados para processamento. O site entrega páginas e código estáticos; compartilhamento deliberado e funções online opcionais têm limites próprios, explicados abaixo.
     </p>
     <p>
       Esse é o produto. Todo o resto desta página explica por que vale a pena
@@ -46,19 +41,10 @@
   <section>
     <h2>Por que é feito assim</h2>
     <p>
-      O jeito comum de construir estas ferramentas é enviar o arquivo, fazer o
-      trabalho num servidor e devolver o resultado. É mais fácil, funciona em
-      qualquer aparelho, e é o que faz quase todo &ldquo;conversor online
-      grátis&rdquo;.
+      Muitos conversores enviam o arquivo, processam em um servidor e devolvem o resultado. Outros trabalham localmente. A distinção útil é onde o trabalho acontece e se ele exige que o arquivo saia do navegador.
     </p>
     <p>
-      Também significa entregar seu arquivo a um estranho. Para um meme, tanto
-      faz. Para o escaneamento de um passaporte, uma imagem médica, um contrato
-      assinado ou uma foto com o seu endereço nos metadados, não. Depois que o
-      arquivo está no computador de outra pessoa, o que acontece com ele depende
-      das políticas e do cuidado dela, e você não tem como auditar nem uma coisa
-      nem outra. A política de privacidade de um site desses é uma promessa, não
-      uma trava.
+      Processar em servidor entrega uma cópia ao provedor. Para passaporte, imagem médica, contrato assinado ou foto com localização, vale conferir essa decisão. Políticas públicas, documentação de segurança, auditorias e comportamento observável oferecem evidências. A página sozinha não mostra toda cópia interna, backup ou acesso após o envio. Uma política descreve o tratamento do provedor; não é a mesma restrição que concluir uma operação local desconectado.
     </p>
     <p>
       Os navegadores ficaram bons o bastante para tornar essa promessa
@@ -79,46 +65,24 @@
   <section>
     <h2>Conferir, em vez de confiar</h2>
     <p>
-      Tudo o que está acima existe para ser testado. Quatro maneiras, da menos
-      para a mais trabalhosa:
+      Quatro verificações oferecem evidências diferentes. Use-as em conjunto e confira a função que você pretende usar:
     </p>
     <ul>
       <li>
-        <strong>Desligue a internet.</strong> Carregue a página de qualquer
-        ferramenta, desconecte e use assim mesmo. Ela continua funcionando,
-        porque nunca houve etapa de rede ali dentro. Uma ferramenta que
-        mandasse o seu arquivo para fora para processar iria parar.
+        <strong>Desconecte para uma operação local.</strong> Deixe a ferramenta carregar e espere o indicador offline mostrar que está pronta. Processe um arquivo do dispositivo. Concluir prova que aquela operação foi local enquanto estava desconectado, mas não o que a página pode enviar ao reconectar.
       </li>
       <li>
-        <strong>Observe a rede.</strong> Abra as ferramentas de desenvolvedor,
-        vá até a aba Rede e processe um arquivo. Nenhuma requisição carrega o
-        seu arquivo, uma miniatura dele, o nome dele nem um byte do conteúdo. O
-        que aparece é a página, os scripts dela, os anúncios e o contador de
-        visitas.
+        <strong>Inspecione solicitações de rede.</strong> Confira URLs, corpos de solicitações e mensagens WebSocket, não só o tamanho da transferência. O processamento local não envia arquivos. Recursos da página, scripts da plataforma, consultas opcionais e compartilhamento deliberado são tráfegos distintos, explicados nas próprias páginas.
       </li>
       <li>
-        <strong>Leia a regra que a página impõe a si mesma.</strong> Cada página
-        traz uma <code>Content-Security-Policy</code> que nomeia todos os
-        endereços com os quais ela pode falar, e nenhum deles pertence a este
-        site. Nem mesmo um erro no código conseguiria mandar um arquivo para
-        algum lugar, porque o navegador recusaria a conexão.
+        <strong>Leia a Content-Security-Policy.</strong> Ela limita recursos e destinos de conexão. Não inspeciona o conteúdo, não impede envio a hosts permitidos e não descreve tráfego WebRTC entre navegadores. Compare com o código e o comportamento observado.
       </li>
       <li>
-        <strong>Leia o código.</strong> Ele é
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">todo
-        público</a>, sem etapa de compilação e sem empacotador: o que está no
-        repositório é byte a byte o que o seu navegador executa. Cada ferramenta
-        tem um README explicando como funciona, e cada página indica quais
-        arquivos vale a pena ler primeiro.
+        <strong>Leia o código e o resultado compilado.</strong> O <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a> contém modelos, módulos, partes compartilhadas e motores incluídos. A compilação gera páginas e minifica o código próprio. Cada ferramenta indica o que ler primeiro; você pode compilar e comparar com a publicação.
       </li>
     </ul>
     <p>
-      Existe exatamente uma exceção proposital ao &ldquo;sem rede&rdquo;, e ela
-      está explicada com calma na própria página:
-      <a href="../compartilhar-texto/">Compartilhar texto</a> leva texto de um
-      aparelho seu para outro, e isso não dá para fazer sem rede. Ele abre uma
-      única conexão com um intermediário que não guarda nada e ao qual só se diz
-      que dois navegadores querem ser apresentados.
+      As funções de rede são deliberadas. <a href="../imagens-para-video/">Imagens para vídeo</a> pode buscar uma URL de imagem. O <a href="../extrair-recibos-faturas/">Extrator de recibos e faturas</a> pode consultar par de moedas e data no Frankfurter e entregar um relatório ao aplicativo de email ou compartilhamento que você escolhe. <a href="../compartilhar-texto/">Compartilhar texto e arquivos</a> e <a href="../remote-camera/">Câmera remota</a> transferem conteúdo entre navegadores. O servidor de encontro leva metadados de descoberta e conexão, nunca os arquivos nem o vídeo. Essas funções precisam de conexão; suas páginas e a <a href="../privacidade/">página de privacidade</a> explicam o que cada participante vê.
     </p>
   </section>
 
@@ -134,12 +98,7 @@
       pela mesma pessoa que escreveu o defeito não encontra.
     </p>
     <p>
-      Abaixo disso há um conjunto de testes automáticos cobrindo as duas
-      metades: o gerador que constrói o site e os módulos que o navegador
-      executa. Ele roda a cada mudança, e nada é publicado depois de uma falha.
-      Onde o mesmo trabalho aparece em mais de uma ferramenta, e várias delas
-      leem arquivos MP4, um teste confere se as cópias ainda combinam, de modo
-      que consertar uma não deixe as outras erradas em silêncio.
+      Uma suíte automática cobre o gerador e os módulos do navegador. Ela roda no CI e uma falha impede a publicação. Leitores e escritores comuns, como o leitor MP4, ficam em módulos compartilhados copiados para cada ferramenta compilada. Uma verificação de duplicações impede cópias independentes de divergirem.
     </p>
     <p>
       Os guias seguem o mesmo critério. As capturas de tela deles são tiradas do
@@ -156,20 +115,10 @@
       que não envolve.
     </p>
     <p>
-      <strong>Não há nada para comprar.</strong> Sem conta, sem cadastro, sem
-      plano gratuito com um pago em cima, sem marca d&rsquo;água para remover,
-      sem limite de tamanho, sem limite diário e sem função guardada. O que está
-      no site é tudo.
+      <strong>Não há nada para comprar.</strong> Sem conta, plano pago, marca-d’água para remover pagando ou função reservada. Formatos aceitos, memória do navegador e limites deliberados continuam relevantes; cada ferramenta os explica.
     </p>
     <p>
-      <strong>Seus arquivos não fazem parte do acordo.</strong> A publicidade é
-      do Google e a contagem de visitas é o Google Analytics, e nenhum dos dois
-      fica sabendo o que você abre, o que você produz, como se chamava ou o
-      tamanho que tinha, porque nenhum dos dois scripts recebe isso, e a política
-      de segurança da página recusaria o envio se um deles tentasse. O que esses
-      dois de fato coletam, e como desligar cada um, está na
-      <a href="../privacidade/">página de privacidade</a>. Todas as ferramentas
-      continuam funcionando com os dois bloqueados.
+      <strong>Seus arquivos não fazem parte do acordo.</strong> Publicidade e contagem de visitas usam serviços do Google. O feedback opcional envia nome da ferramenta, resposta fixa positiva ou negativa e motivo fixo; não envia arquivo, nome, tamanho ou conteúdo. O código não entrega dados de arquivos a esses serviços. Destinos permitidos continuam sendo destinos de rede; a política de segurança sozinha não garante o conteúdo enviado. A <a href="../privacidade/">página de privacidade</a> explica coleta e bloqueio. O processamento local funciona com esses scripts bloqueados.
     </p>
     <p>
       <strong>As ferramentas não são escritas para a publicidade.</strong>
@@ -186,13 +135,7 @@
   <section>
     <h2>Idiomas</h2>
     <p>
-      O site é publicado em quinze idiomas. Cada um é uma tradução de verdade, e
-      não uma tradução automática publicada sem revisão: os nomes das ferramentas, as
-      explicações, os guias e os próprios endereços estão traduzidos, e uma
-      página só aparece listada em um idioma depois que esse idioma foi
-      realmente escrito. Um idioma ainda em andamento continua legível, mas fica
-      fora do sitemap e do seletor de idiomas, para que ninguém seja convidado a
-      uma página meio em inglês.
+      Inglês, chinês simplificado, alemão, espanhol, português do Brasil, francês e japonês são mantidos aqui. Oito traduções anteriores continuam disponíveis como páginas arquivadas e não recebem mudanças atuais. Páginas mantidas entram no mapa do site e no seletor apenas quando traduzidas; as incompletas continuam disponíveis sem serem anunciadas como traduções prontas.
     </p>
     <p>
       A correspondência é respondida em inglês, que é a única coisa honesta a
@@ -203,10 +146,8 @@
   <section>
     <h2>O que este site não vai fazer</h2>
     <ul>
-      <li>Pedir que você crie uma conta, nem pedir seu e-mail.</li>
-      <li>
-        Enviar, guardar, inspecionar ou reter um arquivo que você abrir aqui.
-      </li>
+      <li>Exigir conta ou email para processar um arquivo.</li>
+      <li>Receber ou guardar arquivos em um servidor para processamento.</li>
       <li>
         Colocar marca d&rsquo;água em um resultado, nem guardar uma função para
         um plano pago.

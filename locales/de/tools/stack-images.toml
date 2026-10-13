@@ -24,13 +24,7 @@ og_title = "Eine Fotoserie stacken, RAW-Dateien eingeschlossen"
 og_description = "Mittelwert, Median, Sigma-Clipping, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher ausgerichteten Aufnahmen. RAW-Dateien werden über die eingebettete JPEG-Vorschau der Kamera geöffnet, sofern eine vorhanden ist, ohne die Sensordaten zu dekodieren. Nichts wird hochgeladen."
 og_image_alt = "Bild-Stacker - mehrere Aufnahmen zu einer zusammengerechnet, im Browser"
 
-pledge = """
-    Jede Aufnahme wird von Ihrem eigenen Browser auf Ihrem eigenen Gerät
-    geöffnet, dekodiert, ausgerichtet, zusammengerechnet und geschrieben. Ein
-    Stapel aus zwanzig 60&nbsp;MB großen RAW-Dateien ist rund ein Gigabyte
-    Fotos, und kein einziges Byte davon bewegt sich: Netzfunktionen hat dieses
-    Werkzeug keine, und die Dateien werden direkt von Ihrer Festplatte gelesen,
-    von einem Worker, der nirgendwohin etwas senden könnte."""
+pledge = "Jede Aufnahme wird von Ihrem eigenen Browser auf Ihrem eigenen Gerät geöffnet, dekodiert, ausgerichtet, zusammengerechnet und geschrieben. Ein Stapel aus zwanzig 60&nbsp;MB großen RAW-Dateien ist rund ein Gigabyte Fotos, und kein einziges Byte davon bewegt sich: Netzfunktionen hat dieses Werkzeug keine, und die Dateien werden direkt von Ihrer Festplatte gelesen, von einem Worker, der sie lokal ohne Datei-Upload verarbeitet."
 
 live_hint = """
       Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
@@ -71,15 +65,8 @@ text = "Läuft offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Ihre Fotos haben keinen Ort, an den sie gehen könnten."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört uns. Es gibt hier keinen Endpunkt, an dem Ihre
-      Dateien gesammelt werden könnten, und keinen Code, der sie senden würde,
-      wenn es ihn gäbe: kein <code>fetch</code>, kein
-      <code>XMLHttpRequest</code>, kein <code>sendBeacon</code>, weder in
-      <code>src/</code> noch im Worker."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "RAW-Vorschauen werden auf diesem Gerät gelesen."
@@ -87,15 +74,7 @@ body = "Viele Kamera-RAW-Dateien enthalten eine von der Kamera gerenderte JPEG-V
 
 [[privacy]]
 title = "Die Arbeit passiert in einem Worker auf diesem Gerät, nicht auf einem Server."
-body = """
- Das ist das einzige
-      Werkzeug hier, das einen verwendet, weil Stacken Minuten an Rechnerei ist
-      statt Sekunden und eine eingefrorene Seite weder Fortschritt zeigen noch
-      abgebrochen werden kann. Ein Worker ist ein zweiter Strang in genau diesem
-      Browser, siehe <code>src/worker.js</code>. Ihm werden die Dateien selbst
-      übergeben, was nichts kostet, weil ein Dateihandle nicht die Bytes ist, und
-      er hat genau dieselbe Content-Security-Policy wie die Seite, also ebenso
-      wenig einen Ort, an den er sie senden könnte."""
+body = "Stacken kann Minuten dauern; ein Worker rechnet, während die Seite reagiert, Fortschritt zeigt und Abbruch erlaubt. Es ist ein weiterer Thread dieses Browsers, siehe <code>src/worker.js</code>. Dateireferenzen werden lokal ohne Upload übergeben. Der Verarbeitungscode liest und kombiniert Dateien auf diesem Gerät. Prüfen Sie ihn, statt die Zielrichtlinie der Seite als Beweis für Datenwege des Workers zu behandeln."
 
 [[privacy]]
 title = "Über die Serie wird nirgendwohin etwas gemeldet."

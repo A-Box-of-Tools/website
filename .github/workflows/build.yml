@@ -637,10 +637,25 @@ jobs:
           set -euo pipefail
 
           # A tag push can succeed while creating its release page fails.
-          # Reruns must repair that page, because every footer links to it.
+          # Reruns must repair that page with the same change summary, because
+          # every footer links to it. Excluding this and later version tags
+          # keeps a repair from comparing the release with itself.
           ensure_release() {
             if ! gh release view "$version" >/dev/null 2>&1; then
-              gh release create "$version" --verify-tag --title "$version" --notes-from-tag
+              local previous
+              previous=$(python -c \
+                "import sys; from scripts.next_version import git, rule; \
+          target = rule.parse(sys.argv[1]); \
+          tags = [tag for tag in git('tag', '--list').splitlines() if rule.parse(tag) is not None and rule.parse(tag) < target]; \
+          print(max(tags, key=rule.parse) if tags else '')" "$version")
+              local notes_args=(--generate-notes)
+              if [ -n "$previous" ]; then
+                notes_args+=(--notes-start-tag "$previous")
+              fi
+              git for-each-ref --format='%(contents)' "refs/tags/$version" \
+                > "$RUNNER_TEMP/notes.md"
+              gh release create "$version" --verify-tag --title "$version" \
+                --notes-file "$RUNNER_TEMP/notes.md" "${notes_args[@]}"
             fi
           }
           version="$RELEASE_VERSION"
@@ -685,12 +700,9 @@ jobs:
 
           # The release is the tag with a page: it is what shows in the
           # repository sidebar and what a person lands on from a changelog.
-          # Its note is the same sentence as the tag's, plus the merge that
-          # caused it, so the two can never say different things.
-          printf '%s\n\n%s\n' "$reason" "$(git log -1 --pretty=%s)" \
-            > "$RUNNER_TEMP/notes.md"
-          gh release create "$version" --verify-tag --title "$version" \
-            --notes-file "$RUNNER_TEMP/notes.md"
+          # The tag explains the number; the generated notes describe the
+          # changes inside the whole bundle, with links to their pull requests.
+          ensure_release
 
           echo "### Version" >> "$GITHUB_STEP_SUMMARY"
           echo "$reason" >> "$GITHUB_STEP_SUMMARY"

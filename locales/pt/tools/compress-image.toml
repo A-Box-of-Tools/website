@@ -8,11 +8,11 @@
 name = "Compressor de imagens"
 # O trecho final é a expressão que as pessoas procuram. O nome do produto
 # continua sendo a metade barulhenta, como no inglês.
-heading = "Comprimir&nbsp;imagem <span class=\"h1-kw\">&mdash; para um tamanho exato</span>"
+heading = "Comprimir&nbsp;imagem <span class=\"h1-kw\">&mdash; abaixo de um limite de tamanho</span>"
 tagline = "Diga o tamanho. Ele resolve o resto."
 
-title = "Comprimir imagem para um tamanho exato &mdash; grátis, sem envio"
-description = "Comprima um JPEG, PNG ou WebP para um tamanho exato: 100 KB, 2 MB, o que for. Roda inteiro no navegador, não envia nada, não pede conta e funciona offline."
+title = "Comprimir imagem abaixo de um tamanho alvo &mdash; grátis, sem upload"
+description = "Comprima JPEG, PNG, WebP ou AVIF para um limite como 100 KB ou 2 MB. O resultado busca ficar no máximo no alvo, não ter uma quantidade exata de bytes. Sem upload, funciona offline."
 og_title = "Comprima uma imagem para um tamanho que você escolhe"
 og_description = "Diga um tamanho alvo e ele acha a menor compressão que chega lá, depois mede o que isso custou. Roda no seu próprio computador e não envia nada."
 og_image_alt = "Compressor de imagens - diga um tamanho, mantenha a qualidade"
@@ -62,13 +62,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Suas imagens não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
-      arquivos pudessem ser recolhidos, e não existe no código nada que os
-      mandaria mesmo que existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui vai buscar coisa alguma."
@@ -146,15 +141,8 @@ a = """
         site."""
 
 [[faq]]
-q = "Como ele acerta um tamanho exato?"
-a = """
-        Tentando. Não existe fórmula que transforme um ajuste de qualidade numa
-        contagem de bytes, porque isso depende inteiramente da imagem. Então a
-        ferramenta codifica a imagem várias vezes até achar a resposta. Ela começa
-        no topo da faixa de qualidade e vai cortando o intervalo pela metade, o que
-        encontra a maior qualidade que cabe em umas oito codificações. Todo tamanho
-        que você vê na página é um arquivo codificado de verdade, não uma
-        estimativa."""
+q = "Como respeita um limite de tamanho?"
+a = "Codifica e mede vários candidatos e busca a maior qualidade que caiba. Quando consegue produzir um arquivo adequado, ele fica no alvo ou abaixo, não necessariamente com o número exato de bytes informado. Arquivos já abaixo do limite ficam intactos. Se a qualidade não bastar, reduz as dimensões; confira o resultado."
 
 [[faq]]
 q = "O que &ldquo;perda mínima&rdquo; quer dizer aqui, exatamente?"
@@ -214,7 +202,7 @@ description = "Comprima imagens JPEG, PNG e WebP até um tamanho que você diz. 
 features = [
   "Comprime até um tamanho de arquivo alvo que você escolhe, e não um número de qualidade que você teria que adivinhar",
   "Mantém a resolução cheia quando dá, e só redimensiona quando a qualidade sozinha não alcança o alvo",
-  "Gasta o orçamento inteiro: o resultado cai logo abaixo do alvo, e não bem longe dele",
+  "Busca ficar perto do limite sem prometer bytes exatos",
   "Mede o resultado contra o original com SSIM e PSNR",
   "Deixa completamente intocados os arquivos que já estão abaixo do alvo",
   "JPEG, PNG e WebP, com escolha automática de formato",

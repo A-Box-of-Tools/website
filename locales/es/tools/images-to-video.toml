@@ -57,14 +57,8 @@ text = "Código abierto"
 text = "Los archivos se quedan en tu dispositivo"
 
 [[privacy]]
-title = "Tus imágenes no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger tus archivos, ni una línea de código que los mandara
-      si lo hubiera. Esto antes decía <code>connect-src 'none'</code>, que era
-      absoluto. Poner publicidad costó eso, y decirlo forma parte del trato."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "La codificación es local."
