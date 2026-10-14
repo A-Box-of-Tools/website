@@ -58,13 +58,32 @@ class Clock {
   }
 }
 
+class NativeAudioSession {
+  state = 'active';
+  listeners = new Set();
+  additions = 0;
+  addEventListener(type, listener) {
+    assert.equal(type, 'statechange');
+    this.listeners.add(listener);
+    this.additions++;
+  }
+  removeEventListener(type, listener) {
+    assert.equal(type, 'statechange');
+    this.listeners.delete(listener);
+  }
+  transition(state) {
+    this.state = state;
+    for (const listener of [...this.listeners]) listener();
+  }
+}
+
 function microphone() {
-  const track = { kind: 'audio', enabled: true, onended: null, stops: 0,
-    stop() { this.stops++; } };
+  const track = { kind: 'audio', enabled: true, onended: null, onmute: null, stops: 0,
+    stop() { this.stops++; this.onstop?.(); } };
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
+function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -123,13 +142,14 @@ function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
   }
   const session = new BroadcastSession({ role, code: CODE,
     key: role === 'host' ? KEY : LISTEN_KEY,
-    ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, clock, endpoint,
+    ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, audioSession, clock, endpoint,
     onState: (key, detail) => states.push({ key, detail }), onStream: stream => streams.push(stream) });
   t.after(async () => {
     session.stop({ notify: false, state: null });
     await flush();
     assert.equal(clock.tasks.size, 0, 'Stopping must clear peer, retry and check timers.');
     assert.equal(sockets.filter(ws => ws.readyState < 2).length, 0);
+    if (audioSession) assert.equal(audioSession.listeners.size, 0);
   });
   const begin = async frame => {
     const starting = session.start();
@@ -498,4 +518,65 @@ test('Stop clears an outstanding pong deadline and parked replies do not delay k
   assert.equal(h.clock.tasks.size, 0);
   await h.clock.advance(30000);
   assert.equal(h.sockets.length, 1);
+});
+
+test('host source mute releases broadcast capture without End or automatic recovery', async t => {
+  const mic = microphone();
+  const audioSession = new NativeAudioSession();
+  const h = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  const staleMute = mic.track.onmute;
+  mic.track.onstop = () => {
+    assert.equal(audioSession.listeners.size, 0);
+    assert.equal(mic.track.onmute, null);
+    assert.equal(mic.track.onended, null);
+  };
+  mic.track.onmute();
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(ws.closed, true);
+  assert.equal(h.states.at(-1).key, 'error-microphone');
+  assert.ok(!ws.sent.some(frame => frame.type === 'end'));
+  audioSession.transition('active');
+  staleMute();
+  h.session.setTalking(true);
+  await h.clock.advance(30000);
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('native interruption stops a broadcast source but does not interrupt its receive-only session', async t => {
+  const audioSession = new NativeAudioSession();
+  const mic = microphone();
+  const host = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const receiver = harness(t, { audioSession,
+    mediaDevices: { getUserMedia() { throw new Error('A receiver must not capture.'); } } });
+  const hostSocket = await host.begin();
+  const listenerSocket = await receiver.begin(ready());
+  listenerSocket.message(offer());
+  await flush();
+  const voice = { name: 'direct voice' };
+  receiver.peers[0].receive(voice);
+  receiver.peers[0].connect();
+  host.session.setTalking(true);
+  assert.equal(audioSession.additions, 1);
+  audioSession.transition('interrupted');
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(host.states.at(-1).key, 'error-microphone');
+  assert.equal(hostSocket.closed, true);
+  assert.ok(!hostSocket.sent.some(frame => frame.type === 'end'));
+  assert.equal(audioSession.listeners.size, 0);
+  assert.equal(listenerSocket.closed, false);
+  assert.equal(receiver.peers[0].closed, false);
+  assert.equal(receiver.streams.at(-1), voice);
+  assert.equal(receiver.states.at(-1).key, 'listener-listening');
 });

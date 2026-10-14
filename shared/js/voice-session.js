@@ -20,7 +20,7 @@ class VoiceSession {
   constructor({ role, code, key, listenKey, mode = 'broadcast', roomName = '', passwordProof = null, name = '',
     onState = () => {}, onStream = () => {}, onParticipants = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
-    mediaDevices = globalThis.navigator?.mediaDevices, clock = realClock,
+    mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
     origin = 'wss://rendezvous.abox.tools', endpoint }) {
     this.role = role;
     this.code = code;
@@ -48,6 +48,8 @@ class VoiceSession {
     this._Socket = Socket;
     this._Peer = Peer;
     this._mediaDevices = mediaDevices;
+    this._audioSession = audioSession;
+    this._captureInterruption = null;
     this._clock = clock;
     const url = new URL(endpoint || origin);
     url.pathname = `/${this._inbox ? 'inbox' : 'broadcast'}/${code}`;
@@ -98,12 +100,22 @@ class VoiceSession {
         return false;
       }
       this._stream = stream;
+      const interrupt = () => {
+        if (this._live(epoch)) this.stop({ notify: false, state: 'error-microphone' });
+      };
       for (const track of stream.getTracks()) {
         track.enabled = false;
-        track.onended = () => {
-          if (this._live(epoch)) this.stop({ notify: false, state: 'error-microphone' });
-        };
+        track.onended = track.onmute = interrupt;
       }
+      if (stream.getAudioTracks().some(track => track.muted || track.readyState === 'ended')) interrupt();
+      if (!this._live(epoch)) return false;
+      const native = this._audioSession;
+      if (typeof native?.addEventListener === 'function' && typeof native?.removeEventListener === 'function') {
+        this._captureInterruption = () => { if (native.state === 'interrupted') interrupt(); };
+        native.addEventListener('statechange', this._captureInterruption);
+      }
+      // A permission grant can arrive while the operating system still owns the microphone.
+      if (native?.state === 'interrupted') interrupt();
     }
     if (!this._live(epoch)) return false;
     const started = new Promise(resolve => { this._resolveStart = resolve; });
@@ -135,6 +147,10 @@ class VoiceSession {
     this._clock.clearTimeout(this._tickTimer);
     this._clock.clearTimeout(this._retryTimer);
     this._tickTimer = this._retryTimer = null;
+    if (this._captureInterruption) {
+      this._audioSession.removeEventListener('statechange', this._captureInterruption);
+      this._captureInterruption = null;
+    }
     this._closeSocket(this._socket);
     this._socket = null;
     for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
@@ -147,7 +163,7 @@ class VoiceSession {
     this._emitParticipants();
     if (this._stream) {
       for (const track of this._stream.getTracks()) {
-        track.onended = null;
+        track.onended = track.onmute = null;
         track.enabled = false;
         track.stop();
       }

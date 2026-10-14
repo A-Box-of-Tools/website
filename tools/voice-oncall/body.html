@@ -65,6 +65,10 @@
         <h2 id="vi-live-name"></h2>
         <button type="button" class="vi-secondary" id="vi-end">End room</button>
       </div>
+      <div id="vi-audio-recovery" hidden>
+        <p class="vi-note" id="vi-audio-note" role="status" aria-live="polite"></p>
+        <button type="button" class="vi-secondary" id="vi-restore-sound">Restore sound</button>
+      </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
       <p class="vi-note" id="vi-host-empty">Your room is open. Share its link or let nearby people find it.</p>
       <ul class="vi-participants" id="vi-participants" aria-label="People in the room"></ul>
@@ -120,6 +124,10 @@
   <span data-phrase="error-connection">The pairing service could not be reached. Check your internet connection and try again.</span>
   <span data-phrase="error-microphone">The microphone stopped or could not start. Check microphone permission and try again.</span>
   <span data-phrase="error-audio">Your browser could not start room audio. Try starting the room again.</span>
+  <span data-phrase="host-sound-paused">Sound is paused. Choose Restore sound to hear people again.</span>
+  <span data-phrase="host-sound-interrupted">Sound was interrupted. Your room remains open. Choose Restore sound when you are ready to listen again.</span>
+  <span data-phrase="host-sound-restoring">Restoring sound…</span>
+  <span data-phrase="error-sound-restore">Sound could not be restored. Try again, or end this room and start a new one.</span>
   <span data-phrase="error-browser">This browser cannot start secure voice connections.</span>
   <span data-phrase="error-secure-context">Open this page over HTTPS to use your microphone.</span>
   <span data-phrase="error-moderation-full">That action could not be remembered because this room's moderation history is full. Your local audio setting still applies. End this room and start a new one to clear that history.</span>

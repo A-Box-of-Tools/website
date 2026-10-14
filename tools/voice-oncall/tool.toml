@@ -2,7 +2,7 @@
 # without trusting that participant to stop transmitting.
 slug = "voice-oncall"
 name = "Voice Oncall"
-heading = "Many voices <span class=\"h1-kw\">&mdash; one listening host</span>"
+heading = "Voice Oncall"
 tagline = "Open an inbox, let nearby people join, and hear their live voice. Set a password and mute or remove individual participants."
 icon = "&#127897;"
 favicon = "&#127897;"
@@ -12,11 +12,11 @@ roadmap_group = "audio"
 css_parts = ["form", "notes"]
 js_parts = ["voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-13"
+lastmod = "2026-10-14"
 
 title = "Voice Oncall &mdash; Receive Live Voice from Nearby Devices"
 description = "Let up to ten people send live voice directly to one host browser. Nearby discovery, optional room password, push to talk, mute and remove controls."
-og_title = "Many voices, one listening host"
+og_title = "Voice Oncall — One Listening Host"
 og_description = "A browser voice inbox with nearby discovery, an optional password, and individual mute and remove controls."
 og_image_alt = "Voice Oncall - several speakers and one listening host"
 og_card = "Nearby people speak. One host listens and chooses who to hear."
@@ -72,13 +72,13 @@ body = "The service receives room and participant names, password-derived creden
 
 [[howto]]
 title = "Open the listening inbox."
-body = "Choose Host a room, give the room a name, optionally set a password and choose Start room. The host needs speaker output but does not grant microphone access. Keep its page open and its device awake."
+body = "Choose Host a room, give the room a name, optionally set a password and choose Start room. The host needs speaker output but does not grant microphone access. Keep its page open and its device awake. If sound is interrupted, return here and choose Restore sound when shown."
 [[howto]]
 title = "Find it nearby or use its link."
 body = "On a participating device, open this page and choose the named inbox from the nearby list. Use the copied link or QR code if discovery does not find it. Both devices need internet for discovery and pairing, plus a reachable direct network path for audio."
 [[howto]]
 title = "Join and deliberately speak."
-body = "Enter a display name and the room password if required, then Join and allow microphone access. No host acceptance prompt is needed. Hold Talk or focus it and hold Space; release to stop. Start talking offers a hands-free toggle. Only the host hears your audio."
+body = "Enter a display name and the room password if required, then Join and allow microphone access. No host acceptance prompt is needed. Hold Talk or focus it and hold Space; release to stop. Start talking offers a hands-free toggle. Only the host hears your audio. After a microphone interruption, use Resume microphone and deliberately start talking again."
 [[howto]]
 title = "Control individual participants."
 body = "The host can Mute, Unmute or Remove a participant. Several people may speak at once, so their voices can overlap. Leave closes one participant; End room closes the room. Starting a new room creates a fresh invitation and resets its moderation history. Removal is pending until the service confirms it; local playback is silenced immediately."
