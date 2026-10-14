@@ -17,7 +17,7 @@ function activateChannel() {
   const element = id => document.getElementById(`wt-${id}`);
   const ui = Object.fromEntries([
     'role', 'host-intro', 'status-text', 'status-dot', 'error', 'error-text',
-    'host', 'start', 'listener-count', 'transmit', 'hold', 'toggle',
+    'host', 'start', 'listener-count', 'transmit', 'hold', 'toggle', 'hands-free', 'live-banner',
     'microphone', 'microphone-note', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
@@ -77,6 +77,11 @@ function activateChannel() {
   let session = null;
   let sessionGeneration = 0;
   let starting = false;
+  let preparingCredentials = false;
+  let hostWanted = false;
+  let resumeHostOnReturn = false;
+  let hostNeedsResume = Boolean(credentials);
+  let hostResumeTimer = null;
   let hostActive = false;
   let canTransmit = false;
   let sourceEpoch = 0;
@@ -107,7 +112,7 @@ function activateChannel() {
     ui.host.hidden = role !== 'host';
     ui.listener.hidden = role !== 'listener';
     ui['host-intro'].hidden = role !== 'host';
-    ui.nearby.hidden = role !== 'host' || hostActive || starting;
+    ui.nearby.hidden = role !== 'host' || hostActive || starting || preparingCredentials;
   }
   renderRole();
 
@@ -124,7 +129,11 @@ function activateChannel() {
       join.textContent = phrase('join-channel');
       join.setAttribute('aria-label', phrase('join-channel-name', { name: channel.name }));
       join.addEventListener('click', () => {
-        if (role !== 'host' || hostActive || starting || pageSuspended) return;
+        if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended) return;
+        hostWanted = false;
+        resumeHostOnReturn = false;
+        hostNeedsResume = false;
+        clearHostResumeTimer();
         sessionGeneration++;
         session?.stop({ notify: false, state: null });
         session = null;
@@ -181,20 +190,24 @@ function activateChannel() {
 
   function updateHostControls() {
     const talking = hostActive && canTransmit && !microphoneMuted && (held() || latched);
+    const handsFree = talking && latched;
+    ui['hands-free'].dataset.active = String(handsFree);
+    ui['live-banner'].hidden = !handsFree;
     ui.start.hidden = hostActive;
-    ui.start.disabled = starting;
+    ui.start.disabled = starting || preparingCredentials;
+    ui.start.textContent = phrase(hostNeedsResume ? 'resume-channel' : 'start-channel');
     ui.setup.hidden = hostActive;
-    ui['room-name'].disabled = starting;
-    ui.discover.disabled = starting;
+    ui['room-name'].disabled = starting || preparingCredentials;
+    ui.discover.disabled = starting || preparingCredentials;
     renderRole();
     ui.transmit.hidden = !hostActive;
     ui.invite.hidden = !hostActive || !ui.link.value;
     ui.hold.disabled = !hostActive || !canTransmit || microphoneMuted;
     ui.toggle.disabled = !hostActive || !canTransmit || microphoneMuted;
-    ui.hold.setAttribute('aria-pressed', String(talking));
+    ui.hold.setAttribute('aria-pressed', String(held() && talking));
     ui.hold.textContent = phrase(held() && talking ? 'hold-talking' : 'hold-talk');
-    ui.toggle.setAttribute('aria-pressed', String(latched));
-    ui.toggle.textContent = phrase(latched ? 'toggle-stop' : 'toggle-start');
+    ui.toggle.setAttribute('aria-pressed', String(handsFree));
+    ui.toggle.textContent = phrase(handsFree ? 'toggle-stop' : 'toggle-start');
     ui.microphone.setAttribute('aria-pressed', String(microphoneMuted));
     ui.microphone.textContent = phrase(microphoneMuted ? 'microphone-unmute' : 'microphone-mute');
     ui['microphone-note'].hidden = !microphoneMuted;
@@ -214,6 +227,17 @@ function activateChannel() {
 
   function renderState(key, detail = {}) {
     if (typeof detail.listeners === 'number') listenerCount = detail.listeners;
+    if (role === 'host' && ['host-ready', 'host-talking'].includes(key)) {
+      hostWanted = true;
+      hostNeedsResume = false;
+      clearHostResumeTimer();
+    }
+    if (role === 'host' && key === 'broadcast-ended') {
+      hostWanted = false;
+      resumeHostOnReturn = false;
+      hostNeedsResume = false;
+      clearHostResumeTimer();
+    }
     if (role === 'host' && ['host-ready', 'host-talking', 'host-reconnecting'].includes(key)) {
       hostActive = true;
       canTransmit = Boolean(detail.signaling || detail.directReady || detail.listeners > 0);
@@ -224,7 +248,7 @@ function activateChannel() {
         latched = false;
       }
     }
-    if (role === 'host' && (['host-idle', 'host-hidden', 'broadcast-ended'].includes(key) || errors.has(key))) {
+    if (role === 'host' && (['host-idle', 'host-hidden', 'host-resume-needed', 'broadcast-ended'].includes(key) || errors.has(key))) {
       hostActive = false;
       canTransmit = false;
       activePointer = null;
@@ -241,7 +265,10 @@ function activateChannel() {
     }
     if (key === 'listener-left') listenerLeft = true;
     stateTalking = key === 'host-talking' || key === 'listener-talking';
-    ui['status-text'].textContent = phrase(key);
+    const statusKey = role === 'host' && hostNeedsResume
+      ? starting ? 'host-resuming' : errors.has(key) ? 'host-resume-needed' : key
+      : key;
+    ui['status-text'].textContent = phrase(statusKey);
     ui['status-dot'].dataset.state = stateTalking ? 'talking' : key === 'host-ready' || key === 'listener-listening' ? 'ready' : 'waiting';
     ui.error.hidden = !errors.has(key);
     ui['error-text'].textContent = errors.has(key) ? phrase(key) : '';
@@ -294,10 +321,17 @@ function activateChannel() {
       discover: role === 'host' && identity.discover === true,
       onState: (key, detail) => {
         if (generation !== sessionGeneration) return;
+        if (role === 'host' && hostNeedsResume && errors.has(key) && key !== 'error-full') {
+          requireHostResume(key);
+          return;
+        }
         if (role === 'host' && key === 'error-microphone') {
+          // A phone can interrupt capture before it reports that the page is hidden.
+          hostWanted = hostActive;
           sourceEpoch++;
           starting = false;
         }
+        if (role === 'host' && key === 'error-access') hostWanted = false;
         renderState(key, detail);
       },
       onStream: stream => {
@@ -346,35 +380,77 @@ function activateChannel() {
   }
 
   async function prepareCredentials() {
-    if (!credentials || await channelCode(credentials.key) !== credentials.code) {
+    let identity = credentials;
+    if (!identity || await channelCode(identity.key) !== identity.code) {
       const key = randomKey();
-      credentials = { code: await channelCode(key), key, listenKey: randomKey() };
+      identity = { code: await channelCode(key), key, listenKey: randomKey() };
     }
-    credentials.roomName = ui['room-name'].value.trim();
-    credentials.discover = ui.discover.checked;
+    if (!hostWanted && !resumeHostOnReturn) return null;
+    credentials = { ...identity, roomName: ui['room-name'].value.trim(), discover: ui.discover.checked };
     writeStored(hostStorage, credentials);
     return credentials;
   }
 
-  async function startHost() {
-    if (starting || hostActive || pageSuspended) return;
-    const name = ui['room-name'].value.trim();
-    ui['room-name'].setCustomValidity(name && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f]/.test(name) ? '' : phrase('name-invalid'));
-    if (!ui['room-name'].reportValidity()) return;
+  function clearHostResumeTimer() {
+    clearTimeout(hostResumeTimer);
+    hostResumeTimer = null;
+  }
+
+  function requireHostResume(errorKey = 'host-resume-needed') {
+    clearHostResumeTimer();
+    hostWanted = false;
+    resumeHostOnReturn = false;
+    hostNeedsResume = true;
+    sourceEpoch++;
+    sessionGeneration++;
+    releaseTransmission();
+    session?.stop({ notify: false, state: null });
+    session = null;
+    unpublish();
+    starting = false;
+    hostActive = false;
+    canTransmit = false;
+    listenerCount = 0;
+    renderState(errorKey);
+  }
+
+  function resumeHiddenHost() {
+    if (!resumeHostOnReturn || role !== 'host' || starting || hostActive || preparingCredentials
+        || pageSuspended || document.hidden || !credentials) return;
+    void startHost(true);
+  }
+
+  async function startHost(automatic = false) {
+    if (role !== 'host' || starting || hostActive || preparingCredentials || pageSuspended || document.hidden) return;
+    if (!automatic) {
+      const name = ui['room-name'].value.trim();
+      ui['room-name'].setCustomValidity(name && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f]/.test(name) ? '' : phrase('name-invalid'));
+      if (!ui['room-name'].reportValidity()) return;
+    }
+    resumeHostOnReturn = false;
+    clearHostResumeTimer();
     if (!window.isSecureContext) {
+      hostWanted = false;
       renderState('error-secure-context');
       return;
     }
     if (!navigator.mediaDevices?.getUserMedia || !globalThis.crypto?.subtle || !window.RTCPeerConnection) {
+      hostWanted = false;
       renderState('error-browser');
       return;
     }
+    hostWanted = true;
     starting = true;
     const epoch = ++sourceEpoch;
     releaseTransmission();
     renderState('host-starting');
     try {
-      const identity = await prepareCredentials();
+      let identity = credentials;
+      if (!automatic) {
+        preparingCredentials = true;
+        try { identity = await prepareCredentials(); }
+        finally { preparingCredentials = false; }
+      }
       if (epoch !== sourceEpoch || pageSuspended || document.hidden) return;
       if (session) {
         sessionGeneration++;
@@ -382,31 +458,52 @@ function activateChannel() {
       }
       const currentSession = createSession(identity);
       drawInvitation();
+      if (hostNeedsResume) {
+        // A stalled wake must leave a gesture-driven retry, not a pending capture forever.
+        hostResumeTimer = setTimeout(() => {
+          if (epoch === sourceEpoch) requireHostResume();
+        }, 10000);
+      }
       const success = await currentSession.start();
       if (epoch !== sourceEpoch || pageSuspended || document.hidden) return;
       hostActive = success;
+      if (!success && hostNeedsResume) requireHostResume();
     } catch {
-      if (epoch === sourceEpoch) renderState('error-connection');
+      if (epoch === sourceEpoch) {
+        if (hostNeedsResume) requireHostResume('error-connection');
+        else {
+          hostWanted = false;
+          renderState('error-connection');
+        }
+      }
     } finally {
       if (epoch === sourceEpoch) {
+        clearHostResumeTimer();
         starting = false;
-        updateHostControls();
       }
+      updateHostControls();
+      if (resumeHostOnReturn && !preparingCredentials && !credentials) requireHostResume('error-connection');
+      else resumeHiddenHost();
     }
   }
 
   function stopHiddenSource() {
-    if (role !== 'host' || (!hostActive && !starting && !session)) return;
+    if (role !== 'host' || (!hostWanted && !starting && !session)) return;
+    resumeHostOnReturn = hostWanted || starting;
+    hostNeedsResume ||= resumeHostOnReturn;
+    clearHostResumeTimer();
     sourceEpoch++;
-    releaseTransmission();
     sessionGeneration++;
+    releaseTransmission();
     session?.stop({ notify: false, state: null });
     session = null;
     unpublish();
     starting = false;
     hostActive = false;
     listenerCount = 0;
-    renderState('host-hidden');
+    if (resumeHostOnReturn) renderState('host-hidden');
+    else if (hostNeedsResume) renderState('host-resume-needed');
+    else updateHostControls();
   }
 
   async function startListener() {
@@ -482,9 +579,13 @@ function activateChannel() {
     else updateTransmission();
   });
   ui.end.addEventListener('click', () => {
+    hostWanted = false;
+    resumeHostOnReturn = false;
+    hostNeedsResume = false;
+    clearHostResumeTimer();
     sourceEpoch++;
-    releaseTransmission();
     sessionGeneration++;
+    releaseTransmission();
     session?.stop({ notify: true, state: null });
     session = null;
     credentials = null;
@@ -545,6 +646,7 @@ function activateChannel() {
   });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopHiddenSource();
+    else resumeHiddenHost();
   });
   window.addEventListener('pagehide', () => {
     pageSuspended = true;
@@ -561,10 +663,11 @@ function activateChannel() {
   window.addEventListener('pageshow', event => {
     pageSuspended = false;
     if (event.persisted) discovery = openDiscovery();
+    if (role === 'host') resumeHiddenHost();
     if (event.persisted && role === 'listener' && !listenerLeft && !listenerEnded) void startListener();
   });
 
-  if (role === 'host') renderState('host-idle');
+  if (role === 'host') renderState(hostNeedsResume ? 'host-resume-needed' : 'host-idle');
   else if (!validIdentity(listenerIdentity)) renderState('error-access');
   else if (listenerEnded) renderState('broadcast-ended');
   else void startListener();

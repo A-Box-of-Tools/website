@@ -46,16 +46,23 @@ Healthy direct audio can survive a brief signaling outage. New generations
 retire stale peers, and failed media is negotiated again. Background timers,
 sleep and connection limits can delay retries.
 
-Host capture begins disabled. Hold or tap enables it, and microphone mute
-overrides both. Stop, page hiding and a lost track invalidate pending capture
-and release every track, including late permission grants. A temporary hide
-keeps the invitation for a manual restart; explicit End stops listener retries.
+Host capture begins disabled. Holding Talk or enabling hands-free speech starts
+transmission, and microphone mute overrides both. Hands-free speech stays on
+until Stop talking, and the interface makes its active state visible. Page
+hiding, screen lock, End and a lost track invalidate pending capture and release
+every track, including late permission grants. A temporary hide keeps the same
+channel and invitation. Returning to the foreground automatically tries to
+restore that channel with transmission off; browser restrictions can require
+the visible Resume channel action. Restoring a channel never restores a latched
+hands-free transmission. Explicit End retires the host identity, prevents
+automatic resumption and stops listener retries.
 
 The worker's Broadcast binding must be deployed before the updated page can
 pair. Existing text and camera routes keep their protocol and room identifiers.
 CI owns the JS and Python suites. Build the page, use it in a browser, verify
-multiple receive-only peers, audible media, hold/release, mute, leave, host
-restart, stale setup and deliberate End. Physical-device acceptance remains
+multiple receive-only peers, audible media, hold/release, hands-free state,
+mute, leave, foreground recovery with talking off, the Resume channel fallback,
+stale setup and deliberate End without automatic resumption. Physical-device acceptance remains
 necessary for phone autoplay, permissions, Wi-Fi isolation and capacity.
 
 The guide is /guides/broadcast-voice-on-a-local-network/.
