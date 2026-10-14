@@ -16,6 +16,7 @@ function activateOncall() {
     'hold', 'toggle', 'leave', 'host-form', 'room-name', 'password-required',
     'host-password-field', 'host-password', 'saved-password', 'start', 'host-live',
     'live-name', 'end', 'participant-count', 'host-empty', 'participants',
+    'audio-recovery', 'audio-note', 'restore-sound',
     'moderation-note', 'link', 'copy', 'copy-note', 'publication-status', 'qr', 'qr-note',
   ].map(id => [id, element(id)]));
   const hostStorage = 'voice-oncall.host';
@@ -46,6 +47,12 @@ function activateOncall() {
   let senderIdentity = null;
   let lastPublication = null;
   let audioContext = null;
+  let hostAudioCleanup = null;
+  let hostAudioSession = null;
+  let audioRestorePending = false;
+  let audioRestoreFailed = false;
+  let audioRestoreTimer = null;
+  let audioRestoreEpoch = 0;
   const audioGraphs = new Map();
   const playbackMuted = new Map();
   // A refused moderation request must never undo the host's local silence.
@@ -141,6 +148,109 @@ function activateOncall() {
     ui.toggle.textContent = phrase(latched ? 'toggle-stop' : 'toggle-start');
     ui['sender-note'].hidden = !senderMuted && !senderPaused;
     ui['sender-note'].textContent = senderMuted ? phrase('sender-muted') : senderPaused ? phrase('sender-paused') : '';
+    updateHostSound();
+  }
+
+  function interruptedHostAudio() {
+    try {
+      return hostAudioSession?.state === 'interrupted';
+    } catch {
+      return false;
+    }
+  }
+
+  function updateHostSound() {
+    const interrupted = interruptedHostAudio();
+    const primerPaused = Array.from(audioGraphs.values()).some(graph => graph.primerFailed || (graph.primerStarted && graph.primer.paused));
+    const needsRestore = hostActive && audioContext && (audioContext.state !== 'running' || interrupted || primerPaused);
+    ui['audio-recovery'].hidden = !needsRestore;
+    ui['restore-sound'].disabled = audioRestorePending;
+    ui['audio-note'].textContent = !needsRestore ? '' : phrase(audioRestorePending ? 'host-sound-restoring' : audioRestoreFailed ? 'error-sound-restore' : interrupted ? 'host-sound-interrupted' : 'host-sound-paused');
+  }
+
+  function monitorHostAudio(context) {
+    hostAudioCleanup?.();
+    let audioSession = null;
+    let previousType = null;
+    let playbackAssigned = false;
+    try {
+      const candidate = navigator.audioSession;
+      if (candidate && typeof candidate.type === 'string') {
+        audioSession = candidate;
+        previousType = candidate.type;
+        candidate.type = 'playback';
+        playbackAssigned = true;
+      }
+    } catch {
+      // Playback still works on browsers without a usable AudioSession API.
+    }
+    hostAudioSession = audioSession;
+    const changed = () => {
+      if (audioContext === context) updateHostSound();
+    };
+    context.addEventListener('statechange', changed);
+    audioSession?.addEventListener?.('statechange', changed);
+    hostAudioCleanup = () => {
+      context.removeEventListener('statechange', changed);
+      audioSession?.removeEventListener?.('statechange', changed);
+      try {
+        if (playbackAssigned && audioSession.type === 'playback') audioSession.type = previousType;
+      } catch {
+        // Ending the room must not depend on restoring an experimental setting.
+      }
+      hostAudioSession = null;
+      hostAudioCleanup = null;
+    };
+    updateHostSound();
+  }
+
+  function resumeHostSound() {
+    const context = audioContext;
+    if (!hostActive || !context || audioRestorePending || pageSuspended) return;
+    const epoch = ++audioRestoreEpoch;
+    audioRestorePending = true;
+    audioRestoreFailed = false;
+    updateHostSound();
+    clearTimeout(audioRestoreTimer);
+    audioRestoreTimer = setTimeout(() => {
+      if (context !== audioContext || epoch !== audioRestoreEpoch) return;
+      audioRestorePending = false;
+      audioRestoreFailed = true;
+      updateHostSound();
+    }, 3000);
+    const attempts = [];
+    try {
+      if (hostAudioSession && hostAudioSession.type !== 'playback') hostAudioSession.type = 'playback';
+    } catch {
+      // A rejected playback hint does not prevent a normal AudioContext resume.
+    }
+    try {
+      attempts.push(context.resume());
+    } catch (error) {
+      attempts.push(Promise.reject(error));
+    }
+    for (const [id, graph] of audioGraphs) {
+      try {
+        attempts.push(graph.primer.play().then(() => {
+          if (audioGraphs.get(id) !== graph) return;
+          graph.primerStarted = true;
+          graph.primerFailed = false;
+        }).catch(error => {
+          if (error.name === 'AbortError' || audioGraphs.get(id) !== graph) return;
+          graph.primerFailed = true;
+          throw error;
+        }));
+      } catch (error) {
+        attempts.push(Promise.reject(error));
+      }
+    }
+    void Promise.allSettled(attempts).then(results => {
+      if (context !== audioContext || epoch !== audioRestoreEpoch) return;
+      clearTimeout(audioRestoreTimer);
+      audioRestorePending = false;
+      audioRestoreFailed = results.some(result => result.status === 'rejected');
+      updateHostSound();
+    });
   }
 
   function clearTransmitFlags() {
@@ -342,15 +452,24 @@ function activateOncall() {
       });
       primer.srcObject = stream;
       document.body.append(primer);
-      const graph = { source, gain, primer };
+      const graph = { source, gain, primer, primerStarted: false, primerFailed: false };
       audioGraphs.set(id, graph);
+      primer.addEventListener('pause', () => {
+        if (audioGraphs.get(id) === graph) updateHostSound();
+      });
+      primer.addEventListener('playing', () => {
+        if (audioGraphs.get(id) !== graph) return;
+        graph.primerStarted = true;
+        graph.primerFailed = false;
+        updateHostSound();
+      });
       updateGain(id);
       source.connect(gain);
       gain.connect(audioContext.destination);
       void primer.play().catch(error => {
         if (error.name === 'AbortError' || audioGraphs.get(id) !== graph) return;
-        ui['moderation-note'].textContent = phrase('error-audio');
-        ui['moderation-note'].hidden = false;
+        graph.primerFailed = true;
+        updateHostSound();
       });
     } catch {
       ui['moderation-note'].textContent = phrase('error-audio');
@@ -359,10 +478,16 @@ function activateOncall() {
   }
 
   function clearAudio() {
-    for (const id of audioGraphs.keys()) disconnectGraph(id);
+    audioRestoreEpoch++;
+    clearTimeout(audioRestoreTimer);
+    audioRestorePending = false;
+    audioRestoreFailed = false;
+    hostAudioCleanup?.();
     const context = audioContext;
     audioContext = null;
+    for (const id of audioGraphs.keys()) disconnectGraph(id);
     if (context) void context.close().catch(() => {});
+    updateHostSound();
   }
 
   function renderParticipants(rows) {
@@ -530,6 +655,7 @@ function activateOncall() {
     renderState('host-starting');
     try {
       audioContext = new Context();
+      monitorHostAudio(audioContext);
       await audioContext.resume();
       if (epoch !== operationEpoch || pageSuspended) return;
       const roomName = ui['room-name'].value.trim();
@@ -721,6 +847,7 @@ function activateOncall() {
   });
   ui.resume.addEventListener('click', () => void startSender(true));
   ui.end.addEventListener('click', endHost);
+  ui['restore-sound'].addEventListener('click', resumeHostSound);
   ui.leave.addEventListener('click', leaveSender);
   ui.hold.addEventListener('pointerdown', event => {
     if (event.button !== 0 || !senderActive || !canTransmit || senderMuted || activePointer !== null) return;
@@ -792,6 +919,7 @@ function activateOncall() {
   });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && activeRole === 'sender') pauseSender();
+    else if (!document.hidden && activeRole === 'host') resumeHostSound();
   });
   window.addEventListener('pagehide', () => {
     pageSuspended = true;

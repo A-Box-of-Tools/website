@@ -51,6 +51,12 @@ participants to stop transmission. Removal silences playback immediately and
 waits for the service's confirmation before closing the peer and removing the
 row. Refused removal remains visible and locally muted, so the host can Unmute
 again. Successful removal blocks the retained participant session at admission.
+The host watches playback interruptions and can restore its existing audio
+context without rebuilding the room or requesting a microphone. Browsers that
+offer AudioSession receive a temporary playback hint; ending the host restores
+the previous hint. A native source-track mute or audio-session interruption
+releases a participant's capture and requires an explicit muted Resume, rather
+than allowing a latched transmission to restart when the device recovers.
 The room retains bounded
 moderation history on socket attachments without persistent storage. Creating a
 new identity can bypass a session block, so the page does not promise a permanent
