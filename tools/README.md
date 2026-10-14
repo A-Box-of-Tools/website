@@ -62,7 +62,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
 | [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start in your browser and hold to talk. Other devices listen through your link, with Mute and Leave controls. |
-| [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open an inbox, let nearby people join, and hear their live voice. Set a password and mute or remove individual participants. |
+| [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants. |
 | [JSON Formatter](json-formatter/) | `/json-formatter/` | JSON, XML, HTML, CSS and YAML, formatted or converted. Nothing is pasted into anyone else's server. |
 | [YAML to JSON Converter](yaml-to-json/) | `/yaml-to-json/` | Both directions, and it says what each one costs. Nothing is pasted into anyone else's server. |
 | [XML Formatter](xml-formatter/) | `/xml-formatter/` | XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server. |

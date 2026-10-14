@@ -1,36 +1,36 @@
 <main id="main">
 <div class="vi-tool">
-  <p class="vi-intro">Create a Voice Oncall room for people on the same local network. They join with their name and speak to the host. The host listens, without using a microphone.</p>
+  <p class="vi-intro">Create a Voice Oncall pager for people on the same local network. They connect with their name and speak to the host. The host listens, without using a microphone.</p>
   <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall">
-    <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Join a room</button>
-    <button type="button" role="tab" id="vi-tab-host" aria-controls="vi-host-panel" aria-selected="false" tabindex="-1">Host a room</button>
+    <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
+    <button type="button" role="tab" id="vi-tab-host" aria-controls="vi-host-panel" aria-selected="false" tabindex="-1">Host a pager</button>
   </div>
   <div class="vi-status" aria-live="polite" aria-atomic="true">
     <span class="vi-status-dot" id="vi-status-dot" aria-hidden="true"></span>
-    <p id="vi-status-text">Choose a nearby room or open a link from its host.</p>
+    <p id="vi-status-text">Choose a nearby pager or open a link from its host.</p>
   </div>
 
   <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
     <form id="vi-join-form">
       <div class="vi-discovery-heading">
-        <h2>Nearby rooms</h2>
+        <h2>Nearby pagers</h2>
         <button type="button" class="vi-secondary" id="vi-refresh">Refresh</button>
       </div>
-      <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby rooms…</p>
+      <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby pagers…</p>
       <div class="vi-rooms" id="vi-rooms"></div>
-      <p class="vi-note" id="vi-empty">No rooms are listed yet. Ask the host for their room link, or create one with Host a room.</p>
+      <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
       <div class="vi-form-grid">
         <div>
           <label for="vi-sender-name">Your display name</label>
           <input id="vi-sender-name" type="text" maxlength="64" autocomplete="nickname" required>
         </div>
         <div>
-          <label for="vi-sender-password">Room password, if required</label>
+          <label for="vi-sender-password">Pager password, if required</label>
           <input id="vi-sender-password" type="password" autocomplete="current-password">
         </div>
       </div>
-      <p class="vi-note">Joining asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
-      <button type="submit" id="vi-join">Join room</button>
+      <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
+      <button type="submit" id="vi-join">Connect</button>
     </form>
     <div id="vi-sender" hidden>
       <h2 id="vi-sender-room"></h2>
@@ -40,7 +40,7 @@
       <p class="vi-note vi-talk-help" id="vi-talk-help">Hold this button or the space bar to speak. Release to stop. You can also use Start talking for hands-free control.</p>
       <div class="vi-sender-actions">
         <button type="button" id="vi-toggle" aria-pressed="false">Start talking</button>
-        <button type="button" class="vi-secondary" id="vi-leave">Leave</button>
+        <button type="button" class="vi-secondary" id="vi-leave">Disconnect</button>
       </div>
       <p class="vi-note">Hiding this tab or leaving the browser pauses your microphone. Return and choose Resume microphone to continue.</p>
     </div>
@@ -48,36 +48,36 @@
 
   <section id="vi-host-panel" role="tabpanel" aria-labelledby="vi-tab-host" hidden>
     <form id="vi-host-form">
-      <h2>Open your Voice Oncall room</h2>
-      <label for="vi-room-name">Room name</label>
+      <h2>Open your Voice Oncall pager</h2>
+      <label for="vi-room-name">Pager name</label>
       <input id="vi-room-name" type="text" maxlength="80" autocomplete="off" required>
       <label class="vi-check" for="vi-password-required"><input id="vi-password-required" type="checkbox">Require a password</label>
       <div id="vi-host-password-field" hidden>
-        <label for="vi-host-password">Room password</label>
+        <label for="vi-host-password">Pager password</label>
         <input id="vi-host-password" type="password" autocomplete="new-password">
-        <p class="vi-note" id="vi-saved-password" hidden>A password is saved for this room. Leave this field blank to keep it, or enter a new password.</p>
+        <p class="vi-note" id="vi-saved-password" hidden>A password is saved for this pager. Leave this field blank to keep it, or enter a new password.</p>
       </div>
-      <p class="vi-note">Up to 10 people can join without approval. You can mute or remove each person. Your microphone is never requested.</p>
-      <button type="submit" id="vi-start">Start room</button>
+      <p class="vi-note">Up to 10 people can connect without approval. You can mute or remove each person. Your microphone is never requested.</p>
+      <button type="submit" id="vi-start">Start pager</button>
     </form>
     <div id="vi-host-live" hidden>
       <div class="vi-live-heading">
         <h2 id="vi-live-name"></h2>
-        <button type="button" class="vi-secondary" id="vi-end">End room</button>
+        <button type="button" class="vi-secondary" id="vi-end">End pager</button>
       </div>
       <div id="vi-audio-recovery" hidden>
         <p class="vi-note" id="vi-audio-note" role="status" aria-live="polite"></p>
         <button type="button" class="vi-secondary" id="vi-restore-sound">Restore sound</button>
       </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
-      <p class="vi-note" id="vi-host-empty">Your room is open. Share its link or let nearby people find it.</p>
-      <ul class="vi-participants" id="vi-participants" aria-label="People in the room"></ul>
+      <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let nearby people find it.</p>
+      <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
       <section class="vi-invite" aria-labelledby="vi-invite-title">
         <div class="vi-invite-fields">
           <h3 id="vi-invite-title">Invite people</h3>
-          <p class="vi-note">Share this link or let people scan the QR code. Share a password separately if your room requires one.</p>
-          <label for="vi-link">Room link</label>
+          <p class="vi-note">Share this link or let people scan the QR code. Share a password separately if your pager requires one.</p>
+          <label for="vi-link">Pager link</label>
           <div class="vi-link-row">
             <input id="vi-link" type="text" readonly spellcheck="false" autocomplete="off">
             <button type="button" id="vi-copy">Copy link</button>
@@ -86,64 +86,64 @@
           <p class="vi-note" id="vi-publication-status" aria-live="polite"></p>
         </div>
         <div class="vi-qr">
-          <canvas id="vi-qr" width="220" height="220" role="img" aria-label="QR code for the room link"></canvas>
-          <p class="vi-note" id="vi-qr-note" hidden>The QR code is unavailable. Use the room link instead.</p>
+          <canvas id="vi-qr" width="220" height="220" role="img" aria-label="QR code for the pager link"></canvas>
+          <p class="vi-note" id="vi-qr-note" hidden>The QR code is unavailable. Use the pager link instead.</p>
         </div>
       </section>
-      <p class="vi-note">Keep this room page open to hear people. Remove ends a participant's current session; it does not permanently ban a person. End room closes this room for everyone.</p>
+      <p class="vi-note">Keep this pager page open to hear people. Remove ends a participant's current session; it does not permanently ban a person. End pager closes this pager for everyone.</p>
     </div>
   </section>
 
   <details class="vi-details">
     <summary>How nearby voices connect</summary>
-    <p>An internet service lists rooms in your internet-address group and introduces their browsers. This is not a scan of your Wi-Fi, and a listed room is not guaranteed to be on your physical network.</p>
+    <p>An internet service lists pagers in your internet-address group and introduces their browsers. This is not a scan of your Wi-Fi, and a listed pager is not guaranteed to be on your physical network.</p>
     <p>Voice travels directly between browsers and is encrypted. There is no audio relay or recording. Use a trusted network where devices can reach one another; guest Wi-Fi, firewalls, and some VPNs may prevent connections.</p>
-    <p>Anyone who can find your room can try to join. A password limits access, and the host can mute or remove participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
+    <p>Anyone who can find your pager can try to connect. A password limits access, and the host can mute or remove participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
     <p>Remove ends one participant session. A new tab or cleared browser storage can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
   </details>
 </div>
 <div id="phrases" hidden>
-  <span data-phrase="join-idle">Choose a nearby room or open a link from its host.</span>
-  <span data-phrase="host-idle">Name your room, then open it for nearby people.</span>
-  <span data-phrase="host-starting">Opening your Voice Oncall room…</span>
-  <span data-phrase="host-ready">Your room is open.</span>
-  <span data-phrase="host-reconnecting">Reconnecting your room…</span>
-  <span data-phrase="host-paused">The room paused when this page closed. Start it again to resume.</span>
-  <span data-phrase="sender-connecting">Joining the room and checking your microphone…</span>
+  <span data-phrase="join-idle">Choose a nearby pager or open a link from its host.</span>
+  <span data-phrase="host-idle">Name your pager, then open it for nearby people.</span>
+  <span data-phrase="host-starting">Opening your Voice Oncall pager…</span>
+  <span data-phrase="host-ready">Your pager is open.</span>
+  <span data-phrase="host-reconnecting">Reconnecting your pager…</span>
+  <span data-phrase="host-paused">The pager paused when this page closed. Start it again to resume.</span>
+  <span data-phrase="sender-connecting">Connecting to the pager and checking your microphone…</span>
   <span data-phrase="sender-ready">Connected. Hold to talk when you are ready.</span>
   <span data-phrase="sender-talking">You are speaking to the host.</span>
   <span data-phrase="sender-muted">The host muted you. Wait for the host to unmute you.</span>
   <span data-phrase="sender-reconnecting">Waiting for the host connection…</span>
   <span data-phrase="sender-paused">Your microphone paused. Choose Resume microphone to continue.</span>
-  <span data-phrase="inbox-ended">The host ended this room.</span>
-  <span data-phrase="sender-left">You left the room.</span>
-  <span data-phrase="kicked">The host removed you from this room.</span>
-  <span data-phrase="error-password">That password did not match. Enter the room password and try again.</span>
-  <span data-phrase="error-access">This room link is invalid or the room is no longer available.</span>
-  <span data-phrase="error-full">This room has reached its limit of 10 people.</span>
+  <span data-phrase="inbox-ended">The host ended this pager.</span>
+  <span data-phrase="sender-left">You disconnected from the pager.</span>
+  <span data-phrase="kicked">The host removed you from this pager.</span>
+  <span data-phrase="error-password">That password did not match. Enter the pager password and try again.</span>
+  <span data-phrase="error-access">This pager link is invalid or the pager is no longer available.</span>
+  <span data-phrase="error-full">This pager has reached its limit of 10 people.</span>
   <span data-phrase="error-connection">The pairing service could not be reached. Check your internet connection and try again.</span>
   <span data-phrase="error-microphone">The microphone stopped or could not start. Check microphone permission and try again.</span>
-  <span data-phrase="error-audio">Your browser could not start room audio. Try starting the room again.</span>
+  <span data-phrase="error-audio">Your browser could not start pager audio. Try starting the pager again.</span>
   <span data-phrase="host-sound-paused">Sound is paused. Choose Restore sound to hear people again.</span>
-  <span data-phrase="host-sound-interrupted">Sound was interrupted. Your room remains open. Choose Restore sound when you are ready to listen again.</span>
+  <span data-phrase="host-sound-interrupted">Sound was interrupted. Your pager remains open. Choose Restore sound when you are ready to listen again.</span>
   <span data-phrase="host-sound-restoring">Restoring sound…</span>
-  <span data-phrase="error-sound-restore">Sound could not be restored. Try again, or end this room and start a new one.</span>
+  <span data-phrase="error-sound-restore">Sound could not be restored. Try again, or end this pager and start a new one.</span>
   <span data-phrase="error-browser">This browser cannot start secure voice connections.</span>
   <span data-phrase="error-secure-context">Open this page over HTTPS to use your microphone.</span>
-  <span data-phrase="error-moderation-full">That action could not be remembered because this room's moderation history is full. Your local audio setting still applies. End this room and start a new one to clear that history.</span>
-  <span data-phrase="error-removal-full">The removal was refused because this room's moderation history is full. This person remains connected and is muted for you. End this room and start a new one to clear that history.</span>
+  <span data-phrase="error-moderation-full">That action could not be remembered because this pager's moderation history is full. Your local audio setting still applies. End this pager and start a new one to clear that history.</span>
+  <span data-phrase="error-removal-full">The removal was refused because this pager's moderation history is full. This person remains connected and is muted for you. End this pager and start a new one to clear that history.</span>
   <span data-phrase="name-invalid">Enter a name without control characters.</span>
-  <span data-phrase="room-required">Choose a room or open a room link first.</span>
-  <span data-phrase="password-required">Enter this room's password.</span>
-  <span data-phrase="invited-room">Invited room</span>
+  <span data-phrase="room-required">Choose a pager or open a pager link first.</span>
+  <span data-phrase="password-required">Enter this pager's password.</span>
+  <span data-phrase="invited-room">Invited pager</span>
   <span data-phrase="room-locked">Password required</span>
-  <span data-phrase="room-open">Open room</span>
-  <span data-phrase="discovery-connecting">Looking for nearby rooms…</span>
-  <span data-phrase="discovery-ready">Nearby rooms are updated automatically.</span>
-  <span data-phrase="discovery-unavailable">Nearby rooms cannot be listed right now. You can still use a room link.</span>
-  <span data-phrase="publication-publishing">Making your room discoverable…</span>
-  <span data-phrase="publication-published">Your room is listed for your internet-address group.</span>
-  <span data-phrase="publication-not-published">Your room is not listed yet. Share the room link instead.</span>
+  <span data-phrase="room-open">Open pager</span>
+  <span data-phrase="discovery-connecting">Looking for nearby pagers…</span>
+  <span data-phrase="discovery-ready">Nearby pagers are updated automatically.</span>
+  <span data-phrase="discovery-unavailable">Nearby pagers cannot be listed right now. You can still use a pager link.</span>
+  <span data-phrase="publication-publishing">Making your pager discoverable…</span>
+  <span data-phrase="publication-published">Your pager is listed for your internet-address group.</span>
+  <span data-phrase="publication-not-published">Your pager is not listed yet. Share the pager link instead.</span>
   <span data-phrase="participant-ready">Listening connection ready</span>
   <span data-phrase="participant-speaking">Speaking</span>
   <span data-phrase="participant-muted">Muted by you</span>
@@ -161,9 +161,9 @@
   <span data-phrase="hold-talking">Release to stop</span>
   <span data-phrase="toggle-start">Start talking</span>
   <span data-phrase="toggle-stop">Stop talking</span>
-  <span data-phrase="copy-success">Room link copied.</span>
-  <span data-phrase="copy-error">Select and copy the room link above.</span>
+  <span data-phrase="copy-success">Pager link copied.</span>
+  <span data-phrase="copy-error">Select and copy the pager link above.</span>
   <span data-phrase="net.clean">Internet discovery and pairing introduce browsers. Voice travels directly between them.</span>
-  <span data-phrase="net.dirty">Internet discovery and pairing are needed to find or reconnect a room.</span>
+  <span data-phrase="net.dirty">Internet discovery and pairing are needed to find or reconnect a pager.</span>
 </div>
 </main>

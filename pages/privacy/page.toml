@@ -12,8 +12,8 @@ description = "Local file processing, deliberate sharing, optional online rates,
 heading = "Privacy &amp; Cookies"
 lede = "Files are processed locally. Intentional sharing and optional network features have separate boundaries. This page explains those boundaries and the ads, feedback, storage and hosting around them."
 
-updated = "13 October 2026"     # shown on the page, in words
-lastmod = "2026-10-13"         # the sitemap's machine-readable copy
+updated = "14 October 2026"     # shown on the page, in words
+lastmod = "2026-10-14"         # the sitemap's machine-readable copy
 
 og_title = "Privacy &amp; Cookies &mdash; abox.tools"
 og_description = "What stays in the browser, what deliberate network features send, and what the platform services collect."
