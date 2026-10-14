@@ -661,3 +661,50 @@ test('a previously removed identity admitted again stays visible until removal s
   assert.equal(h.peers[1].closed, false);
   assert.equal(h.peers[1].transceivers[0].direction, 'recvonly');
 });
+
+test('late events from retiring host audio cannot cancel the replacement or silence retained audio', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  const first = await h.connected(ws);
+  ws.message(join());
+  await flush();
+  const replacement = h.peers[1];
+  await h.clock.advance(2000);
+  first.peer.receive({ name: 'late old track' });
+  first.peer.connectionState = 'disconnected';
+  first.peer.onconnectionstatechange();
+  first.peer.connect();
+  assert.equal(first.peer.closed, false);
+  assert.equal(replacement.closed, false);
+  assert.deepEqual(h.streams.at(-1), { id: ID_A, stream: first.stream });
+  assert.equal(h.streams.filter(value => value.stream === null).length, 0);
+  const voice = { name: 'new direct audio' };
+  replacement.receive(voice);
+  replacement.connect();
+  assert.equal(first.peer.closed, true);
+  assert.deepEqual(h.streams.at(-1), { id: ID_A, stream: voice });
+  assert.equal(h.streams.filter(value => value.stream === null).length, 0);
+});
+
+test('a retiring sender reconnect event cannot drop itself or extend its bounded grace', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin();
+  ws.message(offer());
+  await flush();
+  const first = h.peers[0];
+  first.connect();
+  ws.message(offer(CONN_B));
+  await flush();
+  assert.equal(first.closed, false);
+  await h.clock.advance(5000);
+  first.connectionState = 'disconnected';
+  first.onconnectionstatechange();
+  first.connect();
+  assert.equal(first.closed, false);
+  assert.equal(h.mic.track.enabled, false);
+  await h.clock.advance(4999);
+  assert.equal(first.closed, false);
+  await h.clock.advance(1);
+  assert.equal(first.closed, true);
+  assert.equal(h.mic.track.enabled, false);
+});

@@ -436,6 +436,8 @@ test('admitted and pending limits, auth deadlines, malformed frames and update b
   const admitted = await s.sender(12);
   assert.equal(last(admitted).type, 'ready');
   for (let i = 0; i < 120; i += 1) await s.send(admitted, { type: 'check' });
+  assert.equal(admitted.readyState, 1);
+  await s.send(admitted, { type: 'check' });
   assert.equal(admitted.closed.code, 4429);
   assert.equal(last(admitted).error, 'busy');
   for (const value of ['{', '[]', 'x'.repeat(65537), new ArrayBuffer(1)]) {

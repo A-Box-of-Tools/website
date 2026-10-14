@@ -443,6 +443,7 @@ class VoiceSession {
     pc.onconnectionstatechange = () => {
       if (!this._current(peer)) return;
       if (pc.connectionState === 'connected') {
+        if (this._peers.get(peer.id) !== peer) return;
         if (!peer.departed) { this._clock.clearTimeout(peer.timer); peer.timer = null; }
         if (this._receiver) this._activate(peer);
         else if (this._inbox) this._dropRetiring(peer.id);
@@ -549,7 +550,7 @@ class VoiceSession {
     }
   }
   _activate(peer) {
-    if (!this._current(peer) || !peer.stream) return;
+    if (!this._current(peer) || this._peers.get(peer.id) !== peer || !peer.stream) return;
     if (this._inbox) {
       this._activeInbox.set(peer.id, peer);
       this.onStream(peer.stream, peer.id);
