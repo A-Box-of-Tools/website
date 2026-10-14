@@ -1,15 +1,17 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
+import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
 const RENDEZVOUS = 'wss://rendezvous.abox.tools';
 const CONNECT_TIMEOUT = 20000;
-const MAX_PEERS = 4;
+const MAX_PENDING = 4;
 const INTRODUCTION_RETRIES = [2000, 4000, 8000, 15000, 30000];
 
 export class CameraSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
+    onViewers = () => {}, onBandwidth = () => {},
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -18,12 +20,13 @@ export class CameraSession {
     this.onRequests = onRequests;
     this.onStream = onStream;
     this.onDiscovery = onDiscovery;
+    this.onViewers = onViewers;
+    this.onBandwidth = onBandwidth;
     this.revision = 0;
     this.role = null;
     this.socket = null;
     this.stream = null;
     this.peers = new Map();
-    this.active = null;
     this.keepalive = null;
     this.socketDeadline = null;
     this.cancelOpen = null;
@@ -33,6 +36,13 @@ export class CameraSession {
     this.signalingUnavailable = false;
     this.requireApproval = true;
     this.cameraChange = null;
+    this.videoBudget = DEFAULT_VIDEO_BUDGET;
+    this.bandwidth = new VideoBandwidth({
+      current: (entry) => this.role === 'camera' && this.current(entry),
+      onStatus: ({ supported }) => {
+        if (this.role === 'camera') this.onBandwidth(supported ? 'camera.bandwidth-applied' : 'camera.bandwidth-unsupported');
+      },
+    });
   }
 
   state(key) {
@@ -41,18 +51,45 @@ export class CameraSession {
   }
 
   // Stopping also interrupts viewers whose connection has not reached the
-  // approval request yet, so the active video slot alone is not enough.
+  // approval request yet, so counting accepted viewers alone is not enough.
   get hasViewers() { return this.role === 'camera' && this.peers.size > 0; }
+
+  get viewerCount() { return this.role === 'camera' ? [...this.peers.values()].filter((entry) => entry.approved).length : 0; }
+
+  get maxViewers() { return viewerLimit(this.videoBudget); }
+
+  setVideoBudget(mbps) {
+    this.videoBudget = normalizeVideoBudget(Number(mbps) * 1000000);
+    if (this.role === 'camera') {
+      this.viewers();
+      this.requests();
+    }
+  }
+
+  hostState() {
+    if (this.reconnecting) return 'camera.reconnecting';
+    if (this.signalingUnavailable) return 'camera.reconnect-failed';
+    if ([...this.peers.values()].some((entry) => entry.video)) return 'camera.streaming';
+    return this.viewerCount ? 'camera.approved' : 'camera.waiting';
+  }
+
+  viewers() {
+    const entries = this.role === 'camera' ? [...this.peers.values()].filter((entry) => entry.approved) : [];
+    this.onViewers(entries
+      .map((entry) => ({ id: entry.id, note: entry.note, streaming: this.established(entry) === true })));
+    return this.role === 'camera' ? this.bandwidth.update(entries, this.videoBudget) : Promise.resolve();
+  }
 
   setApprovalRequired(value) {
     this.requireApproval = Boolean(value);
-    if (this.role === 'camera' && this.active === null) this.state(this.reconnecting ? 'camera.reconnecting' : 'camera.waiting');
+    if (this.role === 'camera') this.state(this.hostState());
   }
 
-  async startHost(stream, code, { discoverable = false, requireApproval = true } = {}) {
+  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000 } = {}) {
     this.stop();
     this.role = 'camera';
     this.requireApproval = Boolean(requireApproval);
+    this.setVideoBudget(videoBudget);
     this.stream = stream;
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
@@ -92,7 +129,7 @@ export class CameraSession {
           this.signalingUnavailable = false;
           this.retryAttempts = 0;
         }
-        this.state(this.role === 'camera' ? this.active === null ? 'camera.waiting' : 'camera.streaming' : 'connection.connecting');
+        this.state(this.role === 'camera' ? this.hostState() : 'connection.connecting');
         resolve();
       };
       const fail = (key) => {
@@ -197,7 +234,7 @@ export class CameraSession {
     if (this.retryAttempts >= INTRODUCTION_RETRIES.length) {
       this.reconnecting = false;
       this.signalingUnavailable = true;
-      if (this.established(this.peers.get(this.active), true)) this.state('camera.reconnect-failed');
+      if ([...this.peers.values()].some((entry) => this.established(entry, true))) this.state('camera.reconnect-failed');
       else this.stop('connection.server-failed');
       return;
     }
@@ -247,7 +284,8 @@ export class CameraSession {
     const data = message.data;
     if (data.dial === true && this.role === 'camera') {
       if (this.peers.has(id)) return;
-      if (this.active !== null || this.peers.size >= MAX_PEERS) {
+      const pending = [...this.peers.values()].filter((entry) => !entry.approved).length;
+      if (this.viewerCount >= this.maxViewers || pending >= MAX_PENDING) {
         this.send({ protocol: PROTOCOL, refused: 'busy' }, id);
         return;
       }
@@ -270,7 +308,10 @@ export class CameraSession {
             || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
         await entry.pc.setRemoteDescription(localDescription(description));
         if (!this.current(entry)) return;
-        if (expected === 'answer' && entry.video) entry.mediaNegotiated = true;
+        if (expected === 'answer' && entry.video) {
+          entry.mediaNegotiated = true;
+          this.viewers();
+        }
         for (const candidate of entry.candidates.splice(0)) await entry.pc.addIceCandidate(candidate);
         if (expected === 'offer') {
           entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
@@ -329,6 +370,7 @@ export class CameraSession {
           if (pc.connectionState === 'disconnected') this.peerFailed(entry, 'connection.direct-failed');
         }, 5000);
       }
+      if (this.role === 'camera' && this.current(entry)) this.viewers();
     });
     return entry;
   }
@@ -423,7 +465,7 @@ export class CameraSession {
             if (this.current(entry)) this.peerFailed(entry, 'connection.direct-failed');
           });
         }, CONNECT_TIMEOUT);
-      } else if (message.type === 'approval-ack' && this.role === 'camera' && entry.approved && this.active === entry.id) {
+      } else if (message.type === 'approval-ack' && this.role === 'camera' && entry.approved) {
         entry.acknowledged = true;
         clearTimeout(entry.approvalDeadline);
         entry.timers.delete(entry.approvalDeadline);
@@ -446,10 +488,9 @@ export class CameraSession {
 
   approve(id) {
     const entry = this.peers.get(id);
-    if (!entry?.pending || entry.refused || this.active !== null || this.role !== 'camera' || this.cameraChange) return false;
+    if (!entry?.pending || entry.refused || this.viewerCount >= this.maxViewers || this.role !== 'camera' || this.cameraChange) return false;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.stop('camera.ended'); return false; }
-    this.active = id;
     entry.pending = false;
     entry.approved = true;
     try {
@@ -462,38 +503,52 @@ export class CameraSession {
       if (!entry.acknowledged) this.peerFailed(entry, 'connection.direct-failed');
     }, CONNECT_TIMEOUT);
     this.requests();
-    this.state('camera.approved');
-    for (const other of [...this.peers.values()]) {
-      if (other !== entry) this.deny(other.id, 'busy');
-    }
+    this.viewers();
+    this.state(this.hostState());
     return true;
   }
 
-  beginVideo(entry) {
-    if (!this.current(entry) || entry.video || !entry.acknowledged || this.role !== 'camera' || this.active !== entry.id || this.cameraChange) return;
-    const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
-    if (!track) { this.stop('camera.ended'); return; }
+  async beginVideo(entry) {
+    if (!this.current(entry) || entry.video || entry.videoStarting || !entry.approved || !entry.acknowledged || this.role !== 'camera' || this.cameraChange) return;
+    entry.videoStarting = true;
     try {
-      // Approval and SDP use different transports. The acknowledgement proves
-      // the viewer processed approval before a video offer can overtake it.
-      entry.sender = entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] }).sender;
-      // Older viewers reject audio events, so their hello keeps this link
-      // video-only even when the owner has enabled the microphone.
-      const audio = entry.receiveAudio && this.stream?.getAudioTracks?.().find((item) => item.readyState === 'live');
-      if (audio) entry.audioSender = entry.pc.addTransceiver(audio, { direction: 'sendonly', streams: [this.stream] }).sender;
-      entry.video = true;
-    } catch {
-      this.peerFailed(entry, 'connection.ended');
-      return;
-    }
-    this.queue(entry, () => this.offer(entry));
-    this.state('camera.streaming');
+      // Existing senders receive their smaller shares before this reservation
+      // adds another encoder. Approval still gates every media attachment.
+      await this.bandwidth.update([...this.peers.values()].filter((peer) => peer.approved), this.videoBudget);
+      if (!this.current(entry) || this.role !== 'camera' || this.cameraChange) return;
+      const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
+      if (!track) { this.stop('camera.ended'); return; }
+      try {
+        // Approval and SDP use different transports. The acknowledgement proves
+        // the viewer processed approval before a video offer can overtake it.
+        const options = {
+          direction: 'sendonly', streams: [this.stream],
+          sendEncodings: [{ maxBitrate: videoBitrate(this.viewerCount, this.videoBudget) }],
+        };
+        try { entry.sender = entry.pc.addTransceiver(track, options).sender; }
+        catch (error) {
+          if (!(error instanceof TypeError) && error.name !== 'NotSupportedError') throw error;
+          entry.sender = entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] }).sender;
+        }
+        // Older viewers reject audio events, so their hello keeps this link
+        // video-only even when the owner has enabled the microphone.
+        const audio = entry.receiveAudio && this.stream?.getAudioTracks?.().find((item) => item.readyState === 'live');
+        if (audio) entry.audioSender = entry.pc.addTransceiver(audio, { direction: 'sendonly', streams: [this.stream] }).sender;
+        entry.video = true;
+      } catch {
+        this.peerFailed(entry, 'connection.ended');
+        return;
+      }
+      this.queue(entry, () => this.offer(entry));
+      this.viewers();
+      this.state(this.hostState());
+    } finally { entry.videoStarting = false; }
   }
 
   prepareCameraChange() {
     if (this.role !== 'camera' || this.cameraChange) throw new Error('camera.switch-failed');
     const revision = this.revision;
-    const operation = { candidate: null };
+    const operation = { candidate: null, committing: false };
     this.cameraChange = operation;
     const current = () => this.role === 'camera' && this.revision === revision && this.cameraChange === operation;
     const finish = () => {
@@ -503,8 +558,9 @@ export class CameraSession {
         this.stop('camera.switch-ended');
         return;
       }
-      const active = this.peers.get(this.active);
-      if (active?.acknowledged) this.beginVideo(active);
+      for (const entry of this.peers.values()) {
+        if (entry.approved && entry.acknowledged) this.beginVideo(entry);
+      }
       // Only requests made while approval was off may be accepted here.
       // An existing manual request does not inherit a later policy change.
       for (const entry of [...this.peers.values()]) {
@@ -518,36 +574,35 @@ export class CameraSession {
     return {
       commit: async (stream) => {
         if (!current()) return false;
+        if (operation.committing) throw new Error('camera.switch-failed');
         const track = stream?.getVideoTracks().find((item) => item.readyState === 'live');
         if (!track) throw new Error('camera.switch-failed');
         operation.candidate = stream;
-        const entry = this.peers.get(this.active);
-        const sender = entry?.video ? entry.sender : null;
-        const previous = sender?.track;
-        if (sender) {
-          try { await sender.replaceTrack(track); }
-          catch (error) {
-            if (!current()) return false;
-            // A departing viewer no longer has a sender to replace. The new
-            // camera can still serve the next viewer on the same invitation.
-            if (this.current(entry)) throw error;
-          }
-        }
-        if (!current()) return false;
-        if (track.readyState !== 'live') {
-          if (sender && this.current(entry) && previous?.readyState === 'live') {
-            try { await sender.replaceTrack(previous); }
-            catch { if (this.current(entry)) this.peerFailed(entry, 'connection.ended'); }
-          }
+        operation.committing = true;
+        const replacements = [...this.peers.values()].filter((entry) => entry.video && entry.sender)
+          .map((entry) => ({ entry, sender: entry.sender, previous: entry.sender.track }));
+        try {
+          const results = await Promise.allSettled(replacements.map(async ({ sender }) => sender.replaceTrack(track)));
           if (!current()) return false;
-          throw new Error('camera.switch-failed');
-        }
-        this.stream = stream;
-        operation.candidate = null;
-        finish();
-        return true;
+          const failed = results.find((result, index) => result.status === 'rejected' && this.current(replacements[index].entry));
+          if (failed || track.readyState !== 'live') {
+            // A failed encoder must not leave the other viewers on a camera
+            // that capture will discard. Only surviving senders need rollback.
+            await Promise.all(replacements.map(async ({ entry, sender, previous }, index) => {
+              if (results[index].status !== 'fulfilled' || !this.current(entry) || previous?.readyState !== 'live') return;
+              try { await sender.replaceTrack(previous); }
+              catch { if (current() && this.current(entry)) this.peerFailed(entry, 'connection.ended'); }
+            }));
+            if (!current()) return false;
+            throw failed?.reason ?? new Error('camera.switch-failed');
+          }
+          this.stream = stream;
+          operation.candidate = null;
+          finish();
+          return true;
+        } finally { operation.committing = false; }
       },
-      cancel: finish,
+      cancel: () => { if (!operation.committing) finish(); },
     };
   }
 
@@ -562,6 +617,14 @@ export class CameraSession {
     return true;
   }
 
+  disconnectViewer(id) {
+    const entry = this.peers.get(id);
+    if (this.role !== 'camera' || !entry?.approved) return false;
+    try { this.control(entry, 'ended'); } catch {}
+    this.removePeer(id);
+    return true;
+  }
+
   peerFailed(entry, key) {
     if (!this.current(entry)) return;
     if (this.role === 'viewer') this.stop(key);
@@ -569,7 +632,7 @@ export class CameraSession {
       this.removePeer(entry.id);
       // A viewer leaving closes only its peer; the camera invitation remains
       // available and must not acquire the viewer's end-of-link status.
-      if (key !== 'connection.ended' && this.role === 'camera') this.state(key);
+      if (key !== 'connection.ended' && this.role === 'camera' && !this.viewerCount) this.state(key);
     }
   }
 
@@ -580,11 +643,11 @@ export class CameraSession {
     for (const timer of entry.timers) clearTimeout(timer);
     entry.dc?.close();
     entry.pc.close();
-    if (this.active === id) this.active = null;
     this.requests();
-    if (this.role === 'camera' && this.active === null) {
-      if (this.signalingUnavailable && !this.reconnecting && !this.socket) this.stop('connection.server-failed');
-      else this.state(this.reconnecting ? 'camera.reconnecting' : 'camera.waiting');
+    this.viewers();
+    if (this.role === 'camera') {
+      if (!this.viewerCount && this.signalingUnavailable && !this.reconnecting && !this.socket) this.stop('connection.server-failed');
+      else this.state(this.hostState());
     }
   }
 
@@ -596,6 +659,7 @@ export class CameraSession {
       if (track.readyState !== 'ended') track.stop();
     });
     this.cameraChange = null;
+    this.bandwidth.clear();
     clearInterval(this.keepalive);
     this.keepalive = null;
     clearTimeout(this.socketDeadline);
@@ -611,7 +675,6 @@ export class CameraSession {
     this.socket = null;
     this.role = null;
     for (const id of [...this.peers.keys()]) this.removePeer(id);
-    this.active = null;
     this.stream = null;
     socket?.close();
     if (role === 'viewer') this.onStream(null);
@@ -619,7 +682,7 @@ export class CameraSession {
   }
 
   async inspect() {
-    const entry = this.peers.get(this.role === 'viewer' ? 'viewer' : this.active);
+    const entry = this.role === 'viewer' ? this.peers.get('viewer') : [...this.peers.values()].find((peer) => peer.video);
     if (!entry) return null;
     const stats = await entry.pc.getStats();
     const values = [...stats.values()];

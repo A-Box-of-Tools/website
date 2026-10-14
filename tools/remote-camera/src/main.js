@@ -48,6 +48,11 @@ function idleCamera() {
   $('camera-discoverable').disabled = false;
   $('camera-audio').disabled = false;
   $('camera-audio-status').textContent = '';
+  $('camera-bandwidth-status').textContent = '';
+  $('camera-bandwidth-status').classList.remove('warn');
+  $('camera-viewers').hidden = true;
+  $('camera-viewer-count').textContent = '';
+  $('camera-viewer-list').replaceChildren();
   $('camera-stop').hidden = true;
   $('camera-invite').hidden = true;
   $('camera-approval').hidden = true;
@@ -132,12 +137,51 @@ const session = new CameraSession({
         button.dataset.peer = request.id;
         button.disabled = Boolean(session.cameraChange) || capture.switching;
         if (action === 'deny') button.className = 'ghost';
-        button.addEventListener('click', () => session[action](request.id));
+        button.addEventListener('click', () => {
+          if (action === 'approve' && !session.approve(request.id)) showStatus('connection.busy', 'camera');
+          else if (action === 'deny') session.deny(request.id);
+        });
         row.append(button);
       }
       row.prepend(note);
       $('camera-requests').append(row);
     }
+  },
+  onViewers(viewers) {
+    $('camera-viewers').hidden = viewers.length === 0;
+    $('camera-viewer-count').textContent = phrase('camera.viewer-count', {
+      count: ltr(viewers.length.toLocaleString(document.documentElement.lang)),
+      limit: ltr(session.maxViewers.toLocaleString(document.documentElement.lang)),
+    });
+    const focused = document.activeElement?.dataset;
+    $('camera-viewer-list').replaceChildren();
+    for (const viewer of viewers) {
+      const row = document.createElement('div');
+      row.className = 'camera-request';
+      row.dataset.peer = viewer.id;
+      const label = document.createElement('p');
+      label.textContent = viewer.note || phrase('camera.unnamed');
+      const state = document.createElement('span');
+      state.className = 'field-note';
+      state.textContent = phrase(viewer.streaming ? 'camera.viewer-watching' : 'camera.viewer-preparing');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'ghost danger';
+      button.dataset.action = 'disconnect';
+      button.dataset.peer = viewer.id;
+      button.textContent = phrase('camera.disconnect-viewer');
+      button.addEventListener('click', () => {
+        session.disconnectViewer(viewer.id);
+        $('camera-stop').focus();
+      });
+      row.append(label, state, button);
+      $('camera-viewer-list').append(row);
+      if (focused?.action === 'disconnect' && focused.peer === viewer.id) button.focus();
+    }
+  },
+  onBandwidth(key) {
+    $('camera-bandwidth-status').textContent = key ? phrase(key) : '';
+    $('camera-bandwidth-status').classList.toggle('warn', key === 'camera.bandwidth-unsupported');
   },
   onStream(stream) {
     const previous = $('remote-video').srcObject;
@@ -507,7 +551,7 @@ async function startCamera() {
     hostCode = code;
     if ($('camera-discoverable').checked) $('camera-publication-status').textContent = phrase('discovery.not-published');
     renderDiscovery();
-    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked, requireApproval: $('camera-require-approval').checked });
+    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked, requireApproval: $('camera-require-approval').checked, videoBudget: Number($('camera-bandwidth').value) });
     if (current !== epoch) return;
     const link = viewerLink(location.href, code);
     $('camera-link').value = link;
@@ -589,6 +633,9 @@ function updateFullscreenControl() {
 
 $('camera-start').addEventListener('click', startCamera);
 $('camera-device').addEventListener('change', switchCamera);
+$('camera-bandwidth').addEventListener('change', () => {
+  if (session.role === 'camera') session.setVideoBudget(Number($('camera-bandwidth').value));
+});
 $('camera-require-approval').addEventListener('change', () => {
   showApprovalPolicy();
   session.setApprovalRequired($('camera-require-approval').checked);

@@ -7,7 +7,7 @@ to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
 viewer fragment so the URL no longer suggests a different camera.
 
-One browser opens a camera and accepts one viewer. Approval is on by default;
+One browser opens a camera and accepts up to eight viewers. Approval is on by default;
 turning it off accepts new requests through the same encrypted acknowledgement
 flow. Video and enabled audio are added only after that acknowledgement; the initial WebRTC offer has a control channel and no
 media. The viewer note, hello and approval travel that encrypted channel.
@@ -48,8 +48,8 @@ discovery requests use `tool=remote-camera`, keeping equal names in the two
 tools independent. Deploy the updated worker before relying on discovery;
 an older worker leaves discovery unavailable and direct links usable. Both
 camera tabs must reload after the namespace update. The protocol marker `remote-camera-v1` distinguishes the
-tool from text sharing. The source holds at most four pending peer connections
-and one approved viewer. Notes are bounded to 80 characters and rendered with
+tool from text sharing. The source holds at most four unfinished peer connections
+alongside up to eight accepted viewers. Each viewer is approved independently. Notes are bounded to 80 characters and rendered with
 `textContent`; signal queues and messages are bounded too.
 
 Capture defaults to `{video: true, audio: false}` so the browser chooses its camera.
@@ -58,8 +58,10 @@ The source may opt into microphone audio before starting. That choice requests
 permission requests on Stop; a late successful grant has every track closed.
 After permission, enumerateDevices exposes a selector when several video
 devices exist. Camera switching holds new approvals and video acknowledgements
-until the selected capture is ready, replaces the active sender track without
-renegotiating, and keeps the invitation, discovery lease and peer connection.
+until the selected capture is ready, replaces every active video sender track without
+renegotiating, and keeps the invitation, discovery lease and peer connections.
+Replacement waits for all senders; a failure rolls surviving senders back before
+the capture is adopted. A departing viewer does not cancel a switch for the others.
 A live microphone track is carried into each video replacement and rollback.
 Video-only acquisition and replacement cleanup leave that microphone running.
 The old video stays alive until adoption where hardware permits. Exclusive
@@ -69,8 +71,10 @@ streams. A failure with no usable camera ends the invitation.
 
 The approval switch applies to new requests. Waiting manual requests never
 inherit automatic acceptance, and an accepted viewer remains connected when
-the setting changes. One active slot is reserved synchronously before its
-acknowledgement; the four-pending cap and busy refusals remain in place.
+the setting changes. Each accepted slot is reserved synchronously before its
+acknowledgement; the separate four-pending cap and busy refusals remain in place.
+Viewer Disconnect and a host's Disconnect this viewer action close only that
+peer. Removing one viewer leaves the shared capture and other peers running.
 Source Stop, page hide and page close stop capture, peers and
 socket. Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
@@ -86,6 +90,31 @@ Camera access requires trusted HTTPS and user permission. Video uses native
 WebRTC encryption, with no recording feature. This provides a browser view,
 not an OS webcam for meeting apps. Both pages must remain open and the source
 visible. A viewer can independently capture their screen.
+
+## Multiple viewers and bandwidth
+
+The host chooses a shared video budget of 1, 2, 4, 6 or 10 Mbps, defaulting to
+6 Mbps. `src/bandwidth.js` divides it across accepted reservations, with a
+1.5 Mbps ceiling per video sender. The browser's congestion control can reduce
+the actual rate further. This is a video ceiling, not a measurement of total
+Wi-Fi capacity; microphone traffic and network overhead are additional.
+At 1 Mbps, four new viewers may be accepted; the higher choices allow eight.
+Lowering a budget does not remove existing viewers, but new admissions wait
+until the accepted count falls below its resulting limit.
+
+New senders start with a capped encoding after their own acceptance ACK.
+Existing senders are rebalanced before a new video starts. Sender parameter
+updates are serialized and stale peers are ignored. Unsupported bitrate limits
+leave native congestion control in place and produce an explicit host status;
+the selected shared ceiling is not promised on that browser. No connection
+speed test, STUN/TURN service or extra network request is introduced. The
+[WebRTC encoding parameters](https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters-maxbitrate)
+define that ceiling excluding transport overhead and permit lower rates.
+
+The host lists accepted viewers and can disconnect them independently. Test
+several native peers at once, separate ACK timing, per-sender caps, a budget
+change, one viewer leaving, introduction recovery and a camera switch across
+all viewers. One peer failure must not stop another accepted view.
 
 ## Audio and viewer alerts
 

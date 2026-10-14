@@ -47,6 +47,23 @@
       </details>
     </div>
     <p id="camera-audio-status" class="field-note" role="status" aria-live="polite"></p>
+    <div class="field camera-bandwidth-field">
+      <div class="camera-help-row">
+        <label for="camera-bandwidth">Shared video bandwidth</label>
+        <details id="camera-bandwidth-help" class="camera-help info-fold">
+          <summary aria-describedby="camera-bandwidth-note"><span class="visually-hidden">About sharing video bandwidth</span></summary>
+          <p id="camera-bandwidth-note" class="camera-help-note" role="tooltip">Choose a video limit that leaves room for other Wi-Fi traffic. Up to eight viewers share it; each connection can lower its quality when congested. The browser cannot measure your total Wi-Fi capacity. Audio and network overhead are additional. A 1 Mbps limit allows four new viewers; higher limits allow eight. Lowering the limit keeps current viewers connected.</p>
+        </details>
+      </div>
+      <select id="camera-bandwidth" aria-describedby="camera-bandwidth-note">
+        <option value="1">1 Mbps</option>
+        <option value="2">2 Mbps</option>
+        <option value="4">4 Mbps</option>
+        <option value="6" selected>6 Mbps</option>
+        <option value="10">10 Mbps</option>
+      </select>
+      <p id="camera-bandwidth-status" class="field-note" role="status" aria-live="polite"></p>
+    </div>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
       <button type="button" id="camera-stop" class="big danger" hidden>Stop camera and end the link</button>
@@ -75,8 +92,13 @@
     </div>
     <section id="camera-approval" aria-labelledby="approval-heading" hidden>
       <h3 id="approval-heading">Viewer requests</h3>
-      <p class="field-note">Recognise the person or device before approving. One viewer at a time receives video; everyone else is turned away.</p>
+      <p class="field-note">Recognise each person or device before approving. Every viewer needs their own acceptance before receiving video.</p>
       <div id="camera-requests" aria-live="polite"></div>
+    </section>
+    <section id="camera-viewers" aria-labelledby="camera-viewers-heading" hidden>
+      <h3 id="camera-viewers-heading">Connected viewers</h3>
+      <p id="camera-viewer-count" class="field-note" role="status" aria-live="polite"></p>
+      <div id="camera-viewer-list"></div>
     </section>
   </section>
 
@@ -170,9 +192,15 @@
     <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
     <span data-phrase="camera.open-waiting">Camera preview is on. A viewer can connect without asking you for approval.</span>
     <span data-phrase="camera.approval-required">Approve viewer requests on this device. Changes to this setting apply to new requests.</span>
-    <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while it is free. Changes apply to new requests; an existing viewer stays connected.</span>
+    <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while space is available. Changes apply to new requests; accepted viewers stay connected.</span>
     <span data-phrase="camera.approved">Viewer accepted. Waiting for the direct video connection.</span>
-    <span data-phrase="camera.streaming">One viewer is connected to your camera. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.streaming">Sharing live video with accepted viewers. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.viewer-count">Accepted viewers: {count}. New-viewer limit: {limit}.</span>
+    <span data-phrase="camera.viewer-preparing">Waiting for live video</span>
+    <span data-phrase="camera.viewer-watching">Watching</span>
+    <span data-phrase="camera.disconnect-viewer">Disconnect this viewer</span>
+    <span data-phrase="camera.bandwidth-applied">The video limit is shared across viewers. Each browser can lower quality further when needed.</span>
+    <span data-phrase="camera.bandwidth-unsupported">This browser could not apply the shared video limit. Its normal connection adaptation continues; use fewer viewers if Wi-Fi becomes congested.</span>
     <span data-phrase="camera.reconnecting">The camera remains on. Reconnecting the introduction service so new viewers can find it.</span>
     <span data-phrase="camera.reconnect-failed">Live sharing continues, but the introduction service is unavailable. Stop and start again before inviting another viewer.</span>
     <span data-phrase="camera.current-device">Current camera</span>
@@ -224,7 +252,7 @@
     <span data-phrase="connection.ended">The camera link ended. Ask the camera device to start again and send a new link.</span>
     <span data-phrase="connection.not-found">This camera link is no longer open. Check the code or ask the camera device for a new link.</span>
     <span data-phrase="connection.taken">That camera link name is already in use. Choose another name and start again.</span>
-    <span data-phrase="connection.busy">This camera already has a viewer or too many pending requests. Try again after the camera device is free.</span>
+    <span data-phrase="connection.busy">This camera has reached its viewer or pending-request limit. Try again after a viewer disconnects, or ask its owner to adjust the shared video bandwidth.</span>
     <span data-phrase="connection.server-failed">The introduction service could not stay connected. Check your internet connection, then start again.</span>
     <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions; no internet relay will be used.</span>
     <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and pair again.</span>

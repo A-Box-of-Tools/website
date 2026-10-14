@@ -16,7 +16,7 @@ css_parts = ["form", "notes"]
 js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
 lastmod = "2026-10-13"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
-description = "Watch a camera on your local network with direct encrypted video, optional audio, viewer approval, camera switching and motion or sound notifications."
+description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
 og_title = "Watch another device's camera"
 og_description = "A direct camera view between two browsers, with camera permission, optional viewer approval and camera switching on the source device."
 og_image_alt = "Remote Camera - watch a camera from another device"
@@ -31,15 +31,15 @@ csp_note = """
   WebRTC media is outside CSP's connect-src. The existing worker source is
   workers/rendezvous/worker.js; it keeps no media or room content."""
 pledge = """
-    Your camera video and enabled audio go directly to one accepted viewer over an
-    encrypted WebRTC connection. Our introduction service carries connection
+    Your camera video and enabled audio go directly to accepted viewers over
+    separate encrypted WebRTC connections. Our introduction service carries connection
     negotiation, never video, audio or the viewer's note. Audio is off by default;
     the source requests microphone access only when you enable it. There is no recording
     feature. Stop, hide or close the camera page
     and capture ends. Internet access is required for the introduction;
     pairing also reveals network addresses to the other browser. Viewer
     approval is on by default; turning it off lets anyone who knows your link
-    or finds your listed camera watch while it is free."""
+    or finds your listed camera watch while space is available."""
 live_hint = """
       Watch DevTools: one WebSocket lists camera names, and starting or
       connecting adds one for setup messages. Camera frames, enabled audio and the viewer's note travel the encrypted
@@ -51,7 +51,7 @@ read_first = """
       <code>workers/rendezvous/worker.js</code> in the same repository"""
 howto_heading = "How to watch another device's camera"
 card = "A phone or computer camera in another browser, with optional viewer approval, camera switching and direct encrypted video."
-pledge_line = "Camera video goes <strong>directly to one viewer</strong>. You choose whether approval is required. Internet introduces the browsers."
+pledge_line = "Camera video goes <strong>directly to accepted viewers</strong>. You choose whether approval is required. Internet introduces the browsers."
 md_note = "Camera video travels directly between connected browsers, with viewer approval on by default. Internet rendezvous carries setup metadata, never video or audio. Audio is off by default; optional viewer alerts analyze media locally. No recording feature."
 
 [csp]
@@ -84,8 +84,8 @@ body = """
       The first WebRTC connection carries only an encrypted control channel.
       Require my approval is on by default. Turning it off accepts new
       viewers automatically: anyone who knows the link or finds the listed
-      camera can watch while it is free. The camera track and enabled audio are added only after
-      the viewer acknowledges acceptance, and only one viewer receives it.
+      camera can watch while space is available. The camera track and enabled audio are added to each connection only after
+      that viewer acknowledges acceptance. Up to eight viewers can watch together.
       Changing the setting applies to new requests, not waiting requests or
       an already connected viewer. Video uses the browser's encrypted media transport
       directly between devices. It never passes through the rendezvous.
@@ -166,7 +166,7 @@ title = "Invite the viewing device."
 body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
 [[howto]]
 title = "Connect the viewer."
-body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
+body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve each request you recognise on the source. With it off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
 title = "Keep the source visible, then stop."
 body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel. Switching away from the source page also stops it."
@@ -185,10 +185,13 @@ q = "Why must the camera page use HTTPS?"
 a = "A browser requires a secure context and camera permission. Use the site's trusted HTTPS address. Ordinary HTTP on a local-network IP cannot request a camera; localhost is a development exception on the same computer."
 [[faq]]
 q = "Can anyone with the link watch?"
-a = "With Require my approval on, a link or code permits a request and network-address exchange; the owner must approve before video. Turn approval off to let anyone with the link or a listed camera name watch while the camera is free. The optional viewer note is not proof of identity, so approve only the person and request you expect."
+a = "With Require my approval on, a link or code permits a request and network-address exchange; the owner must approve each viewer before video. Turn approval off to let anyone with the link or a listed camera name watch while space is available. The optional viewer note is not proof of identity, so approve only the people and requests you expect."
 [[faq]]
 q = "Can several devices watch at once?"
-a = "One viewer at a time. Disconnect the current viewer before another can watch. Up to four peer connections may be pending; further requests are refused while busy."
+a = "Up to eight accepted viewers can watch together, with separate encrypted connections. Shared video bandwidth divides a chosen video ceiling between them; browsers can lower each connection's quality when congested. A 1 Mbps ceiling permits four new viewers and higher choices permit eight. Audio and network overhead are additional. The browser cannot measure total Wi-Fi capacity, and device performance can also limit how many views work well. Lower the ceiling or disconnect individual viewers if sharing slows down. Lowering the ceiling keeps existing viewers connected, with fewer new admissions until space is available."
+[[faq]]
+q = "Can the tool measure my Wi-Fi bandwidth?"
+a = "The browser does not expose the total capacity shared by your Wi-Fi devices. Choose a shared video ceiling that leaves room for other traffic. The tool divides that ceiling among viewers and WebRTC adapts each stream to its connection. If the browser cannot apply sender bitrate limits, the page reports that and its normal connection adaptation continues; the selected shared ceiling cannot be guaranteed there."
 [[faq]]
 q = "Why did sharing stop when I changed apps?"
 a = "Hiding or closing the source page deliberately stops capture and ends the link. Keep it visible and awake. Start again to create a new invitation after returning."
@@ -208,4 +211,4 @@ a = "Guest networks and client isolation can separate devices. Firewalls, blocke
 [schema]
 category = "MultimediaApplication"
 description = "Watch a device camera in another browser with optional viewer approval and camera switching over a direct encrypted WebRTC connection, with optional microphone audio and viewer motion or sound notifications, without recording."
-features = ["Camera video with optional microphone audio", "One viewer at a time with optional approval", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting the viewer", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]
+features = ["Camera video with optional microphone audio", "Up to eight viewers with individual approval and disconnect", "Shared video bandwidth and per-connection adaptation", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting viewers", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]

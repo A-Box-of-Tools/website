@@ -38,6 +38,11 @@
 #viewer-alert-status.warn, #viewer-audio-status.warn { color: var(--danger); }
 .camera-device-field { max-width: 32rem; margin-bottom: 0.75rem; }
 .camera-device-field select { width: 100%; }
+.camera-bandwidth-field { max-width: 32rem; margin-top: 0.75rem; }
+.camera-bandwidth-field select { width: 100%; }
+#camera-bandwidth-status.warn { color: var(--danger); }
+#camera-viewer-list .camera-request .field-note { flex: 0 1 auto; }
+#camera-viewer-list .danger { color: var(--danger); border-color: var(--danger); }
 .camera-discovery-note { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
 .camera-discovery-list { display: flex; gap: 0.6rem; flex-wrap: wrap; list-style: none; padding: 0; }
 .camera-discovery-list a { display: inline-block; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--radius); overflow-wrap: anywhere; }
