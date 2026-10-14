@@ -522,7 +522,7 @@ function activateOncall() {
     for (const [id, row] of next) {
       let labelLength = 6;
       while (labelLength < id.length && Array.from(next.keys()).some(other => other !== id && other.slice(0, labelLength) === id.slice(0, labelLength))) labelLength++;
-      const displayName = row.name.trim() || phrase('caller', { id: id.slice(0, labelLength) });
+      const displayName = row.name.trim() || phrase('participant-anonymous-name', { id: id.slice(0, labelLength) });
       const muted = localMute.has(id) ? localMute.get(id) : Boolean(row.muted);
       playbackMuted.set(id, muted);
       updateGain(id);
