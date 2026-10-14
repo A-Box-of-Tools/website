@@ -18,7 +18,7 @@ function activateOncall() {
   const element = id => document.getElementById(`vi-${id}`);
   const ui = Object.fromEntries([
     'tab-join', 'tab-host', 'join-panel', 'host-panel', 'status-text', 'status-dot',
-    'join-form', 'refresh', 'discovery-status', 'rooms', 'empty', 'sender-name',
+    'join-form', 'refresh', 'discovery-status', 'rooms', 'empty',
     'sender-password', 'join', 'sender', 'sender-room', 'sender-note', 'resume',
     'hold', 'toggle', 'leave', 'host-form', 'room-name', 'password-required',
     'host-password-field', 'host-password', 'saved-password', 'start', 'host-live',
@@ -94,6 +94,15 @@ function activateOncall() {
 
   const savedSenders = readStored(senderStorage);
   const senderRecords = savedSenders && typeof savedSenders === 'object' && !Array.isArray(savedSenders) ? savedSenders : {};
+  // Older pages saved caller names alongside the credentials needed for recovery.
+  let removedStoredNames = false;
+  for (const record of Object.values(senderRecords)) {
+    if (record && typeof record === 'object' && Object.hasOwn(record, 'name')) {
+      delete record.name;
+      removedStoredNames = true;
+    }
+  }
+  if (removedStoredNames) writeStored(senderStorage, senderRecords);
   const savedHost = readStored(hostStorage);
   let hostIdentity = savedHost && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
   if (hostIdentity) {
@@ -289,7 +298,7 @@ function activateOncall() {
   function rememberSenderTerminal(reason) {
     const code = senderIdentity?.code || selectedCode;
     if (code) {
-      senderRecords[code] = { blocked: true, reason, roomName: ui['sender-room'].textContent, name: senderIdentity?.name || ui['sender-name'].value.trim() };
+      senderRecords[code] = { blocked: true, reason, roomName: ui['sender-room'].textContent };
       writeStored(senderStorage, senderRecords);
     }
     senderIdentity = null;
@@ -393,8 +402,6 @@ function activateOncall() {
       radio.addEventListener('change', () => {
         selectedCode = room.code;
         ui['sender-password'].value = '';
-        const record = senderRecords[selectedCode];
-        if (!ui['sender-name'].value && typeof record?.name === 'string') ui['sender-name'].value = record.name;
       });
       ui.rooms.append(label);
     }
@@ -513,6 +520,9 @@ function activateOncall() {
       }
     }
     for (const [id, row] of next) {
+      let labelLength = 6;
+      while (labelLength < id.length && Array.from(next.keys()).some(other => other !== id && other.slice(0, labelLength) === id.slice(0, labelLength))) labelLength++;
+      const displayName = row.name.trim() || phrase('caller', { id: id.slice(0, labelLength) });
       const muted = localMute.has(id) ? localMute.get(id) : Boolean(row.muted);
       playbackMuted.set(id, muted);
       updateGain(id);
@@ -557,15 +567,15 @@ function activateOncall() {
           session?.kick(id);
         });
       }
-      node.name.textContent = row.name;
+      node.name.textContent = displayName;
       node.status.textContent = phrase(row.pendingRemoval ? 'participant-removing' : muted ? 'participant-muted' : row.talking ? 'participant-speaking' : row.connected ? 'participant-ready' : 'participant-waiting');
       node.item.dataset.speaking = String(Boolean(row.talking && !muted));
       node.mute.textContent = phrase(muted ? 'unmute-label' : 'mute-label');
-      node.mute.setAttribute('aria-label', phrase(muted ? 'participant-unmute' : 'participant-mute', { name: row.name }));
+      node.mute.setAttribute('aria-label', phrase(muted ? 'participant-unmute' : 'participant-mute', { name: displayName }));
       node.mute.setAttribute('aria-pressed', String(muted));
       node.mute.disabled = Boolean(row.pendingRemoval);
       node.remove.textContent = phrase('remove-label');
-      node.remove.setAttribute('aria-label', phrase('participant-remove', { name: row.name }));
+      node.remove.setAttribute('aria-label', phrase('participant-remove', { name: displayName }));
       node.remove.disabled = Boolean(row.pendingRemoval);
     }
     const count = Array.from(next.values()).filter(row => row.connected).length;
@@ -582,7 +592,6 @@ function activateOncall() {
       key: identity.key,
       roomName: role === 'host' ? identity.roomName : undefined,
       passwordProof: identity.passwordProof,
-      name: role === 'sender' ? identity.name : undefined,
       onState: (key, detail) => {
         if (generation === sessionGeneration) renderState(key, detail);
       },
@@ -722,7 +731,6 @@ function activateOncall() {
       renderState('room-required');
       return;
     }
-    if (!validateName(ui['sender-name'])) return;
     const room = currentRoom();
     const record = senderRecords[selectedCode];
     if (record?.blocked) {
@@ -753,12 +761,11 @@ function activateOncall() {
       const identity = resume && senderIdentity ? senderIdentity : {
         code: selectedCode,
         key: validKey(record?.key) ? record.key : makeSenderKey(),
-        name: ui['sender-name'].value.trim(),
         passwordProof: password ? await derivePasswordProof(selectedCode, password) : validKey(record?.passwordProof) ? record.passwordProof : null,
       };
       if (epoch !== operationEpoch || pageSuspended || document.hidden) return;
       senderIdentity = identity;
-      senderRecords[selectedCode] = { key: identity.key, name: identity.name, passwordProof: identity.passwordProof };
+      senderRecords[selectedCode] = { key: identity.key, passwordProof: identity.passwordProof };
       writeStored(senderStorage, senderRecords);
       ui['sender-password'].value = '';
       const current = createSession('sender', identity);
@@ -843,7 +850,7 @@ function activateOncall() {
   ui.refresh.addEventListener('click', () => discovery.refresh());
   ui['password-required'].addEventListener('change', updateHostPassword);
   ui['room-name'].addEventListener('input', updateHostPassword);
-  for (const input of [ui['room-name'], ui['sender-name'], ui['sender-password'], ui['host-password']]) input.addEventListener('input', () => input.setCustomValidity(''));
+  for (const input of [ui['room-name'], ui['sender-password'], ui['host-password']]) input.addEventListener('input', () => input.setCustomValidity(''));
   ui['host-form'].addEventListener('submit', event => {
     event.preventDefault();
     void startHost();
@@ -949,7 +956,6 @@ function activateOncall() {
 
   updateHostPassword();
   const selectedRecord = selectedCode && senderRecords[selectedCode];
-  if (typeof selectedRecord?.name === 'string') ui['sender-name'].value = selectedRecord.name;
   renderRooms();
   if (invitationCode && !validCode(invitationCode)) renderState('error-access');
   else if (selectedRecord?.blocked) {

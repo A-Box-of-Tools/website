@@ -1,6 +1,7 @@
 import { BroadcastSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
+import { watchDiscovery } from './shared/peer-discovery.js';
 
 activateChannel();
 const privacyToggle = document.getElementById('privacy-toggle');
@@ -19,7 +20,8 @@ function activateChannel() {
     'host', 'start', 'listener-count', 'transmit', 'hold', 'toggle',
     'microphone', 'microphone-note', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
-    'mute', 'leave', 'audio',
+    'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
+    'discovery-status', 'publication', 'setup', 'room-name', 'discover',
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
@@ -58,7 +60,7 @@ function activateChannel() {
 
   const cachedListener = readStored(listenerStorage);
   let listenerIdentity = hasInvitation ? { code: fragment.get('code'), key: fragment.get('listen'), muted: false, ended: false } : validIdentity(cachedListener) ? cachedListener : null;
-  const role = hasInvitation || listenerIdentity ? 'listener' : 'host';
+  let role = hasInvitation || listenerIdentity ? 'listener' : 'host';
   if (validIdentity(listenerIdentity)) {
     listenerIdentity.code = listenerIdentity.code.toLowerCase();
     if (hasInvitation && writeStored(listenerStorage, listenerIdentity)) {
@@ -91,11 +93,89 @@ function activateChannel() {
   let currentStream = null;
   let stateTalking = false;
   let pageSuspended = false;
+  let channels = [];
+  let lastPublication = null;
+  let discovery = openDiscovery();
+  if (credentials) {
+    if (typeof credentials.roomName === 'string') ui['room-name'].value = credentials.roomName;
+    // A channel created before discovery was offered keeps its private link.
+    ui.discover.checked = credentials.discover === true;
+  }
 
-  ui.role.textContent = phrase(role === 'host' ? 'host-role' : 'listener-role');
-  ui.host.hidden = role !== 'host';
-  ui.listener.hidden = role !== 'listener';
-  ui['host-intro'].hidden = role !== 'host';
+  function renderRole() {
+    ui.role.textContent = phrase(role === 'host' ? 'host-role' : 'listener-role');
+    ui.host.hidden = role !== 'host';
+    ui.listener.hidden = role !== 'listener';
+    ui['host-intro'].hidden = role !== 'host';
+    ui.nearby.hidden = role !== 'host' || hostActive || starting;
+  }
+  renderRole();
+
+  function renderChannels() {
+    ui.channels.replaceChildren();
+    const available = channels.filter(channel => channel.code !== credentials?.code);
+    ui.empty.hidden = available.length > 0;
+    for (const channel of available) {
+      const item = document.createElement('li');
+      const name = document.createElement('span');
+      name.textContent = channel.name;
+      const join = document.createElement('button');
+      join.type = 'button';
+      join.textContent = phrase('join-channel');
+      join.setAttribute('aria-label', phrase('join-channel-name', { name: channel.name }));
+      join.addEventListener('click', () => {
+        if (role !== 'host' || hostActive || starting || pageSuspended) return;
+        sessionGeneration++;
+        session?.stop({ notify: false, state: null });
+        session = null;
+        listenerIdentity = { code: channel.code, key: channel.listenKey, muted: false, ended: false };
+        if (!writeStored(listenerStorage, listenerIdentity)) {
+          const invitation = new URL(pageUrl.href);
+          invitation.hash = new URLSearchParams({ code: channel.code, listen: channel.listenKey }).toString();
+          try { history.replaceState(history.state, '', invitation.href); } catch {
+            // The current session can still listen when recovery storage is blocked.
+          }
+        }
+        listenerLeft = false;
+        listenerEnded = false;
+        listenerMuted = false;
+        playbackBlocked = false;
+        role = 'listener';
+        renderRole();
+        void startListener();
+      });
+      item.append(name, join);
+      ui.channels.append(item);
+    }
+  }
+
+  function openDiscovery() {
+    return watchDiscovery('wss://rendezvous.abox.tools/discover?tool=walkie-talkie', {
+      list: rows => { channels = rows; renderChannels(); },
+      status: status => { ui['discovery-status'].textContent = phrase(`discovery-${status}`); },
+      publication: status => {
+        ui.publication.hidden = status === null;
+        ui.publication.textContent = status === null ? '' : phrase(`publication-${status}`);
+      },
+    });
+  }
+
+  function unpublish() {
+    discovery.unpublish();
+    lastPublication = null;
+  }
+
+  function syncPublication(detail) {
+    const listing = detail.discovery;
+    if (role !== 'host' || !hostActive || !detail.signaling || !credentials?.discover
+        || listing?.tool !== 'walkie-talkie' || listing.code !== credentials.code) {
+      if (lastPublication !== null) unpublish();
+      return;
+    }
+    if (listing.lease !== lastPublication && discovery.publish(listing.code, listing.lease, { listenKey: credentials.listenKey })) {
+      lastPublication = listing.lease;
+    }
+  }
 
   const held = () => activePointer !== null || keyboardHeld;
 
@@ -103,6 +183,10 @@ function activateChannel() {
     const talking = hostActive && canTransmit && !microphoneMuted && (held() || latched);
     ui.start.hidden = hostActive;
     ui.start.disabled = starting;
+    ui.setup.hidden = hostActive;
+    ui['room-name'].disabled = starting;
+    ui.discover.disabled = starting;
+    renderRole();
     ui.transmit.hidden = !hostActive;
     ui.invite.hidden = !hostActive || !ui.link.value;
     ui.hold.disabled = !hostActive || !canTransmit || microphoneMuted;
@@ -163,6 +247,7 @@ function activateChannel() {
     ui['error-text'].textContent = errors.has(key) ? phrase(key) : '';
     updateHostControls();
     updateListenerControls();
+    syncPublication(detail);
   }
 
   function updateTransmission() {
@@ -205,6 +290,8 @@ function activateChannel() {
       code: identity.code,
       key: identity.key,
       listenKey: role === 'host' ? identity.listenKey : undefined,
+      roomName: role === 'host' ? identity.roomName : undefined,
+      discover: role === 'host' && identity.discover === true,
       onState: (key, detail) => {
         if (generation !== sessionGeneration) return;
         if (role === 'host' && key === 'error-microphone') {
@@ -259,15 +346,21 @@ function activateChannel() {
   }
 
   async function prepareCredentials() {
-    if (credentials && await channelCode(credentials.key) === credentials.code) return credentials;
-    const key = randomKey();
-    credentials = { code: await channelCode(key), key, listenKey: randomKey() };
+    if (!credentials || await channelCode(credentials.key) !== credentials.code) {
+      const key = randomKey();
+      credentials = { code: await channelCode(key), key, listenKey: randomKey() };
+    }
+    credentials.roomName = ui['room-name'].value.trim();
+    credentials.discover = ui.discover.checked;
     writeStored(hostStorage, credentials);
     return credentials;
   }
 
   async function startHost() {
     if (starting || hostActive || pageSuspended) return;
+    const name = ui['room-name'].value.trim();
+    ui['room-name'].setCustomValidity(name && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f]/.test(name) ? '' : phrase('name-invalid'));
+    if (!ui['room-name'].reportValidity()) return;
     if (!window.isSecureContext) {
       renderState('error-secure-context');
       return;
@@ -309,6 +402,7 @@ function activateChannel() {
     sessionGeneration++;
     session?.stop({ notify: false, state: null });
     session = null;
+    unpublish();
     starting = false;
     hostActive = false;
     listenerCount = 0;
@@ -331,6 +425,8 @@ function activateChannel() {
   }
 
   ui.start.addEventListener('click', () => void startHost());
+  ui['room-name'].addEventListener('input', () => ui['room-name'].setCustomValidity(''));
+  ui.refresh.addEventListener('click', () => discovery.refresh());
   ui.hold.addEventListener('pointerdown', event => {
     if (event.button !== 0 || !hostActive || !canTransmit || microphoneMuted || activePointer !== null) return;
     event.preventDefault();
@@ -392,6 +488,7 @@ function activateChannel() {
     session?.stop({ notify: true, state: null });
     session = null;
     credentials = null;
+    unpublish();
     removeStored(hostStorage);
     starting = false;
     hostActive = false;
@@ -437,7 +534,11 @@ function activateChannel() {
       // Leaving still stops this receiver when its address cannot be changed.
     }
     receiveStream(null);
+    listenerIdentity = null;
+    role = 'host';
     renderState('listener-left');
+    renderChannels();
+    discovery.refresh();
   });
   window.addEventListener('blur', () => {
     if (role === 'host') releaseTransmission();
@@ -454,9 +555,12 @@ function activateChannel() {
       session = null;
       receiveStream(null);
     }
+    discovery.close();
+    lastPublication = null;
   });
   window.addEventListener('pageshow', event => {
     pageSuspended = false;
+    if (event.persisted) discovery = openDiscovery();
     if (event.persisted && role === 'listener' && !listenerLeft && !listenerEnded) void startListener();
   });
 

@@ -7,8 +7,8 @@ another's audio and the host can silence or remove one without affecting the res
 
 The host opens a named pager, optionally protects it with a password, and listens
 without microphone permission. Participants find it in nearby discovery or open
-its invitation, enter a name and password when required, and Connect. Their microphone
-starts disabled until they hold Talk or enable the talking toggle. Hiding or
+its invitation, enter the password when required, and Connect without supplying a
+name. Their microphone starts disabled until they hold Talk or enable the talking toggle. Hiding or
 leaving a participant page releases capture. No account, installation, Python
 helper, recording, STUN server or audio relay is involved.
 
@@ -23,6 +23,11 @@ The public room code is SHA-256 of a random host capability. Host authorization
 proves ownership of that code without putting its secret in a request URL. A
 participant has a separate random capability retained in per-tab session storage;
 its hashed identity stays stable across reconnection and is not a verified person.
+The host labels an unnamed participant with a localized Caller label and a short
+prefix of that identity, extending the prefix when needed to distinguish callers.
+The page no longer retains caller names and removes names saved by older pages
+without discarding recovery credentials or session blocks. The worker still
+accepts older clients that send a display name, which the host can display.
 
 Optional passwords derive a 32-byte credential with PBKDF2 SHA-256, 120,000
 iterations, and the room-specific UTF-8 salt `voice-inbox:<code>`. Only the derived
@@ -66,8 +71,9 @@ moderation history on socket attachments without persistent storage. Creating a
 new identity can bypass a session block, so the page does not promise a permanent
 ban on a person. End creates a new room and clears the old moderation history.
 
-The service carries room and participant names, derived admission credentials,
-moderation and connection metadata, never audio. Cloudflare keeps seven-day
+The service carries room names, participant identifiers, derived admission
+credentials, moderation and connection metadata, never audio. Older clients may
+also send participant display names. Cloudflare keeps seven-day
 invocation metadata logs. The website's normal scripts run on the page and can
 read its address and browser storage. The tool page and Privacy page disclose
 these boundaries together.
@@ -78,6 +84,7 @@ Use a scoped build, then open the built page over HTTPS or loopback. A full clea
 build checks the catalogue and guide registration. CI owns the Python and
 JavaScript suites; do not run the full suites locally. Browser acceptance should
 exercise protected and open discovery, host receive-only behavior without capture,
-several synthetic sender streams, wrong-password refusal, individual mute and
+connecting without a caller name, several synthetic sender streams, distinct
+caller labels, wrong-password refusal, individual mute and
 removal, reconnect moderation, End/Leave and late microphone cleanup. Physical
 phones and Wi-Fi routes still need separate acceptance.

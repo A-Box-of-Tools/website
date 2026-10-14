@@ -13,7 +13,8 @@ const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
 
 const DEFAULT_TOOL = "share-text";
-const TOOLS = new Set([DEFAULT_TOOL, "remote-camera", "voice-oncall"]);
+const TOOLS = new Set([DEFAULT_TOOL, "remote-camera", "voice-oncall", "walkie-talkie"]);
+const LISTEN_KEY_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
 export function rendezvousTool(value) {
   return value == null ? DEFAULT_TOOL : TOOLS.has(value) ? value : null;
@@ -110,6 +111,15 @@ export const validPublication = (value) => value !== null && typeof value === "o
   && typeof value.code === "string" && CODE_PATTERN.test(value.code)
   && typeof value.lease === "string" && LEASE_PATTERN.test(value.lease);
 
+function validVoicePublication(value, tool) {
+  if (!/^[a-f0-9]{64}$/.test(value.code)) return false;
+  return tool !== "walkie-talkie" || Object.keys(value).length === 3
+    && typeof value.listenKey === "string" && LISTEN_KEY_PATTERN.test(value.listenKey);
+}
+
+const metadataTool = (tool) => tool === "voice-oncall" || tool === "walkie-talkie";
+const verificationKey = (who) => `${who.tool ?? DEFAULT_TOOL}:${who.publication.code}:${who.publication.lease}:${who.scope}:${who.publication.listenKey ?? ""}`;
+
 async function privateBody(request) {
   const text = await request.text();
   if (text.length > MAX_MESSAGE) return null;
@@ -174,7 +184,8 @@ export class Discovery {
       if (publication?.verified) codes.set(publication.code, publication);
     }
     const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true,
-      ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}) }));
+      ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}),
+      ...(tool === "walkie-talkie" ? { name: codes.get(code).name, listenKey: codes.get(code).listenKey } : {}) }));
     return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL ? {} : { tool }), list });
   }
 
@@ -194,21 +205,30 @@ export class Discovery {
 
   async verify(publication, scope, tool = DEFAULT_TOOL) {
     try {
-      const binding = tool === "voice-oncall" ? this.env.INBOXES : this.env.ROOMS;
-      const room = binding.get(binding.idFromName(tool === "voice-oncall" ? publication.code : roomName(publication.code, tool)));
+      const binding = tool === "voice-oncall" ? this.env.INBOXES
+        : tool === "walkie-talkie" ? this.env.BROADCASTS : this.env.ROOMS;
+      const room = binding.get(binding.idFromName(metadataTool(tool) ? publication.code : roomName(publication.code, tool)));
       const result = await room.fetch("https://room.internal/_discovery/check", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool }),
+        body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool,
+          ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}) }),
       });
-      if (tool !== "voice-oncall") return result.status === 204;
+      if (!metadataTool(tool)) return result.status === 204;
       if (result.status !== 200) return false;
       const text = await result.text();
       if (text.length > MAX_MESSAGE) return false;
       const metadata = JSON.parse(text);
       if (!metadata || typeof metadata !== "object" || Array.isArray(metadata) || Object.keys(metadata).length !== 2
           || typeof metadata.name !== "string" || metadata.name.length === 0 || metadata.name.length > 80
-          || /[\x00-\x1f\x7f-\x9f]/.test(metadata.name) || typeof metadata.locked !== "boolean") return false;
+          || !metadata.name.isWellFormed() || metadata.name.trim().length === 0
+          || /[\x00-\x1f\x7f-\x9f]/.test(metadata.name)) return false;
+      if (tool === "walkie-talkie") {
+        if (typeof metadata.listenKey !== "string" || !LISTEN_KEY_PATTERN.test(metadata.listenKey)
+            || metadata.listenKey !== publication.listenKey) return false;
+        return { name: metadata.name, listenKey: metadata.listenKey };
+      }
+      if (typeof metadata.locked !== "boolean") return false;
       return { name: metadata.name, locked: metadata.locked };
     } catch {
       return false;
@@ -221,19 +241,19 @@ export class Discovery {
     const checks = new Map();
     for (const { who } of entries) {
       const tool = who.tool ?? DEFAULT_TOOL;
-      const key = `${tool}:${who.publication.code}:${who.publication.lease}:${who.scope}`;
+      const key = verificationKey(who);
       if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool));
     }
     // Rechecking a manual refresh repairs a missed withdrawal without a
     // polling loop. Deduplicating leases bounds the binding calls to the list.
     await Promise.all(checks.values());
     for (const { ws, who } of entries) {
-      const key = `${who.tool ?? DEFAULT_TOOL}:${who.publication.code}:${who.publication.lease}:${who.scope}`;
+      const key = verificationKey(who);
       const valid = await checks.get(key);
       const current = ws.deserializeAttachment();
       if (current !== null && current.generation === who.generation
           && current.publication?.code === who.publication.code && current.publication.lease === who.publication.lease) {
-        if (valid && (who.tool ?? DEFAULT_TOOL) === "voice-oncall") {
+        if (valid && metadataTool(who.tool ?? DEFAULT_TOOL)) {
           ws.serializeAttachment({ ...current, publication: { ...current.publication, ...valid } });
         } else if (!valid) ws.serializeAttachment({ ...current, generation: current.generation + 1, publication: null });
       }
@@ -251,7 +271,8 @@ export class Discovery {
     const who = ws.deserializeAttachment();
     if (who === null || ws.readyState !== 1) return;
     if (publishing && parsed.publish !== null && !validPublication(parsed.publish)) return;
-    if (publishing && parsed.publish !== null && who.tool === "voice-oncall" && !/^[a-f0-9]{64}$/.test(parsed.publish.code)) return;
+    if (publishing && parsed.publish !== null && metadataTool(who.tool)
+        && !validVoicePublication(parsed.publish, who.tool)) return;
     if (who.updates >= MAX_UPDATES) { this.drop(ws); ws.close(4429, "too-many-updates"); return; }
     if (!publishing) {
       ws.serializeAttachment({ ...who, updates: who.updates + 1 });
@@ -260,6 +281,7 @@ export class Discovery {
     const generation = who.generation + 1;
     const publication = parsed.publish === null ? null : {
       code: parsed.publish.code, lease: parsed.publish.lease, verified: false,
+      ...(who.tool === "walkie-talkie" ? { listenKey: parsed.publish.listenKey } : {}),
     };
     // Attach before awaiting Room: a host withdrawal can then cancel this
     // pending check, rather than arriving just before a stale result publishes.
@@ -273,7 +295,7 @@ export class Discovery {
     const listed = JSON.parse(this.snapshot()).list;
     if (valid && listed.length >= MAX_SHARES && !listed.some((item) => item.code === publication.code)) valid = false;
     ws.serializeAttachment({ ...current, publication: valid ? { ...publication, verified: true,
-      ...((who.tool ?? DEFAULT_TOOL) === "voice-oncall" ? valid : {}) } : null });
+      ...(metadataTool(who.tool ?? DEFAULT_TOOL) ? valid : {}) } : null });
     this.broadcast();
   }
 

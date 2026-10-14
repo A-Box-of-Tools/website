@@ -72,8 +72,10 @@ export default {
       if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
       const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
       if (!knock.success) return new Response("too many connections from this address", { status: 429 });
+      const scope = await discoveryScope(request, "walkie-talkie");
       const headers = new Headers(request.headers);
       headers.delete(DISCOVERY_SCOPE_HEADER);
+      if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
       return env.BROADCASTS.get(env.BROADCASTS.idFromName(broadcast[1])).fetch(new Request(request, { headers }));
     }
     const inbox = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/);
@@ -93,7 +95,7 @@ export default {
     if (room || url.pathname === "/discover") {
       const tool = rendezvousTool(url.searchParams.get("tool"));
       if (tool === null) return new Response("unknown tool", { status: 400 });
-      if (room && tool === "voice-oncall") return new Response("not found", { status: 404 });
+      if (room && ["voice-oncall", "walkie-talkie"].includes(tool)) return new Response("not found", { status: 404 });
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
       }

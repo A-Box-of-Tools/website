@@ -1,8 +1,9 @@
 # Local Walkie-Talkie
 
 The website hosts one microphone and up to ten receive-only browsers. Nothing
-needs downloading or installing. Starting the host or opening a listener
-invitation connects to the existing rendezvous over WSS; microphone audio
+needs downloading or installing. Opening the page lists nearby channels over
+a discovery WebSocket; joining never requests microphone access. Starting the
+host or choosing a channel opens its own rendezvous connection; microphone audio
 travels over a separate direct WebRTC connection to each listener.
 
 The broadcast protocol is separate from text and camera rooms. Its room code
@@ -17,6 +18,16 @@ Both sides use iceServers: [] and the shared peer-network filters inline and
 trickled candidates to host candidates only. VPNs and operating-system routes
 can still affect their path; the policy does not prove a physical LAN boundary.
 Direct reachability is required and there is no relay fallback.
+
+Starting with Show this channel nearby selected publishes a bounded channel
+name and its listener capability to the trusted address-and-origin group.
+Discovery verifies the live host lease and listener-key hash through the
+Broadcast binding. The host authority key is never listed. Public IPv4 or
+IPv6 /64 grouping is a hint rather than proof of physical Wi-Fi membership.
+New channels offer discovery by default with an explicit checkbox; retained
+legacy channels remain link-only. Uncheck before starting for link-only use.
+End, hiding, disconnect and replacement withdraw the old listing; a restarted
+host publishes its new lease. Browsing creates no peer or microphone stream.
 
 The host key stays in per-tab session storage. Listener invitations carry a
 different key in the URL fragment; the page saves it per tab and removes the

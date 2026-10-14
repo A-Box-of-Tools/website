@@ -148,8 +148,9 @@ export class Inbox {
 
   async authenticate(ws, value, who) {
     const isHost = value.role === "host";
-    const name = cleanName(isHost ? value.roomName : value.name, isHost ? 80 : 64);
-    if (!fields(value, ["type", "role", "key", isHost ? "roomName" : "name", "passwordProof"])
+    const anonymous = value.role === "sender" && !Object.hasOwn(value, "name");
+    const name = anonymous ? "" : cleanName(isHost ? value.roomName : value.name, isHost ? 80 : 64);
+    if (!fields(value, ["type", "role", "key", ...(anonymous ? [] : [isHost ? "roomName" : "name"]), "passwordProof"])
         || value.type !== "auth" || !["host", "sender"].includes(value.role)
         || !validKey(value.key) || !proof(value.passwordProof) || name === null) {
       this.refuse(ws, 4400, "invalid"); return;

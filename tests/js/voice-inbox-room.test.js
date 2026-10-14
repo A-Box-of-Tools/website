@@ -5,6 +5,48 @@
  */
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
+
+test('unnamed callers retain password admission and session moderation across reconnection', async () => {
+  const s = await system(), host = await s.host(PASSWORD);
+  const connect = async (passwordProof = PASSWORD) => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'sender', key: key(0), passwordProof });
+    return ws;
+  };
+  const denied = await connect(WRONG);
+  assert.deepEqual(last(denied), { type: 'error', error: 'password' });
+  assert.equal(denied.closed.code, 4403);
+  assert.equal(host.messages.some(frame => frame.type === 'join'), false);
+  const first = await connect(), id = await broadcastCode(key(0));
+  assert.equal(state(first).id, id);
+  assert.equal(state(first).name, '');
+  assert.deepEqual(last(host), { type: 'join', id, generation: state(host).generation,
+    name: '', muted: false, talking: false });
+  await s.moderate(host, first, true);
+  const resumed = await connect();
+  assert.equal(state(resumed).id, id);
+  assert.equal(last(resumed).muted, true);
+  assert.equal(first.closed.code, 4409);
+  await s.kick(host, resumed);
+  const blocked = await connect();
+  assert.equal(last(blocked).type, 'kicked');
+  assert.equal(blocked.closed.code, 4403);
+});
+
+test('anonymous sender authentication does not relax pager names or extra-field validation', async () => {
+  const s = await system();
+  for (const frame of [
+    { type: 'auth', role: 'host', key: HOST_KEY, passwordProof: null },
+    { type: 'auth', role: 'host', key: HOST_KEY, roomName: '', passwordProof: null },
+    { type: 'auth', role: 'sender', key: key(0), passwordProof: null, extra: true },
+    { type: 'auth', role: 'sender', key: key(0), passwordProof: null, name: '' },
+  ]) {
+    const ws = await s.open();
+    await s.send(ws, frame);
+    assert.deepEqual(last(ws), { type: 'error', error: 'invalid' });
+    assert.equal(ws.closed.code, 4400);
+  }
+});
 import worker, { Discovery, Inbox } from '../../workers/rendezvous/worker.js';
 import { broadcastCode } from '../../workers/rendezvous/broadcast.js';
 import { validInboxSignal } from '../../workers/rendezvous/inbox.js';

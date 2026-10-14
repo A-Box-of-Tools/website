@@ -186,14 +186,16 @@
   margin-top: 0;
 }
 
-.wt-invite label {
+.wt-invite label,
+.wt-setup > label {
   display: block;
   margin-block: 1rem .4rem;
   font-size: .9rem;
   font-weight: 600;
 }
 
-.wt-invite input {
+.wt-invite input,
+.wt-setup input[type="text"] {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -204,6 +206,51 @@
   background: transparent;
   font: inherit;
   font-size: .9rem;
+}
+
+.wt-nearby {
+  margin-block: 1rem 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.wt-nearby h3 {
+  margin: 0;
+}
+
+.wt-channels {
+  list-style: none;
+  padding: 0;
+}
+
+.wt-channels li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: .5rem;
+}
+
+.wt-channels li span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.wt-channels button {
+  flex-shrink: 0;
+}
+
+.wt-setup > .wt-discover {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 44px;
+}
+
+.wt-discover input {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .wt-link-row button {
