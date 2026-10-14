@@ -313,6 +313,7 @@ el.copy.addEventListener('click', async () => {
   const copied = result;
   try {
     await navigator.clipboard.writeText(copied.text);
+    globalThis.aboxToolComplete?.();
     if (result !== copied) return;
     el.copy.textContent = phrase('copy.copied');
   } catch {

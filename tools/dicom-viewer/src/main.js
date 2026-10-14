@@ -142,11 +142,16 @@ let selection = 0;
 
 /* --------------------------------------------------------------- the files */
 
+const exampleFiles = new WeakSet();
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFiles(files); },
-  example: makeExample,
+  example: async () => {
+    const file = await makeExample();
+    exampleFiles.add(file);
+    return file;
+  },
 });
 
 async function openFiles(files) {
@@ -212,6 +217,7 @@ async function openFiles(files) {
   renderSeriesPicker();
   await chooseSeries(0);
   if (mine !== selection) return;
+  if (open && instances.some(instance => !exampleFiles.has(instance.file))) globalThis.aboxToolComplete?.();
   el.viewerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1233,6 +1239,7 @@ el.copyHeader.addEventListener('click', async () => {
   if (!open) return;
   try {
     await navigator.clipboard.writeText(report(open, open.decoder, phrase));
+    globalThis.aboxToolComplete?.();
     el.copyStatus.textContent = phrase('copied');
   } catch {
     el.copyStatus.textContent = phrase('copy.failed');
@@ -1245,6 +1252,7 @@ function save(blob, name) {
   link.href = url;
   link.download = name;
   link.click();
+  globalThis.aboxToolComplete?.();
   // Long enough for the download to have started, and revoked either way so a
   // page left open all afternoon does not accumulate them.
   setTimeout(() => URL.revokeObjectURL(url), 10_000);

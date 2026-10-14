@@ -423,6 +423,7 @@ async function runJob(kind) {
       el.resultAudio.src = url;
       el.download.href = url;
       el.download.download = name;
+      el.download.onclick = () => globalThis.aboxToolComplete?.();
       el.result.hidden = false;
       lastEdited = edited.channels;
       drawWaveform(el.outWave, lastEdited);

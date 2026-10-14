@@ -244,6 +244,7 @@ async function toClipboard(text) {
   el.copyFallback.textContent = '';
   try {
     await navigator.clipboard.writeText(text);
+    globalThis.aboxToolComplete?.();
     if (!current()) return;
     el.copyNote.textContent = el.result.dataset.copied;
     el.copyNote.className = 'copy-note good';
@@ -291,6 +292,7 @@ function downloadList() {
   link.href = url;
   link.download = mode === 'passphrase' ? 'passphrases.txt' : 'passwords.txt';
   link.click();
+  globalThis.aboxToolComplete?.();
   URL.revokeObjectURL(url);
 }
 

@@ -439,6 +439,7 @@ function showResult({ out, check, chosen, planned, bitrate, pass, seconds }) {
   downloadUrl = URL.createObjectURL(out.blob);
   el.download.href = downloadUrl;
   el.download.download = outName(file.name);
+  el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
   el.download.hidden = !check.ok;
 
   // The result played from memory, so "did it survive" is a thing that can

@@ -37,6 +37,7 @@ export function saveBlob(blob, name) {
   // synthetic click on a link that was not.
   document.body.append(link);
   link.click();
+  globalThis.aboxToolComplete?.();
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
@@ -52,6 +53,9 @@ export function saveBlob(blob, name) {
  */
 export function downloadLink(link, type = 'text/plain;charset=utf-8') {
   let url = null;
+  link.addEventListener('click', () => {
+    if (url && !link.hidden) globalThis.aboxToolComplete?.();
+  });
   const clear = () => {
     if (url) URL.revokeObjectURL(url);
     url = null;
