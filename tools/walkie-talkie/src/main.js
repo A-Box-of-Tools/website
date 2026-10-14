@@ -226,6 +226,7 @@ function activateChannel() {
   }
 
   function renderState(key, detail = {}) {
+    if (detail.directReady) globalThis.aboxToolComplete?.();
     if (typeof detail.listeners === 'number') listenerCount = detail.listeners;
     if (role === 'host' && ['host-ready', 'host-talking'].includes(key)) {
       hostWanted = true;

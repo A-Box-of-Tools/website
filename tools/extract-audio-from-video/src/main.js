@@ -209,6 +209,7 @@ async function write() {
     el.resultAudio.src = downloadUrl;
     el.download.href = downloadUrl;
     el.download.download = name;
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = phrase('out.info', {
       depth: phrase(bits === 32 ? 'depth.float' : 'depth.16'),
       size: humanBytes(blob.size), length: clock(input.duration),

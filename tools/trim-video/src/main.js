@@ -1474,6 +1474,7 @@ async function runExport() {
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = outputFilename(job.sourceName, result.extension);
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = [
       result.extension.toUpperCase(),
       sections > 1 ? phrase('result.parts', { n: sections }) : null,

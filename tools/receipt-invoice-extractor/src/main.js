@@ -716,6 +716,7 @@ $('clear-all').addEventListener('click', () => {
 $('copy-report').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText($('report-text').value);
+    globalThis.aboxToolComplete?.();
     $('export-status').textContent = phrase('copied');
   } catch {
     $('report-text').focus(); $('report-text').select();
@@ -735,7 +736,11 @@ $('email-report').addEventListener('click', async () => {
   // transient activation. An async encode here would lose it on some devices.
   setExporting(true);
   let status = '';
-  try { await navigator.share(payload); status = phrase('shared'); }
+  try {
+    await navigator.share(payload);
+    globalThis.aboxToolComplete?.();
+    status = phrase('shared');
+  }
   catch (error) { if (error.name !== 'AbortError') status = phrase('shareFailed'); }
   finally { setExporting(false); $('export-status').textContent = status; }
 });

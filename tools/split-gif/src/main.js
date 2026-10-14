@@ -565,6 +565,7 @@ function save(blob, name) {
   link.href = url;
   link.download = name;
   link.click();
+  globalThis.aboxToolComplete?.();
   // Revoked on the next turn: revoking immediately races the download in
   // Firefox, which has not necessarily started reading the blob yet.
   setTimeout(() => URL.revokeObjectURL(url), 60000);

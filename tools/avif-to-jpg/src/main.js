@@ -454,6 +454,7 @@ function resultRow(one) {
   download.textContent = phrase('result.download');
   download.href = urlFor(one.blob);
   download.download = one.name;
+  download.addEventListener('click', () => globalThis.aboxToolComplete?.());
   actions.append(download);
 
   li.append(text, actions);

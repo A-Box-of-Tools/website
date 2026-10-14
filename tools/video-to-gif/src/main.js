@@ -597,6 +597,7 @@ async function runExport() {
     el.resultImage.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = name;
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     const written = phrase(result.written === 1 ? 'n.frame.one' : 'n.frame.many',
       { n: result.written });
     el.resultInfo.textContent = [

@@ -421,6 +421,7 @@ el.copyPng.addEventListener('click', async () => {
     // An older conversion must not overwrite a newer copy in the clipboard.
     if (!owns()) return;
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    globalThis.aboxToolComplete?.();
     if (owns()) el.downloadNote.textContent = phrase('save.copied');
   } catch {
     if (owns()) el.downloadNote.textContent = phrase('save.noclipboard');

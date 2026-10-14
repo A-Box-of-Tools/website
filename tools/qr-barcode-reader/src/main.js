@@ -284,6 +284,7 @@ function render(found) {
   copy.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(found.text);
+      globalThis.aboxToolComplete?.();
       copy.textContent = phrase('value.copied');
       setTimeout(() => { copy.textContent = original; }, 1600);
     } catch {
@@ -305,7 +306,8 @@ function render(found) {
 }
 
 /** Put a result on the page, unless it is one that is already there. */
-function report(found) {
+function report(found, measure = true) {
+  if (measure) globalThis.aboxToolComplete?.();
   if (shown.some((seen) => seen === `${found.symbology}:${found.text}`)) return false;
   shown.unshift(`${found.symbology}:${found.text}`);
   shown.length = Math.min(shown.length, MOST_KEPT);
@@ -372,11 +374,16 @@ function showPicture(file, thumbnail, found) {
 
 /* --------------------------------------------------------------- the files */
 
+const exampleFiles = new WeakSet();
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { void readFiles(files); },
-  example: makeExample,
+  example: async () => {
+    const file = await makeExample();
+    exampleFiles.add(file);
+    return file;
+  },
 });
 
 async function readFiles(files) {
@@ -396,7 +403,7 @@ async function readFiles(files) {
         if (found) {
           // A duplicate was still read successfully, even when it adds no row.
           any = true;
-          report(found);
+          report(found, !exampleFiles.has(file));
         }
         showPicture(file, thumbnail, found);
       } catch {

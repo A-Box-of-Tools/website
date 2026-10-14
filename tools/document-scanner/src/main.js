@@ -844,6 +844,7 @@ function show(blob, name, facts) {
 
   el.download.href = resultUrl;
   el.download.download = name;
+  el.download.onclick = () => globalThis.aboxToolComplete?.();
   el.resultFacts.replaceChildren(...facts.map((line) => {
     const item = document.createElement('li');
     item.textContent = line;

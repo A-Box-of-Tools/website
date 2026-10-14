@@ -714,6 +714,7 @@ function show(result, check, plan, input) {
   downloadUrl = URL.createObjectURL(new Blob([result.bytes], { type: 'application/pdf' }));
   el.download.href = downloadUrl;
   el.download.download = outName(input.file.name);
+  el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
   el.result.hidden = false;
 }
 

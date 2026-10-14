@@ -1062,6 +1062,7 @@ function resultRow(result) {
   link.className = 'primary as-button';
   link.href = result.url;
   link.download = result.outName;
+  link.addEventListener('click', () => globalThis.aboxToolComplete?.());
   link.textContent = phrase('result.download');
   actions.appendChild(link);
 
@@ -1145,6 +1146,7 @@ function paintViewer() {
 
   el.viewerDownload.href = result.url;
   el.viewerDownload.download = result.outName;
+  el.viewerDownload.onclick = () => globalThis.aboxToolComplete?.();
 
   el.viewerFacts.replaceChildren();
   for (const [term, value] of viewerFacts(result)) {

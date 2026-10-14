@@ -414,6 +414,7 @@ async function playVideo() {
     await $('remote-video').play();
     if ($('remote-video').srcObject !== stream || stream === null) return;
     $('viewer-play').hidden = true;
+    globalThis.aboxToolComplete?.();
     showStatus('viewer.receiving', 'viewer');
   } catch {
     if ($('remote-video').srcObject !== stream || stream === null) return;

@@ -81,11 +81,16 @@ let shown = 0;
 
 /* --------------------------------------------------------------- the file */
 
+const exampleFiles = new WeakSet();
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFile(files[0]); },
-  example: makeExample,
+  example: async () => {
+    const file = await makeExample();
+    exampleFiles.add(file);
+    return file;
+  },
 });
 
 let sourceVersion = 0;
@@ -155,6 +160,7 @@ async function openFile(file) {
     });
     if (!ownsRead(job)) { releaseDrawn(decoded.drawn); return; }
     show(job, decoded);
+    if (!exampleFiles.has(file) && !job.controller.signal.aborted) globalThis.aboxToolComplete?.();
   } catch (error) {
     if (!ownsRead(job)) return;
     const why = messageFor(error);
@@ -586,6 +592,7 @@ el.downloadReport.addEventListener('click', () => {
   link.href = url;
   link.download = `${source.name.replace(/\.gif$/i, '')}-analysis.txt`;
   link.click();
+  globalThis.aboxToolComplete?.();
   // Long enough for the download to have started, and revoked either way so a
   // page left open all afternoon does not accumulate them.
   reportUrls.add(url);
@@ -598,6 +605,7 @@ el.copyReport.addEventListener('click', async () => {
   const text = report(source.gif, source.view, phrase);
   try {
     await navigator.clipboard.writeText(text);
+    globalThis.aboxToolComplete?.();
     if (current === source) el.copyStatus.textContent = phrase('copy.done');
   } catch {
     if (current === source) el.copyStatus.textContent = phrase('copy.refused');

@@ -559,6 +559,7 @@ function resultRow(result) {
   link.className = 'primary as-button';
   link.href = url;
   link.download = result.outName;
+  link.addEventListener('click', () => globalThis.aboxToolComplete?.());
   link.textContent = phrase('row.download');
   actions.appendChild(link);
 

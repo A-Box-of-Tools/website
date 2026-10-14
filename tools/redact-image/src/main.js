@@ -605,6 +605,7 @@ function showResult(blob, format, { picture, regions }) {
     { width: picture.width, height: picture.height });
   el.download.href = resultUrl;
   el.download.download = name;
+  el.download.onclick = () => globalThis.aboxToolComplete?.();
 
   const facts = [
     phrase('result.file', {

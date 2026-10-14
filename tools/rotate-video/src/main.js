@@ -450,6 +450,7 @@ function showResult({ out, check, plan, job, seconds }) {
   downloadUrl = URL.createObjectURL(out.blob);
   el.download.href = downloadUrl;
   el.download.download = outName(file.name);
+  el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
   el.download.hidden = !check.ok;
 
   // The result played from memory: a turn is the one change a person can

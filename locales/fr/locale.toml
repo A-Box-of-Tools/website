@@ -162,7 +162,7 @@ body = "Votre navigateur ouvre, lit et modifie les fichiers choisis. Aucun envoi
 
 [[hub.guarantees]]
 title = "Vos fichiers ne sont pas transmis aux statistiques"
-body = "Les visites et les réponses fixes aux avis facultatifs sont comptées. Ni votre fichier, ni son nom, sa taille ou son contenu ne leur sont transmis. Les imports d’images et les demandes de taux de change des reçus expliquent leurs données près des commandes."
+body = "Les visites, la première utilisation réussie d’un outil par chargement de page et les réponses fixes aux avis facultatifs sont comptées. Aucun fichier, nom de fichier, contenu ou détail du résultat n’accompagne ces comptes. Les imports d’images et les demandes de taux de change des reçus expliquent leurs données près des commandes."
 
 [[hub.guarantees]]
 title = "Le traitement local fonctionne hors ligne"
