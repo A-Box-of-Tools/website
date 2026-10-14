@@ -4,6 +4,16 @@ import { cleanShares } from '../../shared/js/peer-discovery.js';
 
 const code = 'a'.repeat(64);
 
+test('walkie discovery keeps only a bounded channel name and listener capability', () => {
+  const valid = { code, local: true, name: 'Classroom', listenKey: 'B'.repeat(43) };
+  assert.deepEqual(cleanShares([
+    { ...valid, name: '', key: 'private' }, { ...valid, listenKey: 'short' },
+    { ...valid, name: 'x'.repeat(81) }, { ...valid, name: '\u0000' },
+    { ...valid, local: false }, { ...valid, code: 'room' },
+    { ...valid, key: 'private', lease: 'private', locked: false }, valid,
+  ], 'walkie-talkie'), [valid]);
+});
+
 test('voice inbox discovery preserves only bounded verified room metadata', () => {
   assert.deepEqual(cleanShares([{ code, local: true, name: '  Classroom  ', locked: true,
     passwordProof: 'private', key: 'private' }], 'voice-oncall'), [

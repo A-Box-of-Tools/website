@@ -1,6 +1,6 @@
 <main id="main">
 <div class="vi-tool">
-  <p class="vi-intro">Create a Voice Oncall pager for people on the same local network. They connect with their name and speak to the host. The host listens, without using a microphone.</p>
+  <p class="vi-intro">Create a Voice Oncall pager for people on the same local network. They connect and speak to the host without entering a name. The host listens, without using a microphone.</p>
   <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall">
     <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
     <button type="button" role="tab" id="vi-tab-host" aria-controls="vi-host-panel" aria-selected="false" tabindex="-1">Host a pager</button>
@@ -19,16 +19,8 @@
       <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby pagers…</p>
       <div class="vi-rooms" id="vi-rooms"></div>
       <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
-      <div class="vi-form-grid">
-        <div>
-          <label for="vi-sender-name">Your display name</label>
-          <input id="vi-sender-name" type="text" maxlength="64" autocomplete="nickname" required>
-        </div>
-        <div>
-          <label for="vi-sender-password">Pager password, if required</label>
-          <input id="vi-sender-password" type="password" autocomplete="current-password">
-        </div>
-      </div>
+      <label for="vi-sender-password">Pager password, if required</label>
+      <input id="vi-sender-password" type="password" autocomplete="current-password">
       <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
       <button type="submit" id="vi-join">Connect</button>
     </form>
@@ -132,7 +124,7 @@
   <span data-phrase="error-secure-context">Open this page over HTTPS to use your microphone.</span>
   <span data-phrase="error-moderation-full">That action could not be remembered because this pager's moderation history is full. Your local audio setting still applies. End this pager and start a new one to clear that history.</span>
   <span data-phrase="error-removal-full">The removal was refused because this pager's moderation history is full. This person remains connected and is muted for you. End this pager and start a new one to clear that history.</span>
-  <span data-phrase="name-invalid">Enter a name without control characters.</span>
+  <span data-phrase="name-invalid">Enter a pager name without control characters.</span>
   <span data-phrase="room-required">Choose a pager or open a pager link first.</span>
   <span data-phrase="password-required">Enter this pager's password.</span>
   <span data-phrase="invited-room">Invited pager</span>
@@ -149,6 +141,7 @@
   <span data-phrase="participant-muted">Muted by you</span>
   <span data-phrase="participant-waiting">Connecting</span>
   <span data-phrase="participant-removing">Removal pending</span>
+  <span data-phrase="participant-anonymous-name">Caller {id}</span>
   <span data-phrase="participant-mute">Mute {name}</span>
   <span data-phrase="participant-unmute">Unmute {name}</span>
   <span data-phrase="participant-remove">Remove {name}</span>

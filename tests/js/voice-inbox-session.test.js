@@ -1,5 +1,32 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+
+test('unnamed sender connects with muted capture and remains subject to host moderation', async t => {
+  const h = harness(t, { role: 'sender', passwordProof: PROOF, name: null });
+  const ws = await h.begin();
+  assert.deepEqual(ws.sent[0], { type: 'auth', role: 'sender', key: SENDER_KEY, passwordProof: PROOF });
+  assert.equal(h.captures(), 1);
+  assert.equal(h.mic.track.enabled, false);
+  ws.message(offer());
+  await flush();
+  const peer = h.peers[0];
+  assert.equal(peer.transceivers[0].direction, 'sendonly');
+  peer.connect();
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, true);
+  ws.message({ type: 'moderated', generation: GEN_A, muted: true });
+  await flush();
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, false);
+  ws.message({ type: 'moderated', generation: GEN_A, muted: false });
+  await flush();
+  assert.equal(h.mic.track.enabled, false);
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, true);
+  h.session.stop();
+  assert.equal(peer.closed, true);
+  assert.equal(h.mic.track.stops, 1);
+});
 import { webcrypto } from 'node:crypto';
 import { InboxSession } from '../../shared/js/voice-session.js';
 
@@ -92,7 +119,7 @@ function microphone() {
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession } = {}) {
+function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession, name = 'Alice' } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -163,7 +190,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
   }
   const session = new InboxSession({
     role, code: CODE, key: role === 'host' ? KEY : SENDER_KEY,
-    roomName: 'Support desk', name: 'Alice', passwordProof,
+    roomName: 'Support desk', passwordProof, ...(name === null ? {} : { name }),
     endpoint: 'ws://127.0.0.1:8794', Socket, Peer, clock, audioSession,
     mediaDevices: mediaDevices || { async getUserMedia(options) {
       captures++;

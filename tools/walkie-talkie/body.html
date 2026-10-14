@@ -4,25 +4,48 @@
     <h2 id="wt-channel-title">One voice, nearby listeners</h2>
     <span class="wt-role" id="wt-role">Host</span>
   </div>
-  <p class="wt-intro" id="wt-host-intro">Start a channel, then share its link with phones and computers on the same Wi-Fi or local network. One host speaks; everyone else listens.</p>
+  <p class="wt-intro" id="wt-host-intro">Join a nearby channel or start one for phones and computers on your local network. One host speaks; everyone else listens.</p>
+  <section id="wt-nearby" class="wt-nearby" aria-labelledby="wt-nearby-title">
+    <div class="wt-host-summary">
+      <h3 id="wt-nearby-title">Nearby channels</h3>
+      <button type="button" class="wt-secondary" id="wt-refresh">Refresh</button>
+    </div>
+    <p class="wt-note" id="wt-discovery-status" aria-live="polite">Looking for nearby channels…</p>
+    <ul id="wt-channels" class="wt-channels"></ul>
+    <p class="wt-note" id="wt-empty">No channels are listed yet. Ask the host for a listener link, or start a channel below.</p>
+    <p class="wt-note">Choosing a channel joins as a listener and never requests your microphone. Nearby channels are grouped by internet address; this is not a Wi-Fi scan.</p>
+  </section>
   <div class="wt-status" aria-live="polite" aria-atomic="true">
     <span class="wt-status-dot" id="wt-status-dot" aria-hidden="true"></span>
-    <p id="wt-status-text">Start a channel, then invite your listeners.</p>
+    <p id="wt-status-text">Choose a nearby channel, or start your own.</p>
   </div>
   <div class="wt-error" id="wt-error" hidden role="alert">
     <p id="wt-error-text"></p>
   </div>
 
   <div id="wt-host">
+    <div id="wt-setup" class="wt-setup">
+      <label for="wt-room-name">Channel name</label>
+      <input id="wt-room-name" type="text" maxlength="80" value="Voice channel" autocomplete="off" required>
+      <label class="wt-discover"><input id="wt-discover" type="checkbox" checked> Show this channel nearby</label>
+      <p class="wt-note">When selected, starting lists the channel for nearby listeners. Anyone who finds it can join and listen. Turn this off to invite listeners only by link or QR code.</p>
+    </div>
     <div class="wt-host-summary">
       <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
       <button type="button" id="wt-start">Start channel</button>
     </div>
+    <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
     <div id="wt-transmit" hidden>
       <button class="wt-talk" type="button" id="wt-hold" aria-pressed="false" aria-describedby="wt-talk-help">Hold to talk</button>
       <p class="wt-note wt-talk-help" id="wt-talk-help">Hold this button or the space bar to speak. Release to listen. For hands-free control, use Start talking below.</p>
-      <div class="wt-host-actions">
+      <div class="wt-hands-free" id="wt-hands-free">
         <button type="button" id="wt-toggle" aria-pressed="false">Start talking</button>
+        <div class="wt-live-banner" id="wt-live-banner" hidden>
+          <strong>Microphone on</strong>
+          <p>Hands-free talking is on. Choose Stop talking when you have finished.</p>
+        </div>
+      </div>
+      <div class="wt-host-actions">
         <button type="button" id="wt-microphone" aria-pressed="false">Mute microphone</button>
         <button type="button" class="wt-secondary" id="wt-end">End broadcast</button>
       </div>
@@ -45,7 +68,7 @@
         <p class="wt-note" id="wt-qr-error" hidden>The QR code is unavailable. Use the listener link instead.</p>
       </div>
     </section>
-    <p class="wt-note">Keep the host tab visible. Hiding it pauses the microphone; return and choose Start channel to resume with the same link. End broadcast closes this channel; the next start creates a new invitation.</p>
+    <p class="wt-note">Locking the screen or hiding this tab pauses the microphone. Return to reconnect the same channel with talking off. If the browser needs a tap, choose Resume channel. End broadcast closes this channel; the next start creates a new invitation.</p>
   </div>
 
   <div id="wt-listener" hidden>
@@ -63,6 +86,7 @@
 
   <details class="wt-details">
     <summary>How devices connect</summary>
+    <p>Opening this page asks the pairing service for live channels grouped by public IPv4 address or IPv6 subnet and website origin. Shared gateways can include strangers, and VPNs can hide devices that are physically nearby. Starting with Show this channel nearby selected shares its name and listener invitation with that group. Hiding or ending the host removes its listing.</p>
     <p>An internet pairing service introduces the browsers using connection metadata. Live voice is encrypted and travels directly between them. There is no audio relay or recording.</p>
     <p>Use a trusted local network where devices can reach one another. Guest Wi-Fi, device isolation, and some VPNs or firewalls may prevent a connection. This tool uses no public STUN or TURN servers.</p>
     <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
@@ -73,12 +97,25 @@
 <div id="phrases" hidden>
   <span data-phrase="host-role">Host</span>
   <span data-phrase="listener-role">Receiver</span>
-  <span data-phrase="host-idle">Start a channel, then invite your listeners.</span>
+  <span data-phrase="host-idle">Choose a nearby channel, or start your own.</span>
+  <span data-phrase="join-channel">Join</span>
+  <span data-phrase="join-channel-name">Join {name}</span>
+  <span data-phrase="name-invalid">Enter a channel name of up to 80 characters without control characters.</span>
+  <span data-phrase="discovery-connecting">Looking for nearby channels…</span>
+  <span data-phrase="discovery-ready">Nearby channels update automatically.</span>
+  <span data-phrase="discovery-unavailable">Nearby channels cannot be listed right now. You can still use a listener link.</span>
+  <span data-phrase="publication-publishing">Listing your channel nearby…</span>
+  <span data-phrase="publication-published">Your channel is listed nearby.</span>
+  <span data-phrase="publication-not-published">Your channel is not listed nearby right now. Share its listener link instead.</span>
   <span data-phrase="host-starting">Starting the channel and checking your microphone…</span>
   <span data-phrase="host-ready">Channel open. Hold to talk when you are ready.</span>
   <span data-phrase="host-talking">You are broadcasting.</span>
   <span data-phrase="host-reconnecting">Pairing connection interrupted. Reconnecting…</span>
-  <span data-phrase="host-hidden">The microphone paused while this tab was hidden. Start the channel to resume.</span>
+  <span data-phrase="host-hidden">The microphone paused while this tab was hidden. Your channel will reconnect when you return, with the microphone off until you talk.</span>
+  <span data-phrase="host-resuming">Reconnecting your channel. Your microphone will stay off until you talk…</span>
+  <span data-phrase="host-resume-needed">Channel paused. Choose Resume channel to reconnect. Your microphone will stay off until you talk.</span>
+  <span data-phrase="start-channel">Start channel</span>
+  <span data-phrase="resume-channel">Resume channel</span>
   <span data-phrase="config-connecting">Connecting to the pairing service…</span>
   <span data-phrase="listener-connecting">Joining the channel…</span>
   <span data-phrase="listener-listening">Connected. Waiting for the host to speak.</span>

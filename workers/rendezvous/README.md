@@ -20,6 +20,9 @@ and go, their IP addresses, and negotiation metadata. The voice object also
 validates anonymous capabilities and handles talking status. Voice Oncall also
 carries room and participant names, password-derived admission credentials,
 and individual moderation, never microphone audio.
+An explicitly discoverable Walkie-Talkie broadcast adds its room name and
+listener capability to the nearby directory. That capability admits listeners;
+the separate host capability never enters the directory.
 What it cannot see: shared text or files, camera frames, or voice. Those
 travel the encrypted peer connection. Text/camera admission decisions,
 including the knock on a private share, also stay on that peer channel.
@@ -61,9 +64,8 @@ because nearly every feature the tool has gained since the first version has
 been page-side. The protocol carries introductions, the relay credential
 below and the local discovery directory.
 
-Walkie-Talkie uses the same origin check and address connection limit, with neither
-discovery nor relay credentials. Voice Oncall adds the existing nearby directory
-under a separate namespace. The voice signaling services never carry audio,
+Both voice tools use the same origin check and address connection limit, with
+nearby discovery under separate namespaces and no relay credentials. The voice signaling services never carry audio,
 and the page does not configure STUN or TURN. Host-only ICE candidates can
 include globally routable interface addresses, especially IPv6: a candidate
 type describes how an address was obtained, not a physical LAN boundary.
@@ -89,6 +91,11 @@ an existing text or camera room. The usual manual deploy applies the new
 binding and class. There are no new secrets, relay keys, or storage records to
 configure. An older worker has no `/broadcast/` route, so the page cannot pair
 until that deployment has happened.
+
+Walkie-Talkie nearby listing also requires this worker update before its static
+page, using the existing `BROADCASTS` and `DISCOVERY` bindings without a new
+migration. Older host authentication frames retain their exact protocol and
+remain link-only; they cannot accidentally expose a listener invitation.
 
 ### The Voice Oncall migration
 
@@ -138,7 +145,10 @@ connection or override admission.
 Text/camera directory entries contain only codes and `local: true`, never text,
 file names, file sizes or file bytes. Voice Oncall entries additionally contain
 a bounded room name and password-required flag, verified against the live host's
-lease. Directory state is held in WebSocket attachments while
+lease. Walkie-Talkie entries contain a bounded room name and listener capability,
+verified against the live host's listener hash and current discovery lease.
+Publishing that capability deliberately allows browsers in the nearby group to
+listen without receiving a separate invitation. Directory state is held in WebSocket attachments while
 the sockets are open, with no directory records written to Durable Object
 storage. Cloudflare's seven-day connection logging is unchanged; leases are
 message payloads and never put in URLs or logged by the worker.
@@ -203,7 +213,8 @@ pairs that could not connect directly.
 - The start page opens `/discover` with a WebSocket upgrade, scoped by the
   worker as described above. A directory group permits 64 observer sockets
   and 32 listed share codes. Snapshots contain `{code, local: true}` entries
-  and no addresses or content metadata.
+  and no addresses. Voice namespaces additionally carry the verified room
+  metadata described below.
 - A local host that wants listing opens
   `/ws/<code>?role=host&local=1&discover=1`. Its room issues a random lease
   in `{type: "host-ready", discovery: {code, lease}}`. Ordinary hosts keep
@@ -239,11 +250,20 @@ the listener capability in the page URL fragment. Request URLs carry only
 - The new route uses the existing allowed origins and thirty-connections-per-
   address-per-minute limit. It addresses only `BROADCASTS`, never `ROOMS` or
   `DISCOVERY`. A refused upgrade still uses the ordinary 403, 426, or 429 gates.
-- The first frame is `{type: "auth", role: "host", key, listenKey}` or
+- The legacy first frame is `{type: "auth", role: "host", key, listenKey}` or
   `{type: "auth", role: "listener", key}`. Host authority requires the digest
   of `key` to equal the path's code. Socket attachments retain hashes, roles,
   random listener ids, generations, connection ids, and bounded bookkeeping;
   they retain no raw capabilities, SDP, candidates, or audio.
+- A host explicitly offering nearby listening instead sends the exact frame
+  `{type: "auth", role: "host", key, listenKey, roomName, discover: true}`.
+  Its capabilities must differ; its trimmed room name must contain 1–80
+  characters, with control characters and malformed Unicode rejected. Only
+  this frame opts into discovery. The Worker derives the network scope and
+  strips any caller-supplied scope header before forwarding the connection.
+  Unsupported discovery scopes still permit ordinary invitation-based use.
+  A discoverable host's attachment additionally retains its trusted name,
+  scope and random lease, never the raw listener capability.
 - A listener arriving before the first host can wait, but its capability is
   unverified and cannot establish authority for other listeners. A genuine
   host validates those waiting hashes and removes mismatches. After a host
@@ -254,6 +274,17 @@ the listener capability in the page URL fragment. Request URLs carry only
   host receives `{type: "join", id, generation}`. Both ids and generations
   are UUIDs generated by the worker. A repeated check for the current
   generation sends `ready` again without a second `join`.
+- The opted-in host-ready frame additionally carries
+  `discovery: {code, lease, tool: "walkie-talkie"}`, or `discovery: null` when
+  its network scope is unavailable. The page publishes `{publish: {code,
+  lease, listenKey}}` on `/discover?tool=walkie-talkie`. Through `BROADCASTS`,
+  the directory privately checks the listener capability's hash and the live,
+  unended host's current lease and scope, then obtains `{name, listenKey}`.
+  The check reads host authority again after hashing, so a concurrent End,
+  disconnect or replacement cannot revive an old listing. Public snapshots
+  whitelist `{code, local: true, name, listenKey}` and never expose the host
+  capability, hashes, lease or scope. End, disconnect, replacement and failed
+  sends withdraw the matching lease; refresh rechecks authority and metadata.
 - The host sends `offer` or `candidate` frames with `to`, `generation`,
   `connection`, and either `sdp` or `candidate`. A listener sends `answer` or
   `candidate` with the same fields except `to`. The worker derives `from` and

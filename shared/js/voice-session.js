@@ -17,7 +17,7 @@ const uuid = () => {
 };
 
 class VoiceSession {
-  constructor({ role, code, key, listenKey, mode = 'broadcast', roomName = '', passwordProof = null, name = '',
+  constructor({ role, code, key, listenKey, mode = 'broadcast', roomName = '', discover = false, passwordProof = null, name = '',
     onState = () => {}, onStream = () => {}, onParticipants = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
     mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
@@ -27,6 +27,7 @@ class VoiceSession {
     this.key = key;
     this.listenKey = listenKey;
     this.roomName = roomName;
+    this.discover = discover === true;
     this.passwordProof = passwordProof;
     this.name = name;
     this.onParticipants = onParticipants;
@@ -83,7 +84,10 @@ class VoiceSession {
         (!this._inbox && this.role === 'host' && !/^[A-Za-z0-9_-]{43}$/.test(this.listenKey || '')) ||
         (this._inbox && this.passwordProof !== null && !/^[A-Za-z0-9_-]{43}$/.test(this.passwordProof || '')) ||
         (this._inbox && this.role === 'host' && (typeof this.roomName !== 'string' || !this.roomName.trim() || this.roomName.length > 80)) ||
-        (this._inbox && this._client && (typeof this.name !== 'string' || !this.name.trim() || this.name.length > 64))) {
+        (this._inbox && this._client && (typeof this.name !== 'string' || this.name.length > 64)) ||
+        (!this._inbox && this.discover && (this.role !== 'host' || this.key === this.listenKey
+          || typeof this.roomName !== 'string' || !this.roomName.trim() || this.roomName.length > 80
+          || /[\u0000-\u001f\u007f-\u009f]/.test(this.roomName)))) {
       this._finish('error-access');
       return false;
     }
@@ -329,7 +333,7 @@ class VoiceSession {
       this._authenticated(ctx);
       this._waiting = false;
       if (this._source) this._send({ type: 'status', generation: this._generation, talking: this._talking });
-      if (this._inbox) this._discovery = frame.discovery || null;
+      this._discovery = frame.discovery || null;
       this._flushControls();
       this._settleStart(true);
       this._voiceState();
@@ -636,9 +640,10 @@ class VoiceSession {
 
   _authFrame() {
     if (!this._inbox) return { type: 'auth', role: this.role, key: this.key,
-      ...(this.role === 'host' ? { listenKey: this.listenKey } : {}) };
+      ...(this.role === 'host' ? { listenKey: this.listenKey,
+        ...(this.discover ? { roomName: this.roomName, discover: true } : {}) } : {}) };
     return { type: 'auth', role: this.role, key: this.key, passwordProof: this.passwordProof,
-      ...(this.role === 'host' ? { roomName: this.roomName } : { name: this.name }) };
+      ...(this.role === 'host' ? { roomName: this.roomName } : this.name ? { name: this.name } : {}) };
   }
   _applyMuted(muted) {
     this._muted = muted;

@@ -83,7 +83,7 @@ function microphone() {
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession } = {}) {
+function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, discover = false, roomName = '' } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -140,7 +140,7 @@ function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession } 
     fail() { this.connectionState = 'failed'; this.onconnectionstatechange?.(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new BroadcastSession({ role, code: CODE,
+  const session = new BroadcastSession({ role, code: CODE, discover, roomName,
     key: role === 'host' ? KEY : LISTEN_KEY,
     ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, audioSession, clock, endpoint,
     onState: (key, detail) => states.push({ key, detail }), onStream: stream => streams.push(stream) });
@@ -163,6 +163,28 @@ function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession } 
   };
   return { session, clock, sockets, peers, states, streams, begin };
 }
+
+test('nearby host opts in explicitly and forwards a fresh lease after reconnecting', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', discover: true, roomName: 'Classroom',
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const discovery = { code: CODE, lease: ID_A, tool: 'walkie-talkie' };
+  const ws = await h.begin({ type: 'host-ready', generation: GEN_A, discovery });
+  assert.deepEqual(ws.sent[0], { type: 'auth', role: 'host', key: KEY,
+    listenKey: LISTEN_KEY, roomName: 'Classroom', discover: true });
+  assert.deepEqual(h.states.at(-1).detail.discovery, discovery);
+  assert.equal(mic.track.enabled, false);
+  ws.serverClose();
+  assert.equal(h.states.at(-1).detail.signaling, false);
+  await h.clock.advance(1000);
+  const fresh = h.sockets.at(-1);
+  fresh.open();
+  fresh.message({ type: 'host-ready', generation: GEN_B, discovery: { ...discovery, lease: ID_B } });
+  await flush();
+  assert.equal(h.states.at(-1).detail.discovery.lease, ID_B);
+  h.session.stop();
+  assert.equal(h.states.at(-1).detail.discovery, null);
+});
 
 test('receiver auth is outside its URL, waiting checks stay on one socket, and capture is never requested', async t => {
   let captures = 0;
