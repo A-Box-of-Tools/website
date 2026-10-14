@@ -179,6 +179,15 @@
     <span class="tool-filter-key" aria-hidden="true">/</span>
   </div>
 
+  <!-- Saved cards are independent of category previews and searches. The
+       script copies only cards already built for this language. -->
+  <section class="favorites" id="favorites" aria-labelledby="favorites-heading" hidden>
+    <h2 id="favorites-heading">{{ ui.favorites_heading }}</h2>
+    <p class="favorites-note" id="favorites-note">{{ ui.favorites_note }}</p>
+    <ul class="tool-grid" id="favorite-tools"></ul>
+  </section>
+  {% include "partials/favorites-status.html" %}
+
   <nav class="hub-categories" aria-label="{{ ui.hub_categories_label }}">
 {% for category in categories %}    <a href="#{{ category.id }}">{{ category.short_name }} <span class="category-count">{{ category.count }}</span></a>
 {% endfor %}  </nav>
@@ -236,8 +245,11 @@
             <span class="tool-name">{{ tool.name | e }}</span>
             <span class="tool-desc">{{ tool.tagline }}</span>
           </span>
-          <span class="tool-arrow" aria-hidden="true">↗</span>
         </a>
+        <button type="button" class="favorite-toggle favorite-icon-only" data-favorite="{{ tool.slug | e }}"
+                aria-label="{{ ui.favorite_tool | e }} — {{ tool.name | e }}" aria-pressed="false" hidden>
+          {% include "partials/favorite-star.html" %}
+        </button>
       </li>
 {% endfor %}    </ul>
   </section>
@@ -307,6 +319,7 @@
   reader could type into before it is listening.
 -->
 <script src="{{ filter_href }}" defer></script>
+<script src="{{ favorites_href }}" defer></script>
 
 </body>
 </html>

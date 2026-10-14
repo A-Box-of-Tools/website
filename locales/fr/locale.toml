@@ -244,6 +244,10 @@ base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour 
 licence = "Les textes sont sous <a href=\"https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a>, le code sous <a href=\"https://github.com/A-Box-of-Tools/website/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener noreferrer\">MIT</a>. Réutilisez-les en citant la source."
 
 [ui]
+favorites_heading = "Favoris"
+favorites_note = "Enregistrés dans ce navigateur."
+favorite_tool = "Favori"
+favorites_unavailable = "Les favoris n’ont pas pu être enregistrés dans ce navigateur."
 languages = "Langue"
 lang_auto = "Cette page s'affiche en français parce que c'est la langue demandée par votre navigateur."
 skip_to_content = "Aller au contenu"

@@ -654,6 +654,10 @@ order = [
 #
 
 [ui]
+favorites_heading = "Favorites"
+favorites_note = "Saved in this browser."
+favorite_tool = "Favorite"
+favorites_unavailable = "Favorites could not be saved in this browser."
 # The language switcher. `languages` labels it for a screen reader; the
 # languages themselves are never translated - each is written in its own
 # language, in locales/<lang>/locale.toml, because somebody looking for German

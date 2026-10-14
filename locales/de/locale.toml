@@ -435,6 +435,10 @@ licence = """
 #
 
 [ui]
+favorites_heading = "Favoriten"
+favorites_note = "In diesem Browser gespeichert."
+favorite_tool = "Favorit"
+favorites_unavailable = "Favoriten konnten in diesem Browser nicht gespeichert werden."
 languages = "Sprache"
 lang_auto = "Diese Seite wird auf Deutsch angezeigt, weil Ihr Browser diese Sprache bevorzugt."
 skip_to_content = "Zum Inhalt springen"

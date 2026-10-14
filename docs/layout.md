@@ -105,6 +105,22 @@ the domain root, at `/compress-image/`, or nested deeper, with no configuration.
 The service worker registers with the scope of its own folder, so each tool
 caches only itself and cannot interfere with its neighbours.
 
+## Favorites
+
+The hub and each tool page offer a star button. `shared/favorites.js` remembers
+canonical tool slugs in `abox-favorites` in localStorage, so a tool saved in one
+language remains saved when its translated address is opened. Nothing is sent
+for this preference, and clearing site data removes it.
+
+The hub copies saved cards from its own catalogue into a section above the
+categories, hidden when empty. These copies stay outside search and category
+previews. Unknown saved slugs are retained for pages or languages that do not
+list them; only existing cards supply links. Storage failures leave the buttons
+usable for the current page and show a localized message that saving failed.
+Back navigation and other tabs refresh the selection without losing keyboard
+focus when a saved card is removed. The shared script is versioned and included
+in the hub and tool workers' precaches.
+
 ## Installing it as an app
 
 Two kinds of page here can be installed, and both are offered by the browser
