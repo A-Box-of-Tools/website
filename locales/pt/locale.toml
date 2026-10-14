@@ -378,6 +378,10 @@ licence = """
 #
 
 [ui]
+favorites_heading = "Favoritos"
+favorites_note = "Guardados neste navegador."
+favorite_tool = "Favorito"
+favorites_unavailable = "Não foi possível guardar os favoritos neste navegador."
 languages = "Idioma"
 lang_auto = "Esta página está em português porque é o idioma que o navegador pede."
 skip_to_content = "Ir para o conteúdo"

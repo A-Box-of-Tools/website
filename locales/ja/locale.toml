@@ -224,6 +224,10 @@ licence = """文章は<a href="https://github.com/A-Box-of-Tools/website/blob/ma
 #
 
 [ui]
+favorites_heading = "お気に入り"
+favorites_note = "このブラウザーに保存されます。"
+favorite_tool = "お気に入り"
+favorites_unavailable = "このブラウザーにお気に入りを保存できませんでした。"
 languages = "言語"
 lang_auto = "ブラウザの言語設定が日本語なので、このページは日本語で表示しています。"
 skip_to_content = "本文へスキップ"
