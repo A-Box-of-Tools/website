@@ -429,6 +429,7 @@ function copyButton(text, className) {
   button.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(text);
+      globalThis.aboxToolComplete?.();
       flash(button, phrase('copy.copied'));
     } catch {
       flash(button, phrase('copy.refused'));
@@ -455,6 +456,7 @@ el.copyAll.addEventListener('click', async () => {
   const text = bundle(currentShape(), results());
   try {
     await navigator.clipboard.writeText(text);
+    globalThis.aboxToolComplete?.();
     flash(el.copyAll, phrase('copy.copied'));
   } catch {
     flash(el.copyAll, phrase('copy.refused'));
@@ -475,6 +477,7 @@ function saveText(text, name) {
   link.href = url;
   link.download = name;
   link.click();
+  globalThis.aboxToolComplete?.();
   // Revoked late: revoking immediately can cancel a download that has not
   // started yet in some browsers.
   setTimeout(() => URL.revokeObjectURL(url), 60000);

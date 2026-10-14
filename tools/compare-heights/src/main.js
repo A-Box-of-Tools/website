@@ -499,6 +499,7 @@ el.copyPng.addEventListener('click', async () => {
   try {
     const blob = await svgToPng(current.svg, current);
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    globalThis.aboxToolComplete?.();
     return note(phrase('save.copied'));
   } catch {
     return note(phrase('save.noclipboard'), true);

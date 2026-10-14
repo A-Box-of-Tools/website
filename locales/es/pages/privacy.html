@@ -64,16 +64,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; el contador de visitas</h3>
+    <h3>Google Analytics &mdash; visitas y usos completados</h3>
     <p>
-      Usamos Google Analytics 4 para contar visitas a las páginas, y así saber en
-      qué herramientas merece la pena trabajar. Registra la página que viste,
-      más o menos cuándo, un identificador generado al azar y guardado en tu
-      navegador, una ubicación aproximada, tu tipo de dispositivo y navegador, y
-      el sitio que te trajo hasta aquí.
+      Usamos Google Analytics 4 para contar visitas a las páginas y usos completados, y así saber en qué herramientas merece la pena trabajar. Registra la página que viste, el momento aproximado, un identificador generado al azar y guardado en tu navegador, una ubicación aproximada, tu tipo de dispositivo y navegador y las etiquetas habituales de atribución de campañas.
     </p>
     <p>
-      <code>analytics.js</code> configura las visitas. Tras responder voluntariamente, <code>feedback.js</code> envía también un evento <code>tool_feedback</code>: identificador de herramienta, voto fijo positivo o negativo y motivo fijo. No hay texto libre ni archivo, nombre, tamaño, dimensión, cantidad, formato o contenido en el evento. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local.
+      La dirección que recibe Analytics usa la URL canónica de la página y solo las etiquetas habituales de campaña. Se omiten los demás parámetros de consulta y los fragmentos de la dirección. El título de la página es fijo y del sitio de referencia solo se envía el origen, sin ruta ni consulta.
+    </p>
+    <p>
+      Contamos el primer uso completado por cada carga de página, por ejemplo, solicitar una descarga ya preparada, completar una copia o mostrar un análisis o una vista utilizable en una herramienta de inspección. El único dato específico de la herramienta que se añade al evento es su identificador fijo. No confirma que tu sistema operativo haya guardado una descarga.
+    </p>
+    <p>
+      Los comentarios voluntarios registran el identificador fijo de la herramienta, una respuesta fija positiva o negativa y un motivo fijo después de que elijas una respuesta. No hay texto libre. Las herramientas no adjuntan archivos, nombres, contenidos, texto introducido, cantidades, tamaños, dimensiones, formatos, ajustes, errores ni otros detalles de entrada o salida a ninguno de los dos registros. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local, también sin conexión cuando la caché de la herramienta esté lista.
     </p>
 
     <h3>Buy Me a Coffee &mdash; el botón de donación</h3>
@@ -127,7 +129,7 @@
       <strong>Otro almacenamiento local.</strong> Los comentarios guardan la fecha de respuesta o cierre para no volver a preguntar. Las herramientas pueden guardar ajustes o un borrador opcional de lo compartido. Cambiar de idioma o continuar expresamente en otra herramienta puede guardar archivos y ajustes temporalmente en IndexedDB. No son cookies ni se nos envían; borrar los datos del sitio los elimina. La herramienta correspondiente explica los borradores persistentes.
     </p>
     <p>
-      Las cookies e identificadores de Google miden visitas y seleccionan y limitan anuncios. Son distintos de los registros locales del sitio descritos arriba.
+      Las cookies e identificadores de Google miden visitas y usos de las herramientas y seleccionan y limitan anuncios. Son distintos de los registros locales del sitio descritos arriba.
     </p>
     <h3>Cómo desactivarlo</h3>
     <ul>

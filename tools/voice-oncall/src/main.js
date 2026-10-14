@@ -296,6 +296,7 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
+    if (detail.directReady) globalThis.aboxToolComplete?.();
     if (activeRole === 'host' && key === 'error-moderation-full') {
       const refused = detail.moderation;
       if (refused?.action === 'kick' && validCode(refused.id)) {

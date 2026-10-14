@@ -64,15 +64,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; the visit counter</h3>
+    <h3>Google Analytics &mdash; visits and successful tool use</h3>
     <p>
-      We use Google Analytics 4 to count page visits, so we know which tools are
-      worth working on. It records the page you viewed, roughly when, a randomly
-      generated identifier stored in your browser, an approximate location, your
-      device and browser type, and the site that referred you.
+      We use Google Analytics 4 to count page visits and successful tool use, so we know which tools are worth working on. It records the page you viewed, roughly when, a randomly generated identifier stored in your browser, an approximate location, your device and browser type, and standard campaign attribution tags.
     </p>
     <p>
-      <code>analytics.js</code> configures page views. <code>feedback.js</code> also sends an optional <code>tool_feedback</code> event after you answer: the tool slug, a fixed up or down verdict and a fixed reason. There is no free-text field and no file, filename, size, dimension, count, format or file contents in that event. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available.
+      The page address sent to Analytics uses its canonical URL with only standard campaign tags. Other query parameters and address fragments are omitted. The page title is fixed, and the referring site is reduced to its origin, without its path or query.
+    </p>
+    <p>
+      We count the first successful tool use per page load, such as requesting a ready download, completing a copy, or displaying a usable analysis or view in an inspector. The only tool-specific detail added to this event is the tool's fixed identifier. It does not confirm that your operating system saved a download.
+    </p>
+    <p>
+      Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, errors or other input or output details to either record. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
     </p>
 
     <h3>Buy Me a Coffee &mdash; the donate button</h3>
@@ -135,7 +138,7 @@
       <strong>Other local storage.</strong> Feedback stores an answer or dismissal timestamp to avoid asking again. Tools may keep settings or an optional sharing draft locally. A language switch or an explicit carry-on action can temporarily store files and settings in IndexedDB so another local tool page can pick them up. These records are not cookies and are not sent to us; clearing site data removes them. The relevant tool explains persistent drafts.
     </p>
     <p>
-      Google's cookies and identifiers are used to measure visits and to select and cap ads. They are distinct from the local site records described above.
+      Google's cookies and identifiers are used to measure visits and tool use and to select and cap ads. They are distinct from the local site records described above.
     </p>
     <h3>How to switch it off</h3>
     <ul>

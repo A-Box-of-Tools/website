@@ -1126,6 +1126,7 @@ function showResults(results) {
       link.className = 'primary as-button';
       link.href = url;
       link.download = result.outputName;
+      link.addEventListener('click', () => globalThis.aboxToolComplete?.());
       link.textContent = phrase('result.download');
       li.appendChild(link);
       li.appendChild(cleanedInspection(result, resultEpoch));

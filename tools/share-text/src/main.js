@@ -216,6 +216,7 @@ function admitViewer(id, dc) {
   try {
     dc.send(JSON.stringify({ type: 'token', token }));
     dc.send(payload());
+    if ($('text').value !== '') globalThis.aboxToolComplete?.();
     dc.send(filesMsg());
   } catch {}
   refreshCount();
@@ -276,7 +277,12 @@ function dropViewer(id, reason = 'peer-left') {
 
 function broadcast() {
   if ($('publish').hidden === false) return;
-  for (const dc of channels.values()) { try { dc.send(payload()); } catch {} }
+  for (const dc of channels.values()) {
+    try {
+      dc.send(payload());
+      if ($('text').value !== '') globalThis.aboxToolComplete?.();
+    } catch {}
+  }
 }
 
 /* --------------------------------------------------------------- the files */
@@ -561,7 +567,11 @@ async function hostSignal(from, data) {
         // this side can attach an open listener.
         if (m.type === 'hello') {
           if (!introduced) introduce();
-          else if (channels.has(from)) { dc.send(payload()); dc.send(filesMsg()); }
+          else if (channels.has(from)) {
+            dc.send(payload());
+            if ($('text').value !== '') globalThis.aboxToolComplete?.();
+            dc.send(filesMsg());
+          }
           else dc.send(JSON.stringify({ type: 'private' }));
           return;
         }
@@ -948,6 +958,7 @@ function view(code) {
     }
     retireFile(owner);
     trace.mark('transfer-complete');
+    globalThis.aboxToolComplete?.();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     owner.btn.textContent = phrase('view.download');
     owner.status.textContent = '';
@@ -1160,6 +1171,7 @@ function view(code) {
       clearDeadlines();
       retireTextCopy();
       lastBody = String(msg.body ?? '');
+      if (lastBody !== '') globalThis.aboxToolComplete?.();
       // The sharer's markdown flag sets the default; a reader who has
       // touched the view toggle keeps their own choice through live updates.
       if (!mdTouched) asMd = msg.md === true;

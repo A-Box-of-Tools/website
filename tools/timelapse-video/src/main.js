@@ -701,6 +701,7 @@ async function runExport() {
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = outputFilename(job.file);
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = [
       phrase('size.plain', { width: plan.frame.width, height: plan.frame.height }),
       phrase(result.frames === 1 ? 'n.frame.one' : 'n.frame.many',

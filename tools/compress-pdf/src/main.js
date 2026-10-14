@@ -440,6 +440,7 @@ function showResult(result, input) {
   downloadUrl = URL.createObjectURL(result.blob);
   el.download.href = downloadUrl;
   el.download.download = outName(input.file.name);
+  el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
   // A file the tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !result.check.ok;

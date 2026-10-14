@@ -8,11 +8,12 @@
   through a bug - so the code lives here instead and the policy stays closed.
   Behaviour is identical; only the delivery changed.
 
-  This measures page visits. It is never given anything about your {{ words.plural }}: no
+  This measures page visits and the first successful tool use on each visit.
+  It is never given anything about your {{ words.plural }}: no
   file, no thumbnail, no filename, no dimension, no count{{ words.analytics_extra }}. Nothing here
-  can see any of that, and there is no custom event in this file to carry it.
+  can see any of that. `tool_complete` carries only the tool's static slug.
 
-  One event does exist, and it is not in this file: shared/feedback.js sends
+  Separately, shared/feedback.js sends
   `tool_feedback` when somebody answers the thumbs up or thumbs down that
   appears after a download. It carries three things - which tool, "up" or
   "down", and one of four fixed reasons - and it is sent only on a press of one
@@ -61,8 +62,58 @@ if (notAVisit) {
   window['ga-disable-{{ site.analytics_id }}'] = true;
 }
 
+// Page context is public site metadata. Invitation fragments and arbitrary
+// query fields are not: a room key or pasted value must not become a page URL
+// in Analytics. Keep the standard campaign fields so paid and tagged visits
+// retain their attribution, and never read a tool's inputs or result DOM.
+var canonical = document.querySelector('link[rel="canonical"]');
+// The 404 deliberately has no canonical. A fixed error-page address keeps
+// missing routes out of homepage traffic without reporting the requested path.
+var measurementPage = new URL(canonical ? canonical.href : '{{ site.domain }}404.html');
+var campaign = new URLSearchParams(location.search);
+['utm_source', 'utm_medium', 'utm_campaign', 'utm_id', 'utm_content', 'utm_term',
+  'gclid', 'dclid', 'gbraid', 'wbraid'].forEach(function (key) {
+  var value = campaign.get(key);
+  if (value) measurementPage.searchParams.set(key, value);
+});
+var measurementReferrer = '';
+try {
+  var referrer = new URL(document.referrer);
+  if (referrer.protocol === 'https:' || referrer.protocol === 'http:') {
+    measurementReferrer = referrer.origin + '/';
+  }
+} catch (err) { /* Direct visits have no referrer. */ }
+
 gtag('js', new Date());
-gtag('config', '{{ site.analytics_id }}');
+gtag('config', '{{ site.analytics_id }}', {
+  page_location: measurementPage.href,
+  page_title: document.title,
+  page_referrer: measurementReferrer,
+});
+
+// Completion belongs to a tool's verified outcome, not a guessed button id:
+// an exporter calls this after preparing a result, a copy action after the
+// clipboard accepts it, and a viewer after displaying a usable analysis.
+// There are no arguments on purpose. In particular this API has no place for
+// a file, an entered value, an output name or an error message to go.
+(function () {
+  var panel = document.getElementById('feedback');
+  var slug = panel && panel.getAttribute('data-tool');
+  if (!slug || !/^[a-z][a-z0-9-]*$/.test(slug)) return;
+  var complete = false;
+  window.aboxToolComplete = function () {
+    if (complete) return;
+    try {
+      gtag('event', 'tool_complete', {
+        send_to: '{{ site.analytics_id }}',
+        tool_slug: slug,
+      });
+      complete = true;
+    } catch (err) {
+      // A blocked or broken counter must never break the local operation.
+    }
+  };
+}());
 
 // AdSense, behind the same test, for a sharper version of the same reason. It
 // used to be a plain async <script> in the head, so every one of those

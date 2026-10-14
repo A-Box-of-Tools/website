@@ -157,6 +157,7 @@ export class CameraSession {
         await entry.pc.setRemoteDescription(localDescription(description));
         if (!this.current(entry)) return;
         for (const candidate of entry.candidates.splice(0)) await entry.pc.addIceCandidate(candidate);
+        if (expected === 'answer' && entry.video && entry.pc.connectionState === 'connected') globalThis.aboxToolComplete?.();
         if (expected === 'offer') {
           entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
           await entry.pc.setLocalDescription(await entry.pc.createAnswer());

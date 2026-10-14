@@ -1082,6 +1082,7 @@ function renderResults(made) {
     link.className = 'primary as-button';
     link.href = url;
     link.download = item.name;
+    link.addEventListener('click', () => globalThis.aboxToolComplete?.());
     link.textContent = phrase('out.download');
 
     const name = document.createElement('p');

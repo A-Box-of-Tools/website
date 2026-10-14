@@ -709,6 +709,7 @@ async function runExport() {
     el.resultImage.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = job.name;
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = [
       'GIF',
       phrase('size.plain', { width: job.settings.width, height: job.settings.height }),

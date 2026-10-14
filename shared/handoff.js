@@ -367,7 +367,9 @@
     }))
       .then(function (files) {
         return park(link.getAttribute('data-slug'),
-                    { files: files, from: slug, time: Date.now() });
+                    { files: files, from: slug, time: Date.now() }).then(function () {
+          globalThis.aboxToolComplete?.();
+        });
       })
       .catch(function () { /* fall through to the plain visit */ })
       .then(function () { window.location.assign(link.href); });

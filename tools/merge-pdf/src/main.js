@@ -707,6 +707,7 @@ function showResult(result, sourceCount) {
   const handed = result.archive ?? { name: result.files[0].name, blob: blobFor(result.files[0]) };
   el.download.href = keepUrl(handed.blob);
   el.download.download = handed.name;
+  el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
   el.download.textContent = result.archive
     ? phrase('result.zip', { n: result.files.length })
     : phrase('result.download');
@@ -765,6 +766,7 @@ function renderFiles(result) {
     link.className = 'ghost';
     link.textContent = phrase('result.download');
     link.download = file.name;
+    link.addEventListener('click', () => globalThis.aboxToolComplete?.());
     link.href = keepUrl(blobFor(file));
     link.hidden = !file.check.ok;
 
