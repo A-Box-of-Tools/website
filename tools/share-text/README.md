@@ -135,6 +135,38 @@ worker becomes a visible discovery failure, and the active share stays
 reachable by link. The new worker deployment is manual, documented in
 [`workers/rendezvous/README.md`](../../workers/rendezvous/README.md).
 
+## Connection diagnostics
+
+Both roles expose a **Connection details** panel with a readable last-stage
+summary and a copyable JSON report. A failed attempt opens it automatically.
+The report includes the generated tool-code identifier, parsed browser family
+and version, connection mode, anonymous attempt numbers, elapsed milestones,
+signaling counts, ICE/DTLS/SCTP/control-channel states, candidate classifications,
+reported candidate-pair counts, and allowlisted error codes. A sharer records
+each reader independently, including negotiation errors that previously reached
+an empty catch. The introduction socket has its own record and numeric close
+code. Seeing a discoverable name establishes directory visibility, not a working
+peer connection.
+
+`connection-diagnostics.js` projects candidates and RTC statistics through an
+allowlist. It never retains or exports raw SDP, candidate addresses or hostnames,
+ICE credentials, share names, peer identifiers, text, file names, file sizes,
+approval notes, admission tokens, exception messages, or stacks. Reports stay in
+the tab's memory; Copy writes only to the local clipboard, with selectable text
+when clipboard access is refused. The read-only report is excluded from the
+frame's language-switch settings storage. No endpoint, relay policy, connection
+permission or application protocol is added by diagnostics.
+
+History is bounded to twelve anonymous attempts, sixty-four events and sixteen
+errors per attempt, with omission counts. Statistics are sampled once per second
+while a channel is opening and once on open; no payload listener is added.
+Finish freezes the meaningful states before teardown and detaches sampling and
+event listeners, so a late statistics promise cannot repaint a newer attempt.
+Missing browser counters remain `null`; `stats.available` distinguishes an
+unavailable report from an empty one. In particular, no reported ICE pairs does
+not by itself prove an mDNS, browser-version, firewall or router defect. Reports
+from both physical devices are needed to investigate those boundaries.
+
 ## How the pieces work
 
 - **Roles.** One page, both halves: no hash means sharer, `#name` means

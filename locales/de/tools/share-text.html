@@ -167,8 +167,36 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Verbindungsdetails</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Noch kein Verbindungsversuch.</p>
+    <p class="field-note">Falls eine Verbindung fehlschlägt, kopieren Sie diesen Bericht auf beiden Geräten. Er enthält keine geteilten Texte, Dateinamen, Linknamen, Netzwerkadressen oder Zugangsdaten.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Verbindungsbericht kopieren</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Verbindungsbericht</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">Die Suche kann eine Freigabe finden, auch wenn sich die Browser nicht direkt verbinden können; dieser Bericht zeigt den erreichten Schritt, belegt aber nicht die Ursache.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Noch kein Verbindungsversuch.</span>
+    <span data-phrase="debug.attempt">Verbindungsversuch {n}. {status}</span>
+    <span data-phrase="debug.introduction">Der Vermittlungsserver wird kontaktiert.</span>
+    <span data-phrase="debug.network">Die Verbindung zwischen den Browsern wird eingerichtet.</span>
+    <span data-phrase="debug.channel">Verbindung offen; die Freigabe wird erwartet.</span>
+    <span data-phrase="debug.approval">Verbunden; die Zustimmung wird erwartet.</span>
+    <span data-phrase="debug.connected">Verbunden; die Freigabe wird empfangen.</span>
+    <span data-phrase="debug.host-connected">Mit einem Empfänger verbunden.</span>
+    <span data-phrase="debug.transfer">Eine Datei wird übertragen.</span>
+    <span data-phrase="debug.transfer-complete">Dateiübertragung abgeschlossen.</span>
+    <span data-phrase="debug.transfer-failed">Die Dateiübertragung konnte nicht abgeschlossen werden.</span>
+    <span data-phrase="debug.failed">Dieser Verbindungsversuch wurde vorzeitig beendet; der Bericht hält den zuletzt erreichten Schritt fest.</span>
+    <span data-phrase="debug.ended">Diese Verbindung wurde beendet.</span>
+    <span data-phrase="debug.unsupported">Dieser Browser unterstützt die für dieses Werkzeug benötigten Verbindungsfunktionen nicht.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
