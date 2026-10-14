@@ -37,6 +37,10 @@ class_name = "Discovery"
 name = "BROADCASTS"
 class_name = "Broadcast"
 
+[[durable_objects.bindings]]
+name = "INBOXES"
+class_name = "Inbox"
+
 # SQLite-backed classes are the kind the free plan allows. The object never
 # touches its storage - its whole state is the sockets connected to it - but
 # the class still has to be declared this way to deploy at all.
@@ -55,6 +59,12 @@ new_sqlite_classes = ["Discovery"]
 [[migrations]]
 tag = "v3"
 new_sqlite_classes = ["Broadcast"]
+
+# Incoming voice retains password and moderation authority separately from the
+# outgoing broadcast protocol, without writing audio or room state to storage.
+[[migrations]]
+tag = "v4"
+new_sqlite_classes = ["Inbox"]
 
 # One address may open thirty sockets a minute. The start page opens one for
 # discovery, a host adds one for its room, and each reader opens one. It is

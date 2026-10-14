@@ -10,7 +10,7 @@ glyph = "audio-waveform"
 category = "documents-and-audio"
 roadmap_group = "audio"
 css_parts = ["form", "notes"]
-js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-network", "voice-session", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 lastmod = "2026-10-13"
 

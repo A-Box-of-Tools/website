@@ -13,7 +13,7 @@ const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
 
 const DEFAULT_TOOL = "share-text";
-const TOOLS = new Set([DEFAULT_TOOL, "remote-camera"]);
+const TOOLS = new Set([DEFAULT_TOOL, "remote-camera", "voice-oncall"]);
 
 export function rendezvousTool(value) {
   return value == null ? DEFAULT_TOOL : TOOLS.has(value) ? value : null;
@@ -166,14 +166,15 @@ export class Discovery {
   snapshot() {
     const observers = this.observers();
     const tool = observers[0]?.deserializeAttachment().tool ?? DEFAULT_TOOL;
-    const codes = new Set();
+    const codes = new Map();
     for (const ws of observers) {
       const who = ws.deserializeAttachment();
       if ((who.tool ?? DEFAULT_TOOL) !== tool) continue;
       const publication = who.publication;
-      if (publication?.verified) codes.add(publication.code);
+      if (publication?.verified) codes.set(publication.code, publication);
     }
-    const list = [...codes].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true }));
+    const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true,
+      ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}) }));
     return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL ? {} : { tool }), list });
   }
 
@@ -193,13 +194,22 @@ export class Discovery {
 
   async verify(publication, scope, tool = DEFAULT_TOOL) {
     try {
-      const room = this.env.ROOMS.get(this.env.ROOMS.idFromName(roomName(publication.code, tool)));
+      const binding = tool === "voice-oncall" ? this.env.INBOXES : this.env.ROOMS;
+      const room = binding.get(binding.idFromName(tool === "voice-oncall" ? publication.code : roomName(publication.code, tool)));
       const result = await room.fetch("https://room.internal/_discovery/check", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool }),
       });
-      return result.status === 204;
+      if (tool !== "voice-oncall") return result.status === 204;
+      if (result.status !== 200) return false;
+      const text = await result.text();
+      if (text.length > MAX_MESSAGE) return false;
+      const metadata = JSON.parse(text);
+      if (!metadata || typeof metadata !== "object" || Array.isArray(metadata) || Object.keys(metadata).length !== 2
+          || typeof metadata.name !== "string" || metadata.name.length === 0 || metadata.name.length > 80
+          || /[\x00-\x1f\x7f-\x9f]/.test(metadata.name) || typeof metadata.locked !== "boolean") return false;
+      return { name: metadata.name, locked: metadata.locked };
     } catch {
       return false;
     }
@@ -219,11 +229,13 @@ export class Discovery {
     await Promise.all(checks.values());
     for (const { ws, who } of entries) {
       const key = `${who.tool ?? DEFAULT_TOOL}:${who.publication.code}:${who.publication.lease}:${who.scope}`;
-      if (await checks.get(key)) continue;
+      const valid = await checks.get(key);
       const current = ws.deserializeAttachment();
       if (current !== null && current.generation === who.generation
           && current.publication?.code === who.publication.code && current.publication.lease === who.publication.lease) {
-        ws.serializeAttachment({ ...current, generation: current.generation + 1, publication: null });
+        if (valid && (who.tool ?? DEFAULT_TOOL) === "voice-oncall") {
+          ws.serializeAttachment({ ...current, publication: { ...current.publication, ...valid } });
+        } else if (!valid) ws.serializeAttachment({ ...current, generation: current.generation + 1, publication: null });
       }
     }
     this.broadcast();
@@ -239,6 +251,7 @@ export class Discovery {
     const who = ws.deserializeAttachment();
     if (who === null || ws.readyState !== 1) return;
     if (publishing && parsed.publish !== null && !validPublication(parsed.publish)) return;
+    if (publishing && parsed.publish !== null && who.tool === "voice-oncall" && !/^[a-f0-9]{64}$/.test(parsed.publish.code)) return;
     if (who.updates >= MAX_UPDATES) { this.drop(ws); ws.close(4429, "too-many-updates"); return; }
     if (!publishing) {
       ws.serializeAttachment({ ...who, updates: who.updates + 1 });
@@ -259,7 +272,8 @@ export class Discovery {
         || current.publication?.code !== publication.code || current.publication.lease !== publication.lease) return;
     const listed = JSON.parse(this.snapshot()).list;
     if (valid && listed.length >= MAX_SHARES && !listed.some((item) => item.code === publication.code)) valid = false;
-    ws.serializeAttachment({ ...current, publication: valid ? { ...publication, verified: true } : null });
+    ws.serializeAttachment({ ...current, publication: valid ? { ...publication, verified: true,
+      ...((who.tool ?? DEFAULT_TOOL) === "voice-oncall" ? valid : {}) } : null });
     this.broadcast();
   }
 
