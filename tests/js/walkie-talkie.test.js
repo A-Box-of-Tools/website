@@ -436,6 +436,40 @@ test('host grace preserves departing audio briefly and evicts it before exceedin
   assert.ok(h.session._peers.size <= 10);
 });
 
+test('a stale offer for a departed listener preserves the host and its other listeners', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  h.peers[0].connect();
+  ws.message({ type: 'join', id: ID_B, generation: GEN_A });
+  await flush();
+  assert.ok(ws.sent.some(frame => frame.type === 'offer' && frame.to === ID_B));
+
+  // The listener's departure can reach the service before the offer above.
+  // Its leave notification is followed by rejection of that in-flight offer.
+  ws.message({ type: 'leave', id: ID_B, generation: GEN_A });
+  ws.message({ type: 'error', error: 'stale' });
+  await flush();
+  assert.equal(h.peers[1].closed, true);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
+  assert.equal(mic.track.stops, 0);
+  assert.equal(h.states.at(-1).detail.listeners, 1);
+  h.session.setTalking(true);
+  assert.equal(mic.track.enabled, true);
+  assert.equal(h.states.at(-1).key, 'host-talking');
+
+  ws.message({ type: 'error', error: 'unauthorized' });
+  await flush();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(ws.closed, true);
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.states.at(-1).key, 'error-access');
+});
+
 test('unauthorized or replaced hosts stop capture and cannot reconnect automatically', async t => {
   const mic = microphone();
   const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });

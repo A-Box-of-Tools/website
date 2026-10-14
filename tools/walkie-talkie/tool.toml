@@ -12,7 +12,7 @@ roadmap_group = "audio"
 css_parts = ["form", "notes"]
 js_parts = ["peer-network", "voice-session", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-13"
+lastmod = "2026-10-14"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice directly from your browser to up to ten receive-only browsers. No installation, push to talk, automatic listening and reconnection."
@@ -53,32 +53,32 @@ text = "No recording or audio relay"
 
 [[privacy]]
 title = "Internet pairing carries setup, never audio."
-body = "Start channel opens one secure WebSocket to our rendezvous. A listener invitation opens a receive-only session automatically. The service authenticates the host and listener invitations, forwards bounded setup messages and reports host availability. Its temporary room state lives on open sockets without a stored room history. Cloudflare keeps seven-day request metadata logs including the room identifier, connection address and timing; invitation keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
+body = " Start channel opens one secure WebSocket to our rendezvous. A listener invitation opens a receive-only session automatically. The service authenticates the host and listener invitations, forwards bounded setup messages and reports host availability. Its temporary room state lives on open sockets without a stored room history. Cloudflare keeps seven-day request metadata logs including the room identifier, connection address and timing; invitation keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
 [[privacy]]
 title = "A listener invitation cannot control the host."
-body = "Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
+body = " Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
 [[privacy]]
 title = "Direct reachability still depends on your network."
-body = "Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and devices awake, and try the actual devices you intend to use."
+body = " Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and devices awake, and try the actual devices you intend to use."
 [[privacy]]
 title = "Temporary loss reconnects; End and Leave stop retries."
-body = "A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Working direct audio can continue during a brief pairing-service outage. Hiding the host releases its microphone; return and choose Start channel to resume the same invitation when per-tab storage is available. End broadcast deliberately stops the session and the next Start creates a new invitation. Leave closes one listener and its retries. Background browsers, connection limits and sleeping devices can delay recovery."
+body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Working direct audio can continue during a brief pairing-service outage. Hiding the host releases its microphone; return and choose Start channel to resume the same invitation when per-tab storage is available. End broadcast deliberately stops the session and the next Start creates a new invitation. Leave closes one listener and its retries. Background browsers, connection limits and sleeping devices can delay recovery."
 [[privacy]]
 title = "The website's regular scripts still run on this page."
-body = "The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
+body = " The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
 
 [[howto]]
 title = "Start directly on this website."
-body = "On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
+body = " On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
 title = "Invite listeners."
-body = "Share the listener link or QR code with devices on your reachable local network. Opening the invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for pairing."
+body = " Share the listener link or QR code with devices on your reachable local network. Opening the invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for pairing."
 [[howto]]
 title = "Hold or tap to talk."
-body = "Hold the Talk button, or focus it and hold Space. Release to stop sending voice. Start talking offers click-to-start and click-to-stop. Microphone mute overrides both. Listening starts automatically where permitted; the existing Unmute control starts sound if the browser blocks playback."
+body = " Hold the Talk button, or focus it and hold Space. Release to stop sending voice. Start talking offers click-to-start and click-to-stop. Microphone mute overrides both. Listening starts automatically where permitted; the existing Unmute control starts sound if the browser blocks playback."
 [[howto]]
 title = "Recover or end the channel."
-body = "Receivers retry a temporarily missing host in place. Return to the same host tab and choose Start channel to resume after hiding it. End broadcast closes the current channel and creates a fresh invitation on the next Start; Leave closes one listener. Keep pages open and devices awake."
+body = " Receivers retry a temporarily missing host in place. Return to the same host tab and choose Start channel to resume after hiding it. End broadcast closes the current channel and creates a fresh invitation on the next Start; Leave closes one listener. Keep pages open and devices awake."
 
 [[faq]]
 q = "Do I need Python or a download?"
