@@ -5,12 +5,16 @@ send live voice to one listening host. Each has an independent encrypted WebRTC
 audio connection terminating at that host, so participants never receive one
 another's audio and the host can silence or remove one without affecting the rest.
 
-The host opens a named inbox, optionally protects it with a password, and listens
+The host opens a named pager, optionally protects it with a password, and listens
 without microphone permission. Participants find it in nearby discovery or open
-its invitation, enter a name and password when required, and Join. Their microphone
+its invitation, enter a name and password when required, and Connect. Their microphone
 starts disabled until they hold Talk or enable the talking toggle. Hiding or
 leaving a participant page releases capture. No account, installation, Python
 helper, recording, STUN server or audio relay is involved.
+
+The interface calls the listening endpoint a pager. Internal inbox and room
+identifiers retain their existing names so invitations, credentials and recovery
+remain compatible.
 
 ## Admission and discovery
 
