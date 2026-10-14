@@ -167,8 +167,36 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Détails de la connexion</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Aucune tentative de connexion pour le moment.</p>
+    <p class="field-note">Si une connexion échoue, copiez ce rapport sur les deux appareils. Il ne contient aucun texte partagé, nom de fichier, nom de lien, adresse réseau ou identifiant d’accès.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copier le rapport de connexion</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Rapport de connexion</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">La recherche peut trouver un partage même si les navigateurs ne peuvent pas se connecter directement ; ce rapport indique l’étape atteinte, sans prouver la cause.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Aucune tentative de connexion pour le moment.</span>
+    <span data-phrase="debug.attempt">Tentative de connexion {n}</span>
+    <span data-phrase="debug.introduction">Prise de contact avec le serveur de mise en relation.</span>
+    <span data-phrase="debug.network">Établissement de la connexion entre les navigateurs.</span>
+    <span data-phrase="debug.channel">Connexion ouverte ; en attente du partage.</span>
+    <span data-phrase="debug.approval">Connecté ; en attente d’approbation.</span>
+    <span data-phrase="debug.connected">Connecté et en cours de réception du partage.</span>
+    <span data-phrase="debug.host-connected">Connecté à un destinataire.</span>
+    <span data-phrase="debug.transfer">Transfert d’un fichier en cours.</span>
+    <span data-phrase="debug.transfer-complete">Transfert du fichier terminé.</span>
+    <span data-phrase="debug.transfer-failed">Le transfert du fichier n’a pas pu être terminé.</span>
+    <span data-phrase="debug.failed">Cette tentative de connexion s’est arrêtée avant d’aboutir ; le rapport conserve la dernière étape atteinte.</span>
+    <span data-phrase="debug.ended">Cette connexion est terminée.</span>
+    <span data-phrase="debug.unsupported">Ce navigateur ne prend pas en charge les fonctions de connexion nécessaires à cet outil.</span>
+
     <span data-phrase="units.b">o</span>
     <span data-phrase="units.kb">Ko</span>
     <span data-phrase="units.mb">Mo</span>
