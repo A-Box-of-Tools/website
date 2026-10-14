@@ -319,7 +319,9 @@ class VoiceSession {
       else if (['full', 'busy'].includes(frame.error)) this._lost(ctx, 4429);
       else if (frame.error === 'timeout') this._lost(ctx, 1006);
       else if (frame.error === 'stale' && this._client) this._send({ type: 'check' });
-      else if (frame.error === 'unauthorized' || (frame.error === 'stale' && !this._inbox)) this._finish('error-access');
+      // A listener can leave while its offer is in flight; that stale target
+      // does not revoke the host's authority or end its other connections.
+      else if (frame.error === 'unauthorized') this._finish('error-access');
       return;
     }
     if (frame.type === 'host-ready' && this.role === 'host' && UUID.test(frame.generation || '')) {

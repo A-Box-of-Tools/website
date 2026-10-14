@@ -3,6 +3,13 @@ import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 
 activateChannel();
+const privacyToggle = document.getElementById('privacy-toggle');
+const privacyPanel = document.getElementById('privacy-panel');
+privacyToggle.addEventListener('click', () => {
+  const open = privacyPanel.hidden;
+  privacyPanel.hidden = !open;
+  privacyToggle.setAttribute('aria-expanded', String(open));
+});
 document.getElementById('boot-warning')?.remove();
 
 function activateChannel() {

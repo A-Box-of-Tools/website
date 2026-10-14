@@ -4,10 +4,9 @@
 # The `preview` job in build.yml uploads two kinds of address, and they stop
 # being useful at different moments:
 #
-#   pr-<n>       one pull request, as it currently stands. Finished with the
-#                moment that pull request closes - merged or not, there is
-#                nothing left to review and the branch behind it is usually
-#                gone too.
+#   pr-<n>       one pull request, as it currently stands. Closing the pull
+#                request makes it eligible for cleanup, but its preview stays
+#                while QA is active or its state cannot be established.
 #   dev-pr-<n>   the bundle as it stood just after one merge into `dev`, kept
 #                so that the state before the next merge is still there to
 #                compare against. Finished with once that change is in `main`,
@@ -22,12 +21,12 @@
 # as long as anybody could want them, so the next push to `dev` is what
 # finishes with it.
 #
-# So a closed pull request takes its own preview down, and a push to `main`
-# takes down every `dev-pr-<n>` whose change has been released, and every `dev`
-# but the newest. NOT all of the first: `dev` carries on while a release is in
-# flight, and a merge that is on `dev` and not yet released is exactly the case
-# those addresses exist for. The copies under `dev` are asked nothing, because
-# the question has only one answer: one of them is the address and the rest are
+# So a closed pull request takes its own preview down once QA is idle, and a
+# push to `main` takes down every `dev-pr-<n>` whose change has been released,
+# and every `dev` but the newest. NOT all of the first: `dev` carries on while
+# a release is in flight. A merge on `dev` that has not yet been released is
+# exactly what those addresses preserve. The copies under `dev` are asked
+# nothing, because the question has only one answer: one is the address and the rest are
 # unreachable.
 #
 # WHICH ONES HAVE BEEN RELEASED IS ASKED BY NUMBER, and that is the whole of
@@ -42,19 +41,29 @@
 # unreleased ones, and every `dev-pr-<n>` outside that set has shipped.
 #
 # RUN BY HAND, it does all of that and one thing more: it takes down every
-# `pr-<n>` whose pull request has closed, however long ago that was. Those two
-# events only ever see what is in front of them - a pull request closing knows
-# one number, and a release knows the merges below it - so a preview uploaded
-# before this workflow existed, or while it was broken, is invisible to both
-# for ever. A dispatch is how that backlog is swept, and asking GitHub the
-# state of every pull request it finds a preview for is worth doing on demand
+# `pr-<n>` whose pull request has closed, however long ago that was, provided
+# QA is idle. Those two events only ever see what is in front of them - a pull
+# request closing knows one number, and a release knows the merges below it -
+# so a preview uploaded before this workflow existed, or while it was broken,
+# is invisible to both for ever. A dispatch sweeps that backlog. Asking GitHub
+# the state of every pull request it finds a preview for is worth doing on demand
 # and not on every release.
 #
-# Nothing here gates anything. It runs after the fact, on addresses nobody is
-# reading, so it reports rather than fails: a tidy that goes wrong must not put
-# a red mark on a release that went out perfectly well. There are two things it
-# will fail for, both of the same kind - being unable to list the deployments,
-# and listing them without being able to tell one branch from another. A tidy
+# PR #577 closed while its QA run was still reading the preview. Deleting the
+# deployment then made the remaining cases test a missing deployment instead
+# of the website. A deployment's hash URL disappears with it too, so a stable
+# test URL alone cannot protect the run. Before removing any PR previews, this
+# asks the QA repository's Report workflow once and retains them all if any
+# run is unfinished or the list cannot be read. The check is deliberately
+# global: a missing or old website commit status cannot establish that QA is
+# idle when posting statuses has failed. A later manual run can clear previews
+# retained at close; unrelated dev and dev-pr cleanup keeps its own rules.
+#
+# Nothing here gates a release. It reports rather than fails when cleanup has
+# to wait: a tidy that goes wrong must not put a red mark on a release that
+# went out perfectly well. There are two things it will fail for, both of the
+# same kind - being unable to list the deployments, and listing them without
+# being able to tell one branch from another. A tidy
 # that has quietly stopped working looks exactly like a tidy with nothing to
 # do, and the only other place that would ever say so is the bill.
 #
@@ -168,6 +177,27 @@ jobs:
             gh api "repos/$REPO/pulls/$1" --jq '.state' 2>/dev/null || true
           }
 
+          # A closed PR can still have a browser suite reading its deployment.
+          # Read every page once, keeping only unfinished run ids. A refused
+          # API call or an unexpected response must retain previews, not turn
+          # an unavailable answer into an empty list and permission to delete.
+          pr_qa_idle=no
+          if qa_active=$(gh api --paginate \
+               'repos/A-Box-of-Tools/qa/actions/workflows/report.yml/runs?per_page=100' \
+               --jq 'if (.workflow_runs | type) != "array" then
+                 error("unexpected Report workflow run list")
+               else
+                 .workflow_runs[] | select(.status != "completed") | (.id // "unknown")
+               end' 2>/dev/null); then
+            if [ -z "$qa_active" ]; then
+              pr_qa_idle=yes
+            else
+              echo '::notice::Keeping all PR previews because the QA Report workflow still has unfinished runs.'
+            fi
+          else
+            echo '::notice::Could not list the QA Report workflow runs; keeping all PR previews.'
+          fi
+
           # THE PULL REQUESTS THAT ARE ON `dev` AND NOT YET RELEASED, one
           # number per line. Read out of the subjects rather than the hashes,
           # for the reason at the top of this file: the hashes do not survive a
@@ -212,7 +242,11 @@ jobs:
           while IFS="$(printf '\t')" read -r id branch created; do
             case "$EVENT:$branch" in
               "pull_request:pr-$PR")
-                printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                if [ "$pr_qa_idle" = yes ]; then
+                  printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                else
+                  echo "  $branch: QA is active or could not be checked; left alone."
+                fi
                 ;;
               workflow_dispatch:pr-*)
                 # The backlog sweep, and the only place any pull request but
@@ -221,7 +255,12 @@ jobs:
                 state=$(pull_state "$n")
                 case "$state" in
                   closed)
-                    printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv ;;
+                    if [ "$pr_qa_idle" = yes ]; then
+                      printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                    else
+                      echo "  $branch: QA is active or could not be checked; left alone."
+                    fi
+                    ;;
                   open)
                     echo "  $branch: still open; left alone." ;;
                   *)
@@ -270,6 +309,10 @@ jobs:
           count=$(wc -l < doomed.tsv)
           echo '### Previews taken down' >> "$GITHUB_STEP_SUMMARY"
           echo >> "$GITHUB_STEP_SUMMARY"
+          if [ "$pr_qa_idle" != yes ]; then
+            echo 'PR previews were retained because QA is active or its state could not be verified.' >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          fi
 
           if [ "$count" -eq 0 ]; then
             echo 'Nothing was finished with.'

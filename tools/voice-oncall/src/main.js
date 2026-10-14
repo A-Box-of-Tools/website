@@ -5,6 +5,13 @@ import { watchDiscovery } from './shared/peer-discovery.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
+const privacyToggle = document.getElementById('privacy-toggle');
+const privacyPanel = document.getElementById('privacy-panel');
+privacyToggle.addEventListener('click', () => {
+  const open = privacyPanel.hidden;
+  privacyPanel.hidden = !open;
+  privacyToggle.setAttribute('aria-expanded', String(open));
+});
 document.getElementById('boot-warning')?.remove();
 
 function activateOncall() {
