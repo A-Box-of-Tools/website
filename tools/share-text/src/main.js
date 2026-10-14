@@ -72,7 +72,7 @@ function renderDiagnostics() {
     else if (['offer-sent', 'offer-received', 'answer-sent', 'answer-accepted'].includes(stage)) key = 'debug.network';
     else key = 'debug.introduction';
   }
-  const text = `${attempt ? phrase('debug.attempt', { n: attempt.attempt }) + '. ' : ''}${phrase(key)}`;
+  const text = attempt ? phrase('debug.attempt', { n: attempt.attempt, status: phrase(key) }) : phrase(key);
   if ($('connection-progress').textContent !== text) $('connection-progress').textContent = text;
 }
 
