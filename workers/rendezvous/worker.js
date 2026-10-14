@@ -40,8 +40,9 @@
 // rendezvous to try the tool at all, so localhost is let in on any port.
 import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, roomName, validPublication, validScope } from "./discovery.js";
 import { Broadcast } from "./broadcast.js";
+import { Inbox } from "./inbox.js";
 
-export { Broadcast, Discovery };
+export { Broadcast, Discovery, Inbox };
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
 // (see the `preview` job in .github/workflows/build.yml), at
 // https://pr-<n>.abox-preview.pages.dev, and the QA suite is run against it -
@@ -57,7 +58,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/") {
       return new Response(
-        "The rendezvous for abox.tools/share-text/, remote-camera/, and walkie-talkie/. "
+        "The rendezvous for abox.tools/share-text/, remote-camera/, walkie-talkie/, and voice-oncall/. "
         + "It introduces browsers to each other and never sees what they exchange.\n",
         { headers: { "content-type": "text/plain; charset=utf-8" } },
       );
@@ -75,10 +76,24 @@ export default {
       headers.delete(DISCOVERY_SCOPE_HEADER);
       return env.BROADCASTS.get(env.BROADCASTS.idFromName(broadcast[1])).fetch(new Request(request, { headers }));
     }
+    const inbox = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/);
+    if (inbox) {
+      if (url.search) return new Response("unexpected parameters", { status: 400 });
+      if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
+      if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
+      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      if (!knock.success) return new Response("too many connections from this address", { status: 429 });
+      const scope = await discoveryScope(request, "voice-oncall");
+      const headers = new Headers(request.headers);
+      headers.delete(DISCOVERY_SCOPE_HEADER);
+      if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
+      return env.INBOXES.get(env.INBOXES.idFromName(inbox[1])).fetch(new Request(request, { headers }));
+    }
     const room = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/);
     if (room || url.pathname === "/discover") {
       const tool = rendezvousTool(url.searchParams.get("tool"));
       if (tool === null) return new Response("unknown tool", { status: 400 });
+      if (room && tool === "voice-oncall") return new Response("not found", { status: 404 });
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
       }

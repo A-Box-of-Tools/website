@@ -2,14 +2,23 @@
 
 import { CODE_PATTERN } from './room-names.js';
 
-export function cleanShares(list) {
+export function cleanShares(list, tool = 'share-text') {
   if (!Array.isArray(list)) return [];
   const seen = new Set();
   const result = [];
   for (const entry of list.slice(0, 64)) {
     if (entry?.local !== true || typeof entry.code !== 'string' || !CODE_PATTERN.test(entry.code) || seen.has(entry.code)) continue;
-    seen.add(entry.code);
-    result.push({ code: entry.code, local: true });
+    if (tool === 'voice-oncall') {
+      if (!/^[a-f0-9]{64}$/.test(entry.code) || typeof entry.name !== 'string'
+          || !entry.name.trim() || entry.name.length > 80 || /[\u0000-\u001f\u007f-\u009f]/.test(entry.name)
+          || typeof entry.locked !== 'boolean') continue;
+      seen.add(entry.code);
+      result.push({ code: entry.code, local: true,
+        name: entry.name.trim(), locked: entry.locked });
+    } else {
+      seen.add(entry.code);
+      result.push({ code: entry.code, local: true });
+    }
   }
   return result;
 }
@@ -94,7 +103,7 @@ export function watchDiscovery(url, handlers, timers = {}) {
       namespaceReady = true;
       cancel(deadline);
       if (newlyReady && desired !== null) sendPublication();
-      const shares = cleanShares(message.list);
+      const shares = cleanShares(message.list, tool);
       handlers.list(shares);
       handlers.status('ready');
       if (desired !== null) {

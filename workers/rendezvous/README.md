@@ -1,7 +1,7 @@
 # The rendezvous
 
 The one server component anything on this site has. `/share-text/`,
-`/remote-camera/`, and `/walkie-talkie/` connect browsers directly over WebRTC.
+`/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect browsers directly over WebRTC.
 Text and files, camera frames, and voice stay on the peer connection. A direct
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
@@ -10,14 +10,16 @@ who typed it. This Worker carries that introduction and lists opted-in local
 link names, never the shared text or files.
 
 One Room Durable Object per text/camera tool and code word, a Discovery Durable
-Object per tool, public-address-and-origin group, and a separate Broadcast
-Durable Object per voice invitation. No application storage is ever written;
+Object per tool, public-address-and-origin group, and separate Broadcast and
+Inbox Durable Objects per voice invitation. No application storage is ever written;
 room authority and directory entries live in socket attachments. Text/camera
 rooms end when their sharer disconnects. Voice listeners can remain parked
 while their host reconnects; their room disappears when its last socket leaves.
 What it can see: that an invitation or code word is in use, when peers come
 and go, their IP addresses, and negotiation metadata. The voice object also
-validates anonymous capabilities and handles the host's talking status.
+validates anonymous capabilities and handles talking status. Voice Oncall also
+carries room and participant names, password-derived admission credentials,
+and individual moderation, never microphone audio.
 What it cannot see: shared text or files, camera frames, or voice. Those
 travel the encrypted peer connection. Text/camera admission decisions,
 including the knock on a private share, also stay on that peer channel.
@@ -59,8 +61,9 @@ because nearly every feature the tool has gained since the first version has
 been page-side. The protocol carries introductions, the relay credential
 below and the local discovery directory.
 
-Voice uses the same origin check and address connection limit, with neither
-discovery nor relay credentials. Its signaling service never carries audio,
+Walkie-Talkie uses the same origin check and address connection limit, with neither
+discovery nor relay credentials. Voice Oncall adds the existing nearby directory
+under a separate namespace. The voice signaling services never carry audio,
 and the page does not configure STUN or TURN. Host-only ICE candidates can
 include globally routable interface addresses, especially IPv6: a candidate
 type describes how an address was obtained, not a physical LAN boundary.
@@ -86,6 +89,17 @@ an existing text or camera room. The usual manual deploy applies the new
 binding and class. There are no new secrets, relay keys, or storage records to
 configure. An older worker has no `/broadcast/` route, so the page cannot pair
 until that deployment has happened.
+
+### The Voice Oncall migration
+
+Voice Oncall requires `INBOXES`, the exported `Inbox` class and migration `v4`
+with `new_sqlite_classes = ["Inbox"]`. Deploy the worker before its static page.
+Keep the earlier bindings and migrations unchanged. `/inbox/<64hex>` has the
+same origin and connection-rate gates as `/broadcast/`, and its capabilities
+enter the first secure message rather than its URL. Discovery uses
+`tool=voice-oncall`; its private lease check asks `INBOXES` for trusted name and
+password-required metadata before publishing either. No new service secret or
+application storage is required.
 
 ### What local discovery means
 
@@ -121,8 +135,10 @@ link-only sharing. Names are visible to the group, so Private stays on by
 default. Choosing a name opens consent; it does not initiate a peer
 connection or override admission.
 
-The directory contains only codes and `local: true`, never text, file names,
-file sizes or file bytes. Its state is held in WebSocket attachments while
+Text/camera directory entries contain only codes and `local: true`, never text,
+file names, file sizes or file bytes. Voice Oncall entries additionally contain
+a bounded room name and password-required flag, verified against the live host's
+lease. Directory state is held in WebSocket attachments while
 the sockets are open, with no directory records written to Durable Object
 storage. Cloudflare's seven-day connection logging is unchanged; leases are
 message payloads and never put in URLs or logged by the worker.
@@ -281,3 +297,43 @@ outage need not tear it down. Wi-Fi isolation, firewalls, VPNs, and browser
 policies can still prevent a direct connection. The absence of STUN/TURN and
 the use of host-only candidates do not prove that two devices share a physical
 LAN, and neither the worker nor the page claims that proof.
+
+## The Voice Oncall protocol
+
+The Inbox transport reverses the voice media directions. The host creates
+receive-only offers, and each participant answers send-only audio. Participants
+never receive other participants' audio. Setup uses flat audio SDP and host ICE
+frames with authoritative participant, generation and connection identifiers,
+as in Broadcast, without a STUN or TURN fallback.
+
+- `/inbox/<64hex>` addresses only `INBOXES`. The code is SHA-256 of a random
+  43-character host capability, whose digest must match before host admission.
+- The first frame is host `auth` with `key`, `roomName` and optional
+  `passwordProof`, or sender `auth` with its separate stable random `key`,
+  self-chosen `name` and `passwordProof`. The browser derives the proof with
+  PBKDF2 SHA-256, 120,000 iterations, 32 output bytes and the room-specific
+  salt `voice-inbox:<code>`. It is an access credential sent inside WSS, not
+  plain password text or an invitation query parameter. The Inbox stores its
+  digest and rejects a mismatch before forwarding any voice setup.
+- A sender's public identity is SHA-256 of its retained capability. Reconnection
+  therefore keeps moderation attached to the same session. A new browser
+  identity is a new session; this is not an account or permanent person ban.
+- A host's `moderate` command sets a participant's mute state. The worker
+  reports it to both sides; the normal sender stops transmission. The host
+  additionally silences its own per-stream gain, which remains the authority
+  when a sender ignores the message. `kick` removes the peer and records the
+  session block. Generation checks prevent stale host commands taking effect.
+- Socket attachments carry a compact, bounded moderation history without
+  storage writes. Unmute can free a mute-only entry. When that history is full,
+  `moderation-full` leaves the room active and reports that further remembered
+  moderation was refused. Ending the room and creating another resets history.
+- Host-ready includes a private discovery lease. The page publishes code and
+  lease on `/discover?tool=voice-oncall`; the directory obtains only trusted
+  room name and password-required flag through its binding-only lease check.
+  Host withdrawal cancels matching pending or verified listings. Password
+  credentials and participant identities never enter directory snapshots.
+- Up to ten participants can be admitted. Wrong passwords and kicked sessions
+  are terminal for that attempt. Authorized senders can remain parked during
+  host absence, probing at the one-second foreground target. End and Leave
+  stop retries; raw ping/pong maintains idle signaling. Socket messages,
+  pending authentication, negotiation and rate bookkeeping remain bounded.

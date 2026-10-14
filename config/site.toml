@@ -338,7 +338,7 @@ support_heading = "Free, with your support."
 
 [[hub.guarantees]]
 title = "Your files are processed on your device"
-body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files and Remote Camera deliberately send content to another browser; their own pages explain the connection."
+body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files, Remote Camera and the live voice tools deliberately send content to another browser; their own pages explain the connection."
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
@@ -388,8 +388,8 @@ order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "i
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 short_name = "PDF &amp; audio"
-note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio", "walkie-talkie"]
+note = "Edit documents and recordings locally, or open a direct voice channel with nearby people."
+order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio", "walkie-talkie", "voice-oncall"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -581,6 +581,7 @@ order = [
   "share-text-between-devices",
   "watch-camera-from-another-device",
   "broadcast-voice-on-a-local-network",
+  "receive-voice-from-nearby-devices",
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
@@ -1041,7 +1042,7 @@ licence = """
 summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Remote Camera and Local Walkie-Talkie deliberately transmit content between browsers. Their public rendezvous carries connection setup, status and discovery metadata, not shared content. Local Walkie-Talkie hosts directly in the browser, with internet pairing and direct WebRTC voice. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
+Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. Their public rendezvous carries connection setup, status and discovery metadata, not shared content. The voice tools host directly in the browser, with internet pairing and direct WebRTC audio. Voice Oncall adds nearby discovery, participant names, password-derived admission credentials and moderation status. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
 
 The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
 
