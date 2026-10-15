@@ -40,11 +40,11 @@ function sourceStream(audio = false) {
   return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
-function fixture(t, { diagnostics = null } = {}) {
+function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
   const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [], viewers = [], bandwidth = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
-    constructor(url) { super(); this.url = url; sockets.push(this); queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
+    constructor(url) { super(); this.url = url; sockets.push(this); if (socketOpen) queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
     send(value) { assert.equal(this.readyState, 1); this.sent.push(value === 'ping' ? value : JSON.parse(value)); }
     receive(value) { this.emit('message', { data: JSON.stringify(value) }); }
     pong() { this.emit('message', { data: 'pong' }); }
@@ -1064,16 +1064,75 @@ test('the shared socket fences replaced callbacks and owns camera heartbeat clea
   assert.equal(original.video.stops, 1); assert.equal(next.video.stops, 1);
 });
 
-function diagnosticFixture(t) {
+function diagnosticFixture(t, options = {}) {
   let now = 0;
   const diagnostics = createDiagnostics({
     version: '0123456789', userAgent: 'Mozilla/5.0 (Android) Chrome/131.0.0.0', now: () => now,
   });
   return {
-    ...fixture(t, { diagnostics }), diagnostics,
+    ...fixture(t, { ...options, diagnostics }), diagnostics,
     advance(ms) { now += ms; t.mock.timers.tick(ms); },
     attempts() { return diagnostics.report().attempts; },
   };
+}
+
+for (const role of ['camera', 'viewer']) {
+  for (const [failure, key, outcome] of [
+    ['error', 'connection.server-failed', 'socket-error'],
+    ['refused', 'connection.not-found', 'socket-closed'],
+    ['timeout', 'connection.server-failed', 'timeout'],
+  ]) {
+    test(`${role} opening ${failure} retains a report before any peer is introduced`, async t => {
+      t.mock.timers.enable({ apis: ['setTimeout'] });
+      const f = diagnosticFixture(t, { socketOpen: false });
+      assert.deepEqual(f.attempts(), []);
+      const opening = role === 'camera' ? f.session.startHost(sourceStream(), CODE) : f.session.connect(CODE, 'Private opening note');
+      const result = opening.catch(error => error.message);
+      if (failure === 'error') { f.advance(25); f.sockets[0].emit('error'); }
+      else if (failure === 'refused') {
+        f.sockets[0].readyState = 1; f.sockets[0].emit('open'); await opening;
+        f.advance(25); f.sockets[0].drop(4404);
+      }
+      else f.advance(20000);
+      assert.equal(await result, failure === 'refused' ? undefined : key);
+      assert.equal(f.states.at(-1), key);
+      const report = f.attempts()[0];
+      assert.equal(f.attempts().length, 1); assert.equal(f.peers.length, 0);
+      assert.equal(report.role, role === 'camera' ? 'sharer' : 'receiver');
+      assert.equal(report.stage, failure === 'refused' ? 'server-open' : 'opening'); assert.equal(report.outcome, outcome);
+      assert.equal(report.finished, true); assert.equal(report.elapsedMs, failure === 'timeout' ? 20000 : 25);
+      assert.equal(report.socket.state, 'closed');
+      assert.equal(report.socket.closeCode, failure === 'refused' ? 4404 : null);
+      assert.equal(report.states.connection, null); assert.equal(f.session.role, null);
+      if (failure === 'error') assert.deepEqual(report.errors.map(({ operation, code }) => ({ operation, code })), [
+        { operation: 'websocket', code: 'NetworkError' },
+      ]);
+      const frozen = f.diagnostics.report(), text = JSON.stringify(frozen);
+      assert.ok(!text.includes(CODE)); assert.ok(!text.includes('Private opening note'));
+      f.sockets[0].emit('open'); f.sockets[0].emit('error'); f.session.stop();
+      f.advance(60000); await settle();
+      assert.deepEqual(f.diagnostics.report(), frozen);
+    });
+  }
+
+  test(`${role} opening evidence transfers to its first peer without a duplicate attempt`, async t => {
+    const f = diagnosticFixture(t);
+    assert.deepEqual(f.attempts(), []);
+    if (role === 'camera') await f.session.startHost(sourceStream(), CODE);
+    else await f.session.connect(CODE, 'Private viewer note');
+    const trace = f.session.openingTrace;
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].stage, 'server-open');
+    if (role === 'camera') signal(f.sockets[0], 'v:first', { dial: true });
+    else f.sockets[0].receive({ type: 'ready' });
+    await settle();
+    const entry = f.session.peers.get(role === 'camera' ? 'v:first' : 'viewer');
+    assert.equal(entry.trace, trace); assert.equal(f.session.openingTrace, null);
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].stage, role === 'camera' ? 'offer-sent' : 'room-ready');
+    assert.equal(f.attempts()[0].milestonesMs['server-open'], 0);
+    assert.equal(f.attempts()[0].milestonesMs['room-ready'], 0);
+    f.session.stop();
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].outcome, 'stopped');
+  });
 }
 
 test('a camera handshake timeout retains candidate and native state evidence before cleanup', async (t) => {

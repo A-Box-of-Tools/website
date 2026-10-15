@@ -28,6 +28,7 @@ export class CameraSession {
     this.onSignaling = onSignaling;
     this.visible = visible;
     this.diagnostics = diagnostics;
+    this.openingTrace = null;
     this.signalingLost = false;
     this.signalingRetry = null;
     this.revision = 0;
@@ -122,10 +123,20 @@ export class CameraSession {
     const revision = this.revision;
     this.code = code;
     this.discoverable = discoverable;
+    if (!recovering) this.openingTrace = this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local') ?? null;
     if (!recovering) this.state('connection.starting');
     return new Promise((resolve, reject) => {
       let settled = false, opened = false;
-      const socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
+      let socket;
+      try {
+        socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
+      } catch (error) {
+        this.openingTrace?.error('websocket', error);
+        this.openingTrace?.socket('closed');
+        this.openingTrace?.finish('socket-error');
+        this.openingTrace = null;
+        throw error;
+      }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
       const finish = () => {
@@ -144,12 +155,14 @@ export class CameraSession {
         this.onSignaling();
         resolve();
       };
-      const fail = (key) => {
+      const fail = (key, reason = 'signaling-error') => {
         if (!current()) return;
         pairing.clear('opening');
         this.socketDeadline = null;
         this.cancelOpen = null;
         this.detachSocket(socket);
+        this.openingTrace?.finish(reason);
+        this.openingTrace = null;
         if (recovering) {
           if (!settled) {
             this.onDiscovery(null);
@@ -162,13 +175,15 @@ export class CameraSession {
           if (!settled) { settled = true; reject(new Error(key)); }
         }
       };
-      this.socketDeadline = pairing.after('opening', CONNECT_TIMEOUT, () => fail('connection.server-failed'));
+      this.socketDeadline = pairing.after('opening', CONNECT_TIMEOUT, () => fail('connection.server-failed', 'timeout'));
       this.cancelOpen = () => {
         if (!settled) { settled = true; reject(new Error('connection.stopped')); }
       };
       pairing.listen({
         open: () => {
           opened = true;
+          this.openingTrace?.socket('open');
+          this.openingTrace?.mark('server-open');
           for (const entry of this.peers.values()) entry.trace?.socket('open');
           this.keepalive = pairing.every('heartbeat', 25000, () => {
             if (socket.readyState === 1 && !pairing.send('ping')) fail('connection.server-failed');
@@ -180,13 +195,15 @@ export class CameraSession {
           } else finish();
         },
         error: () => {
+          this.openingTrace?.error('websocket', { name: 'NetworkError' });
           for (const entry of this.peers.values()) entry.trace?.error('websocket', { name: 'NetworkError' });
-          fail('connection.server-failed');
+          fail('connection.server-failed', 'socket-error');
         },
         close: (event) => {
+          this.openingTrace?.socket('closed', event.code);
           for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
           const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' };
-          fail(reasons[event.code] ?? 'connection.server-failed');
+          fail(reasons[event.code] ?? 'connection.server-failed', 'socket-closed');
         },
         message: (event) => {
           if (event.data === 'pong') { if (recovering && opened) finish(); return; }
@@ -212,6 +229,7 @@ export class CameraSession {
 
   detachSocket(socket) {
     if (this.socket !== socket) return;
+    this.openingTrace?.socket('closed');
     for (const entry of this.peers.values()) entry.trace?.socket('closed');
     const pairing = this.pairing;
     this.socket = null;
@@ -411,7 +429,10 @@ export class CameraSession {
 
   newPeer(id) {
     const pc = new this.PeerConnection(rtcConfig(true));
-    const trace = this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local');
+    // The invitation's opening evidence becomes the first peer's evidence,
+    // rather than adding an otherwise duplicate attempt after admission.
+    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local');
+    this.openingTrace = null;
     const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], pending: false, approved: false, timers: new Set() };
     this.peers.set(id, entry);
     trace?.attach(pc);
@@ -785,6 +806,8 @@ export class CameraSession {
     const reason = key === 'connection.stopped' ? 'stopped'
       : key === 'viewer.denied' ? 'denied'
         : ['connection.ended', 'camera.ended', 'camera.switch-ended', 'camera.paused'].includes(key) ? 'ended' : 'signaling-error';
+    this.openingTrace?.finish(reason);
+    this.openingTrace = null;
     for (const entry of this.peers.values()) entry.trace?.finish(reason);
     // The encrypted control remains authoritative when the room socket is lost.
     if (role === 'camera' && key === 'connection.stopped') {
