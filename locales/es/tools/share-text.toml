@@ -13,7 +13,7 @@ tagline = "Lo compartido vive en esta pestaña abierta. Los lectores lo reciben 
 title = "Compartir texto y archivos entre dispositivos &mdash; directo, cifrado, sin guardar nada"
 description = "Envía texto o archivos de un navegador a otro por una conexión directa y cifrada. Un nombre de enlace que se puede decir en voz alta, actualización en vivo mientras escribes, aprobación por lector - y nada guardado en ningún servidor, nunca. Gratis y sin registro."
 og_title = "Algo compartido que se acaba en cuanto cierras la pestaña"
-og_description = "El texto y los archivos viajan cifrados, directos de tu navegador al del lector. El servidor solo os presenta y nunca ve el contenido. Sin almacenamiento, sin historial, sin cuenta: cierra la pestaña y desaparece, en todas partes."
+og_description = "El texto y los archivos viajan cifrados, directos de tu navegador al del lector. El servidor solo os presenta y nunca ve el contenido. Sin almacenamiento, sin historial, sin cuenta. Cerrar la pestaña elimina la fuente; la copia mostrada se borra cuando se detecta la desconexión."
 og_image_alt = "Compartir texto y archivos - directo de navegador a navegador, sin guardar nada"
 
 pledge = """
@@ -25,8 +25,10 @@ pledge = """
     de enlace locales visibles en la lista. No guarda texto ni archivos
     compartidos, y el contenido nunca pasa por él. Los nombres de la lista
     duran solo mientras quien comparte sigue conectado. No hay historial
-    de contenido ni cuenta. Cierra esta pestaña y lo compartido se acaba en todas partes a
-    la vez, también en las páginas abiertas de los lectores."""
+    de contenido ni cuenta. Al cerrar esta pestaña, la fuente desaparece.
+    Las páginas de los lectores borran la copia mostrada al recibir el aviso
+    de finalización o detectar un fallo de conexión. El contenido que ya
+    hayan copiado o descargado sigue siendo suyo."""
 
 live_hint = """
       Abre las herramientas de desarrollo y mira la pestaña «Red» mientras
@@ -203,12 +205,7 @@ body = """
 
 [[howto]]
 title = "Empieza a compartir, y deja la pestaña abierta."
-body = """
- La pestaña es el servidor:
-      lo compartido está disponible mientras siga abierta y despierta, y ni
-      un momento más. Un portátil que se cierra también lo termina. Copia el
-      enlace, o simplemente di el nombre: un lector puede escribirlo como
-      <code>#name</code> al final de la dirección de esta página. Para el modo Red local, copia el enlace: lleva <code>?local=1</code> antes del nombre. Si el lector usa otro modo, se le pregunta antes de reintentar con el tuyo."""
+body = """La pestaña es el servidor. Mantenla abierta y el dispositivo activo para compartir sin interrupciones. Una conexión que funciona se conserva al ocultar la página, pero el teléfono o un portátil en reposo pueden suspender el navegador. Al volver, se intenta recuperar la misma compartición. Detenerla impide la reanudación automática. Copia el enlace o comunica el nombre: el lector puede añadir <code>#name</code> a la dirección de esta página. Para Red local, copia el enlace con <code>?local=1</code> antes del nombre. Cambiar el modo de conexión requiere que el lector lo elija."""
 
 [[howto]]
 title = "Al otro lado: primero consentir, después llamar."
@@ -265,13 +262,7 @@ a = """
 
 [[faq]]
 q = "¿Qué pasa cuando cierro la pestaña?"
-a = """
-        Lo compartido se acaba en todas partes a la vez. El enlace deja de
-        funcionar en un par de segundos, y los lectores que aún tengan la
-        página abierta ven desaparecer su copia, con una nota de que la
-        compartición terminó. No es una petición de borrado a un servidor:
-        no hay copia en servidor que borrar. La pestaña era el único lugar
-        donde lo compartido existía, y cerrarla es toda la limpieza."""
+a = """La compartición termina cuando desaparece su única fuente. Los lectores borran la copia mostrada cuando detectan el final o un fallo de conexión. Detener la compartición envía un aviso explícito de finalización; una pérdida temporal de red puede activar un número limitado de intentos de recuperación. No hay ninguna copia en el servidor que borrar. Lo que el lector ya haya copiado o descargado seguirá en su poder."""
 
 [[faq]]
 q = "¿Puede un lector quedarse con lo que compartí?"

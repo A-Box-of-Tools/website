@@ -8,8 +8,10 @@ another's audio and the host can silence or remove one without affecting the res
 The host opens a named pager, optionally protects it with a password, and listens
 without microphone permission. Participants find it in nearby discovery or open
 its invitation, enter the password when required, and Connect without supplying a
-name. Their microphone starts disabled until they hold Talk or enable the talking toggle. Hiding or
-leaving a participant page releases capture. No account, installation, Python
+name. Their microphone starts disabled until they hold Talk or enable the talking
+toggle. A physical hold releases on blur or hiding; explicit hands-free speech
+and healthy connections can continue in the background while the browser allows.
+No account, installation, Python
 helper, recording, STUN server or audio relay is involved.
 
 The interface calls the listening endpoint a pager. Internal inbox and room
@@ -64,8 +66,22 @@ The host watches playback interruptions and can restore its existing audio
 context without rebuilding the room or requesting a microphone. Browsers that
 offer AudioSession receive a temporary playback hint; ending the host restores
 the previous hint. A native source-track mute or audio-session interruption
-releases a participant's capture and requires an explicit muted Resume, rather
-than allowing a latched transmission to restart when the device recovers.
+clears talking while retaining the participant's connection and live track.
+Recovery never restores the previous hands-free transmission. An ended
+microphone track can be replaced within the same pairing, automatically once on
+returning to the foreground or through Resume microphone. Replacement starts
+with transmission disabled and retains host moderation. Sources request the
+optional play-and-record audio-session hint and restore its previous value when
+the last owning session stops, provided another owner has not changed it.
+
+A pagehide notification releases media; a subsequent pageshow attempts to
+restore the same pager or caller identity, with caller transmission off. Browser restrictions can
+require Resume microphone or Restore sound. Healthy hidden pages are not
+deliberately disconnected, but screen lock, browser suspension and operating-
+system interruptions can still stop audio or connections. Locked-screen
+operation is not guaranteed. Disconnect and End cancel recovery and stop late
+microphone grants.
+
 The room retains bounded
 moderation history on socket attachments without persistent storage. Creating a
 new identity can bypass a session block, so the page does not promise a permanent
@@ -86,5 +102,7 @@ JavaScript suites; do not run the full suites locally. Browser acceptance should
 exercise protected and open discovery, host receive-only behavior without capture,
 connecting without a caller name, several synthetic sender streams, distinct
 caller labels, wrong-password refusal, individual mute and
-removal, reconnect moderation, End/Leave and late microphone cleanup. Physical
-phones and Wi-Fi routes still need separate acceptance.
+removal, reconnect moderation, hidden hands-free continuity, hold release,
+microphone interruptions, silent capture replacement, End/Disconnect and late
+microphone cleanup. Simulated lifecycle events do not prove locked-screen
+continuity; physical phones and Wi-Fi routes need separate acceptance.

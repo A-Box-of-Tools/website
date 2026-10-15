@@ -37,12 +37,12 @@
     <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
     <div id="wt-transmit" hidden>
       <button class="wt-talk" type="button" id="wt-hold" aria-pressed="false" aria-describedby="wt-talk-help">Hold to talk</button>
-      <p class="wt-note wt-talk-help" id="wt-talk-help">Hold this button or the space bar to speak. Release to listen. For hands-free control, use Start talking below.</p>
+      <p class="wt-note wt-talk-help" id="wt-talk-help">Hold this button or the space bar to speak. Release to stop. For hands-free control, use Start talking below.</p>
       <div class="wt-hands-free" id="wt-hands-free">
         <button type="button" id="wt-toggle" aria-pressed="false">Start talking</button>
         <div class="wt-live-banner" id="wt-live-banner" hidden>
           <strong>Microphone on</strong>
-          <p>Hands-free talking is on. Choose Stop talking when you have finished.</p>
+          <p>Hands-free talking is on, including in the background when your browser allows it. Choose Stop talking when you have finished.</p>
         </div>
       </div>
       <div class="wt-host-actions">
@@ -50,6 +50,7 @@
         <button type="button" class="wt-secondary" id="wt-end">End broadcast</button>
       </div>
       <p class="wt-note" id="wt-microphone-note" hidden>The microphone is muted. Unmute it before talking.</p>
+      <button type="button" id="wt-resume-microphone" hidden>Resume microphone</button>
     </div>
 
     <section class="wt-invite" id="wt-invite" hidden aria-labelledby="wt-invite-title">
@@ -68,7 +69,7 @@
         <p class="wt-note" id="wt-qr-error" hidden>The QR code is unavailable. Use the listener link instead.</p>
       </div>
     </section>
-    <p class="wt-note">Locking the screen or hiding this tab pauses the microphone. Return to reconnect the same channel with talking off. If the browser needs a tap, choose Resume channel. End broadcast closes this channel; the next start creates a new invitation.</p>
+    <p class="wt-note">This page keeps your channel connected when hidden or locked, and hands-free talking continues while your browser allows it. Phones can still pause audio or suspend the page. After an interruption, return to the same tab; recovery keeps the invitation and leaves talking off. Use Resume microphone or Resume channel if shown. End broadcast closes this channel; the next start creates a new invitation.</p>
   </div>
 
   <div id="wt-listener" hidden>
@@ -86,7 +87,7 @@
 
   <details class="wt-details">
     <summary>How devices connect</summary>
-    <p>Opening this page asks the pairing service for live channels grouped by public IPv4 address or IPv6 subnet and website origin. Shared gateways can include strangers, and VPNs can hide devices that are physically nearby. Starting with Show this channel nearby selected shares its name and listener invitation with that group. Hiding or ending the host removes its listing.</p>
+    <p>Opening this page asks the pairing service for live channels grouped by public IPv4 address or IPv6 subnet and website origin. Shared gateways can include strangers, and VPNs can hide devices that are physically nearby. Starting with Show this channel nearby selected shares its name and listener invitation with that group. The listing stays while the host connection is alive; ending or losing that connection removes it.</p>
     <p>An internet pairing service introduces the browsers using connection metadata. Live voice is encrypted and travels directly between them. There is no audio relay or recording.</p>
     <p>Use a trusted local network where devices can reach one another. Guest Wi-Fi, device isolation, and some VPNs or firewalls may prevent a connection. This tool uses no public STUN or TURN servers.</p>
     <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
@@ -111,11 +112,14 @@
   <span data-phrase="host-ready">Channel open. Hold to talk when you are ready.</span>
   <span data-phrase="host-talking">You are broadcasting.</span>
   <span data-phrase="host-reconnecting">Pairing connection interrupted. Reconnecting…</span>
-  <span data-phrase="host-hidden">The microphone paused while this tab was hidden. Your channel will reconnect when you return, with the microphone off until you talk.</span>
+  <span data-phrase="host-hidden">The page was suspended. Your channel will reconnect when you return, with talking off until you start again.</span>
   <span data-phrase="host-resuming">Reconnecting your channel. Your microphone will stay off until you talk…</span>
   <span data-phrase="host-resume-needed">Channel paused. Choose Resume channel to reconnect. Your microphone will stay off until you talk.</span>
   <span data-phrase="start-channel">Start channel</span>
   <span data-phrase="resume-channel">Resume channel</span>
+  <span data-phrase="resume-microphone">Resume microphone</span>
+  <span data-phrase="microphone-resuming">Restoring your microphone with talking off…</span>
+  <span data-phrase="host-microphone-paused">Your microphone was interrupted. The channel remains open. Choose Resume microphone if it does not recover; talking stays off until you start again.</span>
   <span data-phrase="config-connecting">Connecting to the pairing service…</span>
   <span data-phrase="listener-connecting">Joining the channel…</span>
   <span data-phrase="listener-listening">Connected. Waiting for the host to speak.</span>
@@ -132,7 +136,7 @@
   <span data-phrase="host-count">{count} listeners connected</span>
   <span data-phrase="host-count-one">1 listener connected</span>
   <span data-phrase="hold-talk">Hold to talk</span>
-  <span data-phrase="hold-talking">Release to listen</span>
+  <span data-phrase="hold-talking">Release to stop</span>
   <span data-phrase="toggle-start">Start talking</span>
   <span data-phrase="toggle-stop">Stop talking</span>
   <span data-phrase="microphone-mute">Mute microphone</span>

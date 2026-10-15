@@ -15,7 +15,7 @@ requires_pairing = true
 lastmod = "2026-10-14"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
-description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk or hands-free speech, and screen-lock recovery with talking off."
+description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk, hands-free speech and microphone recovery within the same pairing."
 og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
@@ -59,10 +59,10 @@ title = "A listener invitation cannot control the host."
 body = " Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
 [[privacy]]
 title = "Direct reachability still depends on your network."
-body = " Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and devices awake, and try the actual devices you intend to use."
+body = " Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and try the actual devices you intend to use. Background or locked-screen operation depends on the browser and operating system and is not guaranteed."
 [[privacy]]
 title = "Temporary loss reconnects; End and Leave stop retries."
-body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Working direct audio can continue during a brief pairing-service outage. Hiding the host page or locking the screen releases its microphone and removes its nearby listing. Returning to the same tab automatically tries to restore the same channel and invitation with talking off. If the browser requires an action, choose Resume channel. Hold to talk or choose Start talking when ready to speak again. End broadcast stops the session, prevents automatic resumption and creates a new invitation on the next Start. Leave closes one listener and its retries. Background browsers, connection limits and sleeping devices can delay recovery."
+body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Healthy hidden connections and explicitly enabled hands-free speech continue while the browser allows. A physical hold releases on blur or hiding. A microphone interruption stops talking while preserving the channel; an ended microphone can be replaced on returning to the page or with Resume microphone. Recovery stays silent until you deliberately talk again. If the browser suspends the page, returning attempts to restore the same channel and invitation, with Resume channel available when an action is required. End broadcast prevents automatic resumption and creates a new invitation on the next Start. Leave closes one listener and its retries. Background timers, connection limits and sleeping devices can delay recovery."
 [[privacy]]
 title = "The website's regular scripts still run on this page."
 body = " The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
@@ -75,10 +75,10 @@ title = "Invite listeners."
 body = " Listeners can choose Join beside your channel in Nearby channels when you start with Show this channel nearby selected. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
 [[howto]]
 title = "Hold to talk or speak hands-free."
-body = " Hold the Talk button, or focus it and hold Space. Release to stop sending voice. For hands-free speech, choose Start talking; transmission continues until Stop talking. Check the displayed talking state before setting the device down. Microphone mute overrides both modes. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
+body = " Hold the Talk button, or focus it and hold Space. Release, leave the page or switch focus to release a physical hold. For hands-free speech, choose Start talking; it can continue with the page hidden while the browser allows. Choose Stop talking to stop, and check the displayed talking state before setting the device down. Microphone mute overrides both modes, and a microphone interruption clears hands-free speech. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
 [[howto]]
 title = "Recover or end the channel."
-body = " Receivers retry a temporarily missing host in place. After hiding the host page or locking its screen, return to the same tab: the page automatically tries to restore the same channel with talking off. Choose Resume channel if the browser requires an action. End broadcast prevents automatic resumption and creates a fresh invitation on the next Start; Leave closes one listener. Keep pages open and devices awake."
+body = " Receivers retry a temporarily missing host in place. If the microphone is interrupted, talking stops while the channel remains connected. Return to the page or choose Resume microphone to replace an ended microphone; then deliberately start talking again. If the page was suspended, it attempts to restore the same channel silently, with Resume channel as a fallback. End broadcast prevents automatic resumption and creates a fresh invitation on the next Start; Leave closes one listener. Keep the pages open; screen-lock continuity is not guaranteed."
 
 [[faq]]
 q = "Do I need Python or a download?"
@@ -91,13 +91,13 @@ q = "Does it work without internet?"
 a = "Internet access is required for new pairing and recovery. A healthy direct audio connection may continue during a brief internet or pairing-service outage. A cached page alone cannot introduce new devices."
 [[faq]]
 q = "Can a phone host the channel?"
-a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Keep the host page visible and the device awake. Phones can also listen without granting microphone access."
+a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Healthy connections and hands-free speech can continue with the page hidden while the browser permits. Screen lock, browser suspension or operating-system interruptions may still stop them; try your actual phone before relying on background use. Phones can also listen without granting microphone access."
 [[faq]]
 q = "How do listeners join?"
 a = "Choose Join beside a nearby channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
 [[faq]]
 q = "What happens when the host disappears?"
-a = "Receivers wait and check availability with a one-second target while active. Their mute choice stays the same. Hiding the host page or locking the screen pauses its microphone. Returning to the same tab automatically tries to restore the same channel and invitation, with Resume channel as a fallback if an action is needed. Talking stays off until the host deliberately talks again. Background timers or service connection limits can delay retries. End broadcast deliberately stops receivers and prevents automatic resumption; the next channel uses a new invitation."
+a = "Receivers wait and check availability with a one-second target while active, keeping their mute choice. Hiding a healthy page does not deliberately disconnect it. A microphone interruption clears talking and keeps the pairing; an ended microphone can be replaced with Resume microphone or on returning to the page. If the browser suspends the page, returning tries to restore the same channel and invitation, with Resume channel as a fallback. Recovery leaves talking off. Background timers or service connection limits can delay retries. End broadcast stops receivers and prevents automatic resumption; the next channel uses a new invitation."
 [[faq]]
 q = "How many listeners are supported?"
 a = "A channel admits up to ten listeners, including waiting connections. The host sends a separate audio stream to each. Actual capacity depends on its browser, device and network; ten is a limit, not a guarantee for every phone."
@@ -108,4 +108,4 @@ a = "Guest isolation, firewalls, VPN routes or browser local-network permissions
 [schema]
 category = "CommunicationApplication"
 description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and secure internet pairing."
-features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Screen-lock recovery with talking off", "Listener link and QR pairing", "No recording, STUN or TURN"]
+features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link and QR pairing", "No recording, STUN or TURN"]

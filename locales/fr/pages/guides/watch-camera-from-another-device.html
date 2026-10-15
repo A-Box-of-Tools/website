@@ -12,7 +12,7 @@
     <li><strong>Une entrée intérieure.</strong> Gardez un œil sur la porte depuis une autre pièce. Il s’agit d’un direct pendant que vous regardez, sans enregistrement ni alerte de mouvement.</li>
     <li><strong>Une inspection de bricolage.</strong> Orientez le téléphone vers un raccord sous l’évier, une vis tombée derrière un meuble ou un passage de câbles. Le portable permet de voir là où votre tête ne passe pas.</li>
   </ul>
-  <p>Gardez la page de caméra visible et le téléphone éveillé pendant chaque utilisation. Changer d’application, masquer la page ou perdre la connexion de mise en relation termine la vue. L’outil fournit une vidéo en direct sur un réseau accessible, sans relais internet pour regarder depuis ailleurs.</p>
+  <p>Pour une image plus fiable, gardez la page de caméra visible et le téléphone éveillé. La page conserve une connexion fonctionnelle lorsqu’elle est masquée, mais le navigateur du téléphone peut suspendre la capture ou la page lors d’un changement d’application ou du verrouillage de l’écran. L’outil fournit une vidéo en direct sur un réseau accessible, sans relais internet pour regarder depuis ailleurs.</p>
 </section>
 <section>
   <h2>Installer une vue pour une inspection</h2>
@@ -29,7 +29,7 @@
     <li>Choisissez un nom pour le lien de consultation ou gardez le nom aléatoire proposé. Laissez Require my approval activé pour approuver les spectateurs, ou désactivez-le pour une consultation automatique. Choisissez ensuite Start camera. Le navigateur sélectionne la caméra initiale.</li>
     <li>Autorisez l’accès à la caméra. La page demande uniquement la vidéo.</li>
   </ol>
-  <p>L’aperçu local apparaît avec le lien, le code choisi et un code QR. Aucune vidéo n’est encore envoyée. Gardez la page visible et l’appareil éveillé ; quitter la page arrête la capture. Arrêtez avant de modifier le nom du lien. Désactivez la publication dans la liste avant de commencer si vous souhaitez inviter uniquement par lien. Si plusieurs caméras sont proposées, le sélecteur Camera apparaît après l’autorisation. Un changement conserve le lien et la connexion du spectateur ; une courte pause est possible si l’appareil doit d’abord libérer l’ancienne caméra.</p>
+  <p>L’aperçu local apparaît avec le lien, le code choisi et un code QR. Aucune vidéo n’est encore envoyée. Gardez la page visible et l’appareil éveillé pour une capture fiable. Arrêtez avant de modifier le nom du lien. Désactivez la publication dans la liste avant de commencer si vous souhaitez inviter uniquement par lien. Si plusieurs caméras sont proposées, le sélecteur Camera apparaît après l’autorisation. Un changement conserve le lien et la connexion du spectateur ; une courte pause est possible si l’appareil doit d’abord libérer l’ancienne caméra.</p>
 </section>
 <section>
   <h2>Connecter le spectateur et l’approuver</h2>
@@ -41,8 +41,12 @@
   <p>La note n’est pas une identité vérifiée. Reconnaissez la personne et la demande attendue avant d’approuver. L’association échange des adresses réseau même avant l’approbation ; le réglage décide si une action du propriétaire est requise avant la vidéo. Sans approbation, toute personne qui connaît le lien ou trouve la caméra dans la liste peut regarder quand elle est libre. Une modification du réglage concerne les nouvelles demandes ; un spectateur déjà connecté le reste. Un seul reçoit la vidéo à la fois. Si la lecture est en pause, choisissez Play live video ; Full screen agrandit la vue si le navigateur le permet.</p>
 </section>
 <section>
+  <h2>Revenir après un verrouillage ou une interruption</h2>
+  <p>À votre retour, la page essaie de continuer avec le même lien et la caméra choisie. Si elle n’y parvient pas, choisissez Resume camera ; le navigateur peut demander à nouveau l’accès à la caméra. Le spectateur reste approuvé tant que la connexion d’origine subsiste. Si la connexion de salle a été perdue, il doit se reconnecter et recevoir une nouvelle approbation lorsque Require my approval est activé. La capture en arrière-plan sur un téléphone verrouillé n’est pas garantie.</p>
+</section>
+<section>
   <h2>Arrêter à la fin</h2>
-  <p>Stop camera and end the link libère la capture et ferme l’invitation. Masquer ou fermer la page source fait de même. Disconnect côté spectateur efface le direct, tandis que la source conserve un aperçu local pour une autre demande.</p>
+  <p>Stop camera and end the link libère la capture et ferme l’invitation. Revenir à la page après Stop ne la redémarre pas. Fermer la page source termine la session ; la masquer seule conserve une connexion fonctionnelle. Disconnect côté spectateur efface le direct, tandis que la source conserve un aperçu local pour une autre demande.</p>
   <p>Une autorisation de caméra accordée après Stop est immédiatement libérée. Redémarrer utilise le nom du champ de lien ; New random name crée une nouvelle invitation. Terminer la session arrête les vidéos futures, mais un spectateur peut conserver ce qu’il a lui-même capturé sur son écran.</p>
 </section>
 <section>
@@ -52,7 +56,7 @@
 </section>
 <section>
   <h2>Ce que voit le service de mise en relation</h2>
-  <p>Ouvrir la page crée un WebSocket de découverte vers le rendezvous. Démarrer, connecter ou choisir une caméra dans la liste ajoute un WebSocket de salle. La connexion reste ouverte pendant la session et sa perte termine la session. Le service voit le code, les adresses IP, les horaires ainsi que les descriptions et candidats WebRTC. Les messages de configuration lui sont visibles ; la vidéo et la note du spectateur passent par la connexion chiffrée entre appareils.</p>
+  <p>Ouvrir la page crée un WebSocket de découverte vers le rendezvous. Démarrer, connecter ou choisir une caméra dans la liste ajoute un WebSocket de salle. La connexion reste ouverte pendant la session. Sa perte termine la connexion vidéo actuelle ; la source conserve le lien pour Resume camera. Le service voit le code, les adresses IP, les horaires ainsi que les descriptions et candidats WebRTC. Les messages de configuration lui sont visibles ; la vidéo et la note du spectateur passent par la connexion chiffrée entre appareils.</p>
   <p>La découverte regroupe les noms des caméras volontairement publiées selon l’adresse IPv4 publique ou le préfixe IPv6 /64 vu par le service et l’adresse du site. Cela peut inclure des inconnus derrière des VPN ou réseaux d’opérateurs partagés, et omettre des caméras proches. Choisir un nom demande immédiatement une connexion et échange les adresses réseau. La source peut exiger l’approbation du propriétaire ou accepter automatiquement. Ouvrir un lien attend toujours Connect. Les salles et listes existent seulement sur des connexions ouvertes. Cloudflare conserve sept jours de journaux de connexion contenant des métadonnées, jamais le contenu des messages. Les scripts publicitaires habituels peuvent lire l’adresse de la page, y compris le code caméra dans son fragment. Un code autorise une demande ; l’approbation côté source reste donc essentielle.</p>
   <p>C’est une vue de caméra dans le navigateur : elle n’a ni microphone ni fonction d’enregistrement et n’installe pas de webcam système pour les autres applications.</p>
 </section>

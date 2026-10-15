@@ -12,7 +12,7 @@
     <li><strong>An indoor entryway.</strong> Keep an eye on the front door from another room. This is a live view while you watch, with no recording or motion alerts.</li>
     <li><strong>DIY inspections.</strong> Aim a phone at a pipe joint under a sink, a dropped screw behind a cabinet, or a gap where you are routing cables. A laptop gives you a second pair of eyes where your head will not fit.</li>
   </ul>
-  <p>Keep the camera page visible and the phone awake for every use. Switching apps, hiding the page or losing the introduction connection ends the view. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
+  <p>For the most reliable view, keep the camera page visible and the phone awake. The page keeps a healthy connection when hidden, but a phone browser may pause capture or suspend the page when you switch apps or lock the screen. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
 </section>
 <section>
   <h2>Set up a DIY inspection view</h2>
@@ -29,7 +29,7 @@
     <li>Choose a viewer link name or keep the random suggestion. Leave Require my approval on to approve viewers yourself, or turn it off for automatic viewing. Then choose Start camera. Your browser chooses the initial camera.</li>
     <li>Allow camera access. The page requests video only.</li>
   </ol>
-  <p>Your local preview appears along with a viewer link, your chosen code and a QR code. Nothing is sent as video yet. Keep this page visible and the device awake; switching away stops capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only. If this browser exposes more than one camera, the Camera selector appears after permission. Choose another camera there to keep the same link and viewer connection; a brief pause may occur on devices that must release the old camera first.</p>
+  <p>Your local preview appears along with a viewer link, your chosen code and a QR code. Nothing is sent as video yet. Keep this page visible and the device awake for reliable capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only. If this browser exposes more than one camera, the Camera selector appears after permission. Choose another camera there to keep the same link and viewer connection; a brief pause may occur on devices that must release the old camera first.</p>
 </section>
 <section>
   <h2>Connect the viewer and approve it</h2>
@@ -41,8 +41,12 @@
   <p>The note is not verified identity. Recognise the person and expected request before approving. Pairing exchanges network addresses even before approval; the source approval setting controls whether an owner action is required before video. With approval off, anyone who knows the link or finds the listed camera can watch while it is free. Changes to the setting apply to new requests; an already connected viewer stays connected. One viewer receives video at a time. If playback pauses, choose Play live video; Full screen enlarges the view where supported.</p>
 </section>
 <section>
+  <h2>Return after a screen lock or interruption</h2>
+  <p>When you return, the page tries to continue with the same viewer link and chosen camera. If it cannot resume, choose Resume camera; your browser may ask for camera permission again. A viewer stays approved while the original connection survives. If the room connection was lost, the viewer must reconnect and receive fresh approval when Require my approval is on. Background capture on a locked phone is not guaranteed.</p>
+</section>
+<section>
   <h2>Stop when finished</h2>
-  <p>Stop camera and end the link releases capture and closes the invitation. Hiding or closing the source page does the same. Disconnect on the viewer clears its live view while the source retains a local preview for another request.</p>
+  <p>Stop camera and end the link releases capture and closes the invitation. Returning to the page after Stop will not restart it. Closing the source page ends the session; hiding it alone keeps a healthy connection. Disconnect on the viewer clears its live view while the source retains a local preview for another request.</p>
   <p>A camera permission granted after Stop is released immediately. Starting again uses the name in the link-name field; choose New random name for a fresh invitation. Ending a session stops future video; a viewer can still keep anything they independently captured on their own screen.</p>
 </section>
 <section>
@@ -52,7 +56,7 @@
 </section>
 <section>
   <h2>What the introduction service sees</h2>
-  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. The connection stays open during the session, and losing it ends the session. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. The connection stays open during the session. Losing it ends the current video connection; the source keeps the viewer link for Resume camera. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
   <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Choosing a listed name requests a connection immediately and exchanges network addresses. The source can require owner approval or accept a viewer automatically. Opening a viewer link still waits for Connect. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
   <p>This is a browser camera view: it has no microphone or recording feature, and it does not install a system webcam for other applications.</p>
 </section>

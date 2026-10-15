@@ -13,7 +13,7 @@ tagline = "O compartilhamento vive nesta aba aberta. Os leitores o recebem cript
 title = "Compartilhar texto e arquivos entre dispositivos &mdash; direto, criptografado, nada armazenado"
 description = "Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro."
 og_title = "Um compartilhamento que acaba assim que você fecha a aba"
-og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta: feche a aba e some, em todo lugar."
+og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta. Fechar a aba encerra a origem do compartilhamento; a cópia exibida é apagada quando a desconexão é detectada."
 og_image_alt = "Compartilhar texto e arquivos - de navegador a navegador, nada armazenado"
 
 pledge = """
@@ -25,8 +25,10 @@ pledge = """
     os nomes de link locais visíveis na lista. Não guarda texto ou arquivos
     compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta
     duram só enquanto quem compartilha continua conectado. Não há histórico
-    de conteúdo nem conta. Feche esta aba e o compartilhamento acaba em todo
-    lugar ao mesmo tempo, inclusive nas páginas abertas dos leitores."""
+    de conteúdo nem conta. Feche esta aba e a origem do compartilhamento
+    desaparece. As páginas dos leitores limpam a cópia exibida ao receber o
+    aviso de encerramento ou detectar uma falha de conexão. O conteúdo já
+    copiado ou baixado permanece com quem o recebeu."""
 
 live_hint = """
       Abra as ferramentas do desenvolvedor e observe a aba
@@ -199,12 +201,7 @@ body = """
 
 [[howto]]
 title = "Comece a compartilhar, e deixe a aba aberta."
-body = """
- A aba é o servidor: o
-      compartilhamento fica acessível enquanto ela estiver aberta e
-      acordada, e nem um instante a mais. Um notebook fechado também o
-      encerra. Copie o link, ou apenas fale o nome: um leitor pode digitá-lo
-      como <code>#name</code> no fim do endereço desta página. Para o modo Rede local, copie o link: ele contém <code>?local=1</code> antes do nome. Um leitor que usa outro modo precisa escolher antes de tentar de novo com o seu."""
+body = """A aba é o servidor. Mantenha-a aberta e o dispositivo ativo para compartilhar sem interrupções. Uma conexão que funciona continua aberta quando a página fica oculta, mas o telefone ou um notebook em suspensão pode pausar o navegador. Ao voltar, a página tenta restaurar o mesmo compartilhamento. Parar de compartilhar impede a retomada automática. Copie o link ou diga o nome: o leitor pode acrescentar <code>#name</code> ao endereço desta página. No modo Rede local, copie o link que contém <code>?local=1</code> antes do nome. Uma mudança no modo de conexão exige a escolha do leitor."""
 
 [[howto]]
 title = "Do outro lado: primeiro consentir, depois bater."
@@ -261,14 +258,7 @@ a = """
 
 [[faq]]
 q = "O que acontece quando fecho a aba?"
-a = """
-        O compartilhamento acaba em todo lugar ao mesmo tempo. O link para
-        de funcionar em um ou dois segundos, e os leitores que ainda tiverem
-        a página aberta veem a própria cópia sumir, com um aviso de que o
-        compartilhamento terminou. Não é um pedido de exclusão a um
-        servidor: não há cópia em servidor para excluir. A aba era o único
-        lugar onde o compartilhamento existia, e fechá-la é toda a limpeza
-        que existe."""
+a = """O compartilhamento termina quando sua única fonte desaparece. Os leitores limpam a cópia exibida ao detectar o fim ou uma falha na conexão. Parar de compartilhar envia um aviso explícito de encerramento; uma perda temporária de rede pode iniciar um número limitado de tentativas de recuperação. Não existe cópia no servidor para excluir. O que já foi copiado ou baixado permanece com os leitores."""
 
 [[faq]]
 q = "Um leitor pode ficar com o que compartilhei?"

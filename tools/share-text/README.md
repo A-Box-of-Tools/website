@@ -177,11 +177,13 @@ from both physical devices are needed to investigate those boundaries.
   and the switchboard forwards offers, answers and candidates. Rejections
   arrive as 4xxx close codes: 4404 nobody sharing, 4409 name taken, 4429
   full, 4410 sharer gone.
-- **End of share.** The 4410 close is the fast, authoritative signal — the
-  reader's page wipes what it was showing within a couple of seconds.
-  WebRTC's own detection (ICE consent expiry) takes ~30s and is kept only
-  as the fallback for when signalling itself is down. The wipe is courtesy,
-  not revocation: copied or downloaded content is the reader's.
+- **End of share.** Stop sharing sends an ordered `{type: 'ended'}` on each
+  current encrypted control channel before closing it. That explicit control
+  is terminal. A 4410 introduction-socket close alone can also mean temporary
+  host suspension, so a healthy direct channel is retained and checked rather
+  than declared ended. Lost peers clear their displayed content and file
+  buffers before any bounded recovery attempt. The wipe is courtesy, not
+  revocation: copied or downloaded content is the reader's.
 - **Private mode** (default). The host's first message on a new channel is
   `{private}` instead of the content; the reader's introduction returns as
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
@@ -257,11 +259,38 @@ with no key configured, or an older one that does not know the question,
 leaves the ask unanswered, and five seconds of silence becomes "no relay is
 available" — the page degrades to exactly what it was.
 
+## Foreground continuity
+
+Hiding this page does not close healthy sockets, peers or file lanes. A phone
+can still freeze or discard its browser while locked; this page cannot make
+background execution reliable. Returning to the foreground, restoring a page
+or coming back online probes the existing connection first. A host with active
+sharing intent reconnects its introduction socket under the same code. A clean
+WebSocket close is not treated as a user Stop. A name now held by another host
+ends that recovery rather than silently selecting a different code.
+
+A reader who already chose Connect can retry a lost transport in the same
+page, with at most three foreground attempts. The Local/ordinary mode and any
+explicit relay choice stay fixed; recovery never selects a relay or changes
+mode. Admission tokens remain in the reader's memory when browser storage is
+unavailable, and the same live host can recognize them after suspension. The
+reader keeps its source/formatted choice and any introduction input. A new
+connection discards partial file bytes and requires a fresh download request.
+Failed recovery leaves Check this link again for a deliberate fresh attempt.
+
+Stop sharing clears the host's admission tokens and disables host recovery.
+An explicit ended control, a refusal or an intentional legacy-file shutdown
+disables reader recovery. Closing the page does not persist recovery intent.
+If an abrupt closure or older cached host cannot deliver an ended control,
+the bounded retries distinguish it from a temporarily missing host without
+polling forever. A name remains an address, not proof of a particular person;
+Private admission still protects a new share reusing that name.
+
 ## Limits, deliberate
 
-Sixteen readers, 50k characters, 200 MB a file. The sharer's tab must stay
-open and awake: phones suspend background tabs quickly, so this is "desktop
-shares, anyone reads".
+Sixteen readers, 50k characters, 200 MB a file. Keep the sharer's tab open and
+the device awake for uninterrupted sharing. Foreground recovery helps after
+suspension; it cannot keep a phone browser executing while its screen is locked.
 
 ## Copy feedback
 

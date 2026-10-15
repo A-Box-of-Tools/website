@@ -26,7 +26,7 @@ Broadcast binding. The host authority key is never listed. Public IPv4 or
 IPv6 /64 grouping is a hint rather than proof of physical Wi-Fi membership.
 New channels offer discovery by default with an explicit checkbox; retained
 legacy channels remain link-only. Uncheck before starting for link-only use.
-End, hiding, disconnect and replacement withdraw the old listing; a restarted
+End, pagehide, disconnect and replacement withdraw the old listing; a restarted
 host publishes its new lease. Browsing creates no peer or microphone stream.
 
 The host key stays in per-tab session storage. Listener invitations carry a
@@ -47,22 +47,32 @@ retire stale peers, and failed media is negotiated again. Background timers,
 sleep and connection limits can delay retries.
 
 Host capture begins disabled. Holding Talk or enabling hands-free speech starts
-transmission, and microphone mute overrides both. Hands-free speech stays on
-until Stop talking, and the interface makes its active state visible. Page
-hiding, screen lock, End and a lost track invalidate pending capture and release
-every track, including late permission grants. A temporary hide keeps the same
-channel and invitation. Returning to the foreground automatically tries to
-restore that channel with transmission off; browser restrictions can require
-the visible Resume channel action. Restoring a channel never restores a latched
-hands-free transmission. Explicit End retires the host identity, prevents
-automatic resumption and stops listener retries.
+transmission, and microphone mute overrides both. A physical hold releases when
+the page loses focus or becomes hidden. Explicit hands-free speech and healthy
+connections continue in the background for as long as the browser permits; the
+interface makes hands-free transmission visible before the page is hidden.
+Screen lock, browser suspension and operating-system interruptions can still
+stop audio or connections, so locked-screen operation is not guaranteed.
+
+A native microphone mute or audio-session interruption clears talking while
+keeping the channel, peers and live capture track. When that track becomes
+available again, transmission stays off. An ended track can be replaced within
+the same pairing, automatically once on returning to the foreground or through
+Resume microphone. Replacement begins disabled and never restores a previous
+hands-free transmission. A pagehide notification releases capture; a subsequent
+pageshow reconnects with the retained channel identity. Resume channel remains
+available if an action is required. End invalidates pending capture, stops late permission
+grants, retires the host identity and prevents automatic resumption and listener
+retries.
 
 The worker's Broadcast binding must be deployed before the updated page can
 pair. Existing text and camera routes keep their protocol and room identifiers.
 CI owns the JS and Python suites. Build the page, use it in a browser, verify
 multiple receive-only peers, audible media, hold/release, hands-free state,
-mute, leave, foreground recovery with talking off, the Resume channel fallback,
-stale setup and deliberate End without automatic resumption. Physical-device acceptance remains
-necessary for phone autoplay, permissions, Wi-Fi isolation and capacity.
+mute, leave, hidden hands-free continuity, hold release, microphone interruption,
+silent capture replacement, the Resume channel fallback, stale setup and
+deliberate End without automatic resumption. Simulated lifecycle events do not
+prove locked-screen continuity; physical-device acceptance remains necessary
+for background audio, phone autoplay, permissions, Wi-Fi isolation and capacity.
 
 The guide is /guides/broadcast-voice-on-a-local-network/.
