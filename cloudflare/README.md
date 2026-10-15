@@ -64,7 +64,7 @@ site returns, which needs no token at all.
 | `X-Frame-Options` | `DENY` | The older spelling of the same thing, for browsers that predate `frame-ancestors` |
 | `X-Content-Type-Options` | `nosniff` | Stops the browser second-guessing a declared content type |
 | `Referrer-Policy` | `no-referrer` | Outgoing links do not carry which page you came from |
-| `Permissions-Policy` | `camera=(self), microphone=(), geolocation=(), usb=(), payment=()` | Switches off capabilities no tool here uses, so a future mistake cannot quietly start using one. `camera=(self)` is the one exception: `/qr-barcode-reader/` reads a code from a live camera, and a page cannot ask for a capability its own site has switched off. `(self)` is this origin only — no embedded frame gets it, and nothing else moved |
+| `Permissions-Policy` | `camera=(self), microphone=(self), geolocation=(), usb=(), payment=()` | Allows camera and microphone requests from this origin while disabling unused capabilities. Camera input serves QR & Barcode Reader and Remote Camera; microphone input serves Local Walkie-Talkie hosts, Voice Oncall callers and optional Remote Camera audio. Visitors still grant access through the browser's permission prompt — this header lets the tools ask, rather than granting access itself |
 
 A second rule, on `.md` addresses only, adds `X-Robots-Tag: noindex`. Every
 tool and prose page has a Markdown twin beside it at `index.md` — see
