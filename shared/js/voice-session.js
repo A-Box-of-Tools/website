@@ -4,6 +4,7 @@ const INTERVAL = 1000;
 const DEADLINE = 10000;
 const KEEPALIVE = 30000;
 const MAX_ICE = 128;
+const captureAudioSessions = new WeakMap();
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const realClock = { now: () => Date.now(),
   setTimeout: (fn, delay) => globalThis.setTimeout(fn, delay),
@@ -51,6 +52,10 @@ class VoiceSession {
     this._mediaDevices = mediaDevices;
     this._audioSession = audioSession;
     this._captureInterruption = null;
+    this._captureAudioLease = null;
+    this._captureState = this._source ? 'ready' : null;
+    this._captureRecovery = null;
+    this._captureBroken = false;
     this._clock = clock;
     const url = new URL(endpoint || origin);
     url.pathname = `/${this._inbox ? 'inbox' : 'broadcast'}/${code}`;
@@ -92,6 +97,7 @@ class VoiceSession {
       return false;
     }
     if (this._source) {
+      this._claimCaptureAudioSession();
       let stream;
       try { stream = await this._mediaDevices.getUserMedia({ audio: true, video: false }); }
       catch {
@@ -100,26 +106,23 @@ class VoiceSession {
       }
       // An old permission prompt must not resurrect a stopped or replaced session.
       if (!this._live(epoch)) {
-        stream.getTracks().forEach(track => track.stop());
+        this._stopCaptureStream(stream);
         return false;
       }
-      this._stream = stream;
-      const interrupt = () => {
-        if (this._live(epoch)) this.stop({ notify: false, state: 'error-microphone' });
-      };
-      for (const track of stream.getTracks()) {
-        track.enabled = false;
-        track.onended = track.onmute = interrupt;
+      for (const track of stream.getTracks()) track.enabled = false;
+      if (!this._usableCapture(stream)) {
+        this._stopCaptureStream(stream);
+        this._finish('error-microphone');
+        return false;
       }
-      if (stream.getAudioTracks().some(track => track.muted || track.readyState === 'ended')) interrupt();
-      if (!this._live(epoch)) return false;
+      this._installCapture(stream, epoch);
       const native = this._audioSession;
       if (typeof native?.addEventListener === 'function' && typeof native?.removeEventListener === 'function') {
-        this._captureInterruption = () => { if (native.state === 'interrupted') interrupt(); };
+        this._captureInterruption = () => { if (this._live(epoch)) this._syncCaptureState(); };
         native.addEventListener('statechange', this._captureInterruption);
       }
       // A permission grant can arrive while the operating system still owns the microphone.
-      if (native?.state === 'interrupted') interrupt();
+      if (native?.state === 'interrupted') this._finish('error-microphone');
     }
     if (!this._live(epoch)) return false;
     const started = new Promise(resolve => { this._resolveStart = resolve; });
@@ -131,7 +134,7 @@ class VoiceSession {
 
   setTalking(talking) {
     if (!this._active || !this._source || !this._stream) return;
-    if (talking && this._muted) return;
+    if (talking && (this._muted || this._captureRecovery || this._readCaptureState() !== 'ready')) return;
     // Direct audio can remain useful while the introduction socket reconnects.
     if (talking && !this._canSignal() && !this._connected().length) return;
     this._talking = Boolean(talking);
@@ -139,6 +142,156 @@ class VoiceSession {
     if (this._canSignal()) this._send({ type: 'status', generation: this._generation,
       talking: this._talking });
     this._voiceState();
+  }
+
+  _claimCaptureAudioSession() {
+    const native = this._audioSession;
+    if (!native) return;
+    try {
+      let lease = captureAudioSessions.get(native);
+      if (native.type !== 'play-and-record' && typeof native.type === 'string') {
+        const previous = native.type;
+        native.type = 'play-and-record';
+        if (native.type === 'play-and-record') {
+          lease = { previous, owners: new Set() };
+          captureAudioSessions.set(native, lease);
+        }
+      }
+      if (lease && native.type === 'play-and-record') {
+        lease.owners.add(this);
+        this._captureAudioLease = lease;
+      }
+    } catch { /* Audio-session configuration is optional. */ }
+  }
+
+  _releaseCaptureAudioSession() {
+    const native = this._audioSession;
+    const lease = this._captureAudioLease;
+    this._captureAudioLease = null;
+    if (!lease) return;
+    lease.owners.delete(this);
+    if (captureAudioSessions.get(native) !== lease || lease.owners.size) return;
+    captureAudioSessions.delete(native);
+    try {
+      if (native.type === 'play-and-record') native.type = lease.previous;
+    } catch { /* A later owner or platform decision must not prevent stopping. */ }
+  }
+
+  _stopCaptureStream(stream) {
+    for (const track of stream.getTracks()) {
+      track.onended = track.onmute = track.onunmute = null;
+      track.enabled = false;
+      track.stop();
+    }
+  }
+
+  _usableCapture(stream) {
+    const tracks = stream.getAudioTracks();
+    return tracks.length > 0 && tracks.every(track => !track.muted && track.readyState !== 'ended');
+  }
+
+  _readCaptureState() {
+    const tracks = this._stream?.getAudioTracks() || [];
+    if (this._captureBroken || !tracks.length || tracks.some(track => track.readyState === 'ended')) return 'ended';
+    if (this._audioSession?.state === 'interrupted' || tracks.some(track => track.muted)) return 'interrupted';
+    return 'ready';
+  }
+
+  _installCapture(stream, epoch) {
+    this._stream = stream;
+    const changed = () => {
+      if (this._live(epoch) && this._stream === stream) this._syncCaptureState();
+    };
+    for (const track of stream.getAudioTracks()) {
+      track.enabled = false;
+      track.onended = track.onmute = track.onunmute = changed;
+    }
+    this._captureState = this._readCaptureState();
+  }
+
+  _syncCaptureState() {
+    if (!this._active || !this._source || !this._stream) return;
+    const state = this._readCaptureState();
+    // An old track unmuting during replacement must not enable speech mid-update.
+    if (this._captureRecovery && state === 'ready') return;
+    this._captureState = state;
+    if (state !== 'ready') this.setTalking(false);
+    else this._voiceState();
+  }
+
+  resumeCapture() {
+    if (!this._active || !this._source || !this._stream) return Promise.resolve(false);
+    if (this._captureRecovery) return this._captureRecovery.promise;
+    if (this._readCaptureState() === 'ready') return Promise.resolve(true);
+    const flight = { epoch: this._epoch, stream: null, promise: null };
+    this._captureRecovery = flight;
+    flight.promise = Promise.resolve().then(() => this._replaceCapture(flight))
+      .then(result => result && this._live(flight.epoch));
+    return flight.promise;
+  }
+
+  _captureSenders() {
+    return [...new Set([...this._peers.values(), ...this._retiring.values()])]
+      .filter(peer => this._current(peer))
+      .flatMap(peer => peer.pc.getSenders().filter(sender => sender.track?.kind === 'audio')
+        .map(sender => ({ peer, sender, track: sender.track })));
+  }
+
+  async _replaceCapture(flight) {
+    const current = () => this._live(flight.epoch) && this._captureRecovery === flight;
+    const changed = [];
+    try {
+      if (!current()) return false;
+      this.setTalking(false);
+      if (!current()) return false;
+      const stream = await this._mediaDevices.getUserMedia({ audio: true, video: false });
+      for (const track of stream.getTracks()) track.enabled = false;
+      if (!current()) {
+        this._stopCaptureStream(stream);
+        return false;
+      }
+      flight.stream = stream;
+      if (!this._usableCapture(stream) || this._audioSession?.state === 'interrupted') return false;
+      const track = stream.getAudioTracks()[0];
+      const seen = new Set();
+      for (;;) {
+        // Offers can finish while replaceTrack is pending, including retiring peers.
+        const batch = this._captureSenders().filter(item => !seen.has(item.sender));
+        if (!batch.length) break;
+        for (const item of batch) { seen.add(item.sender); changed.push(item); }
+        const results = await Promise.allSettled(batch.map(async item => item.sender.replaceTrack(track)));
+        if (!current()) return false;
+        if (results.some((result, index) => result.status === 'rejected' && this._current(batch[index].peer))) {
+          throw new Error('Capture replacement failed.');
+        }
+      }
+      if (!this._usableCapture(stream) || this._audioSession?.state === 'interrupted') {
+        throw new Error('Capture became unavailable during replacement.');
+      }
+      this._stopCaptureStream(this._stream);
+      this._captureBroken = false;
+      this._installCapture(stream, flight.epoch);
+      flight.stream = null;
+      return true;
+    } catch {
+      if (current() && changed.length) {
+        const rollback = changed.filter(item => this._current(item.peer));
+        const results = await Promise.allSettled(rollback.map(async item => item.sender.replaceTrack(item.track)));
+        if (current() && results.some((result, index) => result.status === 'rejected' && this._current(rollback[index].peer))) {
+          this._captureBroken = true;
+        }
+      }
+      return false;
+    } finally {
+      if (flight.stream) {
+        this._stopCaptureStream(flight.stream);
+        flight.stream = null;
+      }
+      if (current()) {
+        this._captureRecovery = null;
+        this._syncCaptureState();
+      }
+    }
   }
 
   stop({ notify = true,
@@ -155,6 +308,11 @@ class VoiceSession {
       this._audioSession.removeEventListener('statechange', this._captureInterruption);
       this._captureInterruption = null;
     }
+    if (this._captureRecovery?.stream) {
+      this._stopCaptureStream(this._captureRecovery.stream);
+      this._captureRecovery.stream = null;
+    }
+    this._captureRecovery = null;
     this._closeSocket(this._socket);
     this._socket = null;
     for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
@@ -166,13 +324,12 @@ class VoiceSession {
     this._discovery = null;
     this._emitParticipants();
     if (this._stream) {
-      for (const track of this._stream.getTracks()) {
-        track.onended = track.onmute = null;
-        track.enabled = false;
-        track.stop();
-      }
+      this._stopCaptureStream(this._stream);
       this._stream = null;
     }
+    this._releaseCaptureAudioSession();
+    this._captureBroken = false;
+    this._captureState = this._source ? 'ready' : null;
     this._generation = this._id = null;
     this._talking = this._remoteTalking = false;
     this._waiting = true;
@@ -194,6 +351,7 @@ class VoiceSession {
   _state(key, extra = {}) {
     if (this._inbox) key = key.replace(/^listener-/, 'sender-').replace('broadcast-ended', 'inbox-ended');
     this.onState(key, { talking: this._source ? this._talking : this._remoteTalking,
+      captureState: this._captureState,
       muted: this._muted, participants: this._participants.size, discovery: this._discovery,
       listeners: this.role === 'host' ? this._connected().filter(p => !p.departed).length : 0,
       signaling: this._canSignal(), waiting: this._waiting, directReady: this._connected().length > 0, ...extra });

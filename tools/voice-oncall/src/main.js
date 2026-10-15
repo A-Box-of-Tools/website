@@ -45,6 +45,10 @@ function activateOncall() {
   let senderPaused = false;
   let senderTerminal = false;
   let senderMuted = false;
+  let captureState = 'ready';
+  let microphoneResuming = false;
+  let captureRecoveryTried = false;
+  let resumeRoleOnReturn = null;
   let canTransmit = false;
   let activePointer = null;
   let keyboardHeld = false;
@@ -153,17 +157,19 @@ function activateOncall() {
     ui['host-live'].hidden = !hostActive;
     ui['join-form'].hidden = senderActive || senderPaused || senderTerminal;
     ui.sender.hidden = !senderActive && !senderPaused && !senderTerminal;
-    ui.resume.hidden = !senderPaused || senderTerminal;
-    ui.resume.disabled = starting;
+    const capturePaused = senderActive && captureState !== 'ready';
+    ui.resume.hidden = (!senderPaused && !capturePaused) || senderTerminal;
+    ui.resume.disabled = starting || microphoneResuming;
+    ui.resume.textContent = phrase(microphoneResuming ? 'microphone-resuming' : 'resume-microphone');
     const talking = senderActive && canTransmit && !senderMuted && (activePointer !== null || keyboardHeld || latched);
     ui.hold.disabled = !senderActive || !canTransmit || senderMuted;
     ui.toggle.disabled = ui.hold.disabled;
-    ui.hold.setAttribute('aria-pressed', String(talking));
+    ui.hold.setAttribute('aria-pressed', String(talking && (activePointer !== null || keyboardHeld)));
     ui.hold.textContent = phrase(talking && (activePointer !== null || keyboardHeld) ? 'hold-talking' : 'hold-talk');
-    ui.toggle.setAttribute('aria-pressed', String(latched));
-    ui.toggle.textContent = phrase(latched ? 'toggle-stop' : 'toggle-start');
-    ui['sender-note'].hidden = !senderMuted && !senderPaused;
-    ui['sender-note'].textContent = senderMuted ? phrase('sender-muted') : senderPaused ? phrase('sender-paused') : '';
+    ui.toggle.setAttribute('aria-pressed', String(talking && latched));
+    ui.toggle.textContent = phrase(talking && latched ? 'toggle-stop' : 'toggle-start');
+    ui['sender-note'].hidden = !senderMuted && !senderPaused && !capturePaused;
+    ui['sender-note'].textContent = senderMuted ? phrase('sender-muted') : capturePaused ? phrase('sender-microphone-paused') : senderPaused ? phrase('sender-paused') : '';
     updateHostSound();
   }
 
@@ -286,6 +292,46 @@ function activateOncall() {
     transmit();
   }
 
+  function releaseHold() {
+    activePointer = null;
+    keyboardHeld = false;
+    heldKey = null;
+    transmit();
+  }
+
+  async function resumeSenderMicrophone(automatic = false) {
+    if (activeRole !== 'sender' || senderTerminal || pageSuspended || document.hidden || starting || microphoneResuming) return;
+    if (senderPaused && !senderActive) {
+      await startSender(true);
+      return;
+    }
+    if (!senderActive || captureState === 'ready' || !session) return;
+    if (automatic && (captureState !== 'ended' || captureRecoveryTried)) return;
+    captureRecoveryTried = true;
+    microphoneResuming = true;
+    releaseTransmission();
+    const current = session;
+    const generation = sessionGeneration;
+    let timer;
+    ui['status-text'].textContent = phrase('microphone-resuming');
+    updateControls();
+    try {
+      await Promise.race([
+        current.resumeCapture(),
+        new Promise(resolve => { timer = setTimeout(() => resolve(false), 10000); }),
+      ]);
+    } catch {
+      // Failed capture replacement does not retire this caller's authenticated session.
+    } finally {
+      clearTimeout(timer);
+      if (session === current && sessionGeneration === generation) {
+        microphoneResuming = false;
+        if (captureState !== 'ready') ui['status-text'].textContent = phrase('sender-microphone-paused');
+        updateControls();
+      }
+    }
+  }
+
   function clearSenderRecord() {
     const code = senderIdentity?.code || selectedCode;
     if (code && !senderRecords[code]?.blocked) {
@@ -306,6 +352,10 @@ function activateOncall() {
 
   function renderState(key, detail = {}) {
     if (detail.directReady) globalThis.aboxToolComplete?.();
+    if (activeRole === 'sender' && detail.captureState) {
+      captureState = detail.captureState;
+      if (captureState === 'ready') captureRecoveryTried = false;
+    }
     if (activeRole === 'host' && key === 'error-moderation-full') {
       const refused = detail.moderation;
       if (refused?.action === 'kick' && validCode(refused.id)) {
@@ -332,7 +382,7 @@ function activateOncall() {
       senderActive = true;
       senderPaused = false;
       senderMuted = key === 'sender-muted' || Boolean(detail.muted);
-      canTransmit = !senderMuted && Boolean(detail.directReady || (detail.signaling && !detail.waiting));
+      canTransmit = captureState === 'ready' && !senderMuted && Boolean(detail.directReady || (detail.signaling && !detail.waiting));
       if (!canTransmit || senderMuted) clearTransmitFlags();
     }
     if (activeRole === 'sender' && key === 'error-microphone') {
@@ -357,6 +407,7 @@ function activateOncall() {
       if (key === 'error-access') clearSenderRecord();
     }
     if (activeRole === 'host' && ['error-access', 'inbox-ended'].includes(key)) {
+      resumeRoleOnReturn = null;
       hostActive = false;
       hostIdentity = null;
       removeStored(hostStorage);
@@ -366,6 +417,7 @@ function activateOncall() {
       clearAudio();
     }
     if (activeRole === 'sender' && ['inbox-ended', 'kicked'].includes(key)) {
+      resumeRoleOnReturn = null;
       senderActive = false;
       senderPaused = false;
       senderTerminal = true;
@@ -374,8 +426,10 @@ function activateOncall() {
       rememberSenderTerminal(key);
       stripInvitation();
     }
-    ui['status-text'].textContent = phrase(key);
-    ui['status-dot'].dataset.state = key === 'sender-talking' ? 'talking' : ['host-ready', 'sender-ready'].includes(key) ? 'ready' : 'waiting';
+    ui['status-text'].textContent = phrase(activeRole === 'sender' && senderActive && captureState !== 'ready'
+      ? microphoneResuming ? 'microphone-resuming' : 'sender-microphone-paused' : key);
+    ui['status-dot'].dataset.state = activeRole === 'sender' && senderActive && captureState !== 'ready'
+      ? 'waiting' : key === 'sender-talking' ? 'talking' : ['host-ready', 'sender-ready'].includes(key) ? 'ready' : 'waiting';
     updateControls();
   }
 
@@ -587,6 +641,9 @@ function activateOncall() {
   function createSession(role, identity) {
     const generation = ++sessionGeneration;
     activeRole = role;
+    captureState = 'ready';
+    microphoneResuming = false;
+    captureRecoveryTried = false;
     session = new InboxSession({
       role,
       code: identity.code,
@@ -658,7 +715,7 @@ function activateOncall() {
     return true;
   }
 
-  async function startHost() {
+  async function startHost(automatic = false) {
     if (starting || hostActive || pageSuspended || !validateName(ui['room-name']) || !browserReady(false)) return;
     const Context = window.AudioContext || window.webkitAudioContext;
     if (!Context) {
@@ -673,7 +730,11 @@ function activateOncall() {
     try {
       audioContext = new Context();
       monitorHostAudio(audioContext);
-      await audioContext.resume();
+      const playing = audioContext.resume();
+      if (automatic) void playing.catch(() => {
+        if (epoch === operationEpoch) updateHostSound();
+      });
+      else await playing;
       if (epoch !== operationEpoch || pageSuspended) return;
       const roomName = ui['room-name'].value.trim();
       const locked = ui['password-required'].checked;
@@ -700,9 +761,11 @@ function activateOncall() {
       ui['host-password'].value = '';
       updateHostPassword();
       ui['live-name'].textContent = hostIdentity.roomName;
-      removedIds.clear();
-      playbackMuted.clear();
-      localMute.clear();
+      if (!automatic) {
+        removedIds.clear();
+        playbackMuted.clear();
+        localMute.clear();
+      }
       renderParticipants([]);
       ui['moderation-note'].hidden = true;
       drawInvitation();
@@ -773,7 +836,6 @@ function activateOncall() {
       const success = await current.start();
       if (epoch !== operationEpoch) return;
       senderActive = success;
-      if (success && (document.hidden || !document.hasFocus())) pauseSender();
     } catch {
       if (epoch === operationEpoch) {
         senderActive = false;
@@ -803,6 +865,7 @@ function activateOncall() {
   }
 
   function leaveSender() {
+    resumeRoleOnReturn = null;
     operationEpoch++;
     releaseTransmission();
     stopSession(true);
@@ -820,6 +883,7 @@ function activateOncall() {
   }
 
   function endHost() {
+    resumeRoleOnReturn = null;
     operationEpoch++;
     stopSession(true);
     discovery.unpublish();
@@ -860,7 +924,7 @@ function activateOncall() {
     event.preventDefault();
     void startSender();
   });
-  ui.resume.addEventListener('click', () => void startSender(true));
+  ui.resume.addEventListener('click', () => void resumeSenderMicrophone());
   ui.end.addEventListener('click', endHost);
   ui['restore-sound'].addEventListener('click', resumeHostSound);
   ui.leave.addEventListener('click', leaveSender);
@@ -929,14 +993,29 @@ function activateOncall() {
     }
   });
   window.addEventListener('blur', () => {
-    if (senderActive && !starting) pauseSender();
-    else if (activeRole === 'sender') releaseTransmission();
+    if (activeRole === 'sender') releaseHold();
   });
+  function returnToPage() {
+    if (pageSuspended || document.hidden) return;
+    discovery.refresh();
+    const resume = resumeRoleOnReturn;
+    resumeRoleOnReturn = null;
+    if (resume === 'host' && hostIdentity && !hostActive && !starting) void startHost(true);
+    else if (resume === 'sender' && senderPaused && !senderTerminal) void resumeSenderMicrophone(true);
+    else if (activeRole === 'sender' && senderActive) void resumeSenderMicrophone(true);
+    if (activeRole === 'host') resumeHostSound();
+  }
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && activeRole === 'sender') pauseSender();
-    else if (!document.hidden && activeRole === 'host') resumeHostSound();
+    if (document.hidden && activeRole === 'sender') {
+      releaseHold();
+      if (starting) {
+        resumeRoleOnReturn = 'sender';
+        pauseSender();
+      }
+    } else if (!document.hidden) returnToPage();
   });
   window.addEventListener('pagehide', () => {
+    if (hostActive || senderActive || starting) resumeRoleOnReturn = activeRole;
     pageSuspended = true;
     discovery.close();
     lastPublication = null;
@@ -953,6 +1032,7 @@ function activateOncall() {
   window.addEventListener('pageshow', event => {
     pageSuspended = false;
     if (event.persisted) discovery = openDiscovery();
+    returnToPage();
   });
 
   updateHostPassword();

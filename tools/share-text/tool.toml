@@ -265,9 +265,12 @@ body = """
 [[howto]]
 title = "Start sharing, and keep the tab open."
 body = """
- The tab is the server: the
-      share is reachable while it is open and awake, and stops the moment it
-      is not. A laptop lid closing ends it too. Copy the link, or just say
+ The tab is the server: keep it open
+      and the device awake for uninterrupted sharing. Healthy connections stay
+      open when the page is hidden, but a phone or sleeping laptop can suspend
+      the browser. Returning checks the connection and tries to restore the
+      same share; Stop sharing ends it without automatic resumption.
+      Copy the link, or just say
       the name &mdash; a reader can type it into this page's address as
       <code>#name</code> on the end. For Local network mode, copy the link:
       it carries <code>?local=1</code> before the name. A reader who uses the
@@ -325,9 +328,10 @@ a = """
 [[faq]]
 q = "What happens when I close the tab?"
 a = """
-        The share ends everywhere at once. The link stops working within a
-        second or two, and readers who still have the page open see their
-        copy clear with a note that the share has ended. That is not a
+        The share ends when its only source disappears. Readers clear their
+        displayed copy when the end or connection failure is detected.
+        Stop sharing sends an explicit end notice; a temporary network loss
+        can instead trigger bounded recovery attempts. That is not a
         deletion request to a server &mdash; there is no server copy to
         delete. The tab was the only place the share existed, and closing it
         is the whole of the cleanup."""

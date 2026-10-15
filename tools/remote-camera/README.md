@@ -60,19 +60,39 @@ The approval switch applies to new requests. Waiting manual requests never
 inherit automatic acceptance, and an accepted viewer remains connected when
 the setting changes. One active slot is reserved synchronously before its
 acknowledgement; the four-pending cap and busy refusals remain in place.
-Source Stop, page hide, page close and signaling loss stop capture, peers and
-socket. Manual Source Stop asks for confirmation while any viewer peer is
+Ordinary tab hiding keeps a healthy capture, peer connection and room socket.
+The browser can still mute or end a camera when a phone locks, and may suspend
+network traffic and JavaScript too; the page cannot guarantee background video.
+Temporary track mute keeps the pairing and waits for native unmute. An ended
+track keeps the chosen code, camera device and approval settings; on returning
+the page attempts one recovery, replacing the accepted viewer's sender track
+without changing its approval. Resume camera offers a gesture after a failed
+attempt. No new camera request starts while the page is hidden, and a pending
+request is invalidated if the page hides before it completes.
+
+BFcache page suspension releases capture and peers but retains the chosen
+camera identity for visible recovery. A healthy viewer can keep playing while
+its tab is hidden; returning retries native playback and retains the existing
+Play live video fallback. Source Stop, actual navigation, page close and a lost
+room still release capture, peers and socket. A lost camera room retains its
+chosen identity for Resume camera, but a newly connected viewer must repeat
+approval; viewer notes are never treated as admission credentials. There is no
+new reconnect protocol or worker change.
+
+Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
 leaves capture, invitation and connections intact. The native dialog does not
-block lifecycle handling: page hide, page close, capture failure and signaling
-loss cancel it and clean up immediately. Viewer Disconnect closes its own peer
+block lifecycle handling: suspension, page close and signaling loss cancel it
+and clean up immediately. Viewer Disconnect closes its own peer
 while the source retains preview.
-A best-effort screen wake lock is released on cleanup, including a late grant.
+A best-effort screen wake lock is released when hidden or on cleanup, including
+a late grant, and is requested again only for a visible active camera.
 
 Camera access requires trusted HTTPS and user permission. Video uses native
 WebRTC encryption, with no recording feature. This provides a browser view,
-not an OS webcam for meeting apps. Both pages must remain open and the source
-visible. A viewer can independently capture their screen.
+not an OS webcam for meeting apps. Both pages must remain open; background
+capture depends on the source browser and operating system. A viewer can
+independently capture their screen.
 
 ## Checking a change
 
@@ -83,8 +103,13 @@ request and observes video frames advancing. Confirm that Stop releases all
 tracks and clears the viewer, and that a late camera grant after Stop closes.
 Check that manual Stop asks while a viewer is connecting, waiting for approval
 or watching; Keep sharing and Escape preserve the same invitation and stream.
-Hide the source while the confirmation is open and verify that cleanup happens
-without accepting the confirmation. With no viewer, Stop ends sharing directly.
+Hide the source while the confirmation is open and verify that the existing
+capture and pairing are retained. Check native track mute and unmute, ended
+capture followed by visible recovery, and a failed recovery followed by Resume
+camera. The code, chosen camera and live viewer approval must remain unchanged
+when the original peer survives. Stop during a pending recovery must close a
+late grant and prevent every later visibility event from reopening capture.
+With no viewer, Stop ends sharing directly.
 
 The website's capture, protocol and session tests run in CI. Functional browser
 coverage lives in the sibling `A-Box-of-Tools/qa` repository. Do not run the

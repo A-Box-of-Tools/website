@@ -318,7 +318,7 @@ export class CameraSession {
     const entry = this.peers.get(id);
     if (!entry?.pending || entry.refused || this.active !== null || this.role !== 'camera' || this.cameraChange) return false;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
-    if (!track) { this.stop('camera.ended'); return false; }
+    if (!track) { this.state('camera.paused'); return false; }
     this.active = id;
     entry.pending = false;
     entry.approved = true;
@@ -342,7 +342,7 @@ export class CameraSession {
   beginVideo(entry) {
     if (!this.current(entry) || entry.video || !entry.acknowledged || this.role !== 'camera' || this.active !== entry.id || this.cameraChange) return;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
-    if (!track) { this.stop('camera.ended'); return; }
+    if (!track) { this.state('camera.paused'); return; }
     try {
       // Approval and SDP use different transports. The acknowledgement proves
       // the viewer processed approval before a video offer can overtake it.
@@ -356,7 +356,7 @@ export class CameraSession {
     this.state('camera.streaming');
   }
 
-  prepareCameraChange() {
+  prepareCameraChange({ preserveOnFailure = false } = {}) {
     if (this.role !== 'camera' || this.cameraChange) throw new Error('camera.switch-failed');
     const revision = this.revision;
     const operation = { candidate: null };
@@ -366,7 +366,8 @@ export class CameraSession {
       if (!current()) return;
       this.cameraChange = null;
       if (!this.stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
-        this.stop('camera.switch-ended');
+        if (preserveOnFailure) { this.state('camera.paused'); this.requests(); }
+        else this.stop('camera.switch-ended');
         return;
       }
       const active = this.peers.get(this.active);

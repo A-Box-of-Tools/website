@@ -333,3 +333,74 @@ test('departed sender failure still lets a later viewer use the new camera', asy
   second.channel.receive('approval-ack'); await settle(); assert.equal(second.getSenders()[0].track, next.video);
   original.getTracks().forEach(track => track.stop());
 });
+
+test('failed capture recovery retains the accepted viewer and room for another attempt', async t => {
+  const f = fixture(t), original = sourceStream();
+  await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  const entry = f.session.peers.get('v:1'), sender = entry.sender;
+  original.video.stop();
+  const failed = f.session.prepareCameraChange({ preserveOnFailure: true });
+  failed.cancel();
+  assert.equal(f.session.role, 'camera');
+  assert.equal(f.session.code, CODE);
+  assert.equal(f.session.active, 'v:1');
+  assert.equal(f.session.peers.get('v:1'), entry);
+  assert.equal(peer.closed, false);
+  assert.equal(f.sockets[0].closed, false);
+  assert.equal(f.states.at(-1), 'camera.paused');
+
+  const restored = sourceStream(), offers = t.mock.method(peer, 'createOffer');
+  const retry = f.session.prepareCameraChange({ preserveOnFailure: true });
+  assert.equal(await retry.commit(restored), true); await settle();
+  assert.equal(f.session.peers.get('v:1'), entry);
+  assert.equal(entry.sender, sender);
+  assert.equal(sender.track, restored.video);
+  assert.equal(offers.mock.callCount(), 0);
+  assert.equal(f.sockets.length, 1);
+  assert.equal(f.peers.length, 1);
+  original.getTracks().forEach(track => track.stop());
+});
+
+test('an ended source keeps pending approval without admitting or sending video', async t => {
+  const f = fixture(t), original = sourceStream();
+  await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  original.video.stop();
+  assert.equal(f.session.approve('v:1'), false);
+  assert.equal(f.session.role, 'camera');
+  assert.equal(f.session.peers.get('v:1').pending, true);
+  assert.equal(f.session.active, null);
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(peer.channel.sent.some(message => message.type === 'approved'), false);
+  const restored = sourceStream(), recovery = f.session.prepareCameraChange({ preserveOnFailure: true });
+  assert.equal(await recovery.commit(restored), true);
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(f.session.approve('v:1'), true);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.getSenders()[0].track, restored.video);
+  original.getTracks().forEach(track => track.stop());
+});
+
+test('Stop closes a late capture recovery and cannot reinstall it', async t => {
+  const f = fixture(t), original = sourceStream();
+  await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  original.video.stop();
+  let release;
+  const sender = f.session.peers.get('v:1').sender;
+  sender.replaceTrack = track => new Promise(resolve => { release = () => { sender.track = track; resolve(); }; });
+  const recovery = f.session.prepareCameraChange({ preserveOnFailure: true }), candidate = sourceStream();
+  const pending = recovery.commit(candidate);
+  f.session.stop();
+  assert.equal(candidate.video.readyState, 'ended');
+  release();
+  assert.equal(await pending, false);
+  recovery.cancel();
+  assert.equal(f.session.role, null);
+  assert.equal(f.session.stream, null);
+  assert.equal(peer.closed, true);
+  assert.equal(f.sockets[0].closed, true);
+});

@@ -79,7 +79,7 @@ body = "Privé est le réglage par défaut : chaque lecteur est invité à se p
 
 [[howto]]
 title = "Lancez le partage, et laissez l'onglet ouvert."
-body = "L'onglet est le serveur : le partage est joignable tant qu'il est ouvert et éveillé, et pas un instant de plus. Un portable qu'on referme y met fin aussi. Copiez le lien, ou dites simplement le nom &mdash; un lecteur peut le taper en <code>#name</code> au bout de l'adresse de cette page. Pour le mode Réseau local, copiez le lien : il contient <code>?local=1</code> avant le nom. Un lecteur utilisant un autre mode est invité à choisir avant de réessayer avec le vôtre."
+body = """L’onglet est le serveur. Gardez-le ouvert et l’appareil éveillé pour partager sans interruption. Une connexion fonctionnelle reste ouverte lorsque la page est masquée, mais le téléphone ou un ordinateur en veille peut suspendre le navigateur. Au retour, la page tente de retrouver le même partage. Arrêter le partage empêche sa reprise automatique. Copiez le lien ou donnez le nom : le lecteur peut ajouter <code>#name</code> à l’adresse de cette page. En mode Réseau local, copiez le lien contenant <code>?local=1</code> avant le nom. Un changement de mode de connexion exige le choix du lecteur."""
 
 [[howto]]
 title = "De l'autre côté : consentir, puis frapper."
@@ -99,7 +99,7 @@ a = "Il voit les noms de lien utilisés, les arrivées et départs des personnes
 
 [[faq]]
 q = "Que se passe-t-il quand je ferme l'onglet ?"
-a = "Le partage s'arrête partout à la fois. Le lien cesse de fonctionner en une seconde ou deux, et les lecteurs qui ont encore la page ouverte voient leur copie disparaître, avec un mot disant que le partage est terminé. Ce n'est pas une demande d'effacement adressée à un serveur &mdash; il n'y a pas de copie serveur à effacer. L'onglet était le seul endroit où le partage existait, et le fermer est tout le ménage qu'il y a à faire."
+a = """Le partage prend fin lorsque son unique source disparaît. Les lecteurs effacent la copie affichée lorsqu’ils détectent la fin ou une panne de connexion. Arrêter le partage envoie un avis explicite de fin ; une perte temporaire du réseau peut déclencher un nombre limité de tentatives de reconnexion. Il n’existe aucune copie sur le serveur à supprimer. Ce que les lecteurs ont déjà copié ou téléchargé leur reste acquis."""
 
 [[faq]]
 q = "Un lecteur peut-il garder ce que j'ai partagé ?"

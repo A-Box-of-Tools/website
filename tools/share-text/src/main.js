@@ -10,6 +10,7 @@ import { watchDiscovery } from './discovery.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { fileSender, FILE_CHANNEL } from './send-file.js';
 import { createDiagnostics } from './connection-diagnostics.js';
+import { foregroundRecovery } from './foreground-recovery.js';
 
 // The one address this tool contacts, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -104,6 +105,11 @@ const fmtSize = (n) => formatSize(n, sizeUnits);
 
 let sock = null;
 let keepalive = 0;
+let sharing = false;
+let activeCode = '';
+let hostHadRoom = false;
+let hostRetry = 0;
+let hostProbe = 0;
 let attempts = 0;
 let suggestion = '';
 let isPrivate = true;        // captured when sharing starts
@@ -115,6 +121,7 @@ let foundShares = [];
 const withdrawing = new Set();
 let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
+const controlChannels = new Map(); // includes readers still waiting to knock
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
@@ -162,6 +169,9 @@ function suggest() {
 }
 
 function unlock() {
+  sharing = false;
+  clearTimeout(hostRetry);
+  clearTimeout(hostProbe);
   linkCopy.invalidate();
   isDiscoverable = false;
   $('publish').hidden = false;
@@ -209,6 +219,7 @@ function refreshCount() {
 const admitTokens = new Set();
 
 function admitViewer(id, dc) {
+  if (!sharing || controlChannels.get(id) !== dc || dc.readyState !== 'open') return;
   peerDiagnostics.get(id)?.mark('approved');
   channels.set(id, dc);
   const token = crypto.randomUUID();
@@ -265,9 +276,12 @@ function removeRequest(id) {
 }
 
 function dropViewer(id, reason = 'peer-left') {
+  controlChannels.delete(id);
   peerDiagnostics.get(id)?.finish(reason);
   peerDiagnostics.delete(id);
-  if (peers.has(id)) { peers.get(id).close(); peers.delete(id); }
+  const pc = peers.get(id);
+  peers.delete(id);
+  pc?.close();
   channels.delete(id);
   sendQueue.get(id)?.close();
   sendQueue.delete(id);
@@ -385,7 +399,9 @@ function hostSocket(code, onOpen) {
   sock = ws;
   let pulse = 0;
   ws.onopen = () => {
-    if (sock !== ws) { ws.close(1000); return; }
+    if (sock !== ws || !sharing) { ws.close(1000); return; }
+    clearTimeout(hostProbe);
+    hostHadRoom = true;
     trace.socket('open');
     trace.mark('server-open');
     pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
@@ -400,7 +416,8 @@ function hostSocket(code, onOpen) {
     }
   };
   ws.onmessage = (e) => {
-    if (sock !== ws) return;
+    if (sock !== ws || !sharing) return;
+    clearTimeout(hostProbe);
     if (e.data === 'pong') return;
     let m;
     try { m = JSON.parse(e.data); }
@@ -410,9 +427,11 @@ function hostSocket(code, onOpen) {
       return;
     }
     if (m.type === 'leave') {
-      // The reader's page never closes its rendezvous socket on purpose, so
-      // a leave means the reader is gone. The peer channel's own close event
-      // can lag an abrupt tab-close by half a minute; this does not.
+      // A reader's introduction can be suspended independently of its
+      // encrypted channel. Native peer failure still retires a dead reader.
+      const dc = controlChannels.get(m.id);
+      const pc = peers.get(m.id);
+      if (dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
       dropViewer(m.id);
       return;
     }
@@ -428,7 +447,7 @@ function hostSocket(code, onOpen) {
     // arrives. That close belongs to its own room and its own heartbeat.
     clearInterval(pulse);
     trace.socket('closed', e.code);
-    trace.finish(e.code === 1000 ? 'stopped' : 'socket-closed');
+    trace.finish(sharing ? 'socket-closed' : 'stopped');
     if (sock !== ws) return;
     clearTimeout(announcementTimer);
     discovery?.unpublish();
@@ -436,19 +455,55 @@ function hostSocket(code, onOpen) {
       withdrawing.delete(code);
       // A collision on our own suggestion is bad luck, silently retried; a
       // collision on a name the user chose is theirs to resolve.
-      if ($('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
-      unlock();
+      if (!hostHadRoom && $('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
+      if (hostHadRoom) stopSharing();
+      else unlock();
+      withdrawing.delete(code);
       setStatus(phrase('share.name-taken', { name: $('code').value }));
       return;
     }
-    if (e.code === 1000 || $('publish').hidden === false) return;
+    if (!sharing || $('publish').hidden === false) return;
     // Connected readers are unaffected - the peer channels do not run
     // through the server - but new ones cannot join until this recovers.
     setStatus(phrase('share.lost-rendezvous'), true);
-    setTimeout(() => {
-      if ($('publish').hidden && sock === ws) hostSocket(code, refreshCount);
+    clearTimeout(hostRetry);
+    hostRetry = setTimeout(() => {
+      if (sharing && activeCode === code && sock === ws) {
+        try { hostSocket(code, refreshCount); }
+        catch { resumeHost(); }
+      }
     }, 5000);
   };
+}
+
+function resumeHost() {
+  if (!sharing || document.visibilityState === 'hidden' || navigator.onLine === false) {
+    clearTimeout(hostProbe);
+    return;
+  }
+  clearTimeout(hostRetry);
+  clearTimeout(hostProbe);
+  const ws = sock;
+  if (!ws || ws.readyState > 1) {
+    try { hostSocket(activeCode, refreshCount); }
+    catch {
+      setStatus(phrase('share.lost-rendezvous'), true);
+      hostRetry = setTimeout(resumeHost, 5000);
+    }
+    return;
+  }
+  // A suspended socket can still report OPEN until the browser processes
+  // its failure. Keep direct peers intact while probing that introduction.
+  if (ws.readyState === 1) {
+    try { ws.send('ping'); } catch {}
+  }
+  hostProbe = setTimeout(() => {
+    if (!sharing || sock !== ws || document.visibilityState === 'hidden' || navigator.onLine === false) return;
+    sock = null;
+    clearInterval(keepalive);
+    try { ws.close(); } catch {}
+    resumeHost();
+  }, 8000);
 }
 
 function publish() {
@@ -458,6 +513,10 @@ function publish() {
     return;
   }
   $('code').value = code;
+  sharing = true;
+  activeCode = code;
+  hostHadRoom = false;
+  admitTokens.clear();
   $('code').disabled = true;
   $('suggest').disabled = true;
   isPrivate = $('private').checked;
@@ -489,7 +548,7 @@ function publish() {
 }
 
 async function hostSignal(from, data) {
-  if (!data || typeof data !== 'object') return;
+  if (!sharing || !data || typeof data !== 'object') return;
   // The copied link carries the mode for convenience; the sharer enforces
   // it too, so removing its query cannot enable a relay on a local share.
   if ((data.local === true) !== isLocal) {
@@ -537,11 +596,15 @@ async function hostSignal(from, data) {
         trace.finish('ice-failed'); revealDiagnostics();
       }
     });
+    pc.addEventListener('connectionstatechange', () => {
+      if (peers.get(from) === pc && ['failed', 'closed'].includes(pc.connectionState)) dropViewer(from);
+    });
     let mainChannel = null;
     pc.ondatachannel = (e) => {
       const dc = e.channel;
       if (dc.label !== 'share' || mainChannel || peers.get(from) !== pc) { dc.close(); return; }
       mainChannel = dc;
+      controlChannels.set(from, dc);
       trace.channel(dc);
       const sender = fileSender({ peer: pc, control: dc, files: attached,
         admitted: () => channels.get(from) === dc && peers.get(from) === pc });
@@ -549,7 +612,7 @@ async function hostSignal(from, data) {
       dc.binaryType = 'arraybuffer';
       let introduced = false;
       const introduce = () => {
-        if (introduced || dc.readyState !== 'open') return;
+        if (!sharing || peers.get(from) !== pc || introduced || dc.readyState !== 'open') return;
         introduced = true;
         if (isPrivate) {
           trace.mark('waiting-approval');
@@ -558,6 +621,7 @@ async function hostSignal(from, data) {
       };
       dc.onopen = introduce;
       dc.onmessage = (ev) => {
+        if (!sharing || peers.get(from) !== pc) return;
         if (typeof ev.data !== 'string') return;
         let m;
         try { m = JSON.parse(ev.data); } catch { return; }
@@ -572,7 +636,7 @@ async function hostSignal(from, data) {
             if ($('text').value !== '') globalThis.aboxToolComplete?.();
             dc.send(filesMsg());
           }
-          else dc.send(JSON.stringify({ type: 'private' }));
+          else dc.send(JSON.stringify({ type: pending.has(from) ? 'asked' : 'private' }));
           return;
         }
         if (m.type === 'get') { sender.request(m); return; }
@@ -679,7 +743,16 @@ $('save').addEventListener('click', () => {
 // while the readers watch it arrive.
 $('publish').addEventListener('click', publish);
 
-$('stop').addEventListener('click', () => {
+function stopSharing() {
+  sharing = false;
+  clearTimeout(hostRetry);
+  clearTimeout(hostProbe);
+  // Signaling can disappear while direct channels remain healthy. A real
+  // Stop therefore has its own terminal message, independent of close codes.
+  for (const dc of controlChannels.values()) {
+    try { dc.send(JSON.stringify({ type: 'ended' })); dc.close(); } catch {}
+  }
+  admitTokens.clear();
   hostDiagnostic?.finish('stopped');
   for (const trace of peerDiagnostics.values()) trace.finish('stopped');
   peerDiagnostics.clear();
@@ -692,11 +765,15 @@ $('stop').addEventListener('click', () => {
   sock?.close(1000);
   clearInterval(keepalive);
   for (const sender of sendQueue.values()) sender.close();
-  for (const pc of peers.values()) pc.close();
-  peers.clear(); channels.clear(); sendQueue.clear();
+  const stoppedPeers = [...peers.values()];
+  // Give the ordered terminal control a chance to drain without leaving any
+  // share channel eligible for text, admission or file requests during it.
+  setTimeout(() => { for (const pc of stoppedPeers) pc.close(); }, 250);
+  peers.clear(); channels.clear(); controlChannels.clear(); sendQueue.clear();
   unlock();
   setStatus(phrase('share.stopped'));
-});
+}
+$('stop').addEventListener('click', stopSharing);
 
 $('suggest').addEventListener('click', suggest);
 
@@ -741,11 +818,12 @@ function fail(text) {
 }
 
 let viewerLive = false;
+let resumeViewer = () => {};
 
-function view(code) {
+function view(code, recovered = null) {
   $('share').hidden = true;
   $('view').hidden = false;
-  const localMode = isLocalLink(location.href);
+  const localMode = recovered?.localMode ?? isLocalLink(location.href);
   $('local-note').hidden = !localMode;
   let retryLocal = localMode;
 
@@ -756,7 +834,7 @@ function view(code) {
   // watched the direct attempt fail, and asked for the relay by name.
   let carried = false;
   let wantRelay = false;
-  try {
+  if (!recovered) try {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
@@ -764,12 +842,32 @@ function view(code) {
     sessionStorage.removeItem(RELAY_FLAG(code));
   } catch {}
 
+  const session = recovered ?? { consent: carried, relay: wantRelay, localMode,
+    token: null, asMd: false, mdTouched: false, generation: 0 };
+  if (recovered) { carried = session.consent; wantRelay = session.relay; }
+  const events = new AbortController();
+  const listen = (id, event, handler) => $(id).addEventListener(event, handler, { signal: events.signal });
+  const generation = ++session.generation;
+  session.restart = () => { events.abort(); view(code, session); };
+  session.retry ??= foregroundRecovery(() => session.restart(), {
+    visible: () => document.visibilityState !== 'hidden' && navigator.onLine !== false,
+    exhausted() {
+      $('view-status').hidden = false;
+      $('view-status').textContent = phrase('view.interrupted');
+      $('retryrow').hidden = false;
+    },
+  });
+  if (carried && !recovered) session.retry.start();
+
   const trace = diagnostics.begin('viewer', localMode ? 'local' : wantRelay ? 'relay' : 'internet');
   let ws;
   try { ws = new WebSocket(wsUrl(code, 'viewer')); }
   catch (error) {
     trace.error('websocket', error); trace.finish('socket-error');
-    fail(phrase('view.error')); revealDiagnostics(); return;
+    fail(phrase(recovered ? 'view.reconnecting' : 'view.error')); revealDiagnostics();
+    resumeViewer = () => session.retry.foreground();
+    if (recovered) session.retry.pause();
+    return;
   }
   let pc = null;
   let dcRef = null;
@@ -781,25 +879,33 @@ function view(code) {
   let introduced = false;
   let viewerKeepalive = 0;
   let lastBody = '';
-  let asMd = false;
-  let mdTouched = false;
+  let asMd = session.asMd;
+  let mdTouched = session.mdTouched;
   let rx = null; // Each selected file owns either a dedicated lane or the legacy lane.
   let fileChannels = false;
   let offered = new Map();
   let connectionTimer = 0;
   let deliveryTimer = 0;
+  let foregroundProbe = 0;
   const clearDeadlines = () => {
     clearTimeout(connectionTimer);
     clearTimeout(deliveryTimer);
   };
   const stopAttempt = (key, offerRelay = false, reason = 'signaling-error') => {
     if (done) return;
+    if (recovered && session.retry.active &&
+        ['signaling-error', 'socket-closed', 'channel-error', 'timeout', 'delivery-timeout', 'ice-failed'].includes(reason)) {
+      sharerGone();
+      return;
+    }
     done = true;
+    session.retry.stop();
     trace.finish(reason);
     revealDiagnostics();
     viewerLive = false;
     clearDeadlines();
     clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     pc?.close();
     ws.close();
     $('knockrow').hidden = true;
@@ -815,6 +921,8 @@ function view(code) {
   // The raw source always sits in #received (the copy button reads it
   // there); the toggle only decides which of the two views is shown.
   function renderView() {
+    session.asMd = asMd;
+    session.mdTouched = mdTouched;
     $('received').textContent = lastBody;
     const empty = lastBody === '';
     $('panel').hidden = empty;
@@ -825,8 +933,8 @@ function view(code) {
     $('mode-src').classList.toggle('active', !asMd);
   }
 
-  $('mode-fmt').addEventListener('click', () => { mdTouched = true; asMd = true; renderView(); });
-  $('mode-src').addEventListener('click', () => { mdTouched = true; asMd = false; renderView(); });
+  listen('mode-fmt', 'click', () => { mdTouched = true; asMd = true; renderView(); });
+  listen('mode-src', 'click', () => { mdTouched = true; asMd = false; renderView(); });
 
   function refreshFileButtons() {
     for (const button of $('filelist').querySelectorAll('button')) {
@@ -857,10 +965,12 @@ function view(code) {
     // Older cached pages put untagged chunks on the text lane. That lane must
     // end before another file can be requested; a retry cannot safely reuse it.
     done = true;
+    session.retry.stop();
     trace.finish('channel-error');
     viewerLive = false;
     clearDeadlines();
     clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     lastBody = '';
     retireTextCopy();
     $('received').textContent = '';
@@ -1007,34 +1117,57 @@ function view(code) {
     waitingForFile(owner);
   }
 
-  const sharerGone = () => {
-    if (done) return;
+  function sharerGone(terminal = false) {
+    if (session.generation !== generation) return;
+    if (terminal) {
+      session.retry.stop();
+      session.token = null;
+      try { sessionStorage.removeItem(`share-text-token:${code}`); } catch {}
+    } else if (done) return;
     done = true;
-    trace.finish('ended');
+    trace.finish(terminal ? 'ended' : 'socket-closed');
     viewerLive = false;
     clearDeadlines();
     clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     $('knockrow').hidden = true;
     if (rx) retireFile(rx);
     offered.clear();
     $('filelist').textContent = '';
-    if (got) {
-      // The share ends everywhere at once: what the sharer's tab stops
-      // holding, this page stops showing.
-      lastBody = '';
-      retireTextCopy();
-      $('received').textContent = '';
-      $('rendered').textContent = '';
-      $('panel').hidden = true;
-      $('view-status').hidden = false;
-      $('view-status').textContent = phrase('view.ended');
-      $('retryrow').hidden = false;
+    lastBody = '';
+    retireTextCopy();
+    $('received').textContent = '';
+    $('rendered').textContent = '';
+    $('panel').hidden = true;
+    $('consent').hidden = true;
+    $('relayrow').hidden = true;
+    $('view-status').hidden = false;
+    $('view-status').textContent = phrase(terminal ? (got ? 'view.ended' : 'view.gone-early')
+      : session.retry.active ? 'view.reconnecting' : 'view.interrupted');
+    $('retryrow').hidden = false;
+    pc?.close();
+    ws.close();
+    if (!terminal) session.retry.pause();
+  }
+
+  resumeViewer = () => {
+    session.retry.foreground();
+    if (document.visibilityState === 'hidden') { clearTimeout(foregroundProbe); return; }
+    if (done || !session.consent || !session.retry.active || navigator.onLine === false) return;
+    if (dcRef?.readyState !== 'open') {
+      if (connected || ws.readyState > 1) sharerGone();
       return;
     }
-    fail(phrase('view.gone-early'));
+    clearTimeout(foregroundProbe);
+    // Repeating hello requests the current introduction on the existing
+    // encrypted peer; it never opens another connection or changes consent.
+    try { dcRef.send(JSON.stringify({ type: 'hello' })); } catch { sharerGone(); return; }
+    foregroundProbe = setTimeout(() => {
+      if (!done && session.generation === generation && document.visibilityState !== 'hidden' && navigator.onLine !== false) sharerGone();
+    }, 8000);
   };
 
-  $('send-knock').addEventListener('click', () => {
+  listen('send-knock', 'click', () => {
     const note = $('knock').value.trim().slice(0, 200);
     try { dcRef.send(JSON.stringify({ type: 'knock', note })); } catch { return; }
     trace.mark('approval-requested');
@@ -1042,7 +1175,7 @@ function view(code) {
     $('send-knock').disabled = true;
     $('view-status').textContent = phrase('view.asked');
   });
-  $('knock').addEventListener('keydown', (e) => {
+  listen('knock', 'keydown', (e) => {
     if (e.key === 'Enter') $('send-knock').click();
   });
 
@@ -1051,6 +1184,8 @@ function view(code) {
   // this reader exists, let alone an address.
   async function dial() {
     if (pc !== null || ws.readyState !== 1) return;
+    session.consent = true;
+    if (!session.retry.active) session.retry.start();
     $('consent').hidden = true;
     $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : relay ? 'view.relaying' : 'view.connecting');
     pc = new RTCPeerConnection(rtcConfig(localMode, relay));
@@ -1096,7 +1231,7 @@ function view(code) {
     dcRef = dc;
     trace.channel(dc);
     const opened = () => {
-      if (connected || done) return;
+      if (connected || done || session.generation !== generation) return;
       connected = true;
       viewerLive = true;
       clearTimeout(connectionTimer);
@@ -1108,11 +1243,15 @@ function view(code) {
     };
     dc.onopen = opened;
     dc.onmessage = (ev) => {
-      if (done) return;
+      if (session.generation !== generation) return;
+      if (done && typeof ev.data !== 'string') return;
       if (typeof ev.data !== 'string') { if (!rx?.request) fileChunk(ev.data); return; }
       let msg;
       try { msg = JSON.parse(ev.data); } catch { return; }
       if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'ended') { sharerGone(true); return; }
+      if (done) return;
+      clearTimeout(foregroundProbe);
       if (msg.type === 'files') { renderFilelist(msg.list ?? [], msg.fileChannels); return; }
       if (msg.type === 'file-begin') { if (!rx?.request) fileBegin(msg); return; }
       if (msg.type === 'file-end') { if (!rx?.request) fileEnd(msg); return; }
@@ -1125,24 +1264,28 @@ function view(code) {
         return;
       }
       if (msg.type === 'token') {
+        session.token = String(msg.token);
         try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
         return;
       }
       if (msg.type === 'private') {
+        session.retry.ready();
         trace.mark('waiting-approval');
         if (got) return;
         introduced = true;
         clearDeadlines();
         // A reader who was admitted and switched language knocks again with
         // the token the sharer issued, silently; anyone else knocks aloud.
-        let token = null;
-        try { token = carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
+        let token = carried ? session.token : null;
+        try { token ??= carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
         if (token !== null) {
           awaitIntroduction();
           dc.send(JSON.stringify({ type: 'knock', note: '', token }));
           return;
         }
         $('view-status').textContent = phrase('view.private');
+        $('knock').disabled = false;
+        $('send-knock').disabled = false;
         $('knockrow').hidden = false;
         $('knock').focus();
         return;
@@ -1155,6 +1298,7 @@ function view(code) {
         return;
       }
       if (msg.type === 'denied') {
+        session.retry.stop();
         trace.finish('denied');
         done = true;
         viewerLive = false;
@@ -1165,6 +1309,7 @@ function view(code) {
         return;
       }
       if (msg.type !== 'text' || done) return;
+      session.retry.ready();
       got = true;
       trace.mark('received');
       introduced = true;
@@ -1187,7 +1332,7 @@ function view(code) {
       if (!got) stopAttempt('view.error', false, 'channel-error');
       else revealDiagnostics();
     };
-    dc.onclose = sharerGone;
+    dc.onclose = () => sharerGone();
     if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
     if (done) return;
@@ -1215,14 +1360,14 @@ function view(code) {
     await dial();
   }
 
-  $('connect').addEventListener('click', () => {
+  listen('connect', 'click', () => {
     dial().catch(error => {
       trace.error('offer', error);
       stopAttempt('view.error', false, typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
     });
   });
 
-  $('relay').addEventListener('click', () => {
+  listen('relay', 'click', () => {
     if (localMode) return;
     try {
       sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
@@ -1234,17 +1379,20 @@ function view(code) {
     location.reload();
   });
 
-  $('mode-retry').addEventListener('click', () => {
+  listen('mode-retry', 'click', () => {
+    session.retry.stop();
     location.href = makeShareUrl(location.href, code, retryLocal);
   });
 
   ws.onopen = () => {
+    if (done || session.generation !== generation) { ws.close(); return; }
     trace.socket('open'); trace.mark('server-open');
     viewerKeepalive = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
   };
   ws.onerror = () => { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); };
 
   ws.onmessage = async (e) => {
+    if (done || session.generation !== generation) return;
     if (e.data === 'pong') return;
     let m;
     try { m = JSON.parse(e.data); }
@@ -1302,11 +1450,15 @@ function view(code) {
   ws.onclose = (e) => {
     trace.socket('closed', e.code);
     clearInterval(viewerKeepalive);
-    // The server closes every reader with host-gone the instant the sharer
-    // disconnects - long before the peer channel notices on its own.
+    // Losing introductions does not retire a working encrypted peer. An
+    // explicit host-ended control is terminal; transport loss can recover.
     if (done) return;
-    if (e.code === 4410) { sharerGone(); return; }
-    if (got) return;
+    if (connected && dcRef?.readyState === 'open' &&
+        !['failed', 'closed'].includes(pc?.connectionState)) {
+      resumeViewer();
+      return;
+    }
+    if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
     if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
     else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
     else if (!connected) stopAttempt('view.error', false, 'socket-closed');
@@ -1314,6 +1466,14 @@ function view(code) {
 }
 
 $('retry').addEventListener('click', () => location.reload());
+
+function resumePairedPage() {
+  resumeHost();
+  resumeViewer();
+}
+document.addEventListener('visibilitychange', resumePairedPage);
+window.addEventListener('pageshow', resumePairedPage);
+window.addEventListener('online', resumePairedPage);
 
 /* ----------------------------------------------------- the frame's panels */
 

@@ -150,12 +150,7 @@ body = """
 
 [[howto]]
 title = "Starten Sie die Freigabe, und lassen Sie den Tab offen."
-body = """
- Der Tab ist der Server: Die
-      Freigabe ist erreichbar, solange er offen und wach ist, und keinen
-      Moment länger. Auch ein zugeklappter Laptop beendet sie. Kopieren Sie
-      den Link, oder sagen Sie einfach den Namen &mdash; ein Leser kann ihn
-      als <code>#name</code> ans Ende der Adresse dieser Seite tippen. Kopieren Sie für den Modus Lokales Netzwerk den Link: Er enthält <code>?local=1</code> vor dem Namen. Ein Leser mit einem anderen Modus wird gefragt, bevor er es mit Ihrem Modus erneut versucht."""
+body = """Der Tab ist der Server. Lassen Sie ihn offen und das Gerät wach, um ohne Unterbrechung zu teilen. Eine funktionierende Verbindung bleibt beim Ausblenden der Seite bestehen; das Telefon oder ein schlafender Laptop kann den Browser dennoch anhalten. Bei der Rückkehr wird dieselbe Freigabe wiederherzustellen versucht. Stoppen beendet die Freigabe ohne automatischen Neustart. Kopieren Sie den Link oder nennen Sie den Namen: Leser können <code>#name</code> an die Seitenadresse anhängen. Für Lokales Netzwerk kopieren Sie den Link mit <code>?local=1</code> vor dem Namen. Ein anderer Verbindungsmodus wird nur nach Zustimmung des Lesers verwendet."""
 
 [[howto]]
 title = "Auf der anderen Seite: erst zustimmen, dann anklopfen."
@@ -181,14 +176,7 @@ a = "Er sieht genutzte Link-Namen, wann Teilende und Leser kommen und gehen, ihr
 
 [[faq]]
 q = "Was passiert, wenn ich den Tab schließe?"
-a = """
-        Die Freigabe endet überall zugleich. Der Link hört binnen ein, zwei
-        Sekunden auf zu funktionieren, und Leser, die die Seite noch offen
-        haben, sehen ihre Kopie verschwinden, mit dem Hinweis, dass die
-        Freigabe beendet wurde. Das ist keine Löschanfrage an einen Server
-        &mdash; es gibt keine Serverkopie zu löschen. Der Tab war der
-        einzige Ort, an dem die Freigabe existierte, und ihn zu schließen
-        ist das ganze Aufräumen."""
+a = """Die Freigabe endet, wenn ihre einzige Quelle verschwindet. Leser löschen die angezeigte Kopie, sobald das Ende oder der Verbindungsfehler erkannt wird. Stoppen sendet eine ausdrückliche Endmeldung; ein vorübergehender Netzwerkausfall kann stattdessen eine begrenzte Anzahl von Wiederverbindungsversuchen auslösen. Es gibt keine Serverkopie zu löschen. Bereits kopierte oder heruntergeladene Inhalte bleiben bei den Lesern."""
 
 [[faq]]
 q = "Kann ein Leser behalten, was ich geteilt habe?"

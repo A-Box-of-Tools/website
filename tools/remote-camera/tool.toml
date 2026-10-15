@@ -14,7 +14,7 @@ category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
 js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names"]
-lastmod = "2026-10-13"
+lastmod = "2026-10-14"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a phone or computer camera from another browser on a reachable local network. Direct encrypted video, optional viewer approval, camera switching, no microphone or recording."
 og_title = "Watch another device's camera"
@@ -34,8 +34,9 @@ pledge = """
     Your camera video goes directly to one accepted viewer over an
     encrypted WebRTC connection. Our introduction service carries connection
     negotiation, never the video or the viewer's note. There is no recording
-    feature and no microphone request. Stop, hide or close the camera page
-    and capture ends. Internet access is required for the introduction;
+    feature and no microphone request. Stop or close the camera page and capture
+    ends. Hiding it keeps the connection where the browser permits; a locked
+    phone may pause capture until you return. Internet access is required for the introduction;
     pairing also reveals network addresses to the other browser. Viewer
     approval is on by default; turning it off lets anyone who knows your link
     or finds your listed camera watch while it is free."""
@@ -155,8 +156,8 @@ body = "Open the viewer link or scan the QR code on the other device. You can al
 title = "Connect the viewer."
 body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback."
 [[howto]]
-title = "Keep the source visible, then stop."
-body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel. Switching away from the source page also stops it."
+title = "Resume if the browser pauses video, then stop."
+body = "The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. Stop camera and end the link releases the camera. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel."
 
 [[faq]]
 q = "Must both devices use the same Wi-Fi?"
@@ -177,8 +178,8 @@ a = "With Require my approval on, a link or code permits a request and network-a
 q = "Can several devices watch at once?"
 a = "One viewer at a time. Disconnect the current viewer before another can watch. Up to four peer connections may be pending; further requests are refused while busy."
 [[faq]]
-q = "Why did sharing stop when I changed apps?"
-a = "Hiding or closing the source page deliberately stops capture and ends the link. Keep it visible and awake. Start again to create a new invitation after returning."
+q = "Can the camera keep working when my phone is locked?"
+a = "It keeps the live connection and camera where your browser allows background use. Phone browsers can pause or end camera capture when locked; this page cannot override that. Return to the source to recover the same viewer link, or choose Resume camera if permission is needed again. If the introduction connection was lost, the viewer must reconnect and receive fresh approval when required. Stop and Disconnect remain final for that session."
 [[faq]]
 q = "Can I change cameras while sharing?"
 a = "After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again."
@@ -192,4 +193,4 @@ a = "Guest networks and client isolation can separate devices. Firewalls, blocke
 [schema]
 category = "MultimediaApplication"
 description = "Watch a device camera in another browser with optional viewer approval and camera switching over a direct encrypted WebRTC connection, with no microphone or recording feature."
-features = ["Camera video without microphone access", "One viewer at a time with optional approval", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting the viewer", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata"]
+features = ["Camera video without microphone access", "One viewer at a time with optional approval", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting the viewer", "Host-only ICE without STUN or TURN", "Best-effort background continuity and same-link camera recovery", "Internet introduction with disclosed connection metadata"]

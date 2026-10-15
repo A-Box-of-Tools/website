@@ -95,6 +95,7 @@ class Clock {
 }
 
 class NativeAudioSession {
+  type = 'auto';
   state = 'active';
   listeners = new Set();
   additions = 0;
@@ -114,8 +115,12 @@ class NativeAudioSession {
 }
 
 function microphone() {
-  const track = { kind: 'audio', enabled: true, onended: null, onmute: null, stops: 0,
-    stop() { this.stops++; this.onstop?.(); } };
+  const track = { kind: 'audio', enabled: true, muted: false, readyState: 'live',
+    onended: null, onmute: null, onunmute: null, stops: 0,
+    mute() { this.muted = true; this.onmute?.(); },
+    unmute() { this.muted = false; this.onunmute?.(); },
+    end() { this.readyState = 'ended'; this.onended?.(); },
+    stop() { this.stops++; this.readyState = 'ended'; this.onstop?.(); } };
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
@@ -168,7 +173,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     addTrack(track, stream) {
       let transceiver = this.transceivers.find(item => !item.sender.track);
       if (!transceiver) transceiver = this.addTransceiver('audio', { direction: 'sendrecv' });
-      transceiver.sender = { track, stream };
+      transceiver.sender = { track, stream, async replaceTrack(next) { this.track = next; } };
       return transceiver.sender;
     }
     getSenders() { return this.transceivers.map(item => item.sender); }
@@ -476,15 +481,19 @@ test('kick is terminal even while an earlier offer is stalled', async t => {
   assert.equal(h.sockets.length, 1);
 });
 
-test('capture loss leaves without End and deliberate End closes the sender permanently', async t => {
+test('sender capture loss preserves the connection while a remote End remains terminal', async t => {
   const h = harness(t, { role: 'sender' });
   const ws = await h.begin();
   ws.message(offer());
   await flush();
-  h.mic.track.onended();
-  assert.equal(h.states.at(-1).key, 'error-microphone');
-  assert.equal(h.mic.track.stops, 1);
-  assert.equal(h.peers[0].closed, true);
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  h.mic.track.end();
+  assert.equal(h.states.at(-1).detail.captureState, 'ended');
+  assert.equal(h.mic.track.enabled, false);
+  assert.equal(h.mic.track.stops, 0);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
   assert.ok(!ws.sent.some(frame => frame.type === 'end' || frame.type === 'leave'));
   const other = harness(t, { role: 'sender' });
   const second = await other.begin();
@@ -758,7 +767,7 @@ test('a retiring sender reconnect event cannot drop itself or extend its bounded
   assert.equal(h.mic.track.enabled, false);
 });
 
-test('source track mute releases latched sender capture and unregisters native interruption before stopping tracks', async t => {
+test('sender track mute preserves its peer and unmute requires a fresh talking action', async t => {
   const audioSession = new NativeAudioSession();
   const h = harness(t, { role: 'sender', audioSession });
   const ws = await h.begin();
@@ -773,20 +782,29 @@ test('source track mute releases latched sender capture and unregisters native i
     assert.equal(audioSession.listeners.size, 0);
     assert.equal(h.mic.track.onmute, null);
     assert.equal(h.mic.track.onended, null);
+    assert.equal(h.mic.track.onunmute, null);
   };
-  h.mic.track.onmute();
+  h.mic.track.mute();
   assert.equal(h.mic.track.enabled, false);
-  assert.equal(h.mic.track.stops, 1);
-  assert.equal(h.peers[0].closed, true);
-  assert.equal(ws.closed, true);
-  assert.equal(h.states.at(-1).key, 'error-microphone');
+  assert.equal(h.mic.track.stops, 0);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
+  assert.equal(h.states.at(-1).detail.captureState, 'interrupted');
   assert.ok(!ws.sent.some(frame => frame.type === 'end' || frame.type === 'leave'));
-  assert.equal(h.clock.tasks.size, 0);
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, false);
+  h.mic.track.unmute();
+  assert.equal(h.states.at(-1).detail.captureState, 'ready');
+  assert.equal(h.states.at(-1).key, 'sender-ready');
+  assert.equal(h.mic.track.enabled, false);
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, true);
+  h.session.stop();
+  const stateCount = h.states.length;
   audioSession.transition('active');
   lateMute();
-  h.session.setTalking(true);
-  await h.clock.advance(30000);
-  assert.equal(h.mic.track.enabled, false);
+  assert.equal(h.states.length, stateCount);
+  assert.equal(h.clock.tasks.size, 0);
   assert.equal(h.mic.track.stops, 1);
   assert.equal(h.captures(), 1);
   assert.equal(h.sockets.length, 1);
@@ -814,7 +832,7 @@ test('a microphone grant arriving during a native interruption is refused before
   assert.equal(h.clock.tasks.size, 0);
 });
 
-test('native sender interruption requires a new muted capture and old epoch handlers cannot stop its replacement', async t => {
+test('native sender interruption recovers silently on the same capture and stale handlers cannot affect a restart', async t => {
   const audioSession = new NativeAudioSession();
   const firstMic = microphone();
   const secondMic = microphone();
@@ -827,13 +845,18 @@ test('native sender interruption requires a new muted capture and old epoch hand
   h.session.setTalking(true);
   assert.equal(firstMic.track.enabled, true);
   audioSession.transition('interrupted');
-  assert.equal(firstMic.track.stops, 1);
+  assert.equal(firstMic.track.stops, 0);
   assert.equal(firstMic.track.enabled, false);
-  assert.equal(first.closed, true);
-  assert.equal(audioSession.listeners.size, 0);
+  assert.equal(first.closed, false);
+  assert.equal(audioSession.listeners.size, 1);
+  assert.equal(h.states.at(-1).detail.captureState, 'interrupted');
   audioSession.transition('active');
+  assert.equal(h.states.at(-1).detail.captureState, 'ready');
+  assert.equal(firstMic.track.enabled, false);
   await h.clock.advance(1000);
   assert.equal(h.sockets.length, 1);
+  h.session.stop();
+  assert.equal(firstMic.track.stops, 1);
   const next = await h.begin();
   assert.equal(secondMic.track.enabled, false);
   assert.equal(audioSession.listeners.size, 1);
@@ -846,9 +869,9 @@ test('native sender interruption requires a new muted capture and old epoch hand
   h.session.setTalking(true);
   audioSession.transition('interrupted');
   assert.equal(secondMic.track.enabled, false);
-  assert.equal(secondMic.track.stops, 1);
-  assert.equal(audioSession.listeners.size, 0);
-  assert.equal(h.states.at(-1).key, 'error-microphone');
+  assert.equal(secondMic.track.stops, 0);
+  assert.equal(audioSession.listeners.size, 1);
+  assert.equal(h.states.at(-1).detail.captureState, 'interrupted');
 });
 
 test('receive-only inbox host ignores native capture interruptions and never subscribes for microphone recovery', async t => {
@@ -861,10 +884,81 @@ test('receive-only inbox host ignores native capture interruptions and never sub
   audioSession.transition('interrupted');
   assert.equal(audioSession.additions, 0);
   assert.equal(h.captures(), 0);
+  assert.equal(await h.session.resumeCapture(), false);
   assert.equal(ws.closed, false);
   assert.equal(voice.peer.closed, false);
   assert.equal(h.streams.at(-1).stream, voice.stream);
   assert.equal(h.participants()[0].connected, true);
+});
+
+test('sender replacement updates active and retiring peers while preserving moderation and identity', async t => {
+  const firstMic = microphone();
+  const secondMic = microphone();
+  const captures = [firstMic.stream, secondMic.stream];
+  const h = harness(t, { role: 'sender',
+    mediaDevices: { getUserMedia: async () => captures.shift() } });
+  const ws = await h.begin();
+  ws.message(offer());
+  await flush();
+  const firstPeer = h.peers[0];
+  firstPeer.connect();
+  ws.message(offer(CONN_B));
+  await flush();
+  const newPeer = h.peers[1];
+  assert.equal(firstPeer.closed, false);
+  firstMic.track.end();
+  ws.message({ type: 'moderated', generation: GEN_A, muted: true });
+  await flush();
+  assert.equal(await h.session.resumeCapture(), true);
+  assert.equal(ws.closed, false);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.session._id, ID_A);
+  assert.equal(h.session._generation, GEN_A);
+  assert.equal(h.peers.length, 2);
+  for (const peer of [firstPeer, newPeer]) {
+    assert.equal(peer.closed, false);
+    assert.equal(peer.getSenders()[0].track, secondMic.track);
+    assert.equal(peer.transceivers[0].direction, 'sendonly');
+  }
+  assert.equal(firstMic.track.stops, 1);
+  assert.equal(h.states.at(-1).detail.captureState, 'ready');
+  assert.equal(h.states.at(-1).detail.muted, true);
+  h.session.setTalking(true);
+  assert.equal(secondMic.track.enabled, false);
+  ws.message({ type: 'moderated', generation: GEN_A, muted: false });
+  await flush();
+  assert.equal(secondMic.track.enabled, false);
+  h.session.setTalking(true);
+  assert.equal(secondMic.track.enabled, true);
+});
+
+test('remote removal while sender recovery awaits permission stops the late grant', async t => {
+  const firstMic = microphone();
+  const lateMic = microphone();
+  const permission = deferred();
+  let captures = 0;
+  const h = harness(t, { role: 'sender', mediaDevices: {
+    getUserMedia: () => ++captures === 1 ? Promise.resolve(firstMic.stream) : permission.promise,
+  } });
+  const ws = await h.begin();
+  ws.message(offer());
+  await flush();
+  h.peers[0].connect();
+  firstMic.track.end();
+  const recovery = h.session.resumeCapture();
+  await flush();
+  ws.message({ type: 'kicked' });
+  await flush();
+  assert.equal(ws.closed, true);
+  assert.equal(h.peers[0].closed, true);
+  const stateCount = h.states.length;
+  permission.resolve(lateMic.stream);
+  assert.equal(await recovery, false);
+  assert.equal(lateMic.track.stops, 1);
+  assert.equal(lateMic.track.enabled, false);
+  assert.equal(h.states.length, stateCount);
+  assert.equal(h.states.at(-1).key, 'kicked');
+  assert.equal(h.clock.tasks.size, 0);
 });
 test('already-muted and ended microphone grants are refused and later hardware recovery cannot enable capture', async t => {
   for (const initial of [{ muted: true, readyState: 'live' }, { muted: false, readyState: 'ended' }]) {

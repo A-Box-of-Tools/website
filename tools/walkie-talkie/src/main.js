@@ -18,7 +18,7 @@ function activateChannel() {
   const ui = Object.fromEntries([
     'role', 'host-intro', 'status-text', 'status-dot', 'error', 'error-text',
     'host', 'start', 'listener-count', 'transmit', 'hold', 'toggle', 'hands-free', 'live-banner',
-    'microphone', 'microphone-note', 'end', 'invite', 'link', 'copy',
+    'microphone', 'microphone-note', 'resume-microphone', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
     'discovery-status', 'publication', 'setup', 'room-name', 'discover',
@@ -90,6 +90,9 @@ function activateChannel() {
   let heldKey = null;
   let latched = false;
   let microphoneMuted = false;
+  let captureState = 'ready';
+  let microphoneResuming = false;
+  let captureRecoveryTried = false;
   let listenerMuted = Boolean(listenerIdentity?.muted);
   let playbackBlocked = false;
   let listenerLeft = false;
@@ -211,6 +214,9 @@ function activateChannel() {
     ui.microphone.setAttribute('aria-pressed', String(microphoneMuted));
     ui.microphone.textContent = phrase(microphoneMuted ? 'microphone-unmute' : 'microphone-mute');
     ui['microphone-note'].hidden = !microphoneMuted;
+    ui['resume-microphone'].hidden = !hostActive || captureState === 'ready';
+    ui['resume-microphone'].disabled = microphoneResuming;
+    ui['resume-microphone'].textContent = phrase(microphoneResuming ? 'microphone-resuming' : 'resume-microphone');
     ui['listener-count'].textContent = phrase(listenerCount === 1 ? 'host-count-one' : 'host-count', { count: listenerCount });
   }
 
@@ -227,6 +233,10 @@ function activateChannel() {
 
   function renderState(key, detail = {}) {
     if (detail.directReady) globalThis.aboxToolComplete?.();
+    if (role === 'host' && detail.captureState) {
+      captureState = detail.captureState;
+      if (captureState === 'ready') captureRecoveryTried = false;
+    }
     if (typeof detail.listeners === 'number') listenerCount = detail.listeners;
     if (role === 'host' && ['host-ready', 'host-talking'].includes(key)) {
       hostWanted = true;
@@ -241,7 +251,7 @@ function activateChannel() {
     }
     if (role === 'host' && ['host-ready', 'host-talking', 'host-reconnecting'].includes(key)) {
       hostActive = true;
-      canTransmit = Boolean(detail.signaling || detail.directReady || detail.listeners > 0);
+      canTransmit = captureState === 'ready' && Boolean(detail.signaling || detail.directReady || detail.listeners > 0);
       if (!canTransmit) {
         activePointer = null;
         keyboardHeld = false;
@@ -266,11 +276,14 @@ function activateChannel() {
     }
     if (key === 'listener-left') listenerLeft = true;
     stateTalking = key === 'host-talking' || key === 'listener-talking';
-    const statusKey = role === 'host' && hostNeedsResume
+    const statusKey = role === 'host' && hostActive && captureState !== 'ready'
+      ? microphoneResuming ? 'microphone-resuming' : 'host-microphone-paused'
+      : role === 'host' && hostNeedsResume
       ? starting ? 'host-resuming' : errors.has(key) ? 'host-resume-needed' : key
       : key;
     ui['status-text'].textContent = phrase(statusKey);
-    ui['status-dot'].dataset.state = stateTalking ? 'talking' : key === 'host-ready' || key === 'listener-listening' ? 'ready' : 'waiting';
+    ui['status-dot'].dataset.state = role === 'host' && hostActive && captureState !== 'ready'
+      ? 'waiting' : stateTalking ? 'talking' : key === 'host-ready' || key === 'listener-listening' ? 'ready' : 'waiting';
     ui.error.hidden = !errors.has(key);
     ui['error-text'].textContent = errors.has(key) ? phrase(key) : '';
     updateHostControls();
@@ -289,6 +302,42 @@ function activateChannel() {
     heldKey = null;
     latched = false;
     updateTransmission();
+  }
+
+  function releaseHold() {
+    activePointer = null;
+    keyboardHeld = false;
+    heldKey = null;
+    updateTransmission();
+  }
+
+  async function resumeHostMicrophone(automatic = false) {
+    if (role !== 'host' || !hostActive || captureState === 'ready' || microphoneResuming
+        || pageSuspended || document.hidden || !session) return;
+    if (automatic && (captureState !== 'ended' || captureRecoveryTried)) return;
+    captureRecoveryTried = true;
+    microphoneResuming = true;
+    releaseTransmission();
+    const current = session;
+    const generation = sessionGeneration;
+    let timer;
+    ui['status-text'].textContent = phrase('microphone-resuming');
+    updateHostControls();
+    try {
+      await Promise.race([
+        current.resumeCapture(),
+        new Promise(resolve => { timer = setTimeout(() => resolve(false), 10000); }),
+      ]);
+    } catch {
+      // A denied replacement leaves the existing channel and its Resume action available.
+    } finally {
+      clearTimeout(timer);
+      if (session === current && sessionGeneration === generation) {
+        microphoneResuming = false;
+        if (captureState !== 'ready') ui['status-text'].textContent = phrase('host-microphone-paused');
+        updateHostControls();
+      }
+    }
   }
 
   async function playAudio() {
@@ -313,6 +362,9 @@ function activateChannel() {
 
   function createSession(identity) {
     const generation = ++sessionGeneration;
+    captureState = 'ready';
+    microphoneResuming = false;
+    captureRecoveryTried = false;
     session = new BroadcastSession({
       role,
       code: identity.code,
@@ -523,6 +575,7 @@ function activateChannel() {
   }
 
   ui.start.addEventListener('click', () => void startHost());
+  ui['resume-microphone'].addEventListener('click', () => void resumeHostMicrophone());
   ui['room-name'].addEventListener('input', () => ui['room-name'].setCustomValidity(''));
   ui.refresh.addEventListener('click', () => discovery.refresh());
   ui.hold.addEventListener('pointerdown', event => {
@@ -643,11 +696,20 @@ function activateChannel() {
     discovery.refresh();
   });
   window.addEventListener('blur', () => {
-    if (role === 'host') releaseTransmission();
+    if (role === 'host') releaseHold();
   });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopHiddenSource();
-    else resumeHiddenHost();
+    if (document.hidden) {
+      if (role === 'host') {
+        releaseHold();
+        if (starting && !hostActive) stopHiddenSource();
+      }
+    } else {
+      discovery.refresh();
+      resumeHiddenHost();
+      void resumeHostMicrophone(true);
+      if (role === 'listener') void playAudio();
+    }
   });
   window.addEventListener('pagehide', () => {
     pageSuspended = true;
@@ -665,6 +727,7 @@ function activateChannel() {
     pageSuspended = false;
     if (event.persisted) discovery = openDiscovery();
     if (role === 'host') resumeHiddenHost();
+    if (role === 'host') void resumeHostMicrophone(true);
     if (event.persisted && role === 'listener' && !listenerLeft && !listenerEnded) void startListener();
   });
 
