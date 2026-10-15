@@ -248,3 +248,38 @@ visits either.
 
 Until the secrets exist the `preview` job says so and skips, and pull
 requests stay green; nothing else changes.
+
+### Testing changes to the rendezvous Worker
+
+The static previews use a separate development switchboard at
+`rendezvous-dev.abox.tools`. Localhost uses it too. Production pages retain
+`rendezvous.abox.tools`; both discovery and pairing choose their endpoint from
+the page hostname through the shared source helper, without rewriting the
+JavaScript during a preview build or accepting a query-parameter override.
+
+The development Worker is named `rendezvous-dev` and has its own room,
+discovery and voice Durable Object namespaces and state. Its address rate
+counter is separate as well. The same source and inherited migration history
+create the same classes without binding them to production objects.
+
+Worker deployment remains manual and independent of the Pages upload above.
+From `workers/rendezvous/`, use:
+
+```
+npx wrangler deploy --env dev --dry-run
+npx wrangler deploy --env dev
+```
+
+The development environment explicitly replaces the route list with
+`rendezvous-dev.abox.tools`, so these commands do not deploy the production
+Worker or attach its hostname. A Wrangler login or suitably scoped Worker
+token is required; the Pages-only token described above cannot create a
+Worker or configure its custom domain. Secrets are not inherited from
+production. The [worker documentation](../workers/rendezvous/README.md#development-worker)
+covers bindings, rate-limit isolation and optional development relay secrets.
+
+Deploy a worker change to this environment, open the pull request or `dev`
+preview, and pair two browsers there. An online session should contact the
+development hostname. Offline Share a Browser Tab should open no rendezvous
+socket. A failed development connection stays a failure rather than using the
+live Worker, so a preview cannot silently exercise production state.

@@ -5,9 +5,11 @@ viewer. The viewer opens the tool in a browser, watches live video and has no
 input path back to the host website. No extension is needed. There is no audio,
 camera, microphone, DOM replication, text selection or recording feature.
 
-This is an intentional network feature. Its page explains the video path,
-setup metadata, public address discovery, optional relay and the limits of
-read-only viewing rather than inheriting local-file-processing claims.
+This is an intentional network feature. Both pairing methods use host-only
+ICE on a reachable local network, without STUN or TURN. Online pairing uses
+the existing introduction service; offline pairing exchanges complete blocks
+manually. The page explains these paths and the limits of read-only viewing
+rather than inheriting local-file-processing claims.
 
 ## Capture belongs to the browser picker
 
@@ -26,7 +28,7 @@ again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
 
-Every session generates a fresh random `tab-` room code. It is a link-only
+An online session generates a fresh random `tab-` room code. It is a link-only
 invitation, with no discovery socket or listing. A viewer link selects the
 viewing role but does not authorize a connection. The viewer sees the address
 exchange notice, optionally adds an introduction and chooses Request to watch.
@@ -36,7 +38,8 @@ verified identity.
 The initial WebRTC offer contains only the data channel. The host must
 approve a request, the viewer must acknowledge acceptance, and only then may
 the host attach its video track and renegotiate. One approved viewer can
-watch, with up to four pending requests. Refusal, disconnect, Stop, stale
+watch, with up to four pending requests in online mode. An offline exchange
+connects one viewer. Refusal, disconnect, Stop, stale
 callbacks and permission promises from a retired attempt cannot grant media
 to another attempt. A new viewer connection requires fresh approval.
 
@@ -51,41 +54,73 @@ over the website's cookies or login session.
 ## The connection is shared infrastructure
 
 `PairingSocket` in `shared/js/peer-pairing.js` owns signaling callbacks and
-timers. `peer-network.js` supplies ordinary STUN configuration and the
-viewer-selected TURN retry. `room-names.js` supplies name validation.
+timers. `peer-network.js` supplies host-only ICE configuration and filtering
+of remote descriptions and candidates. `room-names.js` supplies name validation.
 The tool's `session.js` and `protocol.js` retain application consent,
 approval, acknowledgement, limits and media ownership.
 
-The rendezvous endpoint is `wss://rendezvous.abox.tools`. Room URLs include
+`shared/js/peer-endpoint.js` selects `wss://rendezvous.abox.tools` for production
+and `wss://rendezvous-dev.abox.tools` for recognized preview and localhost pages.
+Offline mode opens neither endpoint. Online room URLs include
 `tool=share-tab`, which selects an isolated `share-tab:<code>` room identifier
 through the existing worker namespace helper. It must never fall back to the
 unqualified Share Text room when the worker does not recognise that tool.
-The worker namespace allowlist requires a separate manual deployment before
-the static tool can pair. There is no new Durable Object class, migration,
-storage or service secret. See [the worker deployment notes](../../workers/rendezvous/README.md).
+The worker namespace allowlist must be deployed for online pairing. There is
+no new Durable Object class, migration, storage or service secret. Offline
+pairing needs no worker at all, and the page-side local policy requires no
+worker protocol change. See [the worker deployment notes](../../workers/rendezvous/README.md).
 
-The ordinary attempt uses Cloudflare and Google STUN for address discovery.
-A direct failure offers the viewer an explicit relay retry using the
-rendezvous's existing short-lived Cloudflare TURN credentials. That retry
-uses a fresh peer attempt; it does not silently widen a failed attempt's
-policy. An absent relay configuration remains a visible failure. Neither
-STUN nor TURN traffic is governed by the page's `connect-src` directive.
+Both methods configure no ICE servers and accept only host candidates in
+local and remote descriptions and trickled messages. Removing STUN alone
+would not stop a peer supplying relayed or server-reflexive addresses; the
+two-sided filtering is part of the policy. There is no TURN-credential
+request or relay retry. Host candidates may describe public interfaces or
+follow VPN routes, so this is an address policy rather than proof of a
+physical LAN. Client isolation, firewalls and browser local-network
+permissions can still prevent a connection.
 
-The rendezvous sees room codes, IPs, times, SDP and ICE candidates. Setup is
-not encrypted from that service. It does not carry video, viewer notes or
-approval decisions. Those use the browser's encrypted WebRTC transports;
-the optional TURN relay forwards ciphertext without media keys. Cloudflare
-connection logs retain request metadata for seven days. The page's usual
-third-party scripts can read page addresses and same-page state, so a fragment
-code is not treated as a secret from those scripts. Mandatory approval is the
-media admission step.
+Online introductions expose room codes, IPs, times, SDP and host ICE
+candidates to the rendezvous. Setup is not encrypted from that service. It
+does not carry video, viewer notes or approval decisions. Those use the
+browser's encrypted WebRTC transports. Cloudflare connection logs retain
+request metadata for seven days. The page's usual third-party scripts can
+read page addresses and same-page state, including pasted blocks, so a
+fragment code or textarea is not treated as a secret from those scripts.
+Mandatory approval remains the media admission step.
+
+## Offline block exchange
+
+Load the HTTPS tool on both devices and wait for each service worker's
+offline-ready indication before losing internet. The website being captured
+must also be loaded or otherwise available offline. The user supplies a
+reachable Wi-Fi, Ethernet or hotspot network; the page does not establish
+Wi-Fi Direct, Bluetooth or a hotspot.
+
+The host captures a tab, creates a control-only offer and waits for complete
+host-candidate gathering before exposing the host block. The viewer pastes
+or loads that block, adds an optional note and creates a complete reply.
+The host pastes or loads the reply to establish the encrypted control
+channel. This is one manual round trip: media negotiation after approval and
+acknowledgement travels the encrypted control channel, without another
+manual exchange. No rendezvous socket, public STUN server or TURN relay is
+used anywhere in this mode.
+
+Blocks carry connection information, including addresses. Type, size,
+generation, expiry and candidate-policy checks reject incomplete, stale or
+mismatched exchanges before they acquire the current attempt's authority.
+A failed or expired exchange requires fresh blocks. Copy controls await the
+clipboard result and leave selectable text on failure. Save and load controls
+let the user transfer files through their own local method, including OS
+Bluetooth transfer or USB; the tool never sends those files. Saved files are
+user-owned copies and must be removed separately. Every block field opts
+out of the frame's remembered settings.
 
 ## Ending and reconnecting
 
 Stop releases capture, closes peers and retires session intent. A browser
 Stop action, the captured tab ending or closing the sharing page also ends
 the source. A viewer disconnect ends only that viewer's connection. A failed
-introduction service does not itself authorize media, change relay policy or
+introduction service does not itself authorize media, change candidate policy or
 request new capture. The session code owns the handling of an already healthy
 peer while signaling is interrupted; returning to the page never bypasses
 an ended track or an explicit Stop.
@@ -98,7 +133,10 @@ on a desktop browser: tab accepted; window and screen refused; cancellation
 releases nothing. Verify no media before approval and acknowledgement,
 only one approved viewer, refusal and disconnect, browser Stop, late capture
 after Stop, hidden control-page continuity and a fresh start after capture
-ends. Direct and explicitly chosen relay paths need separate network checks.
+ends. Exercise both online pairing and offline block exchange on the actual
+local network, including file loading, expired or mismatched blocks, and an
+offline cached-page reload with no rendezvous socket. A disconnected internet
+route during online pairing is not a substitute for testing offline mode.
 An automated synthetic stream cannot establish real browser-picker support.
 
 The generator and JavaScript suites run in CI, in accordance with the

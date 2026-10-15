@@ -8,13 +8,14 @@ const $ = (id) => document.getElementById(id);
 let revision = 0;
 let role = null;
 let invitation = '';
-let attempt = null;
+let offlineAccepted = false;
+let offlineAccepting = false;
 let remoteRevision = 0;
 let waitingRequests = [];
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
-  'connection.relay-unavailable', 'connection.relay-failed', 'viewer.denied', 'host.ended',
+  'viewer.denied', 'host.ended', 'offline.expired',
 ]);
 
 function status(id, key, error = false) {
@@ -98,16 +99,35 @@ function clearRemote() {
   $('viewer-play').hidden = true;
 }
 
+function isOffline() { return $('pairing-offline').checked; }
+
 function updateControls() {
   const hosting = role === 'host';
   const viewing = role === 'viewer';
+  const busy = hosting || viewing;
+  const offline = isOffline();
+  $('pairing-online').disabled = busy;
+  $('pairing-offline').disabled = busy;
+  $('online-viewer-fields').hidden = offline;
+  $('offline-viewer-fields').hidden = !offline;
+  $('offline-note').hidden = !offline;
   $('host-start').disabled = hosting || viewing || !canCapture;
   $('host-stop').hidden = !hosting;
-  $('viewer-connect').disabled = hosting || viewing || !canConnect;
+  $('viewer-connect').hidden = offline;
+  $('viewer-connect').disabled = busy || !canConnect;
+  $('offline-reply').hidden = !offline;
+  $('offline-reply').disabled = busy || !canConnect;
   $('viewer-stop').hidden = !viewing;
-  $('viewer-code').readOnly = hosting || viewing;
-  $('viewer-name').readOnly = hosting || viewing;
-  $('host-invitation').hidden = !hosting || !invitation;
+  $('viewer-code').readOnly = busy;
+  $('viewer-name').readOnly = busy;
+  $('offline-offer-input').readOnly = busy;
+  $('choose-offer').disabled = busy;
+  $('host-invitation').hidden = offline || !hosting || !invitation;
+  $('offline-host-panel').hidden = !offline || !hosting || !$('offline-offer').value;
+  $('offline-answer-panel').hidden = !offline || !viewing || !$('offline-answer').value;
+  $('offline-answer-input').readOnly = offlineAccepted || offlineAccepting;
+  $('choose-answer').disabled = offlineAccepted || offlineAccepting;
+  $('offline-accept').disabled = !hosting || offlineAccepted || offlineAccepting;
 }
 
 const session = new TabSession({
@@ -116,11 +136,7 @@ const session = new TabSession({
     const currentRole = role;
     status(currentRole === 'host' ? 'host-status' : 'viewer-status', key, terminal.has(key));
     if (terminal.has(key) && currentRole === 'viewer') {
-      const offerRelay = key === 'connection.direct-failed' && attempt && !attempt.relay;
-      role = null;
-      clearRemote();
-      updateControls();
-      $('relay-panel').hidden = !offerRelay;
+      stopAll(key, 'viewer');
     } else if (terminal.has(key) && currentRole === 'host' && !session.role) {
       stopAll(key, 'host');
     }
@@ -160,17 +176,42 @@ const linkCopy = clipboardFeedback({
   restore: () => { $('copy-status').textContent = ''; },
 });
 
+function blockCopy(field, feedback, expectedRole) {
+  return clipboardFeedback({
+    read: () => ({ text: $(field).value }),
+    current: (value) => role === expectedRole && isOffline() && Boolean(value.text) && value.text === $(field).value,
+    write: (value) => navigator.clipboard.writeText(value),
+    done: () => status(feedback, 'copy.done'),
+    selected: () => {
+      $(field).focus();
+      $(field).select();
+      status(feedback, 'copy.manual');
+    },
+    restore: () => { $(feedback).textContent = ''; },
+  });
+}
+
+const offerCopy = blockCopy('offline-offer', 'offer-copy-status', 'host');
+const answerCopy = blockCopy('offline-answer', 'answer-copy-status', 'viewer');
+
 function stopAll(key = 'connection.stopped', previousRole = role) {
   revision += 1;
   role = null;
   invitation = '';
+  offlineAccepted = false;
+  offlineAccepting = false;
   linkCopy.invalidate();
+  offerCopy.invalidate();
+  answerCopy.invalidate();
   session.stop();
   capture.stop();
   $('local-video').srcObject = null;
   $('host-preview-panel').hidden = true;
   $('share-link').value = '';
-  $('relay-panel').hidden = true;
+  $('offline-offer').value = '';
+  $('offline-answer').value = '';
+  $('offline-answer-input').value = '';
+  $('offline-accept-status').textContent = '';
   renderRequests([]);
   renderViewers([]);
   clearRemote();
@@ -183,7 +224,7 @@ async function startHost() {
   stopAll();
   const owner = revision;
   role = 'host';
-  attempt = null;
+  const offline = isOffline();
   status('host-status', 'host.choosing');
   updateControls();
   try {
@@ -193,11 +234,17 @@ async function startHost() {
     $('local-video').srcObject = stream;
     $('host-preview-panel').hidden = false;
     $('local-video').play().catch(() => {});
-    const code = makeCode();
-    await session.startHost(stream, code);
-    if (owner !== revision || role !== 'host') return;
-    invitation = viewerLink(location.href, code);
-    $('share-link').value = invitation;
+    if (offline) {
+      const block = await session.startOfflineHost(stream);
+      if (owner !== revision || role !== 'host') return;
+      $('offline-offer').value = block;
+    } else {
+      const code = makeCode();
+      await session.startHost(stream, code);
+      if (owner !== revision || role !== 'host') return;
+      invitation = viewerLink(location.href, code);
+      $('share-link').value = invitation;
+    }
     updateControls();
   } catch (error) {
     if (owner !== revision) return;
@@ -211,24 +258,92 @@ function knownPhrase(key) {
     .some((element) => element.dataset.phrase === key);
 }
 
-async function connectViewer(relay = false) {
+async function connectViewer() {
   if (role || !canConnect) return;
-  const code = relay ? attempt?.code : parseCode($('viewer-code').value);
+  const code = parseCode($('viewer-code').value);
   if (!code) { status('viewer-status', 'code.invalid', true); return; }
-  const note = relay ? attempt.note : $('viewer-name').value.trim();
+  const note = $('viewer-name').value.trim();
   stopAll();
   const owner = revision;
   role = 'viewer';
-  attempt = { code, note, relay };
   $('viewer-code').value = code;
   updateControls();
   try {
-    await session.connect(code, note, { relay });
+    await session.connect(code, note);
   } catch (error) {
     if (owner !== revision || role !== 'viewer') return;
     const key = error.code || error.message;
     stopAll(knownPhrase(key) ? key : 'connection.server-failed', 'viewer');
   }
+}
+
+async function createViewerReply() {
+  if (role || !canConnect || !isOffline()) return;
+  const block = $('offline-offer-input').value.trim();
+  const note = $('viewer-name').value.trim();
+  if (!block || block.length > 65536) { status('viewer-status', 'offline.invalid-offer', true); return; }
+  stopAll();
+  const owner = revision;
+  role = 'viewer';
+  updateControls();
+  try {
+    const answer = await session.createOfflineAnswer(block, note);
+    if (owner !== revision || role !== 'viewer') return;
+    $('offline-answer').value = answer;
+    updateControls();
+  } catch (error) {
+    if (owner !== revision || role !== 'viewer') return;
+    const key = error.code || error.message;
+    stopAll(knownPhrase(key) ? key : 'offline.invalid-offer', 'viewer');
+  }
+}
+
+async function acceptViewerReply() {
+  if (role !== 'host' || !isOffline() || offlineAccepted || offlineAccepting) return;
+  const owner = revision;
+  offlineAccepting = true;
+  updateControls();
+  try {
+    await session.acceptOfflineAnswer($('offline-answer-input').value.trim());
+    if (owner !== revision || role !== 'host') return;
+    offlineAccepted = true;
+    $('offline-accept-status').textContent = '';
+  } catch (error) {
+    if (owner !== revision || role !== 'host') return;
+    const key = error.code || error.message;
+    status('offline-accept-status', knownPhrase(key) ? key : 'offline.invalid-answer', true);
+  } finally {
+    if (owner === revision) { offlineAccepting = false; updateControls(); }
+  }
+}
+
+async function loadBlock(input, field, feedback) {
+  const file = input.files?.[0];
+  input.value = '';
+  if (!file) return;
+  const owner = revision;
+  try {
+    if (file.size > 65536) throw new Error('offline.file-invalid');
+    const text = await file.text();
+    if (owner !== revision || !isOffline()) return;
+    if (field === 'offline-answer-input' && (offlineAccepted || offlineAccepting)) return;
+    if (!text.trim() || text.length > 65536) throw new Error('offline.file-invalid');
+    $(field).value = text;
+  } catch { if (owner === revision) status(feedback, 'offline.file-invalid', true); }
+}
+
+function saveBlock(field, filename, feedback) {
+  const text = $(field).value;
+  if (!text || !isOffline() || !role) return;
+  const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  status(feedback, 'offline.saved');
 }
 
 function showInvitation() {
@@ -238,6 +353,8 @@ function showInvitation() {
   $('show-host').hidden = !watching;
   $('tab-share-grid').classList.toggle('tab-share-watching', watching);
   if (watching) {
+    $('pairing-online').checked = true;
+    $('pairing-offline').checked = false;
     const code = parseCode(hash);
     $('viewer-code').value = code || hash.slice(0, 2048);
     if (!code) status('viewer-status', 'code.invalid', true);
@@ -255,13 +372,33 @@ if (!canConnect) status('viewer-status', 'connection.unsupported', true);
 $('host-start').addEventListener('click', startHost);
 $('host-stop').addEventListener('click', () => stopAll('host.stopped'));
 $('viewer-connect').addEventListener('click', () => connectViewer());
-$('viewer-stop').addEventListener('click', () => { attempt = null; stopAll(); });
-$('viewer-relay').addEventListener('click', () => connectViewer(true));
+$('viewer-stop').addEventListener('click', () => stopAll());
+$('offline-reply').addEventListener('click', createViewerReply);
+$('offline-accept').addEventListener('click', acceptViewerReply);
 $('copy-link').addEventListener('click', () => linkCopy.copy());
-$('viewer-code').addEventListener('input', () => { $('relay-panel').hidden = true; });
+$('copy-offer').addEventListener('click', () => offerCopy.copy());
+$('copy-answer').addEventListener('click', () => answerCopy.copy());
+$('save-offer').addEventListener('click', () => saveBlock('offline-offer', 'tab-offer.json', 'offer-copy-status'));
+$('save-answer').addEventListener('click', () => saveBlock('offline-answer', 'tab-answer.json', 'answer-copy-status'));
+$('choose-offer').addEventListener('click', () => $('load-offer').click());
+$('choose-answer').addEventListener('click', () => $('load-answer').click());
+$('load-offer').addEventListener('change', () => loadBlock($('load-offer'), 'offline-offer-input', 'viewer-status'));
+$('load-answer').addEventListener('change', () => loadBlock($('load-answer'), 'offline-answer-input', 'offline-accept-status'));
+for (const id of ['pairing-online', 'pairing-offline']) {
+  $(id).addEventListener('change', () => {
+    if (role) return;
+    revision += 1;
+    if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
+    updateControls();
+  });
+}
 for (const id of ['viewer-code', 'viewer-name']) {
   $(id).addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') { event.preventDefault(); connectViewer(); }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (isOffline()) createViewerReply();
+      else connectViewer();
+    }
   });
 }
 $('viewer-play').addEventListener('click', async () => {

@@ -1,8 +1,10 @@
-import { rtcConfig, allowedCandidate } from './shared/peer-network.js';
+import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
 import { PairingSocket } from './shared/peer-pairing.js';
-import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage, relayServer } from './protocol.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
+import { newOfflinePairing, offlineBlock, readOfflineBlock, OFFLINE_LIFETIME } from './offline-pairing.js';
 
-const RENDEZVOUS = 'wss://rendezvous.abox.tools';
+const RENDEZVOUS = rendezvousEndpoint();
 const TIMEOUT = 20000;
 const MAX_PENDING = 4;
 
@@ -10,10 +12,13 @@ export class TabSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, diagnostics = null,
+    random = globalThis.crypto, now = () => Date.now(),
   } = {}) {
-    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, diagnostics });
+    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, diagnostics, random, now });
     this.revision = 0;
     this.role = null;
+    this.mode = null;
+    this.offline = null;
     this.stream = null;
     this.socket = null;
     this.pairing = null;
@@ -37,9 +42,10 @@ export class TabSession {
       .map(({ id, note, media, negotiated, pc }) => ({ id, note, streaming: Boolean(media && negotiated && pc.connectionState === 'connected') })));
   }
 
-  async startHost(stream, code) {
+  prepareHost(stream, mode) {
     this.stop();
     this.role = 'host';
+    this.mode = mode;
     this.stream = stream;
     const track = stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.stop('host.ended'); throw new Error('host.ended'); }
@@ -47,23 +53,121 @@ export class TabSession {
     track.addEventListener('ended', () => {
       if (this.revision === revision && this.role === 'host' && this.stream === stream) this.stop('host.ended');
     }, { once: true });
+  }
+
+  async startHost(stream, code) {
+    this.prepareHost(stream, 'online');
     return this.open(code);
   }
 
-  async connect(code, note, { relay = false } = {}) {
+  async connect(code, note) {
     this.stop();
     this.role = 'viewer';
+    this.mode = 'online';
     this.note = String(note ?? '').trim().slice(0, 80);
-    this.wantRelay = Boolean(relay);
-    this.relay = null;
     return this.open(code);
+  }
+
+  async startOfflineHost(stream) {
+    this.prepareHost(stream, 'offline');
+    const revision = this.revision;
+    try {
+      this.offline = newOfflinePairing(this.random, this.now());
+      const entry = this.newPeer('offline', true);
+      this.channel(entry, entry.pc.createDataChannel(CHANNEL));
+      this.expireOffline(entry);
+      this.state('offline.gathering');
+      const offer = await entry.pc.createOffer();
+      if (!this.current(entry)) throw new Error('connection.stopped');
+      await entry.pc.setLocalDescription(localDescription(offer));
+      if (!this.current(entry)) throw new Error('connection.stopped');
+      await this.gather(entry);
+      this.checkOffline(entry);
+      entry.awaitingAnswer = true;
+      this.state('offline.offer-ready');
+      return offlineBlock(this.offline, entry.pc.localDescription);
+    } catch (error) {
+      if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
+      throw error;
+    }
+  }
+
+  async createOfflineAnswer(text, note) {
+    // The host owns the offer's expiry. A viewer starts its own bounded wait,
+    // so devices with different clocks can still exchange the two blocks.
+    const offer = readOfflineBlock(text, 'offer', { checkExpiry: false });
+    this.stop();
+    this.role = 'viewer'; this.mode = 'offline';
+    this.note = String(note ?? '').trim().slice(0, 80);
+    this.offline = { session: offer.session, expires: offer.expires, deadline: this.now() + OFFLINE_LIFETIME };
+    const revision = this.revision;
+    try {
+      const entry = this.newPeer('offline', true);
+      this.expireOffline(entry);
+      this.state('offline.gathering');
+      await this.receiveSignal(entry, { description: offer.description }, true);
+      this.checkOffline(entry);
+      this.state('offline.answer-ready');
+      return offlineBlock(this.offline, entry.pc.localDescription);
+    } catch (error) {
+      if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
+      throw error;
+    }
+  }
+
+  async acceptOfflineAnswer(text) {
+    const entry = this.peers.get('offline');
+    if (this.mode !== 'offline' || this.role !== 'host' || !entry || this.offline?.answered) throw new Error('offline.invalid-answer');
+    const answer = readOfflineBlock(text, 'answer', { now: this.now(), pairing: this.offline });
+    this.offline.answered = true;
+    try {
+      await this.receiveSignal(entry, { description: answer.description }, true);
+      this.checkOffline(entry);
+      this.clear(entry, 'manual');
+      if (!entry.hello) {
+        this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
+        this.state('connection.connecting');
+      }
+    } catch (error) {
+      if (this.current(entry)) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
+      throw error;
+    }
+  }
+
+  checkOffline(entry) {
+    if (!this.current(entry)) throw new Error('connection.stopped');
+    if ((this.offline.deadline ?? this.offline.expires) <= this.now()) throw new Error('offline.expired');
+  }
+
+  expireOffline(entry) {
+    const deadline = this.offline.deadline ?? this.offline.expires;
+    this.deadline(entry, 'manual', Math.max(0, deadline - this.now()), () => this.stop('offline.expired'));
+  }
+
+  gather(entry) {
+    if (!this.current(entry)) return Promise.reject(new Error('connection.stopped'));
+    if (entry.pc.iceGatheringState === 'complete') return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const finish = (error) => {
+        entry.pc.removeEventListener('icegatheringstatechange', changed);
+        this.clear(entry, 'gather');
+        if (entry.cancelGather === cancel) entry.cancelGather = null;
+        if (error) reject(error); else resolve();
+      };
+      const changed = () => { if (entry.pc.iceGatheringState === 'complete') finish(); };
+      const cancel = () => finish(new Error('connection.stopped'));
+      entry.cancelGather = cancel;
+      entry.pc.addEventListener('icegatheringstatechange', changed);
+      this.deadline(entry, 'gather', TIMEOUT, () => finish(new Error('connection.direct-failed')));
+      changed();
+    });
   }
 
   open(code) {
     if (typeof code !== 'string' || !CODE_PATTERN.test(code)) { this.stop('code.invalid'); return Promise.reject(new Error('code.invalid')); }
     this.code = code;
     this.state('connection.starting');
-    this.openingTrace = this.diagnostics?.begin(this.role, this.wantRelay && this.role === 'viewer' ? 'relay' : 'internet') ?? null;
+    this.openingTrace = this.diagnostics?.begin(this.role, 'local') ?? null;
     const revision = this.revision;
     return new Promise((resolve, reject) => {
       let settled = false, ready = false, socket;
@@ -108,15 +212,6 @@ export class TabSession {
           if (message.type === 'ready' && this.role === 'viewer' && !ready) {
             ready = true;
             finish();
-            if (this.wantRelay) {
-              this.state('connection.relaying');
-              pairing.after('relay', 10000, () => fail('connection.relay-unavailable'));
-              if (!pairing.send({ relay: true })) fail('connection.server-failed');
-            } else this.dial();
-          } else if (message.type === 'relay' && this.role === 'viewer' && this.wantRelay && ready && !this.peers.size) {
-            pairing.clear('relay');
-            this.relay = relayServer(message.iceServers);
-            if (!this.relay) return fail('connection.relay-unavailable');
             this.dial();
           } else {
             try { this.message(message); } catch { fail('connection.invalid'); }
@@ -134,7 +229,7 @@ export class TabSession {
     try {
       this.newPeer('viewer');
       this.send({ protocol: PROTOCOL, dial: true });
-    } catch { this.stop(this.wantRelay ? 'connection.relay-failed' : 'connection.direct-failed'); }
+    } catch { this.stop('connection.direct-failed'); }
   }
 
   message(message) {
@@ -164,14 +259,18 @@ export class TabSession {
     if (data.refused === 'protocol' && this.role === 'viewer') { this.stop('connection.invalid'); return; }
     const entry = this.peers.get(id);
     if (!entry) return;
-    this.queue(entry, async () => {
+    this.queue(entry, () => this.receiveSignal(entry, data));
+  }
+
+  async receiveSignal(entry, data, manual = false) {
+      if (!this.current(entry)) return;
       if (data.description !== undefined) {
         const description = data.description;
         const expected = this.role === 'host' ? 'answer' : 'offer';
         if (description?.type !== expected || typeof description.sdp !== 'string' || description.sdp.length > 60000
             || !description.sdp.startsWith('v=0') || (expected === 'answer' && !entry.awaitingAnswer)
             || (expected === 'offer' && (/^m=audio\s/m.test(description.sdp) || (!entry.approved && /^m=video\s/m.test(description.sdp))))) throw new Error('connection.invalid');
-        await entry.pc.setRemoteDescription(description);
+        await entry.pc.setRemoteDescription(localDescription(description));
         if (!this.current(entry)) return;
         for (const candidate of entry.candidates.splice(0)) {
           await entry.pc.addIceCandidate(candidate);
@@ -181,37 +280,42 @@ export class TabSession {
           entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
           const answer = await entry.pc.createAnswer();
           if (!this.current(entry)) return;
-          await entry.pc.setLocalDescription(answer);
-          if (this.current(entry)) this.signal(entry, { description: entry.pc.localDescription });
+          await entry.pc.setLocalDescription(localDescription(answer));
+          if (!this.current(entry)) return;
+          if (manual) await this.gather(entry);
+          else this.signal(entry, { description: entry.pc.localDescription });
         } else {
           entry.awaitingAnswer = false;
           if (entry.media) { this.clear(entry, 'media'); entry.negotiated = true; this.viewers(); this.state(this.hostState()); }
         }
       } else if (data.candidate !== undefined) {
         const candidate = data.candidate;
-        if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048 || !allowedCandidate(candidate, false)) throw new Error('connection.invalid');
+        if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048) throw new Error('connection.invalid');
+        if (!allowedCandidate(candidate, true)) return;
         if (entry.pc.remoteDescription) await entry.pc.addIceCandidate(candidate);
         else if (entry.candidates.length < 64) entry.candidates.push(candidate);
         else throw new Error('connection.invalid');
       }
-    });
   }
 
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
-  newPeer(id) {
-    const configuration = rtcConfig(false, this.role === 'viewer' ? this.relay : null);
-    if (this.role === 'viewer' && this.relay) configuration.iceTransportPolicy = 'relay';
-    const pc = new this.PeerConnection(configuration);
-    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, 'internet');
+  newPeer(id, manual = false) {
+    // Pairing still uses the public introduction service, but it must never
+    // widen the media route beyond the host candidates of these browsers.
+    const pc = new this.PeerConnection(rtcConfig(true));
+    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, 'local');
     this.openingTrace = null;
-    const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], timers: new Map(), approved: false, pending: false };
+    const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], timers: new Map(), approved: false, pending: false, manualInitial: manual };
     this.peers.set(id, entry);
     trace?.attach(pc);
-    this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
+    if (!manual) this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
     pc.addEventListener('icecandidate', (event) => {
       if (!this.current(entry) || !event.candidate) return;
-      try { this.signal(entry, { candidate: event.candidate.toJSON() }); } catch { this.peerFailed(entry); }
+      try {
+        const candidate = event.candidate.toJSON();
+        if (allowedCandidate(candidate, true)) this.signal(entry, { candidate });
+      } catch { this.peerFailed(entry); }
     });
     pc.addEventListener('datachannel', (event) => {
       if (!this.current(entry)) { event.channel.close(); return; }
@@ -251,12 +355,22 @@ export class TabSession {
     }).finally(() => { entry.queued -= 1; });
   }
 
-  signal(entry, data) { this.send({ protocol: PROTOCOL, ...data }, this.role === 'host' ? entry.id : null); }
+  signal(entry, data) {
+    const frame = data.description === undefined ? data : { ...data, description: localDescription(data.description) };
+    if (this.mode === 'offline') {
+      // The initial two blocks contain all gathered candidates. After that,
+      // renegotiation stays on the authenticated encrypted control channel.
+      if (entry.manualInitial) return;
+      this.control(entry, 'signal', { data: frame });
+      return;
+    }
+    this.send({ protocol: PROTOCOL, ...frame }, this.role === 'host' ? entry.id : null);
+  }
 
   async offer(entry) {
     const offer = await entry.pc.createOffer();
     if (!this.current(entry)) return;
-    await entry.pc.setLocalDescription(offer);
+    await entry.pc.setLocalDescription(localDescription(offer));
     if (!this.current(entry)) return;
     entry.awaitingAnswer = true;
     this.signal(entry, { description: entry.pc.localDescription });
@@ -272,6 +386,7 @@ export class TabSession {
     const opened = () => {
       if (!this.current(entry) || entry.opened) return;
       entry.opened = true;
+      entry.manualInitial = false;
       try { this.control(entry, 'hello'); } catch { this.peerFailed(entry); }
     };
     channel.addEventListener('open', opened);
@@ -290,9 +405,15 @@ export class TabSession {
           if (entry.hello) return;
           entry.hello = true;
           this.clear(entry, 'connect');
+          this.clear(entry, 'manual');
           if (this.role === 'viewer') { this.control(entry, 'request', { note: this.note }); this.state('viewer.waiting'); }
           else this.deadline(entry, 'request', TIMEOUT, () => this.peerFailed(entry));
         } else if (!entry.hello) this.peerFailed(entry, 'connection.invalid');
+        else if (message.type === 'signal') {
+          const consent = this.role === 'host' ? entry.acknowledged : entry.localAckSent;
+          if (this.mode !== 'offline' || !entry.approved || !consent) return this.peerFailed(entry, 'connection.invalid');
+          this.queue(entry, () => this.receiveSignal(entry, message.data));
+        }
         else if (message.type === 'request' && this.role === 'host' && !entry.approved) {
           if (!entry.pending && !entry.refused) {
             this.clear(entry, 'request'); entry.note = message.note; entry.pending = true; this.requests();
@@ -302,6 +423,7 @@ export class TabSession {
           entry.approved = true;
           this.state('viewer.approved');
           this.control(entry, 'approval-ack');
+          entry.localAckSent = true;
           this.deadline(entry, 'media', TIMEOUT, async () => {
             try {
               const stats = await entry.pc.getStats();
@@ -354,7 +476,10 @@ export class TabSession {
     entry.refused = true;
     entry.pending = false;
     this.requests();
-    this.deadline(entry, 'denied', 150, () => this.removePeer(id));
+    this.deadline(entry, 'denied', 150, () => {
+      if (this.mode === 'offline') this.stop('connection.ended');
+      else this.removePeer(id);
+    });
     return true;
   }
 
@@ -362,7 +487,8 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (this.role !== 'host' || !entry?.approved) return false;
     try { this.control(entry, 'ended'); } catch {}
-    this.removePeer(id);
+    if (this.mode === 'offline') this.stop('connection.ended');
+    else this.removePeer(id);
     return true;
   }
 
@@ -377,9 +503,9 @@ export class TabSession {
     entry.timers.set(name, timer);
   }
 
-  peerFailed(entry, key = this.wantRelay && this.role === 'viewer' ? 'connection.relay-failed' : 'connection.direct-failed') {
+  peerFailed(entry, key = 'connection.direct-failed') {
     if (!this.current(entry)) return;
-    if (this.role === 'viewer') this.stop(key);
+    if (this.role === 'viewer' || this.mode === 'offline') this.stop(key);
     else this.removePeer(entry.id);
   }
 
@@ -387,6 +513,7 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (!entry) return;
     this.peers.delete(id);
+    entry.cancelGather?.();
     for (const timer of entry.timers.values()) clearTimeout(timer);
     entry.timers.clear();
     entry.trace?.finish('ended');
@@ -403,6 +530,8 @@ export class TabSession {
     this.revision += 1;
     if (role === 'host') for (const entry of this.peers.values()) { try { this.control(entry, 'ended'); } catch {} }
     this.role = null;
+    this.mode = null;
+    this.offline = null;
     this.cancelOpen?.(); this.cancelOpen = null;
     this.openingTrace?.finish('stopped'); this.openingTrace = null;
     const pairing = this.pairing;

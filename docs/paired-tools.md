@@ -12,6 +12,23 @@ owns ICE configuration and local candidate/SDP filtering; `peer-discovery.js`
 and `room-names.js` supply the existing discovery and room-name primitives.
 Both voice tools also share their authenticated protocol in `voice-session.js`.
 
+## Choosing the pairing service
+
+Add `"peer-endpoint"` to the tool's `js_parts` and use `rendezvousEndpoint()`
+for both discovery and session sockets. It selects the separate development
+service, `wss://rendezvous-dev.abox.tools`, on localhost, 127.0.0.1 and HTTPS
+`abox-preview.pages.dev` or its subdomains. Other page addresses, including
+production and unknown or malformed addresses, use
+`wss://rendezvous.abox.tools`. The choice comes only from the page address;
+query strings and invitation fragments cannot choose a server.
+
+Both WSS origins belong in the tool's `connect-src` policy. A development
+outage remains a development outage: there is no fallback to production.
+Consequently local builds and preview deployments need the development
+worker and pair only with pages selecting that same service. This separates
+rooms, discovery and runtime bindings from the live worker. Share a Browser
+Tab's offline block exchange opens neither service.
+
 ## Owning an introduction
 
 Add `"peer-pairing"` to a tool's `js_parts`, then import `PairingSocket` from
@@ -75,12 +92,13 @@ camera and voice keep their established retry schedules and readiness rules.
 | Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
-| Share a Browser Tab | A click and browser-tab-only capture, fresh random link-only rooms, explicit Request to watch, mandatory approval and acknowledgement before video, one approved viewer, and direct-first ICE with an explicit viewer relay retry. An ended track requires a new picker choice; lifecycle recovery cannot recapture. |
+| Share a Browser Tab | A click and browser-tab-only capture, online link-only introductions or offline offer/reply blocks, host-only ICE without STUN or TURN in both methods, and mandatory approval and acknowledgement before video. One viewer can watch; offline media renegotiation uses the established encrypted control channel. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
-approval requirement or restore a session the user ended. The shared parts
-never request devices, save session intent, or choose a server. No worker
-protocol or deployment changes are needed to use them.
+approval requirement or restore a session the user ended. The socket and
+lifecycle parts never request devices, save session intent, or choose a
+server. `peer-endpoint.js` makes only the fixed environment choice described
+above. These primitives require no worker protocol changes.
 
 ## Connection reports
 

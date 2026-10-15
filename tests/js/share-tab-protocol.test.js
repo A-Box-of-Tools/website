@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TOOL, PROTOCOL, makeCode, parseCode, viewerLink, controlMessage, relayServer } from '../../tools/share-tab/src/protocol.js';
+import { TOOL, PROTOCOL, makeCode, parseCode, viewerLink, controlMessage } from '../../tools/share-tab/src/protocol.js';
 
 test('tab invitations keep their tool namespace and unpredictable code', () => {
   const random = { getRandomValues(bytes) { bytes.fill(31); return bytes; } };
@@ -20,17 +20,16 @@ test('tab control accepts only bounded admission and ending messages', () => {
   const frame = (type, values = {}) => JSON.stringify({ protocol: PROTOCOL, type, ...values });
   assert.equal(controlMessage(frame('request', { note: 'My screen' })).note, 'My screen');
   assert.equal(controlMessage(frame('approval-ack')).type, 'approval-ack');
-  for (const type of ['click', 'keypress', 'navigate', 'execute']) assert.equal(controlMessage(frame(type)), null);
+  for (const type of ['click', 'keypress', 'navigate', 'execute', 'relay']) assert.equal(controlMessage(frame(type)), null);
   assert.equal(controlMessage(frame('request', { note: 'x'.repeat(81) })), null);
   assert.equal(controlMessage(frame('request')), null);
   assert.equal(controlMessage(JSON.stringify({ protocol: 'share-text', type: 'approved' })), null);
   assert.equal(controlMessage('x'.repeat(1025)), null);
 });
 
-test('relay credentials must name a bounded TURN service', () => {
-  const relay = { urls: ['turn:relay.example:3478?transport=udp'], username: 'temporary', credential: 'secret' };
-  assert.deepEqual(relayServer([relay]), relay);
-  assert.equal(relayServer([{ ...relay, urls: ['https://example.test/'] }]), null);
-  assert.equal(relayServer([{ ...relay, credential: '' }]), null);
-  assert.equal(relayServer(null), null);
+test('offline encrypted signaling has its own bounded object envelope', () => {
+  const frame = { protocol: PROTOCOL, type: 'signal', data: { description: { type: 'offer', sdp: 'v=0\r\n' } } };
+  assert.equal(controlMessage(JSON.stringify(frame)).type, 'signal');
+  assert.equal(controlMessage(JSON.stringify({ ...frame, data: [] })), null);
+  assert.equal(controlMessage(JSON.stringify({ ...frame, data: { description: { sdp: 'x'.repeat(65536) } } })), null);
 });

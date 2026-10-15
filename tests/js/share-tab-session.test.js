@@ -6,7 +6,14 @@ import { CHANNEL, PROTOCOL } from '../../tools/share-tab/src/protocol.js';
 
 const CODE = 'tab-abcdefghijklmnop';
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\na=mid:0\r\n';
-const RELAY = { urls: ['turn:relay.example:3478'], username: 'temporary', credential: 'secret' };
+const HOST_CANDIDATE = 'candidate:lan1 1 udp 2122260223 device.local 5000 typ host';
+const OTHER_CANDIDATES = [
+  'candidate:map1 1 udp 1686052607 198.51.100.1 5001 typ srflx raddr 192.168.1.2 rport 5000',
+  'candidate:relay1 1 udp 1686052607 198.51.100.2 5002 typ relay raddr 192.168.1.2 rport 5000',
+  'candidate:peer1 1 udp 1686052607 198.51.100.3 5003 typ prflx',
+];
+const MIXED_SDP = `${SDP}a=${HOST_CANDIDATE} raddr 198.51.100.1 rport 5001\r\n${OTHER_CANDIDATES.map((candidate) => `a=${candidate}\r\n`).join('')}`;
+const LOCAL_SDP = `${SDP}a=${HOST_CANDIDATE}\r\n`;
 
 class Events extends EventTarget {
   emit(type, fields = {}) {
@@ -37,7 +44,7 @@ class Stream {
 const source = () => new Stream([new Track(), new Track('audio')]);
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
 
-function fixture(t) {
+function fixture(t, overrides = {}) {
   const sockets = [], peers = [], states = [], requests = [], viewers = [], streams = [];
   class Socket extends Events {
     readyState = 0; sent = [];
@@ -60,6 +67,7 @@ function fixture(t) {
   }
   class PeerConnection extends Events {
     connectionState = 'new'; localDescription = null; remoteDescription = null;
+    iceGatheringState = 'complete';
     transceivers = []; ice = []; closed = false;
     constructor(config) { super(); this.config = config; peers.push(this); }
     createDataChannel(label) { this.channel = new Channel(); this.channel.label = label; return this.channel; }
@@ -75,7 +83,7 @@ function fixture(t) {
   }
   const session = new TabSession({ Socket, PeerConnection, MediaStream: Stream,
     onState(key, role) { states.push({ key, role }); }, onRequests(value) { requests.push(value); },
-    onViewers(value) { viewers.push(value); }, onStream(value) { streams.push(value); } });
+    onViewers(value) { viewers.push(value); }, onStream(value) { streams.push(value); }, ...overrides });
   t.after(() => session.stop());
   return { session, sockets, peers, states, requests, viewers, streams };
 }
@@ -139,13 +147,13 @@ test('sending the local hello does not accept approval before the remote hello',
   assert.equal(f.streams.some((stream) => stream !== null), false);
 });
 
-test('a tab host opens only its own ordinary STUN room and no media before consent', async (t) => {
+test('a tab host uses its own pairing room and no ICE servers or media before consent', async (t) => {
   const f = fixture(t), stream = source(); await f.session.startHost(stream, CODE);
   const url = new URL(f.sockets[0].url);
   assert.equal(url.searchParams.get('tool'), 'share-tab');
   assert.equal(url.searchParams.has('local'), false);
   const peer = await request(f);
-  assert.ok(peer.config.iceServers.some((server) => server.urls.some((url) => url.startsWith('stun:'))));
+  assert.deepEqual(peer.config, { iceServers: [] });
   assert.equal(peer.transceivers.length, 0);
   assert.deepEqual(f.requests.at(-1), [{ id: 'v:1', note: 'v:1' }]);
   assert.equal(f.session.approve('v:1'), true); await settle();
@@ -217,7 +225,7 @@ test('a complete request can wait for the human beyond the transport deadline', 
 test('early ICE candidates wait for the remote description', async (t) => {
   const f = fixture(t); await f.session.startHost(source(), CODE);
   signal(f.sockets[0], 'v:1', { dial: true }); await settle();
-  const candidate = { candidate: 'candidate:one 1 udp 1 192.0.2.1 1234 typ srflx' };
+  const candidate = { candidate: HOST_CANDIDATE };
   signal(f.sockets[0], 'v:1', { candidate }); await settle();
   assert.deepEqual(f.peers[0].ice, []);
   signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
@@ -280,23 +288,103 @@ test('a mismatched peer protocol reports an invalid connection immediately', asy
   assert.equal(f.peers[0].closed, true); assert.equal(f.states.at(-1).key, 'connection.invalid');
 });
 
-test('relay is requested only by an explicit fresh viewer connection', async (t) => {
-  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+test('obsolete relay options and unsolicited credentials cannot widen a viewer connection', async (t) => {
+  const f = fixture(t);
+  const credentials = { urls: ['turn:relay.example:3478'], username: 'temporary', credential: 'secret' };
+  await f.session.connect(CODE, 'Viewer', { relay: true, iceServers: [credentials] });
   assert.equal(f.sockets[0].sent.some((message) => message?.relay === true), false);
-  await f.session.connect(CODE, 'Viewer', { relay: true });
-  assert.equal(f.sockets[0].readyState, 3); assert.equal(f.peers[0].closed, true);
-  assert.ok(f.sockets[1].sent.some((message) => message?.relay === true));
+  assert.deepEqual(f.peers[0].config, { iceServers: [] });
+  f.sockets[0].receive({ type: 'relay', iceServers: [credentials] });
+  signal(f.sockets[0], undefined, { relay: true, iceServers: [credentials], local: false });
+  await settle();
   assert.equal(f.peers.length, 1);
-  f.sockets[1].receive({ type: 'relay', iceServers: [RELAY] }); await settle();
-  assert.equal(f.peers[1].config.iceTransportPolicy, 'relay');
-  assert.deepEqual(f.peers[1].config.iceServers.at(-1), RELAY);
+  assert.deepEqual(f.peers[0].config, { iceServers: [] });
+  f.peers[0].connectionState = 'failed'; f.peers[0].emit('connectionstatechange'); await settle();
+  assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1).key, 'connection.direct-failed');
+  assert.equal(f.sockets.length, 1);
 });
 
-test('unavailable relay credentials stop cleanly without dialing', async (t) => {
-  const f = fixture(t); await f.session.connect(CODE, 'Viewer', { relay: true });
-  f.sockets[0].receive({ type: 'relay', iceServers: null }); await settle();
-  assert.equal(f.peers.length, 0); assert.equal(f.session.role, null);
-  assert.equal(f.states.at(-1).key, 'connection.relay-unavailable');
+test('a forged dial cannot configure ICE servers on the host', async (t) => {
+  const f = fixture(t); await f.session.startHost(source(), CODE);
+  signal(f.sockets[0], 'v:1', { dial: true, local: false, relay: true, iceServers: [{ urls: 'stun:example.test:3478' }] });
+  await settle();
+  assert.equal(f.peers.length, 1);
+  assert.deepEqual(f.peers[0].config, { iceServers: [] });
+});
+
+test('host and viewer send only host trickle candidates even when candidate metadata claims otherwise', async (t) => {
+  const host = fixture(t), watching = fixture(t);
+  await host.session.startHost(source(), CODE);
+  signal(host.sockets[0], 'v:1', { dial: true }); await settle();
+  await watching.session.connect(CODE, 'Viewer');
+  for (const f of [host, watching]) {
+    const peer = f.peers[0];
+    for (const wire of [...OTHER_CANDIDATES, HOST_CANDIDATE]) {
+      peer.emit('icecandidate', { candidate: { type: 'host', toJSON() { return { candidate: wire, type: 'host' }; } } });
+    }
+    await settle();
+    assert.deepEqual(f.sockets[0].sent.filter((message) => message?.data?.candidate).map((message) => message.data.candidate.candidate), [HOST_CANDIDATE]);
+    assert.equal(peer.closed, false);
+  }
+});
+
+test('host and viewer reject mapped and relayed trickle routes before buffering or adding ICE', async (t) => {
+  const host = fixture(t), watching = fixture(t);
+  await host.session.startHost(source(), CODE);
+  signal(host.sockets[0], 'v:1', { dial: true }); await settle();
+  await watching.session.connect(CODE, 'Viewer');
+  for (const [f, id, type] of [[host, 'v:1', 'answer'], [watching, undefined, 'offer']]) {
+    for (const wire of [...OTHER_CANDIDATES, HOST_CANDIDATE]) {
+      signal(f.sockets[0], id, { candidate: { candidate: wire, type: 'host' } });
+    }
+    await settle();
+    assert.deepEqual(f.peers[0].ice, []);
+    signal(f.sockets[0], id, { description: { type, sdp: SDP } }); await settle();
+    assert.deepEqual(f.peers[0].ice.map((candidate) => candidate.candidate), [HOST_CANDIDATE]);
+    assert.equal(f.peers[0].closed, false);
+    for (const wire of OTHER_CANDIDATES) signal(f.sockets[0], id, { candidate: { candidate: wire } });
+    await settle();
+    assert.deepEqual(f.peers[0].ice.map((candidate) => candidate.candidate), [HOST_CANDIDATE]);
+  }
+});
+
+test('the host strips nonlocal embedded SDP candidates from both its offer and the answer', async (t) => {
+  const f = fixture(t); await f.session.startHost(source(), CODE);
+  signal(f.sockets[0], 'v:1', { dial: true });
+  const peer = f.peers[0];
+  peer.createOffer = async () => ({ type: 'offer', sdp: MIXED_SDP });
+  await settle();
+  assert.equal(peer.localDescription.sdp, LOCAL_SDP);
+  assert.equal(f.sockets[0].sent.find((message) => message?.data?.description)?.data.description.sdp, LOCAL_SDP);
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: MIXED_SDP } }); await settle();
+  assert.equal(peer.remoteDescription.sdp, LOCAL_SDP);
+});
+
+test('the viewer strips nonlocal embedded SDP candidates from the offer and its answer', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  const peer = f.peers[0];
+  peer.createAnswer = async () => ({ type: 'answer', sdp: MIXED_SDP });
+  signal(f.sockets[0], undefined, { description: { type: 'offer', sdp: MIXED_SDP } }); await settle();
+  assert.equal(peer.remoteDescription.sdp, LOCAL_SDP);
+  assert.equal(peer.localDescription.sdp, LOCAL_SDP);
+  assert.equal(f.sockets[0].sent.find((message) => message?.data?.description)?.data.description.sdp, LOCAL_SDP);
+});
+
+test('candidates gathered after setLocalDescription are filtered again before either role signals SDP', async (t) => {
+  for (const role of ['host', 'viewer']) {
+    const f = fixture(t);
+    if (role === 'host') {
+      await f.session.startHost(source(), CODE);
+      signal(f.sockets[0], 'v:1', { dial: true });
+    } else await f.session.connect(CODE, 'Viewer');
+    const peer = f.peers[0];
+    peer.setLocalDescription = async (description) => { peer.localDescription = { ...description, sdp: MIXED_SDP }; };
+    if (role === 'viewer') signal(f.sockets[0], undefined, { description: { type: 'offer', sdp: SDP } });
+    await settle();
+    assert.equal(peer.localDescription.sdp, MIXED_SDP);
+    assert.equal(f.sockets[0].sent.find((message) => message?.data?.description)?.data.description.sdp, LOCAL_SDP);
+  }
 });
 
 test('invalid names are rejected without opening a room', async (t) => {
@@ -304,4 +392,147 @@ test('invalid names are rejected without opening a room', async (t) => {
   await assert.rejects(f.session.startHost(stream, undefined), /code.invalid/);
   assert.equal(f.sockets.length, 0);
   assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+});
+
+test('one offline offer and answer establishes control, then media negotiates only after approval and acknowledgement', async (t) => {
+  const host = fixture(t), watching = fixture(t), held = [];
+  const offer = await host.session.startOfflineHost(source());
+  const answer = await watching.session.createOfflineAnswer(offer, 'My laptop');
+  await host.session.acceptOfflineAnswer(answer);
+  assert.equal(host.session.mode, 'offline'); assert.equal(watching.session.mode, 'offline');
+  assert.equal(host.sockets.length, 0); assert.equal(watching.sockets.length, 0);
+  assert.equal(/^m=(video|audio)\s/m.test(JSON.parse(offer).description.sdp), false);
+  assert.equal(/^m=(video|audio)\s/m.test(JSON.parse(answer).description.sdp), false);
+  const a = host.peers[0].channel, b = new Channel();
+  watching.peers[0].emit('datachannel', { channel: b });
+  for (const [from, to] of [[a, b], [b, a]]) {
+    const send = from.send.bind(from);
+    from.send = (text) => {
+      send(text);
+      if (JSON.parse(text).type === 'approval-ack') held.push(() => to.emit('message', { data: text }));
+      else queueMicrotask(() => to.emit('message', { data: text }));
+    };
+  }
+  a.open(); b.open(); await settle();
+  assert.deepEqual(host.requests.at(-1), [{ id: 'offline', note: 'My laptop' }]);
+  assert.equal(host.peers[0].transceivers.length, 0);
+  host.session.approve('offline'); await settle();
+  assert.equal(held.length, 1); assert.equal(host.peers[0].transceivers.length, 0);
+  held[0](); await settle();
+  assert.equal(host.peers[0].transceivers.length, 1);
+  assert.equal(host.peers[0].transceivers[0].direction, 'sendonly');
+  assert.ok(a.sent.some((frame) => frame.type === 'signal' && frame.data.description.type === 'offer'));
+  assert.ok(b.sent.some((frame) => frame.type === 'signal' && frame.data.description.type === 'answer'));
+  assert.equal(host.session.peers.get('offline').negotiated, true);
+  assert.equal(host.sockets.length + watching.sockets.length, 0);
+});
+
+test('offline answers are bound to their offer and cannot be replayed', async (t) => {
+  const host = fixture(t), watching = fixture(t);
+  const offer = await host.session.startOfflineHost(source());
+  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
+  const foreign = { ...JSON.parse(answer), session: 'f'.repeat(32) };
+  if (foreign.session === JSON.parse(offer).session) foreign.session = 'e'.repeat(32);
+  await assert.rejects(host.session.acceptOfflineAnswer(JSON.stringify(foreign)), /offline.invalid-answer/);
+  assert.equal(host.peers[0].remoteDescription, null);
+  await host.session.acceptOfflineAnswer(answer);
+  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
+  assert.equal(host.peers[0].transceivers.length, 0);
+});
+
+test('hello arriving during answer import cannot reinstall a connection deadline over human approval', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const host = fixture(t), watching = fixture(t);
+  const offer = await host.session.startOfflineHost(source());
+  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
+  const peer = host.peers[0];
+  peer.setRemoteDescription = async (description) => {
+    peer.remoteDescription = description;
+    peer.channel.open(); peer.channel.receive('hello');
+    peer.channel.receive('request', { note: 'Already connected' });
+  };
+  await host.session.acceptOfflineAnswer(answer);
+  t.mock.timers.tick(20001); await settle();
+  assert.equal(peer.closed, false);
+  assert.equal(host.session.approve('offline'), true);
+  assert.equal(peer.transceivers.length, 0);
+});
+
+test('a stopped or replaced offline offer cannot accept its old answer', async (t) => {
+  const host = fixture(t), watching = fixture(t), first = source();
+  const offer = await host.session.startOfflineHost(first);
+  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
+  host.session.stop();
+  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
+  await host.session.startOfflineHost(source());
+  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
+  assert.equal(host.peers[1].remoteDescription, null);
+  assert.ok(first.getTracks().every((track) => track.readyState === 'ended'));
+});
+
+test('offline gathering waits for complete candidates and Stop cancels without creating a socket', async (t) => {
+  const f = fixture(t), stream = source(), pending = f.session.startOfflineHost(stream);
+  const peer = f.peers[0]; peer.iceGatheringState = 'gathering'; await settle();
+  assert.equal(f.states.at(-1).key, 'offline.gathering');
+  f.session.stop();
+  await assert.rejects(pending, /connection.stopped/);
+  peer.iceGatheringState = 'complete'; peer.emit('icegatheringstatechange'); await settle();
+  assert.equal(f.session.mode, null); assert.equal(f.sockets.length, 0);
+  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+});
+
+test('a manual offer is exported only after gathering finishes and includes only filtered host candidates', async (t) => {
+  const f = fixture(t), pending = f.session.startOfflineHost(source());
+  const peer = f.peers[0]; peer.iceGatheringState = 'gathering'; await settle();
+  assert.equal(f.states.at(-1).key, 'offline.gathering');
+  peer.localDescription = { type: 'offer', sdp: MIXED_SDP };
+  peer.iceGatheringState = 'complete'; peer.emit('icegatheringstatechange');
+  const block = await pending;
+  assert.equal(JSON.parse(block).description.sdp, LOCAL_SDP);
+  assert.equal(f.states.at(-1).key, 'offline.offer-ready');
+  assert.equal(f.sockets.length, 0);
+});
+
+test('an offline host gets ten minutes for human exchange rather than the transport deadline', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = fixture(t), stream = source(); await f.session.startOfflineHost(stream);
+  t.mock.timers.tick(20001); await settle();
+  assert.equal(f.session.mode, 'offline'); assert.equal(f.peers[0].closed, false);
+  t.mock.timers.tick(600000); await settle();
+  assert.equal(f.session.mode, null); assert.equal(f.states.at(-1).key, 'offline.expired');
+  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+});
+
+test('an offline viewer keeps its answer alive beyond twenty seconds while the human returns it', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const host = fixture(t), watching = fixture(t);
+  const offer = await host.session.startOfflineHost(source());
+  await watching.session.createOfflineAnswer(offer, 'Viewer');
+  t.mock.timers.tick(20001); await settle();
+  assert.equal(watching.session.mode, 'offline'); assert.equal(watching.peers[0].closed, false);
+  assert.equal(watching.states.at(-1).key, 'offline.answer-ready');
+  t.mock.timers.tick(600000); await settle();
+  assert.equal(watching.session.mode, null); assert.equal(watching.states.at(-1).key, 'offline.expired');
+});
+
+test('offline pairing tolerates different device clocks while the host still enforces its own expiry', async (t) => {
+  let hostNow = Date.now();
+  const host = fixture(t, { now: () => hostNow }), watching = fixture(t, { now: () => hostNow + 24 * 60 * 60 * 1000 });
+  const offer = await host.session.startOfflineHost(source());
+  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
+  assert.equal(JSON.parse(answer).expires, JSON.parse(offer).expires);
+  await host.session.acceptOfflineAnswer(answer);
+  const newer = await host.session.startOfflineHost(source());
+  const newerAnswer = await watching.session.createOfflineAnswer(newer, 'Viewer');
+  hostNow = JSON.parse(newer).expires;
+  await assert.rejects(host.session.acceptOfflineAnswer(newerAnswer), /offline.expired/);
+  assert.equal(host.peers[1].remoteDescription, null);
+});
+
+test('offline in-band media signaling before approval cannot attach a track', async (t) => {
+  const f = fixture(t); await f.session.startOfflineHost(source());
+  const peer = f.peers[0]; peer.channel.open(); peer.channel.receive('hello');
+  peer.channel.receive('signal', { data: { description: { type: 'answer', sdp: SDP } } }); await settle();
+  assert.equal(peer.closed, true); assert.equal(peer.transceivers.length, 0);
+  assert.equal(f.session.mode, null);
 });

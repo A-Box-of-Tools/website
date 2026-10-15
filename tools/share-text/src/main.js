@@ -12,15 +12,16 @@ import { fileSender, FILE_CHANNEL } from './send-file.js';
 import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { foregroundRecovery, observeForeground } from './shared/foreground-recovery.js';
 import { PairingSocket } from './shared/peer-pairing.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 
-// The one address this tool contacts, named in this page's
+// The environment's address, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
 // It carries WebRTC negotiation and nothing else - the text and the files
 // travel the direct channel it sets up. See workers/rendezvous/ in the
 // repository for the whole of what runs there. A subdomain of the site rather
 // than the worker's workers.dev name: that whole domain is blocked inside
 // mainland China, and this one is not.
-const RENDEZVOUS = 'wss://rendezvous.abox.tools';
+const RENDEZVOUS = rendezvousEndpoint();
 
 // A direct connection is what this page is, and it is also what a minority of
 // network pairs cannot make: a phone on a carrier's address-sharing network

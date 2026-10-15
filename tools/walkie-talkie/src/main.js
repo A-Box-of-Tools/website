@@ -2,6 +2,7 @@ import { BroadcastSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 
 activateChannel();
@@ -163,7 +164,7 @@ function activateChannel() {
   }
 
   function openDiscovery() {
-    return watchDiscovery('wss://rendezvous.abox.tools/discover?tool=walkie-talkie', {
+    return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=walkie-talkie`, {
       list: rows => { channels = rows; renderChannels(); },
       status: status => { ui['discovery-status'].textContent = phrase(`discovery-${status}`); },
       publication: status => {
