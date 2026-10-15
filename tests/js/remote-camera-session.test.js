@@ -6,7 +6,11 @@ import { PROTOCOL } from '../../tools/remote-camera/src/protocol.js';
 const CODE = 'cam-abcdefghijkl';
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\na=mid:0\r\n';
 class Events extends EventTarget {
-  emit(type, fields = {}) { this.dispatchEvent(Object.assign(new Event(type), fields)); }
+  emit(type, fields = {}) {
+    const event = Object.assign(new Event(type), fields);
+    this.dispatchEvent(event);
+    this[`on${type}`]?.(event);
+  }
 }
 class Channel extends Events {
   readyState = 'connecting'; sent = []; closed = false;
@@ -1014,4 +1018,27 @@ test('encrypted End remains terminal for received video and audio after the intr
   channel.receive('ended'); await settle();
   assert.equal(f.session.role, null); assert.equal(peer.closed, true);
   assert.equal(video.stops, 1); assert.equal(audio.stops, 1); assert.equal(f.streams.at(-1), null);
+});
+
+test('the shared socket fences replaced callbacks and owns camera heartbeat cleanup', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), original = sourceStream(); await f.session.startHost(original, CODE);
+  const first = f.sockets[0], old = { open: first.onopen, message: first.onmessage, close: first.onclose, error: first.onerror };
+  const next = sourceStream(); await f.session.startHost(next, CODE);
+  const publication = { tool: 'remote-camera', code: CODE, lease: 'new-lease-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' };
+  old.open(new Event('open'));
+  old.message(Object.assign(new Event('message'), { data: JSON.stringify({ type: 'host-ready', discovery: publication }) }));
+  old.close(Object.assign(new Event('close'), { code: 4409 })); old.error(new Event('error'));
+  assert.equal(f.session.socket, f.sockets[1]); assert.equal(f.session.stream, next);
+  assert.deepEqual(f.publications, []); assert.equal(next.video.stops, 0);
+  t.mock.timers.tick(25000); await settle();
+  assert.deepEqual(first.sent, []); assert.deepEqual(f.sockets[1].sent, ['ping']);
+  const callbacks = { message: f.sockets[1].onmessage, close: f.sockets[1].onclose };
+  f.session.stop();
+  callbacks.message(Object.assign(new Event('message'), { data: 'pong' }));
+  callbacks.close(Object.assign(new Event('close'), { code: 1006 }));
+  t.mock.timers.tick(120000); await settle();
+  assert.equal(f.sockets.length, 2); assert.deepEqual(f.sockets[1].sent, ['ping']);
+  assert.equal(f.session.role, null); assert.equal(f.session.keepalive, null); assert.equal(f.session.socketDeadline, null);
+  assert.equal(original.video.stops, 1); assert.equal(next.video.stops, 1);
 });

@@ -103,6 +103,8 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |
 | `shared/css/modes.css` | `css_parts = ["modes"]` | a choice between two ways of working, as radio rows with a title and an explanation |
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
+| `shared/js/peer-pairing.js` | `js_parts = ["peer-pairing"]` | owned signaling sockets, guarded sends, deadlines, heartbeats and probes; [paired tool adapters](paired-tools.md) keep their own protocol and permissions |
+| `shared/js/foreground-recovery.js` | `js_parts = ["foreground-recovery"]` | coalesced page lifecycle callbacks and an opt-in bounded retry controller; neither grants consent nor starts media |
 | `shared/js/ordered-loads.js` | `js_parts = ["ordered-loads"]` | sequential batches for an append workflow; Reset retires pending reads and starts a fresh queue; optional `discard` releases resource-owning values that never reach `complete` |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `shared/js/image-batch.js` | `js_parts = ["image-batch", "image-convert"]` | sequential native image conversion with captured jobs, per-file failures and cooperative cancellation; imports `image-convert` |

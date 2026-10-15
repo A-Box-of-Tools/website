@@ -1,4 +1,5 @@
-import { allowedCandidate, localDescription } from './peer-network.js';
+import { rtcConfig, allowedCandidate, localDescription } from './peer-network.js';
+import { PairingSocket } from './peer-pairing.js';
 
 const INTERVAL = 1000;
 const DEADLINE = 10000;
@@ -338,7 +339,7 @@ class VoiceSession {
   }
 
   _live(epoch) { return this._active && epoch === this._epoch; }
-  _currentSocket(ctx) { return this._live(ctx.epoch) && this._socket === ctx && !ctx.closed; }
+  _currentSocket(ctx) { return Boolean(ctx?.pairing.isCurrent()); }
   _current(peer) {
     return this._live(peer.epoch) && (this._peers.get(peer.id) === peer || this._retiring.get(peer.id) === peer) && peer.generation === this._generation;
   }
@@ -381,20 +382,22 @@ class VoiceSession {
     let ws;
     try { ws = new this._Socket(this._endpoint); }
     catch { this._voiceState(); this._retry(epoch, 1006); return; }
-    const ctx = { ws, epoch, auth: false, closed: false, pending: 0, chain: Promise.resolve(),
-      timer: null, pongTimer: null, lastPing: 0 };
+    const ctx = { ws, epoch, auth: false, pending: 0, chain: Promise.resolve(),
+      pairing: null, unsentPing: false, lastPing: 0 };
     this._socket = ctx;
-    ctx.timer = this._clock.setTimeout(() => this._lost(ctx, 1006), DEADLINE);
-    ws.onopen = () => {
-      if (!this._currentSocket(ctx)) return;
+    ctx.pairing = new PairingSocket(ws, {
+      current: () => this._live(epoch) && this._socket === ctx,
+      clock: this._clock, maxBuffered: 65536,
+      onSendError: () => this._lost(ctx, 1006),
+    });
+    ctx.pairing.after('auth', DEADLINE, () => this._lost(ctx, 1006));
+    ctx.pairing.listen({ open: () => {
       this._send(this._authFrame());
       if (this._client && !this._inbox) this._settleStart(true);
-    };
-    ws.onmessage = event => {
-      if (!this._currentSocket(ctx)) return;
+    }, message: event => {
       if (event.data === 'pong') {
-        this._clock.clearTimeout(ctx.pongTimer);
-        ctx.pongTimer = null;
+        ctx.unsentPing = false;
+        ctx.pairing.clear('unsent-ping');
         return;
       }
       if (typeof event.data !== 'string' || event.data.length > 65536 || ctx.pending >= 256) {
@@ -417,20 +420,14 @@ class VoiceSession {
       }).catch(() => {
         if (this._currentSocket(ctx)) this._lost(ctx, 1006);
       }).finally(() => { ctx.pending--; });
-    };
-    ws.onclose = event => this._lost(ctx, event.code);
+    }, close: event => this._lost(ctx, event.code),
     // Browsers hide an HTTP429 upgrade response behind a generic socket failure.
-    ws.onerror = () => this._lost(ctx, 1006);
+    error: () => this._lost(ctx, 1006) });
   }
 
   _closeSocket(ctx) {
     if (!ctx) return;
-    ctx.closed = true;
-    this._clock.clearTimeout(ctx.timer);
-    this._clock.clearTimeout(ctx.pongTimer);
-    ctx.timer = ctx.pongTimer = null;
-    ctx.ws.onopen = ctx.ws.onmessage = ctx.ws.onclose = ctx.ws.onerror = null;
-    try { ctx.ws.close(1000); } catch {}
+    ctx.pairing.close();
   }
   _lost(ctx, code) {
     if (!this._currentSocket(ctx)) return;
@@ -457,17 +454,13 @@ class VoiceSession {
     }, delay);
   }
   _send(frame) {
-    const ctx = this._socket;
-    if (!ctx || !this._currentSocket(ctx) || ctx.ws.readyState !== 1 || ctx.ws.bufferedAmount > 65536) return false;
-    try { ctx.ws.send(typeof frame === 'string' ? frame : JSON.stringify(frame)); return true; }
-    catch { this._lost(ctx, 1006); return false; }
+    return this._socket?.pairing.send(frame) ?? false;
   }
   _authenticated(ctx) {
     if (!ctx.auth) ctx.lastPing = this._clock.now();
     ctx.auth = true;
     this._failures = 0;
-    this._clock.clearTimeout(ctx.timer);
-    ctx.timer = null;
+    ctx.pairing.clear('auth');
   }
 
   async _message(frame, ctx) {
@@ -582,10 +575,14 @@ class VoiceSession {
       this._tickTimer = null;
       if (!this._live(epoch)) return;
       const ctx = this._socket;
-      if (ctx?.auth && ctx.pongTimer === null && this._clock.now() - ctx.lastPing >= KEEPALIVE) {
+      if (ctx?.auth && !ctx.pairing.probing && !ctx.unsentPing && this._clock.now() - ctx.lastPing >= KEEPALIVE) {
         ctx.lastPing = this._clock.now();
-        ctx.pongTimer = this._clock.setTimeout(() => this._lost(ctx, 1006), DEADLINE);
-        this._send('ping');
+        if (!ctx.pairing.probe({ timeout: DEADLINE, onTimeout: () => this._lost(ctx, 1006) }) && this._currentSocket(ctx)) {
+          // A full send buffer must still expire instead of postponing every
+          // heartbeat until the next interval indefinitely.
+          ctx.unsentPing = true;
+          ctx.pairing.after('unsent-ping', DEADLINE, () => this._lost(ctx, 1006));
+        }
       }
       if (this._canSignal()) {
         for (const peer of this._peers.values()) this._flushOutgoing(peer);
@@ -605,7 +602,7 @@ class VoiceSession {
   }
 
   _peer(id, connection, epoch) {
-    const pc = new this._Peer({ iceServers: [], iceTransportPolicy: 'all' });
+    const pc = new this._Peer({ ...rtcConfig(true), iceTransportPolicy: 'all' });
     const peer = { id, connection, pc, epoch, generation: this._generation, ice: [], outgoing: [],
       timer: null, departed: false, stream: null };
     this._peers.set(id, peer);

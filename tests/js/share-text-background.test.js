@@ -1,7 +1,7 @@
 /** Suspension may retry a consented session; an explicit end must stay ended. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { foregroundRecovery } from '../../tools/share-text/src/foreground-recovery.js';
+import { foregroundRecovery } from '../../shared/js/foreground-recovery.js';
 
 function fixture() {
   let shown = true;

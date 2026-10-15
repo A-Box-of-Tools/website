@@ -76,3 +76,12 @@ prove locked-screen continuity; physical-device acceptance remains necessary
 for background audio, phone autoplay, permissions, Wi-Fi isolation and capacity.
 
 The guide is /guides/broadcast-voice-on-a-local-network/.
+
+## The shared pairing library
+
+Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events
+come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
+[The pairing library guide](../../docs/paired-tools.md) describes their contract
+and how another tool can use them. This tool still owns its protocol, consent,
+credentials, approval and media policy; a foreground event cannot grant any of
+those permissions or undo an explicit Stop.

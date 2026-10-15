@@ -590,6 +590,36 @@ test('Stop clears an outstanding pong deadline and parked replies do not delay k
   assert.equal(h.sockets.length, 1);
 });
 
+test('a blocked heartbeat send retains its deadline and a pong can still cancel it', async t => {
+  for (const reply of [false, true]) await t.test(reply ? 'reply arrives' : 'socket remains stalled', async t => {
+    const h = harness(t);
+    const ws = await h.begin(ready());
+    ws.message(offer());
+    await flush();
+    const voice = { name: 'direct voice' };
+    h.peers[0].receive(voice);
+    h.peers[0].connect();
+    ws.bufferedAmount = 70000;
+    await h.clock.advance(30000);
+    assert.equal(ws.sent.filter(frame => frame === 'ping').length, 0);
+    if (reply) ws.message('pong');
+    await h.clock.advance(9999);
+    assert.equal(ws.closed, false);
+    await h.clock.advance(1);
+    assert.equal(ws.closed, !reply);
+    assert.equal(h.peers[0].closed, false);
+    assert.equal(h.streams.at(-1), voice);
+    if (reply) {
+      ws.bufferedAmount = 0;
+      await h.clock.advance(20000);
+      assert.equal(ws.sent.filter(frame => frame === 'ping').length, 1);
+    } else {
+      await h.clock.advance(1000);
+      assert.equal(h.sockets.length, 2);
+    }
+  });
+});
+
 test('host source mute preserves connected listeners and unmute never resumes speech', async t => {
   const mic = microphone();
   const audioSession = new NativeAudioSession();

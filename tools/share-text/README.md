@@ -299,3 +299,12 @@ A refusal selects the raw text or share link for manual copying. Live text
 replacement, end of share, a new share and a newer copy action retire feedback
 and its timer; they cannot cancel a clipboard write already accepted by the
 browser. A stale rejection does not select or change the current content.
+
+## The shared pairing library
+
+Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events
+come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
+[The pairing library guide](../../docs/paired-tools.md) describes their contract
+and how another tool can use them. This tool still owns its protocol, consent,
+credentials, approval and media policy; a foreground event cannot grant any of
+those permissions or undo an explicit Stop.

@@ -10,7 +10,8 @@ import { watchDiscovery } from './discovery.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { fileSender, FILE_CHANNEL } from './send-file.js';
 import { createDiagnostics } from './connection-diagnostics.js';
-import { foregroundRecovery } from './foreground-recovery.js';
+import { foregroundRecovery, observeForeground } from './shared/foreground-recovery.js';
+import { PairingSocket } from './shared/peer-pairing.js';
 
 // The one address this tool contacts, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -104,12 +105,11 @@ const fmtSize = (n) => formatSize(n, sizeUnits);
 /* ------------------------------------------------------------- the sharer */
 
 let sock = null;
-let keepalive = 0;
+let hostPairing = null;
 let sharing = false;
 let activeCode = '';
 let hostHadRoom = false;
 let hostRetry = 0;
-let hostProbe = 0;
 let attempts = 0;
 let suggestion = '';
 let isPrivate = true;        // captured when sharing starts
@@ -171,7 +171,7 @@ function suggest() {
 function unlock() {
   sharing = false;
   clearTimeout(hostRetry);
-  clearTimeout(hostProbe);
+  hostPairing?.clear('foreground');
   linkCopy.invalidate();
   isDiscoverable = false;
   $('publish').hidden = false;
@@ -396,93 +396,95 @@ function hostSocket(code, onOpen) {
   const trace = diagnostics.begin('host', isLocal ? 'local' : 'internet');
   hostDiagnostic = trace;
   const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
+  hostPairing?.close();
   sock = ws;
-  let pulse = 0;
-  ws.onopen = () => {
-    if (sock !== ws || !sharing) { ws.close(1000); return; }
-    clearTimeout(hostProbe);
-    hostHadRoom = true;
-    trace.socket('open');
-    trace.mark('server-open');
-    pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
-    keepalive = pulse;
-    setShareState('share.active');
-    onOpen();
-    if (isDiscoverable) {
-      $('discovery-share-status').textContent = phrase('discovery.publishing');
-      announcementTimer = setTimeout(() => {
-        if (sock === ws && isDiscoverable) $('discovery-share-status').textContent = phrase('discovery.not-published');
-      }, 8000);
-    }
-  };
-  ws.onmessage = (e) => {
-    if (sock !== ws || !sharing) return;
-    clearTimeout(hostProbe);
-    if (e.data === 'pong') return;
-    let m;
-    try { m = JSON.parse(e.data); }
-    catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
-    if (m.type === 'host-ready' && isLocal && isDiscoverable && m.discovery?.code === code) {
-      if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
-      return;
-    }
-    if (m.type === 'leave') {
-      // A reader's introduction can be suspended independently of its
-      // encrypted channel. Native peer failure still retires a dead reader.
-      const dc = controlChannels.get(m.id);
-      const pc = peers.get(m.id);
-      if (dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
-      dropViewer(m.id);
-      return;
-    }
-    if (m.type === 'signal') void hostSignal(m.from, m.data).catch(error => {
-      trace.error('signaling', error); revealDiagnostics();
-    });
-  };
-  ws.onerror = () => {
-    if (sock === ws) { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); }
-  };
-  ws.onclose = (e) => {
-    // Stopping and starting can replace the socket before the old close
-    // arrives. That close belongs to its own room and its own heartbeat.
-    clearInterval(pulse);
-    trace.socket('closed', e.code);
-    trace.finish(sharing ? 'socket-closed' : 'stopped');
-    if (sock !== ws) return;
-    clearTimeout(announcementTimer);
-    discovery?.unpublish();
-    if (e.code === 4409) {
-      withdrawing.delete(code);
-      // A collision on our own suggestion is bad luck, silently retried; a
-      // collision on a name the user chose is theirs to resolve.
-      if (!hostHadRoom && $('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
-      if (hostHadRoom) stopSharing();
-      else unlock();
-      withdrawing.delete(code);
-      setStatus(phrase('share.name-taken', { name: $('code').value }));
-      return;
-    }
-    if (!sharing || $('publish').hidden === false) return;
-    // Connected readers are unaffected - the peer channels do not run
-    // through the server - but new ones cannot join until this recovers.
-    setStatus(phrase('share.lost-rendezvous'), true);
-    clearTimeout(hostRetry);
-    hostRetry = setTimeout(() => {
-      if (sharing && activeCode === code && sock === ws) {
-        try { hostSocket(code, refreshCount); }
-        catch { resumeHost(); }
+  const pairing = new PairingSocket(ws, {
+    current: () => sock === ws && sharing,
+    onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
+  });
+  hostPairing = pairing;
+  pairing.listen({
+    open() {
+      hostPairing?.clear('foreground');
+      hostHadRoom = true;
+      trace.socket('open');
+      trace.mark('server-open');
+      pairing.every('heartbeat', 30000, () => pairing.send('ping'));
+      setShareState('share.active');
+      onOpen();
+      if (isDiscoverable) {
+        $('discovery-share-status').textContent = phrase('discovery.publishing');
+        announcementTimer = setTimeout(() => {
+          if (sock === ws && isDiscoverable) $('discovery-share-status').textContent = phrase('discovery.not-published');
+        }, 8000);
       }
-    }, 5000);
-  };
+    },
+    message(e) {
+      hostPairing?.clear('foreground');
+      if (e.data === 'pong') return;
+      let m;
+      try { m = JSON.parse(e.data); }
+      catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
+      if (m.type === 'host-ready' && isLocal && isDiscoverable && m.discovery?.code === code) {
+        if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
+        return;
+      }
+      if (m.type === 'leave') {
+        // A reader's introduction can be suspended independently of its
+        // encrypted channel. Native peer failure still retires a dead reader.
+        const dc = controlChannels.get(m.id);
+        const pc = peers.get(m.id);
+        if (dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
+        dropViewer(m.id);
+        return;
+      }
+      if (m.type === 'signal') void hostSignal(m.from, m.data).catch(error => {
+        trace.error('signaling', error); revealDiagnostics();
+      });
+    },
+    error() {
+      trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics();
+    },
+    close(e) {
+      pairing.close();
+      trace.socket('closed', e.code);
+      trace.finish(sharing ? 'socket-closed' : 'stopped');
+      if (sock !== ws) return;
+      clearTimeout(announcementTimer);
+      discovery?.unpublish();
+      if (e.code === 4409) {
+        withdrawing.delete(code);
+        // A collision on our own suggestion is bad luck, silently retried; a
+        // collision on a name the user chose is theirs to resolve.
+        if (!hostHadRoom && $('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
+        if (hostHadRoom) stopSharing();
+        else unlock();
+        withdrawing.delete(code);
+        setStatus(phrase('share.name-taken', { name: $('code').value }));
+        return;
+      }
+      if (!sharing || $('publish').hidden === false) return;
+      // Connected readers are unaffected - the peer channels do not run
+      // through the server - but new ones cannot join until this recovers.
+      setStatus(phrase('share.lost-rendezvous'), true);
+      clearTimeout(hostRetry);
+      hostRetry = setTimeout(() => {
+        if (sharing && activeCode === code && sock === ws) {
+          try { hostSocket(code, refreshCount); }
+          catch { resumeHost(); }
+        }
+      }, 5000);
+    },
+  });
 }
 
 function resumeHost() {
   if (!sharing || document.visibilityState === 'hidden' || navigator.onLine === false) {
-    clearTimeout(hostProbe);
+    hostPairing?.clear('foreground');
     return;
   }
   clearTimeout(hostRetry);
-  clearTimeout(hostProbe);
+  hostPairing?.clear('foreground');
   const ws = sock;
   if (!ws || ws.readyState > 1) {
     try { hostSocket(activeCode, refreshCount); }
@@ -495,15 +497,15 @@ function resumeHost() {
   // A suspended socket can still report OPEN until the browser processes
   // its failure. Keep direct peers intact while probing that introduction.
   if (ws.readyState === 1) {
-    try { ws.send('ping'); } catch {}
+    hostPairing.send('ping');
   }
-  hostProbe = setTimeout(() => {
+  const pairing = hostPairing;
+  pairing.after('foreground', 8000, () => {
     if (!sharing || sock !== ws || document.visibilityState === 'hidden' || navigator.onLine === false) return;
     sock = null;
-    clearInterval(keepalive);
-    try { ws.close(); } catch {}
+    pairing.close();
     resumeHost();
-  }, 8000);
+  });
 }
 
 function publish() {
@@ -552,10 +554,11 @@ async function hostSignal(from, data) {
   // The copied link carries the mode for convenience; the sharer enforces
   // it too, so removing its query cannot enable a relay on a local share.
   if ((data.local === true) !== isLocal) {
-    if (sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { networkMode: isLocal ? 'local' : 'direct' } }));
+    hostPairing?.send({ to: from, data: { networkMode: isLocal ? 'local' : 'direct' } });
     return;
   }
   const socket = sock;
+  const pairing = hostPairing;
   let pc = peers.get(from);
   let trace = peerDiagnostics.get(from);
   if (data.candidate && !allowedCandidate(data.candidate, isLocal)) {
@@ -584,7 +587,9 @@ async function hostSignal(from, data) {
       }
       if (socket.readyState !== 1) { trace.candidate('local', e.candidate, 'rejected'); return; }
       try {
-        socket.send(JSON.stringify({ to: from, data: { candidate: e.candidate, local: isLocal } }));
+        if (!pairing.send({ to: from, data: { candidate: e.candidate, local: isLocal } })) {
+          trace.candidate('local', e.candidate, 'rejected'); return;
+        }
         trace.candidate('local', e.candidate, 'sent');
         trace.count('candidatesSent');
       } catch (error) {
@@ -662,7 +667,7 @@ async function hostSignal(from, data) {
       await pc.setRemoteDescription(isLocal ? localDescription(data.sdp) : data.sdp);
       await pc.setLocalDescription(await pc.createAnswer());
       if (peers.get(from) !== pc || sock !== socket || socket.readyState !== 1) return;
-      socket.send(JSON.stringify({ to: from, data: { sdp: pc.localDescription, local: isLocal } }));
+      if (!pairing.send({ to: from, data: { sdp: pc.localDescription, local: isLocal } })) return;
       trace.count('answerSent'); trace.mark('answer-sent');
     } else if (data.candidate) {
       trace.count('candidatesReceived');
@@ -746,7 +751,7 @@ $('publish').addEventListener('click', publish);
 function stopSharing() {
   sharing = false;
   clearTimeout(hostRetry);
-  clearTimeout(hostProbe);
+  hostPairing?.clear('foreground');
   const stoppedPeers = [...peers].map(([id, pc]) => ({ pc, dc: controlChannels.get(id) }));
   for (const sender of sendQueue.values()) sender.close();
   peers.clear(); channels.clear(); controlChannels.clear(); sendQueue.clear();
@@ -777,8 +782,8 @@ function stopSharing() {
   discovery?.unpublish();
   isDiscoverable = false;
   foundShares = foundShares.filter((share) => share.code !== stoppedCode);
-  sock?.close(1000);
-  clearInterval(keepalive);
+  hostPairing?.close();
+  hostPairing = null;
   unlock();
   setStatus(phrase('share.stopped'));
 }
@@ -886,7 +891,12 @@ function view(code, recovered = null) {
   let connected = false;
   let done = false;
   let introduced = false;
-  let viewerKeepalive = 0;
+  const pairing = new PairingSocket(ws, {
+    current: () => !done && session.generation === generation,
+    onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
+  });
+  session.pairing?.close();
+  session.pairing = pairing;
   let lastBody = '';
   let asMd = session.asMd;
   let mdTouched = session.mdTouched;
@@ -913,10 +923,9 @@ function view(code, recovered = null) {
     revealDiagnostics();
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
     clearTimeout(foregroundProbe);
     pc?.close();
-    ws.close();
+    pairing.close();
     $('knockrow').hidden = true;
     $('view-status').hidden = false;
     fail(phrase(key));
@@ -978,7 +987,6 @@ function view(code, recovered = null) {
     trace.finish('channel-error');
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
     clearTimeout(foregroundProbe);
     lastBody = '';
     retireTextCopy();
@@ -986,7 +994,7 @@ function view(code, recovered = null) {
     $('rendered').textContent = '';
     $('panel').hidden = true;
     pc?.close();
-    ws.close(1000);
+    pairing.close();
     for (const button of $('filelist').querySelectorAll('button')) button.disabled = true;
     $('view-status').hidden = false;
     $('view-status').textContent = phrase(key);
@@ -1137,7 +1145,6 @@ function view(code, recovered = null) {
     trace.finish(terminal ? 'ended' : 'socket-closed');
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
     clearTimeout(foregroundProbe);
     $('knockrow').hidden = true;
     if (rx) retireFile(rx);
@@ -1155,7 +1162,7 @@ function view(code, recovered = null) {
       : session.retry.active ? 'view.reconnecting' : 'view.interrupted');
     $('retryrow').hidden = false;
     pc?.close();
-    ws.close();
+    pairing.close();
     if (!terminal) session.retry.pause();
   }
 
@@ -1210,7 +1217,9 @@ function view(code, recovered = null) {
       }
       if (ws.readyState !== 1) { trace.candidate('local', ev.candidate, 'rejected'); return; }
       try {
-        ws.send(JSON.stringify({ data: { candidate: ev.candidate, local: localMode } }));
+        if (!pairing.send({ data: { candidate: ev.candidate, local: localMode } })) {
+          trace.candidate('local', ev.candidate, 'rejected'); return;
+        }
         trace.candidate('local', ev.candidate, 'sent');
         trace.count('candidatesSent');
       } catch (error) {
@@ -1345,7 +1354,7 @@ function view(code, recovered = null) {
     if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
     if (done) return;
-    ws.send(JSON.stringify({ data: { sdp: pc.localDescription, local: localMode } }));
+    if (!pairing.send({ data: { sdp: pc.localDescription, local: localMode } })) throw new Error('signaling-unavailable');
     trace.count('offerSent'); trace.mark('offer-sent');
   }
 
@@ -1358,7 +1367,7 @@ function view(code, recovered = null) {
     return new Promise((resolve) => {
       relayReply = resolve;
       setTimeout(() => resolve(null), RELAY_WAIT);
-      ws.send(JSON.stringify({ relay: true }));
+      if (!pairing.send({ relay: true })) resolve(null);
     });
   }
 
@@ -1393,85 +1402,86 @@ function view(code, recovered = null) {
     location.href = makeShareUrl(location.href, code, retryLocal);
   });
 
-  ws.onopen = () => {
-    if (done || session.generation !== generation) { ws.close(); return; }
-    trace.socket('open'); trace.mark('server-open');
-    viewerKeepalive = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
-  };
-  ws.onerror = () => { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); };
+  pairing.listen({
+    open() {
+      trace.socket('open'); trace.mark('server-open');
+      pairing.every('heartbeat', 30000, () => pairing.send('ping'));
+    },
+    error() { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); },
 
-  ws.onmessage = async (e) => {
-    if (done || session.generation !== generation) return;
-    if (e.data === 'pong') return;
-    let m;
-    try { m = JSON.parse(e.data); }
-    catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
-    try {
-      if (m.type === 'ready') {
-        trace.mark('room-ready');
-        if (wantRelay) {
-          $('consent').hidden = true;
-          $('view-status').textContent = phrase('view.relaying');
-          await relayDial();
-        } else if (carried) {
-          await dial();
-        } else {
-          $('view-status').textContent = phrase('view.someone');
-          $('consent').hidden = false;
-        }
-      } else if (m.type === 'relay' && !localMode && relayReply !== null) {
-        // Only a TURN entry with a credential is worth carrying; anything
-        // else the rendezvous might send is not a relay.
-        const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
-        relayReply(entry ?? null);
-      } else if (m.type === 'signal' && pc && !done) {
-        const mode = m.data.networkMode;
-        if (mode === 'local' || mode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
-          retryLocal = mode === 'local';
-          stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct', false, 'mode-mismatch');
-          $('mode-retryrow').hidden = false;
-          return;
-        }
-        if (m.data.sdp) {
-          await pc.setRemoteDescription(localMode ? localDescription(m.data.sdp) : m.data.sdp);
-          trace.count('answerAccepted'); trace.mark('answer-accepted');
-        } else if (m.data.candidate) {
-          const candidate = m.data.candidate;
-          trace.count('candidatesReceived');
-          if (!allowedCandidate(candidate, localMode)) {
-            trace.candidate('remote', candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+    async message(e) {
+      if (done || session.generation !== generation) return;
+      if (e.data === 'pong') return;
+      let m;
+      try { m = JSON.parse(e.data); }
+      catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
+      try {
+        if (m.type === 'ready') {
+          trace.mark('room-ready');
+          if (wantRelay) {
+            $('consent').hidden = true;
+            $('view-status').textContent = phrase('view.relaying');
+            await relayDial();
+          } else if (carried) {
+            await dial();
+          } else {
+            $('view-status').textContent = phrase('view.someone');
+            $('consent').hidden = false;
           }
-          try {
-            await pc.addIceCandidate(candidate);
-            trace.candidate('remote', candidate, 'accepted'); trace.count('candidatesAccepted');
-          } catch (error) {
-            trace.candidate('remote', candidate, 'rejected'); trace.error('add-candidate', error);
-            throw error;
+        } else if (m.type === 'relay' && !localMode && relayReply !== null) {
+          // Only a TURN entry with a credential is worth carrying; anything
+          // else the rendezvous might send is not a relay.
+          const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
+          relayReply(entry ?? null);
+        } else if (m.type === 'signal' && pc && !done) {
+          const mode = m.data.networkMode;
+          if (mode === 'local' || mode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
+            retryLocal = mode === 'local';
+            stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct', false, 'mode-mismatch');
+            $('mode-retryrow').hidden = false;
+            return;
+          }
+          if (m.data.sdp) {
+            await pc.setRemoteDescription(localMode ? localDescription(m.data.sdp) : m.data.sdp);
+            trace.count('answerAccepted'); trace.mark('answer-accepted');
+          } else if (m.data.candidate) {
+            const candidate = m.data.candidate;
+            trace.count('candidatesReceived');
+            if (!allowedCandidate(candidate, localMode)) {
+              trace.candidate('remote', candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+            }
+            try {
+              await pc.addIceCandidate(candidate);
+              trace.candidate('remote', candidate, 'accepted'); trace.count('candidatesAccepted');
+            } catch (error) {
+              trace.candidate('remote', candidate, 'rejected'); trace.error('add-candidate', error);
+              throw error;
+            }
           }
         }
+      } catch (error) {
+        trace.error('signaling', error);
+        if (!done && !got) stopAttempt('view.error');
       }
-    } catch (error) {
-      trace.error('signaling', error);
-      if (!done && !got) stopAttempt('view.error');
-    }
-  };
+    },
 
-  ws.onclose = (e) => {
-    trace.socket('closed', e.code);
-    clearInterval(viewerKeepalive);
-    // Losing introductions does not retire a working encrypted peer. An
-    // explicit host-ended control is terminal; transport loss can recover.
-    if (done) return;
-    if (connected && dcRef?.readyState === 'open' &&
-        !['failed', 'closed'].includes(pc?.connectionState)) {
-      resumeViewer();
-      return;
-    }
-    if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
-    if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
-    else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
-    else if (!connected) stopAttempt('view.error', false, 'socket-closed');
-  };
+    close(e) {
+      pairing.close();
+      trace.socket('closed', e.code);
+      // Losing introductions does not retire a working encrypted peer. An
+      // explicit host-ended control is terminal; transport loss can recover.
+      if (done) return;
+      if (connected && dcRef?.readyState === 'open' &&
+          !['failed', 'closed'].includes(pc?.connectionState)) {
+        resumeViewer();
+        return;
+      }
+      if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
+      if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
+      else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
+      else if (!connected) stopAttempt('view.error', false, 'socket-closed');
+    },
+  });
 }
 
 $('retry').addEventListener('click', () => location.reload());
@@ -1480,9 +1490,11 @@ function resumePairedPage() {
   resumeHost();
   resumeViewer();
 }
-document.addEventListener('visibilitychange', resumePairedPage);
-window.addEventListener('pageshow', resumePairedPage);
-window.addEventListener('online', resumePairedPage);
+observeForeground({
+  foreground: resumePairedPage,
+  hidden: resumePairedPage,
+  suspend() { hostPairing?.clear('foreground'); },
+});
 
 /* ----------------------------------------------------- the frame's panels */
 
