@@ -162,7 +162,7 @@ body = "Votre navigateur ouvre, lit et modifie les fichiers choisis. Aucun envoi
 
 [[hub.guarantees]]
 title = "Vos fichiers ne sont pas transmis aux statistiques"
-body = "Les visites et les réponses fixes aux avis facultatifs sont comptées. Ni votre fichier, ni son nom, sa taille ou son contenu ne leur sont transmis. Les imports d’images et les demandes de taux de change des reçus expliquent leurs données près des commandes."
+body = "Les visites, la première utilisation réussie d’un outil par chargement de page et les réponses fixes aux avis facultatifs sont comptées. Aucun fichier, nom de fichier, contenu ou détail du résultat n’accompagne ces comptes. Les imports d’images et les demandes de taux de change des reçus expliquent leurs données près des commandes."
 
 [[hub.guarantees]]
 title = "Le traitement local fonctionne hors ligne"
@@ -244,6 +244,10 @@ base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour 
 licence = "Les textes sont sous <a href=\"https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a>, le code sous <a href=\"https://github.com/A-Box-of-Tools/website/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener noreferrer\">MIT</a>. Réutilisez-les en citant la source."
 
 [ui]
+favorites_heading = "Favoris"
+favorites_note = "Enregistrés dans ce navigateur."
+favorite_tool = "Favori"
+favorites_unavailable = "Les favoris n’ont pas pu être enregistrés dans ce navigateur."
 languages = "Langue"
 lang_auto = "Cette page s'affiche en français parce que c'est la langue demandée par votre navigateur."
 skip_to_content = "Aller au contenu"

@@ -8,7 +8,7 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import worker, { Broadcast } from '../../workers/rendezvous/worker.js';
 import { broadcastCode, validBroadcastSignal } from '../../workers/rendezvous/broadcast.js';
-import { DISCOVERY_SCOPE_HEADER } from '../../workers/rendezvous/discovery.js';
+import { DISCOVERY_SCOPE_HEADER, discoveryScope } from '../../workers/rendezvous/discovery.js';
 
 const NativeResponse = globalThis.Response;
 const NativePair = globalThis.WebSocketPair;
@@ -136,7 +136,7 @@ test('broadcast uses a separate binding with the existing origin and address gat
   const response = await worker.fetch(s.request(undefined, { [DISCOVERY_SCOPE_HEADER]: 'forged' }), s.env);
   assert.equal(response.status, 101);
   assert.deepEqual(s.keys, ['1.2.3.4']);
-  assert.equal(s.calls[0].headers.get(DISCOVERY_SCOPE_HEADER), null);
+  assert.equal(s.calls[0].headers.get(DISCOVERY_SCOPE_HEADER), await discoveryScope(s.request(), 'walkie-talkie'));
   assert.equal(s.calls[0].url.includes(HOST_KEY), false);
   assert.equal(s.calls[0].url.includes(LISTEN_KEY), false);
 });

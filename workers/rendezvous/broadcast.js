@@ -1,6 +1,7 @@
-// A voice room has no directory, relay, or stored payloads. Its authority and
+// A voice room has no relay or stored payloads. Its authority and
 // current generation live in socket attachments, so hibernation cannot forget
 // them and the last socket leaving removes the room's complete state.
+import { DISCOVERY_SCOPE_HEADER, validPublication, validScope } from "./discovery.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
@@ -15,6 +16,12 @@ const object = (value) => value !== null && typeof value === "object" && !Array.
 const fields = (value, names) => object(value) && Object.keys(value).length === names.length
   && names.every((name) => Object.hasOwn(value, name));
 const uuid = (value) => typeof value === "string" && UUID.test(value);
+
+function roomName(value) {
+  if (typeof value !== "string" || value.length > 80 || !value.isWellFormed()
+      || /[\x00-\x1f\x7f-\x9f]/.test(value)) return null;
+  return value.trim() || null;
+}
 
 export async function broadcastCode(key) {
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(key)));
@@ -124,7 +131,35 @@ export class Broadcast {
   }
 
   async fetch(request) {
-    const url = new URL(request.url), code = url.pathname.match(/^\/broadcast\/([a-f0-9]{64})$/)?.[1];
+    const url = new URL(request.url);
+    // The public Worker never forwards this path. Publication proves both a
+    // live host lease and the separate listener capability without retaining it.
+    if (url.pathname === "/_discovery/check" && request.method === "POST") {
+      let claim;
+      try {
+        const text = await request.text();
+        if (text.length > 512) return new Response(null, { status: 400 });
+        claim = JSON.parse(text);
+      } catch { return new Response(null, { status: 400 }); }
+      if (!fields(claim, ["code", "lease", "scope", "tool", "listenKey"])
+          || claim.tool !== "walkie-talkie" || !/^[a-f0-9]{64}$/.test(claim.code)
+          || !validPublication(claim) || !validScope(claim.scope)
+          || typeof claim.listenKey !== "string" || !KEY.test(claim.listenKey)) {
+        return new Response(null, { status: 400 });
+      }
+      const listenHash = await broadcastCode(claim.listenKey);
+      // Digesting yields to socket events: only authority still live after it
+      // completes may make an entry visible or revive one during refresh.
+      const owner = this.host()?.deserializeAttachment();
+      if (!owner || owner.ended || owner.code !== claim.code || owner.lease !== claim.lease
+          || owner.scope !== claim.scope || owner.listenHash !== listenHash) {
+        return new Response(null, { status: 403 });
+      }
+      return new Response(JSON.stringify({ name: owner.name, listenKey: claim.listenKey }), {
+        headers: { "content-type": "application/json" },
+      });
+    }
+    const code = url.pathname.match(/^\/broadcast\/([a-f0-9]{64})$/)?.[1];
     if (!code || url.search || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
@@ -133,8 +168,10 @@ export class Broadcast {
       server.send(JSON.stringify({ type: "error", error: "full" }));
       server.close(4429, "full");
     } else {
+      const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
       this.ctx.acceptWebSocket(server, ["broadcast"]);
-      server.serializeAttachment({ role: "pending", code, deadline: Date.now() + AUTH_TIMEOUT,
+      server.serializeAttachment({ role: "pending", code, scope: validScope(scope) ? scope : null,
+        deadline: Date.now() + AUTH_TIMEOUT,
         window: Date.now(), updates: 0 });
     }
     return new Response(null, { status: 101, webSocket: client });
@@ -153,10 +190,15 @@ export class Broadcast {
 
   async authenticate(ws, value, who) {
     const isHost = value.role === "host";
-    if (!fields(value, isHost ? ["type", "role", "key", "listenKey"] : ["type", "role", "key"])
+    const offered = isHost && fields(value, ["type", "role", "key", "listenKey", "roomName", "discover"])
+      && value.discover === true;
+    const name = offered ? roomName(value.roomName) : null;
+    if (!(isHost ? offered || fields(value, ["type", "role", "key", "listenKey"])
+        : fields(value, ["type", "role", "key"]))
         || value.type !== "auth" || !["host", "listener"].includes(value.role)
         || typeof value.key !== "string" || !KEY.test(value.key)
-        || isHost && (typeof value.listenKey !== "string" || !KEY.test(value.listenKey))) {
+        || isHost && (typeof value.listenKey !== "string" || !KEY.test(value.listenKey))
+        || offered && (name === null || value.key === value.listenKey)) {
       this.refuse(ws, 4400, "invalid"); return;
     }
     // Claim the pending socket before digesting: a second auth frame and a
@@ -172,16 +214,22 @@ export class Broadcast {
       if (keyHash !== who.code) { this.refuse(ws, 4403, "unauthorized"); return; }
       const previous = this.sockets("host");
       const generation = crypto.randomUUID();
+      const scope = offered && validScope(who.scope) ? who.scope : null;
+      const lease = scope === null ? null : crypto.randomUUID();
       ws.serializeAttachment({ role: "host", code: who.code, listenHash, generation,
+        ...(offered ? { name, scope, lease } : {}),
         talking: false, ended: false, window: Date.now(), updates: 0 });
       for (const old of previous) {
         // Blank first: the replaced socket's eventual close cannot park a
         // new host's listeners or undo the new generation.
+        const retired = old.deserializeAttachment();
         old.serializeAttachment(null);
+        this.withdraw(retired);
         this.send(old, { type: "replaced" });
         try { old.close(4409, "replaced"); } catch {}
       }
-      if (!this.send(ws, { type: "host-ready", generation })) return;
+      if (!this.send(ws, { type: "host-ready", generation,
+        ...(offered ? { discovery: lease === null ? null : { code: who.code, lease, tool: "walkie-talkie" } } : {}) })) return;
       for (const listener of this.sockets("listener")) {
         if (listener.deserializeAttachment().listenHash !== listenHash) this.refuse(listener, 4403, "unauthorized");
         else this.ready(listener);
@@ -251,6 +299,7 @@ export class Broadcast {
     }
     if (who.role === "host" && value.type === "end" && fields(value, ["type", "generation"])) {
       ws.serializeAttachment({ ...who, ended: true, talking: false });
+      this.withdraw(who);
       for (const listener of this.sockets("listener")) {
         listener.serializeAttachment({ ...listener.deserializeAttachment(), ended: true, connection: null });
         this.send(listener, { type: "ended" });
@@ -277,11 +326,22 @@ export class Broadcast {
   webSocketClose(ws) { this.drop(ws); }
   webSocketError(ws) { this.drop(ws); }
 
+  withdraw(owner) {
+    if (!owner || !validScope(owner.scope) || !validPublication(owner)) return;
+    this.ctx.waitUntil(Promise.resolve().then(() => this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(owner.scope)).fetch(
+      "https://discovery.internal/_discovery/withdraw", {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ code: owner.code, lease: owner.lease, tool: "walkie-talkie" }),
+      },
+    )).catch(() => {}));
+  }
+
   drop(ws) {
     const who = ws.deserializeAttachment();
     if (who === null) return;
     ws.serializeAttachment(null);
     if (who.role === "host") {
+      this.withdraw(who);
       for (const listener of this.sockets("listener")) {
         this.send(listener, { type: listener.deserializeAttachment().ended ? "ended" : "waiting" });
       }

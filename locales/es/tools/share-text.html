@@ -196,8 +196,36 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Detalles de la conexión</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Todavía no se ha intentado conectar.</p>
+    <p class="field-note">Si falla una conexión, copia este informe en ambos dispositivos. No contiene texto compartido, nombres de archivos, nombres de enlaces, direcciones de red ni credenciales.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copiar informe de conexión</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Informe de conexión</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">La búsqueda puede encontrar un recurso compartido aunque los navegadores no puedan conectarse directamente; este informe identifica la etapa alcanzada, pero no demuestra la causa.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Todavía no se ha intentado conectar.</span>
+    <span data-phrase="debug.attempt">Intento de conexión {n}. {status}</span>
+    <span data-phrase="debug.introduction">Contactando con el servidor de presentación.</span>
+    <span data-phrase="debug.network">Estableciendo la conexión entre los navegadores.</span>
+    <span data-phrase="debug.channel">Conexión abierta; esperando el contenido compartido.</span>
+    <span data-phrase="debug.approval">Conectado; esperando aprobación.</span>
+    <span data-phrase="debug.connected">Conectado y recibiendo el contenido compartido.</span>
+    <span data-phrase="debug.host-connected">Conectado a un receptor.</span>
+    <span data-phrase="debug.transfer">Transfiriendo un archivo.</span>
+    <span data-phrase="debug.transfer-complete">Transferencia del archivo completada.</span>
+    <span data-phrase="debug.transfer-failed">No se pudo completar la transferencia del archivo.</span>
+    <span data-phrase="debug.failed">Este intento de conexión terminó antes de completarse; el informe conserva la última etapa alcanzada.</span>
+    <span data-phrase="debug.ended">Esta conexión ha terminado.</span>
+    <span data-phrase="debug.unsupported">Este navegador no admite las funciones de conexión que necesita esta herramienta.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
@@ -232,6 +260,8 @@
     <span data-phrase="share.leave-warning">Salir de esta página termina la compartición para todos. ¿Continuar?</span>
 
     <span data-phrase="copy.select">Seleccionado — cópialo manualmente</span>
+    <span data-phrase="view.reconnecting">La conexión se ha interrumpido. Se intentará recuperar la misma compartición mientras esta página esté visible…</span>
+    <span data-phrase="view.interrupted">No se ha podido restablecer la conexión. Pide a quien comparte que mantenga su página abierta y vuelve a comprobar este enlace.</span>
     <span data-phrase="view.file-cancel">Cancelar descarga</span>
     <span data-phrase="view.file-retry">Reintentar descarga</span>
     <span data-phrase="view.file-cancelled">Descarga cancelada. El contenido sigue compartido.</span>

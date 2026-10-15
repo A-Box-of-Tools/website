@@ -13,6 +13,7 @@ let mode = 'camera';
 let activeRole = null;
 let epoch = 0;
 let wake = null;
+let wakePending = false;
 let detailsTimer = null;
 let discovery = null;
 let discoveryState = 'connecting';
@@ -27,9 +28,20 @@ let viewerAudioTrack = null;
 let viewerWantsAudio = true;
 let viewerAudioBlocked = false;
 let playbackRevision = 0;
-let hostAudioObserver = null;
 let viewerSoundSupported = false;
-const capture = new CameraCapture({ getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints) });
+let cameraIntent = null;
+let cameraResumeNeeded = false;
+let cameraAudioResumeNeeded = false;
+let cameraResuming = false;
+let cameraStarting = false;
+let resumeOnVisible = false;
+let pageSuspended = false;
+const watchedTracks = new WeakSet();
+const capture = new CameraCapture({ getUserMedia: (constraints) => {
+  // Exclusive-camera retries can outlive the gesture that opened them.
+  if (document.hidden || pageSuspended) throw new DOMException('', 'AbortError');
+  return navigator.mediaDevices.getUserMedia(constraints);
+} });
 
 const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
 function showStatus(key, role = mode) {
@@ -39,10 +51,14 @@ function showStatus(key, role = mode) {
 }
 
 function idleCamera() {
-  hostAudioObserver?.track.removeEventListener('ended', hostAudioObserver.ended);
-  hostAudioObserver = null;
+  cameraResumeNeeded = false;
+  cameraAudioResumeNeeded = false;
+  cameraResuming = false;
+  cameraStarting = false;
+  resumeOnVisible = false;
   $('camera-start').disabled = false;
   $('camera-start').hidden = false;
+  $('camera-start').textContent = phrase('camera.start');
   $('camera-name').disabled = false;
   $('camera-suggest').disabled = false;
   $('camera-discoverable').disabled = false;
@@ -108,17 +124,44 @@ function releaseWake() {
 }
 
 const session = new CameraSession({
+  visible: () => !document.hidden && !pageSuspended,
+  onSignaling() {
+    if (session.signalingLost) {
+      discovery?.unpublish();
+      showStatus(session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable', session.role);
+    } else if (cameraResumeNeeded && session.role === 'camera') showStatus('camera.paused', 'camera');
+    if (cameraIntent) renderCameraRecovery();
+  },
   onState(key, role) {
     if (!role) return;
-    showStatus(key, role);
+    const awaitingPairing = session.signalingLost && ['camera.waiting', 'camera.open-waiting', 'camera.streaming', 'connection.starting'].includes(key);
+    showStatus(awaitingPairing ? session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable' : key, role);
     if (session.role === null) {
+      const retain = role === 'camera' && cameraIntent !== null
+        && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
       closeStopDialog();
       discovery?.unpublish();
       epoch += 1;
       clearDetails();
-      if (role === 'camera') { capture.stop(); releaseWake(); idleCamera(); }
+      if (role === 'camera') {
+        cameraStarting = false;
+        capture.stop(); releaseWake();
+        $('camera-preview').srcObject = null;
+        $('camera-preview-panel').hidden = true;
+        if (retain) {
+          cameraResumeNeeded = true;
+          cameraResuming = false;
+          resumeOnVisible = document.hidden || pageSuspended;
+          showCameraIdentity(cameraIntent.code);
+          renderCameraRecovery();
+          showStatus('camera.resume-needed', 'camera');
+        } else { cameraIntent = null; idleCamera(); }
+      }
       else idleViewer();
-      showActiveRole(null);
+      showActiveRole(retain ? 'camera' : null);
+    } else if (role === 'camera' && key === 'camera.paused') {
+      cameraResumeNeeded = true;
+      renderCameraRecovery();
     }
   },
   onRequests(requests) {
@@ -135,7 +178,7 @@ const session = new CameraSession({
         button.textContent = phrase(key);
         button.dataset.action = action;
         button.dataset.peer = request.id;
-        button.disabled = Boolean(session.cameraChange) || capture.switching;
+        button.disabled = Boolean(session.cameraChange) || capture.switching || cameraResumeNeeded || cameraResuming;
         if (action === 'deny') button.className = 'ghost';
         button.addEventListener('click', () => {
           if (action === 'approve' && !session.approve(request.id)) showStatus('connection.busy', 'camera');
@@ -235,6 +278,9 @@ function startDiscovery() {
 }
 
 function stop(key = 'connection.stopped') {
+  // Explicit Stop and navigation retire recovery before asynchronous cleanup.
+  cameraIntent = null;
+  resumeOnVisible = false;
   closeStopDialog();
   epoch += 1;
   discovery?.unpublish();
@@ -326,12 +372,15 @@ function watchDetails() {
 }
 
 async function keepAwake(current) {
+  if (document.hidden || pageSuspended || wakePending || wake && !wake.released) return;
+  wakePending = true;
   try {
     const lock = await navigator.wakeLock?.request('screen');
     if (!lock) return;
-    if (current !== epoch || session.role !== 'camera') await lock.release();
+    if (current !== epoch || session.role !== 'camera' || document.hidden || pageSuspended) await lock.release();
     else wake = lock;
   } catch {}
+  finally { wakePending = false; }
 }
 
 function captureError(error) {
@@ -439,31 +488,235 @@ function showApprovalPolicy() {
 }
 
 function showCameraStream(stream, current) {
-  const alreadyShown = $('camera-preview').srcObject === stream;
   $('camera-preview').srcObject = stream;
   $('camera-preview-panel').hidden = false;
   $('camera-preview').play().catch(() => {});
-  if (alreadyShown) return;
-  const audio = stream.getAudioTracks().find((track) => track.readyState === 'live');
-  $('camera-audio-status').textContent = audio ? phrase('camera.audio-on') : $('camera-audio').checked ? phrase('camera.audio-ended') : '';
-  if (hostAudioObserver?.track !== audio) {
-    hostAudioObserver?.track.removeEventListener('ended', hostAudioObserver.ended);
-    hostAudioObserver = null;
-    if (audio) {
-      const ended = () => {
-        if (current === epoch && capture.stream?.getAudioTracks().includes(audio)) $('camera-audio-status').textContent = phrase('camera.audio-ended');
-      };
-      audio.addEventListener('ended', ended);
-      hostAudioObserver = { track: audio, ended };
-    }
-  }
-  for (const track of stream.getVideoTracks()) {
-    track.addEventListener('ended', () => {
-      // Opening another camera can end the old hardware track. The switch
-      // reconciles that result; a replaced stream must not stop its successor.
-      if (current === epoch && capture.stream === stream && !capture.switching) stop('camera.ended');
+  const audio = cameraAudioTrack(stream);
+  if (cameraIntent?.audio && (!audio || audio.muted)) cameraAudioResumeNeeded = true;
+  if (cameraAudioResumeNeeded && audio) audio.enabled = false;
+  updateCameraAudio();
+  for (const track of stream.getTracks()) {
+    if (track.kind === 'video' && cameraIntent) cameraIntent.deviceId = track.getSettings?.().deviceId || cameraIntent.deviceId;
+    if (watchedTracks.has(track)) continue;
+    watchedTracks.add(track);
+    // The microphone can belong to several successive camera streams. One
+    // observer follows its current capture instead of retaining old streams.
+    const valid = () => cameraIntent && capture.stream?.getTracks().includes(track);
+    const interrupted = () => {
+      if (!valid()) return;
+      if (track.kind === 'audio') {
+        track.enabled = false;
+        cameraAudioResumeNeeded = true;
+        resumeOnVisible ||= document.hidden || pageSuspended;
+        updateCameraAudio();
+        renderCameraRecovery();
+      } else if (!capture.switching) pauseCameraCapture();
+    };
+    track.addEventListener('ended', interrupted);
+    track.addEventListener('mute', interrupted);
+    track.addEventListener('unmute', () => {
+      if (!valid() || track.readyState !== 'live') return;
+      if (track.kind === 'audio') updateCameraAudio();
+      else {
+        cameraResumeNeeded = false;
+        session.state(session.hostState());
+        if (!document.hidden) keepAwake(epoch);
+      }
+      renderCameraRecovery();
     });
   }
+}
+
+function cameraAudioTrack(stream = capture.stream) {
+  return stream?.getAudioTracks().find((track) => track.readyState === 'live');
+}
+
+function updateCameraAudio() {
+  const audio = cameraAudioTrack();
+  $('camera-audio-status').textContent = !cameraIntent?.audio ? ''
+    : phrase(cameraAudioResumeNeeded || !audio || audio.muted || !audio.enabled ? 'camera.audio-paused' : 'camera.audio-on');
+}
+
+function showCameraIdentity(code) {
+  hostCode = code;
+  const link = viewerLink(location.href, code);
+  $('camera-link').value = link;
+  $('camera-code').textContent = code;
+  $('camera-invite').hidden = false;
+  qr(link);
+  renderDiscovery();
+}
+
+function renderCameraRecovery() {
+  if (!cameraIntent) return;
+  updateCameraAudio();
+  const pairing = session.role === 'camera' && session.signalingLost;
+  $('camera-start').hidden = !cameraResumeNeeded && !cameraAudioResumeNeeded && !cameraResuming && !pairing;
+  $('camera-start').disabled = cameraResuming || Boolean(session.signalingRetry) || document.hidden || pageSuspended;
+  $('camera-start').textContent = phrase(cameraResuming ? 'camera.resuming' : cameraResumeNeeded ? 'camera.resume'
+    : cameraAudioResumeNeeded ? 'camera.resume-audio' : session.signalingRetry ? 'connection.reconnecting' : 'connection.resume');
+  $('camera-stop').hidden = false;
+  $('camera-name').value = cameraIntent.code;
+  $('camera-name').disabled = true;
+  $('camera-suggest').disabled = true;
+  $('camera-discoverable').disabled = true;
+  $('camera-audio').disabled = true;
+  $('camera-device').disabled = cameraResuming || cameraResumeNeeded || capture.switching;
+  session.requests();
+}
+
+function pauseCameraCapture() {
+  if (!cameraIntent) return;
+  cameraResumeNeeded = true;
+  resumeOnVisible = document.hidden || pageSuspended;
+  releaseWake();
+  if (!capture.stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
+    $('camera-preview').srcObject = null;
+    $('camera-preview-panel').hidden = true;
+  }
+  renderCameraRecovery();
+  showStatus('camera.paused', 'camera');
+}
+
+function suspendCameraResources() {
+  if (!cameraIntent) return;
+  cameraAudioResumeNeeded = cameraIntent.audio;
+  closeStopDialog();
+  epoch += 1;
+  discovery?.unpublish();
+  session.stop('camera.paused');
+  capture.stop();
+  releaseWake();
+  $('camera-preview').srcObject = null;
+  $('camera-preview-panel').hidden = true;
+  cameraStarting = false;
+  cameraResuming = false;
+  cameraResumeNeeded = true;
+  resumeOnVisible = true;
+  showCameraIdentity(cameraIntent.code);
+  renderCameraRecovery();
+  showStatus('camera.paused', 'camera');
+}
+
+async function resumeCamera({ manual = true } = {}) {
+  if (!cameraIntent || cameraStarting || cameraResuming || capture.switching || document.hidden || pageSuspended) return;
+  const previousAudio = cameraAudioTrack();
+  const healthyVideo = capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted);
+  const resumeAudio = manual && !cameraResumeNeeded && cameraAudioResumeNeeded;
+  if (!cameraResumeNeeded && session.role === 'camera' && healthyVideo
+      && (!cameraIntent.audio || previousAudio)) {
+    if (resumeAudio && previousAudio && !previousAudio.muted) {
+      previousAudio.enabled = true;
+      cameraAudioResumeNeeded = false;
+      updateCameraAudio();
+    }
+    renderCameraRecovery();
+    await session.restoreSignaling({ manual });
+    return;
+  }
+  const identity = cameraIntent, current = ++epoch;
+  cameraResuming = true;
+  cameraResumeNeeded = false;
+  resumeOnVisible = false;
+  renderCameraRecovery();
+  showStatus('camera.resuming', 'camera');
+  let change = null;
+  try {
+    let stream;
+    const constraints = { video: identity.deviceId ? { deviceId: { exact: identity.deviceId } } : true, audio: identity.audio };
+    const prepareAudio = (candidate) => {
+      const audio = cameraAudioTrack(candidate);
+      if (audio && (audio !== previousAudio || audio.muted || cameraAudioResumeNeeded)) {
+        audio.enabled = false;
+        cameraAudioResumeNeeded = true;
+      }
+    };
+    if (session.role === 'camera') {
+      change = session.prepareCameraChange({ preserveOnFailure: true });
+      if (capture.stream) stream = await capture.switchDevice(identity.deviceId || '', async (candidate) => {
+        if (current !== epoch || cameraIntent !== identity || document.hidden || pageSuspended) return false;
+        prepareAudio(candidate);
+        return change.commit(candidate);
+      }, { audio: identity.audio });
+      else {
+        stream = await capture.start(constraints);
+        if (current !== epoch || cameraIntent !== identity || stream === null) return;
+        if (document.hidden || pageSuspended) { suspendCameraResources(); return; }
+        prepareAudio(stream);
+        if (!await change.commit(stream)) { capture.stop(); return; }
+      }
+    } else {
+      stream = await capture.start(constraints);
+      if (current !== epoch || cameraIntent !== identity || stream === null) return;
+      if (document.hidden || pageSuspended) { suspendCameraResources(); return; }
+      prepareAudio(stream);
+      await session.startHost(stream, identity.code, identity);
+    }
+    if (current !== epoch || cameraIntent !== identity) return;
+    if (stream === null) {
+      cameraResumeNeeded = !capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted);
+      if (cameraResumeNeeded) showStatus('camera.resume-needed', 'camera');
+      updateCameraAudio();
+      return;
+    }
+    if (document.hidden || pageSuspended) {
+      suspendCameraResources();
+      return;
+    }
+    const audio = cameraAudioTrack(stream);
+    if (resumeAudio && audio && !audio.muted) {
+      audio.enabled = true;
+      cameraAudioResumeNeeded = false;
+    }
+    showCameraStream(stream, current);
+    showCameraIdentity(identity.code);
+    cameraResumeNeeded = stream.getVideoTracks().some((track) => track.muted || track.readyState !== 'live');
+    if (cameraResumeNeeded) showStatus('camera.paused', 'camera');
+    else session.state(session.hostState());
+    watchDetails();
+    keepAwake(current);
+    await refreshCameras();
+  } catch {
+    if (current !== epoch || cameraIntent !== identity) return;
+    const restored = capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted);
+    cameraResumeNeeded = !restored;
+    if (restored && session.role === 'camera') {
+      session.state(session.hostState());
+      keepAwake(current);
+    } else showStatus('camera.resume-needed', 'camera');
+  } finally {
+    change?.cancel();
+    if (current === epoch && cameraIntent === identity) {
+      cameraResuming = false;
+      cameraResumeNeeded = session.role !== 'camera'
+        || !capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted);
+      if (identity.audio && !cameraAudioTrack()) cameraAudioResumeNeeded = true;
+      if (capture.stream?.getVideoTracks().some((track) => track.readyState === 'live')) showCameraStream(capture.stream, current);
+      updateCameraAudio();
+      renderCameraRecovery();
+    }
+  }
+}
+
+function visibleCamera() {
+  if (document.hidden || pageSuspended) return;
+  discovery?.refresh();
+  if (session.role === 'camera') void session.restoreSignaling();
+  if (!cameraIntent) {
+    if (session.role === 'viewer' && $('remote-video').srcObject) void playVideo();
+    return;
+  }
+  const track = capture.stream?.getVideoTracks().find((item) => item.readyState === 'live');
+  const audioEnded = cameraIntent.audio && !cameraAudioTrack();
+  if (resumeOnVisible && (!track || session.role !== 'camera' || audioEnded)) {
+    void resumeCamera({ manual: false });
+  } else if (session.role === 'camera' && track && !track.muted) {
+    cameraResumeNeeded = false;
+    resumeOnVisible = false;
+    renderCameraRecovery();
+    $('camera-preview').play().catch(() => {});
+    keepAwake(epoch);
+  } else renderCameraRecovery();
 }
 
 async function refreshCameras() {
@@ -490,10 +743,11 @@ async function refreshCameras() {
   });
   if (devices.some((device) => device.deviceId === selected)) select.value = selected;
   $('camera-device-field').hidden = devices.length < 2;
-  select.disabled = false;
+  select.disabled = cameraResuming || cameraResumeNeeded || capture.switching;
 }
 
 async function switchCamera() {
+  if (document.hidden || pageSuspended) return;
   const deviceId = $('camera-device').value;
   if (!deviceId || session.role !== 'camera' || session.cameraChange || capture.switching || !capture.stream) return;
   if (capture.stream.getVideoTracks()[0]?.getSettings?.().deviceId === deviceId) return;
@@ -525,15 +779,21 @@ async function switchCamera() {
 }
 
 async function startCamera() {
+  if (cameraIntent) return resumeCamera();
+  if (document.hidden || pageSuspended) return;
   const code = normalize($('camera-name').value);
   if (!code) return showStatus('code.name-invalid', 'camera');
   if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) return showStatus('camera.unsupported', 'camera');
   if (!globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'camera');
   stop();
   mode = 'camera';
+  cameraIntent = { code, discoverable: $('camera-discoverable').checked,
+    requireApproval: $('camera-require-approval').checked, deviceId: null,
+    audio: $('camera-audio').checked, videoBudget: Number($('camera-bandwidth').value) };
   if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   showActiveRole('camera');
   const current = ++epoch;
+  cameraStarting = true;
   $('camera-start').disabled = true;
   $('camera-start').hidden = true;
   $('camera-name').value = code;
@@ -545,24 +805,25 @@ async function startCamera() {
   $('camera-stop').focus();
   showStatus('camera.permission', 'camera');
   try {
-    const stream = await capture.start({ video: true, audio: $('camera-audio').checked });
+    const stream = await capture.start({ video: true, audio: cameraIntent.audio });
     if (current !== epoch || stream === null) return;
+    if (document.hidden || pageSuspended) { suspendCameraResources(); return; }
     showCameraStream(stream, current);
     hostCode = code;
     if ($('camera-discoverable').checked) $('camera-publication-status').textContent = phrase('discovery.not-published');
     renderDiscovery();
-    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked, requireApproval: $('camera-require-approval').checked, videoBudget: Number($('camera-bandwidth').value) });
+    await session.startHost(stream, code, cameraIntent);
     if (current !== epoch) return;
-    const link = viewerLink(location.href, code);
-    $('camera-link').value = link;
-    $('camera-code').textContent = code;
-    $('camera-invite').hidden = false;
-    qr(link);
+    showCameraIdentity(code);
     watchDetails();
     keepAwake(current);
     refreshCameras();
+    if (stream.getVideoTracks().some((track) => track.muted)) pauseCameraCapture();
+    else renderCameraRecovery();
   } catch (error) {
     if (current === epoch) stop(captureError(error));
+  } finally {
+    if (current === epoch) cameraStarting = false;
   }
 }
 
@@ -604,6 +865,7 @@ async function playVideo(retryAudio = false) {
     await video.play();
     if (!valid()) return;
     $('viewer-play').hidden = true;
+    globalThis.aboxToolComplete?.();
     showStatus('viewer.receiving', 'viewer');
   } catch {
     if (!valid()) return;
@@ -634,10 +896,12 @@ function updateFullscreenControl() {
 $('camera-start').addEventListener('click', startCamera);
 $('camera-device').addEventListener('change', switchCamera);
 $('camera-bandwidth').addEventListener('change', () => {
+  if (cameraIntent) cameraIntent.videoBudget = Number($('camera-bandwidth').value);
   if (session.role === 'camera') session.setVideoBudget(Number($('camera-bandwidth').value));
 });
 $('camera-require-approval').addEventListener('change', () => {
   showApprovalPolicy();
+  if (cameraIntent) cameraIntent.requireApproval = $('camera-require-approval').checked;
   session.setApprovalRequired($('camera-require-approval').checked);
 });
 navigator.mediaDevices?.addEventListener?.('devicechange', refreshCameras);
@@ -679,10 +943,24 @@ $('camera-copy').addEventListener('click', async () => {
     $('copy-status').textContent = phrase('copy.manual');
   }
 });
-window.addEventListener('pagehide', () => { stop(); discovery?.close(); discovery = null; });
-window.addEventListener('pageshow', () => { if (!discovery) startDiscovery(); });
+window.addEventListener('pagehide', (event) => {
+  pageSuspended = true;
+  if (event.persisted && cameraIntent) {
+    suspendCameraResources();
+  } else stop();
+  discovery?.close(); discovery = null;
+});
+window.addEventListener('pageshow', () => {
+  pageSuspended = false;
+  if (!discovery) startDiscovery();
+  visibleCamera();
+});
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && (!$('camera-stop').hidden || session.role === 'camera')) stop('camera.hidden');
+  if (document.hidden) {
+    releaseWake();
+    if (cameraIntent && (cameraStarting || cameraResuming || capture.switching)) suspendCameraResources();
+    else if (cameraIntent) resumeOnVisible = true;
+  } else visibleCamera();
 });
 window.addEventListener('hashchange', () => {
   const code = parseCode(location.hash);

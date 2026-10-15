@@ -58,13 +58,37 @@ class Clock {
   }
 }
 
+class NativeAudioSession {
+  type = 'auto';
+  state = 'active';
+  listeners = new Set();
+  additions = 0;
+  addEventListener(type, listener) {
+    assert.equal(type, 'statechange');
+    this.listeners.add(listener);
+    this.additions++;
+  }
+  removeEventListener(type, listener) {
+    assert.equal(type, 'statechange');
+    this.listeners.delete(listener);
+  }
+  transition(state) {
+    this.state = state;
+    for (const listener of [...this.listeners]) listener();
+  }
+}
+
 function microphone() {
-  const track = { kind: 'audio', enabled: true, onended: null, stops: 0,
-    stop() { this.stops++; } };
+  const track = { kind: 'audio', enabled: true, muted: false, readyState: 'live',
+    onended: null, onmute: null, onunmute: null, stops: 0,
+    mute() { this.muted = true; this.onmute?.(); },
+    unmute() { this.muted = false; this.onunmute?.(); },
+    end() { this.readyState = 'ended'; this.onended?.(); },
+    stop() { this.stops++; this.readyState = 'ended'; this.onstop?.(); } };
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
+function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, discover = false, roomName = '' } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -103,9 +127,12 @@ function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
       peers.push(this);
     }
     addTrack(track, stream) {
-      this.senders.push({ track, stream });
+      const sender = { track, stream, async replaceTrack(next) { this.track = next; } };
+      this.senders.push(sender);
       this.transceivers.push({ direction: 'sendrecv' });
+      return sender;
     }
+    getSenders() { return this.senders; }
     getTransceivers() { return this.transceivers; }
     async createOffer() { return { type: 'offer', sdp: SDP }; }
     async createAnswer() { return { type: 'answer', sdp: SDP.replace('sendonly', 'recvonly') }; }
@@ -121,15 +148,16 @@ function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
     fail() { this.connectionState = 'failed'; this.onconnectionstatechange?.(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new BroadcastSession({ role, code: CODE,
+  const session = new BroadcastSession({ role, code: CODE, discover, roomName,
     key: role === 'host' ? KEY : LISTEN_KEY,
-    ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, clock, endpoint,
+    ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, audioSession, clock, endpoint,
     onState: (key, detail) => states.push({ key, detail }), onStream: stream => streams.push(stream) });
   t.after(async () => {
     session.stop({ notify: false, state: null });
     await flush();
     assert.equal(clock.tasks.size, 0, 'Stopping must clear peer, retry and check timers.');
     assert.equal(sockets.filter(ws => ws.readyState < 2).length, 0);
+    if (audioSession) assert.equal(audioSession.listeners.size, 0);
   });
   const begin = async frame => {
     const starting = session.start();
@@ -143,6 +171,28 @@ function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
   };
   return { session, clock, sockets, peers, states, streams, begin };
 }
+
+test('nearby host opts in explicitly and forwards a fresh lease after reconnecting', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', discover: true, roomName: 'Classroom',
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const discovery = { code: CODE, lease: ID_A, tool: 'walkie-talkie' };
+  const ws = await h.begin({ type: 'host-ready', generation: GEN_A, discovery });
+  assert.deepEqual(ws.sent[0], { type: 'auth', role: 'host', key: KEY,
+    listenKey: LISTEN_KEY, roomName: 'Classroom', discover: true });
+  assert.deepEqual(h.states.at(-1).detail.discovery, discovery);
+  assert.equal(mic.track.enabled, false);
+  ws.serverClose();
+  assert.equal(h.states.at(-1).detail.signaling, false);
+  await h.clock.advance(1000);
+  const fresh = h.sockets.at(-1);
+  fresh.open();
+  fresh.message({ type: 'host-ready', generation: GEN_B, discovery: { ...discovery, lease: ID_B } });
+  await flush();
+  assert.equal(h.states.at(-1).detail.discovery.lease, ID_B);
+  h.session.stop();
+  assert.equal(h.states.at(-1).detail.discovery, null);
+});
 
 test('receiver auth is outside its URL, waiting checks stay on one socket, and capture is never requested', async t => {
   let captures = 0;
@@ -371,16 +421,22 @@ test('early ICE is bounded, non-host candidates are rejected, and authority fiel
   assert.equal(h.peers[0].closed, false);
 });
 
-test('microphone loss stops capture without End, while explicit host stop sends End', async t => {
+test('ended microphone keeps the host registered until explicit End', async t => {
   const mic = microphone();
   const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
   const ws = await h.begin();
   ws.message({ type: 'join', id: ID_A, generation: GEN_A });
   await flush();
-  mic.track.onended();
-  assert.equal(mic.track.stops, 1);
-  assert.equal(h.peers[0].closed, true);
-  assert.equal(h.states.at(-1).key, 'error-microphone');
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  mic.track.end();
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 0);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
+  assert.equal(h.states.at(-1).detail.captureState, 'ended');
+  h.session.setTalking(true);
+  assert.equal(mic.track.enabled, false);
   assert.equal(ws.sent.filter(frame => frame.type === 'end').length, 0);
   const secondMic = microphone();
   const other = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => secondMic.stream } });
@@ -414,6 +470,40 @@ test('host grace preserves departing audio briefly and evicts it before exceedin
   await h.clock.advance(1);
   assert.equal(h.peers[1].closed, true);
   assert.ok(h.session._peers.size <= 10);
+});
+
+test('a stale offer for a departed listener preserves the host and its other listeners', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  h.peers[0].connect();
+  ws.message({ type: 'join', id: ID_B, generation: GEN_A });
+  await flush();
+  assert.ok(ws.sent.some(frame => frame.type === 'offer' && frame.to === ID_B));
+
+  // The listener's departure can reach the service before the offer above.
+  // Its leave notification is followed by rejection of that in-flight offer.
+  ws.message({ type: 'leave', id: ID_B, generation: GEN_A });
+  ws.message({ type: 'error', error: 'stale' });
+  await flush();
+  assert.equal(h.peers[1].closed, true);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
+  assert.equal(mic.track.stops, 0);
+  assert.equal(h.states.at(-1).detail.listeners, 1);
+  h.session.setTalking(true);
+  assert.equal(mic.track.enabled, true);
+  assert.equal(h.states.at(-1).key, 'host-talking');
+
+  ws.message({ type: 'error', error: 'unauthorized' });
+  await flush();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(ws.closed, true);
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.states.at(-1).key, 'error-access');
 });
 
 test('unauthorized or replaced hosts stop capture and cannot reconnect automatically', async t => {
@@ -498,4 +588,253 @@ test('Stop clears an outstanding pong deadline and parked replies do not delay k
   assert.equal(h.clock.tasks.size, 0);
   await h.clock.advance(30000);
   assert.equal(h.sockets.length, 1);
+});
+
+test('host source mute preserves connected listeners and unmute never resumes speech', async t => {
+  const mic = microphone();
+  const audioSession = new NativeAudioSession();
+  const h = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  const staleMute = mic.track.onmute;
+  mic.track.mute();
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 0);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(ws.closed, false);
+  assert.equal(h.states.at(-1).detail.captureState, 'interrupted');
+  assert.ok(!ws.sent.some(frame => frame.type === 'end'));
+  h.session.setTalking(true);
+  assert.equal(mic.track.enabled, false);
+  mic.track.unmute();
+  assert.equal(h.states.at(-1).detail.captureState, 'ready');
+  assert.equal(mic.track.enabled, false);
+  assert.equal(h.states.at(-1).detail.talking, false);
+  h.session.setTalking(true);
+  assert.equal(mic.track.enabled, true);
+  h.session.stop();
+  const stateCount = h.states.length;
+  staleMute();
+  audioSession.transition('active');
+  assert.equal(h.states.length, stateCount);
+  assert.equal(audioSession.listeners.size, 0);
+  assert.equal(mic.track.onunmute, null);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('native interruption pauses capture and leaves receive-only audio and both connections alive', async t => {
+  const audioSession = new NativeAudioSession();
+  const mic = microphone();
+  const host = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => mic.stream } });
+  const receiver = harness(t, { audioSession,
+    mediaDevices: { getUserMedia() { throw new Error('A receiver must not capture.'); } } });
+  const hostSocket = await host.begin();
+  const listenerSocket = await receiver.begin(ready());
+  listenerSocket.message(offer());
+  await flush();
+  const voice = { name: 'direct voice' };
+  receiver.peers[0].receive(voice);
+  receiver.peers[0].connect();
+  host.session.setTalking(true);
+  assert.equal(audioSession.additions, 1);
+  audioSession.transition('interrupted');
+  assert.equal(mic.track.enabled, false);
+  assert.equal(mic.track.stops, 0);
+  assert.equal(host.states.at(-1).detail.captureState, 'interrupted');
+  assert.equal(hostSocket.closed, false);
+  assert.ok(!hostSocket.sent.some(frame => frame.type === 'end'));
+  assert.equal(audioSession.listeners.size, 1);
+  assert.equal(listenerSocket.closed, false);
+  assert.equal(receiver.peers[0].closed, false);
+  assert.equal(receiver.streams.at(-1), voice);
+  assert.equal(receiver.states.at(-1).key, 'listener-listening');
+  assert.equal(receiver.states.at(-1).detail.captureState, null);
+  assert.equal(await receiver.session.resumeCapture(), false);
+  audioSession.transition('active');
+  assert.equal(host.states.at(-1).detail.captureState, 'ready');
+  assert.equal(mic.track.enabled, false);
+});
+
+test('capture recovery is deduplicated and replaces every sender without changing the host identity', async t => {
+  const first = microphone();
+  const replacement = microphone();
+  const permission = deferred();
+  const replacing = deferred();
+  let requests = 0;
+  const h = harness(t, { role: 'host', mediaDevices: {
+    getUserMedia: () => ++requests === 1 ? Promise.resolve(first.stream) : permission.promise,
+  } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  const peer = h.peers[0];
+  peer.connect();
+  h.session.setTalking(true);
+  const staleMute = first.track.onmute;
+  first.track.end();
+  peer.senders[0].replaceTrack = async function(track) {
+    await replacing.promise;
+    this.track = track;
+  };
+  const resumed = h.session.resumeCapture();
+  assert.equal(h.session.resumeCapture(), resumed);
+  await flush();
+  assert.equal(requests, 2);
+  permission.resolve(replacement.stream);
+  await flush();
+  assert.equal(replacement.track.enabled, false);
+  h.session.setTalking(true);
+  assert.equal(first.track.enabled, false);
+  ws.message({ type: 'join', id: ID_B, generation: GEN_A });
+  await flush();
+  const laterPeer = h.peers[1];
+  laterPeer.connect();
+  replacing.resolve();
+  assert.equal(await resumed, true);
+  assert.equal(h.peers.length, 2);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(ws.closed, false);
+  assert.equal(h.session._generation, GEN_A);
+  assert.equal(ws.sent.filter(frame => frame.type === 'auth').length, 1);
+  for (const current of [peer, laterPeer]) {
+    assert.equal(current.closed, false);
+    assert.equal(current.senders[0].track, replacement.track);
+    assert.equal(current.transceivers[0].direction, 'sendonly');
+  }
+  assert.equal(first.track.stops, 1);
+  assert.equal(h.states.at(-1).detail.captureState, 'ready');
+  assert.equal(replacement.track.enabled, false);
+  const stateCount = h.states.length;
+  staleMute();
+  assert.equal(h.states.length, stateCount);
+  h.session.setTalking(true);
+  assert.equal(replacement.track.enabled, true);
+});
+
+test('a late replacement grant cannot alter a newer host session after Stop and Start', async t => {
+  const first = microphone();
+  const late = microphone();
+  const fresh = microphone();
+  const permission = deferred();
+  let requests = 0;
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: () => {
+    requests++;
+    return requests === 1 ? Promise.resolve(first.stream) : requests === 2 ? permission.promise : Promise.resolve(fresh.stream);
+  } } });
+  await h.begin();
+  first.track.end();
+  const resumed = h.session.resumeCapture();
+  await flush();
+  h.session.stop();
+  const next = await h.begin();
+  const stateCount = h.states.length;
+  permission.resolve(late.stream);
+  assert.equal(await resumed, false);
+  assert.equal(late.track.enabled, false);
+  assert.equal(late.track.stops, 1);
+  assert.equal(h.session._stream, fresh.stream);
+  assert.equal(next.closed, false);
+  assert.equal(fresh.track.enabled, false);
+  assert.equal(h.states.length, stateCount);
+});
+
+test('failed sender replacement rolls back other listeners and allows a later explicit recovery', async t => {
+  const first = microphone();
+  const rejected = microphone();
+  const replacement = microphone();
+  const captures = [first.stream, rejected.stream, replacement.stream];
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => captures.shift() } });
+  const ws = await h.begin();
+  for (const id of [ID_A, ID_B]) ws.message({ type: 'join', id, generation: GEN_A });
+  await flush();
+  for (const peer of h.peers) peer.connect();
+  first.track.end();
+  const refusing = h.peers[1].senders[0];
+  refusing.replaceTrack = async function(track) {
+    if (track === rejected.track) throw new Error('Replacement refused.');
+    this.track = track;
+  };
+  assert.equal(await h.session.resumeCapture(), false);
+  assert.equal(rejected.track.stops, 1);
+  assert.equal(ws.closed, false);
+  for (const peer of h.peers) {
+    assert.equal(peer.closed, false);
+    assert.equal(peer.senders[0].track, first.track);
+  }
+  assert.equal(h.states.at(-1).detail.captureState, 'ended');
+  assert.equal(await h.session.resumeCapture(), true);
+  for (const peer of h.peers) assert.equal(peer.senders[0].track, replacement.track);
+  assert.equal(replacement.track.enabled, false);
+});
+
+test('rejected and unusable replacement captures leave the channel registered without retrying', async t => {
+  const first = microphone();
+  const muted = microphone();
+  muted.track.muted = true;
+  const ended = microphone();
+  ended.track.readyState = 'ended';
+  const empty = { getTracks: () => [], getAudioTracks: () => [] };
+  const captures = [first.stream, null, muted.stream, ended.stream, empty];
+  let requests = 0;
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => {
+    requests++;
+    const stream = captures.shift();
+    if (!stream) throw new Error('Permission denied.');
+    return stream;
+  } } });
+  const ws = await h.begin();
+  first.track.end();
+  for (let attempt = 0; attempt < 4; attempt++) {
+    assert.equal(await h.session.resumeCapture(), false);
+    assert.equal(h.states.at(-1).detail.captureState, 'ended');
+    assert.equal(ws.closed, false);
+  }
+  assert.equal(muted.track.stops, 1);
+  assert.equal(ended.track.stops, 1);
+  await h.clock.advance(1000);
+  assert.equal(requests, 5);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('Stop releases a replacement already waiting in replaceTrack and restores only an owned audio mode', async t => {
+  const first = microphone();
+  const replacement = microphone();
+  const gate = deferred();
+  const audioSession = new NativeAudioSession();
+  audioSession.type = 'playback';
+  const captures = [first.stream, replacement.stream];
+  const h = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => captures.shift() } });
+  const ws = await h.begin();
+  assert.equal(audioSession.type, 'play-and-record');
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  await flush();
+  const sender = h.peers[0].senders[0];
+  sender.replaceTrack = async function(track) { await gate.promise; this.track = track; };
+  first.track.end();
+  const resumed = h.session.resumeCapture();
+  await flush();
+  h.session.stop();
+  assert.equal(replacement.track.stops, 1);
+  assert.equal(replacement.track.enabled, false);
+  assert.equal(audioSession.type, 'playback');
+  const stateCount = h.states.length;
+  gate.resolve();
+  assert.equal(await resumed, false);
+  assert.equal(h.states.length, stateCount);
+  assert.equal(replacement.track.stops, 1);
+  assert.equal(h.peers[0].closed, true);
+  const otherMic = microphone();
+  const other = harness(t, { role: 'host', audioSession,
+    mediaDevices: { getUserMedia: async () => otherMic.stream } });
+  await other.begin();
+  audioSession.type = 'ambient';
+  other.session.stop();
+  assert.equal(audioSession.type, 'ambient');
 });

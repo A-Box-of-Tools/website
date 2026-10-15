@@ -135,6 +135,38 @@ worker becomes a visible discovery failure, and the active share stays
 reachable by link. The new worker deployment is manual, documented in
 [`workers/rendezvous/README.md`](../../workers/rendezvous/README.md).
 
+## Connection diagnostics
+
+Both roles expose a **Connection details** panel with a readable last-stage
+summary and a copyable JSON report. A failed attempt opens it automatically.
+The report includes the generated tool-code identifier, parsed browser family
+and version, connection mode, anonymous attempt numbers, elapsed milestones,
+signaling counts, ICE/DTLS/SCTP/control-channel states, candidate classifications,
+reported candidate-pair counts, and allowlisted error codes. A sharer records
+each reader independently, including negotiation errors that previously reached
+an empty catch. The introduction socket has its own record and numeric close
+code. Seeing a discoverable name establishes directory visibility, not a working
+peer connection.
+
+`connection-diagnostics.js` projects candidates and RTC statistics through an
+allowlist. It never retains or exports raw SDP, candidate addresses or hostnames,
+ICE credentials, share names, peer identifiers, text, file names, file sizes,
+approval notes, admission tokens, exception messages, or stacks. Reports stay in
+the tab's memory; Copy writes only to the local clipboard, with selectable text
+when clipboard access is refused. The read-only report is excluded from the
+frame's language-switch settings storage. No endpoint, relay policy, connection
+permission or application protocol is added by diagnostics.
+
+History is bounded to twelve anonymous attempts, sixty-four events and sixteen
+errors per attempt, with omission counts. Statistics are sampled once per second
+while a channel is opening and once on open; no payload listener is added.
+Finish freezes the meaningful states before teardown and detaches sampling and
+event listeners, so a late statistics promise cannot repaint a newer attempt.
+Missing browser counters remain `null`; `stats.available` distinguishes an
+unavailable report from an empty one. In particular, no reported ICE pairs does
+not by itself prove an mDNS, browser-version, firewall or router defect. Reports
+from both physical devices are needed to investigate those boundaries.
+
 ## How the pieces work
 
 - **Roles.** One page, both halves: no hash means sharer, `#name` means
@@ -145,11 +177,13 @@ reachable by link. The new worker deployment is manual, documented in
   and the switchboard forwards offers, answers and candidates. Rejections
   arrive as 4xxx close codes: 4404 nobody sharing, 4409 name taken, 4429
   full, 4410 sharer gone.
-- **End of share.** The 4410 close is the fast, authoritative signal — the
-  reader's page wipes what it was showing within a couple of seconds.
-  WebRTC's own detection (ICE consent expiry) takes ~30s and is kept only
-  as the fallback for when signalling itself is down. The wipe is courtesy,
-  not revocation: copied or downloaded content is the reader's.
+- **End of share.** Stop sharing sends an ordered `{type: 'ended'}` on each
+  current encrypted control channel before closing it. That explicit control
+  is terminal. A 4410 introduction-socket close alone can also mean temporary
+  host suspension, so a healthy direct channel is retained and checked rather
+  than declared ended. Lost peers clear their displayed content and file
+  buffers before any bounded recovery attempt. The wipe is courtesy, not
+  revocation: copied or downloaded content is the reader's.
 - **Private mode** (default). The host's first message on a new channel is
   `{private}` instead of the content; the reader's introduction returns as
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
@@ -225,11 +259,38 @@ with no key configured, or an older one that does not know the question,
 leaves the ask unanswered, and five seconds of silence becomes "no relay is
 available" — the page degrades to exactly what it was.
 
+## Foreground continuity
+
+Hiding this page does not close healthy sockets, peers or file lanes. A phone
+can still freeze or discard its browser while locked; this page cannot make
+background execution reliable. Returning to the foreground, restoring a page
+or coming back online probes the existing connection first. A host with active
+sharing intent reconnects its introduction socket under the same code. A clean
+WebSocket close is not treated as a user Stop. A name now held by another host
+ends that recovery rather than silently selecting a different code.
+
+A reader who already chose Connect can retry a lost transport in the same
+page, with at most three foreground attempts. The Local/ordinary mode and any
+explicit relay choice stay fixed; recovery never selects a relay or changes
+mode. Admission tokens remain in the reader's memory when browser storage is
+unavailable, and the same live host can recognize them after suspension. The
+reader keeps its source/formatted choice and any introduction input. A new
+connection discards partial file bytes and requires a fresh download request.
+Failed recovery leaves Check this link again for a deliberate fresh attempt.
+
+Stop sharing clears the host's admission tokens and disables host recovery.
+An explicit ended control, a refusal or an intentional legacy-file shutdown
+disables reader recovery. Closing the page does not persist recovery intent.
+If an abrupt closure or older cached host cannot deliver an ended control,
+the bounded retries distinguish it from a temporarily missing host without
+polling forever. A name remains an address, not proof of a particular person;
+Private admission still protects a new share reusing that name.
+
 ## Limits, deliberate
 
-Sixteen readers, 50k characters, 200 MB a file. The sharer's tab must stay
-open and awake: phones suspend background tabs quickly, so this is "desktop
-shares, anyone reads".
+Sixteen readers, 50k characters, 200 MB a file. Keep the sharer's tab open and
+the device awake for uninterrupted sharing. Foreground recovery helps after
+suspension; it cannot keep a phone browser executing while its screen is locked.
 
 ## Copy feedback
 

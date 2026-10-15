@@ -64,15 +64,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; the visit counter</h3>
+    <h3>Google Analytics &mdash; visits and successful tool use</h3>
     <p>
-      We use Google Analytics 4 to count page visits, so we know which tools are
-      worth working on. It records the page you viewed, roughly when, a randomly
-      generated identifier stored in your browser, an approximate location, your
-      device and browser type, and the site that referred you.
+      We use Google Analytics 4 to count page visits and successful tool use, so we know which tools are worth working on. It records the page you viewed, roughly when, a randomly generated identifier stored in your browser, an approximate location, your device and browser type, and standard campaign attribution tags.
     </p>
     <p>
-      <code>analytics.js</code> configures page views. <code>feedback.js</code> also sends an optional <code>tool_feedback</code> event after you answer: the tool slug, a fixed up or down verdict and a fixed reason. There is no free-text field and no file, filename, size, dimension, count, format or file contents in that event. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available.
+      The page address sent to Analytics uses its canonical URL with only standard campaign tags. Other query parameters and address fragments are omitted. The page title is fixed, and the referring site is reduced to its origin, without its path or query.
+    </p>
+    <p>
+      We count the first successful tool use per page load, such as requesting a ready download, completing a copy, or displaying a usable analysis or view in an inspector. The only tool-specific detail added to this event is the tool's fixed identifier. It does not confirm that your operating system saved a download.
+    </p>
+    <p>
+      Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, errors or other input or output details to either record. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
     </p>
 
     <h3>Buy Me a Coffee &mdash; the donate button</h3>
@@ -105,7 +108,12 @@
 
     <h3>Local Walkie-Talkie</h3>
     <p>
-      <a href="../walkie-talkie/">Local Walkie-Talkie</a> hosts directly in the website without Python or a download. Start channel or opening a listener invitation connects securely to our rendezvous for authentication, connection setup and availability checks. Live voice travels directly from the host browser to up to ten receive-only browsers using encrypted WebRTC; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key and the tool retains temporary per-tab identities in session storage for recovery. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and direct reachability can listen. No STUN server, TURN relay or recording feature is used. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
+      <a href="../walkie-talkie/">Local Walkie-Talkie</a> hosts directly in the website without Python or a download. Opening the page connects securely to our rendezvous for nearby discovery. Starting or joining adds a channel connection for authentication, setup and availability checks. Show this channel nearby publishes its name and listener invitation to browsers grouped by public IPv4 address or IPv6 /64 subnet and page origin. Shared gateways can include strangers and VPNs can hide nearby devices; this is not a physical Wi-Fi scan. Hosts can turn the option off before starting to keep invitations link-only. Hiding or ending the host withdraws the listing. Live voice travels directly from the host browser to up to ten receive-only browsers using encrypted WebRTC; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key and the tool retains temporary per-tab identities in session storage for recovery. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and direct reachability can listen. No STUN server, TURN relay or recording feature is used. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
+    </p>
+
+    <h3>Voice Oncall</h3>
+    <p>
+      <a href="../voice-oncall/">Voice Oncall</a> receives separate direct encrypted audio streams from up to ten participants in one host browser. Its nearby discovery connection lists advertised pagers sharing a public IPv4 address or IPv6 subnet and page origin; this is a hint, not a LAN scan or proof of physical Wi-Fi membership. The service sees pager names, password-derived admission credentials, moderation status and connection details, never voice. Callers need no display name; the host sees a short identifier instead. Older clients may still send a display name. An optional password controls admission without a host approval prompt. It is derived in the browser and its access credential is sent inside secure signaling rather than in a URL. The host never grants microphone access; participants deliberately enable transmission with Talk. Host mute silences each participant's playback locally, and removal blocks its retained session identity rather than a permanent person-level identity. Temporary credentials stay in per-tab session storage when available; the site's normal scripts can read the page address and that storage. Socket attachments hold temporary pager state without stored pager history, while Cloudflare keeps seven-day invocation metadata logs. No STUN server, TURN relay or recording feature is configured. Internet is required for discovery and pairing, and direct reachability still depends on browser and network routes.
     </p>
 
     <h3>Share Text &amp; Files and the rendezvous</h3>
@@ -133,7 +141,7 @@
       <strong>Other local storage.</strong> Feedback stores an answer or dismissal timestamp to avoid asking again. Tools may keep settings or an optional sharing draft locally. A language switch or an explicit carry-on action can temporarily store files and settings in IndexedDB so another local tool page can pick them up. These records are not cookies and are not sent to us; clearing site data removes them. The relevant tool explains persistent drafts.
     </p>
     <p>
-      Google's cookies and identifiers are used to measure visits and to select and cap ads. They are distinct from the local site records described above.
+      Google's cookies and identifiers are used to measure visits and tool use and to select and cap ads. They are distinct from the local site records described above.
     </p>
     <h3>How to switch it off</h3>
     <ul>

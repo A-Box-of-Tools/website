@@ -43,7 +43,7 @@
       <label class="camera-discoverable"><input type="checkbox" id="camera-audio" aria-describedby="camera-audio-note">Enable microphone</label>
       <details id="camera-audio-help" class="camera-help info-fold">
         <summary aria-describedby="camera-audio-note"><span class="visually-hidden">About enabling the microphone</span></summary>
-        <p id="camera-audio-note" class="camera-help-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice.</p>
+        <p id="camera-audio-note" class="camera-help-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice. If the browser interrupts the microphone, choose Resume microphone when you are ready.</p>
       </details>
     </div>
     <p id="camera-audio-status" class="field-note" role="status" aria-live="polite"></p>
@@ -78,7 +78,7 @@
       </div>
       <p id="camera-switch-status" class="camera-switch-status" role="status" aria-live="polite"></p>
       <video id="camera-preview" autoplay muted playsinline aria-label="Your camera preview, visible only on this device until you approve a viewer"></video>
-      <p class="field-note">Keep this tab visible and this device awake. Switching tabs or closing the page stops the camera and ends the link.</p>
+      <p class="field-note">The connection stays open when this tab is hidden where your browser allows it. Locking a phone can pause its camera. Return here if video pauses; choose Resume camera if needed. Stop camera ends this session.</p>
     </div>
     <div id="camera-invite" class="camera-invite" hidden>
       <div class="camera-link-fields">
@@ -186,15 +186,22 @@
 
   <div id="phrases" hidden>
     <span data-phrase="camera.ready">Your camera is off. Nothing is paired.</span>
+    <span data-phrase="camera.start">Start camera</span>
+    <span data-phrase="camera.resume">Resume camera</span>
+    <span data-phrase="camera.resuming">Resuming the same camera connection&hellip;</span>
+    <span data-phrase="camera.paused">Your browser paused the camera. The viewer link is kept. Return to this tab or choose Resume camera when ready.</span>
+    <span data-phrase="camera.resume-needed">The camera could not resume automatically. Choose Resume camera to try the same viewer link. Camera permission may be needed again.</span>
     <span data-phrase="camera.permission">Waiting for camera permission and, if enabled, microphone permission. You can stop this attempt at any time.</span>
     <span data-phrase="camera.audio-on">Microphone is on. Stop sharing to turn it off.</span>
-    <span data-phrase="camera.audio-ended">The microphone stopped. Camera video continues; stop and start again to share audio.</span>
+    <span data-phrase="camera.audio-ended">The microphone stopped. Camera video continues; choose Resume microphone when you are ready.</span>
+    <span data-phrase="camera.resume-audio">Resume microphone</span>
+    <span data-phrase="camera.audio-paused">Microphone interrupted. Resume it when you are ready.</span>
     <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
     <span data-phrase="camera.open-waiting">Camera preview is on. A viewer can connect without asking you for approval.</span>
     <span data-phrase="camera.approval-required">Approve viewer requests on this device. Changes to this setting apply to new requests.</span>
     <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while space is available. Changes apply to new requests; accepted viewers stay connected.</span>
     <span data-phrase="camera.approved">Viewer accepted. Waiting for the direct video connection.</span>
-    <span data-phrase="camera.streaming">Sharing live video with accepted viewers. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.streaming">Sharing live video with accepted viewers. Your browser may pause video while this device is locked.</span>
     <span data-phrase="camera.viewer-count">Accepted viewers: {count}. New-viewer limit: {limit}.</span>
     <span data-phrase="camera.viewer-preparing">Waiting for live video</span>
     <span data-phrase="camera.viewer-watching">Watching</span>
@@ -202,7 +209,7 @@
     <span data-phrase="camera.bandwidth-applied">The video limit is shared across viewers. Each browser can lower quality further when needed.</span>
     <span data-phrase="camera.bandwidth-unsupported">This browser could not apply the shared video limit. Its normal connection adaptation continues; use fewer viewers if Wi-Fi becomes congested.</span>
     <span data-phrase="camera.reconnecting">The camera remains on. Reconnecting the introduction service so new viewers can find it.</span>
-    <span data-phrase="camera.reconnect-failed">Live sharing continues, but the introduction service is unavailable. Stop and start again before inviting another viewer.</span>
+    <span data-phrase="camera.reconnect-failed">Live sharing continues, but the introduction service is unavailable. Choose Restore pairing before inviting another viewer.</span>
     <span data-phrase="camera.current-device">Current camera</span>
     <span data-phrase="camera.device-label">Camera {number}</span>
     <span data-phrase="camera.switching">Switching cameras&hellip;</span>
@@ -210,7 +217,7 @@
     <span data-phrase="camera.switch-failed">The camera could not be switched. Sharing continues with the current camera.</span>
     <span data-phrase="camera.switch-ended">The camera could not be switched or restored. Start again to share a camera.</span>
     <span data-phrase="camera.ended">The camera stopped. Start again when you are ready to share.</span>
-    <span data-phrase="camera.hidden">The camera stopped because this tab was hidden. Start again when you are ready to share.</span>
+    <span data-phrase="camera.hidden">Your browser may pause the camera while this tab is hidden. Return here to resume the same viewer link.</span>
     <span data-phrase="camera.denied">Camera or microphone access was not allowed. Check this page&rsquo;s permissions, or turn audio off, and try again.</span>
     <span data-phrase="camera.missing">No available camera or requested microphone was found on this device. Check the devices, or turn audio off, and try again.</span>
     <span data-phrase="camera.busy">The camera or microphone could not start. Check whether another application is using it, or turn audio off, and try again.</span>
@@ -254,6 +261,9 @@
     <span data-phrase="connection.taken">That camera link name is already in use. Choose another name and start again.</span>
     <span data-phrase="connection.busy">This camera has reached its viewer or pending-request limit. Try again after a viewer disconnects, or ask its owner to adjust the shared video bandwidth.</span>
     <span data-phrase="connection.server-failed">The introduction service could not stay connected. Check your internet connection, then start again.</span>
+    <span data-phrase="connection.unavailable">Pairing is unavailable. Your approved video connection can keep working while the browser allows.</span>
+    <span data-phrase="connection.reconnecting">Restoring pairing…</span>
+    <span data-phrase="connection.resume">Restore pairing</span>
     <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions; no internet relay will be used.</span>
     <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and pair again.</span>
     <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>

@@ -30,7 +30,7 @@ The source retries its invitation with the same code after 2, 4, 8, 15 and 30
 seconds, with each handshake bounded at 20 seconds and confirmed by a pong.
 Recovery republishes a fresh discovery lease. Unfinished peers are closed;
 the viewer never rejoins the room under a new identity. If retries fail, an
-established view continues, but new invitations need Stop and Start. An idle
+established view continues, but new invitations need Restore pairing. An idle
 source with no established peer ends after the retry budget is exhausted.
 The worker sees descriptions, candidates, room code, addresses and timing,
 never media or the viewer note. Cloudflare keeps seven-day metadata logs.
@@ -64,6 +64,12 @@ Replacement waits for all senders; a failure rolls surviving senders back before
 the capture is adopted. A departing viewer does not cancel a switch for the others.
 A live microphone track is carried into each video replacement and rollback.
 Video-only acquisition and replacement cleanup leave that microphone running.
+If native capture interrupts the microphone, it is disabled until the owner
+chooses Resume microphone. Ended opted-in audio can be reacquired alongside
+video and replace every existing audio sender without granting audio to older
+video-only peers. Automatic recovery adopts the new microphone disabled;
+healthy background audio and ordinary camera switching keep the live mic.
+Stop invalidates pending microphone recovery as well as video acquisition.
 The old video stays alive until adoption where hardware permits. Exclusive
 devices release that video and retry once; a failed retry attempts to restore the old
 device. Stop invalidates both acquisition and replacement, including late
@@ -75,21 +81,48 @@ the setting changes. Each accepted slot is reserved synchronously before its
 acknowledgement; the separate four-pending cap and busy refusals remain in place.
 Viewer Disconnect and a host's Disconnect this viewer action close only that
 peer. Removing one viewer leaves the shared capture and other peers running.
-Source Stop, page hide and page close stop capture, peers and
-socket. Manual Source Stop asks for confirmation while any viewer peer is
+Ordinary tab hiding keeps a healthy capture, peer connection and room socket.
+The browser can still mute or end a camera when a phone locks, and may suspend
+network traffic and JavaScript too; the page cannot guarantee background video.
+Temporary track mute keeps the pairing and waits for native unmute. An ended
+track keeps the chosen code, camera device and approval settings; on returning
+the page attempts one recovery, replacing every accepted viewer's sender track
+without changing its approval. Resume camera offers a gesture after a failed
+attempt. No new camera request starts while the page is hidden, and a pending
+request is invalidated if the page hides before it completes.
+
+BFcache page suspension releases capture and peers but retains the chosen
+camera identity for visible recovery. A healthy viewer can keep playing while
+its tab is hidden; returning retries native playback and retains the existing
+Play live video fallback. Losing only introductions preserves an already
+approved, negotiated video connection and its source capture. Room's host-gone
+and viewer-leave signals describe socket loss, not direct-peer termination.
+Foreground host recovery reopens the same named room without rebuilding media;
+only one attempt runs at a time, with five bounded automatic retries before the
+Restore pairing action is required. A service pong confirms recovery, because
+refused WebSocket upgrades also produce an open event. A still-connected viewer
+does not silently join another host. Newly connected viewers need fresh
+approval; viewer notes are never treated as admission credentials.
+
+Source Stop sends the existing direct ended control before closing capture,
+peers and sockets. Navigation and page close also release resources. Initial
+pairing failure still releases capture and offers Resume camera with the same
+chosen identity. There is no worker or room-protocol change.
+
+Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
 leaves capture, invitation and connections intact. The native dialog does not
-block lifecycle handling: page hide, page close and capture failure cancel it
-and clean up immediately. Losing setup before an accepted direct view remains
-a failure; a later introduction interruption preserves the existing peer.
-Viewer Disconnect closes its own peer
+block lifecycle handling: suspension and page close cancel it and clean up
+immediately. Viewer Disconnect closes its own peer
 while the source retains preview.
-A best-effort screen wake lock is released on cleanup, including a late grant.
+A best-effort screen wake lock is released when hidden or on cleanup, including
+a late grant, and is requested again only for a visible active camera.
 
 Camera access requires trusted HTTPS and user permission. Video uses native
 WebRTC encryption, with no recording feature. This provides a browser view,
-not an OS webcam for meeting apps. Both pages must remain open and the source
-visible. A viewer can independently capture their screen.
+not an OS webcam for meeting apps. Both pages must remain open; background
+capture depends on the source browser and operating system. A viewer can
+independently capture their screen.
 
 ## Multiple viewers and bandwidth
 
@@ -180,8 +213,13 @@ request and observes video frames advancing. Confirm that Stop releases all
 tracks and clears the viewer, and that a late camera grant after Stop closes.
 Check that manual Stop asks while a viewer is connecting, waiting for approval
 or watching; Keep sharing and Escape preserve the same invitation and stream.
-Hide the source while the confirmation is open and verify that cleanup happens
-without accepting the confirmation. With no viewer, Stop ends sharing directly.
+Hide the source while the confirmation is open and verify that the existing
+capture and pairing are retained. Check native track mute and unmute, ended
+capture followed by visible recovery, and a failed recovery followed by Resume
+camera. The code, chosen camera and live viewer approval must remain unchanged
+when the original peer survives. Stop during a pending recovery must close a
+late grant and prevent every later visibility event from reopening capture.
+With no viewer, Stop ends sharing directly.
 
 The website's capture, protocol and session tests run in CI. Functional browser
 coverage lives in the sibling `A-Box-of-Tools/qa` repository. Do not run the

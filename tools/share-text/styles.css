@@ -214,3 +214,20 @@ button.danger {
 
 .file-status { flex-basis: 100%; color: var(--text-dim); font-size: 0.85rem; }
 .file-status:empty { display: none; }
+
+.connection-details > summary { cursor: pointer; font-weight: 700; }
+.connection-details .result-actions { align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+#connection-report {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 14rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: 0.78rem/1.5 ui-monospace, monospace;
+  resize: vertical;
+}

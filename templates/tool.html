@@ -235,6 +235,11 @@
     </div>
   </div>
   <div class="topbar-actions">
+    <button type="button" class="favorite-toggle" data-favorite="{{ tool.slug | e }}"
+            aria-label="{{ ui.favorite_tool | e }} — {{ tool.name | e }}" aria-pressed="false" hidden>
+      {% include "partials/favorite-star.html" %}
+      <span>{{ ui.favorite_tool }}</span>
+    </button>
     {% include "partials/lang-pick.html" %}
     <a class="source-link" href="{{ site.source_url }}"
        target="_blank" rel="noopener noreferrer">
@@ -256,6 +261,8 @@
     </div>
   </div>
 </header>
+
+{% include "partials/favorites-status.html" %}
 
 <!--
   The headline claim, always on screen. Every other site that offers to do this
@@ -512,6 +519,7 @@
   would leave nothing to carry. See shared/lang-keep.js.
 -->
 <script src="{{ keep_href }}" defer></script>
+<script src="{{ favorites_href }}" defer></script>
 
 {% include "partials/footer.html" %}
 

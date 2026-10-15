@@ -1,8 +1,9 @@
 # Local Walkie-Talkie
 
 The website hosts one microphone and up to ten receive-only browsers. Nothing
-needs downloading or installing. Starting the host or opening a listener
-invitation connects to the existing rendezvous over WSS; microphone audio
+needs downloading or installing. Opening the page lists nearby channels over
+a discovery WebSocket; joining never requests microphone access. Starting the
+host or choosing a channel opens its own rendezvous connection; microphone audio
 travels over a separate direct WebRTC connection to each listener.
 
 The broadcast protocol is separate from text and camera rooms. Its room code
@@ -17,6 +18,16 @@ Both sides use iceServers: [] and the shared peer-network filters inline and
 trickled candidates to host candidates only. VPNs and operating-system routes
 can still affect their path; the policy does not prove a physical LAN boundary.
 Direct reachability is required and there is no relay fallback.
+
+Starting with Show this channel nearby selected publishes a bounded channel
+name and its listener capability to the trusted address-and-origin group.
+Discovery verifies the live host lease and listener-key hash through the
+Broadcast binding. The host authority key is never listed. Public IPv4 or
+IPv6 /64 grouping is a hint rather than proof of physical Wi-Fi membership.
+New channels offer discovery by default with an explicit checkbox; retained
+legacy channels remain link-only. Uncheck before starting for link-only use.
+End, pagehide, disconnect and replacement withdraw the old listing; a restarted
+host publishes its new lease. Browsing creates no peer or microphone stream.
 
 The host key stays in per-tab session storage. Listener invitations carry a
 different key in the URL fragment; the page saves it per tab and removes the
@@ -35,16 +46,33 @@ Healthy direct audio can survive a brief signaling outage. New generations
 retire stale peers, and failed media is negotiated again. Background timers,
 sleep and connection limits can delay retries.
 
-Host capture begins disabled. Hold or tap enables it, and microphone mute
-overrides both. Stop, page hiding and a lost track invalidate pending capture
-and release every track, including late permission grants. A temporary hide
-keeps the invitation for a manual restart; explicit End stops listener retries.
+Host capture begins disabled. Holding Talk or enabling hands-free speech starts
+transmission, and microphone mute overrides both. A physical hold releases when
+the page loses focus or becomes hidden. Explicit hands-free speech and healthy
+connections continue in the background for as long as the browser permits; the
+interface makes hands-free transmission visible before the page is hidden.
+Screen lock, browser suspension and operating-system interruptions can still
+stop audio or connections, so locked-screen operation is not guaranteed.
+
+A native microphone mute or audio-session interruption clears talking while
+keeping the channel, peers and live capture track. When that track becomes
+available again, transmission stays off. An ended track can be replaced within
+the same pairing, automatically once on returning to the foreground or through
+Resume microphone. Replacement begins disabled and never restores a previous
+hands-free transmission. A pagehide notification releases capture; a subsequent
+pageshow reconnects with the retained channel identity. Resume channel remains
+available if an action is required. End invalidates pending capture, stops late permission
+grants, retires the host identity and prevents automatic resumption and listener
+retries.
 
 The worker's Broadcast binding must be deployed before the updated page can
 pair. Existing text and camera routes keep their protocol and room identifiers.
 CI owns the JS and Python suites. Build the page, use it in a browser, verify
-multiple receive-only peers, audible media, hold/release, mute, leave, host
-restart, stale setup and deliberate End. Physical-device acceptance remains
-necessary for phone autoplay, permissions, Wi-Fi isolation and capacity.
+multiple receive-only peers, audible media, hold/release, hands-free state,
+mute, leave, hidden hands-free continuity, hold release, microphone interruption,
+silent capture replacement, the Resume channel fallback, stale setup and
+deliberate End without automatic resumption. Simulated lifecycle events do not
+prove locked-screen continuity; physical-device acceptance remains necessary
+for background audio, phone autoplay, permissions, Wi-Fi isolation and capacity.
 
 The guide is /guides/broadcast-voice-on-a-local-network/.

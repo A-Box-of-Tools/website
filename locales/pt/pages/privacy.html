@@ -65,16 +65,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; o contador de visitas</h3>
+    <h3>Google Analytics &mdash; visitas e usos concluídos</h3>
     <p>
-      Usamos o Google Analytics 4 para contar visitas às páginas, para saber em
-      quais ferramentas vale a pena trabalhar. Ele registra a página que você
-      viu, mais ou menos quando, um identificador gerado aleatoriamente e
-      guardado no seu navegador, uma localização aproximada, o tipo do seu
-      aparelho e do seu navegador, e o site que trouxe você até aqui.
+      Usamos o Google Analytics 4 para contar visitas às páginas e usos concluídos, para saber em quais ferramentas vale a pena trabalhar. Ele registra a página que você viu, o momento aproximado, um identificador aleatório guardado no navegador, uma localização aproximada, o tipo do seu aparelho e navegador e as etiquetas habituais de atribuição de campanhas.
     </p>
     <p>
-      <code>analytics.js</code> configura visualizações. Depois da resposta opcional, <code>feedback.js</code> também envia um evento <code>tool_feedback</code>: identificador da ferramenta, voto fixo positivo ou negativo e motivo fixo. Não há texto livre nem arquivo, nome, tamanho, dimensão, quantidade, formato ou conteúdo nesse evento. Podemos ver relatórios agregados do Analytics. Bloquear mantém o processamento local disponível.
+      O endereço enviado ao Analytics usa a URL canônica da página e apenas as etiquetas habituais de campanha. Outros parâmetros de consulta e fragmentos do endereço são omitidos. O título da página é fixo e o site de referência é reduzido à origem, sem caminho nem consulta.
+    </p>
+    <p>
+      Contamos o primeiro uso concluído a cada carregamento da página, por exemplo, solicitar um download já preparado, concluir uma cópia ou mostrar uma análise ou visualização utilizável em uma ferramenta de inspeção. O único detalhe específico da ferramenta acrescentado a esse evento é seu identificador fixo. Isso não confirma que seu sistema operacional salvou um download.
+    </p>
+    <p>
+      O feedback opcional registra o identificador fixo da ferramenta, uma resposta fixa positiva ou negativa e um motivo fixo depois que você escolhe uma resposta. Não há campo de texto livre. As ferramentas não anexam arquivos, nomes, conteúdos, texto digitado, quantidades, tamanhos, dimensões, formatos, configurações, erros ou outros detalhes da entrada ou saída a nenhum dos registros. Podemos ver relatórios agregados do Analytics. Bloquear o Analytics mantém o processamento local disponível, inclusive sem conexão quando o cache da ferramenta estiver pronto.
     </p>
 
     <h3>Buy Me a Coffee &mdash; o botão de doação</h3>
@@ -131,7 +133,7 @@
       <strong>Outros dados locais.</strong> Feedback guarda a data da resposta ou fechamento para não perguntar de novo. Ferramentas podem manter configurações ou um rascunho opcional de compartilhamento. Trocar idioma ou continuar explicitamente em outra ferramenta pode guardar arquivos e configurações temporariamente no IndexedDB. Não são cookies nem são enviados a nós; limpar os dados do site remove esses registros. A ferramenta correspondente explica rascunhos persistentes.
     </p>
     <p>
-      Cookies e identificadores do Google medem visitas e selecionam e limitam anúncios. São distintos dos registros locais do site descritos acima.
+      Cookies e identificadores do Google medem visitas e o uso das ferramentas e selecionam e limitam anúncios. São distintos dos registros locais do site descritos acima.
     </p>
     <h3>Como desligar</h3>
     <ul>

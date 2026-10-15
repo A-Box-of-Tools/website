@@ -1,0 +1,33 @@
+.favorite-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.favorite-toggle[hidden] { display: none; }
+.favorite-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.favorite-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.favorite-toggle svg { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.favorite-toggle[aria-pressed="true"] { color: var(--accent); }
+.favorite-toggle[aria-pressed="true"] svg { fill: currentColor; }
+
+/* The star is a sibling of the card link so selecting a favorite cannot also
+   navigate. Space beside the copy keeps both targets reachable on a phone. */
+.hub-catalogue .tool-grid > li { position: relative; }
+.hub-catalogue .tool-card { grid-template-columns: 2rem minmax(0, 1fr); padding-inline-end: 3.25rem; }
+.hub-catalogue .favorite-icon-only { position: absolute; inset-block-start: 0.35rem; inset-inline-end: 0.35rem; padding: 0; border-color: transparent; background: transparent; }
+.favorites { margin-bottom: 1.75rem; }
+.favorites h2 { margin: 0; font-size: 1.07rem; }
+.favorites-note, .favorites-unavailable { margin: 0.4rem 0 0.875rem; color: var(--text-dim); font-size: 0.82rem; }
+.favorites-unavailable[hidden], .favorites-note[hidden], .favorites[hidden] { display: none; }

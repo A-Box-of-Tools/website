@@ -14,7 +14,7 @@ category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
 js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
-lastmod = "2026-10-13"
+lastmod = "2026-10-14"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
 og_title = "Watch another device's camera"
@@ -35,8 +35,10 @@ pledge = """
     separate encrypted WebRTC connections. Our introduction service carries connection
     negotiation, never video, audio or the viewer's note. Audio is off by default;
     the source requests microphone access only when you enable it. There is no recording
-    feature. Stop, hide or close the camera page
-    and capture ends. Internet access is required for the introduction;
+    feature. Stop or close the camera page and capture ends. Hiding it keeps the
+    connection where the browser permits; a locked phone may pause capture until
+    you return. An interrupted microphone stays quiet until you choose Resume
+    microphone. Internet access is required for the introduction;
     pairing also reveals network addresses to the other browser. Viewer
     approval is on by default; turning it off lets anyone who knows your link
     or finds your listed camera watch while space is available."""
@@ -130,7 +132,10 @@ body = """
       Stop on the source closes its tracks, peers and introduction connection.
       If viewers are connected or connecting, choosing Stop first asks you to
       confirm; Keep sharing leaves the camera and connections running.
-      Hiding or closing its page does the same without waiting for confirmation.
+      Closing its page does the same without waiting for confirmation. Hiding
+      the tab keeps healthy capture and connections where the browser permits.
+      If a phone interrupts capture, returning offers recovery with the same
+      viewer link; interrupted microphone audio waits for Resume microphone.
       A lost introduction connection leaves an already accepted direct view
       running while the source retries its invitation. A permission granted after
       Stop is immediately released.
@@ -168,8 +173,8 @@ body = "Open the viewer link or scan the QR code on the other device. You can al
 title = "Connect the viewer."
 body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve each request you recognise on the source. With it off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
-title = "Keep the source visible, then stop."
-body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel. Switching away from the source page also stops it."
+title = "Resume if the browser pauses video, then stop."
+body = "The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. If the microphone was interrupted, choose Resume microphone when ready. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel."
 
 [[faq]]
 q = "Must both devices use the same Wi-Fi?"
@@ -193,14 +198,14 @@ a = "Up to eight accepted viewers can watch together, with separate encrypted co
 q = "Can the tool measure my Wi-Fi bandwidth?"
 a = "The browser does not expose the total capacity shared by your Wi-Fi devices. Choose a shared video ceiling that leaves room for other traffic. The tool divides that ceiling among viewers and WebRTC adapts each stream to its connection. If the browser cannot apply sender bitrate limits, the page reports that and its normal connection adaptation continues; the selected shared ceiling cannot be guaranteed there."
 [[faq]]
-q = "Why did sharing stop when I changed apps?"
-a = "Hiding or closing the source page deliberately stops capture and ends the link. Keep it visible and awake. Start again to create a new invitation after returning."
+q = "Can the camera keep working when my phone is locked?"
+a = "It keeps the live connection and camera where your browser allows background use. Phone browsers can pause or end camera capture when locked; this page cannot override that. Return to the source to recover the same viewer link, or choose Resume camera if permission is needed again. A healthy approved video connection can survive loss of the introduction service. Returning to the source tries to restore pairing without replacing that video connection; Restore pairing offers a manual retry. If the direct connection itself ends, the viewer must reconnect and receive fresh approval when required. Stop and Disconnect remain final for that session."
 [[faq]]
 q = "Can I change cameras while sharing?"
 a = "After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again."
 [[faq]]
 q = "Does it send sound or record video?"
-a = "Audio is off by default on the host. Select Enable microphone before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. The viewer tries to play shared audio automatically; if the browser requires a tap, choose Unmute audio on the video. Mute silences playback while sound detection remains available. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
+a = "Audio is off by default on the host. Select Enable microphone before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. If the browser interrupts the microphone, it stays quiet until you choose Resume microphone. The viewer tries to play shared audio automatically; if the browser requires a tap, choose Unmute audio on the video. Mute silences playback while sound detection remains available. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
 [[faq]]
 q = "Can I receive motion or sound alerts?"
 a = "Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen."
@@ -211,4 +216,4 @@ a = "Guest networks and client isolation can separate devices. Firewalls, blocke
 [schema]
 category = "MultimediaApplication"
 description = "Watch a device camera in another browser with optional viewer approval and camera switching over a direct encrypted WebRTC connection, with optional microphone audio and viewer motion or sound notifications, without recording."
-features = ["Camera video with optional microphone audio", "Up to eight viewers with individual approval and disconnect", "Shared video bandwidth and per-connection adaptation", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting viewers", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]
+features = ["Camera video with optional microphone audio", "Up to eight viewers with individual approval and disconnect", "Shared video bandwidth and per-connection adaptation", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting viewers", "Host-only ICE without STUN or TURN", "Best-effort background continuity and same-link camera recovery", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]

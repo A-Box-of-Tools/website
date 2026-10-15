@@ -2,14 +2,24 @@
 
 import { CODE_PATTERN } from './room-names.js';
 
-export function cleanShares(list) {
+export function cleanShares(list, tool = 'share-text') {
   if (!Array.isArray(list)) return [];
   const seen = new Set();
   const result = [];
   for (const entry of list.slice(0, 64)) {
     if (entry?.local !== true || typeof entry.code !== 'string' || !CODE_PATTERN.test(entry.code) || seen.has(entry.code)) continue;
-    seen.add(entry.code);
-    result.push({ code: entry.code, local: true });
+    if (tool === 'voice-oncall' || tool === 'walkie-talkie') {
+      if (!/^[a-f0-9]{64}$/.test(entry.code) || typeof entry.name !== 'string'
+          || !entry.name.trim() || entry.name.length > 80 || /[\u0000-\u001f\u007f-\u009f]/.test(entry.name)
+          || (tool === 'voice-oncall' ? typeof entry.locked !== 'boolean'
+            : typeof entry.listenKey !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(entry.listenKey))) continue;
+      seen.add(entry.code);
+      result.push({ code: entry.code, local: true,
+        name: entry.name.trim(), ...(tool === 'voice-oncall' ? { locked: entry.locked } : { listenKey: entry.listenKey }) });
+    } else {
+      seen.add(entry.code);
+      result.push({ code: entry.code, local: true });
+    }
   }
   return result;
 }
@@ -94,7 +104,7 @@ export function watchDiscovery(url, handlers, timers = {}) {
       namespaceReady = true;
       cancel(deadline);
       if (newlyReady && desired !== null) sendPublication();
-      const shares = cleanShares(message.list);
+      const shares = cleanShares(message.list, tool);
       handlers.list(shares);
       handlers.status('ready');
       if (desired !== null) {
@@ -115,9 +125,10 @@ export function watchDiscovery(url, handlers, timers = {}) {
 
   connect();
   return {
-    publish(code, lease) {
+    publish(code, lease, details = {}) {
       if (closed || typeof code !== 'string' || !CODE_PATTERN.test(code) || typeof lease !== 'string' || !/^[a-z0-9-]{16,128}$/i.test(lease)) return false;
-      desired = { code, lease };
+      if (tool === 'walkie-talkie' && (typeof details.listenKey !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(details.listenKey))) return false;
+      desired = { code, lease, ...(tool === 'walkie-talkie' ? { listenKey: details.listenKey } : {}) };
       if (socket?.readyState === 1) sendPublication();
       else handlers.publication?.('not-published');
       return true;

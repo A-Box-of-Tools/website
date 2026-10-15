@@ -38,6 +38,28 @@ function fixture(tool = null) {
 
 const lease = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 
+test('walkie discovery publishes only its listener capability after namespace acknowledgement', () => {
+  const f = fixture('walkie-talkie'), ws = f.sockets[0];
+  const code = 'a'.repeat(64), listenKey = 'b'.repeat(43);
+  ws.open();
+  assert.equal(f.controller.publish(code, lease), false);
+  assert.equal(f.controller.publish(code, lease, { listenKey, key: 'private' }), true);
+  ws.message({ type: 'shares', tool: 'voice-oncall', list: [] });
+  assert.deepEqual(ws.sent, []);
+  ws.message({ type: 'shares', tool: 'walkie-talkie', list: [] });
+  assert.deepEqual(JSON.parse(ws.sent.at(-1)), { publish: { code, lease, listenKey } });
+  ws.message({ type: 'shares', tool: 'walkie-talkie', list: [{ code, local: true, name: 'Room', listenKey }] });
+  assert.equal(f.publications.at(-1), 'published');
+  f.controller.unpublish();
+  assert.deepEqual(JSON.parse(ws.sent.at(-1)), { publish: null });
+  ws.close();
+  f.advance(30000);
+  f.sockets[1].open();
+  f.sockets[1].message({ type: 'shares', tool: 'walkie-talkie', list: [] });
+  assert.deepEqual(f.sockets[1].sent, []);
+  f.controller.close();
+});
+
 test('camera discovery waits for a matching namespace before listing or publishing', () => {
   const f = fixture('remote-camera');
   f.sockets[0].open();

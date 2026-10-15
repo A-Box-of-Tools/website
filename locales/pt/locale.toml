@@ -232,7 +232,7 @@ body = "Seu navegador abre, lê e edita os arquivos escolhidos. Não há envio p
 
 [[hub.guarantees]]
 title = "Seus arquivos não são entregues à análise de visitas"
-body = "São contadas as visitas e as respostas fixas do feedback opcional. Nenhum deles recebe seu arquivo, nome, tamanho ou conteúdo. A importação opcional de imagens e a consulta de câmbio de recibos explicam, junto aos controles, as informações enviadas."
+body = "São contadas as visitas, o primeiro uso concluído de uma ferramenta a cada carregamento da página e as respostas fixas do feedback opcional. Nenhum arquivo, nome, conteúdo ou detalhe do resultado acompanha essas contagens. A importação opcional de imagens e a consulta de câmbio de recibos explicam, junto aos controles, as informações enviadas."
 
 [[hub.guarantees]]
 title = "O processamento local funciona offline"
@@ -378,6 +378,10 @@ licence = """
 #
 
 [ui]
+favorites_heading = "Favoritos"
+favorites_note = "Guardados neste navegador."
+favorite_tool = "Favorito"
+favorites_unavailable = "Não foi possível guardar os favoritos neste navegador."
 languages = "Idioma"
 lang_auto = "Esta página está em português porque é o idioma que o navegador pede."
 skip_to_content = "Ir para o conteúdo"

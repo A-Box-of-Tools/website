@@ -822,6 +822,7 @@ function resultRow(row) {
     type: row.kind === 'icns' ? 'image/icns' : 'image/x-icon',
   }));
   download.download = row.name;
+  download.addEventListener('click', () => globalThis.aboxToolComplete?.());
   actions.append(download);
 
   li.append(textBlock, actions);
@@ -870,6 +871,7 @@ function save(blob, name) {
   link.href = url;
   link.download = name;
   link.click();
+  globalThis.aboxToolComplete?.();
   // Revoked late: revoking immediately can cancel a download that has not
   // started yet in some browsers.
   setTimeout(() => URL.revokeObjectURL(url), 60000);
@@ -893,6 +895,7 @@ function clearResults() {
 el.copySnippet.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(headSnippet(phrase));
+    globalThis.aboxToolComplete?.();
     el.copySnippet.textContent = phrase('copy.copied');
   } catch {
     // Clipboard access can be refused outright, and there is nothing to fix.

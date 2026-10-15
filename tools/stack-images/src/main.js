@@ -833,6 +833,7 @@ function finished(result) {
   renderViewer();
   el.download.href = resultUrl;
   el.download.download = `stacked.${result.blob.type === 'image/jpeg' ? 'jpg' : 'png'}`;
+  el.download.onclick = () => globalThis.aboxToolComplete?.();
   el.resultInfo.textContent = phrase('result.info', {
     width: result.width,
     height: result.height,

@@ -84,11 +84,16 @@ let running = null;
 
 /* --------------------------------------------------------------- the file */
 
+const exampleFiles = new WeakSet();
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFiles(files); queueMicrotask(() => { if (running) picker.busy(readingLabel(selection.length)); }); },
-  example: makeExample,
+  example: async () => {
+    const file = await makeExample();
+    exampleFiles.add(file);
+    return file;
+  },
 });
 
 function openFiles(files) {
@@ -171,6 +176,7 @@ function start(ids) {
           if (!owns()) return;
           Object.assign(record.digests, found); record.state = 'ready'; record.error = null;
           render();
+          if (!exampleFiles.has(record.file)) globalThis.aboxToolComplete?.();
         },
         onError(record, error) {
           if (!owns()) return;
@@ -440,6 +446,7 @@ async function copy(text, said, current) {
   el.copyStatus.textContent = '';
   try {
     await navigator.clipboard.writeText(text);
+    globalThis.aboxToolComplete?.();
     if (owns()) el.copyStatus.textContent = said;
   } catch {
     if (!owns()) return;
@@ -454,6 +461,7 @@ function saveChecksums(text, name) {
   const blob = new Blob([`${text}\n`], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a'); link.href = url; link.download = name; link.click();
+  globalThis.aboxToolComplete?.();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 

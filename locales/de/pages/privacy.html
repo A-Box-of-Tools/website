@@ -65,16 +65,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics: der Besuchszähler</h3>
+    <h3>Google Analytics: Besuche und erfolgreiche Werkzeugnutzung</h3>
     <p>
-      Wir nutzen Google Analytics 4, um Seitenaufrufe zu zählen, damit wir
-      wissen, an welchen Werkzeugen zu arbeiten sich lohnt. Erfasst werden die
-      aufgerufene Seite, ungefähr wann, eine zufällig erzeugte Kennung, die in
-      Ihrem Browser gespeichert wird, ein ungefährer Standort, Ihr Geräte- und
-      Browsertyp sowie die Seite, die Sie verwiesen hat.
+      Wir nutzen Google Analytics 4, um Seitenaufrufe und erfolgreiche Werkzeugnutzung zu zählen. So wissen wir, an welchen Werkzeugen zu arbeiten sich lohnt. Erfasst werden die aufgerufene Seite, der ungefähre Zeitpunkt, eine zufällig erzeugte und im Browser gespeicherte Kennung, ein ungefährer Standort, Ihr Geräte- und Browsertyp sowie übliche Angaben zur Kampagnenzuordnung.
     </p>
     <p>
-      <code>analytics.js</code> richtet Seitenaufrufe ein. Nach Ihrer freiwilligen Antwort sendet <code>feedback.js</code> außerdem ein <code>tool_feedback</code>-Ereignis: Werkzeugkennung, feste Ja- oder Nein-Antwort und fester Grund. Es gibt kein Freitextfeld; Datei, Name, Größe, Abmessungen, Anzahl, Format und Inhalt gehören nicht dazu. Wir können zusammengefasste Analytics-Berichte sehen. Blockieren lässt lokale Verarbeitung verfügbar.
+      Die an Analytics gesendete Seitenadresse besteht aus der kanonischen URL und nur den üblichen Kampagnenparametern. Andere Abfrageparameter und Adressfragmente entfallen. Der Seitentitel ist fest vorgegeben. Von der verweisenden Website wird nur die Herkunft ohne Pfad oder Abfrage übermittelt.
+    </p>
+    <p>
+      Wir zählen die erste erfolgreiche Werkzeugnutzung pro Seitenaufruf, zum Beispiel einen angeforderten, fertig vorbereiteten Download, erfolgreiches Kopieren oder eine nutzbare Analyse beziehungsweise Ansicht in einem Prüfwerkzeug. Die einzige werkzeugspezifische Angabe in diesem Ereignis ist die feste Werkzeugkennung. Es bestätigt nicht, dass Ihr Betriebssystem einen Download gespeichert hat.
+    </p>
+    <p>
+      Freiwilliges Feedback erfasst nach Ihrer Antwort die feste Werkzeugkennung, eine feste positive oder negative Antwort und einen festen Grund. Es gibt kein Freitextfeld. Die Werkzeuge fügen keinem dieser Datensätze Dateien, Dateinamen, Inhalte, eingegebenen Text, Anzahlen, Größen, Abmessungen, Formate, Einstellungen, Fehler oder andere Eingabe- oder Ergebnisdetails hinzu. Wir können zusammengefasste Analytics-Berichte sehen. Auch mit blockiertem Analytics bleibt lokale Verarbeitung verfügbar, nach vorbereitetem Offline-Cache auch ohne Verbindung.
     </p>
 
     <h3>Buy Me a Coffee: der Spenden-Button</h3>
@@ -133,7 +135,7 @@
       <strong>Weiterer lokaler Speicher.</strong> Feedback merkt sich den Zeitpunkt einer Antwort oder Ablehnung. Werkzeuge können Einstellungen oder einen optionalen Teilen-Entwurf lokal behalten. Sprachwechsel und eine bewusste Weitergabe an ein anderes Werkzeug können Dateien und Einstellungen vorübergehend in IndexedDB ablegen. Das sind keine Cookies und keine Übertragungen an uns; das Löschen der Websitedaten entfernt sie. Das jeweilige Werkzeug erklärt dauerhafte Entwürfe.
     </p>
     <p>
-      Googles Cookies und Kennungen messen Besuche und wählen oder begrenzen Anzeigen. Sie sind von den oben beschriebenen lokalen Aufzeichnungen der Seite zu unterscheiden.
+      Googles Cookies und Kennungen messen Besuche und Werkzeugnutzung und wählen oder begrenzen Anzeigen. Sie sind von den oben beschriebenen lokalen Aufzeichnungen der Seite zu unterscheiden.
     </p>
     <h3>Wie Sie es abschalten</h3>
     <ul>

@@ -234,7 +234,7 @@ body = "Tu navegador abre, lee y edita los archivos que eliges. No se suben para
 
 [[hub.guarantees]]
 title = "Tus archivos no se entregan a la analítica"
-body = "Se cuentan las visitas y las respuestas fijas de los comentarios voluntarios. No reciben tu archivo, su nombre, su tamaño ni su contenido. Las importaciones opcionales de imágenes y las consultas de cambio de los recibos indican junto a sus controles qué envían."
+body = "Se cuentan las visitas, el primer uso completado de una herramienta por cada carga de página y las respuestas fijas de los comentarios voluntarios. No se adjuntan archivos, nombres, contenidos ni detalles de los resultados. Las importaciones opcionales de imágenes y las consultas de cambio de los recibos indican junto a sus controles qué envían."
 
 [[hub.guarantees]]
 title = "El procesamiento local funciona sin conexión"
@@ -383,6 +383,10 @@ licence = """
 #
 
 [ui]
+favorites_heading = "Favoritos"
+favorites_note = "Guardados en este navegador."
+favorite_tool = "Favorito"
+favorites_unavailable = "No se pudieron guardar los favoritos en este navegador."
 languages = "Idioma"
 lang_auto = "Estás viendo esta página en español, que es el idioma que pide tu navegador."
 skip_to_content = "Saltar al contenido"

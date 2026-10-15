@@ -95,7 +95,7 @@ body = "你的浏览器打开、读取和编辑你选的文件，处理过程不
 
 [[hub.guarantees]]
 title = "文件不会交给统计服务"
-body = "本站统计页面访问和你主动选择的固定反馈答案，不向统计服务提供文件、文件名、大小或内容。可选的网址图片导入和收据汇率查询，会在控件旁说明发出什么信息。"
+body = "本站统计页面访问、每次加载页面后的首次成功工具使用，以及你主动选择的固定反馈答案，不附带文件、文件名、内容或输出详情。可选的网址图片导入和收据汇率查询，会在控件旁说明发出什么信息。"
 
 [[hub.guarantees]]
 title = "本地处理可以离线完成"
@@ -230,6 +230,10 @@ licence = """本站文字采用 <a href="https://github.com/A-Box-of-Tools/websi
 #
 
 [ui]
+favorites_heading = "收藏"
+favorites_note = "保存在此浏览器中。"
+favorite_tool = "收藏"
+favorites_unavailable = "无法在此浏览器中保存收藏。"
 languages = "语言"
 lang_auto = "你的浏览器要的是简体中文，所以这个页面按简体中文显示。"
 skip_to_content = "跳到主要内容"

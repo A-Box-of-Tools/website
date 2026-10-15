@@ -3,27 +3,27 @@
 slug = "walkie-talkie"
 name = "Local Walkie-Talkie"
 heading = "One voice <span class=\"h1-kw\">&mdash; several listeners on your local network</span>"
-tagline = "Start in your browser and hold to talk. Other devices listen through your link, with Mute and Leave controls."
+tagline = "Start a named channel, then hold to talk or speak hands-free. Other devices find it nearby or use your listener link, with Mute and Leave controls."
 icon = "&#128251;"
 favicon = "&#128251;"
 glyph = "audio-waveform"
 category = "documents-and-audio"
 roadmap_group = "audio"
 css_parts = ["form", "notes"]
-js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-13"
+lastmod = "2026-10-14"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
-description = "Broadcast voice directly from your browser to up to ten receive-only browsers. No installation, push to talk, automatic listening and reconnection."
+description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk, hands-free speech and microphone recovery within the same pairing."
 og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
 og_card = "Hold to talk. Everyone on your local link can listen."
-csp_note = "Starting a channel or opening a listener invitation connects to wss://rendezvous.abox.tools for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
-pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet pairing, no recording or audio relay."
+csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Starting or joining a channel opens a separate secure WebSocket for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
+pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet discovery and pairing, no recording or audio relay."
 pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect; the rendezvous handles temporary connection metadata, never microphone audio. Each listener receives encrypted WebRTC audio directly from the host browser. Anyone with the listener link and a reachable direct route can listen. Use a trusted local network and share the link carefully."
-live_hint = "This tool intentionally contacts rendezvous.abox.tools for connection setup and status. It sees room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
+live_hint = "This tool intentionally contacts rendezvous.abox.tools for discovery, connection setup and status. It sees channel names, listener invitations for listed channels, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
 read_first = ", <code>src/session.js</code> for microphone cleanup and reconnects, and <code>workers/rendezvous/broadcast.js</code> for the authenticated setup protocol"
 howto_heading = "How to open a local voice channel"
 card = "One browser host and up to ten receive-only listeners, with push to talk and automatic reconnection."
@@ -52,33 +52,33 @@ mark = "&#10007;"
 text = "No recording or audio relay"
 
 [[privacy]]
-title = "Internet pairing carries setup, never audio."
-body = "Start channel opens one secure WebSocket to our rendezvous. A listener invitation opens a receive-only session automatically. The service authenticates the host and listener invitations, forwards bounded setup messages and reports host availability. Its temporary room state lives on open sockets without a stored room history. Cloudflare keeps seven-day request metadata logs including the room identifier, connection address and timing; invitation keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
+title = "Internet discovery and pairing carry setup, never audio."
+body = " Opening the page opens a secure discovery WebSocket. Starting or joining opens a separate channel connection. Show this channel nearby shares its name and listener invitation with browsers grouped by public IPv4 address or IPv6 /64 subnet and website origin. That group can include strangers behind shared gateways; VPNs can hide nearby devices. Turn the option off before starting for link-only invitations. Browsing never opens an audio connection or asks for a microphone. Channel state and directory entries live on open sockets without a stored history. Cloudflare keeps seven-day request metadata logs; keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
 [[privacy]]
 title = "A listener invitation cannot control the host."
-body = "Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
+body = " Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
 [[privacy]]
 title = "Direct reachability still depends on your network."
-body = "Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and devices awake, and try the actual devices you intend to use."
+body = " Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and try the actual devices you intend to use. Background or locked-screen operation depends on the browser and operating system and is not guaranteed."
 [[privacy]]
 title = "Temporary loss reconnects; End and Leave stop retries."
-body = "A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Working direct audio can continue during a brief pairing-service outage. Hiding the host releases its microphone; return and choose Start channel to resume the same invitation when per-tab storage is available. End broadcast deliberately stops the session and the next Start creates a new invitation. Leave closes one listener and its retries. Background browsers, connection limits and sleeping devices can delay recovery."
+body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Healthy hidden connections and explicitly enabled hands-free speech continue while the browser allows. A physical hold releases on blur or hiding. A microphone interruption stops talking while preserving the channel; an ended microphone can be replaced on returning to the page or with Resume microphone. Recovery stays silent until you deliberately talk again. If the browser suspends the page, returning attempts to restore the same channel and invitation, with Resume channel available when an action is required. End broadcast prevents automatic resumption and creates a new invitation on the next Start. Leave closes one listener and its retries. Background timers, connection limits and sleeping devices can delay recovery."
 [[privacy]]
 title = "The website's regular scripts still run on this page."
-body = "The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
+body = " The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
 
 [[howto]]
 title = "Start directly on this website."
-body = "On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
+body = " On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
 title = "Invite listeners."
-body = "Share the listener link or QR code with devices on your reachable local network. Opening the invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for pairing."
+body = " Listeners can choose Join beside your channel in Nearby channels when you start with Show this channel nearby selected. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
 [[howto]]
-title = "Hold or tap to talk."
-body = "Hold the Talk button, or focus it and hold Space. Release to stop sending voice. Start talking offers click-to-start and click-to-stop. Microphone mute overrides both. Listening starts automatically where permitted; the existing Unmute control starts sound if the browser blocks playback."
+title = "Hold to talk or speak hands-free."
+body = " Hold the Talk button, or focus it and hold Space. Release, leave the page or switch focus to release a physical hold. For hands-free speech, choose Start talking; it can continue with the page hidden while the browser allows. Choose Stop talking to stop, and check the displayed talking state before setting the device down. Microphone mute overrides both modes, and a microphone interruption clears hands-free speech. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
 [[howto]]
 title = "Recover or end the channel."
-body = "Receivers retry a temporarily missing host in place. Return to the same host tab and choose Start channel to resume after hiding it. End broadcast closes the current channel and creates a fresh invitation on the next Start; Leave closes one listener. Keep pages open and devices awake."
+body = " Receivers retry a temporarily missing host in place. If the microphone is interrupted, talking stops while the channel remains connected. Return to the page or choose Resume microphone to replace an ended microphone; then deliberately start talking again. If the page was suspended, it attempts to restore the same channel silently, with Resume channel as a fallback. End broadcast prevents automatic resumption and creates a fresh invitation on the next Start; Leave closes one listener. Keep the pages open; screen-lock continuity is not guaranteed."
 
 [[faq]]
 q = "Do I need Python or a download?"
@@ -91,13 +91,13 @@ q = "Does it work without internet?"
 a = "Internet access is required for new pairing and recovery. A healthy direct audio connection may continue during a brief internet or pairing-service outage. A cached page alone cannot introduce new devices."
 [[faq]]
 q = "Can a phone host the channel?"
-a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Keep the host page visible and the device awake. Phones can also listen without granting microphone access."
+a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Healthy connections and hands-free speech can continue with the page hidden while the browser permits. Screen lock, browser suspension or operating-system interruptions may still stop them; try your actual phone before relying on background use. Phones can also listen without granting microphone access."
 [[faq]]
-q = "Do listeners press Listen?"
-a = "There is no Listen button. Opening an invitation attempts playback automatically. If the browser requires an interaction for sound, Unmute starts it. Mute/Unmute and Leave are the only listener controls."
+q = "How do listeners join?"
+a = "Choose Join beside a nearby channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
 [[faq]]
 q = "What happens when the host disappears?"
-a = "Receivers wait and check availability with a one-second target while active. Their mute choice stays the same. Return to the host tab and Start again to resume its retained invitation. Background timers or service connection limits can delay retries. End broadcast is different: it deliberately stops receivers and the next channel uses a new invitation."
+a = "Receivers wait and check availability with a one-second target while active, keeping their mute choice. Hiding a healthy page does not deliberately disconnect it. A microphone interruption clears talking and keeps the pairing; an ended microphone can be replaced with Resume microphone or on returning to the page. If the browser suspends the page, returning tries to restore the same channel and invitation, with Resume channel as a fallback. Recovery leaves talking off. Background timers or service connection limits can delay retries. End broadcast stops receivers and prevents automatic resumption; the next channel uses a new invitation."
 [[faq]]
 q = "How many listeners are supported?"
 a = "A channel admits up to ten listeners, including waiting connections. The host sends a separate audio stream to each. Actual capacity depends on its browser, device and network; ten is a limit, not a guarantee for every phone."
@@ -108,4 +108,4 @@ a = "Guest isolation, firewalls, VPN routes or browser local-network permissions
 [schema]
 category = "CommunicationApplication"
 description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and secure internet pairing."
-features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Hold or tap to talk", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Listener link and QR pairing", "No recording, STUN or TURN"]
+features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link and QR pairing", "No recording, STUN or TURN"]

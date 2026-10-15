@@ -26,7 +26,7 @@ The point of this app is that it is *checkable*, not that it is promised.
 | Your images have nowhere to be uploaded **to** | The page names every address it may contact, from the one list in `config/site.toml`, and not one of them belongs to this site. There is no endpoint here that your files could be collected at |
 | The encoder never touches the network | Read `src/encoder.js` and `src/compose.js`. Neither imports anything that can make a request |
 | Nothing is sent during an export | Open DevTools, Network tab, create a video. No request carries image data |
-| Google is never handed an image | Read `analytics.js` - it configures a page-visit counter and nothing else. Nothing in `src/` passes a file, thumbnail, name, or dimension to any script |
+| Google is never handed an image | Read `analytics.js` - it counts page visits and the first useful tool result with only the fixed tool slug; optional feedback is separate. Neither event receives a file, thumbnail, name, dimension or other input or output detail |
 | It works with no network at all | Load once, disconnect, reload. Everything except web-address loading still works; the ads simply do not appear |
 
 ### The one exception: "Add from a web address"

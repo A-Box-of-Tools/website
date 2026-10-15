@@ -13,6 +13,13 @@ import assert from 'node:assert/strict';
 
 import { saveBlob, downloadLink } from '../../shared/js/download.js';
 
+function resultLink() {
+  return Object.assign(new EventTarget(), {
+    hidden: true,
+    click() { this.dispatchEvent(new Event('click')); },
+  });
+}
+
 /** A URL and a document that record what was done to them. */
 function browser() {
   const made = [];
@@ -56,7 +63,7 @@ test('saveBlob clicks a link in the document and revokes its URL a minute later'
 
 test('a download link points at the latest text and lets go of the last', () => {
   const { made, revoked } = browser();
-  const link = { hidden: true };
+  const link = resultLink();
   const download = downloadLink(link);
 
   download.offer('one', 'a.txt');
@@ -72,7 +79,7 @@ test('a download link points at the latest text and lets go of the last', () => 
 
 test('an empty result hides the link, and so does clearing', () => {
   const { revoked } = browser();
-  const link = { hidden: true };
+  const link = resultLink();
   const download = downloadLink(link);
 
   download.offer('one', 'a.txt');
@@ -90,8 +97,26 @@ test('an empty result hides the link, and so does clearing', () => {
 
 test('a Blob is offered as it is, whatever type the link was made for', () => {
   const { made } = browser();
-  const link = { hidden: true };
+  const link = resultLink();
   const svg = new Blob(['<svg/>'], { type: 'image/svg+xml' });
   downloadLink(link).offer(svg, 'picture.svg');
   assert.equal(made[0], svg);
+});
+
+test('completion requires choosing a ready result and receives no file data', (t) => {
+  browser();
+  const complete = mock.fn();
+  globalThis.aboxToolComplete = complete;
+  t.after(() => { delete globalThis.aboxToolComplete; });
+  const link = resultLink();
+  const download = downloadLink(link);
+  link.click();
+  download.offer('private contents', 'private-filename.txt');
+  assert.equal(complete.mock.callCount(), 0, 'preparing output is not choosing it');
+  link.click();
+  assert.equal(complete.mock.callCount(), 1);
+  assert.deepEqual(complete.mock.calls[0].arguments, []);
+  download.clear();
+  link.click();
+  assert.equal(complete.mock.callCount(), 1, 'an invalidated result is not usable');
 });

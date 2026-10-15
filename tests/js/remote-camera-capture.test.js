@@ -306,3 +306,138 @@ test('Stop during camera installation closes a shared microphone only once', asy
   assert.equal(await changing, null); assert.equal(microphone.stopped, 1);
   assertStopped(previous, 1); assertStopped(candidate, 1);
 });
+
+function audioOnlyStream() {
+  const result = audioVideoStream('unused');
+  result.tracks.shift();
+  result.getVideoTracks = () => result.tracks.filter((track) => track.kind === 'video');
+  result.getAudioTracks()[0].enabled = true;
+  return result;
+}
+
+test('ended microphone recovery preserves healthy video and adopts replacement audio silently', async () => {
+  const previous = audioVideoStream('camera'), candidate = audioOnlyStream();
+  const video = previous.getVideoTracks()[0], oldAudio = previous.getAudioTracks()[0], audio = candidate.getAudioTracks()[0];
+  const entered = deferred(), installation = deferred();
+  const { capture, calls } = queuedCapture(previous, candidate);
+  await capture.start({ audio: true });
+  oldAudio.stop();
+  const recovering = capture.switchDevice('camera', (stream) => {
+    assert.deepEqual(stream.getVideoTracks(), [video]);
+    assert.deepEqual(stream.getAudioTracks(), [audio]);
+    assert.equal(audio.enabled, false);
+    entered.resolve();
+    return installation.promise;
+  }, { audio: true });
+  await entered.promise;
+  assert.equal(capture.stream, previous);
+  assert.equal(video.stopped, 0);
+  installation.resolve(true);
+  assert.equal(await recovering, candidate);
+  assert.equal(capture.stream, candidate);
+  assert.deepEqual(calls, [{ video: true, audio: true }, { video: false, audio: true }]);
+  assert.equal(video.stopped, 0);
+  assert.equal(audio.enabled, false);
+  capture.stop();
+  assert.equal(video.stopped, 1); assert.equal(audio.stopped, 1); assert.equal(oldAudio.stopped, 1);
+});
+
+test('microphone recovery failure never releases the healthy camera for an exclusive retry', async () => {
+  const previous = audioVideoStream('camera'), failure = captureFailure('NotReadableError');
+  const { capture, calls } = queuedCapture(previous, failure);
+  await capture.start({ audio: true });
+  previous.getAudioTracks()[0].stop();
+  await assert.rejects(capture.switchDevice('camera', () => assert.fail('no replacement'), { audio: true }), (error) => error === failure);
+  assert.equal(capture.stream, previous);
+  assert.equal(previous.getVideoTracks()[0].stopped, 0);
+  assert.equal(calls.length, 2);
+  capture.stop();
+});
+
+test('rejected microphone adoption closes only new audio and leaves the original video running', async () => {
+  const previous = audioVideoStream('camera'), candidate = audioOnlyStream(), audio = candidate.getAudioTracks()[0];
+  const { capture } = queuedCapture(previous, candidate);
+  await capture.start({ audio: true });
+  previous.getAudioTracks()[0].stop();
+  assert.equal(await capture.switchDevice('camera', () => false, { audio: true }), null);
+  assert.equal(capture.stream, previous);
+  assert.equal(previous.getVideoTracks()[0].stopped, 0);
+  assert.equal(audio.stopped, 1);
+  capture.stop();
+});
+
+test('ended camera and microphone are replaced together without reviving audio transmission', async () => {
+  const previous = audioVideoStream('camera'), candidate = audioVideoStream('camera');
+  const { capture, calls } = queuedCapture(previous, candidate);
+  await capture.start({ audio: true });
+  previous.getTracks().forEach((track) => track.stop());
+  assert.equal(await capture.switchDevice('camera', (stream) => {
+    assert.equal(stream.getAudioTracks()[0].enabled, false);
+    return true;
+  }, { audio: true }), candidate);
+  assert.deepEqual(calls.at(-1), { video: { deviceId: { exact: 'camera' } }, audio: true });
+  assertStopped(candidate, 0);
+  capture.stop();
+});
+
+test('recovery keeps a live microphone even when audio was requested for an ended camera', async () => {
+  const previous = audioVideoStream('camera'), candidate = videoStream('camera'), audio = previous.getAudioTracks()[0];
+  audio.enabled = true;
+  const { capture, calls } = queuedCapture(previous, candidate);
+  await capture.start({ audio: true });
+  previous.getVideoTracks()[0].stop();
+  assert.equal(await capture.switchDevice('camera', () => true, { audio: true }), candidate);
+  assert.equal(calls.at(-1).audio, false);
+  assert.deepEqual(candidate.getAudioTracks(), [audio]);
+  assert.equal(audio.enabled, true);
+  assert.equal(audio.stopped, 0);
+  capture.stop();
+});
+
+test('unusable recovered microphone grants are released without interrupting live video', async () => {
+  for (const unavailable of ['missing', 'muted', 'ended']) {
+    const previous = audioVideoStream('camera'), candidate = audioOnlyStream();
+    const audio = candidate.getAudioTracks()[0];
+    if (unavailable === 'missing') candidate.tracks.length = 0;
+    else if (unavailable === 'muted') audio.muted = true;
+    else audio.stop();
+    const { capture } = queuedCapture(previous, candidate);
+    await capture.start({ audio: true });
+    previous.getAudioTracks()[0].stop();
+    await assert.rejects(capture.switchDevice('camera', () => assert.fail('unusable microphone'), { audio: true }), { message: 'camera.audio-ended' });
+    assert.equal(capture.stream, previous);
+    assert.equal(previous.getVideoTracks()[0].stopped, 0);
+    if (unavailable !== 'missing') assert.equal(audio.stopped, 1);
+    capture.stop();
+  }
+});
+
+test('a late microphone recovery cannot revive Stop or replace a newer camera', async () => {
+  const previous = audioVideoStream('camera'), newer = videoStream('new-camera'), late = audioOnlyStream(), pending = deferred();
+  const { capture } = queuedCapture(previous, pending.promise, newer);
+  await capture.start({ audio: true });
+  previous.getAudioTracks()[0].stop();
+  const recovering = capture.switchDevice('camera', () => assert.fail('obsolete microphone'), { audio: true });
+  capture.stop();
+  await capture.start();
+  pending.resolve(late);
+  assert.equal(await recovering, null);
+  assertStopped(late, 1);
+  assert.equal(capture.stream, newer);
+  assertStopped(newer, 0);
+  capture.stop();
+});
+
+test('Stop during microphone adoption releases new audio and retained video once', async () => {
+  const previous = audioVideoStream('camera'), candidate = audioOnlyStream(), entered = deferred(), installation = deferred();
+  const { capture } = queuedCapture(previous, candidate);
+  await capture.start({ audio: true });
+  previous.getAudioTracks()[0].stop();
+  const recovering = capture.switchDevice('camera', () => { entered.resolve(); return installation.promise; }, { audio: true });
+  await entered.promise;
+  capture.stop();
+  installation.resolve(true);
+  assert.equal(await recovering, null);
+  assert.equal(capture.stream, null);
+  assertStopped(previous, 1); assertStopped(candidate, 1);
+});

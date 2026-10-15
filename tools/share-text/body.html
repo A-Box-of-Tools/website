@@ -214,9 +214,37 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Connection details</summary>
+    <p id="connection-progress" role="status" aria-live="polite">No connection attempt yet.</p>
+    <p class="field-note">If a connection fails, copy this report on both devices. It contains no shared text, file names, link names, network addresses or credentials.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copy connection report</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Connection report</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">Discovery can find a share even when the browsers cannot connect directly. This report identifies the stage reached; it does not prove the cause.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page. Hidden here so the locale
        machinery reaches them; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">No connection attempt yet.</span>
+    <span data-phrase="debug.attempt">Connection attempt {n}. {status}</span>
+    <span data-phrase="debug.introduction">Contacting the introduction server.</span>
+    <span data-phrase="debug.network">Setting up the connection between the browsers.</span>
+    <span data-phrase="debug.channel">Connection open. Waiting for the share.</span>
+    <span data-phrase="debug.approval">Connected. Waiting for approval.</span>
+    <span data-phrase="debug.connected">Connected and receiving the share.</span>
+    <span data-phrase="debug.host-connected">Connected to a reader.</span>
+    <span data-phrase="debug.transfer">Transferring a file.</span>
+    <span data-phrase="debug.transfer-complete">File transfer completed.</span>
+    <span data-phrase="debug.transfer-failed">The file transfer could not be completed.</span>
+    <span data-phrase="debug.failed">This connection attempt ended before it completed. The report preserves the last stage reached.</span>
+    <span data-phrase="debug.ended">This connection has ended.</span>
+    <span data-phrase="debug.unsupported">This browser does not support the connection features this tool needs.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
@@ -273,6 +301,8 @@
     <span data-phrase="view.denied">The sharer didn&rsquo;t let you in.</span>
     <span data-phrase="view.empty">Connected. The sharer hasn&rsquo;t written anything yet &mdash; this page fills in as they type.</span>
     <span data-phrase="view.ended">The sharer has ended the share, and this copy went with it.</span>
+    <span data-phrase="view.reconnecting">The connection paused. Waiting to reconnect to the same share while this page is visible&hellip;</span>
+    <span data-phrase="view.interrupted">The connection could not be restored. Ask the sharer to keep their page open, then choose Check this link again.</span>
     <span data-phrase="view.gone-early">The sharer left before the share arrived. It is gone with them.</span>
     <span data-phrase="view.nobody">Nobody is sharing at this address. The sharer may have closed their tab &mdash; if so, the share is gone with it.</span>
     <span data-phrase="view.full">This share already has its maximum number of readers.</span>

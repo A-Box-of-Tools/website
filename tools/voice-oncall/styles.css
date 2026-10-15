@@ -1,0 +1,339 @@
+.vi-tool {
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.vi-tool [hidden] {
+  display: none;
+}
+
+.vi-intro,
+.vi-details p {
+  line-height: 1.7;
+}
+
+.vi-note {
+  color: var(--text-dim);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.vi-tabs,
+.vi-discovery-heading,
+.vi-live-heading,
+.vi-sender-actions,
+.vi-link-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.vi-tabs {
+  margin-block: 1.5rem 1rem;
+}
+
+.vi-tool button {
+  min-height: 44px;
+  padding: .7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent-text);
+  background: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vi-tool .vi-secondary,
+.vi-tabs button[aria-selected="false"] {
+  border-color: var(--border);
+  color: inherit;
+  background: transparent;
+}
+
+.vi-tool button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.vi-tool button:focus-visible,
+.vi-tool input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.vi-status {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 72px;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.vi-status p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.vi-status-dot {
+  flex: 0 0 .7rem;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+  opacity: .6;
+}
+
+.vi-status-dot[data-state="ready"],
+.vi-status-dot[data-state="talking"] {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.vi-discovery-heading,
+.vi-live-heading {
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.vi-discovery-heading h2,
+.vi-live-heading h2 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+#vi-sender-room {
+  overflow-wrap: anywhere;
+}
+
+.vi-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.vi-tool label:not(.vi-room) {
+  display: block;
+  margin-block: 1rem .4rem;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.vi-tool input:not([type="checkbox"]):not([type="radio"]) {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: .6rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+.vi-tool .vi-check {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 44px;
+}
+
+.vi-check input,
+.vi-room input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+}
+
+.vi-rooms {
+  display: grid;
+  gap: .65rem;
+}
+
+.vi-room {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  min-height: 70px;
+  padding: .8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.vi-room:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.vi-room-name {
+  display: block;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.vi-room-kind {
+  display: block;
+  margin-top: .2rem;
+  color: var(--text-dim);
+  font-size: .8rem;
+}
+
+.vi-tool .vi-talk {
+  display: block;
+  width: 100%;
+  min-height: 164px;
+  margin-top: 1.25rem;
+  border-width: 2px;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.vi-tool .vi-talk[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 4px var(--accent-text);
+}
+
+.vi-talk-help {
+  text-align: center;
+}
+
+.vi-sender-actions {
+  flex-wrap: wrap;
+}
+
+.vi-sender-actions button {
+  flex: 1 1 auto;
+}
+
+.vi-participants {
+  display: grid;
+  gap: .7rem;
+  padding: 0;
+  list-style: none;
+}
+
+.vi-participant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.vi-participant-info {
+  min-width: 0;
+}
+
+.vi-participant-name {
+  display: block;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.vi-participant-state {
+  display: block;
+  margin-top: .25rem;
+  color: var(--text-dim);
+  font-size: .85rem;
+}
+
+.vi-participant[data-speaking="true"] .vi-participant-state {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.vi-participant-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: .5rem;
+}
+
+.vi-invite {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.vi-invite-fields {
+  min-width: 0;
+}
+
+.vi-invite h3 {
+  margin-top: 0;
+}
+
+.vi-link-row button {
+  flex: 0 0 auto;
+}
+
+.vi-feedback {
+  min-height: 1.6em;
+}
+
+.vi-qr {
+  text-align: center;
+}
+
+.vi-qr canvas {
+  display: block;
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 8px;
+  background: #fff;
+  image-rendering: pixelated;
+}
+
+.vi-details {
+  margin-block: 1.75rem;
+}
+
+.vi-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .vi-form-grid,
+  .vi-invite {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vi-invite {
+    padding: 1rem;
+  }
+
+  .vi-link-row,
+  .vi-live-heading,
+  .vi-participant {
+    flex-wrap: wrap;
+  }
+
+  .vi-link-row input {
+    flex: 1 1 100%;
+  }
+
+  .vi-link-row button,
+  .vi-participant-actions {
+    width: 100%;
+  }
+
+  .vi-participant-actions button {
+    flex: 1 1 auto;
+  }
+}

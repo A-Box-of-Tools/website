@@ -152,9 +152,37 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>连接详情</summary>
+    <p id="connection-progress" role="status" aria-live="polite">尚未尝试连接。</p>
+    <p class="field-note">如果连接失败，请在两台设备上复制此报告。报告不包含共享文本、文件名、链接名称、网络地址或凭据。</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>复制连接报告</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">连接报告</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">即使浏览器无法直接连接，搜索仍可能找到共享；此报告说明连接到达的阶段，但不能证明故障原因。</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
        One line per phrase - phrase() collapses a wrap into a space. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">尚未尝试连接。</span>
+    <span data-phrase="debug.attempt">第 {n} 次连接尝试。{status}</span>
+    <span data-phrase="debug.introduction">正在联系引介服务器。</span>
+    <span data-phrase="debug.network">正在建立浏览器之间的连接。</span>
+    <span data-phrase="debug.channel">连接已打开，正在等待共享。</span>
+    <span data-phrase="debug.approval">已连接，正在等待批准。</span>
+    <span data-phrase="debug.connected">已连接，正在接收共享。</span>
+    <span data-phrase="debug.host-connected">已连接到接收方。</span>
+    <span data-phrase="debug.transfer">正在传输文件。</span>
+    <span data-phrase="debug.transfer-complete">文件传输已完成。</span>
+    <span data-phrase="debug.transfer-failed">未能完成文件传输。</span>
+    <span data-phrase="debug.failed">此次连接尝试在完成前已结束，报告保留了最后到达的阶段。</span>
+    <span data-phrase="debug.ended">此连接已结束。</span>
+    <span data-phrase="debug.unsupported">此浏览器不支持本工具所需的连接功能。</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
@@ -189,6 +217,8 @@
     <span data-phrase="share.leave-warning">离开此页面，分享对所有人结束。继续吗？</span>
 
     <span data-phrase="copy.select">已选中，请手动复制</span>
+    <span data-phrase="view.reconnecting">连接已暂停。此页面可见时，会尝试重新连接到同一分享…</span>
+    <span data-phrase="view.interrupted">无法恢复连接。请让分享方保持页面开启，然后再次检查此链接。</span>
     <span data-phrase="view.file-cancel">取消下载</span>
     <span data-phrase="view.file-retry">重试下载</span>
     <span data-phrase="view.file-cancelled">下载已取消。共享仍在继续。</span>

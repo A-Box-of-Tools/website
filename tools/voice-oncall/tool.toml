@@ -1,0 +1,114 @@
+# The host receives separate direct streams, so it can silence one participant
+# without trusting that participant to stop transmitting.
+slug = "voice-oncall"
+name = "Voice Oncall"
+heading = "Voice Oncall"
+tagline = "Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants."
+icon = "&#127897;"
+favicon = "&#127897;"
+glyph = "audio-waveform"
+category = "documents-and-audio"
+roadmap_group = "audio"
+css_parts = ["form", "notes"]
+js_parts = ["voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+requires_pairing = true
+lastmod = "2026-10-14"
+
+title = "Voice Oncall &mdash; Receive Live Voice from Nearby Devices"
+description = "Let up to ten people send live voice directly to one host browser. Nearby discovery, optional pager password, push to talk, mute and remove controls."
+og_title = "Voice Oncall — One Listening Host"
+og_description = "A browser voice pager with nearby discovery, an optional password, and individual mute and remove controls."
+og_image_alt = "Voice Oncall - several speakers and one listening host"
+og_card = "Nearby people speak. One host listens and chooses who to hear."
+csp_note = "This page opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, connection setup and status. Live audio uses direct encrypted WebRTC with host candidates only, without STUN or TURN. The rendezvous never carries audio."
+pledge_line = "Live voice goes <strong>directly to the host</strong>. Internet discovery and pairing, no recording or audio relay."
+pledge = "People send live voice from their browsers to one listening host. Internet discovery groups pages sharing a public network address and page origin; it cannot prove they are on the same physical Wi-Fi. The service carries pager names, temporary participant identifiers and credentials, moderation and connection details, never audio. Each participant has a separate encrypted WebRTC connection to the host."
+live_hint = "This page intentionally contacts rendezvous.abox.tools for discovery and pairing. It sees pager names, temporary participant identifiers, addresses, timing, password-derived credentials and moderation status, never voice. Cloudflare keeps seven-day invocation metadata logs."
+read_first = ", <code>src/main.js</code> for individual playback controls, <code>shared/js/voice-session.js</code> for direct connections, and <code>workers/rendezvous/inbox.js</code> for admission and moderation"
+howto_heading = "How to receive voice from nearby people"
+card = "Several people send live voice to one host, with nearby discovery, an optional password and individual moderation."
+md_note = "The host opens a named pager without microphone access. Participants find it nearby or open its link, enter its password if required, and Connect without entering a name. They allow microphone access and deliberately hold or tap Talk. The host can mute or remove each participant. Internet is needed for discovery and pairing; voice stays on direct browser connections."
+
+[csp]
+"connect-src" = ["wss://rendezvous.abox.tools"]
+"media-src" = ["blob:"]
+
+[words]
+plural = "live voice"
+choose = "a microphone"
+analytics_extra = "; the tool does not hand them audio, but scripts on this page can read its address and browser storage"
+
+[[facts]]
+mark = "&#10003;"
+text = "One host, ten participants"
+[[facts]]
+mark = "&#10003;"
+text = "Optional pager password"
+[[facts]]
+mark = "&#10003;"
+text = "Individual mute and remove"
+[[facts]]
+mark = "&#10007;"
+text = "No recording or audio relay"
+
+[[privacy]]
+title = "Discovery is a nearby hint."
+body = " Opening this page connects to the rendezvous to list live pagers sharing your public IPv4 address or IPv6 subnet and page origin. A host explicitly opens and advertises its named pager. Shared carrier gateways can include strangers, and VPNs or different internet routes can hide devices beside you. Pager names and whether a password is required are visible to that discovery group. A copied pager link provides another way to connect. Neither discovery nor a direct connection proves membership of a physical LAN."
+[[privacy]]
+title = "Passwords control admission without a host approval prompt."
+body = " An open pager accepts reachable participants without asking its host to approve them. A protected pager checks a credential derived from its password in the participant's browser before negotiating voice. The password is not put in an invitation or sent as plain text. The derived credential travels inside encrypted signaling messages and acts as an access credential. Choose a strong password and share it separately. Callers do not need a name; their temporary session identifiers do not verify who they are."
+[[privacy]]
+title = "The host hears separate direct audio streams."
+body = " Each admitted participant sends encrypted WebRTC audio directly to the host browser. Other participants do not receive it. No STUN server, TURN relay or recording feature is configured. The host never requests microphone access. Participants grant microphone permission and start with transmission stopped; Hold to talk or Start talking deliberately enables it. Physical holds release on blur or hiding. Explicit hands-free speech can continue while the page is hidden and the browser permits it. A microphone interruption clears talking without deliberately closing the pairing. Recipients can independently record what they hear."
+[[privacy]]
+title = "Mute and Remove belong to the host."
+body = " Mute silences that participant's stream in the host browser even if a modified participant page keeps sending audio. The normal participant page also stops transmission when muted. Remove closes that participant's direct connection and rejects its retained session identity. This is a session block, not a permanent ban on a person: someone can create a new identity, especially in an open pager. Per-pager moderation history is bounded; ending the pager clears it."
+[[privacy]]
+title = "Temporary browser credentials support recovery."
+body = " Host and participant credentials are separate and stay in per-tab session storage when available. Invitation fragments identify a pager without carrying its host secret or password. Healthy hidden connections remain open while the browser allows. An ended microphone can be replaced within the same pairing on returning to the page or through Resume microphone. After page suspension, returning attempts to restore the same pager or caller identity, retaining moderation and leaving caller transmission off. Waiting participants check for the host with a one-second foreground target. Screen-lock continuity is not guaranteed; browser suspension, connection limits and sleeping devices can delay recovery. End pager and Disconnect prevent automatic restart and stop retries."
+[[privacy]]
+title = "The rendezvous carries metadata, never voice."
+body = " The service receives pager names, temporary participant identifiers, password-derived credentials, mute and removal commands, host availability and bounded connection setup messages. Older pages may also send participant display names. Temporary pager state lives on open socket attachments without a stored pager history. Cloudflare keeps seven-day invocation metadata logs including request addresses, pager identifiers and timing. Credentials travel in secure socket payloads rather than request URLs. The website's regular scripts also run here and can read the page address and browser storage; trust the page before granting microphone access or using sensitive credentials."
+
+[[howto]]
+title = "Open the listening pager."
+body = " Choose Host a pager, give the pager a name, optionally set a password and choose Start pager. The host needs speaker output but does not grant microphone access. Keep its page open. Healthy connections can continue in the background while the browser allows; screen-lock operation is not guaranteed. If sound is interrupted, return here and choose Restore sound when shown."
+[[howto]]
+title = "Find it nearby or use its link."
+body = " On a participating device, open this page and choose the named pager from the nearby list. Use the copied link or QR code if discovery does not find it. Both devices need internet for discovery and pairing, plus a reachable direct network path for audio."
+[[howto]]
+title = "Connect and deliberately speak."
+body = " Enter the pager password if required, then Connect and allow microphone access. You do not need to enter a name or wait for host approval. Hold Talk or focus it and hold Space; release to stop. Physical holds also release on blur or hiding. Start talking enables hands-free speech, which can continue in the background while the browser permits. Only the host hears your audio. A microphone interruption clears talking. Return to the page or choose Resume microphone if recovery is needed, then deliberately start talking again."
+[[howto]]
+title = "Control individual participants."
+body = " The host sees each caller with a short identifier and can Mute, Unmute or Remove them. Several people may speak at once, so their voices can overlap. Disconnect closes one participant; End pager closes the pager. Starting a new pager creates a fresh invitation and resets its moderation history. Removal is pending until the service confirms it; local playback is silenced immediately."
+
+[[faq]]
+q = "Is this the reverse of Local Walkie-Talkie?"
+a = "Yes. Walkie-Talkie sends one host's voice to many listeners. Voice Oncall sends each participant's live voice to one listening host. Participants do not hear one another."
+[[faq]]
+q = "Do I need Python, installation or an account?"
+a = "No. Both sides use this HTTPS website, and callers do not need to enter a name. The host names the pager and never requests microphone access. A participant must grant the browser's normal microphone permission when connecting."
+[[faq]]
+q = "Does the host approve each person?"
+a = "No. Admission is automatic while the pager is open and below its ten-participant limit. If the host sets a password, a participant must enter it before connecting. The host can mute or remove participants afterwards."
+[[faq]]
+q = "Can it discover every device on my Wi-Fi?"
+a = "No. Nearby discovery groups active pages by their public internet address and this website's origin. It does not scan the LAN and cannot prove physical Wi-Fi membership. VPNs, shared carrier gateways and different routes affect the list. Use an invitation link when discovery misses the pager."
+[[faq]]
+q = "Does any server receive our voice?"
+a = "The rendezvous carries discovery, admission and connection details, never audio. Audio travels on separate direct encrypted browser connections. No audio relay fallback is configured. Internet remains necessary for introductions and recovery."
+[[faq]]
+q = "Can a removed person return?"
+a = "Their retained participant session is blocked in the active pager. This is not a verified account or permanent person-level ban: a new browser identity can try again. A password helps control who can connect. End the pager and create a new protected one if you need a fresh invitation."
+[[faq]]
+q = "Can I keep talking with the screen locked?"
+a = "Hands-free speech and healthy connections remain active while the browser allows; physical holds release when the page loses focus or becomes hidden. A phone can still interrupt audio, suspend the page or close connections when locked, so this is not guaranteed. A microphone interruption stops talking and recovery stays silent until you deliberately speak again. Test the actual phones and browsers you plan to use. Disconnect and End pager prevent automatic restart."
+[[faq]]
+q = "Why does the same Wi-Fi sometimes fail?"
+a = "Guest isolation, firewalls, VPN routes, browser local-network permissions or sleeping devices may prevent a direct connection. There is no public audio relay fallback. Try the actual phones and computers you intend to use."
+
+[schema]
+category = "CommunicationApplication"
+description = "A browser-hosted live voice pager with nearby discovery, automatic password-gated admission, direct audio and per-participant host controls."
+features = ["One listening host and up to ten speakers", "Nearby pager discovery", "Optional pager password", "Connect without host approval", "Hold or tap to talk", "Individual mute and remove", "Direct encrypted WebRTC", "No recording, STUN or TURN"]

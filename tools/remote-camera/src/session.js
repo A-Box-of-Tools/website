@@ -12,6 +12,7 @@ export class CameraSession {
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
     onViewers = () => {}, onBandwidth = () => {},
+    onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -22,6 +23,10 @@ export class CameraSession {
     this.onDiscovery = onDiscovery;
     this.onViewers = onViewers;
     this.onBandwidth = onBandwidth;
+    this.onSignaling = onSignaling;
+    this.visible = visible;
+    this.signalingLost = false;
+    this.signalingRetry = null;
     this.revision = 0;
     this.role = null;
     this.socket = null;
@@ -128,8 +133,10 @@ export class CameraSession {
           this.reconnecting = false;
           this.signalingUnavailable = false;
           this.retryAttempts = 0;
+          this.signalingLost = false;
         }
         this.state(this.role === 'camera' ? this.hostState() : 'connection.connecting');
+        this.onSignaling();
         resolve();
       };
       const fail = (key) => {
@@ -204,12 +211,14 @@ export class CameraSession {
 
   lostIntroduction(key, opened) {
     if (!opened || !['connection.server-failed', 'connection.ended'].includes(key)) return this.stop(key);
+    this.signalingLost = true;
     const established = [...this.peers.values()].filter((entry) => this.established(entry, true));
     if (this.role === 'viewer') {
       if (!established.length) return this.stop(key);
       established.forEach((entry) => { entry.signalingDetached = true; });
       this.signalingUnavailable = true;
       this.state('viewer.signaling-lost');
+      this.onSignaling();
       return;
     }
     if (this.role !== 'camera') return;
@@ -217,6 +226,7 @@ export class CameraSession {
     this.onDiscovery(null);
     this.detachIntroducedPeers();
     this.state('camera.reconnecting');
+    this.onSignaling();
     this.retryIntroduction();
   }
 
@@ -230,24 +240,51 @@ export class CameraSession {
   }
 
   retryIntroduction() {
-    if (this.role !== 'camera' || !this.reconnecting) return;
+    if (this.role !== 'camera' || !this.reconnecting || this.retryTimer !== null || this.signalingRetry) return;
     if (this.retryAttempts >= INTRODUCTION_RETRIES.length) {
       this.reconnecting = false;
       this.signalingUnavailable = true;
       if ([...this.peers.values()].some((entry) => this.established(entry, true))) this.state('camera.reconnect-failed');
       else this.stop('connection.server-failed');
+      this.onSignaling();
       return;
     }
+    if (!this.visible()) return;
     const revision = this.revision;
     this.retryTimer = setTimeout(() => {
       this.retryTimer = null;
-      if (this.revision !== revision || this.role !== 'camera' || !this.reconnecting) return;
-      this.open(this.code, this.discoverable, true).catch((error) => {
-        if (this.revision !== revision || this.role !== 'camera' || !this.reconnecting) return;
-        if (error.message === 'connection.invalid') this.stop(error.message);
-        else this.retryIntroduction();
+      if (this.revision !== revision || this.role !== 'camera' || !this.reconnecting || !this.visible()) return;
+      void this.restoreSignaling();
+    }, INTRODUCTION_RETRIES[this.retryAttempts]);
+  }
+
+  restoreSignaling({ manual = false } = {}) {
+    if (this.role !== 'camera' || !this.signalingLost || !this.visible()) return Promise.resolve(false);
+    if (this.signalingRetry) return this.signalingRetry.promise;
+    if (manual) this.retryAttempts = 0;
+    if (this.retryAttempts >= INTRODUCTION_RETRIES.length) return Promise.resolve(false);
+    clearTimeout(this.retryTimer);
+    this.retryTimer = null;
+    this.reconnecting = true;
+    this.signalingUnavailable = false;
+    this.retryAttempts += 1;
+    const flight = { revision: this.revision, promise: null };
+    this.signalingRetry = flight;
+    flight.promise = Promise.resolve().then(() => {
+      if (this.signalingRetry !== flight || this.revision !== flight.revision || !this.visible()) return false;
+      return this.open(this.code, this.discoverable, true).then(() => this.revision === flight.revision, (error) => {
+        if (this.revision === flight.revision && error.message === 'connection.invalid') this.stop(error.message);
+        return false;
       });
-    }, INTRODUCTION_RETRIES[this.retryAttempts++]);
+    }).finally(() => {
+      if (this.signalingRetry === flight) {
+        this.signalingRetry = null;
+        this.onSignaling();
+        if (this.signalingLost && this.reconnecting) this.retryIntroduction();
+      }
+    });
+    this.onSignaling();
+    return flight.promise;
   }
 
   send(data, id = null) {
@@ -490,7 +527,7 @@ export class CameraSession {
     const entry = this.peers.get(id);
     if (!entry?.pending || entry.refused || this.viewerCount >= this.maxViewers || this.role !== 'camera' || this.cameraChange) return false;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
-    if (!track) { this.stop('camera.ended'); return false; }
+    if (!track) { this.state('camera.paused'); return false; }
     entry.pending = false;
     entry.approved = true;
     try {
@@ -517,7 +554,7 @@ export class CameraSession {
       await this.bandwidth.update([...this.peers.values()].filter((peer) => peer.approved), this.videoBudget);
       if (!this.current(entry) || this.role !== 'camera' || this.cameraChange) return;
       const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
-      if (!track) { this.stop('camera.ended'); return; }
+      if (!track) { this.state('camera.paused'); return; }
       try {
         // Approval and SDP use different transports. The acknowledgement proves
         // the viewer processed approval before a video offer can overtake it.
@@ -545,7 +582,7 @@ export class CameraSession {
     } finally { entry.videoStarting = false; }
   }
 
-  prepareCameraChange() {
+  prepareCameraChange({ preserveOnFailure = false } = {}) {
     if (this.role !== 'camera' || this.cameraChange) throw new Error('camera.switch-failed');
     const revision = this.revision;
     const operation = { candidate: null, committing: false };
@@ -555,7 +592,8 @@ export class CameraSession {
       if (!current()) return;
       this.cameraChange = null;
       if (!this.stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
-        this.stop('camera.switch-ended');
+        if (preserveOnFailure) { this.state('camera.paused'); this.requests(); }
+        else this.stop('camera.switch-ended');
         return;
       }
       for (const entry of this.peers.values()) {
@@ -577,19 +615,23 @@ export class CameraSession {
         if (operation.committing) throw new Error('camera.switch-failed');
         const track = stream?.getVideoTracks().find((item) => item.readyState === 'live');
         if (!track) throw new Error('camera.switch-failed');
+        const audio = stream.getAudioTracks?.().find((item) => item.readyState === 'live') ?? null;
         operation.candidate = stream;
         operation.committing = true;
         const replacements = [...this.peers.values()].filter((entry) => entry.video && entry.sender)
-          .map((entry) => ({ entry, sender: entry.sender, previous: entry.sender.track }));
+          .flatMap((entry) => [
+            { entry, sender: entry.sender, previous: entry.sender.track, next: track },
+            ...(entry.audioSender ? [{ entry, sender: entry.audioSender, previous: entry.audioSender.track, next: audio }] : []),
+          ]).filter(({ sender, next }) => sender.track !== next);
         try {
-          const results = await Promise.allSettled(replacements.map(async ({ sender }) => sender.replaceTrack(track)));
+          const results = await Promise.allSettled(replacements.map(async ({ sender, next }) => sender.replaceTrack(next)));
           if (!current()) return false;
           const failed = results.find((result, index) => result.status === 'rejected' && this.current(replacements[index].entry));
-          if (failed || track.readyState !== 'live') {
+          if (failed || track.readyState !== 'live' || audio?.readyState === 'ended') {
             // A failed encoder must not leave the other viewers on a camera
             // that capture will discard. Only surviving senders need rollback.
             await Promise.all(replacements.map(async ({ entry, sender, previous }, index) => {
-              if (results[index].status !== 'fulfilled' || !this.current(entry) || previous?.readyState !== 'live') return;
+              if (results[index].status !== 'fulfilled' || !this.current(entry) || (previous && previous.readyState !== 'live')) return;
               try { await sender.replaceTrack(previous); }
               catch { if (current() && this.current(entry)) this.peerFailed(entry, 'connection.ended'); }
             }));
@@ -653,7 +695,15 @@ export class CameraSession {
 
   stop(key = 'connection.stopped') {
     const role = this.role;
+    // The encrypted control remains authoritative when the room socket is lost.
+    if (role === 'camera' && key === 'connection.stopped') {
+      for (const entry of this.peers.values()) {
+        try { this.control(entry, 'ended'); } catch {}
+      }
+    }
     this.revision += 1;
+    this.signalingRetry = null;
+    this.signalingLost = false;
     const tracks = new Set([...(this.cameraChange?.candidate?.getTracks() ?? []), ...(this.stream?.getTracks() ?? [])]);
     tracks.forEach((track) => {
       if (track.readyState !== 'ended') track.stop();
@@ -679,6 +729,7 @@ export class CameraSession {
     socket?.close();
     if (role === 'viewer') this.onStream(null);
     if (role) this.onState(key, role);
+    this.onSignaling();
   }
 
   async inspect() {
