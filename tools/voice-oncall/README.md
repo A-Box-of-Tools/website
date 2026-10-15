@@ -106,3 +106,12 @@ removal, reconnect moderation, hidden hands-free continuity, hold release,
 microphone interruptions, silent capture replacement, End/Disconnect and late
 microphone cleanup. Simulated lifecycle events do not prove locked-screen
 continuity; physical phones and Wi-Fi routes need separate acceptance.
+
+## The shared pairing library
+
+Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events
+come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
+[The pairing library guide](../../docs/paired-tools.md) describes their contract
+and how another tool can use them. This tool still owns its protocol, consent,
+credentials, approval and media policy; a foreground event cannot grant any of
+those permissions or undo an explicit Stop.

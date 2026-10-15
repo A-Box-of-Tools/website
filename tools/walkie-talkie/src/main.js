@@ -2,6 +2,7 @@ import { BroadcastSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { observeForeground } from './shared/foreground-recovery.js';
 
 activateChannel();
 const privacyToggle = document.getElementById('privacy-toggle');
@@ -697,40 +698,43 @@ function activateChannel() {
     renderChannels();
     discovery.refresh();
   });
-  window.addEventListener('blur', () => {
-    if (role === 'host') releaseHold();
-  });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
+  let resumeListenerOnReturn = false;
+  observeForeground({
+    blur() { if (role === 'host') releaseHold(); },
+    hidden() {
       if (role === 'host') {
         releaseHold();
         if (starting && !hostActive) stopHiddenSource();
       }
-    } else {
+    },
+    foreground() {
       discovery.refresh();
       resumeHiddenHost();
       void resumeHostMicrophone(true);
-      if (role === 'listener') void playAudio();
-    }
-  });
-  window.addEventListener('pagehide', () => {
-    pageSuspended = true;
-    if (role === 'host') stopHiddenSource();
-    else {
-      sessionGeneration++;
-      session?.stop({ notify: false, state: null });
-      session = null;
-      receiveStream(null);
-    }
-    discovery.close();
-    lastPublication = null;
-  });
-  window.addEventListener('pageshow', event => {
-    pageSuspended = false;
-    if (event.persisted) discovery = openDiscovery();
-    if (role === 'host') resumeHiddenHost();
-    if (role === 'host') void resumeHostMicrophone(true);
-    if (event.persisted && role === 'listener' && !listenerLeft && !listenerEnded) void startListener();
+      const reconnect = resumeListenerOnReturn;
+      resumeListenerOnReturn = false;
+      if (role === 'listener') {
+        if (reconnect && !listenerLeft && !listenerEnded) void startListener();
+        else void playAudio();
+      }
+    },
+    suspend() {
+      pageSuspended = true;
+      if (role === 'host') stopHiddenSource();
+      else {
+        sessionGeneration++;
+        session?.stop({ notify: false, state: null });
+        session = null;
+        receiveStream(null);
+      }
+      discovery.close();
+      lastPublication = null;
+    },
+    restore(event) {
+      pageSuspended = false;
+      if (event.persisted) discovery = openDiscovery();
+      resumeListenerOnReturn = event.persisted && role === 'listener' && !listenerLeft && !listenerEnded;
+    },
   });
 
   if (role === 'host') renderState(hostNeedsResume ? 'host-resume-needed' : 'host-idle');

@@ -2,6 +2,7 @@ import { phrase, ltr } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
+import { observeForeground } from './shared/foreground-recovery.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
 import { alertCapabilities, ViewerAlerts } from './alerts.js';
@@ -943,24 +944,23 @@ $('camera-copy').addEventListener('click', async () => {
     $('copy-status').textContent = phrase('copy.manual');
   }
 });
-window.addEventListener('pagehide', (event) => {
-  pageSuspended = true;
-  if (event.persisted && cameraIntent) {
-    suspendCameraResources();
-  } else stop();
-  discovery?.close(); discovery = null;
-});
-window.addEventListener('pageshow', () => {
-  pageSuspended = false;
-  if (!discovery) startDiscovery();
-  visibleCamera();
-});
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
+observeForeground({
+  foreground: visibleCamera,
+  hidden() {
     releaseWake();
     if (cameraIntent && (cameraStarting || cameraResuming || capture.switching)) suspendCameraResources();
     else if (cameraIntent) resumeOnVisible = true;
-  } else visibleCamera();
+  },
+  suspend(event) {
+    pageSuspended = true;
+    if (event.persisted && cameraIntent) suspendCameraResources();
+    else stop();
+    discovery?.close(); discovery = null;
+  },
+  restore() {
+    pageSuspended = false;
+    if (!discovery) startDiscovery();
+  },
 });
 window.addEventListener('hashchange', () => {
   const code = parseCode(location.hash);

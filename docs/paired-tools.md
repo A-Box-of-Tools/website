@@ -1,0 +1,88 @@
+# Pairing tools through shared parts
+
+Share Text & Files, Local Walkie-Talkie, Voice Oncall and Remote Camera use the
+same pairing primitives. They live under `shared/js/`, have no dependencies,
+and are copied into each tool by `js_parts`, so every built tool remains a
+complete folder with versioned imports and its own service-worker cache.
+
+The library has two layers. `peer-pairing.js` owns a signaling socket's
+callbacks and timers. `foreground-recovery.js` observes page lifecycle events
+and supplies an optional bounded retry controller. `peer-network.js` already
+owns ICE configuration and local candidate/SDP filtering; `peer-discovery.js`
+and `room-names.js` supply the existing discovery and room-name primitives.
+Both voice tools also share their authenticated protocol in `voice-session.js`.
+
+## Owning an introduction
+
+Add `"peer-pairing"` to a tool's `js_parts`, then import `PairingSocket` from
+`./shared/peer-pairing.js`. Wrap the socket the tool creates for its own
+endpoint. Pass a `current` predicate that checks the active session and the
+identity of that socket. The wrapper checks it before dispatching events,
+sending frames or running a timer; `close()` permanently retires the wrapper
+before clearing its handlers and timers. An old socket cannot acquire the
+authority of its replacement.
+
+`listen({ open, message, close, error })` installs guarded callbacks. Messages
+remain raw events: authentication, frame limits, parsing, ordering and terminal
+controls belong to the protocol adapter. Opening a WebSocket is never proof
+that a participant has authenticated or that a viewer has been approved.
+
+`send(frame)` sends strings unchanged and serializes objects as JSON. It returns
+false for a retired socket, a socket that is not open, a full configured buffer,
+or a failed send. `maxBuffered` is optional, and `onSendError` lets an adapter
+report or recover from a thrown send. Callers must handle a false return when
+their protocol requires delivery.
+
+`after(name, delay, callback)` and `every(name, delay, callback)` own named
+deadlines and recurring work. Replacing or clearing a timer invalidates even a
+callback already queued by the browser. `clear(name)` cancels that work.
+`probe({ timeout, onTimeout, accept })` sends one ping and waits for an accepted
+raw message. Its default acceptance rule is the exact string `pong`; repeated
+probes share the pending deadline. Accepted messages still reach the adapter.
+`cancelProbe()` cancels the pending probe. These helpers do not choose retry
+timing or tear down healthy WebRTC peers when introductions disappear.
+
+## Returning to a page
+
+Add `"foreground-recovery"` to `js_parts` and import `observeForeground`.
+It routes visibility, pageshow, online, pagehide and blur events to the
+callbacks a tool supplies. Visible/online/pageshow events coalesce into one
+foreground callback in a microtask, with visibility checked again on delivery.
+Hidden and suspended pages invalidate pending work; pagehide holds foreground
+callbacks until pageshow. The optional restore callback runs before foreground
+recovery, so an adapter can restore its own suspended state first. The returned
+disposer removes listeners and invalidates queued callbacks.
+
+The observer does not call recovery at registration. A tool's Start or Connect
+action remains the only source of new session intent. The foreground callback
+must check that intent before probing, reconnecting or replacing media. A
+hidden callback may release a held Talk button without stopping healthy
+hands-free audio. Media permissions, track replacement, mute state and explicit
+Stop remain the tool's responsibility.
+
+The separate `foregroundRecovery(retry, options)` helper is Share Text's bounded
+retry scheduler. It exposes `start`, `ready`, `pause`, `foreground`, `stop` and
+`active`; its caller supplies the eligibility check, delay, limit and exhausted
+callback. `start` requires existing consent, `ready` requires the tool's actual
+introduction, and `stop` invalidates queued retries. This controller is optional:
+camera and voice keep their established retry schedules and readiness rules.
+
+## What each adapter retains
+
+| Tool | Pairing and recovery decisions |
+|---|---|
+| Share Text & Files | Explicit Connect, Local/direct/relay selection, private admission tokens, reader mode and partial-file retirement. Reader recovery is ready after the private/text introduction; socket open alone does not reset its retry budget. |
+| Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
+| Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
+| Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
+
+Recovery must not widen a transport policy, re-enable a microphone, lose an
+approval requirement or restore a session the user ended. The shared parts
+never request devices, save session intent, or choose a server. No worker
+protocol or deployment changes are needed to use them.
+
+The shared unit tests exercise socket retirement, timers, probes and page
+lifecycle coalescing. Existing session tests and browser QA exercise each
+adapter's permissions, direct connections and recovery. A browser can still
+suspend a locked phone; sharing this code makes recovery consistent but does
+not change the operating system's background execution policy.

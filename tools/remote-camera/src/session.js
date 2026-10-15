@@ -1,4 +1,5 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
+import { PairingSocket } from './shared/peer-pairing.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
@@ -30,6 +31,7 @@ export class CameraSession {
     this.revision = 0;
     this.role = null;
     this.socket = null;
+    this.pairing = null;
     this.stream = null;
     this.peers = new Map();
     this.keepalive = null;
@@ -123,10 +125,11 @@ export class CameraSession {
       let settled = false, opened = false;
       const socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
       const current = () => this.revision === revision && this.socket === socket;
+      const pairing = this.pairing = new PairingSocket(socket, { current });
       const finish = () => {
         if (!current() || settled) return;
         settled = true;
-        clearTimeout(this.socketDeadline);
+        pairing.clear('opening');
         this.socketDeadline = null;
         this.cancelOpen = null;
         if (recovering) {
@@ -141,7 +144,7 @@ export class CameraSession {
       };
       const fail = (key) => {
         if (!current()) return;
-        clearTimeout(this.socketDeadline);
+        pairing.clear('opening');
         this.socketDeadline = null;
         this.cancelOpen = null;
         this.detachSocket(socket);
@@ -157,35 +160,34 @@ export class CameraSession {
           if (!settled) { settled = true; reject(new Error(key)); }
         }
       };
-      this.socketDeadline = setTimeout(() => fail('connection.server-failed'), CONNECT_TIMEOUT);
+      this.socketDeadline = pairing.after('opening', CONNECT_TIMEOUT, () => fail('connection.server-failed'));
       this.cancelOpen = () => {
         if (!settled) { settled = true; reject(new Error('connection.stopped')); }
       };
-      socket.addEventListener('open', () => {
-        if (!current()) return;
-        opened = true;
-        this.keepalive = setInterval(() => {
-          if (!current() || socket.readyState !== 1) return;
-          try { socket.send('ping'); } catch { fail('connection.server-failed'); }
-        }, 25000);
-        // A refused upgrade also fires open. A pong proves that a recovery
-        // socket owns the room before its retry budget can be reset.
-        if (recovering) {
-          try { socket.send('ping'); } catch { fail('connection.server-failed'); }
-        } else finish();
-      });
-      socket.addEventListener('error', () => fail('connection.server-failed'));
-      socket.addEventListener('close', (event) => {
-        const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' };
-        fail(reasons[event.code] ?? 'connection.server-failed');
-      });
-      socket.addEventListener('message', (event) => {
-        if (!current()) return;
-        if (event.data === 'pong') { if (recovering && opened) finish(); return; }
-        if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
-        let message;
-        try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
-        try { this.message(message); } catch { fail('connection.invalid'); }
+      pairing.listen({
+        open: () => {
+          opened = true;
+          this.keepalive = pairing.every('heartbeat', 25000, () => {
+            if (socket.readyState === 1 && !pairing.send('ping')) fail('connection.server-failed');
+          });
+          // A refused upgrade also fires open. A pong proves that a recovery
+          // socket owns the room before its retry budget can be reset.
+          if (recovering) {
+            if (!pairing.send('ping')) fail('connection.server-failed');
+          } else finish();
+        },
+        error: () => fail('connection.server-failed'),
+        close: (event) => {
+          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' };
+          fail(reasons[event.code] ?? 'connection.server-failed');
+        },
+        message: (event) => {
+          if (event.data === 'pong') { if (recovering && opened) finish(); return; }
+          if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
+          let message;
+          try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
+          try { this.message(message); } catch { fail('connection.invalid'); }
+        },
       });
     });
   }
@@ -203,10 +205,12 @@ export class CameraSession {
 
   detachSocket(socket) {
     if (this.socket !== socket) return;
+    const pairing = this.pairing;
     this.socket = null;
-    clearInterval(this.keepalive);
+    this.pairing = null;
     this.keepalive = null;
-    try { socket.close(); } catch {}
+    this.socketDeadline = null;
+    pairing.close();
   }
 
   lostIntroduction(key, opened) {
@@ -288,8 +292,7 @@ export class CameraSession {
   }
 
   send(data, id = null) {
-    if (this.socket?.readyState !== 1) throw new Error('connection.server-failed');
-    this.socket.send(JSON.stringify(id === null ? { data } : { to: id, data }));
+    if (!this.pairing?.send(JSON.stringify(id === null ? { data } : { to: id, data }))) throw new Error('connection.server-failed');
   }
 
   message(message) {
@@ -710,9 +713,7 @@ export class CameraSession {
     });
     this.cameraChange = null;
     this.bandwidth.clear();
-    clearInterval(this.keepalive);
     this.keepalive = null;
-    clearTimeout(this.socketDeadline);
     this.socketDeadline = null;
     this.cancelOpen?.();
     this.cancelOpen = null;
@@ -721,12 +722,13 @@ export class CameraSession {
     this.retryAttempts = 0;
     this.reconnecting = false;
     this.signalingUnavailable = false;
-    const socket = this.socket;
+    const pairing = this.pairing;
     this.socket = null;
+    this.pairing = null;
     this.role = null;
     for (const id of [...this.peers.keys()]) this.removePeer(id);
     this.stream = null;
-    socket?.close();
+    pairing?.close();
     if (role === 'viewer') this.onStream(null);
     if (role) this.onState(key, role);
     this.onSignaling();

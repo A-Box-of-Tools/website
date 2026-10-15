@@ -2,6 +2,7 @@ import { InboxSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { observeForeground } from './shared/foreground-recovery.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
@@ -1011,9 +1012,6 @@ function activateOncall() {
       ui['copy-note'].textContent = phrase('copy-error');
     }
   });
-  window.addEventListener('blur', () => {
-    if (activeRole === 'sender') releaseHold();
-  });
   function returnToPage() {
     if (pageSuspended || document.hidden) return;
     discovery.refresh();
@@ -1024,34 +1022,37 @@ function activateOncall() {
     else if (activeRole === 'sender' && senderActive) void resumeSenderMicrophone(true);
     if (activeRole === 'host') resumeHostSound();
   }
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && activeRole === 'sender') {
-      releaseHold();
-      if (starting) {
-        resumeRoleOnReturn = 'sender';
-        pauseSender();
+  observeForeground({
+    blur() { if (activeRole === 'sender') releaseHold(); },
+    foreground: returnToPage,
+    hidden() {
+      if (activeRole === 'sender') {
+        releaseHold();
+        if (starting) {
+          resumeRoleOnReturn = 'sender';
+          pauseSender();
+        }
       }
-    } else if (!document.hidden) returnToPage();
-  });
-  window.addEventListener('pagehide', () => {
-    if (hostActive || senderActive || starting) resumeRoleOnReturn = activeRole;
-    pageSuspended = true;
-    discovery.close();
-    lastPublication = null;
-    if (activeRole === 'sender') pauseSender();
-    else if (activeRole === 'host') {
-      operationEpoch++;
-      stopSession(false);
-      clearAudio();
-      starting = false;
-      hostActive = false;
-      renderState('host-paused');
-    }
-  });
-  window.addEventListener('pageshow', event => {
-    pageSuspended = false;
-    if (event.persisted) discovery = openDiscovery();
-    returnToPage();
+    },
+    suspend() {
+      if (hostActive || senderActive || starting) resumeRoleOnReturn = activeRole;
+      pageSuspended = true;
+      discovery.close();
+      lastPublication = null;
+      if (activeRole === 'sender') pauseSender();
+      else if (activeRole === 'host') {
+        operationEpoch++;
+        stopSession(false);
+        clearAudio();
+        starting = false;
+        hostActive = false;
+        renderState('host-paused');
+      }
+    },
+    restore(event) {
+      pageSuspended = false;
+      if (event.persisted) discovery = openDiscovery();
+    },
   });
 
   updateHostPassword();
