@@ -19,8 +19,8 @@ promises to delete it — this one is structurally incapable of keeping it.
 This is the first tool on the site with a network step, so the rule from
 [docs/adding-a-tool.md](../../docs/adding-a-tool.md) applies: it says so on
 its own page, in plain language, and does not weaken the site-wide claim
-quietly. The page's `connect-src` names exactly one origin of ours — the
-**rendezvous**, a Cloudflare Worker whose whole source is in
+quietly. The page's `connect-src` names the production and development origins
+of the **rendezvous**, a Cloudflare Worker whose whole source is in
 [`workers/rendezvous/`](../../workers/rendezvous/). A direct connection
 needs an introduction: something must match the reader who typed
 `brave-otter-42` with the sharer under that name and pass a few KB of WebRTC
@@ -32,11 +32,14 @@ when peers come and go, their IPs, and the negotiation blobs. What it
 cannot see: the text, the files, who was admitted, or what a knock said —
 all of that travels the peer channel.
 
-The endpoint is a constant at the top of `src/main.js` and one line in
-`tool.toml`'s `[csp]`; those two places change together or not at all. It is
-a subdomain of the site, `rendezvous.abox.tools`, rather than the worker's
+The shared `peer-endpoint.js` selects `wss://rendezvous-dev.abox.tools` for
+localhost, 127.0.0.1 and this project's HTTPS Cloudflare previews; other page
+addresses use `wss://rendezvous.abox.tools`. Discovery and room sockets use
+the same selected service, and a failed development service never falls back
+to production. Both origins are named in `tool.toml`'s `[csp]`. They are
+subdomains of the site rather than the worker's
 own `workers.dev` name, because that whole domain is blocked inside mainland
-China and the site's is not; the worker answers at both.
+China and the site's is not.
 In ordinary mode, STUN (Cloudflare's and Google's public servers) helps the
 browsers discover their own addresses; ICE traffic — STUN and, when a reader
 chooses it, the TURN relay — is outside `connect-src`'s vocabulary, which is

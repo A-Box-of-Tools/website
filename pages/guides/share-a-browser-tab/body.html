@@ -1,28 +1,72 @@
   <section>
-    <h2>Choose the tab, then invite the viewer</h2>
+    <h2>Choose the tab and a pairing method</h2>
     <p>
       Open the website in one tab and <a href="../../share-tab/">Share a
-      Browser Tab</a> in another on your computer. Choose <em>Choose a tab to
-      share</em> and select
-      the website tab in your browser's own picker. Choose a browser tab,
+      Browser Tab</a> in another on your computer. Both devices need a
+      reachable Wi-Fi, Ethernet or hotspot network. Choose <em>Online</em>
+      for an internet introduction and a viewer link, or <em>Offline</em>
+      to exchange connection blocks yourself. Then click <em>Choose a tab
+      to share</em> and select the website tab in your browser's own picker.
+      Choose a browser tab,
       rather than a window or your whole screen: this tool refuses those
       broader sources. Check the local preview before sending the link.
     </p>
     <p>
-      Choose <em>Copy viewer link</em> and send it to the other person. They
+      In Online mode, choose <em>Copy viewer link</em> and send it to the other person. They
       open it, read the connection notice, optionally add a short introduction
       and choose <em>Request to watch</em>. Return
       to the sharing page to approve the request you expect. The connection
       first carries only encrypted control messages; video begins after your
       approval and the viewer's acknowledgement. One viewer can watch at a
-      time, with up to four requests waiting.
+      time, with up to four online requests waiting.
     </p>
     <p>
       Work in the selected website tab while keeping the sharing page open.
       A current desktop Chrome or Edge browser is the intended host. The
       viewer needs a browser that can play WebRTC video, without an extension
-      or an account on the website you show. Both devices need internet for
-      the introduction.
+      or an account on the website you show. Online pairing needs internet
+      for its introduction. The video connection itself uses host addresses,
+      with no public STUN service or internet relay in either method.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pair offline on the same Wi-Fi or hotspot</h2>
+    <p>
+      Prepare both devices before losing internet. Open this HTTPS tool on
+      each and wait for each offline indicator to say ready. The tool can
+      then open from its saved browser cache. Keep the website you want to
+      show loaded too, or use a website that works offline. Choosing Offline
+      cannot make an unavailable website load.
+    </p>
+    <p>
+      Connect the devices to a reachable Wi-Fi, Ethernet or hotspot network
+      yourself, then choose <em>Offline &mdash; exchange connection blocks</em>
+      on both pages. This page does not create a hotspot, Wi-Fi Direct or
+      Bluetooth link. A hotspot can work without internet if it allows its
+      devices to reach each other; client isolation can prevent that.
+    </p>
+    <ol>
+      <li>On the host, choose the tab and wait for the <em>Host connection block</em>.</li>
+      <li>Copy that block or save it as a file, then transfer it to the viewer using an available local method.</li>
+      <li>On the viewer, paste or load the host block, optionally add a note and choose <em>Create viewer reply</em>.</li>
+      <li>Return the <em>Viewer reply block</em> or its saved file to the host.</li>
+      <li>On the host, paste or load that reply and choose <em>Connect viewer</em>. When the request appears, approve the viewer you expect.</li>
+    </ol>
+    <p>
+      Keep both pages open during the exchange. The blocks contain network
+      addresses and other connection information, so send them only to the
+      intended person. File controls let you use your operating system's
+      local transfer options, such as Bluetooth or USB; the tool does not
+      transfer those files for you. Remove saved blocks when no longer needed.
+      An expired or mismatched exchange needs fresh blocks.
+    </p>
+    <p>
+      Offline pairing opens no introduction-service connection and uses no
+      public address-discovery service or relay. Establishing the connection
+      still sends no video: the separate host approval step remains. One
+      offline exchange connects one viewer, and another viewer needs a fresh
+      exchange.
     </p>
   </section>
 
@@ -54,18 +98,20 @@
   </section>
 
   <section>
-    <h2>The link permits a request; your approval permits video</h2>
+    <h2>The invitation permits a request; your approval permits video</h2>
     <p>
-      Each session has a fresh random link and is not listed in a discovery
-      directory. Anyone who obtains the link can request a connection,
-      including the network-address exchange needed to establish it. They
-      still need your approval for video. The name or note they type is not
+      Online sessions have fresh random links; offline sessions have fresh
+      connection blocks. Neither method lists a share in a discovery
+      directory. Anyone who obtains an invitation can attempt a connection,
+      including its network-address exchange. They still need your approval
+      for video. The name or note they type is not
       verified identity, so recognise the person through the conversation
       you already have and approve only the request you expect.
     </p>
     <p>
       A URL fragment does not hide a link code from scripts running in the
-      same page, and a browser may keep its history. The tool page has the
+      same page, and a browser may keep its history. Pasted connection blocks
+      are also visible to same-page scripts. The tool page has the
       site's usual advertising, measurement and donation scripts. The tool
       does not deliberately send them video or notes, but same-page scripts
       can read the page's address and state. Mandatory approval remains the
@@ -76,27 +122,30 @@
   <section>
     <h2>How the video reaches the other browser</h2>
     <p>
-      A small introduction service matches the browsers through the random
-      code and forwards WebRTC setup messages. It sees the code, addresses,
+      In Online mode, a small introduction service matches the browsers
+      through the random code and forwards WebRTC setup messages. It sees the code, addresses,
       connection times, descriptions and connection candidates. Setup is
       not hidden from that service, but the video, viewer note and approval
       decisions do not pass through it. Cloudflare keeps connection request
       metadata for seven days. The service writes no room content to storage.
+      Offline mode uses only the exchanged blocks and does not contact that
+      service.
     </p>
     <p>
-      The browsers try a direct encrypted WebRTC connection first, using
-      public STUN services to find reachable addresses. Each browser learns
-      network addresses from the other before video approval. When a direct
-      path fails, the viewer can explicitly choose a fresh attempt through
-      Cloudflare's TURN relay. It forwards encrypted traffic without the
-      media keys and sees addresses, timing and traffic volume. The tool
-      never selects that relay automatically.
+      Both methods use a direct encrypted WebRTC connection with no STUN
+      server or TURN relay. Setup accepts only the browsers' host connection
+      addresses, and each browser learns addresses from the other before
+      video approval. Host addresses can include public interfaces or follow
+      a VPN route; this policy does not prove that traffic stays inside a
+      building.
     </p>
     <p>
-      A firewall, VPN, browser policy or restrictive network can block either
-      path. Try the actual connection before a demonstration or support
-      call, and keep an agreed fallback. A missing relay configuration is a
-      visible failure, rather than a promise that every network can connect.
+      Guest-network or hotspot isolation, firewalls, VPN routes and browser
+      local-network permissions can block the connection. Sharing a Wi-Fi
+      name alone does not establish reachability. Try the actual network
+      before a demonstration or support call. Neither method falls back to
+      an internet relay, and online pairing is not a promise of continuity
+      when its internet connection disappears.
     </p>
   </section>
 
@@ -114,7 +163,7 @@
       when finished. Closing the sharing page or ending the captured tab
       also ends the source. If capture ends, returning to the page never
       silently captures again. Start again, choose a tab again and send the
-      new invitation. A viewer who disconnects leaves the host's selected
-      source available, but a new viewer still needs fresh approval.
+      new invitation or connection blocks. A new viewer always needs fresh
+      approval.
     </p>
   </section>

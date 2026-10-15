@@ -1,8 +1,8 @@
 # The rendezvous
 
-The one server component anything on this site has. `/share-text/`,
+The one server component anything on this site has. `/share-text/`, `/share-tab/`,
 `/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect browsers directly over WebRTC.
-Text and files, camera frames, and voice stay on the peer connection. A direct
+Text and files, tab video, camera frames, and voice stay on the peer connection. A direct
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
 them and match "the person who typed `brave-otter-42`" with the other person
@@ -70,6 +70,64 @@ and the page does not configure STUN or TURN. Host-only ICE candidates can
 include globally routable interface addresses, especially IPv6: a candidate
 type describes how an address was obtained, not a physical LAN boundary.
 
+### Development worker
+
+`env.dev` in `wrangler.toml` deploys a separate Worker named `rendezvous-dev`,
+with the custom domain `rendezvous-dev.abox.tools` and its own `workers.dev`
+address. Its explicit route list contains only the development hostname;
+it must never inherit or include the production `rendezvous.abox.tools` route.
+The top-level configuration remains the production deployment.
+
+From this directory, using Wrangler 4.36 or later:
+
+```
+npx wrangler deploy --env dev --dry-run
+npx wrangler deploy --env dev
+```
+
+The first command checks and bundles the development configuration without
+deploying it. The second creates or updates only the development Worker and
+its configured custom domain. Future worker changes can be tried there before
+a separately requested production deployment. The static Pages preview
+workflow does not deploy either Worker.
+
+Repeat all four Durable Object bindings under `env.dev`, without a
+`script_name` pointing at production. Cloudflare binds those classes to the
+development Worker, giving rooms, discovery, voice objects, socket state and
+any future storage separate namespaces. The existing `v1` through `v4`
+migration history is inherited and creates the same classes in that separate
+Worker. Do not copy production namespace identifiers into the environment.
+The `LIMIT` binding uses namespace `1002`, while production uses `1001`, so
+development requests do not consume the production address counter.
+The existing logging policy is inherited: invocation metadata logs are on,
+traces are off, and no message payload is added to logs.
+
+The paired tools' shared endpoint selector uses this development hostname
+on localhost and recognized `abox-preview.pages.dev` preview hosts. Production
+pages continue to use `rendezvous.abox.tools`. Discovery and room sockets must
+use the same selection; a failed development connection must not fall back to
+production. Each tool's CSP names both permitted hosts. Choosing a different
+endpoint through a page query parameter is not supported.
+
+Deployment needs an authenticated Wrangler session or an API token permitted
+to create the development Worker and attach its custom domain in the
+`abox.tools` zone. A Pages-only upload token is insufficient. Cloudflare's
+current permissions distinguish creating a Worker from updating one; custom
+domain changes also need the affected zone's Workers Routes write authority.
+Keep account credentials outside this repository.
+
+Worker secrets are environment-specific and are not copied from production.
+The development instance can pair without TURN secrets. Share a Browser Tab,
+Remote Camera and the voice tools do not use an internet relay. Testing Share
+Text's optional relay would require separately configured development secrets,
+using `wrangler secret put <name> --env dev`; never export production secrets
+into a checked-in file to populate the environment.
+
+Cloudflare documents [environment inheritance](https://developers.cloudflare.com/workers/wrangler/configuration/#environments),
+[separate Durable Object environments](https://developers.cloudflare.com/durable-objects/reference/environments/),
+[account-wide rate-limit namespace counters](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/),
+and [deployment permissions](https://developers.cloudflare.com/workers/authorization/workers/).
+
 ### The browser-tab namespace
 
 Share a Browser Tab uses the existing room protocol with `tool=share-tab` on
@@ -80,9 +138,11 @@ worker refuses the unknown namespace; the page must not retry in a text room.
 
 Deploy this allowlist update manually from this directory before publishing
 the static page. It adds no class, binding, migration, storage or secret.
-The page uses no discovery listing. It reuses the existing optional TURN
-credentials only after a viewer explicitly chooses a relay retry, so the
-current relay secrets remain sufficient. Approval and acknowledgement stay
+The page uses no discovery listing. Both its online and offline methods use
+host-only ICE, without public STUN or TURN; this tool never requests the
+existing relay credentials. Online pairing uses this namespace, while offline
+offer/reply exchange opens no worker socket. That page-side transport choice
+needs no new worker protocol or deployment. Approval and acknowledgement stay
 on the encrypted control channel; the worker carries neither them nor video.
 
 ### The discovery migration

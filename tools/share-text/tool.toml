@@ -37,7 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-js_parts = ["connection-diagnostics", "peer-pairing", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
+js_parts = ["connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
 lastmod = "2026-10-14"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -52,7 +52,9 @@ og_card = "Text and files, straight from your open tab to theirs - and gone the 
 
 # Appended to the Content-Security-Policy comment in the generated page.
 csp_note = """
-  This tool has a network feature whose CSP names an origin of ours: connect-src
+  Local builds and HTTPS abox-preview.pages.dev previews use the separate
+  rendezvous-dev.abox.tools service; other page addresses use production.
+  This tool has a network feature whose CSP names our rendezvous origins: connect-src
   carries the rendezvous, the WebSocket that matches the two ends of a link
   name and relays their WebRTC negotiation. It is the introduction only -
   the text and files travel the peer-to-peer channel, which CSP does not
@@ -113,7 +115,7 @@ card = """
 
 # The one directive this tool widens: its own rendezvous. See csp_note.
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 
 [words]
 plural = "shared text and files"

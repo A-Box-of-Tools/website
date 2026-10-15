@@ -13,7 +13,7 @@ glyph = "camera"
 category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
 lastmod = "2026-10-14"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
@@ -22,6 +22,8 @@ og_description = "A direct camera view between two browsers, with camera permiss
 og_image_alt = "Remote Camera - watch a camera from another device"
 og_card = "A live camera, straight from one browser to another."
 csp_note = """
+  Local builds and HTTPS abox-preview.pages.dev previews use the separate
+  rendezvous-dev.abox.tools service; other page addresses use production.
   Opening this page opens a discovery WebSocket to the rendezvous that lists
   opted-in camera names. Start camera, Connect or choosing an online camera adds a room WebSocket carrying
   WebRTC descriptions and host candidates, never video or audio. The encrypted control channel carries the viewer note and
@@ -57,7 +59,7 @@ pledge_line = "Camera video goes <strong>directly to accepted viewers</strong>. 
 md_note = "Camera video travels directly between connected browsers, with viewer approval on by default. Internet rendezvous carries setup metadata, never video or audio. Audio is off by default; optional viewer alerts analyze media locally. No recording feature."
 
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 
 [words]
 plural = "camera video"

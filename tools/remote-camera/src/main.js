@@ -1,6 +1,7 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { createDiagnostics } from './shared/connection-diagnostics.js';
@@ -292,7 +293,7 @@ function renderDiscovery() {
 }
 
 function startDiscovery() {
-  discovery = watchDiscovery(`wss://rendezvous.abox.tools/discover?tool=${TOOL}`, {
+  discovery = watchDiscovery(`${rendezvousEndpoint()}/discover?tool=${TOOL}`, {
     list(list) { foundCameras = list; renderDiscovery(); },
     status(state) { discoveryState = state; renderDiscovery(); },
     publication(state) {
