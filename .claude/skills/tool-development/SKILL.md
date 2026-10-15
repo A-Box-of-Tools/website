@@ -1,6 +1,6 @@
 ---
 name: tool-development
-description: "Add, update, or reuse code in this repository — the abox.tools static site of browser-only tools. Use this whenever a task touches tools/, shared/, pages/, templates/, locales/, config/ or buildlib/: building a new tool, fixing or extending an existing one, moving code into a shared part, writing a guide, or changing the build — even when the request only says \"fix X\" or \"add a feature to Y\" without naming a file. It carries the checklists the build enforces, the verification commands, and the traps (LF-only files, positional planned.toml lists, ./shared/ imports in tested modules, og-image redraws) that are not guessable from the code alone."
+description: "Add, update, or reuse code in this repository — the abox.tools static site of browser-only tools. Use this whenever a task touches tools/, shared/, pages/, templates/, locales/, config/ or buildlib/: building a new tool, fixing or extending an existing one, moving code into a shared part, writing a guide, changing the build, or checking website secrets and service renewals — even when the request only says \"fix X\" or \"add a feature to Y\" without naming a file. It carries the checklists the build enforces, the verification commands, and the traps (LF-only files, positional planned.toml lists, ./shared/ imports in tested modules, og-image redraws) that are not guessable from the code alone."
 ---
 
 # Working on abox.tools
@@ -61,11 +61,26 @@ the change:
 | anything under `locales/` | `docs/languages.md` |
 | build flags, tests, serving locally | `docs/running.md` |
 | the branches, previews, what a deploy does | `docs/deploying.md` |
+| secrets, certificates, domains or service renewals | `docs/renewals.md` |
 
 Every tool also documents itself: `tools/<slug>/README.md` says how that tool
 works and why it works that way, and the header comment of its `tool.toml`
 records what is unusual about it. Read both before changing a tool — the
 decisions recorded there are the ones a diff will not show.
+
+## Job: check secrets and service renewals
+
+Follow [docs/renewals.md](../../../docs/renewals.md) during website maintenance,
+before deployment, and whenever work adds or changes a credential or service.
+Check expiry metadata, renew automatically within existing authorization and
+permissions, and verify the renewed item and its consumers before considering
+it resolved. Keep successful renewals quiet. Alert the user before expiry only
+when their permission or action is needed, including a renewal that could not
+be completed automatically. Never include secret values in an alert.
+
+These checks run when the skill is used; recurring monitoring needs an existing
+or explicitly requested schedule. An instruction file alone cannot deliver a
+future alert.
 
 ## Job: add a new tool
 
