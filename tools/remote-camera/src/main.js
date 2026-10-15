@@ -92,9 +92,18 @@ function releaseWake() {
 }
 
 const session = new CameraSession({
+  visible: () => !document.hidden && !pageSuspended,
+  onSignaling() {
+    if (session.signalingLost) {
+      discovery?.unpublish();
+      showStatus(session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable', session.role);
+    } else if (cameraResumeNeeded && session.role === 'camera') showStatus('camera.paused', 'camera');
+    if (cameraIntent) renderCameraRecovery();
+  },
   onState(key, role) {
     if (!role) return;
-    showStatus(key, role);
+    const awaitingPairing = session.signalingLost && ['camera.waiting', 'camera.open-waiting', 'camera.streaming', 'connection.starting'].includes(key);
+    showStatus(awaitingPairing ? session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable' : key, role);
     if (session.role === null) {
       const retain = role === 'camera' && cameraIntent !== null
         && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
@@ -347,9 +356,11 @@ function showCameraIdentity(code) {
 
 function renderCameraRecovery() {
   if (!cameraIntent) return;
-  $('camera-start').hidden = !cameraResumeNeeded && !cameraResuming;
-  $('camera-start').disabled = cameraResuming || document.hidden || pageSuspended;
-  $('camera-start').textContent = phrase(cameraResuming ? 'camera.resuming' : 'camera.resume');
+  const pairing = session.role === 'camera' && session.signalingLost;
+  $('camera-start').hidden = !cameraResumeNeeded && !cameraResuming && !pairing;
+  $('camera-start').disabled = cameraResuming || Boolean(session.signalingRetry) || document.hidden || pageSuspended;
+  $('camera-start').textContent = phrase(cameraResuming ? 'camera.resuming' : pairing && !cameraResumeNeeded
+    ? session.signalingRetry ? 'connection.reconnecting' : 'connection.resume' : 'camera.resume');
   $('camera-stop').hidden = false;
   $('camera-name').value = cameraIntent.code;
   $('camera-name').disabled = true;
@@ -394,7 +405,10 @@ function suspendCameraResources() {
 async function resumeCamera() {
   if (!cameraIntent || cameraStarting || cameraResuming || capture.switching || document.hidden || pageSuspended) return;
   if (!cameraResumeNeeded && session.role === 'camera'
-      && capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted)) return;
+      && capture.stream?.getVideoTracks().some((track) => track.readyState === 'live' && !track.muted)) {
+    await session.restoreSignaling({ manual: true });
+    return;
+  }
   const identity = cameraIntent, current = ++epoch;
   cameraResuming = true;
   cameraResumeNeeded = false;
@@ -462,6 +476,7 @@ async function resumeCamera() {
 function visibleCamera() {
   if (document.hidden || pageSuspended) return;
   discovery?.refresh();
+  if (session.role === 'camera') void session.restoreSignaling();
   if (!cameraIntent) {
     if (session.role === 'viewer' && $('remote-video').srcObject) void playVideo();
     return;

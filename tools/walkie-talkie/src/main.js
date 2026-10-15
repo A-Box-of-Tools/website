@@ -232,6 +232,7 @@ function activateChannel() {
   }
 
   function renderState(key, detail = {}) {
+    const activeHostError = role === 'host' && key === 'error-full' && Boolean(detail.directReady);
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (role === 'host' && detail.captureState) {
       captureState = detail.captureState;
@@ -249,7 +250,7 @@ function activateChannel() {
       hostNeedsResume = false;
       clearHostResumeTimer();
     }
-    if (role === 'host' && ['host-ready', 'host-talking', 'host-reconnecting'].includes(key)) {
+    if (role === 'host' && (['host-ready', 'host-talking', 'host-reconnecting'].includes(key) || activeHostError)) {
       hostActive = true;
       canTransmit = captureState === 'ready' && Boolean(detail.signaling || detail.directReady || detail.listeners > 0);
       if (!canTransmit) {
@@ -259,7 +260,7 @@ function activateChannel() {
         latched = false;
       }
     }
-    if (role === 'host' && (['host-idle', 'host-hidden', 'host-resume-needed', 'broadcast-ended'].includes(key) || errors.has(key))) {
+    if (role === 'host' && (['host-idle', 'host-hidden', 'host-resume-needed', 'broadcast-ended'].includes(key) || (errors.has(key) && !activeHostError))) {
       hostActive = false;
       canTransmit = false;
       activePointer = null;
@@ -275,7 +276,8 @@ function activateChannel() {
       }
     }
     if (key === 'listener-left') listenerLeft = true;
-    stateTalking = key === 'host-talking' || key === 'listener-talking';
+    // A busy introduction service can leave direct speech running normally.
+    stateTalking = key === 'host-talking' || key === 'listener-talking' || (activeHostError && detail.talking);
     const statusKey = role === 'host' && hostActive && captureState !== 'ready'
       ? microphoneResuming ? 'microphone-resuming' : 'host-microphone-paused'
       : role === 'host' && hostNeedsResume

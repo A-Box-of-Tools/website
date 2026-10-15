@@ -9,6 +9,7 @@ export class CameraSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket,
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
+    onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -16,6 +17,11 @@ export class CameraSession {
     this.onRequests = onRequests;
     this.onStream = onStream;
     this.onDiscovery = onDiscovery;
+    this.onSignaling = onSignaling;
+    this.visible = visible;
+    this.signalingLost = false;
+    this.signalingRetry = null;
+    this.signalAttempts = 0;
     this.revision = 0;
     this.role = null;
     this.socket = null;
@@ -45,6 +51,7 @@ export class CameraSession {
     this.stop();
     this.role = 'camera';
     this.requireApproval = Boolean(requireApproval);
+    this.discoverable = discoverable;
     this.stream = stream;
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
@@ -60,7 +67,7 @@ export class CameraSession {
     return this.open(code);
   }
 
-  open(code, discoverable = false) {
+  open(code, discoverable = false, recovering = false) {
     if (!CODE_PATTERN.test(code)) {
       this.stop('code.invalid');
       return Promise.reject(new Error('code.invalid'));
@@ -75,18 +82,33 @@ export class CameraSession {
       const timer = setTimeout(() => fail('connection.server-failed'), CONNECT_TIMEOUT);
       const fail = (key) => {
         clearTimeout(timer);
-        if (current()) this.stop(key);
+        if (current()) {
+          if (recovering || (ready && key !== 'connection.invalid' && [...this.peers.values()].some(entry => this.healthyPeer(entry)))) {
+            this.loseSignaling(socket);
+          } else this.stop(key);
+        }
         if (!ready) reject(new Error(key));
+      };
+      const connected = () => {
+        ready = true;
+        clearTimeout(timer);
+        this.signalingLost = false;
+        this.signalAttempts = 0;
+        this.state(recovering ? (this.active === null ? 'camera.waiting' : 'camera.streaming')
+          : this.role === 'camera' ? 'camera.waiting' : 'connection.connecting');
+        this.onSignaling();
+        resolve();
       };
       socket.addEventListener('open', () => {
         if (!current()) return;
-        ready = true;
-        clearTimeout(timer);
         this.keepalive = setInterval(() => {
           if (current() && socket.readyState === 1) socket.send('ping');
         }, 25000);
-        this.state(this.role === 'camera' ? 'camera.waiting' : 'connection.connecting');
-        resolve();
+        // Refused Room handshakes also emit open. A pong confirms recovery
+        // before its retry budget or unavailable indicator can be cleared.
+        if (recovering) {
+          try { socket.send('ping'); } catch { fail('connection.server-failed'); }
+        } else connected();
       });
       socket.addEventListener('error', () => fail('connection.server-failed'));
       socket.addEventListener('close', (event) => {
@@ -94,13 +116,53 @@ export class CameraSession {
         fail(reasons[event.code] ?? 'connection.server-failed');
       });
       socket.addEventListener('message', (event) => {
-        if (!current() || event.data === 'pong') return;
+        if (!current()) return;
+        if (event.data === 'pong') { if (recovering && !ready) connected(); return; }
         if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
         let message;
         try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
         try { this.message(message); } catch { fail('connection.invalid'); }
       });
     });
+  }
+
+  healthyPeer(entry) {
+    return Boolean(entry?.approved && entry.mediaReady && entry.dc?.readyState === 'open'
+      && entry.pc.connectionState === 'connected');
+  }
+
+  loseSignaling(socket) {
+    if (this.socket !== socket) return;
+    this.socket = null;
+    clearInterval(this.keepalive);
+    this.keepalive = null;
+    this.signalingLost = true;
+    try { socket.close(); } catch {}
+    for (const entry of [...this.peers.values()]) {
+      if (!this.healthyPeer(entry)) this.removePeer(entry.id);
+    }
+    this.onSignaling();
+  }
+
+  restoreSignaling({ manual = false } = {}) {
+    if (this.role !== 'camera' || !this.signalingLost || !this.visible()) return Promise.resolve(false);
+    if (this.signalingRetry) return this.signalingRetry.promise;
+    if (manual) this.signalAttempts = 0;
+    if (this.signalAttempts >= 3) return Promise.resolve(false);
+    this.signalAttempts += 1;
+    const flight = { revision: this.revision, promise: null };
+    this.signalingRetry = flight;
+    flight.promise = Promise.resolve().then(() => {
+      if (this.signalingRetry !== flight || this.revision !== flight.revision || !this.visible()) return false;
+      return this.open(this.code, this.discoverable, true).then(() => this.revision === flight.revision, () => false);
+    }).finally(() => {
+      if (this.signalingRetry === flight) {
+        this.signalingRetry = null;
+        this.onSignaling();
+      }
+    });
+    this.onSignaling();
+    return flight.promise;
   }
 
   send(data, id = null) {
@@ -124,6 +186,7 @@ export class CameraSession {
       return entry;
     }
     if (this.role === 'camera' && message?.type === 'leave') {
+      if (this.healthyPeer(this.peers.get(message.id))) return;
       this.removePeer(message.id);
       return;
     }
@@ -156,6 +219,7 @@ export class CameraSession {
             || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
         await entry.pc.setRemoteDescription(localDescription(description));
         if (!this.current(entry)) return;
+        if (expected === 'answer' && entry.video) entry.mediaReady = true;
         for (const candidate of entry.candidates.splice(0)) await entry.pc.addIceCandidate(candidate);
         if (expected === 'answer' && entry.video && entry.pc.connectionState === 'connected') globalThis.aboxToolComplete?.();
         if (expected === 'offer') {
@@ -194,6 +258,7 @@ export class CameraSession {
       if (!this.current(entry)) return;
       if (this.role !== 'viewer' || !entry.approved || event.track.kind !== 'video') return this.peerFailed(entry, 'connection.invalid');
       const stream = new MediaStream([event.track]);
+      entry.mediaReady = true;
       this.onStream(stream);
       event.track.addEventListener('ended', () => {
         if (this.current(entry)) this.stop('connection.ended');
@@ -229,6 +294,7 @@ export class CameraSession {
   }
 
   signal(entry, data) {
+    if (this.signalingLost && this.healthyPeer(entry)) return;
     this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null);
   }
 
@@ -450,11 +516,22 @@ export class CameraSession {
     if (this.active === id) this.active = null;
     this.requests();
     if (this.role === 'camera' && this.active === null) this.state('camera.waiting');
+    if (this.role === 'camera' && this.signalingLost && this.active === null) void this.restoreSignaling();
   }
 
   stop(key = 'connection.stopped') {
     const role = this.role;
+    // Room's 4410 means host-socket loss, not intentional End. The direct
+    // control message remains authoritative even when introductions are down.
+    if (role === 'camera' && key === 'connection.stopped') {
+      for (const entry of this.peers.values()) {
+        try { this.control(entry, 'ended'); } catch {}
+      }
+    }
     this.revision += 1;
+    this.signalingRetry = null;
+    this.signalingLost = false;
+    this.signalAttempts = 0;
     this.cameraChange?.candidate?.getTracks().forEach((track) => {
       if (track.readyState !== 'ended') track.stop();
     });

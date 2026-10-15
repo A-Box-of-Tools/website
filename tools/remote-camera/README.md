@@ -73,17 +73,26 @@ request is invalidated if the page hides before it completes.
 BFcache page suspension releases capture and peers but retains the chosen
 camera identity for visible recovery. A healthy viewer can keep playing while
 its tab is hidden; returning retries native playback and retains the existing
-Play live video fallback. Source Stop, actual navigation, page close and a lost
-room still release capture, peers and socket. A lost camera room retains its
-chosen identity for Resume camera, but a newly connected viewer must repeat
-approval; viewer notes are never treated as admission credentials. There is no
-new reconnect protocol or worker change.
+Play live video fallback. Losing only introductions preserves an already
+approved, negotiated video connection and its source capture. Room's host-gone
+and viewer-leave signals describe socket loss, not direct-peer termination.
+Foreground host recovery reopens the same named room without rebuilding media;
+only one attempt runs at a time, with three automatic attempts before the
+Restore pairing action is required. A service pong confirms recovery, because
+refused WebSocket upgrades also produce an open event. A still-connected viewer
+does not silently join another host. Newly connected viewers need fresh
+approval; viewer notes are never treated as admission credentials.
+
+Source Stop sends the existing direct ended control before closing capture,
+peers and sockets. Navigation and page close also release resources. Initial
+pairing failure still releases capture and offers Resume camera with the same
+chosen identity. There is no worker or room-protocol change.
 
 Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
 leaves capture, invitation and connections intact. The native dialog does not
-block lifecycle handling: suspension, page close and signaling loss cancel it
-and clean up immediately. Viewer Disconnect closes its own peer
+block lifecycle handling: suspension and page close cancel it and clean up
+immediately. Viewer Disconnect closes its own peer
 while the source retains preview.
 A best-effort screen wake lock is released when hidden or on cleanup, including
 a late grant, and is requested again only for a visible active camera.

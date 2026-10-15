@@ -559,6 +559,24 @@ function activateOncall() {
     updateHostSound();
   }
 
+  function restoreProtection(rows) {
+    if (activeRole !== 'host' || !hostActive || !session) return;
+    const current = session, generation = sessionGeneration;
+    for (const row of rows) {
+      if (row.pendingRemoval || (!removedIds.has(row.id) && (!localMute.get(row.id) || row.muted))) continue;
+      // A suspended page rebuilds its session, and the service forgets policy
+      // after every room socket closes. Reapply retained decisions on rejoin.
+      // Deferring avoids reentering the participant callback while it renders.
+      queueMicrotask(() => {
+        if (session !== current || generation !== sessionGeneration || activeRole !== 'host' || !hostActive) return;
+        const latest = participants.get(row.id);
+        if (!latest || latest.pendingRemoval) return;
+        if (removedIds.has(row.id)) current.kick(row.id);
+        else if (localMute.get(row.id) && !latest.muted) current.moderate(row.id, true);
+      });
+    }
+  }
+
   function renderParticipants(rows) {
     const next = new Map((Array.isArray(rows) ? rows : []).filter(row => validCode(row.id) && typeof row.name === 'string').map(row => [row.id, row]));
     participants = next;
@@ -636,6 +654,7 @@ function activateOncall() {
     const count = Array.from(next.values()).filter(row => row.connected).length;
     ui['participant-count'].textContent = phrase(count === 1 ? 'participant-count-one' : 'participant-count', { count });
     ui['host-empty'].hidden = next.size > 0;
+    restoreProtection(next.values());
   }
 
   function createSession(role, identity) {

@@ -13,7 +13,7 @@ tagline = "O compartilhamento vive nesta aba aberta. Os leitores o recebem cript
 title = "Compartilhar texto e arquivos entre dispositivos &mdash; direto, criptografado, nada armazenado"
 description = "Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro."
 og_title = "Um compartilhamento que acaba assim que você fecha a aba"
-og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta: feche a aba e some, em todo lugar."
+og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta. Fechar a aba encerra a origem do compartilhamento; a cópia exibida é apagada quando a desconexão é detectada."
 og_image_alt = "Compartilhar texto e arquivos - de navegador a navegador, nada armazenado"
 
 pledge = """
@@ -25,8 +25,10 @@ pledge = """
     os nomes de link locais visíveis na lista. Não guarda texto ou arquivos
     compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta
     duram só enquanto quem compartilha continua conectado. Não há histórico
-    de conteúdo nem conta. Feche esta aba e o compartilhamento acaba em todo
-    lugar ao mesmo tempo, inclusive nas páginas abertas dos leitores."""
+    de conteúdo nem conta. Feche esta aba e a origem do compartilhamento
+    desaparece. As páginas dos leitores limpam a cópia exibida ao receber o
+    aviso de encerramento ou detectar uma falha de conexão. O conteúdo já
+    copiado ou baixado permanece com quem o recebeu."""
 
 live_hint = """
       Abra as ferramentas do desenvolvedor e observe a aba

@@ -747,10 +747,25 @@ function stopSharing() {
   sharing = false;
   clearTimeout(hostRetry);
   clearTimeout(hostProbe);
-  // Signaling can disappear while direct channels remain healthy. A real
-  // Stop therefore has its own terminal message, independent of close codes.
-  for (const dc of controlChannels.values()) {
-    try { dc.send(JSON.stringify({ type: 'ended' })); dc.close(); } catch {}
+  const stoppedPeers = [...peers].map(([id, pc]) => ({ pc, dc: controlChannels.get(id) }));
+  for (const sender of sendQueue.values()) sender.close();
+  peers.clear(); channels.clear(); controlChannels.clear(); sendQueue.clear();
+  // Signaling can disappear while direct channels remain healthy. Retire
+  // application authority now, then let each old terminal control drain.
+  for (const { pc, dc } of stoppedPeers) {
+    if (!dc || dc.readyState === 'closed') { pc.close(); continue; }
+    let deadline = 0;
+    const closeOldPeer = () => {
+      clearTimeout(deadline);
+      dc.removeEventListener('close', closeOldPeer);
+      pc.close();
+    };
+    dc.addEventListener('close', closeOldPeer, { once: true });
+    deadline = setTimeout(closeOldPeer, 5000);
+    try {
+      if (dc.readyState === 'open') dc.send(JSON.stringify({ type: 'ended' }));
+      dc.close();
+    } catch { closeOldPeer(); }
   }
   admitTokens.clear();
   hostDiagnostic?.finish('stopped');
@@ -764,12 +779,6 @@ function stopSharing() {
   foundShares = foundShares.filter((share) => share.code !== stoppedCode);
   sock?.close(1000);
   clearInterval(keepalive);
-  for (const sender of sendQueue.values()) sender.close();
-  const stoppedPeers = [...peers.values()];
-  // Give the ordered terminal control a chance to drain without leaving any
-  // share channel eligible for text, admission or file requests during it.
-  setTimeout(() => { for (const pc of stoppedPeers) pc.close(); }, 250);
-  peers.clear(); channels.clear(); controlChannels.clear(); sendQueue.clear();
   unlock();
   setStatus(phrase('share.stopped'));
 }

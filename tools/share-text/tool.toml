@@ -45,7 +45,7 @@ lastmod = "2026-10-14"
 title = "Share Text &amp; Files Between Devices &mdash; Direct, Encrypted, Nothing Stored"
 description = "Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up."
 og_title = "A share that ends the moment you close the tab"
-og_description = "Text and files travel straight from your browser to the reader's, encrypted. The server only introduces the two of you and never sees the content. No storage, no history, no account - close the tab and it is gone, everywhere."
+og_description = "Text and files travel straight from your browser to the reader's, encrypted. The server only introduces the two of you and never sees the content. No storage, no history, no account. Closing ends the source; readers clear their displayed copy when disconnection is detected."
 og_image_alt = "Share Text & Files - direct from browser to browser, nothing stored"
 
 og_card = "Text and files, straight from your open tab to theirs - and gone the moment you close it."
@@ -77,8 +77,9 @@ pledge = """
     It keeps no shared text or files, and the content never passes through
     it. Discovery names last only while the sharer is connected. There is
     no content history and no account.
-    Close this tab and the share ends everywhere at once, including on
-    readers' open pages."""
+    Close this tab and its source disappears. Readers clear their displayed
+    copy when they receive the end notice or detect connection failure.
+    Content they already copied or downloaded remains theirs."""
 
 live_hint = """
       Open DevTools and watch the Network tab while you share. You will see
