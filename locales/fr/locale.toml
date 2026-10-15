@@ -192,6 +192,12 @@ name = "Texte, codes &amp; mots de passe"
 short_name = "Texte &amp; codes"
 note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de configuration et aucun mot de passe sur le serveur d'un inconnu."
 
+[[hub.categories]]
+id = "connect-devices"
+name = "Connecter des appareils"
+short_name = "Connecter des appareils"
+note = "Partagez du texte et des fichiers, parlez en direct ou regardez une caméra ou un onglet de navigateur depuis un autre appareil. Chaque outil explique ce qu'il envoie et comment les navigateurs se connectent."
+
 [guides]
 nav = "Tous les guides"
 title = "Guides&nbsp;: comment faire, et ce que chaque choix coûte"
