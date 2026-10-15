@@ -10,7 +10,7 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "foreground-recovery", "voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 lastmod = "2026-10-14"
 
@@ -20,7 +20,7 @@ og_title = "Voice Oncall — One Listening Host"
 og_description = "A browser voice pager with nearby discovery, an optional password, and individual mute and remove controls."
 og_image_alt = "Voice Oncall - several speakers and one listening host"
 og_card = "Nearby people speak. One host listens and chooses who to hear."
-csp_note = "This page opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, connection setup and status. Live audio uses direct encrypted WebRTC with host candidates only, without STUN or TURN. The rendezvous never carries audio."
+csp_note = "This page opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, connection setup and status. Local builds and HTTPS abox-preview.pages.dev previews use the separate rendezvous-dev.abox.tools service. Live audio uses direct encrypted WebRTC with host candidates only, without STUN or TURN. The rendezvous never carries audio."
 pledge_line = "Live voice goes <strong>directly to the host</strong>. Internet discovery and pairing, no recording or audio relay."
 pledge = "People send live voice from their browsers to one listening host. Internet discovery groups pages sharing a public network address and page origin; it cannot prove they are on the same physical Wi-Fi. The service carries pager names, temporary participant identifiers and credentials, moderation and connection details, never audio. Each participant has a separate encrypted WebRTC connection to the host."
 live_hint = "This page intentionally contacts rendezvous.abox.tools for discovery and pairing. It sees pager names, temporary participant identifiers, addresses, timing, password-derived credentials and moderation status, never voice. Cloudflare keeps seven-day invocation metadata logs."
@@ -30,7 +30,7 @@ card = "Several people send live voice to one host, with nearby discovery, an op
 md_note = "The host opens a named pager without microphone access. Participants find it nearby or open its link, enter its password if required, and Connect without entering a name. They allow microphone access and deliberately hold or tap Talk. The host can mute or remove each participant. Internet is needed for discovery and pairing; voice stays on direct browser connections."
 
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 "media-src" = ["blob:"]
 
 [words]

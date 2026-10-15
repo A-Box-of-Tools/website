@@ -1,9 +1,10 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
 import { PairingSocket } from './shared/peer-pairing.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
-const RENDEZVOUS = 'wss://rendezvous.abox.tools';
+const RENDEZVOUS = rendezvousEndpoint();
 const CONNECT_TIMEOUT = 20000;
 const MAX_PENDING = 4;
 const INTRODUCTION_RETRIES = [2000, 4000, 8000, 15000, 30000];

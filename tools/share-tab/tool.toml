@@ -2,64 +2,71 @@
 # The host must choose one browser tab after a click, and must approve the
 # viewer over an encrypted control channel before a video track is attached.
 # A window or whole-screen capture is refused, even when a browser offers it.
-# The rendezvous carries setup metadata, never video; an explicit viewer
-# retry can use the existing TURN relay when a direct connection fails.
+# Both methods use host-only ICE, with no public STUN service or TURN relay.
+# Online pairing uses the rendezvous for setup metadata. Offline pairing
+# exchanges complete connection blocks without opening a signaling socket.
 slug = "share-tab"
 name = "Share a Browser Tab"
 heading = "Share a browser tab <span class=\"h1-kw\">&mdash; a live view, with you in control</span>"
-tagline = "Choose a tab on your computer and let one approved viewer watch it live in their browser. No extension, no sound, and no remote control."
+tagline = "Choose a tab on your computer and let one approved viewer watch it on your local network. Pair online or exchange connection blocks offline. No extension, sound or remote control."
 icon = "&#128421;"
 favicon = "&#128421;"
 glyph = "app-window"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "peer-network", "room-names", "clipboard-feedback"]
+js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "room-names", "clipboard-feedback"]
 lastmod = "2026-10-15"
 
 title = "Share a Browser Tab Live &mdash; Read-Only Viewing, No Extension"
-description = "Stream one browser tab to an approved viewer over encrypted WebRTC. No extension, audio or remote control. Direct connection first, optional relay retry."
+description = "Share a browser tab with one approved viewer on your local network. Online invitations or offline pairing. No extension, audio or remote control."
 og_title = "Show a browser tab, keep control of it"
-og_description = "Choose one tab, invite a viewer and approve their request. They watch live video in their browser while you browse. No extension or remote control."
+og_description = "Share one tab with an approved viewer on reachable Wi-Fi, Ethernet or a hotspot. Use an online invitation or exchange connection blocks without internet."
 og_image_alt = "Share a Browser Tab - a live view for one approved viewer"
 og_card = "One tab, one approved viewer, a live view you control."
 csp_note = """
-  Choosing a tab to share and requesting to watch open a WebSocket to rendezvous.abox.tools using
-  the separate share-tab room namespace. It carries WebRTC descriptions,
-  candidates and optional TURN credentials, never video or viewer notes.
-  This tool does not use discovery. STUN discovers connection addresses in
-  the ordinary direct attempt. If that attempt fails, the viewer can
-  explicitly retry through Cloudflare's TURN relay, which forwards encrypted
-  traffic without media keys. WebRTC media, STUN and TURN are outside CSP's
-  connect-src vocabulary. Video is added only after host approval and the
-  viewer's encrypted acknowledgement. There is no audio or remote control."""
+  Local builds and HTTPS abox-preview.pages.dev previews use the separate
+  rendezvous-dev.abox.tools service; other page addresses use production.
+  Online pairing opens a WebSocket to rendezvous.abox.tools in the separate
+  share-tab room namespace. It carries WebRTC descriptions and host
+  candidates, never video or viewer notes. Offline pairing exchanges
+  connection blocks manually and opens no rendezvous socket. Both methods
+  configure no STUN server or TURN relay and reject non-host candidates in
+  descriptions and trickled messages. This tool uses no discovery listing.
+  WebRTC media is outside CSP's connect-src vocabulary. Video is added only
+  after host approval and the viewer's encrypted acknowledgement. There is
+  no audio or remote control."""
 pledge = """
     You choose a browser tab in your browser's own picker and approve the
     viewer before video is sent. The viewer receives an encrypted live
-    picture of that tab, without control of your browser. Our introduction
-    service sees connection setup metadata, never the video or viewer note.
-    A direct connection is tried first; a viewer may choose an encrypted relay
-    retry if it fails. No recording is made by this tool. A viewer can still
+    picture of that tab over a direct connection on a reachable local network,
+    without control of your browser. Online pairing uses an introduction
+    service that sees setup metadata, never video or the viewer note.
+    Offline pairing exchanges connection blocks instead and needs no
+    introduction service. Neither method uses public address discovery or an
+    internet relay. No recording is made by this tool. A viewer can still
     capture what they see. Stop sharing, end capture in the browser, or close
     this sharing page to end the session."""
-pledge_line = "Tab video goes <strong>to one viewer you approve</strong>. Setup needs internet; an optional relay forwards encrypted video."
-md_note = "Live video of one browser tab, with mandatory viewer approval. No audio, extension, recording feature or remote control. Internet rendezvous sees setup metadata; direct WebRTC first, explicit viewer relay retry if needed."
+pledge_line = "Tab video goes <strong>directly to one viewer you approve</strong>. Pair online or exchange connection blocks offline on a reachable local network."
+md_note = "Live tab video on a reachable local network, with mandatory approval. Online introductions carry setup metadata; offline block exchange needs the cached HTTPS tool on both devices. No public STUN, internet relay, audio, extension, recording feature or remote control."
 live_hint = """
-      Watch DevTools while starting or connecting: one WebSocket carries
-      introduction messages. Video travels over WebRTC, directly or through
-      the relay only after the viewer chooses that retry. The Network panel
-      and CSP alone do not describe WebRTC, STUN or TURN traffic."""
+      In Online mode, DevTools shows one rendezvous WebSocket for introduction
+      messages. Offline block exchange opens no introduction socket. Video
+      travels directly over WebRTC in both methods, with no configured STUN
+      service or TURN relay. The Network panel and CSP alone do not inspect
+      that peer traffic. The site frame has its usual third-party resources."""
 read_first = """
 , <code>src/capture.js</code> for the browser-tab-only capture check and
       cleanup, <code>src/session.js</code> for approval before media and
-      connection ownership, and <code>src/protocol.js</code> for the bounded
+      connection ownership, <code>src/offline-pairing.js</code> for the
+      manually exchanged blocks, and <code>src/protocol.js</code> for bounded
       control messages. The introduction service is published beside the
       tool under <code>workers/rendezvous/</code>"""
 howto_heading = "How to share a browser tab live"
-card = "A live picture of one browser tab for one viewer you approve. No extension, sound or remote control; direct encrypted video with an optional relay retry."
+card = "Live tab video for one approved viewer on your local network. Pair online or exchange blocks offline. No extension, sound or remote control."
 
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 
 [words]
 plural = "tab video"
@@ -90,8 +97,9 @@ body = """
       refuses capture when the browser cannot confirm that it is a tab.
       The first peer connection contains only an encrypted control channel.
       A viewer can add an introduction, you approve the request, and the viewer
-      acknowledges that approval before a video track is added. Up to four
-      requests can wait, and only one approved viewer can watch at a time.
+      acknowledges that approval before a video track is added. Only one
+      approved viewer can watch at a time. Online pairing permits up to four
+      waiting requests; an offline exchange connects one viewer.
       A note is self-chosen text, not verified identity; recognise the expected
       person and request before approving."""
 [[privacy]]
@@ -107,28 +115,41 @@ body = """
       their screen or record received video. Ending the session cannot erase
       anything they already kept."""
 [[privacy]]
-title = "The introduction service sees setup metadata, not video."
+title = "Online pairing exposes setup metadata to the introduction service."
 body = """
-      Starting or connecting opens a WebSocket to
+      In Online mode, starting or connecting opens a WebSocket to
       <code>rendezvous.abox.tools</code>. The service sees the random room code,
       IP addresses, connection times, WebRTC descriptions and ICE candidates;
       these setup messages are not hidden from it. Video, viewer notes and
       approval decisions travel the encrypted peer connection. No room content
       is written to storage. Cloudflare, which runs the service, keeps
       connection logs for seven days containing request metadata such as the
-      code, address and time, never video. This tool does not publish a
-      discovery listing."""
+      code, address and time, never video. Offline mode makes no connection
+      to that service. Neither method publishes a discovery listing."""
 [[privacy]]
-title = "Direct first, with a relay only after the viewer chooses it."
+title = "Both methods require a reachable local connection, with no relay."
 body = """
-      The ordinary connection uses public STUN services to find reachable
-      addresses. Pairing shares network addresses with the other browser
-      before video approval. If a direct attempt fails, the viewer can choose
-      a fresh attempt through Cloudflare's TURN relay. The relay sees network
-      addresses, timing and traffic volume and forwards encrypted traffic;
-      it does not receive the media keys. It is never selected automatically.
-      Internet is required for introductions, and firewalls, VPNs or browser
-      policies can prevent either path."""
+      The browsers configure no public STUN server or TURN relay. Only host
+      connection addresses are accepted in setup descriptions and candidate
+      messages. Pairing exposes network addresses to the other browser before
+      video approval. Use a reachable Wi-Fi, Ethernet or hotspot network;
+      guest isolation, firewalls, VPN routes and browser local-network
+      permissions can prevent a connection. Host addresses can include public
+      interfaces or follow a VPN route, so this setting does not prove that
+      traffic stays inside a physical building. The tool does not create a
+      hotspot, Wi-Fi Direct or Bluetooth connection."""
+[[privacy]]
+title = "Offline pairing uses connection blocks you exchange yourself."
+body = """
+      Load this HTTPS tool on both devices and wait for each offline indicator
+      to say ready before losing internet. The host sends a connection block;
+      the viewer returns a reply, and the host connects and separately approves
+      the request. Blocks contain connection information, including network
+      addresses. Give them only to the person you expect. Copy them using an
+      available local method or save files and transfer them through your
+      operating system, for example by Bluetooth or USB. The tool does not
+      transmit those files. Saved copies remain yours to remove. The website
+      you show must already be loaded or otherwise available offline."""
 [[privacy]]
 title = "Stop ends capture; returning does not grant a new capture."
 body = """
@@ -141,14 +162,15 @@ body = """
       requires another click and the browser's picker. A viewer disconnection
       releases that viewer without granting a new request access."""
 [[privacy]]
-title = "The link and page are not secrets from page scripts."
+title = "Invitations and connection blocks are visible to page scripts."
 body = """
-      Every session uses a fresh random link; knowing it permits a request,
+      An online session uses a fresh random link; an offline session uses
+      fresh connection blocks. Possessing them permits a connection attempt,
       and approval still controls the video. This page has the site's usual
       Google advertising and measurement scripts and Buy Me a Coffee button.
       The tool does not deliberately pass video or viewer notes to them, but
       scripts running in the page can read its address and same-page state,
-      including a link code. A URL fragment is not a secret from page scripts
+      including a link code or a pasted block. A URL fragment is not a secret from page scripts
       or a guarantee against browser history. Treat the expected person's
       request and your approval as the admission step."""
 
@@ -156,11 +178,14 @@ body = """
 title = "Open the website and this sharing tool on your computer."
 body = "Keep the website in its own tab. Use a desktop browser that supports browser-tab capture, such as Chrome or Edge, and open this tool at its HTTPS address. The viewer needs only a browser with WebRTC video playback."
 [[howto]]
+title = "Choose how to pair the devices."
+body = "Both devices need a reachable local network. Choose Online to use an internet introduction and a viewer link, or Offline to exchange connection blocks without that service. For use without internet, load this HTTPS tool on both devices beforehand and wait for each offline indicator to say ready. Connect the devices to Wi-Fi, Ethernet or a hotspot yourself."
+[[howto]]
 title = "Choose one browser tab."
 body = "Click Choose a tab to share, then select the website tab in the browser's picker. A window or whole screen is refused. No audio is requested. Check the local preview before inviting anyone."
 [[howto]]
-title = "Send the link and approve the expected viewer."
-body = "Choose Copy viewer link and send it to the other person. They open it, read the connection notice, optionally add a short introduction and choose Request to watch. Approve the request you recognise on this sharing page. One approved viewer can watch; up to four requests can wait."
+title = "Exchange the invitation, then approve the viewer."
+body = "Online: choose Copy viewer link and send it to the other person. They open it, optionally add a note and choose Request to watch. Offline: send the Host connection block or saved file to the viewer. They paste or load it and choose Create viewer reply, then return their reply block or file. Paste or load that reply on the host and choose Connect viewer. In both methods, approve the request you recognise before any video is sent."
 [[howto]]
 title = "Browse in the selected tab, then end the session."
 body = "The viewer watches your scrolling and navigation as live video, without controlling the page or selecting its text. Keep both host tabs open and the device awake. Stop sharing here or in the browser when finished. If capture ends, starting again requires a new picker choice and a fresh invitation."
@@ -179,16 +204,22 @@ q = "Does the viewer need an account on the website I show?"
 a = "No. They see the pixels your browser can show, including content in your logged-in account, without receiving your cookies or login session. That also means private information visible in the chosen tab becomes visible to the approved viewer. Some protected content may appear black or be unavailable for capture."
 [[faq]]
 q = "Can anyone with the link watch?"
-a = "A link permits a connection request and exchange of network addresses. You must approve the viewer before video is sent, and their browser must acknowledge the approval. Their introduction is not verified identity. Each new session uses a fresh random code and is not listed in a discovery directory."
+a = "An online link permits a connection request and network-address exchange; offline blocks permit the equivalent local connection attempt. You must approve the viewer before video is sent, and their browser must acknowledge the approval. Their introduction is not verified identity. Invitations are fresh for each session and are not listed in a discovery directory."
 [[faq]]
 q = "Can several viewers watch together?"
-a = "This first version permits one approved viewer at a time, with up to four waiting requests. End or disconnect the current viewer before approving someone else. A waiting or refused viewer receives no video."
+a = "One approved viewer can watch at a time. Online pairing permits up to four waiting requests. Offline pairing creates a connection for one viewer; use a fresh exchange for another. A waiting or refused viewer receives no video."
 [[faq]]
 q = "Is the video uploaded or recorded on a server?"
-a = "The tool makes no recording and stores no video on a server. Video travels encrypted between the browsers, directly when possible. If the direct attempt fails and the viewer chooses the relay retry, Cloudflare forwards encrypted video without media keys. The introduction service carries setup metadata, never video. A viewer can independently record what reaches their device."
+a = "The tool makes no recording and stores no video on a server. Video travels directly between the browsers over an encrypted connection; neither method uses an internet relay. Online introductions carry setup metadata, never video. Offline pairing uses manually exchanged blocks without an introduction service. A viewer can independently record what reaches their device."
 [[faq]]
 q = "What does the connection service learn?"
-a = "The rendezvous sees the code, IP addresses, connection times and WebRTC setup descriptions and candidates. Cloudflare retains request metadata for seven days. STUN services learn connection addresses; an explicitly chosen TURN relay also sees timing and traffic volume. Viewer notes and approval controls use the encrypted peer channel. The tool page explains its usual third-party scripts separately."
+a = "In Online mode, the rendezvous sees the code, IP addresses, connection times and WebRTC setup descriptions and host candidates. Cloudflare retains request metadata for seven days. Offline mode does not contact that service. Both methods share connection addresses with the other browser and use no public STUN or TURN service. Viewer notes and approval controls use the encrypted peer channel. The tool page explains its usual third-party scripts separately."
+[[faq]]
+q = "Can I share without an internet connection?"
+a = "Yes, using Offline mode when both devices can reach each other through Wi-Fi, Ethernet or a hotspot. Before losing internet, open this HTTPS tool on both devices and wait for each offline indicator to say ready. Exchange the host block and viewer reply by a local method or transferred files, then connect and approve the viewer. No rendezvous, public STUN service or TURN relay is used. The website being shown must already be loaded or otherwise available offline. This page does not create or configure the network."
+[[faq]]
+q = "Does being on the same Wi-Fi or hotspot guarantee a connection?"
+a = "No. Guest networks or hotspot client isolation can prevent devices from reaching each other. Firewalls, VPN routes and browser local-network permissions can also block it. Both methods accept only host connection addresses; that controls address types, not a physical building or the routes your device chooses. There is no internet relay fallback."
 [[faq]]
 q = "Will switching tabs reveal another tab?"
 a = "The capture belongs to the browser tab you selected; simply activating another tab does not choose a new source. Changes and navigation inside the selected tab remain visible. Use the browser's capture indicator to check the source, and stop the session before showing anything private."
@@ -197,9 +228,9 @@ q = "Can I hide the sharing page or close my laptop?"
 a = "You can work in the selected website tab while the sharing page remains open. Healthy capture is kept when the page is hidden where the browser permits. A sleeping computer, closed laptop or suspended browser may interrupt or end it. Returning never silently starts a new capture after the track ends; start again and choose the tab again."
 [[faq]]
 q = "What if the connection fails?"
-a = "Check that the host is still sharing and both devices can reach the internet. Firewalls, VPNs and browser policies can prevent a direct WebRTC path. After a direct attempt fails, the viewer can choose the disclosed encrypted relay retry; no relay is selected automatically. If no relay credentials are available or that path is blocked too, try another network or start a fresh session."
+a = "Keep both pages open and check that the devices can reach each other on the local network. Check client isolation, firewalls, VPN routes and browser local-network permissions. Online pairing additionally needs the introduction service; choose Offline if you need to pair without internet. For an expired or mismatched offline exchange, start again with fresh blocks. Neither method falls back to an internet relay."
 
 [schema]
 category = "MultimediaApplication"
-description = "Stream one selected browser tab as encrypted live video to one approved viewer, without an extension, audio or remote control."
-features = ["Browser-tab-only capture through the browser's own picker", "Mandatory viewer approval and acknowledgement before video", "One approved viewer with up to four waiting requests", "Read-only live video without remote input", "Fresh random viewer link for each session", "Direct WebRTC video with an explicit optional TURN retry", "No microphone, camera, tab audio or recording feature", "Capture stops when the host stops, the track ends or the sharing page closes"]
+description = "Stream one selected browser tab as encrypted live video to an approved viewer on a reachable local network, using online introductions or offline connection-block exchange."
+features = ["Browser-tab-only capture through the browser's own picker", "Mandatory viewer approval and acknowledgement before video", "One approved viewer, with up to four waiting requests in Online mode", "Read-only live video without remote input", "Online viewer links or offline blocks with save and load controls", "Host-only WebRTC with no public STUN service or TURN relay", "Offline pairing with the cached HTTPS tool on both devices", "No microphone, camera, tab audio or recording feature", "Capture stops when the host stops, the track ends or the sharing page closes"]

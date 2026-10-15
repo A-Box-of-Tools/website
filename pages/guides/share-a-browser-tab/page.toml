@@ -6,16 +6,17 @@ nav = "Sharing a browser tab"
 group = "doing-the-job"
 tool = "share-tab"
 title = "How to Share a Browser Tab Live Without an Extension"
-description = "Show one browser tab to an approved viewer as live video. Choose the source, understand what is visible, and end capture without giving remote control."
+description = "Show a browser tab to an approved viewer on your local network. Pair with an online link or exchange connection blocks offline, without remote control."
 heading = "How to share a browser tab live without an extension"
 lede = """
     Show someone the website you are using while you keep control of it.
     Your browser captures one chosen tab and sends its changing picture to
-    the viewer's browser. They can watch your scrolling and navigation,
-    without signing in to the website or operating your computer."""
+    the viewer's browser over a reachable local network. Pair using an online
+    invitation or exchange connection blocks without internet. The viewer
+    watches your scrolling and navigation, without operating your computer."""
 updated = "15 October 2026"
 published = "2026-10-15"
 lastmod = "2026-10-15"
 og_title = "A live browser tab, with you in control"
-og_description = "Choose one browser tab, invite a viewer and approve their request. Live video without an extension, audio or remote control."
+og_description = "Live tab video on reachable Wi-Fi, Ethernet or a hotspot. Pair online or exchange blocks offline, with approval and no remote control."
 og_image_alt = "abox.tools - share a browser tab with an approved viewer"

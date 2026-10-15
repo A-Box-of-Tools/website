@@ -2,6 +2,7 @@ import { InboxSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
@@ -466,7 +467,7 @@ function activateOncall() {
 
   let discovery;
   function openDiscovery() {
-    return watchDiscovery('wss://rendezvous.abox.tools/discover?tool=voice-oncall', {
+    return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=voice-oncall`, {
     list(shares) {
       const next = (Array.isArray(shares) ? shares : []).filter(room => validCode(room.code) && typeof room.name === 'string').map(room => ({ code: room.code.toLowerCase(), name: room.name, locked: Boolean(room.locked) })).sort((a, b) => a.name.localeCompare(b.name));
       const signature = JSON.stringify(next);

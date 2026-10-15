@@ -10,7 +10,7 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "foreground-recovery", "peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 lastmod = "2026-10-14"
 
@@ -20,7 +20,7 @@ og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
 og_card = "Hold to talk. Everyone on your local link can listen."
-csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Starting or joining a channel opens a separate secure WebSocket for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
+csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Local builds and HTTPS abox-preview.pages.dev previews use the separate wss://rendezvous-dev.abox.tools service. Starting or joining a channel opens a separate secure WebSocket for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
 pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet discovery and pairing, no recording or audio relay."
 pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect; the rendezvous handles temporary connection metadata, never microphone audio. Each listener receives encrypted WebRTC audio directly from the host browser. Anyone with the listener link and a reachable direct route can listen. Use a trusted local network and share the link carefully."
 live_hint = "This tool intentionally contacts rendezvous.abox.tools for discovery, connection setup and status. It sees channel names, listener invitations for listed channels, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
@@ -30,7 +30,7 @@ card = "One browser host and up to ten receive-only listeners, with push to talk
 md_note = "Choose Start channel on this website, allow microphone access and share the listener link or QR code. No Python, download or account is needed. Internet access is needed for pairing; audio travels directly between reachable devices."
 
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 "media-src" = ["blob:"]
 
 [words]

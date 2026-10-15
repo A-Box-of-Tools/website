@@ -31,25 +31,14 @@ export function viewerLink(href, code) {
 }
 
 export function controlMessage(text) {
-  if (typeof text !== 'string' || text.length > 1024) return null;
+  if (typeof text !== 'string' || text.length > 65536) return null;
   try {
     const value = JSON.parse(text);
     if (!value || value.protocol !== PROTOCOL || Array.isArray(value)) return null;
+    if (value.type === 'signal') return value.data && typeof value.data === 'object' && !Array.isArray(value.data) ? value : null;
+    if (text.length > 1024) return null;
     if (!['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) return null;
     if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
     return value;
   } catch { return null; }
-}
-
-export function relayServer(values) {
-  if (!Array.isArray(values)) return null;
-  for (const value of values) {
-    if (typeof value?.username !== 'string' || !value.username || value.username.length > 2048
-        || typeof value.credential !== 'string' || !value.credential || value.credential.length > 2048) continue;
-    const urls = typeof value.urls === 'string' ? [value.urls] : value.urls;
-    if (!Array.isArray(urls) || !urls.length || urls.length > 8
-        || urls.some((url) => typeof url !== 'string' || url.length > 512 || !/^turns?:[^\s]+$/i.test(url))) continue;
-    return { urls: [...urls], username: value.username, credential: value.credential };
-  }
-  return null;
 }

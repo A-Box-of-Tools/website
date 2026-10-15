@@ -36,7 +36,7 @@
       <a href="../receipt-invoice-extractor/">Receipt &amp; Invoice Extractor</a> reads photos and recognises text locally. Its optional historical-rate button requests a currency pair and your chosen date from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. The date may be the date printed on a receipt. The provider sees your IP address and request; the request omits credentials and referrers and contains no photo, filename, merchant, amount or email address. Manual rates require no request.
     </p>
     <p>
-      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
+      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a>, <a href="../share-tab/">Share a Browser Tab</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
     </p>
   </section>
 
@@ -96,6 +96,11 @@
       address, the page requested, and your user agent &mdash; in order to deliver
       the page and to keep the service up and secure. We do not have access to
       per-visitor logs from either of them.
+    </p>
+
+    <h3>Share a Browser Tab</h3>
+    <p>
+      <a href="../share-tab/">Share a Browser Tab</a> sends encrypted live video of one chosen browser tab to one viewer the host approves. The viewer cannot control the host or select webpage text. Online pairing exposes codes, addresses, timing and setup messages to the rendezvous; Cloudflare keeps seven-day request metadata logs, never video or viewer notes. Offline pairing exchanges connection blocks instead, using the cached HTTPS tool on both devices and a reachable local network. Blocks contain connection addresses; same-page scripts can read them, and saved block files remain until you remove them. Neither method configures public STUN or TURN. No camera or microphone permission is requested, no audio is sent, and the tool has no recording feature. Visible signed-in content is part of the picture, and a viewer can independently capture or record it. The tool page explains network reachability, page-script access and offline preparation.
     </p>
 
     <h3>Remote Camera and browser introductions</h3>

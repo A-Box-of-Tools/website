@@ -1,5 +1,6 @@
 import { rtcConfig, allowedCandidate, localDescription } from './peer-network.js';
 import { PairingSocket } from './peer-pairing.js';
+import { rendezvousEndpoint } from './peer-endpoint.js';
 
 const INTERVAL = 1000;
 const DEADLINE = 10000;
@@ -23,7 +24,7 @@ class VoiceSession {
     onState = () => {}, onStream = () => {}, onParticipants = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
     mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
-    origin = 'wss://rendezvous.abox.tools', endpoint }) {
+    origin = rendezvousEndpoint(), endpoint }) {
     this.role = role;
     this.code = code;
     this.key = key;

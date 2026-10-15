@@ -116,3 +116,42 @@ invocation_logs = true
 # nothing and cannot drift.
 [observability.traces]
 enabled = false
+
+# A dev deployment is a separate Worker, not a version of the live switchboard.
+# Routes are inherited unless replaced, so this complete override must never
+# carry rendezvous.abox.tools. The workers.dev address remains a fallback.
+[env.dev]
+name = "rendezvous-dev"
+workers_dev = true
+routes = [
+  { pattern = "rendezvous-dev.abox.tools", custom_domain = true },
+]
+
+# Bindings are not inherited. Omitting script_name binds each class to this
+# environment's Worker and therefore creates separate object namespaces/state.
+# The v1-v4 migration history and observability policy above are inherited.
+[[env.dev.durable_objects.bindings]]
+name = "ROOMS"
+class_name = "Room"
+
+[[env.dev.durable_objects.bindings]]
+name = "DISCOVERY"
+class_name = "Discovery"
+
+[[env.dev.durable_objects.bindings]]
+name = "BROADCASTS"
+class_name = "Broadcast"
+
+[[env.dev.durable_objects.bindings]]
+name = "INBOXES"
+class_name = "Inbox"
+
+# Rate-limit namespace ids are shared across Workers in the account. A dev
+# address must not spend the live switchboard's allowance under namespace 1001.
+[[env.dev.ratelimits]]
+name = "LIMIT"
+namespace_id = "1002"
+
+  [env.dev.ratelimits.simple]
+  limit = 30
+  period = 60
