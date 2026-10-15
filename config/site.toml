@@ -359,9 +359,9 @@ body = "Wait for a tool's offline indicator to say ready, then disconnect and us
 # mostly heading. A heading earns its space by letting a reader skip everything
 # under it, and a heading with one card under it never does.
 #
-# Four, then, cut where a reader would cut them: three by the kind of file they
-# arrived with - a picture, something that moves, something to read or to listen
-# to - and one for the tools that do not hand back a changed copy of anything.
+# File categories follow what a reader arrived with. Connecting browsers is a
+# different job: keep those tools together rather than scattering a live camera,
+# a voice channel and a text share among tools that edit a local file.
 [[hub.categories]]
 id = "images"
 name = "Images"
@@ -377,8 +377,8 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 id = "video-and-animation"
 name = "Video &amp; animation"
 short_name = "Video &amp; GIFs"
-note = "Edit video and animation in your browser, or watch an approved camera or browser tab on another device."
-order = ["remote-camera", "share-tab", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+note = "Trim, convert or build a clip from photos, with the footage staying on your device."
+order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -388,8 +388,8 @@ order = ["remote-camera", "share-tab", "compress-video", "convert-to-mp4", "rota
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 short_name = "PDF &amp; audio"
-note = "Edit documents and recordings locally, or open a direct voice channel with nearby people."
-order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio", "walkie-talkie", "voice-oncall"]
+note = "Rearrange a document or trim a recording without sending either away for processing."
+order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -403,7 +403,14 @@ id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+
+[[hub.categories]]
+id = "connect-devices"
+name = "Connect devices"
+short_name = "Connect devices"
+note = "Share text and files, talk live, or watch a camera or browser tab on another device. Each tool explains what it sends and how the browsers connect."
+order = ["share-text", "walkie-talkie", "voice-oncall", "remote-camera", "share-tab"]
 
 # Addresses that moved. Each key is a slug a tool used to answer at, each
 # value the slug of the tool that answers now; build.py writes a stub at the

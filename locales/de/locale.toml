@@ -304,6 +304,12 @@ name = "Text, Codes &amp; Passwörter"
 short_name = "Text &amp; Codes"
 note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei und kein Passwort landet auf einem fremden Server."
 
+[[hub.categories]]
+id = "connect-devices"
+name = "Geräte verbinden"
+short_name = "Geräte verbinden"
+note = "Teilen Sie Text und Dateien, sprechen Sie live oder sehen Sie eine Kamera oder einen Browser-Tab auf einem anderen Gerät. Jedes Tool erklärt, was es überträgt und wie sich die Browser verbinden."
+
 #
 # ---------------------------------------------------------------------------
 # The guides index.

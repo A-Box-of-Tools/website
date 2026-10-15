@@ -262,6 +262,12 @@ name = "Texto, códigos e senhas"
 short_name = "Texto &amp; códigos"
 note = "Leia, confira ou crie aqui. Nenhum token, nenhum arquivo de configuração e nenhuma senha vai parar no servidor dos outros."
 
+[[hub.categories]]
+id = "connect-devices"
+name = "Conectar dispositivos"
+short_name = "Conectar dispositivos"
+note = "Compartilhe texto e arquivos, converse ao vivo ou veja uma câmera ou uma aba do navegador em outro dispositivo. Cada ferramenta explica o que envia e como os navegadores se conectam."
+
 #
 # ---------------------------------------------------------------------------
 # The guides index.
