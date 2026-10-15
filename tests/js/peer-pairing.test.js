@@ -35,6 +35,36 @@ function fixture(options = {}) {
   };
 }
 
+test('the default clock preserves the browser receiver for native timers', (t) => {
+  let next = 0;
+  const pending = new Map(), calls = [];
+  t.mock.method(globalThis, 'setTimeout', function(callback, delay) {
+    assert.ok(this === undefined || this === globalThis, 'native timer received a foreign receiver');
+    const id = ++next;
+    pending.set(id, { callback, delay });
+    return id;
+  });
+  t.mock.method(globalThis, 'clearTimeout', function(id) {
+    assert.ok(this === undefined || this === globalThis, 'native timer cancellation received a foreign receiver');
+    pending.delete(id);
+  });
+  const socket = { readyState: 1, send() {}, close() {} };
+  const pairing = new PairingSocket(socket);
+  const opening = pairing.after('opening', 20, () => calls.push('opening'));
+  assert.equal(pending.get(opening).delay, 20);
+  const heartbeat = pairing.every('heartbeat', 25, () => calls.push('heartbeat'));
+  const tick = pending.get(heartbeat).callback;
+  pending.delete(heartbeat); tick();
+  assert.deepEqual(calls, ['heartbeat']);
+  assert.equal(pending.size, 2);
+  assert.equal(pairing.probe({ timeout: 8 }), true);
+  assert.equal(pending.size, 3);
+  pairing.cancelProbe();
+  pairing.clear('opening');
+  pairing.close();
+  assert.equal(pending.size, 0);
+});
+
 test('paired frames preserve their wire form and cannot send through stale, closed or backed-up sockets', () => {
   const f = fixture({ maxBuffered: 8 });
   assert.equal(f.pairing.send('ping'), true);

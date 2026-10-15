@@ -5,7 +5,10 @@
 export class PairingSocket {
   constructor(socket, {
     current = () => true,
-    clock = { setTimeout, clearTimeout },
+    clock = {
+      setTimeout: (callback, delay) => globalThis.setTimeout(callback, delay),
+      clearTimeout: (timer) => globalThis.clearTimeout(timer),
+    },
     maxBuffered = Infinity,
     onSendError = () => {},
   } = {}) {
