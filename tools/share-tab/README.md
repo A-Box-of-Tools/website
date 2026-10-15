@@ -21,7 +21,7 @@ The local preview lets the host check the source before inviting a viewer.
 The page remains open while the host browses in the selected tab. Hiding the
 control page does not voluntarily release healthy capture. Browser suspension
 and sleep remain outside the tool's control. A track's `ended` event retires
-the session; foreground recovery never requests another capture. Starting
+the session; returning to the page never requests another capture. Starting
 again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
@@ -52,8 +52,7 @@ over the website's cookies or login session.
 
 `PairingSocket` in `shared/js/peer-pairing.js` owns signaling callbacks and
 timers. `peer-network.js` supplies ordinary STUN configuration and the
-viewer-selected TURN retry. `room-names.js` supplies name validation, and
-`foreground-recovery.js` supplies lifecycle observation without media grants.
+viewer-selected TURN retry. `room-names.js` supplies name validation.
 The tool's `session.js` and `protocol.js` retain application consent,
 approval, acknowledgement, limits and media ownership.
 

@@ -14,7 +14,7 @@ glyph = "app-window"
 category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "peer-network", "room-names", "foreground-recovery", "clipboard-feedback"]
+js_parts = ["peer-pairing", "peer-network", "room-names", "clipboard-feedback"]
 lastmod = "2026-10-15"
 
 title = "Share a Browser Tab Live &mdash; Read-Only Viewing, No Extension"
