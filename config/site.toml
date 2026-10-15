@@ -13,7 +13,7 @@
 name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-10-13"     # the hub page's own sitemap date
+lastmod = "2026-10-15"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -338,7 +338,7 @@ support_heading = "Free, with your support."
 
 [[hub.guarantees]]
 title = "Your files are processed on your device"
-body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files, Remote Camera and the live voice tools deliberately send content to another browser; their own pages explain the connection."
+body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files, Share a Browser Tab, Remote Camera and the live voice tools deliberately send content to another browser; their own pages explain the connection."
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
@@ -377,8 +377,8 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 id = "video-and-animation"
 name = "Video &amp; animation"
 short_name = "Video &amp; GIFs"
-note = "Edit video and animation in your browser, or watch an approved camera on another device."
-order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+note = "Edit video and animation in your browser, or watch an approved camera or browser tab on another device."
+order = ["remote-camera", "share-tab", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -580,6 +580,7 @@ order = [
   "format-json-without-uploading-it",
   "share-text-between-devices",
   "watch-camera-from-another-device",
+  "share-a-browser-tab",
   "broadcast-voice-on-a-local-network",
   "receive-voice-from-nearby-devices",
   "make-a-height-comparison-chart",

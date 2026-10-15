@@ -1,0 +1,132 @@
+<main id="main">
+  <div class="tab-share-grid" id="tab-share-grid">
+    <section id="host-panel" class="tab-share-card" aria-labelledby="host-heading">
+      <span class="tab-share-badge">No extension needed</span>
+      <h2 id="host-heading">Share a browser tab</h2>
+      <p class="card-lede">Choose a tab, invite a viewer, and approve their request. They can watch while you browse.</p>
+      <p id="capture-support" class="tab-share-help">Start on a desktop browser that supports tab sharing. Choose a browser tab in the sharing dialog.</p>
+      <div class="run-row">
+        <button type="button" id="host-start" class="big">Choose a tab to share</button>
+        <button type="button" id="host-stop" class="big danger" hidden>Stop sharing</button>
+      </div>
+      <p id="host-status" class="tab-share-status" role="status" aria-live="polite">Nothing is being captured or shared.</p>
+      <div id="host-invitation" class="tab-share-invite" hidden>
+        <div class="field">
+          <label for="share-link">Viewer link</label>
+          <input type="text" id="share-link" readonly spellcheck="false" dir="ltr" data-no-remember>
+        </div>
+        <div class="run-row">
+          <button type="button" id="copy-link">Copy viewer link</button>
+          <span id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="tab-share-help">Keep this page and the selected tab open. Only a viewer you approve receives video. One viewer can watch at a time.</p>
+      </div>
+      <div id="host-preview-panel" class="tab-share-video" hidden>
+        <video id="local-video" autoplay muted playsinline aria-label="Preview of the tab you are sharing"></video>
+      </div>
+      <section id="request-panel" hidden aria-labelledby="request-heading">
+        <h3 id="request-heading">Viewer requests</h3>
+        <p class="tab-share-help">Approve only the person you expect. Their note is not verified identity.</p>
+        <ul id="viewer-requests" class="tab-share-requests" aria-live="polite"></ul>
+      </section>
+      <section id="accepted-panel" hidden aria-labelledby="accepted-heading">
+        <h3 id="accepted-heading">Current viewer</h3>
+        <ul id="accepted-viewers" class="tab-share-requests"></ul>
+      </section>
+    </section>
+
+    <section id="viewer-panel" class="tab-share-card" aria-labelledby="viewer-heading">
+      <span class="tab-share-badge">Read-only live view</span>
+      <h2 id="viewer-heading">Watch a shared tab</h2>
+      <p class="card-lede">Open an invitation or enter its code. The host must approve you before video starts.</p>
+      <div id="viewer-fields">
+        <div class="field">
+          <label for="viewer-code">Viewer link or tab code</label>
+          <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="tab-abcdefghijklmnop" data-no-remember>
+        </div>
+        <div class="field">
+          <label for="viewer-name">A note the host will recognise (optional)</label>
+          <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop" data-no-remember>
+          <p class="field-note">Your note goes to the host over the encrypted connection.</p>
+        </div>
+      </div>
+      <p class="tab-share-help">Connecting contacts our introduction service and exchanges network addresses with the other browser. This device does not need screen, camera or microphone permission.</p>
+      <div class="run-row">
+        <button type="button" id="viewer-connect" class="big">Request to watch</button>
+        <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
+      </div>
+      <p id="viewer-status" class="tab-share-status" role="status" aria-live="polite">Enter a viewer link or tab code to begin.</p>
+      <div id="relay-panel" class="options" hidden>
+        <p>The direct connection failed. You can retry through Cloudflare&rsquo;s TURN relay, which forwards encrypted video and sees connection addresses and traffic timing. The host must approve the new request.</p>
+        <button type="button" id="viewer-relay">Retry through an encrypted relay</button>
+      </div>
+      <div id="viewer-video-panel" hidden>
+        <div id="viewer-video-frame" class="tab-share-video">
+          <video id="remote-video" autoplay muted playsinline aria-label="Live video of the host's shared browser tab"></video>
+        </div>
+        <div class="tab-share-video-controls" role="group" aria-label="Live video controls">
+          <button type="button" id="viewer-play" hidden>Play live video</button>
+          <button type="button" id="viewer-fullscreen">Full screen</button>
+        </div>
+        <p class="tab-share-help">You are watching video. You cannot click, type or scroll in the host&rsquo;s tab, and page text is not selectable. Anything you can see can still be captured or recorded on your device.</p>
+      </div>
+      <button type="button" id="show-host" class="ghost" hidden>Share your own tab instead</button>
+    </section>
+  </div>
+
+  <details class="tab-share-details">
+    <summary>What is shared, and how the connection works</summary>
+    <p>The browser captures the selected tab&rsquo;s picture, including visible signed-in content. Close private panels before sharing. Tab audio, your microphone and your camera are not requested. Selecting another browser tab does not automatically share it.</p>
+    <p>A control connection carries the viewer&rsquo;s request. Video is attached only after host approval and the viewer&rsquo;s acknowledgement. Viewer actions have no remote-control path to the host.</p>
+    <p>The introduction service at rendezvous.abox.tools carries setup messages, not video or viewer notes. The browsers try a direct encrypted WebRTC connection using public STUN services. If that fails, the viewer can explicitly retry through a TURN relay. The relay forwards encrypted media; our tool does not record it.</p>
+    <p>Stop sharing, use the browser&rsquo;s Stop sharing control, or close this page to end capture. Hiding this control tab while browsing the selected tab keeps sharing where the browser permits. When capture ends, choosing a tab again always needs a new click and browser permission.</p>
+  </details>
+
+  <div id="phrases" hidden>
+    <span data-phrase="host.ready">Nothing is being captured or shared.</span>
+    <span data-phrase="host.choosing">Choose the browser tab to share. You can stop this attempt at any time.</span>
+    <span data-phrase="host.waiting">Your preview is on. Invite a viewer, then approve the request you recognise.</span>
+    <span data-phrase="host.approved">Viewer approved. Waiting for the live video connection.</span>
+    <span data-phrase="host.streaming">Sharing live tab video with your approved viewer.</span>
+    <span data-phrase="host.ended">Tab sharing ended. Choose a tab again when you are ready.</span>
+    <span data-phrase="host.stopped">Sharing stopped. Capture and viewer connections are closed.</span>
+    <span data-phrase="host.unnamed">A viewer without a note</span>
+    <span data-phrase="host.approve">Approve viewer</span>
+    <span data-phrase="host.deny">Turn away</span>
+    <span data-phrase="host.disconnect">Disconnect viewer</span>
+    <span data-phrase="host.viewer-preparing">Waiting for video</span>
+    <span data-phrase="host.viewer-watching">Watching</span>
+    <span data-phrase="capture.unsupported">Tab sharing needs trusted HTTPS and a desktop browser with tab capture support, such as Chrome. You can still watch a shared tab here if WebRTC is supported.</span>
+    <span data-phrase="capture.denied">Tab sharing was cancelled or not allowed. Choose a tab again when you are ready.</span>
+    <span data-phrase="capture.failed">The browser could not capture that tab. Check its sharing permissions and try again.</span>
+    <span data-phrase="capture.tab-only">Choose a browser tab, rather than a window or screen. This browser must identify the source as a tab before sharing can begin.</span>
+    <span data-phrase="capture.cancelled">The sharing attempt was stopped.</span>
+    <span data-phrase="viewer.ready">Enter a viewer link or tab code to begin.</span>
+    <span data-phrase="viewer.waiting">Your request reached the host. Waiting for approval; no video is being sent yet.</span>
+    <span data-phrase="viewer.approved">The host approved you. Waiting for live tab video.</span>
+    <span data-phrase="viewer.streaming">Watching live video of the host&rsquo;s tab. This view cannot control the host.</span>
+    <span data-phrase="viewer.denied">The host turned away your request. Check with them before trying again.</span>
+    <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
+    <span data-phrase="viewer.fullscreen-failed">Full screen is unavailable here. You can still watch the video in this page.</span>
+    <span data-phrase="code.invalid">Enter a complete viewer link or tab code from this tool.</span>
+    <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
+    <span data-phrase="connection.connecting">Connecting to the other browser&hellip;</span>
+    <span data-phrase="connection.server-failed">The introduction service could not connect. Check your internet connection and try again.</span>
+    <span data-phrase="connection.not-found">This invitation is no longer open. Ask the host for a new viewer link.</span>
+    <span data-phrase="connection.taken">That invitation code is already in use. Stop and choose a tab again to create a new code.</span>
+    <span data-phrase="connection.busy">A viewer is already watching, or too many requests are waiting. Ask the host before trying again.</span>
+    <span data-phrase="connection.ended">The host ended this invitation. Ask them for a new link.</span>
+    <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and try a new link.</span>
+    <span data-phrase="connection.direct-failed">The browsers could not establish a direct connection. Check firewall and network permissions, or explicitly retry through the relay below.</span>
+    <span data-phrase="connection.relaying">Requesting an encrypted relay for this attempt&hellip;</span>
+    <span data-phrase="connection.relay-unavailable">The relay is unavailable. Try a direct connection again or use another network.</span>
+    <span data-phrase="connection.relay-failed">The relayed connection could not be established. Check your connection and try again.</span>
+    <span data-phrase="connection.stopped">Disconnected. The live view is closed on this device.</span>
+    <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
+    <span data-phrase="copy.done">Viewer link copied.</span>
+    <span data-phrase="copy.manual">Select and copy the viewer link above.</span>
+    <span data-phrase="net.clean">{total} page resources checked. {platform} Connection setup and live WebRTC video are disclosed above; this resource list does not inspect WebRTC traffic.</span>
+    <span data-phrase="net.dirty">Unexpected resource hosts: {hosts}. {platform} WebRTC traffic is separate from this resource check.</span>
+    <span data-phrase="offline.ready">The page is cached on this device. Starting or joining a share still needs internet.</span>
+  </div>
+</main>

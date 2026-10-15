@@ -70,6 +70,21 @@ and the page does not configure STUN or TURN. Host-only ICE candidates can
 include globally routable interface addresses, especially IPv6: a candidate
 type describes how an address was obtained, not a physical LAN boundary.
 
+### The browser-tab namespace
+
+Share a Browser Tab uses the existing room protocol with `tool=share-tab` on
+both host and viewer URLs. `rendezvousTool()` must recognise that value before
+the static tool is published. Its `share-tab:<code>` room names stay separate
+from text and camera rooms, even if a caller supplies the same code. An older
+worker refuses the unknown namespace; the page must not retry in a text room.
+
+Deploy this allowlist update manually from this directory before publishing
+the static page. It adds no class, binding, migration, storage or secret.
+The page uses no discovery listing. It reuses the existing optional TURN
+credentials only after a viewer explicitly chooses a relay retry, so the
+current relay secrets remain sufficient. Approval and acknowledgement stay
+on the encrypted control channel; the worker carries neither them nor video.
+
 ### The discovery migration
 
 The local discovery page needs this worker deployed; the static site build

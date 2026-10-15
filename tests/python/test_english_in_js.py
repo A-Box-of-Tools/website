@@ -146,6 +146,9 @@ BASELINE = {
     'remote-camera': 2,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,
+    # The random invitation-code template and the rendezvous URL template.
+    # Both are protocol syntax; visitor-facing text comes from phrase keys.
+    'share-tab': 2,
     'share-text': 1,
     # A filename template, one line of a template literal, and three markers the
     # reader throws internally and never shows.
