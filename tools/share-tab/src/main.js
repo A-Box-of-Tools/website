@@ -22,8 +22,23 @@ function status(id, key, error = false) {
   $(id).dataset.error = String(error);
 }
 
+function listFocus(list) {
+  const button = document.activeElement;
+  return list.contains(button) && button?.dataset.peer && button?.dataset.action
+    ? { peer: button.dataset.peer, action: button.dataset.action } : null;
+}
+
+function restoreListFocus(list, focused) {
+  if (!focused) return;
+  const button = [...list.querySelectorAll('button')].find((item) =>
+    !item.disabled && item.dataset.peer === focused.peer && item.dataset.action === focused.action);
+  button?.focus({ preventScroll: true });
+}
+
 function renderRequests(requests) {
   waitingRequests = requests;
+  const list = $('viewer-requests');
+  const focused = listFocus(list);
   $('viewer-requests').replaceChildren();
   $('request-panel').hidden = requests.length === 0;
   for (const request of requests) {
@@ -40,15 +55,20 @@ function renderRequests(requests) {
       button.type = 'button';
       button.textContent = phrase(key);
       button.disabled = key === 'host.approve' && session.viewerCount > 0;
+      button.dataset.peer = request.id;
+      button.dataset.action = key;
       button.addEventListener('click', action);
       actions.append(button);
     }
     item.append(note, actions);
     $('viewer-requests').append(item);
   }
+  restoreListFocus(list, focused);
 }
 
 function renderViewers(viewers) {
+  const list = $('accepted-viewers');
+  const focused = listFocus(list);
   $('accepted-viewers').replaceChildren();
   $('accepted-panel').hidden = viewers.length === 0;
   for (const viewer of viewers) {
@@ -61,10 +81,13 @@ function renderViewers(viewers) {
     const button = document.createElement('button');
     button.type = 'button';
     button.textContent = phrase('host.disconnect');
+    button.dataset.peer = viewer.id;
+    button.dataset.action = 'host.disconnect';
     button.addEventListener('click', () => session.disconnectViewer(viewer.id));
     item.append(note, state, button);
     $('accepted-viewers').append(item);
   }
+  restoreListFocus(list, focused);
   renderRequests(waitingRequests);
 }
 
@@ -109,7 +132,10 @@ const session = new TabSession({
     const owner = ++remoteRevision;
     $('remote-video').srcObject = stream;
     $('viewer-video-panel').hidden = false;
-    $('remote-video').play().catch(() => {
+    $('remote-video').play().then(() => {
+      if (owner !== remoteRevision || role !== 'viewer') return;
+      globalThis.aboxToolComplete?.();
+    }).catch(() => {
       if (owner !== remoteRevision || role !== 'viewer') return;
       $('viewer-play').hidden = false;
       status('viewer-status', 'viewer.play');
@@ -244,6 +270,7 @@ $('viewer-play').addEventListener('click', async () => {
     await $('remote-video').play();
     if (owner !== remoteRevision || role !== 'viewer') return;
     $('viewer-play').hidden = true;
+    globalThis.aboxToolComplete?.();
     status('viewer-status', 'viewer.streaming');
   } catch { if (owner === remoteRevision) status('viewer-status', 'viewer.play'); }
 });
@@ -270,6 +297,26 @@ window.addEventListener('hashchange', (event) => {
   showInvitation();
 });
 window.addEventListener('pagehide', () => stopAll());
+$('privacy-toggle').addEventListener('click', () => {
+  const panel = $('privacy-panel');
+  const open = panel.hidden;
+  panel.hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
+});
+
+// A translated viewer page needs the invitation too, but still requests
+// approval again because navigating tears down the current connection.
+const alternates = new Set(
+  [...document.querySelectorAll('link[rel="alternate"][hreflang]')]
+    .map((link) => new URL(link.href).pathname),
+);
+addEventListener('click', (event) => {
+  const anchor = event.target.closest('a[href]');
+  if (!anchor || anchor.origin !== location.origin || !alternates.has(anchor.pathname)) return;
+  const code = parseCode(location.hash.slice(1));
+  if (code) anchor.href = viewerLink(anchor.href, code);
+}, true);
+
 showInvitation();
 updateControls();
 document.getElementById('boot-warning')?.remove();
