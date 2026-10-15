@@ -261,6 +261,7 @@ window.addEventListener('hashchange', (event) => {
   // or ending a live session that also uses the URL fragment for routing.
   if (location.hash === '#main') {
     history.replaceState(null, '', event.oldURL);
+    $('main').tabIndex = -1;
     $('main').focus();
     $('main').scrollIntoView();
     return;
