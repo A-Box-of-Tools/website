@@ -11,24 +11,59 @@
     </details>
   </section>
 
-  <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video travels directly between the browsers. No microphone, recording or internet relay.</p>
+  <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video and optional audio travel directly between the browsers. No recording or internet relay.</p>
 
   <div id="camera-workspace" class="camera-workspace">
   <section id="camera-panel" data-role="camera" class="card">
     <h2>Share my camera</h2>
     <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
     <div class="field camera-name-field">
-      <label for="camera-name">Viewer link name</label>
+      <div class="camera-help-row">
+        <label for="camera-name">Viewer link name</label>
+        <details id="camera-name-help" class="camera-help info-fold">
+          <summary aria-describedby="camera-name-note"><span class="visually-hidden">About the viewer link name</span></summary>
+          <p id="camera-name-note" class="camera-help-note" role="tooltip">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
+        </details>
+      </div>
       <div class="camera-name-row">
         <input type="text" id="camera-name" maxlength="64" autocomplete="off" spellcheck="false" dir="ltr" aria-describedby="camera-name-note">
         <button type="button" id="camera-suggest" class="ghost">New random name</button>
       </div>
-      <p id="camera-name-note" class="field-note">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
     </div>
     <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
     <p class="field-note">The link name is visible to browsers in the discovery group described under Online cameras. Turn this off to invite viewers by link only.</p>
-    <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked> Require my approval before viewers can watch</label>
-    <p id="camera-approval-policy" class="camera-policy" role="status" aria-live="polite">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
+    <div class="camera-help-row">
+      <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
+      <details id="camera-approval-help" class="camera-help info-fold">
+        <summary aria-describedby="camera-approval-policy"><span class="visually-hidden">About viewer approval</span></summary>
+        <p id="camera-approval-policy" class="camera-help-note camera-policy" role="tooltip">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
+      </details>
+    </div>
+    <div class="camera-help-row">
+      <label class="camera-discoverable"><input type="checkbox" id="camera-audio" aria-describedby="camera-audio-note">Enable microphone</label>
+      <details id="camera-audio-help" class="camera-help info-fold">
+        <summary aria-describedby="camera-audio-note"><span class="visually-hidden">About enabling the microphone</span></summary>
+        <p id="camera-audio-note" class="camera-help-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice. If the browser interrupts the microphone, choose Resume microphone when you are ready.</p>
+      </details>
+    </div>
+    <p id="camera-audio-status" class="field-note" role="status" aria-live="polite"></p>
+    <div class="field camera-bandwidth-field">
+      <div class="camera-help-row">
+        <label for="camera-bandwidth">Shared video bandwidth</label>
+        <details id="camera-bandwidth-help" class="camera-help info-fold">
+          <summary aria-describedby="camera-bandwidth-note"><span class="visually-hidden">About sharing video bandwidth</span></summary>
+          <p id="camera-bandwidth-note" class="camera-help-note" role="tooltip">Choose a video limit that leaves room for other Wi-Fi traffic. Up to eight viewers share it; each connection can lower its quality when congested. The browser cannot measure your total Wi-Fi capacity. Audio and network overhead are additional. A 1 Mbps limit allows four new viewers; higher limits allow eight. Lowering the limit keeps current viewers connected.</p>
+        </details>
+      </div>
+      <select id="camera-bandwidth" aria-describedby="camera-bandwidth-note">
+        <option value="1">1 Mbps</option>
+        <option value="2">2 Mbps</option>
+        <option value="4">4 Mbps</option>
+        <option value="6" selected>6 Mbps</option>
+        <option value="10">10 Mbps</option>
+      </select>
+      <p id="camera-bandwidth-status" class="field-note" role="status" aria-live="polite"></p>
+    </div>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
       <button type="button" id="camera-stop" class="big danger" hidden>Stop camera and end the link</button>
@@ -57,8 +92,13 @@
     </div>
     <section id="camera-approval" aria-labelledby="approval-heading" hidden>
       <h3 id="approval-heading">Viewer requests</h3>
-      <p class="field-note">Recognise the person or device before approving. One viewer at a time receives video; everyone else is turned away.</p>
+      <p class="field-note">Recognise each person or device before approving. Every viewer needs their own acceptance before receiving video.</p>
       <div id="camera-requests" aria-live="polite"></div>
+    </section>
+    <section id="camera-viewers" aria-labelledby="camera-viewers-heading" hidden>
+      <h3 id="camera-viewers-heading">Connected viewers</h3>
+      <p id="camera-viewer-count" class="field-note" role="status" aria-live="polite"></p>
+      <div id="camera-viewer-list"></div>
     </section>
   </section>
 
@@ -71,23 +111,56 @@
         <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
       </div>
       <div class="field">
-        <label for="viewer-name">A name the camera device will recognise</label>
-        <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop">
-        <p class="field-note">Optional. This note goes to the camera browser over the encrypted connection.</p>
+        <div class="camera-help-row">
+          <label for="viewer-name">A name the camera device will recognise</label>
+          <details id="viewer-name-help" class="camera-help info-fold">
+            <summary aria-describedby="viewer-name-note"><span class="visually-hidden">About your viewer name</span></summary>
+            <p id="viewer-name-note" class="camera-help-note" role="tooltip">Optional. This note goes to the camera browser over the encrypted connection.</p>
+          </details>
+        </div>
+        <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop" aria-describedby="viewer-name-note">
       </div>
     </div>
-    <p class="camera-consent">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
     <div class="run-row">
       <button type="button" id="viewer-connect" class="big">Connect to camera</button>
       <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
+      <div class="camera-help-row">
+        <details id="viewer-connection-help" class="camera-help info-fold">
+          <summary aria-describedby="viewer-connection-note"><span class="visually-hidden">About connecting to a camera</span></summary>
+          <p id="viewer-connection-note" class="camera-help-note" role="tooltip">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
+        </details>
+      </div>
     </div>
     <p id="viewer-status" class="camera-status" role="status" aria-live="polite">Enter a camera code to request a view.</p>
     <div id="viewer-video-panel" class="camera-video-panel" hidden>
-      <video id="remote-video" autoplay muted playsinline aria-label="Live video from the camera device"></video>
-      <div class="run-row">
-        <button type="button" id="viewer-play" hidden>Play live video</button>
-        <button type="button" id="viewer-fullscreen" class="ghost">Full screen</button>
+      <div id="viewer-video-frame" class="viewer-video-frame">
+        <video id="remote-video" autoplay muted playsinline aria-label="Live video from the camera device"></video>
+        <div class="viewer-video-controls camera-help-row" role="group" aria-label="Live video controls">
+          <button type="button" id="viewer-play" hidden>Play live video</button>
+          <button type="button" id="viewer-listen" aria-pressed="false" hidden>Unmute audio</button>
+          <button type="button" id="viewer-fullscreen" aria-pressed="false">Full screen</button>
+          <details id="viewer-audio-help" class="camera-help info-fold">
+            <summary aria-describedby="viewer-audio-note"><span class="visually-hidden">About camera audio and video controls</span></summary>
+            <div id="viewer-audio-note" class="camera-help-note" role="tooltip">
+              <p>Audio starts automatically when the host enables its microphone and your browser allows playback. Otherwise, choose Unmute audio. Muting playback does not stop sound detection. Full screen keeps these controls with the video.</p>
+              <p id="viewer-audio-status" role="status" aria-live="polite"></p>
+            </div>
+          </details>
+        </div>
       </div>
+      <fieldset id="viewer-alert-options" class="viewer-alert-options" hidden aria-describedby="viewer-alert-note">
+        <legend class="visually-hidden">Browser notifications</legend>
+        <div class="camera-help-row viewer-alert-heading">
+          <span aria-hidden="true">Browser notifications</span>
+          <details id="viewer-alert-help" class="camera-help info-fold">
+            <summary aria-describedby="viewer-alert-note"><span class="visually-hidden">About motion and sound notifications</span></summary>
+            <p id="viewer-alert-note" class="camera-help-note" role="tooltip">Enable an alert to request notification permission. Detection runs on this device while this page stays open; browsers may pause it in the background. Lighting changes can trigger motion alerts. Sound alerts need the host to share audio and work while playback is muted. Alerts can be missed; they are not a safety monitor.</p>
+          </details>
+        </div>
+        <label class="camera-discoverable"><input type="checkbox" id="viewer-motion-alert">Notify me when motion is detected</label>
+        <label id="viewer-sound-option" class="camera-discoverable"><input type="checkbox" id="viewer-sound-alert" disabled>Notify me when sound is detected</label>
+        <p id="viewer-alert-status" class="field-note" role="status" aria-live="polite"></p>
+      </fieldset>
     </div>
   </section>
   </div>
@@ -118,13 +191,25 @@
     <span data-phrase="camera.resuming">Resuming the same camera connection&hellip;</span>
     <span data-phrase="camera.paused">Your browser paused the camera. The viewer link is kept. Return to this tab or choose Resume camera when ready.</span>
     <span data-phrase="camera.resume-needed">The camera could not resume automatically. Choose Resume camera to try the same viewer link. Camera permission may be needed again.</span>
-    <span data-phrase="camera.permission">Waiting for camera permission. You can stop this attempt at any time.</span>
+    <span data-phrase="camera.permission">Waiting for camera permission and, if enabled, microphone permission. You can stop this attempt at any time.</span>
+    <span data-phrase="camera.audio-on">Microphone is on. Stop sharing to turn it off.</span>
+    <span data-phrase="camera.audio-ended">The microphone stopped. Camera video continues; choose Resume microphone when you are ready.</span>
+    <span data-phrase="camera.resume-audio">Resume microphone</span>
+    <span data-phrase="camera.audio-paused">Microphone interrupted. Resume it when you are ready.</span>
     <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
     <span data-phrase="camera.open-waiting">Camera preview is on. A viewer can connect without asking you for approval.</span>
     <span data-phrase="camera.approval-required">Approve viewer requests on this device. Changes to this setting apply to new requests.</span>
-    <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while it is free. Changes apply to new requests; an existing viewer stays connected.</span>
+    <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while space is available. Changes apply to new requests; accepted viewers stay connected.</span>
     <span data-phrase="camera.approved">Viewer accepted. Waiting for the direct video connection.</span>
-    <span data-phrase="camera.streaming">One viewer is connected to your camera. Your browser may pause video while this device is locked.</span>
+    <span data-phrase="camera.streaming">Sharing live video with accepted viewers. Your browser may pause video while this device is locked.</span>
+    <span data-phrase="camera.viewer-count">Accepted viewers: {count}. New-viewer limit: {limit}.</span>
+    <span data-phrase="camera.viewer-preparing">Waiting for live video</span>
+    <span data-phrase="camera.viewer-watching">Watching</span>
+    <span data-phrase="camera.disconnect-viewer">Disconnect this viewer</span>
+    <span data-phrase="camera.bandwidth-applied">The video limit is shared across viewers. Each browser can lower quality further when needed.</span>
+    <span data-phrase="camera.bandwidth-unsupported">This browser could not apply the shared video limit. Its normal connection adaptation continues; use fewer viewers if Wi-Fi becomes congested.</span>
+    <span data-phrase="camera.reconnecting">The camera remains on. Reconnecting the introduction service so new viewers can find it.</span>
+    <span data-phrase="camera.reconnect-failed">Live sharing continues, but the introduction service is unavailable. Choose Restore pairing before inviting another viewer.</span>
     <span data-phrase="camera.current-device">Current camera</span>
     <span data-phrase="camera.device-label">Camera {number}</span>
     <span data-phrase="camera.switching">Switching cameras&hellip;</span>
@@ -133,9 +218,9 @@
     <span data-phrase="camera.switch-ended">The camera could not be switched or restored. Start again to share a camera.</span>
     <span data-phrase="camera.ended">The camera stopped. Start again when you are ready to share.</span>
     <span data-phrase="camera.hidden">Your browser may pause the camera while this tab is hidden. Return here to resume the same viewer link.</span>
-    <span data-phrase="camera.denied">Camera access was not allowed. Check this page&rsquo;s camera permission and try again.</span>
-    <span data-phrase="camera.missing">No available camera was found on this device.</span>
-    <span data-phrase="camera.busy">The camera could not start. Check whether another application is using it and try again.</span>
+    <span data-phrase="camera.denied">Camera or microphone access was not allowed. Check this page&rsquo;s permissions, or turn audio off, and try again.</span>
+    <span data-phrase="camera.missing">No available camera or requested microphone was found on this device. Check the devices, or turn audio off, and try again.</span>
+    <span data-phrase="camera.busy">The camera or microphone could not start. Check whether another application is using it, or turn audio off, and try again.</span>
     <span data-phrase="camera.unsupported">Camera access needs trusted HTTPS and a browser that supports it. Ordinary HTTP on a LAN IP cannot use the camera.</span>
     <span data-phrase="camera.unnamed">A viewer without a note</span>
     <span data-phrase="camera.approve">Approve this viewer</span>
@@ -144,9 +229,28 @@
     <span data-phrase="viewer.waiting">Your request reached the camera device. If approval is required, wait for its owner; no video is being sent yet.</span>
     <span data-phrase="viewer.approved">The camera device accepted you. Waiting for live video&hellip;</span>
     <span data-phrase="viewer.receiving">Receiving live video directly from the camera device.</span>
+    <span data-phrase="viewer.signaling-lost">The introduction service disconnected. Your existing direct camera connection continues.</span>
     <span data-phrase="viewer.denied">The camera device turned away your request. Ask its owner before trying again.</span>
     <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
     <span data-phrase="viewer.fullscreen-failed">Full screen is unavailable here. You can still watch the video in this page.</span>
+    <span data-phrase="viewer.listen">Unmute audio</span>
+    <span data-phrase="viewer.mute">Mute audio</span>
+    <span data-phrase="viewer.fullscreen">Full screen</span>
+    <span data-phrase="viewer.fullscreen-exit">Exit full screen</span>
+    <span data-phrase="viewer.audio-available">Audio playback is muted. Sound detection remains available.</span>
+    <span data-phrase="viewer.audio-listening">Listening to camera audio.</span>
+    <span data-phrase="viewer.audio-none">The host is not sharing audio.</span>
+    <span data-phrase="viewer.audio-blocked">Your browser requires a tap for audio. Choose Unmute audio; video and sound detection remain available.</span>
+    <span data-phrase="alerts.title">Remote Camera</span>
+    <span data-phrase="alerts.motion-body">Motion was detected in your camera view.</span>
+    <span data-phrase="alerts.sound-body">Sound was detected from your camera.</span>
+    <span data-phrase="alerts.enabled">Alerts are on for the selected activity while this page can run.</span>
+    <span data-phrase="alerts.denied">Notifications were not allowed. Viewing continues; check this site&rsquo;s notification permission to enable alerts.</span>
+    <span data-phrase="alerts.failed">Alerts could not start or send a notification. Viewing continues; try enabling them again.</span>
+    <span data-phrase="alerts.off">Alerts are off.</span>
+    <span data-phrase="alerts.no-audio">Sound detection needs audio from the host.</span>
+    <span data-phrase="alerts.motion">Motion detected. Browser notification sent.</span>
+    <span data-phrase="alerts.sound">Sound detected. Browser notification sent.</span>
     <span data-phrase="code.invalid">Enter the complete camera code or viewer link from this tool.</span>
     <span data-phrase="code.name-invalid">Choose a viewer link name with letters, numbers or hyphens.</span>
     <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
@@ -155,7 +259,7 @@
     <span data-phrase="connection.ended">The camera link ended. Ask the camera device to start again and send a new link.</span>
     <span data-phrase="connection.not-found">This camera link is no longer open. Check the code or ask the camera device for a new link.</span>
     <span data-phrase="connection.taken">That camera link name is already in use. Choose another name and start again.</span>
-    <span data-phrase="connection.busy">This camera already has a viewer or too many pending requests. Try again after the camera device is free.</span>
+    <span data-phrase="connection.busy">This camera has reached its viewer or pending-request limit. Try again after a viewer disconnects, or ask its owner to adjust the shared video bandwidth.</span>
     <span data-phrase="connection.server-failed">The introduction service could not stay connected. Check your internet connection, then start again.</span>
     <span data-phrase="connection.unavailable">Pairing is unavailable. Your approved video connection can keep working while the browser allows.</span>
     <span data-phrase="connection.reconnecting">Restoring pairing…</span>

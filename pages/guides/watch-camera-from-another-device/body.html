@@ -7,9 +7,9 @@
   <h2>Ways to reuse an old phone at home</h2>
   <p>A spare phone can show you another room or a spot you cannot easily see. These uses need the same direct connection as any other camera session: both devices need internet for pairing and a home network that lets them reach each other.</p>
   <ul>
-    <li><strong>Nursery checks.</strong> Use a live view for an extra visual check from another room while you are at home. Place the phone on a stable support out of the child's reach. There is no audio or alert to tell you when attention is needed.</li>
+    <li><strong>Nursery checks.</strong> Use a live view for an extra visual check from another room while you are at home. Place the phone on a stable support out of the child's reach. Optional audio and activity alerts can be missed or paused by the browser; this is not a safety monitor.</li>
     <li><strong>Pets in another room.</strong> See whether a dog has settled in its bed or what a cat is doing in its favourite corner while you work elsewhere in the house.</li>
-    <li><strong>An indoor entryway.</strong> Keep an eye on the front door from another room. This is a live view while you watch, with no recording or motion alerts.</li>
+    <li><strong>An indoor entryway.</strong> Keep an eye on the front door from another room. This is a live view while you watch, with no recording. Supported browsers can notify you about detected motion or sound while the viewer page can run.</li>
     <li><strong>DIY inspections.</strong> Aim a phone at a pipe joint under a sink, a dropped screw behind a cabinet, or a gap where you are routing cables. A laptop gives you a second pair of eyes where your head will not fit.</li>
   </ul>
   <p>For the most reliable view, keep the camera page visible and the phone awake. The page keeps a healthy connection when hidden, but a phone browser may pause capture or suspend the page when you switch apps or lock the screen. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
@@ -27,22 +27,33 @@
   <h2>Start on the camera device</h2>
   <ol>
     <li>Choose a viewer link name or keep the random suggestion. Leave Require my approval on to approve viewers yourself, or turn it off for automatic viewing. Then choose Start camera. Your browser chooses the initial camera.</li>
-    <li>Allow camera access. The page requests video only.</li>
+    <li>Allow camera access. Audio is off by default; select Enable microphone before starting if you also want to request microphone access. Stop before changing this choice.</li>
   </ol>
-  <p>Your local preview appears along with a viewer link, your chosen code and a QR code. Nothing is sent as video yet. Keep this page visible and the device awake for reliable capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only. If this browser exposes more than one camera, the Camera selector appears after permission. Choose another camera there to keep the same link and viewer connection; a brief pause may occur on devices that must release the old camera first.</p>
+  <p>Your local preview appears along with a viewer link, your chosen code and a QR code. No video or audio is sent until a viewer is accepted. Keep this page visible and the device awake for reliable capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only. If this browser exposes more than one camera, the Camera selector appears after permission. Choose another camera there to keep the same link and viewer connections; a brief pause may occur on devices that must release the old camera first.</p>
 </section>
 <section>
   <h2>Connect the viewer and approve it</h2>
   <ol>
     <li>On the other device, optionally enter a note the source owner will recognise in Watch a camera, then choose a name under Online cameras to request a connection immediately.</li>
     <li>Alternatively, open the viewer link, scan its QR code or enter the code in Watch a camera. These wait for you to choose Connect to camera.</li>
-    <li>If Require my approval is on, approve the expected request on the camera device. With approval off, the first accepted viewer receives video automatically.</li>
+    <li>If Require my approval is on, approve each expected request on the camera device. With approval off, viewers receive video automatically while space is available.</li>
   </ol>
-  <p>The note is not verified identity. Recognise the person and expected request before approving. Pairing exchanges network addresses even before approval; the source approval setting controls whether an owner action is required before video. With approval off, anyone who knows the link or finds the listed camera can watch while it is free. Changes to the setting apply to new requests; an already connected viewer stays connected. One viewer receives video at a time. If playback pauses, choose Play live video; Full screen enlarges the view where supported.</p>
+  <p>The note is not verified identity. Recognise each person and expected request before approving. Pairing exchanges network addresses even before approval; the source approval setting controls whether an owner action is required before video. With approval off, anyone who knows the link or finds the listed camera can watch while space is available. Changes to the setting apply to new requests; accepted viewers stay connected. If playback pauses, choose Play live video. Shared audio starts automatically when the browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video frame. Muting playback does not stop sound alerts.</p>
+</section>
+<section>
+  <h2>Share with several viewers</h2>
+  <p>Up to eight accepted viewers can watch the same camera using separate direct connections. The source lists accepted viewers under Connected viewers. Disconnect this viewer ends only that person's view; Stop camera ends all views.</p>
+  <p>Choose Shared video bandwidth on the source to leave room for other Wi-Fi traffic. The default is 6 Mbps; the choices are 1, 2, 4, 6 and 10 Mbps. The video ceiling is divided between viewers, and each browser can reduce its rate further when congested. At 1 Mbps, new viewers are accepted only while fewer than four viewers are already accepted; higher choices use a limit of eight. Lowering the limit keeps existing viewers connected, even above the new admission threshold. Audio and network overhead are additional.</p>
+  <p>The browser cannot measure your Wi-Fi's total shared capacity. If video slows down, lower the chosen ceiling or disconnect some viewers. Device performance can limit sharing too. A browser that cannot apply the video limits displays that on the source; its normal connection adaptation continues.</p>
+</section>
+<section>
+  <h2>Enable viewer alerts where supported</h2>
+  <p>Connected viewers can choose motion or sound notifications in supported browsers. Enable an alert and allow the browser's notification request. Sound detection needs the host to share audio; it works while playback is muted. Frames and audio are analyzed locally, without recordings or uploads, and notifications contain only generic activity text.</p>
+  <p>Keep the viewer page open. Browsers may pause analysis in the background or while the device sleeps, and lighting changes can trigger motion notices. Alerts can be missed; they are not a safety monitor. On iPhone or iPad, notification support may require adding the site to the Home Screen. Unsupported notification options are hidden.</p>
 </section>
 <section>
   <h2>Return after a screen lock or interruption</h2>
-  <p>When you return, the page tries to continue with the same viewer link and chosen camera. If it cannot resume, choose Resume camera; your browser may ask for camera permission again. A viewer stays approved while the original connection survives. If the room connection was lost, the viewer must reconnect and receive fresh approval when Require my approval is on. Background capture on a locked phone is not guaranteed.</p>
+  <p>When you return, the page tries to continue with the same viewer link and chosen camera. If it cannot resume, choose Resume camera; your browser may ask for camera permission again. A viewer stays approved while the original direct connection survives. If that direct connection was lost, the viewer must reconnect and receive fresh approval when Require my approval is on. Background capture on a locked phone is not guaranteed.</p>
 </section>
 <section>
   <h2>Stop when finished</h2>
@@ -56,7 +67,7 @@
 </section>
 <section>
   <h2>What the introduction service sees</h2>
-  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. The connection stays open during the session. Losing it ends the current video connection; the source keeps the viewer link for Resume camera. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. It stays open for invitations, but an already accepted direct view continues if that introduction connection closes. The camera retries its invitation without repeating capture or viewer approval. If the introduction service cannot recover, the existing view continues; stop and start again before inviting another viewer. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video, enabled audio and the viewer note travel the encrypted peer connection instead.</p>
   <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Choosing a listed name requests a connection immediately and exchanges network addresses. The source can require owner approval or accept a viewer automatically. Opening a viewer link still waits for Connect. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
-  <p>This is a browser camera view: it has no microphone or recording feature, and it does not install a system webcam for other applications.</p>
+  <p>This is a browser camera view: microphone audio is optional and it has no recording feature, and it does not install a system webcam for other applications.</p>
 </section>
