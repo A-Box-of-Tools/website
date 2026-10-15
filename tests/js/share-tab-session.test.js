@@ -147,7 +147,7 @@ test('pending connection limits reject excess peers without making encoders', as
   for (let i = 0; i < 5; i += 1) signal(f.sockets[0], `v:${i}`, { dial: true });
   await settle();
   assert.equal(f.peers.length, 4);
-  assert.equal(f.sockets[0].sent.at(-1).data.refused, 'busy');
+  assert.ok(f.sockets[0].sent.some((message) => message.to === 'v:4' && message.data?.refused === 'busy'));
   assert.ok(f.peers.every((peer) => peer.transceivers.length === 0));
 });
 
