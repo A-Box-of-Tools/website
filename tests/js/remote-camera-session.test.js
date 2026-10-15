@@ -116,6 +116,50 @@ async function readyViewer(f) {
   return { peer, channel };
 }
 
+test('a remote hello delivered before the local open callback still sends our hello before requesting approval', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  channel.readyState = 'open'; channel.receive('hello');
+  assert.deepEqual(channel.sent, [
+    { protocol: PROTOCOL, type: 'hello', receiveAudio: true },
+    { protocol: PROTOCOL, type: 'request', note: 'Phone layout check' },
+  ]);
+  assert.equal(f.states.at(-1), 'viewer.waiting'); assert.equal(peer.closed, false);
+  channel.open(); channel.receive('hello');
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello', 'request']);
+  assert.equal(peer.closed, false);
+});
+
+test('a failed local hello while handling a remote hello cannot send an approval request', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  const sent = [];
+  channel.send = text => { sent.push(JSON.parse(text).type); throw new Error('Local hello failed'); };
+  channel.readyState = 'open'; channel.receive('hello');
+  assert.deepEqual(sent, ['hello']);
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1), 'connection.direct-failed');
+  channel.open(); channel.receive('hello');
+  assert.deepEqual(sent, ['hello']);
+});
+
+test('sending our hello early does not accept another control message before the remote hello', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  channel.readyState = 'open'; channel.receive('approved');
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello']);
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1), 'connection.invalid');
+  channel.open();
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello']);
+});
+
 test('opted-in microphone media waits for approval and acknowledgement beside video', async (t) => {
   const f = fixture(t), stream = sourceStream(true); await f.session.startHost(stream, CODE);
   const peer = await requestViewer(f, 'v:1', 'Audio viewer', { receiveAudio: true });

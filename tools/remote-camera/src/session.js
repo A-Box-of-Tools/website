@@ -563,6 +563,10 @@ export class CameraSession {
     });
     channel.addEventListener('message', (event) => {
       if (!this.current(entry)) return;
+      // A received frame can be delivered while the local open event is
+      // still queued. Our hello must precede every response on this channel.
+      opened();
+      if (!this.current(entry)) return;
       const message = controlMessage(event.data);
       if (!message) return this.peerFailed(entry, 'connection.invalid');
       if (message.type === 'hello') {
