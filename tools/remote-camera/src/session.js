@@ -14,6 +14,7 @@ export class CameraSession {
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
     onViewers = () => {}, onBandwidth = () => {},
     onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
+    diagnostics = null,
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -26,6 +27,7 @@ export class CameraSession {
     this.onBandwidth = onBandwidth;
     this.onSignaling = onSignaling;
     this.visible = visible;
+    this.diagnostics = diagnostics;
     this.signalingLost = false;
     this.signalingRetry = null;
     this.revision = 0;
@@ -167,6 +169,7 @@ export class CameraSession {
       pairing.listen({
         open: () => {
           opened = true;
+          for (const entry of this.peers.values()) entry.trace?.socket('open');
           this.keepalive = pairing.every('heartbeat', 25000, () => {
             if (socket.readyState === 1 && !pairing.send('ping')) fail('connection.server-failed');
           });
@@ -176,8 +179,12 @@ export class CameraSession {
             if (!pairing.send('ping')) fail('connection.server-failed');
           } else finish();
         },
-        error: () => fail('connection.server-failed'),
+        error: () => {
+          for (const entry of this.peers.values()) entry.trace?.error('websocket', { name: 'NetworkError' });
+          fail('connection.server-failed');
+        },
         close: (event) => {
+          for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
           const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' };
           fail(reasons[event.code] ?? 'connection.server-failed');
         },
@@ -205,6 +212,7 @@ export class CameraSession {
 
   detachSocket(socket) {
     if (this.socket !== socket) return;
+    for (const entry of this.peers.values()) entry.trace?.socket('closed');
     const pairing = this.pairing;
     this.socket = null;
     this.pairing = null;
@@ -239,7 +247,7 @@ export class CameraSession {
     // remain private, while unfinished peers cannot cross a new room lease.
     for (const entry of [...this.peers.values()]) {
       if (this.established(entry, true)) entry.signalingDetached = true;
-      else this.removePeer(entry.id);
+      else this.removePeer(entry.id, 'signaling-error');
     }
   }
 
@@ -341,31 +349,60 @@ export class CameraSession {
     const entry = this.peers.get(id);
     if (!entry || entry.signalingDetached) return;
     this.queue(entry, async () => {
-      if (data.description !== undefined) {
-        const description = data.description;
-        const expected = this.role === 'camera' ? 'answer' : 'offer';
-        if (description?.type !== expected || typeof description.sdp !== 'string'
-            || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
-        await entry.pc.setRemoteDescription(localDescription(description));
-        if (!this.current(entry)) return;
-        if (expected === 'answer' && entry.video) {
-          entry.mediaNegotiated = true;
-          this.viewers();
+      let operation = 'signaling', adding = null;
+      try {
+        if (data.description !== undefined) {
+          const description = data.description;
+          const expected = this.role === 'camera' ? 'answer' : 'offer';
+          if (description?.type !== expected || typeof description.sdp !== 'string'
+              || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
+          if (expected === 'offer') { entry.trace?.count('offerReceived'); entry.trace?.mark('offer-received'); }
+          operation = 'set-remote-description';
+          await entry.pc.setRemoteDescription(localDescription(description));
+          if (!this.current(entry)) return;
+          if (expected === 'answer') { entry.trace?.count('answerAccepted'); entry.trace?.mark('answer-accepted'); }
+          if (expected === 'answer' && entry.video) {
+            entry.mediaNegotiated = true;
+            entry.trace?.mark('sharing');
+            this.viewers();
+          }
+          for (const candidate of entry.candidates.splice(0)) {
+            operation = 'add-candidate'; adding = candidate;
+            await entry.pc.addIceCandidate(candidate);
+            entry.trace?.candidate('remote', candidate, 'accepted'); entry.trace?.count('candidatesAccepted');
+            adding = null;
+          }
+          if (expected === 'offer') {
+            operation = 'answer';
+            entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
+            operation = 'create-answer';
+            const answer = await entry.pc.createAnswer();
+            operation = 'set-local-description';
+            await entry.pc.setLocalDescription(answer);
+            if (this.current(entry)) this.signal(entry, { description: localDescription(entry.pc.localDescription) });
+          }
+        } else if (data.candidate !== undefined) {
+          const candidate = data.candidate;
+          entry.trace?.count('candidatesReceived'); entry.trace?.candidate('remote', candidate, 'received');
+          if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048 || !allowedCandidate(candidate, true)) {
+            entry.trace?.count('candidatesFiltered'); entry.trace?.candidate('remote', candidate, 'filtered');
+            return;
+          }
+          if (entry.pc.remoteDescription) {
+            operation = 'add-candidate'; adding = candidate;
+            await entry.pc.addIceCandidate(candidate);
+            entry.trace?.candidate('remote', candidate, 'accepted'); entry.trace?.count('candidatesAccepted');
+            adding = null;
+          }
+          else {
+            if (entry.candidates.length >= 128) throw new Error('connection.invalid');
+            entry.candidates.push(candidate);
+          }
         }
-        for (const candidate of entry.candidates.splice(0)) await entry.pc.addIceCandidate(candidate);
-        if (expected === 'offer') {
-          entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
-          await entry.pc.setLocalDescription(await entry.pc.createAnswer());
-          if (this.current(entry)) this.signal(entry, { description: localDescription(entry.pc.localDescription) });
-        }
-      } else if (data.candidate !== undefined) {
-        const candidate = data.candidate;
-        if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048 || !allowedCandidate(candidate, true)) return;
-        if (entry.pc.remoteDescription) await entry.pc.addIceCandidate(candidate);
-        else {
-          if (entry.candidates.length >= 128) throw new Error('connection.invalid');
-          entry.candidates.push(candidate);
-        }
+      } catch (error) {
+        entry.trace?.error(operation, error);
+        if (adding) entry.trace?.candidate('remote', adding, 'rejected');
+        throw error;
       }
     });
   }
@@ -374,12 +411,26 @@ export class CameraSession {
 
   newPeer(id) {
     const pc = new this.PeerConnection(rtcConfig(true));
-    const entry = { id, pc, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], pending: false, approved: false, timers: new Set() };
+    const trace = this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local');
+    const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], pending: false, approved: false, timers: new Set() };
     this.peers.set(id, entry);
-    this.deadline(entry, () => this.peerFailed(entry, 'connection.direct-failed'), CONNECT_TIMEOUT);
+    trace?.attach(pc);
+    trace?.socket(this.socket?.readyState === 1 ? 'open' : this.socket?.readyState > 1 ? 'closed' : 'connecting');
+    trace?.mark('room-ready');
+    this.deadline(entry, () => this.peerFailed(entry, 'connection.direct-failed', 'handshake-timeout'), CONNECT_TIMEOUT);
     pc.addEventListener('icecandidate', (event) => {
-      if (!this.current(entry) || !event.candidate || !allowedCandidate(event.candidate, true)) return;
-      try { this.signal(entry, { candidate: event.candidate.toJSON() }); } catch { this.peerFailed(entry, 'connection.server-failed'); }
+      if (!this.current(entry) || !event.candidate) return;
+      if (!allowedCandidate(event.candidate, true)) {
+        trace?.candidate('local', event.candidate, 'filtered'); trace?.count('candidatesFiltered');
+        return;
+      }
+      let candidate;
+      try { candidate = event.candidate.toJSON(); }
+      catch (error) {
+        trace?.candidate('local', event.candidate, 'rejected'); trace?.error('candidate', error);
+        this.peerFailed(entry, 'connection.server-failed'); return;
+      }
+      try { this.signal(entry, { candidate }); } catch { this.peerFailed(entry, 'connection.server-failed'); }
     });
     pc.addEventListener('datachannel', (event) => {
       if (this.role !== 'viewer' || entry.dc || event.channel.label !== 'camera-control') return this.peerFailed(entry, 'connection.invalid');
@@ -391,6 +442,7 @@ export class CameraSession {
       const stream = entry.received ??= new this.MediaStream();
       if (stream.getTracks().includes(event.track)) return;
       stream.addTrack(event.track);
+      if (event.track.kind === 'video') trace?.mark('video-track');
       this.stream = stream;
       this.onStream(stream);
       event.track.addEventListener('ended', () => {
@@ -404,10 +456,10 @@ export class CameraSession {
     });
     pc.addEventListener('connectionstatechange', () => {
       if (!this.current(entry)) return;
-      if (pc.connectionState === 'failed') this.peerFailed(entry, 'connection.direct-failed');
+      if (pc.connectionState === 'failed') this.peerFailed(entry, 'connection.direct-failed', 'connection-failed');
       if (pc.connectionState === 'disconnected') {
         this.deadline(entry, () => {
-          if (pc.connectionState === 'disconnected') this.peerFailed(entry, 'connection.direct-failed');
+          if (pc.connectionState === 'disconnected') this.peerFailed(entry, 'connection.direct-failed', 'disconnected');
         }, 5000);
       }
       if (this.role === 'camera' && this.current(entry)) this.viewers();
@@ -434,8 +486,19 @@ export class CameraSession {
 
   signal(entry, data) {
     if (entry.signalingDetached) return;
-    try { this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null); }
+    try {
+      this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null);
+      if (data.candidate !== undefined) {
+        entry.trace?.candidate('local', data.candidate, 'sent'); entry.trace?.count('candidatesSent');
+      } else if (data.description?.type === 'offer') {
+        entry.trace?.count('offerSent'); entry.trace?.mark('offer-sent');
+      } else if (data.description?.type === 'answer') {
+        entry.trace?.count('answerSent'); entry.trace?.mark('answer-sent');
+      }
+    }
     catch (error) {
+      entry.trace?.error('send-signal', error);
+      if (data.candidate !== undefined) entry.trace?.candidate('local', data.candidate, 'rejected');
       if (!this.established(entry) || !this.socket) throw error;
       const socket = this.socket;
       this.detachSocket(socket);
@@ -444,17 +507,25 @@ export class CameraSession {
   }
 
   async offer(entry) {
-    await entry.pc.setLocalDescription(await entry.pc.createOffer());
+    let operation = 'create-offer';
+    try {
+      const offer = await entry.pc.createOffer();
+      operation = 'set-local-description';
+      await entry.pc.setLocalDescription(offer);
+    } catch (error) { entry.trace?.error(operation, error); throw error; }
     if (this.current(entry)) this.signal(entry, { description: localDescription(entry.pc.localDescription) });
   }
 
   control(entry, type, values = {}) {
-    if (entry.dc?.readyState !== 'open') throw new Error('connection.direct-failed');
-    entry.dc.send(JSON.stringify({ protocol: PROTOCOL, type, ...values }));
+    try {
+      if (entry.dc?.readyState !== 'open') throw new Error('connection.direct-failed');
+      entry.dc.send(JSON.stringify({ protocol: PROTOCOL, type, ...values }));
+    } catch (error) { entry.trace?.error('channel', error); throw error; }
   }
 
   channel(entry, channel) {
     entry.dc = channel;
+    entry.trace?.channel(channel);
     const opened = () => {
       if (!this.current(entry) || entry.opened) return;
       entry.opened = true;
@@ -462,7 +533,7 @@ export class CameraSession {
         // Both sides identify the tool over the encrypted channel; approval
         // and the viewer's note never become signalling messages.
         this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {});
-      } catch { this.peerFailed(entry, 'connection.direct-failed'); }
+      } catch { this.peerFailed(entry, 'connection.direct-failed', 'channel-error'); }
     };
     channel.addEventListener('open', opened);
     if (channel.readyState === 'open') opened();
@@ -476,11 +547,13 @@ export class CameraSession {
       if (message.type === 'hello') {
         if (entry.hello) return;
         entry.hello = true;
+        entry.trace?.mark('hello-received');
         entry.receiveAudio = message.receiveAudio === true;
         for (const timer of entry.timers) clearTimeout(timer);
         entry.timers.clear();
         if (this.role === 'viewer') {
           this.control(entry, 'request', { note: this.note });
+          entry.trace?.mark('waiting-approval');
           this.state('viewer.waiting');
         }
       } else if (!entry.hello) {
@@ -488,6 +561,7 @@ export class CameraSession {
       } else if (message.type === 'request' && this.role === 'camera' && !entry.approved) {
         if (entry.pending || entry.refused) return;
         entry.pending = true;
+        entry.trace?.mark('approval-requested');
         entry.note = message.note;
         entry.autoAccept = !this.requireApproval;
         if (entry.autoAccept && !this.cameraChange) {
@@ -495,17 +569,21 @@ export class CameraSession {
         } else this.requests();
       } else if (message.type === 'approved' && this.role === 'viewer' && !entry.approved) {
         entry.approved = true;
+        entry.trace?.mark('approved');
         this.state('viewer.approved');
         this.control(entry, 'approval-ack');
+        entry.trace?.mark('approval-acknowledged');
         this.deadline(entry, () => {
           entry.pc.getStats().then((stats) => {
             const received = [...stats.values()].some((item) => item.type === 'inbound-rtp' && item.kind === 'video' && item.framesDecoded > 0);
-            if (this.current(entry) && !received) this.peerFailed(entry, 'connection.direct-failed');
-          }).catch(() => {
-            if (this.current(entry)) this.peerFailed(entry, 'connection.direct-failed');
+            if (this.current(entry) && !received) this.peerFailed(entry, 'connection.direct-failed', 'media-timeout');
+          }).catch((error) => {
+            entry.trace?.error('get-stats', error);
+            if (this.current(entry)) this.peerFailed(entry, 'connection.direct-failed', 'media-timeout');
           });
         }, CONNECT_TIMEOUT);
       } else if (message.type === 'approval-ack' && this.role === 'camera' && entry.approved) {
+        if (!entry.acknowledged) entry.trace?.mark('approval-acknowledged');
         entry.acknowledged = true;
         clearTimeout(entry.approvalDeadline);
         entry.timers.delete(entry.approvalDeadline);
@@ -523,7 +601,8 @@ export class CameraSession {
   }
 
   requests() {
-    this.onRequests([...this.peers.values()].filter((entry) => entry.pending).map(({ id, note }) => ({ id, note })));
+    this.onRequests([...this.peers.values()].filter((entry) => entry.pending)
+      .map(({ id, note, autoAccept }) => ({ id, note, autoAccept: Boolean(autoAccept) })));
   }
 
   approve(id) {
@@ -536,11 +615,12 @@ export class CameraSession {
     try {
       this.control(entry, 'approved');
     } catch {
-      this.peerFailed(entry, 'connection.ended');
+      this.peerFailed(entry, 'connection.ended', 'channel-error');
       return false;
     }
+    entry.trace?.mark('approved');
     entry.approvalDeadline = this.deadline(entry, () => {
-      if (!entry.acknowledged) this.peerFailed(entry, 'connection.direct-failed');
+      if (!entry.acknowledged) this.peerFailed(entry, 'connection.direct-failed', 'approval-timeout');
     }, CONNECT_TIMEOUT);
     this.requests();
     this.viewers();
@@ -575,8 +655,9 @@ export class CameraSession {
         const audio = entry.receiveAudio && this.stream?.getAudioTracks?.().find((item) => item.readyState === 'live');
         if (audio) entry.audioSender = entry.pc.addTransceiver(audio, { direction: 'sendonly', streams: [this.stream] }).sender;
         entry.video = true;
-      } catch {
-        this.peerFailed(entry, 'connection.ended');
+      } catch (error) {
+        entry.trace?.error('offer', error);
+        this.peerFailed(entry, 'connection.ended', 'signaling-error');
         return;
       }
       this.queue(entry, () => this.offer(entry));
@@ -655,10 +736,11 @@ export class CameraSession {
     const entry = this.peers.get(id);
     if (!entry || entry.approved) return false;
     try { this.control(entry, reason); } catch {}
+    entry.trace?.finish('denied');
     entry.refused = true;
     entry.pending = false;
     this.requests();
-    this.deadline(entry, () => this.removePeer(id), 150);
+    this.deadline(entry, () => this.removePeer(id, 'denied'), 150);
     return true;
   }
 
@@ -666,12 +748,13 @@ export class CameraSession {
     const entry = this.peers.get(id);
     if (this.role !== 'camera' || !entry?.approved) return false;
     try { this.control(entry, 'ended'); } catch {}
-    this.removePeer(id);
+    this.removePeer(id, 'ended');
     return true;
   }
 
-  peerFailed(entry, key) {
+  peerFailed(entry, key, reason = key === 'connection.ended' ? 'ended' : 'signaling-error') {
     if (!this.current(entry)) return;
+    entry.trace?.finish(reason);
     if (this.role === 'viewer') this.stop(key);
     else {
       this.removePeer(entry.id);
@@ -681,9 +764,10 @@ export class CameraSession {
     }
   }
 
-  removePeer(id) {
+  removePeer(id, reason = 'peer-left') {
     const entry = this.peers.get(id);
     if (!entry) return;
+    entry.trace?.finish(reason);
     this.peers.delete(id);
     for (const timer of entry.timers) clearTimeout(timer);
     entry.dc?.close();
@@ -698,6 +782,10 @@ export class CameraSession {
 
   stop(key = 'connection.stopped') {
     const role = this.role;
+    const reason = key === 'connection.stopped' ? 'stopped'
+      : key === 'viewer.denied' ? 'denied'
+        : ['connection.ended', 'camera.ended', 'camera.switch-ended', 'camera.paused'].includes(key) ? 'ended' : 'signaling-error';
+    for (const entry of this.peers.values()) entry.trace?.finish(reason);
     // The encrypted control remains authoritative when the room socket is lost.
     if (role === 'camera' && key === 'connection.stopped') {
       for (const entry of this.peers.values()) {

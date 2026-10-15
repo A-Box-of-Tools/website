@@ -13,7 +13,7 @@ glyph = "camera"
 category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-pairing", "foreground-recovery", "peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
+js_parts = ["peer-pairing", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
 lastmod = "2026-10-14"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
@@ -154,6 +154,17 @@ body = """
       page open; a browser may pause analysis in the background or during sleep."""
 
 [[privacy]]
+title = "Connection reports stay in this tab until you share them."
+body = """
+      Connection details offers Copy connection report and Download JSON for
+      troubleshooting on either device. The report contains browser and tool
+      versions, connection stages, states, counts and error names, without
+      network addresses, pairing codes, viewer notes, video or audio. It is
+      kept only in this tab, remains available after a failure or Stop, and
+      is not uploaded or saved automatically. Copying or downloading shares
+      only the report you requested; reloading clears the tab's report."""
+
+[[privacy]]
 title = "The site frame still loads its usual third parties."
 body = """
       Advertising and measurement scripts come from Google, and the donate
@@ -171,7 +182,7 @@ title = "Invite the viewing device."
 body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
 [[howto]]
 title = "Connect the viewer."
-body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve each request you recognise on the source. With it off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
+body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
 title = "Resume if the browser pauses video, then stop."
 body = "The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. If the microphone was interrupted, choose Resume microphone when ready. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel."

@@ -3,12 +3,17 @@ import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { observeForeground } from './shared/foreground-recovery.js';
+import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
 import { alertCapabilities, ViewerAlerts } from './alerts.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 
 const $ = (id) => document.getElementById(id);
+const diagnostics = createDiagnostics({
+  version: new URL(import.meta.url).searchParams.get('v'),
+  userAgent: navigator.userAgent,
+});
 document.querySelectorAll('.camera-help').forEach(wireHelpTooltip);
 let mode = 'camera';
 let activeRole = null;
@@ -37,6 +42,10 @@ let cameraResuming = false;
 let cameraStarting = false;
 let resumeOnVisible = false;
 let pageSuspended = false;
+let pendingApprovalRequests = new Map();
+let approvalDialogPeer = null;
+let approvalDialogRevision = 0;
+let reportAction = 0;
 const watchedTracks = new WeakSet();
 const capture = new CameraCapture({ getUserMedia: (constraints) => {
   // Exclusive-camera retries can outlive the gesture that opened them.
@@ -52,6 +61,8 @@ function showStatus(key, role = mode) {
 }
 
 function idleCamera() {
+  closeApprovalDialog();
+  pendingApprovalRequests.clear();
   cameraResumeNeeded = false;
   cameraAudioResumeNeeded = false;
   cameraResuming = false;
@@ -125,6 +136,7 @@ function releaseWake() {
 }
 
 const session = new CameraSession({
+  diagnostics,
   visible: () => !document.hidden && !pageSuspended,
   onSignaling() {
     if (session.signalingLost) {
@@ -141,6 +153,7 @@ const session = new CameraSession({
       const retain = role === 'camera' && cameraIntent !== null
         && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
       closeStopDialog();
+      closeApprovalDialog();
       discovery?.unpublish();
       epoch += 1;
       clearDetails();
@@ -166,6 +179,9 @@ const session = new CameraSession({
     }
   },
   onRequests(requests) {
+    const fresh = requests.filter((request) => !request.autoAccept && !pendingApprovalRequests.has(request.id));
+    pendingApprovalRequests = new Map(requests.map((request) => [request.id, request]));
+    const focused = document.activeElement?.dataset;
     $('camera-requests').replaceChildren();
     $('camera-approval').hidden = requests.length === 0;
     for (const request of requests) {
@@ -179,17 +195,24 @@ const session = new CameraSession({
         button.textContent = phrase(key);
         button.dataset.action = action;
         button.dataset.peer = request.id;
-        button.disabled = Boolean(session.cameraChange) || capture.switching || cameraResumeNeeded || cameraResuming;
+        button.disabled = approvalBlocked();
         if (action === 'deny') button.className = 'ghost';
         button.addEventListener('click', () => {
-          if (action === 'approve' && !session.approve(request.id)) showStatus('connection.busy', 'camera');
-          else if (action === 'deny') session.deny(request.id);
+          decideViewerRequest(action, request.id);
         });
         row.append(button);
       }
       row.prepend(note);
       $('camera-requests').append(row);
+      if (focused?.peer === request.id && !$('camera-request-dialog').open) {
+        for (const button of row.querySelectorAll('button')) {
+          if (button.dataset.action === focused.action) button.focus();
+        }
+      }
     }
+    if (approvalDialogPeer !== null && !pendingApprovalRequests.has(approvalDialogPeer)) closeApprovalDialog({ restoreFocus: true });
+    syncApprovalButtons();
+    if (fresh.length) showApprovalRequest(fresh[0]);
   },
   onViewers(viewers) {
     $('camera-viewers').hidden = viewers.length === 0;
@@ -283,6 +306,7 @@ function stop(key = 'connection.stopped') {
   cameraIntent = null;
   resumeOnVisible = false;
   closeStopDialog();
+  closeApprovalDialog();
   epoch += 1;
   discovery?.unpublish();
   session.stop(key);
@@ -302,12 +326,60 @@ function closeStopDialog() {
   if (dialog.open) dialog.close('cancel');
 }
 
+function approvalBlocked() {
+  return Boolean(session.cameraChange) || capture.switching || cameraResumeNeeded || cameraResuming;
+}
+
+function syncApprovalButtons() {
+  const disabled = approvalBlocked() || !pendingApprovalRequests.has(approvalDialogPeer);
+  $('camera-request-approve').disabled = disabled;
+  $('camera-request-deny').disabled = disabled;
+}
+
+function closeApprovalDialog({ restoreFocus = false } = {}) {
+  const dialog = $('camera-request-dialog');
+  const revision = ++approvalDialogRevision, peer = approvalDialogPeer;
+  approvalDialogPeer = null;
+  if (!dialog.open) return;
+  dialog.close();
+  if (!restoreFocus || peer === null) return;
+  queueMicrotask(() => {
+    if (revision !== approvalDialogRevision || dialog.open || $('camera-stop-dialog').open
+        || activeRole !== 'camera' || document.hidden || pageSuspended) return;
+    const buttons = [...$('camera-requests').querySelectorAll('button')];
+    const target = buttons.find((button) => button.dataset.peer === peer && button.dataset.action === 'approve' && !button.disabled)
+      ?? buttons.find((button) => !button.disabled) ?? $('camera-stop');
+    if (!target.hidden) target.focus();
+  });
+}
+
+function showApprovalRequest(request) {
+  const dialog = $('camera-request-dialog');
+  if (dialog.open || $('camera-stop-dialog').open || session.role !== 'camera'
+      || document.hidden || pageSuspended || typeof dialog.showModal !== 'function') return;
+  approvalDialogRevision += 1;
+  approvalDialogPeer = request.id;
+  $('camera-request-note').textContent = request.note || phrase('camera.unnamed');
+  syncApprovalButtons();
+  try { dialog.showModal(); }
+  catch { approvalDialogPeer = null; return; }
+  $('camera-request-later').focus();
+}
+
+function decideViewerRequest(action, id) {
+  if (approvalBlocked() || !pendingApprovalRequests.has(id)) return;
+  if (approvalDialogPeer === id) closeApprovalDialog({ restoreFocus: true });
+  if (action === 'approve' && !session.approve(id)) showStatus('connection.busy', 'camera');
+  else if (action === 'deny') session.deny(id);
+}
+
 function stopCamera() {
   stop();
   $('camera-start').focus();
 }
 
 function requestCameraStop() {
+  closeApprovalDialog();
   if (!session.hasViewers) return stopCamera();
   const dialog = $('camera-stop-dialog');
   dialog.showModal();
@@ -370,6 +442,22 @@ function watchDetails() {
   clearInterval(detailsTimer);
   detailsTimer = setInterval(updateDetails, 1000);
   updateDetails();
+}
+
+function connectionReport() {
+  // A requested snapshot stays selectable while live diagnostics continue.
+  const text = JSON.stringify({ ...diagnostics.report(), tool: 'remote-camera' }, null, 2);
+  if (!$('connection-report-field').hidden) $('connection-report').value = text;
+  return text;
+}
+
+function selectConnectionReport(text, key) {
+  $('connection-details').open = true;
+  $('connection-report-field').hidden = false;
+  $('connection-report').value = text;
+  $('connection-report').focus();
+  $('connection-report').select();
+  $('connection-report-status').textContent = phrase(key);
 }
 
 async function keepAwake(current) {
@@ -549,6 +637,7 @@ function showCameraIdentity(code) {
 }
 
 function renderCameraRecovery() {
+  syncApprovalButtons();
   if (!cameraIntent) return;
   updateCameraAudio();
   const pairing = session.role === 'camera' && session.signalingLost;
@@ -583,6 +672,7 @@ function suspendCameraResources() {
   if (!cameraIntent) return;
   cameraAudioResumeNeeded = cameraIntent.audio;
   closeStopDialog();
+  closeApprovalDialog();
   epoch += 1;
   discovery?.unpublish();
   session.stop('camera.paused');
@@ -754,6 +844,7 @@ async function switchCamera() {
   if (capture.stream.getVideoTracks()[0]?.getSettings?.().deviceId === deviceId) return;
   const current = epoch;
   const operation = session.prepareCameraChange();
+  syncApprovalButtons();
   $('camera-device').disabled = true;
   $('camera-switch-status').textContent = phrase('camera.switching');
   $('camera-switch-status').classList.remove('warn');
@@ -771,6 +862,7 @@ async function switchCamera() {
     } else stop('camera.switch-ended');
   } finally {
     operation.cancel();
+    syncApprovalButtons();
     if (current === epoch && session.role === 'camera') {
       session.requests();
       $('camera-device').disabled = false;
@@ -913,6 +1005,13 @@ $('camera-stop').addEventListener('click', requestCameraStop);
 $('camera-stop-confirm').addEventListener('click', () => {
   if (activeRole === 'camera') stopCamera();
 });
+$('camera-request-later').addEventListener('click', () => closeApprovalDialog({ restoreFocus: true }));
+$('camera-request-approve').addEventListener('click', () => decideViewerRequest('approve', approvalDialogPeer));
+$('camera-request-deny').addEventListener('click', () => decideViewerRequest('deny', approvalDialogPeer));
+$('camera-request-dialog').addEventListener('cancel', (event) => {
+  event.preventDefault();
+  closeApprovalDialog({ restoreFocus: true });
+});
 $('viewer-connect').addEventListener('click', connectViewer);
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', () => playVideo(true));
@@ -944,14 +1043,45 @@ $('camera-copy').addEventListener('click', async () => {
     $('copy-status').textContent = phrase('copy.manual');
   }
 });
+$('connection-copy').addEventListener('click', async () => {
+  const action = ++reportAction, text = connectionReport();
+  try {
+    await navigator.clipboard.writeText(text);
+    if (action === reportAction) $('connection-report-status').textContent = phrase('report.copied');
+  } catch {
+    if (action === reportAction) selectConnectionReport(text, 'report.manual');
+  }
+});
+$('connection-download').addEventListener('click', () => {
+  reportAction += 1;
+  const text = connectionReport();
+  let url = null, anchor = null;
+  try {
+    url = URL.createObjectURL(new Blob([text + '\n'], { type: 'application/json' }));
+    anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'remote-camera-connection-report.json';
+    anchor.hidden = true;
+    document.body.append(anchor);
+    anchor.click();
+    $('connection-report-status').textContent = phrase('report.downloaded');
+  } catch {
+    selectConnectionReport(text, 'report.download-failed');
+  } finally {
+    anchor?.remove();
+    if (url) setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+});
 observeForeground({
   foreground: visibleCamera,
   hidden() {
+    closeApprovalDialog();
     releaseWake();
     if (cameraIntent && (cameraStarting || cameraResuming || capture.switching)) suspendCameraResources();
     else if (cameraIntent) resumeOnVisible = true;
   },
   suspend(event) {
+    closeApprovalDialog();
     pageSuspended = true;
     if (event.persisted && cameraIntent) suspendCameraResources();
     else stop();

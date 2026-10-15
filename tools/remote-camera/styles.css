@@ -55,6 +55,7 @@
 .camera-stop-dialog::backdrop { background: rgb(0 0 0 / 45%); }
 .camera-stop-dialog h2 { margin-top: 0; }
 .camera-stop-dialog p { line-height: 1.65; }
+.camera-request-note { overflow-wrap: anywhere; white-space: pre-wrap; font-weight: 600; }
 .camera-stop-dialog .run-row { margin-top: 1.25rem; }
 .camera-video-panel { margin: 1rem 0; }
 .camera-video-panel video { display: block; width: 100%; max-height: 32rem; min-height: 12rem; aspect-ratio: 16 / 9; object-fit: contain; background: #101418; border: 1px solid var(--border); border-radius: var(--radius); }
@@ -81,6 +82,9 @@
 .camera-details { margin: 1rem 0; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; }
 .camera-details summary { cursor: pointer; font-weight: 600; }
 .camera-details p { color: var(--text-dim); line-height: 1.65; }
+.camera-report-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.camera-report-field label { display: block; margin-bottom: 0.5rem; }
+#connection-report { display: block; box-sizing: border-box; width: 100%; min-height: 14rem; resize: vertical; font: 0.8rem/1.5 ui-monospace, monospace; text-align: left; }
 @media (max-width: 52rem) {
   .camera-workspace { grid-template-columns: minmax(0, 1fr); }
 }

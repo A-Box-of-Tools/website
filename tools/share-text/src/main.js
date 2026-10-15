@@ -9,7 +9,7 @@ import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive
 import { watchDiscovery } from './discovery.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { fileSender, FILE_CHANNEL } from './send-file.js';
-import { createDiagnostics } from './connection-diagnostics.js';
+import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { foregroundRecovery, observeForeground } from './shared/foreground-recovery.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 

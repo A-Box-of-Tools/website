@@ -148,7 +148,7 @@ an empty catch. The introduction socket has its own record and numeric close
 code. Seeing a discoverable name establishes directory visibility, not a working
 peer connection.
 
-`connection-diagnostics.js` projects candidates and RTC statistics through an
+`shared/js/connection-diagnostics.js` projects candidates and RTC statistics through an
 allowlist. It never retains or exports raw SDP, candidate addresses or hostnames,
 ICE credentials, share names, peer identifiers, text, file names, file sizes,
 approval notes, admission tokens, exception messages, or stacks. Reports stay in
