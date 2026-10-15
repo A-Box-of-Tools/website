@@ -36,7 +36,7 @@
       L’<a href="../extraire-recus-factures/">extracteur de reçus et factures</a> lit les photos et reconnaît le texte localement. Son bouton facultatif de taux historique demande une paire de devises et la date choisie à <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. La date peut être celle du reçu. Le prestataire voit votre IP et la requête ; identifiants et référent sont omis, et elle ne contient ni photo, nom, commerçant, montant ni adresse de messagerie. Les taux manuels ne font aucune requête.
     </p>
     <p>
-      Les boutons de messagerie et de partage préparent rapports et copies JPEG localement, puis téléchargent un fichier de message ou les remettent à l’application choisie. Cette page n’envoie pas de courriel. Application, prestataire et destinataire choisis gèrent la suite selon leurs politiques. <a href="../partager-du-texte/">Partager du texte et des fichiers</a> et <a href="../remote-camera/">Caméra distante</a> envoient volontairement du contenu à un autre navigateur ; les métadonnées sont décrites ci-dessous.
+      Les boutons de messagerie et de partage préparent rapports et copies JPEG localement, puis téléchargent un fichier de message ou les remettent à l’application choisie. Cette page n’envoie pas de courriel. Application, prestataire et destinataire choisis gèrent la suite selon leurs politiques. <a href="../partager-du-texte/">Partager du texte et des fichiers</a>, <a href="../share-tab/">Partager un onglet du navigateur</a> et <a href="../remote-camera/">Caméra distante</a> envoient volontairement du contenu à un autre navigateur ; les métadonnées sont décrites ci-dessous.
     </p>
   </section>
 
@@ -100,6 +100,17 @@
       comprend votre adresse IP, la page demandée et votre agent utilisateur,
       afin de livrer la page et de garder le service debout et sûr. Nous n'avons
       accès aux journaux par visiteur d'aucun des deux.
+    </p>
+
+    <h3>Partager un onglet du navigateur</h3>
+    <p>
+      <a href="../share-tab/">Partager un onglet du navigateur</a> utilise le sélecteur d’un navigateur de bureau pour capturer un onglet et transmettre sa vidéo en direct à un spectateur approuvé. Le spectateur demande l’accès, l’hôte l’approuve et le spectateur le confirme avant l’envoi de vidéo. Il n’y a ni découverte d’appareils à proximité ni capture de son, de caméra ou de microphone. Les informations visibles dans l’onglet choisi sont partagées ; le spectateur peut enregistrer ce qu’il reçoit.
+    </p>
+    <p>
+      Les deux méthodes d’appairage utilisent une connexion directe chiffrée sur un réseau local joignable, sans STUN public ni TURN. L’appairage en ligne nécessite internet pour la mise en relation. Le rendez-vous voit les codes de salle, adresses IP, horaires, descriptions WebRTC et candidats de connexion, mais pas la vidéo, les notes du spectateur ni les décisions d’approbation. Cloudflare conserve les journaux de métadonnées de connexion pendant sept jours.
+    </p>
+    <p>
+      L’appairage hors ligne échange plutôt des blocs de connexion manuellement, avec l’outil HTTPS mis en cache sur les deux appareils, sans ouvrir de WebSocket vers le rendez-vous. Les blocs contiennent des adresses de connexion que les scripts habituels de la page peuvent lire ; les fichiers enregistrés restent jusqu’à leur suppression. Ces scripts peuvent aussi lire l’adresse et l’état de la page, dont un code d’invitation en ligne ; un lien ou un bloc seul ne donne jamais accès à la vidéo. Le spectateur ne peut ni contrôler l’hôte ni sélectionner du texte de la page. L’outil ne propose pas d’enregistrement, mais le contenu visible d’une session connectée fait partie de l’image et le spectateur peut le capturer ou l’enregistrer lui-même. La page explique la préparation hors ligne et les limites du réseau ; des adresses locales ne prouvent pas une frontière physique du réseau.
     </p>
 
     <h3>Caméra distante et présentation des navigateurs</h3>

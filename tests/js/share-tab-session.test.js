@@ -103,6 +103,50 @@ async function viewer(f) {
   return { peer, channel };
 }
 
+test('a remote hello before the local open callback still receives hello before the request', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  const peer = f.peers[0], channel = new Channel();
+  peer.emit('datachannel', { channel });
+  // The transport is writable even though delivery of its open event is pending.
+  channel.readyState = 'open';
+  channel.receive('hello');
+  assert.deepEqual(channel.sent, [
+    { protocol: PROTOCOL, type: 'hello' },
+    { protocol: PROTOCOL, type: 'request', note: 'Viewer' },
+  ]);
+  channel.emit('open'); channel.receive('hello'); await settle();
+  assert.deepEqual(channel.sent.map((message) => message.type), ['hello', 'request']);
+  assert.equal(peer.closed, false);
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(f.streams.length, 0);
+  assert.equal(f.states.at(-1).key, 'viewer.waiting');
+});
+
+test('a failed local hello retires the peer before processing the received frame', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  const peer = f.peers[0], channel = new Channel(), entry = f.session.peers.get('viewer');
+  peer.emit('datachannel', { channel }); channel.readyState = 'open';
+  channel.send = () => { throw new Error('Channel closed before hello'); };
+  channel.receive('hello'); await settle();
+  assert.equal(peer.closed, true);
+  assert.equal(entry.hello, undefined);
+  assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1).key, 'connection.direct-failed');
+  assert.deepEqual(channel.sent, []);
+});
+
+test('sending the local hello does not accept approval before the remote hello', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  const peer = f.peers[0], channel = new Channel();
+  peer.emit('datachannel', { channel }); channel.readyState = 'open';
+  channel.receive('approved'); await settle();
+  assert.deepEqual(channel.sent.map((message) => message.type), ['hello']);
+  assert.equal(peer.closed, true);
+  assert.equal(f.states.at(-1).key, 'connection.invalid');
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(f.streams.some((stream) => stream !== null), false);
+});
+
 test('a tab host uses its own pairing room and no ICE servers or media before consent', async (t) => {
   const f = fixture(t), stream = source(); await f.session.startHost(stream, CODE);
   const url = new URL(f.sockets[0].url);

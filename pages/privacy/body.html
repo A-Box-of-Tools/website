@@ -100,7 +100,13 @@
 
     <h3>Share a Browser Tab</h3>
     <p>
-      <a href="../share-tab/">Share a Browser Tab</a> sends encrypted live video of one chosen browser tab to one viewer the host approves. The viewer cannot control the host or select webpage text. Online pairing exposes codes, addresses, timing and setup messages to the rendezvous; Cloudflare keeps seven-day request metadata logs, never video or viewer notes. Offline pairing exchanges connection blocks instead, using the cached HTTPS tool on both devices and a reachable local network. Blocks contain connection addresses; same-page scripts can read them, and saved block files remain until you remove them. Neither method configures public STUN or TURN. No camera or microphone permission is requested, no audio is sent, and the tool has no recording feature. Visible signed-in content is part of the picture, and a viewer can independently capture or record it. The tool page explains network reachability, page-script access and offline preparation.
+      <a href="../share-tab/">Share a Browser Tab</a> uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no nearby discovery, audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+    </p>
+    <p>
+      Both pairing methods use a direct encrypted connection on a reachable local network, without public STUN or TURN. Online pairing needs internet for introductions. The rendezvous sees room codes, IP addresses, times, WebRTC descriptions and candidates, but not video, viewer notes or approval decisions. Cloudflare retains connection metadata logs for seven days.
+    </p>
+    <p>
+      Offline pairing instead exchanges connection blocks manually, using the cached HTTPS tool on both devices, and opens no rendezvous WebSocket. Blocks contain connection addresses; the page’s normal scripts can read them, and saved block files remain until you remove them. Those scripts can also read the page address and state, including an online invitation code; a link or block alone never grants video access. The viewer cannot control the host or select webpage text. The tool has no recording feature, but visible signed-in content is part of the picture and the viewer can independently capture or record it. The tool page explains offline preparation and network limits; local address settings do not prove a physical network boundary.
     </p>
 
     <h3>Remote Camera and browser introductions</h3>

@@ -394,6 +394,10 @@ export class TabSession {
     channel.addEventListener('error', () => { if (this.current(entry)) this.peerFailed(entry); });
     channel.addEventListener('message', (event) => {
       if (!this.current(entry)) return;
+      // A received frame can arrive before the local open callback. Identify
+      // this side before responding, and stop if sending that hello retires it.
+      opened();
+      if (!this.current(entry)) return;
       const message = controlMessage(event.data);
       if (!message) return this.peerFailed(entry, 'connection.invalid');
       try {

@@ -36,7 +36,7 @@
       O <a href="../extrair-recibos-faturas/">Extrator de recibos e faturas</a> lê fotos e reconhece texto localmente. O botão opcional de câmbio histórico solicita par de moedas e data escolhida ao <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. A data pode ser a impressa no recibo. O provedor vê seu IP e a solicitação; ela omite credenciais e referência de origem e não contém foto, nome, estabelecimento, valor ou email. Taxas manuais não precisam de solicitação.
     </p>
     <p>
-      Os botões de email e compartilhamento preparam relatórios e JPEGs localmente e depois baixam um arquivo de email ou os entregam ao app escolhido. Esta página não envia email. O app, provedor e destinatário que você escolhe cuidam do próximo passo pelas próprias políticas. <a href="../compartilhar-texto/">Compartilhar texto e arquivos</a> e <a href="../remote-camera/">Câmera remota</a> enviam conteúdo a outro navegador deliberadamente; os metadados são descritos abaixo.
+      Os botões de email e compartilhamento preparam relatórios e JPEGs localmente e depois baixam um arquivo de email ou os entregam ao app escolhido. Esta página não envia email. O app, provedor e destinatário que você escolhe cuidam do próximo passo pelas próprias políticas. <a href="../compartilhar-texto/">Compartilhar texto e arquivos</a>, <a href="../share-tab/">Compartilhar uma aba do navegador</a> e <a href="../remote-camera/">Câmera remota</a> enviam conteúdo a outro navegador deliberadamente; os metadados são descritos abaixo.
     </p>
   </section>
 
@@ -98,6 +98,17 @@
       inclui o seu endereço IP, a página pedida e o seu agente de usuário, para
       entregar a página e manter o serviço no ar e seguro. Não temos acesso aos
       registros por visitante de nenhum dos dois.
+    </p>
+
+    <h3>Compartilhar uma aba do navegador</h3>
+    <p>
+      <a href="../share-tab/">Compartilhar uma aba do navegador</a> usa o seletor de um navegador de computador para capturar uma aba e enviar vídeo ao vivo a um espectador aprovado. O espectador solicita acesso, o anfitrião aprova e o espectador confirma antes do envio de vídeo. Não há descoberta de dispositivos próximos nem captura de áudio, câmera ou microfone. As informações visíveis na aba escolhida são compartilhadas; o espectador pode gravar o que recebe.
+    </p>
+    <p>
+      Os dois métodos de pareamento usam uma conexão direta criptografada em uma rede local alcançável, sem STUN público nem TURN. O pareamento online precisa de internet para a apresentação. O servidor de encontro vê códigos de sala, endereços IP, horários, descrições WebRTC e candidatos de conexão, mas não vídeo, notas do espectador nem decisões de aprovação. A Cloudflare mantém registros de metadados de conexão por sete dias.
+    </p>
+    <p>
+      O pareamento offline troca blocos de conexão manualmente, usando a ferramenta HTTPS em cache nos dois dispositivos, sem abrir um WebSocket para o servidor de encontro. Os blocos contêm endereços de conexão que os scripts habituais da página podem ler; os arquivos salvos permanecem até você removê-los. Esses scripts também podem ler o endereço e o estado da página, incluindo um código de convite online; um link ou bloco sozinho nunca dá acesso ao vídeo. O espectador não pode controlar o anfitrião nem selecionar texto da página. A ferramenta não grava, mas o conteúdo visível de uma sessão conectada faz parte da imagem e o espectador pode capturá-lo ou gravá-lo por conta própria. A página explica a preparação offline e os limites de rede; usar endereços locais não comprova um limite físico de rede.
     </p>
 
     <h3>Câmera remota e apresentação entre navegadores</h3>

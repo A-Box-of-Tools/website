@@ -17,7 +17,7 @@ lede = """
     computador, o código é público, e esta página reúne os motivos das duas
     coisas."""
 
-updated = "12 de outubro de 2026"
+updated = "15 de outubro de 2026"
 
 og_title = "Quem faz o abox.tools, e por que tudo roda no navegador"
 og_description = "Um projeto independente e autofinanciado: por que o processamento é local, quais funções usam rede, como o site se sustenta e como verificar suas afirmações."

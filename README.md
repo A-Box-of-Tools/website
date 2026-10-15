@@ -1,12 +1,13 @@
 # A Box of Tools
 
 The source for **[abox.tools](https://abox.tools/)** — a small collection of
-single-purpose web tools that do all of their work **in the browser**. No server,
-no upload, no account.
+single-purpose web tools that do their processing **in the browser**. No
+processing uploads, no account.
 
-The selling proposition is not "we promise not to look at your files", it is
-"there is no code path that could send them anywhere". Everything below is
-written to keep that true.
+Local processing keeps your files on your device. Intentional sharing sends
+chosen content to another browser; those tools explain online introductions,
+manual offline pairing where offered, permissions and any optional relay. Everything below is written to
+keep those boundaries explicit.
 
 Most of these tools are also small enough to read in one sitting, and that is
 worth keeping wherever it is free. It is not the promise, though. Where the
