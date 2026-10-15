@@ -392,7 +392,7 @@ wireHelpTooltip($('tool-version-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 
-function hostSocket(code, onOpen) {
+function hostSocket(code) {
   const trace = diagnostics.begin('host', isLocal ? 'local' : 'internet');
   hostDiagnostic = trace;
   const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
@@ -411,7 +411,14 @@ function hostSocket(code, onOpen) {
       trace.mark('server-open');
       pairing.every('heartbeat', 30000, () => pairing.send('ping'));
       setShareState('share.active');
-      onOpen();
+      // The first socket may fail before opening. Its replacement must also
+      // expose the link and Stop control when the same share becomes ready.
+      attempts = 0;
+      linkCopy.invalidate();
+      $('link').value = shareUrl(code);
+      $('linkrow').hidden = false;
+      $('stop').hidden = false;
+      refreshCount();
       if (isDiscoverable) {
         $('discovery-share-status').textContent = phrase('discovery.publishing');
         announcementTimer = setTimeout(() => {
@@ -470,7 +477,7 @@ function hostSocket(code, onOpen) {
       clearTimeout(hostRetry);
       hostRetry = setTimeout(() => {
         if (sharing && activeCode === code && sock === ws) {
-          try { hostSocket(code, refreshCount); }
+          try { hostSocket(code); }
           catch { resumeHost(); }
         }
       }, 5000);
@@ -487,7 +494,7 @@ function resumeHost() {
   hostPairing?.clear('foreground');
   const ws = sock;
   if (!ws || ws.readyState > 1) {
-    try { hostSocket(activeCode, refreshCount); }
+    try { hostSocket(activeCode); }
     catch {
       setStatus(phrase('share.lost-rendezvous'), true);
       hostRetry = setTimeout(resumeHost, 5000);
@@ -532,14 +539,7 @@ function publish() {
   renderDiscovery();
   setStatus('');
   try {
-    hostSocket(code, () => {
-      attempts = 0;
-      linkCopy.invalidate();
-      $('link').value = shareUrl(code);
-      $('linkrow').hidden = false;
-      $('stop').hidden = false;
-      refreshCount();
-    });
+    hostSocket(code);
   } catch (error) {
     hostDiagnostic?.error('websocket', error);
     hostDiagnostic?.finish('socket-error');
