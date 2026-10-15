@@ -31,7 +31,7 @@ favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
 # rasterises for the share card and the two installed-app icons, which
 # want a filled colourful mark rather than a line drawing.
 glyph = "send"
-category = "text-codes-and-passwords"
+category = "connect-devices"
 roadmap_group = "beyond"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this

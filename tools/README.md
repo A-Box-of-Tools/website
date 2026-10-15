@@ -33,8 +33,6 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
-| [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted. |
-| [Share a Browser Tab](share-tab/) | `/share-tab/` | Choose a tab on your computer and let one approved viewer watch it on your local network. Pair online or exchange connection blocks offline. No extension, sound or remote control. |
 | [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
 | [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged. |
@@ -62,15 +60,17 @@ browser and uploads nothing; how the site around them is built is in the
 | [Extract Audio from Video](extract-audio-from-video/) | `/extract-audio-from-video/` | Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
-| [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Other devices find it nearby or use your listener link, with Mute and Leave controls. |
-| [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants. |
 | [JSON Formatter](json-formatter/) | `/json-formatter/` | JSON, XML, HTML, CSS and YAML, formatted or converted. Nothing is pasted into anyone else's server. |
 | [YAML to JSON Converter](yaml-to-json/) | `/yaml-to-json/` | Both directions, and it says what each one costs. Nothing is pasted into anyone else's server. |
 | [XML Formatter](xml-formatter/) | `/xml-formatter/` | XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server. |
 | [Text Diff](text-diff/) | `/text-diff/` | Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server. |
 | [Base64 Encoder & Decoder](base64/) | `/base64/` | Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server. |
-| [Share Text & Files](share-text/) | `/share-text/` | The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server. |
 | [QR & Barcode Generator](qr-barcode/) | `/qr-barcode/` | Type it, and it becomes a code. Nothing is sent to make one. |
 | [QR & Barcode Reader](qr-barcode-reader/) | `/qr-barcode-reader/` | Point it at a code, or drop a picture of one. It is read here, and nowhere else. |
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |
 | [Password & Passphrase Generator](password-generator/) | `/password-generator/` | Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history. |
+| [Share Text & Files](share-text/) | `/share-text/` | The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server. |
+| [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Other devices find it nearby or use your listener link, with Mute and Leave controls. |
+| [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants. |
+| [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted. |
+| [Share a Browser Tab](share-tab/) | `/share-tab/` | Choose a tab on your computer and let one approved viewer watch it on your local network. Pair online or exchange connection blocks offline. No extension, sound or remote control. |
