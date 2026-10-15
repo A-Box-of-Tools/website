@@ -92,7 +92,7 @@ camera and voice keep their established retry schedules and readiness rules.
 | Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
-| Share a Browser Tab | A click and browser-tab-only capture, online link-only introductions or offline offer/reply blocks, host-only ICE without STUN or TURN in both methods, and mandatory approval and acknowledgement before video. One viewer can watch; offline media renegotiation uses the established encrypted control channel. An ended track requires a new picker choice; returning cannot recapture. |
+| Share a Browser Tab | A click and browser-tab-only capture, online invitations with opt-in code-only nearby discovery or offline offer/reply blocks, host-only ICE without STUN or TURN in both methods, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch; offline media renegotiation uses the established encrypted control channel. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
 approval requirement or restore a session the user ended. The socket and

@@ -11,13 +11,15 @@ const MAX_PENDING = 4;
 export class TabSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
-    onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, diagnostics = null,
+    onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, onDiscovery = () => {}, diagnostics = null,
     random = globalThis.crypto, now = () => Date.now(),
   } = {}) {
-    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, diagnostics, random, now });
+    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, onDiscovery, diagnostics, random, now });
     this.revision = 0;
     this.role = null;
     this.mode = null;
+    this.code = null;
+    this.discoverable = false;
     this.offline = null;
     this.stream = null;
     this.socket = null;
@@ -55,8 +57,9 @@ export class TabSession {
     }, { once: true });
   }
 
-  async startHost(stream, code) {
+  async startHost(stream, code, { discoverable = false } = {}) {
     this.prepareHost(stream, 'online');
+    this.discoverable = discoverable === true;
     return this.open(code);
   }
 
@@ -171,7 +174,8 @@ export class TabSession {
     const revision = this.revision;
     return new Promise((resolve, reject) => {
       let settled = false, ready = false, socket;
-      try { socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}`); }
+      const offered = this.role === 'host' && this.mode === 'online' && this.discoverable;
+      try { socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`); }
       catch { this.stop('connection.server-failed'); reject(new Error('connection.server-failed')); return; }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
@@ -233,6 +237,15 @@ export class TabSession {
   }
 
   message(message) {
+    if (message.type === 'host-ready') {
+      const publication = message.discovery;
+      if (this.role === 'host' && this.mode === 'online' && this.discoverable
+          && publication?.tool === TOOL && publication.code === this.code && CODE_PATTERN.test(publication.code)
+          && typeof publication.lease === 'string' && /^[a-z0-9-]{16,128}$/i.test(publication.lease)) {
+        this.onDiscovery({ code: publication.code, lease: publication.lease, tool: TOOL });
+      }
+      return;
+    }
     if (this.role === 'host' && message.type === 'leave') { this.removePeer(message.id); return; }
     if (message.type !== 'signal') return;
     const id = this.role === 'host' ? message.from : 'viewer';
@@ -531,6 +544,8 @@ export class TabSession {
     if (role === 'host') for (const entry of this.peers.values()) { try { this.control(entry, 'ended'); } catch {} }
     this.role = null;
     this.mode = null;
+    this.code = null;
+    this.discoverable = false;
     this.offline = null;
     this.cancelOpen?.(); this.cancelOpen = null;
     this.openingTrace?.finish('stopped'); this.openingTrace = null;
@@ -540,6 +555,7 @@ export class TabSession {
     this.stream?.getTracks().forEach((track) => { if (track.readyState !== 'ended') track.stop(); });
     this.stream = null;
     pairing?.close();
+    if (role === 'host') this.onDiscovery(null);
     if (role === 'viewer') this.onStream(null);
     if (role) this.onState(key, role);
   }

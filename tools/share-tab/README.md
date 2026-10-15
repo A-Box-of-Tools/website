@@ -28,10 +28,12 @@ again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
 
-An online session generates a fresh random `tab-` room code. It is a link-only
-invitation, with no discovery socket or listing. A viewer link selects the
-viewing role but does not authorize a connection. The viewer sees the address
-exchange notice, optionally adds an introduction and chooses Request to watch.
+An online session generates a fresh random `tab-` room code. Invitations are
+link-only by default. Before starting, the host can opt into Show in nearby
+shared tabs; that choice stays fixed until the session ends. A viewer link or
+selected nearby listing fills the invitation but does not authorize a
+connection. The viewer sees the address exchange notice, optionally adds an
+introduction and chooses Request to watch.
 The bounded note travels over the encrypted control channel and is not
 verified identity.
 
@@ -88,6 +90,25 @@ read page addresses and same-page state, including pasted blocks, so a
 fragment code or textarea is not treated as a secret from those scripts.
 Mandatory approval remains the media admission step.
 
+## Optional nearby discovery
+
+`peer-discovery.js` supplies the same discovery protocol as the other paired
+tools, scoped to `tool=share-tab` and the selected rendezvous endpoint. Loading
+the page opens no discovery socket. An online host that opted in publishes
+only the random room code; a viewer explicitly chooses Find nearby tabs to
+open the list. The captured tab's title, URL and pixels, and the viewer's note,
+are never included in discovery messages. Selecting a result only fills the
+invitation: Request to watch, host approval and the viewer's acknowledgement
+remain separate steps.
+
+The rendezvous groups pages by public IPv4 address or IPv6 /64, page origin
+and tool. It is a best-effort network hint, not a Wi-Fi scan, verified identity
+or proof of physical proximity. A shared carrier gateway or VPN can include
+strangers, and differing routes can hide a nearby device. The copied invitation
+still works when discovery cannot find a host. Listings are temporary state on
+open connections; stopping the host withdraws its listing. Offline mode neither
+advertises nor browses, and opens no discovery or introduction socket.
+
 ## Offline block exchange
 
 Load the HTTPS tool on both devices and wait for each service worker's
@@ -137,7 +158,11 @@ ends. Exercise both online pairing and offline block exchange on the actual
 local network, including file loading, expired or mismatched blocks, and an
 offline cached-page reload with no rendezvous socket. A disconnected internet
 route during online pairing is not a substitute for testing offline mode.
-An automated synthetic stream cannot establish real browser-picker support.
+Verify discovery is off initially, an opted-in online host appears only in
+its network/origin/tool group, and selecting a listing sends no connection
+request until Request to watch. Stopping removes the listing; switching to
+Offline opens no discovery socket. An automated synthetic stream cannot
+establish real browser-picker support.
 
 The generator and JavaScript suites run in CI, in accordance with the
 repository's local-test rule. [The pairing library guide](../../docs/paired-tools.md)

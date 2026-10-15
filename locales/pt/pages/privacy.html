@@ -102,7 +102,10 @@
 
     <h3>Compartilhar uma aba do navegador</h3>
     <p>
-      <a href="../share-tab/">Compartilhar uma aba do navegador</a> usa o seletor de um navegador de computador para capturar uma aba e enviar vídeo ao vivo a um espectador aprovado. O espectador solicita acesso, o anfitrião aprova e o espectador confirma antes do envio de vídeo. Não há descoberta de dispositivos próximos nem captura de áudio, câmera ou microfone. As informações visíveis na aba escolhida são compartilhadas; o espectador pode gravar o que recebe.
+      <a href="../share-tab/">Compartilhar uma aba do navegador</a> usa o seletor de um navegador de computador para capturar uma aba e enviar vídeo ao vivo a um espectador aprovado. O espectador solicita acesso, o anfitrião aprova e o espectador confirma antes do envio de vídeo. Não há captura de áudio, câmera ou microfone. As informações visíveis na aba escolhida são compartilhadas; o espectador pode gravar o que recebe.
+    </p>
+    <p>
+      A descoberta próxima online fica desativada por padrão. O anfitrião pode ativar Show in nearby shared tabs antes de iniciar; o espectador escolhe explicitamente Find nearby tabs para abrir a lista. A conexão de descoberta lista apenas o código aleatório do convite, nunca o título, endereço ou imagem da aba capturada nem a nota do espectador. Selecionar um resultado apenas preenche o convite; Request to watch e a aprovação continuam necessários. O serviço agrupa as páginas desta ferramenta por endereço IPv4 público ou sub-rede IPv6 /64 e origem do site, não por localização física. Gateways compartilhados ou VPNs podem incluir desconhecidos ou ocultar dispositivos próximos. As entradas existem nas conexões abertas sem histórico armazenado, e parar retira a entrada do anfitrião. O pareamento offline não usa descoberta.
     </p>
     <p>
       Os dois métodos de pareamento usam uma conexão direta criptografada em uma rede local alcançável, sem STUN público nem TURN. O pareamento online precisa de internet para a apresentação. O servidor de encontro vê códigos de sala, endereços IP, horários, descrições WebRTC e candidatos de conexão, mas não vídeo, notas do espectador nem decisões de aprovação. A Cloudflare mantém registros de metadados de conexão por sete dias.

@@ -3,6 +3,8 @@ import { TabSession } from './session.js';
 import { makeCode, parseCode, viewerLink } from './protocol.js';
 import { phrase } from './shared/phrases.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
+import { watchDiscovery } from './shared/peer-discovery.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 
 const $ = (id) => document.getElementById(id);
 let revision = 0;
@@ -12,6 +14,12 @@ let offlineAccepted = false;
 let offlineAccepting = false;
 let remoteRevision = 0;
 let waitingRequests = [];
+let discovery = null;
+let discoveryPublication = null;
+let nearbyShares = [];
+let discoveryState = 'idle';
+let browsingNearby = false;
+let pageSuspended = false;
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
@@ -101,6 +109,65 @@ function clearRemote() {
 
 function isOffline() { return $('pairing-offline').checked; }
 
+function renderDiscovery() {
+  const list = $('discovery-list');
+  const focused = document.activeElement?.dataset.code;
+  list.replaceChildren();
+  for (const share of nearbyShares) {
+    const code = parseCode(share.code);
+    if (!code || code !== share.code || code === session.code && role === 'host') continue;
+    const item = document.createElement('li');
+    const label = document.createElement('code');
+    label.textContent = code;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.code = code;
+    button.textContent = phrase('discovery.choose', { code });
+    button.disabled = Boolean(role) || isOffline();
+    button.addEventListener('click', () => {
+      if (role || isOffline() || !browsingNearby || !nearbyShares.some((entry) => entry.code === code)) return;
+      $('viewer-code').value = code;
+      status('viewer-status', 'discovery.selected');
+      $('viewer-connect').focus();
+    });
+    item.append(label, button);
+    list.append(item);
+  }
+  const key = discoveryState === 'ready' ? (list.children.length ? 'discovery.found' : 'discovery.empty') : `discovery.${discoveryState}`;
+  status('discovery-status', key, discoveryState === 'unavailable');
+  if (focused) [...list.querySelectorAll('button')].find((button) => button.dataset.code === focused)?.focus({ preventScroll: true });
+}
+
+function startDiscovery() {
+  if (discovery || isOffline() || pageSuspended || !canConnect) return;
+  discovery = watchDiscovery(`${rendezvousEndpoint()}/discover?tool=share-tab`, {
+    list(shares) { nearbyShares = shares; renderDiscovery(); },
+    status(state) { discoveryState = state; renderDiscovery(); },
+    publication(state) {
+      status('host-publication-status', state ? `discovery.${state}` : '', state === 'not-published');
+    },
+  });
+}
+
+function closeDiscovery() {
+  discovery?.unpublish();
+  discovery?.close();
+  discovery = null;
+  browsingNearby = false;
+  nearbyShares = [];
+  discoveryState = 'idle';
+  renderDiscovery();
+}
+
+function publishDiscovery() {
+  if (!discoveryPublication || role !== 'host' || isOffline() || !$('host-discoverable').checked || pageSuspended) {
+    discovery?.unpublish();
+    return;
+  }
+  startDiscovery();
+  discovery?.publish(discoveryPublication.code, discoveryPublication.lease);
+}
+
 function updateControls() {
   const hosting = role === 'host';
   const viewing = role === 'viewer';
@@ -108,6 +175,13 @@ function updateControls() {
   const offline = isOffline();
   $('pairing-online').disabled = busy;
   $('pairing-offline').disabled = busy;
+  $('host-discovery-option').hidden = offline;
+  $('host-discoverable').disabled = busy || !canCapture;
+  $('host-publication-status').hidden = offline || !hosting || !$('host-discoverable').checked;
+  $('discovery-controls').hidden = offline || busy;
+  $('discovery-start').hidden = browsingNearby;
+  $('discovery-start').disabled = !canConnect;
+  $('discovery-panel').hidden = offline || busy || !browsingNearby;
   $('online-viewer-fields').hidden = offline;
   $('offline-viewer-fields').hidden = !offline;
   $('offline-note').hidden = !offline;
@@ -131,6 +205,10 @@ function updateControls() {
 }
 
 const session = new TabSession({
+  onDiscovery(publication) {
+    discoveryPublication = publication;
+    publishDiscovery();
+  },
   onState(key, sessionRole) {
     if (key === 'connection.stopped' || !role || (sessionRole && sessionRole !== role)) return;
     const currentRole = role;
@@ -200,6 +278,8 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
   invitation = '';
   offlineAccepted = false;
   offlineAccepting = false;
+  discoveryPublication = null;
+  closeDiscovery();
   linkCopy.invalidate();
   offerCopy.invalidate();
   answerCopy.invalidate();
@@ -240,7 +320,8 @@ async function startHost() {
       $('offline-offer').value = block;
     } else {
       const code = makeCode();
-      await session.startHost(stream, code);
+      if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
+      await session.startHost(stream, code, { discoverable: $('host-discoverable').checked });
       if (owner !== revision || role !== 'host') return;
       invitation = viewerLink(location.href, code);
       $('share-link').value = invitation;
@@ -259,7 +340,7 @@ function knownPhrase(key) {
 }
 
 async function connectViewer() {
-  if (role || !canConnect) return;
+  if (role || !canConnect || isOffline()) return;
   const code = parseCode($('viewer-code').value);
   if (!code) { status('viewer-status', 'code.invalid', true); return; }
   const note = $('viewer-name').value.trim();
@@ -373,6 +454,19 @@ $('host-start').addEventListener('click', startHost);
 $('host-stop').addEventListener('click', () => stopAll('host.stopped'));
 $('viewer-connect').addEventListener('click', () => connectViewer());
 $('viewer-stop').addEventListener('click', () => stopAll());
+$('discovery-start').addEventListener('click', () => {
+  if (role || isOffline() || !canConnect || pageSuspended) return;
+  browsingNearby = true;
+  startDiscovery();
+  updateControls();
+});
+$('discovery-refresh').addEventListener('click', () => discovery?.refresh());
+$('discovery-close').addEventListener('click', () => {
+  if (role) return;
+  closeDiscovery();
+  updateControls();
+  $('discovery-start').focus();
+});
 $('offline-reply').addEventListener('click', createViewerReply);
 $('offline-accept').addEventListener('click', acceptViewerReply);
 $('copy-link').addEventListener('click', () => linkCopy.copy());
@@ -388,6 +482,7 @@ for (const id of ['pairing-online', 'pairing-offline']) {
   $(id).addEventListener('change', () => {
     if (role) return;
     revision += 1;
+    closeDiscovery();
     if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
     updateControls();
   });
@@ -433,7 +528,8 @@ window.addEventListener('hashchange', (event) => {
   stopAll();
   showInvitation();
 });
-window.addEventListener('pagehide', () => stopAll());
+window.addEventListener('pagehide', () => { pageSuspended = true; stopAll(); });
+window.addEventListener('pageshow', () => { pageSuspended = false; });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
   const open = panel.hidden;
