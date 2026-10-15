@@ -1,7 +1,7 @@
 <main id="main">
   <fieldset id="pairing-methods" class="tab-share-methods" aria-describedby="pairing-method-help">
     <legend>Connection method</legend>
-    <label><input type="radio" id="pairing-online" name="pairing-method" value="online" checked> Online &mdash; invite with a link</label>
+    <label><input type="radio" id="pairing-online" name="pairing-method" value="online" checked> Online &mdash; invite with a link or find nearby</label>
     <label><input type="radio" id="pairing-offline" name="pairing-method" value="offline"> Offline &mdash; exchange connection blocks</label>
     <p id="pairing-method-help" class="field-note">Both methods need devices that can reach each other on the same Wi-Fi, Ethernet or hotspot. Online pairing uses internet for the introduction. Offline pairing uses a manual exchange instead.</p>
   </fieldset>
@@ -12,11 +12,16 @@
       <h2 id="host-heading">Share a browser tab</h2>
       <p class="card-lede">Choose a tab, invite a viewer, and approve their request. They can watch while you browse.</p>
       <p id="capture-support" class="tab-share-help">Start on a desktop browser that supports tab sharing. Choose a browser tab in the sharing dialog.</p>
+      <div id="host-discovery-option" class="tab-share-discovery-option">
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> Show in nearby shared tabs</label>
+        <p id="host-discovery-help" class="field-note">Choose this before sharing to list your invitation code for nearby viewers. Your tab&rsquo;s title, address and picture are not listed. You still approve each viewer.</p>
+      </div>
       <div class="run-row">
         <button type="button" id="host-start" class="big">Choose a tab to share</button>
         <button type="button" id="host-stop" class="big danger" hidden>Stop sharing</button>
       </div>
       <p id="host-status" class="tab-share-status" role="status" aria-live="polite">Nothing is being captured or shared.</p>
+      <p id="host-publication-status" class="tab-share-status" role="status" aria-live="polite" hidden></p>
       <div id="host-invitation" class="tab-share-invite" hidden>
         <div class="field">
           <label for="share-link">Viewer link</label>
@@ -70,6 +75,20 @@
       <span class="tab-share-badge">Read-only live view</span>
       <h2 id="viewer-heading">Watch a shared tab</h2>
       <p class="card-lede">Use the host&rsquo;s invitation for the selected connection method. The host must approve you before video starts.</p>
+      <div id="discovery-controls" class="tab-share-discovery-controls">
+        <button type="button" id="discovery-start" aria-describedby="discovery-help">Find nearby tabs</button>
+        <p id="discovery-help" class="field-note">Nearby discovery uses internet to match the network address seen by our introduction service. It can miss devices on your Wi-Fi or include strangers sharing a gateway or VPN. Check the code with the host.</p>
+      </div>
+      <section id="discovery-panel" class="tab-share-nearby" aria-labelledby="discovery-heading" hidden>
+        <h3 id="discovery-heading">Nearby shared tabs</h3>
+        <p id="discovery-status" role="status" aria-live="polite"></p>
+        <ul id="discovery-list" class="tab-share-nearby-list"></ul>
+        <div class="run-row">
+          <button type="button" id="discovery-refresh">Refresh nearby tabs</button>
+          <button type="button" id="discovery-close">Stop looking</button>
+        </div>
+        <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
+      </section>
       <div id="viewer-fields">
         <div id="online-viewer-fields" class="field">
           <label for="viewer-code">Viewer link or tab code</label>
@@ -128,7 +147,8 @@
     <summary>What is shared, and how the connection works</summary>
     <p>The browser captures the selected tab&rsquo;s picture, including visible signed-in content. Close private panels before sharing. Tab audio, your microphone and your camera are not requested. Selecting another browser tab does not automatically share it.</p>
     <p>A control connection carries the viewer&rsquo;s request. Video is attached only after host approval and the viewer&rsquo;s acknowledgement. Viewer actions have no remote-control path to the host.</p>
-    <p>Both methods use a direct encrypted connection with no public address-discovery service or internet relay. Online pairing uses rendezvous.abox.tools for setup messages, never video or viewer notes. Offline pairing uses manually exchanged connection blocks and makes no introduction-service connection.</p>
+    <p>Both methods use a direct encrypted connection with no public STUN server or internet relay. Online pairing uses rendezvous.abox.tools for setup messages, never video or viewer notes. Offline pairing uses manually exchanged connection blocks and makes no introduction-service connection.</p>
+    <p>Nearby discovery is optional in Online mode. A host can list their invitation code, and a viewer can ask the introduction service for matching listings. Matching uses the public IPv4 address or IPv6 network prefix, page address and tool, not a scan of your Wi-Fi. A match does not prove that a device is trusted or reachable. Offline mode has no nearby discovery.</p>
     <p>Use the same reachable Wi-Fi, Ethernet or hotspot. This page does not create a hotspot, Wi-Fi Direct or Bluetooth connection. Network isolation, firewalls, VPN routes and browser local-network permissions can block a connection. Local address settings do not prove that traffic stays inside a building.</p>
     <p>Before losing internet, load this HTTPS tool on both devices and wait for offline ready. The website you show must already be loaded or otherwise work offline. Files you save for the manual exchange contain connection addresses; remove them when no longer needed.</p>
     <p>Stop sharing, use the browser&rsquo;s Stop sharing control, or close this page to end capture. Hiding this control tab while browsing the selected tab keeps sharing where the browser permits. When capture ends, choosing a tab again always needs a new click and browser permission.</p>
@@ -154,6 +174,16 @@
     <span data-phrase="capture.tab-only">Choose a browser tab, rather than a window or screen. This browser must identify the source as a tab before sharing can begin.</span>
     <span data-phrase="capture.cancelled">The sharing attempt was stopped.</span>
     <span data-phrase="viewer.ready">Enter a viewer link or tab code to begin.</span>
+    <span data-phrase="discovery.idle">Choose Find nearby tabs to look for invitations.</span>
+    <span data-phrase="discovery.connecting">Looking for nearby shared tabs&hellip;</span>
+    <span data-phrase="discovery.found">Check the invitation code with the host, then choose their tab.</span>
+    <span data-phrase="discovery.empty">No shared tabs found. Ask the host to enable nearby sharing before choosing a tab, or use their viewer link.</span>
+    <span data-phrase="discovery.unavailable">Nearby discovery is unavailable. You can still use the host&rsquo;s viewer link, or exchange connection blocks offline.</span>
+    <span data-phrase="discovery.choose">Choose {code}</span>
+    <span data-phrase="discovery.selected">Invitation selected. Choose Request to watch to ask the host for access.</span>
+    <span data-phrase="discovery.publishing">Making your invitation code visible nearby&hellip;</span>
+    <span data-phrase="discovery.published">Your invitation code is listed in nearby shared tabs. Video still needs your approval.</span>
+    <span data-phrase="discovery.not-published">Your invitation is not listed nearby yet. You can still share the viewer link.</span>
     <span data-phrase="offline.viewer-ready">Paste or load the host connection block to create your reply.</span>
     <span data-phrase="viewer.waiting">Your request reached the host. Waiting for approval; no video is being sent yet.</span>
     <span data-phrase="viewer.approved">The host approved you. Waiting for live tab video.</span>

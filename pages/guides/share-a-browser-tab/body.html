@@ -31,6 +31,32 @@
   </section>
 
   <section>
+    <h2>Find a nearby tab without copying its link</h2>
+    <p>
+      In Online mode, the host can check <em>Show in nearby shared tabs</em> before
+      choosing a tab to share. It is off by default and cannot be changed
+      during a session. The list shows the random invitation code, never
+      the captured tab's title, address or picture.
+    </p>
+    <p>
+      On the viewer, choose <em>Find nearby tabs</em> and select the host's
+      code. This only fills the invitation; choose <em>Request to watch</em>
+      when ready. The host still approves the request, and your browser
+      acknowledges that approval before any video arrives. Stop sharing
+      removes the host from the list.
+    </p>
+    <p>
+      Nearby discovery needs internet. The service groups this tool's pages
+      by public IPv4 address or IPv6 /64 subnet and website origin. It does
+      not scan Wi-Fi or prove that someone is physically nearby. A shared
+      carrier gateway or VPN can include strangers, while different routes
+      can hide a device beside you. Confirm the code with the host and use
+      the copied viewer link if it is missing. Offline pairing has no nearby
+      list and uses the block exchange below.
+    </p>
+  </section>
+
+  <section>
     <h2>Pair offline on the same Wi-Fi or hotspot</h2>
     <p>
       Prepare both devices before losing internet. Open this HTTPS tool on
@@ -101,8 +127,8 @@
     <h2>The invitation permits a request; your approval permits video</h2>
     <p>
       Online sessions have fresh random links; offline sessions have fresh
-      connection blocks. Neither method lists a share in a discovery
-      directory. Anyone who obtains an invitation can attempt a connection,
+      connection blocks. An online host may choose to publish its invitation
+      code in the nearby list; this is off by default. Anyone who obtains an invitation can attempt a connection,
       including its network-address exchange. They still need your approval
       for video. The name or note they type is not
       verified identity, so recognise the person through the conversation
@@ -125,7 +151,9 @@
       In Online mode, a small introduction service matches the browsers
       through the random code and forwards WebRTC setup messages. It sees the code, addresses,
       connection times, descriptions and connection candidates. Setup is
-      not hidden from that service, but the video, viewer note and approval
+      not hidden from that service. Optional nearby discovery also publishes
+      the room code to the service's network group, without the tab title,
+      address or picture. The video, viewer note and approval
       decisions do not pass through it. Cloudflare keeps connection request
       metadata for seven days. The service writes no room content to storage.
       Offline mode uses only the exchanged blocks and does not contact that

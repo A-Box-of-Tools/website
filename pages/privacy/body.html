@@ -100,7 +100,10 @@
 
     <h3>Share a Browser Tab</h3>
     <p>
-      <a href="../share-tab/">Share a Browser Tab</a> uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no nearby discovery, audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+      <a href="../share-tab/">Share a Browser Tab</a> uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+    </p>
+    <p>
+      Online nearby discovery is off by default. The host may enable Show in nearby shared tabs before starting; a viewer explicitly chooses Find nearby tabs to open the list. The discovery connection lists only the random invitation code, never the captured tab’s title, address, picture or viewer note. Selecting a result fills the invitation and still requires Request to watch and approval. The service groups this tool’s pages by public IPv4 address or IPv6 /64 subnet and website origin, not physical location. Shared gateways or VPNs can include strangers or hide nearby devices. Listings live on open connections without stored history, and stopping withdraws the host’s listing. Offline pairing uses no discovery.
     </p>
     <p>
       Both pairing methods use a direct encrypted connection on a reachable local network, without public STUN or TURN. Online pairing needs internet for introductions. The rendezvous sees room codes, IP addresses, times, WebRTC descriptions and candidates, but not video, viewer notes or approval decisions. Cloudflare retains connection metadata logs for seven days.

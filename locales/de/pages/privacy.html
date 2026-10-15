@@ -103,7 +103,10 @@
 
     <h3>Browser-Tab teilen</h3>
     <p>
-      <a href="../share-tab/">Browser-Tab teilen</a> verwendet die Auswahl eines Desktop-Browsers, um einen Tab aufzunehmen und dessen Livebild an einen zugelassenen Betrachter zu senden. Der Betrachter fragt an, der Host stimmt zu und der Betrachter bestätigt, bevor Video übertragen wird. Es gibt keine Suche nach Geräten in der Nähe und keine Audio-, Kamera- oder Mikrofonaufnahme. Sichtbare Informationen im gewählten Tab werden geteilt; der Betrachter kann das empfangene Bild aufzeichnen.
+      <a href="../share-tab/">Browser-Tab teilen</a> verwendet die Auswahl eines Desktop-Browsers, um einen Tab aufzunehmen und dessen Livebild an einen zugelassenen Betrachter zu senden. Der Betrachter fragt an, der Host stimmt zu und der Betrachter bestätigt, bevor Video übertragen wird. Es gibt keine Audio-, Kamera- oder Mikrofonaufnahme. Sichtbare Informationen im gewählten Tab werden geteilt; der Betrachter kann das empfangene Bild aufzeichnen.
+    </p>
+    <p>
+      Die Online-Suche nach Freigaben in der Nähe ist standardmäßig aus. Der Host kann vor dem Start Show in nearby shared tabs aktivieren; der Betrachter öffnet die Liste ausdrücklich mit Find nearby tabs. Die Suchverbindung zeigt nur den zufälligen Einladungscode, niemals Titel, Adresse oder Bild des aufgenommenen Tabs oder die Nachricht des Betrachters. Die Auswahl füllt nur die Einladung aus; Request to watch und die Zustimmung bleiben erforderlich. Der Dienst gruppiert Seiten dieses Tools nach öffentlicher IPv4-Adresse oder IPv6-/64-Subnetz und Website-Origin, nicht nach dem physischen Standort. Gemeinsame Gateways oder VPNs können Fremde einschließen oder nahe Geräte verbergen. Einträge bestehen ohne gespeicherte Historie auf offenen Verbindungen; Stoppen entfernt den Eintrag des Hosts. Offline-Kopplung verwendet keine Suche.
     </p>
     <p>
       Beide Kopplungsmethoden verwenden eine verschlüsselte Direktverbindung in einem erreichbaren lokalen Netz, ohne öffentliches STUN oder TURN. Die Online-Kopplung benötigt Internet für die Vermittlung. Die Vermittlungsstelle sieht Raumcodes, IP-Adressen, Zeiten, WebRTC-Beschreibungen und Verbindungskandidaten, aber keine Videos, Betrachternotizen oder Zulassungsentscheidungen. Cloudflare bewahrt Verbindungsmetadaten sieben Tage lang auf.

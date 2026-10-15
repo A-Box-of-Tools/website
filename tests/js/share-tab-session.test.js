@@ -5,6 +5,7 @@ import { TabSession } from '../../tools/share-tab/src/session.js';
 import { CHANNEL, PROTOCOL } from '../../tools/share-tab/src/protocol.js';
 
 const CODE = 'tab-abcdefghijklmnop';
+const PUBLICATION = { code: CODE, lease: '01234567-89ab-4cde-8f01-23456789abcd', tool: 'share-tab' };
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\na=mid:0\r\n';
 const HOST_CANDIDATE = 'candidate:lan1 1 udp 2122260223 device.local 5000 typ host';
 const OTHER_CANDIDATES = [
@@ -45,7 +46,7 @@ const source = () => new Stream([new Track(), new Track('audio')]);
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
 
 function fixture(t, overrides = {}) {
-  const sockets = [], peers = [], states = [], requests = [], viewers = [], streams = [];
+  const sockets = [], peers = [], states = [], requests = [], viewers = [], streams = [], discoveries = [];
   class Socket extends Events {
     readyState = 0; sent = [];
     constructor(url) {
@@ -83,9 +84,10 @@ function fixture(t, overrides = {}) {
   }
   const session = new TabSession({ Socket, PeerConnection, MediaStream: Stream,
     onState(key, role) { states.push({ key, role }); }, onRequests(value) { requests.push(value); },
-    onViewers(value) { viewers.push(value); }, onStream(value) { streams.push(value); }, ...overrides });
+    onViewers(value) { viewers.push(value); }, onStream(value) { streams.push(value); },
+    onDiscovery(value) { discoveries.push(value); }, ...overrides });
   t.after(() => session.stop());
-  return { session, sockets, peers, states, requests, viewers, streams };
+  return { session, sockets, peers, states, requests, viewers, streams, discoveries };
 }
 
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
@@ -152,6 +154,7 @@ test('a tab host uses its own pairing room and no ICE servers or media before co
   const url = new URL(f.sockets[0].url);
   assert.equal(url.searchParams.get('tool'), 'share-tab');
   assert.equal(url.searchParams.has('local'), false);
+  assert.equal(url.searchParams.has('discover'), false);
   const peer = await request(f);
   assert.deepEqual(peer.config, { iceServers: [] });
   assert.equal(peer.transceivers.length, 0);
@@ -164,6 +167,113 @@ test('a tab host uses its own pairing room and no ICE servers or media before co
   assert.equal(peer.transceivers[0].sender.track, stream.getVideoTracks()[0]);
   peer.channel.receive('approval-ack'); await settle();
   assert.equal(peer.transceivers.length, 1);
+});
+
+test('only an opted-in online host accepts its current namespaced discovery lease', async (t) => {
+  const f = fixture(t); await f.session.startHost(source(), CODE, { discoverable: true });
+  const url = new URL(f.sockets[0].url);
+  assert.equal(url.searchParams.get('tool'), 'share-tab');
+  assert.equal(url.searchParams.get('local'), '1');
+  assert.equal(url.searchParams.get('discover'), '1');
+  assert.deepEqual(f.discoveries, []);
+  for (const discovery of [
+    null, {}, { ...PUBLICATION, tool: 'remote-camera' }, { ...PUBLICATION, tool: undefined },
+    { ...PUBLICATION, code: 'tab-bbcdefghijklmnop' }, { ...PUBLICATION, lease: null },
+    { ...PUBLICATION, lease: 'short' }, { ...PUBLICATION, lease: 'a'.repeat(129) },
+    { ...PUBLICATION, lease: 'bad/lease/with/slashes' },
+  ]) f.sockets[0].receive({ type: 'host-ready', discovery });
+  assert.deepEqual(f.discoveries, []);
+  f.sockets[0].receive({ type: 'host-ready', discovery: { ...PUBLICATION, note: 'Not listing metadata' } });
+  assert.deepEqual(f.discoveries, [PUBLICATION]);
+  assert.equal(f.peers.length, 0);
+  assert.equal(f.session.viewerCount, 0);
+  const peer = await request(f);
+  assert.deepEqual(peer.config, { iceServers: [] });
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(f.session.approve('v:1'), true); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+});
+
+test('private hosts and viewers cannot publish even when a service sends a discovery lease', async (t) => {
+  for (const options of [undefined, { discoverable: false }, { discoverable: 'true' }]) {
+    const f = fixture(t); await f.session.startHost(source(), CODE, options);
+    const url = new URL(f.sockets[0].url);
+    assert.equal(url.searchParams.has('local'), false);
+    assert.equal(url.searchParams.has('discover'), false);
+    f.sockets[0].receive({ type: 'host-ready', discovery: PUBLICATION });
+    assert.deepEqual(f.discoveries, []);
+  }
+  const watching = fixture(t); await watching.session.connect(CODE, 'Viewer', { discoverable: true });
+  assert.equal(new URL(watching.sockets[0].url).searchParams.has('discover'), false);
+  watching.sockets[0].receive({ type: 'host-ready', discovery: PUBLICATION });
+  assert.deepEqual(watching.discoveries, []);
+});
+
+test('Stop and an ended capture withdraw discovery before stale host callbacks can return', async (t) => {
+  for (const endCapture of [false, true]) {
+    const f = fixture(t), stream = source();
+    await f.session.startHost(stream, CODE, { discoverable: true });
+    const socket = f.sockets[0], lateMessage = socket.onmessage;
+    socket.receive({ type: 'host-ready', discovery: PUBLICATION });
+    if (endCapture) stream.getVideoTracks()[0].end();
+    else f.session.stop();
+    assert.deepEqual(f.discoveries, [PUBLICATION, null]);
+    assert.equal(socket.readyState, 3);
+    assert.equal(f.session.discoverable, false);
+    lateMessage({ data: JSON.stringify({ type: 'host-ready', discovery: PUBLICATION }) });
+    await settle();
+    assert.deepEqual(f.discoveries, [PUBLICATION, null]);
+    assert.equal(f.session.role, null);
+  }
+});
+
+test('signaling failure withdraws the listing and old callbacks cannot replace a new lease', async (t) => {
+  const f = fixture(t); await f.session.startHost(source(), CODE, { discoverable: true });
+  const oldSocket = f.sockets[0], lateMessage = oldSocket.onmessage, lateClose = oldSocket.onclose;
+  oldSocket.receive({ type: 'host-ready', discovery: PUBLICATION });
+  oldSocket.drop();
+  assert.deepEqual(f.discoveries, [PUBLICATION, null]);
+  assert.equal(f.states.at(-1).key, 'connection.server-failed');
+  await f.session.startHost(source(), CODE, { discoverable: true });
+  const fresh = { ...PUBLICATION, lease: '12345678-9abc-4def-8012-3456789abcde' };
+  f.sockets[1].receive({ type: 'host-ready', discovery: fresh });
+  lateMessage({ data: JSON.stringify({ type: 'host-ready', discovery: PUBLICATION }) });
+  lateClose({ code: 1006 }); await settle();
+  assert.deepEqual(f.discoveries, [PUBLICATION, null, fresh]);
+  assert.equal(f.session.role, 'host');
+  assert.equal(f.sockets[1].readyState, 1);
+});
+
+test('stopping an opening host cannot accept a late publication or revive capture', async (t) => {
+  const f = fixture(t), stream = source();
+  const opening = f.session.startHost(stream, CODE, { discoverable: true });
+  const lateMessage = f.sockets[0].onmessage;
+  f.session.stop();
+  await assert.rejects(opening, /connection.stopped/);
+  lateMessage({ data: JSON.stringify({ type: 'host-ready', discovery: PUBLICATION }) });
+  await settle();
+  assert.deepEqual(f.discoveries, [null]);
+  assert.equal(f.sockets[0].readyState, 3);
+  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+});
+
+test('moving from a discoverable host to offline pairing retires its lease without another socket', async (t) => {
+  const f = fixture(t); await f.session.startHost(source(), CODE, { discoverable: true });
+  const lateMessage = f.sockets[0].onmessage;
+  f.sockets[0].receive({ type: 'host-ready', discovery: PUBLICATION });
+  const offer = await f.session.startOfflineHost(source(), { discoverable: true });
+  assert.equal(JSON.parse(offer).description.type, 'offer');
+  assert.equal(f.session.mode, 'offline');
+  assert.equal(f.session.discoverable, false);
+  assert.equal(f.sockets.length, 1);
+  assert.equal(f.sockets[0].readyState, 3);
+  lateMessage({ data: JSON.stringify({ type: 'host-ready', discovery: PUBLICATION }) });
+  f.session.message({ type: 'host-ready', discovery: PUBLICATION });
+  assert.deepEqual(f.discoveries, [PUBLICATION, null]);
+  assert.deepEqual(f.peers[0].config, { iceServers: [] });
+  assert.equal(f.peers[0].transceivers.length, 0);
 });
 
 test('a forged acknowledgement never substitutes for the host approval', async (t) => {

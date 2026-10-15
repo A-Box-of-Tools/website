@@ -6,7 +6,7 @@ nav = "Sharing a browser tab"
 group = "doing-the-job"
 tool = "share-tab"
 title = "How to Share a Browser Tab Live Without an Extension"
-description = "Show a browser tab to an approved viewer on your local network. Pair with an online link or exchange connection blocks offline, without remote control."
+description = "Show a browser tab to an approved viewer on your local network. Pair by online link or optional nearby discovery, or exchange blocks offline. No remote control."
 heading = "How to share a browser tab live without an extension"
 lede = """
     Show someone the website you are using while you keep control of it.
