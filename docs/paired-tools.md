@@ -1,6 +1,6 @@
 # Pairing tools through shared parts
 
-Share Text & Files, Local Walkie-Talkie, Voice Oncall and Remote Camera use the
+Share Text & Files, Share a Browser Tab, Local Walkie-Talkie, Voice Oncall and Remote Camera use the
 same pairing primitives. They live under `shared/js/`, have no dependencies,
 and are copied into each tool by `js_parts`, so every built tool remains a
 complete folder with versioned imports and its own service-worker cache.
@@ -75,6 +75,7 @@ camera and voice keep their established retry schedules and readiness rules.
 | Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
+| Share a Browser Tab | A click and browser-tab-only capture, fresh random link-only rooms, explicit Request to watch, mandatory approval and acknowledgement before video, one approved viewer, and direct-first ICE with an explicit viewer relay retry. An ended track requires a new picker choice; lifecycle recovery cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
 approval requirement or restore a session the user ended. The shared parts

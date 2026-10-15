@@ -1,0 +1,120 @@
+  <section>
+    <h2>Choose the tab, then invite the viewer</h2>
+    <p>
+      Open the website in one tab and <a href="../../share-tab/">Share a
+      Browser Tab</a> in another on your computer. Choose <em>Choose a tab to
+      share</em> and select
+      the website tab in your browser's own picker. Choose a browser tab,
+      rather than a window or your whole screen: this tool refuses those
+      broader sources. Check the local preview before sending the link.
+    </p>
+    <p>
+      Choose <em>Copy viewer link</em> and send it to the other person. They
+      open it, read the connection notice, optionally add a short introduction
+      and choose <em>Request to watch</em>. Return
+      to the sharing page to approve the request you expect. The connection
+      first carries only encrypted control messages; video begins after your
+      approval and the viewer's acknowledgement. One viewer can watch at a
+      time, with up to four requests waiting.
+    </p>
+    <p>
+      Work in the selected website tab while keeping the sharing page open.
+      A current desktop Chrome or Edge browser is the intended host. The
+      viewer needs a browser that can play WebRTC video, without an extension
+      or an account on the website you show. Both devices need internet for
+      the introduction.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the viewer can see and do</h2>
+    <p>
+      The viewer sees a live video picture. Your scrolling, page navigation,
+      menus and visible account content in that tab become part of the
+      picture. Simply activating another browser tab does not select a new
+      capture source, but anything you reveal inside the selected tab is
+      shared. Check the browser's capture indicator and stop before opening
+      private information there.
+    </p>
+    <p>
+      The viewer's clicks and typing cannot operate your browser. They do
+      not receive your login cookies or a working copy of the website.
+      Text in a video is not selectable, so this version cannot provide
+      webpage copying. Use <a href="../../share-text/">Share Text &amp;
+      Files</a> alongside it when the other person needs a link, note or file
+      they can copy. Some protected content may be black or unavailable in a
+      capture.
+    </p>
+    <p>
+      No audio is requested or sent, including tab sound. The tool does not
+      request camera or microphone access and makes no recording. A viewer
+      can still record their own view or take screenshots. Ending the link
+      stops future video; it cannot erase anything already kept.
+    </p>
+  </section>
+
+  <section>
+    <h2>The link permits a request; your approval permits video</h2>
+    <p>
+      Each session has a fresh random link and is not listed in a discovery
+      directory. Anyone who obtains the link can request a connection,
+      including the network-address exchange needed to establish it. They
+      still need your approval for video. The name or note they type is not
+      verified identity, so recognise the person through the conversation
+      you already have and approve only the request you expect.
+    </p>
+    <p>
+      A URL fragment does not hide a link code from scripts running in the
+      same page, and a browser may keep its history. The tool page has the
+      site's usual advertising, measurement and donation scripts. The tool
+      does not deliberately send them video or notes, but same-page scripts
+      can read the page's address and state. Mandatory approval remains the
+      admission step.
+    </p>
+  </section>
+
+  <section>
+    <h2>How the video reaches the other browser</h2>
+    <p>
+      A small introduction service matches the browsers through the random
+      code and forwards WebRTC setup messages. It sees the code, addresses,
+      connection times, descriptions and connection candidates. Setup is
+      not hidden from that service, but the video, viewer note and approval
+      decisions do not pass through it. Cloudflare keeps connection request
+      metadata for seven days. The service writes no room content to storage.
+    </p>
+    <p>
+      The browsers try a direct encrypted WebRTC connection first, using
+      public STUN services to find reachable addresses. Each browser learns
+      network addresses from the other before video approval. When a direct
+      path fails, the viewer can explicitly choose a fresh attempt through
+      Cloudflare's TURN relay. It forwards encrypted traffic without the
+      media keys and sees addresses, timing and traffic volume. The tool
+      never selects that relay automatically.
+    </p>
+    <p>
+      A firewall, VPN, browser policy or restrictive network can block either
+      path. Try the actual connection before a demonstration or support
+      call, and keep an agreed fallback. A missing relay configuration is a
+      visible failure, rather than a promise that every network can connect.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keep both host tabs open, then stop deliberately</h2>
+    <p>
+      Hiding the sharing page keeps healthy capture where the browser
+      permits, which lets you use the selected website tab normally. Keep
+      both tabs open and the device awake. Sleep, a closed laptop or browser
+      suspension can interrupt or end the stream; this page cannot override
+      those policies.
+    </p>
+    <p>
+      Choose <em>Stop sharing</em> on the tool page or use your browser's capture control
+      when finished. Closing the sharing page or ending the captured tab
+      also ends the source. If capture ends, returning to the page never
+      silently captures again. Start again, choose a tab again and send the
+      new invitation. A viewer who disconnects leaves the host's selected
+      source available, but a new viewer still needs fresh approval.
+    </p>
+  </section>

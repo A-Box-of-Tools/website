@@ -232,9 +232,85 @@ test('camera and text rooms can share a name while their discovery leases stay s
   assert.equal(shares(textList).list.length, 1);
 });
 
+test('tab video signaling never reaches a same-code text or camera host', async () => {
+  const s = system(), address = '1.2.3.4';
+  const code = 'tab-same-code';
+  const text = await edgeSocket(s, `/ws/${code}?role=host`, address);
+  const camera = await edgeSocket(s, `/ws/${code}?role=host&tool=remote-camera`, address);
+  const tab = await edgeSocket(s, `/ws/${code}?role=host&tool=share-tab`, address);
+  const viewer = await edgeSocket(s, `/ws/${code}?role=viewer&tool=share-tab`, address);
+  const room = s.room(`share-tab:${code}`).instance;
+  const data = { protocol: 'share-tab-v1', dial: true };
+  room.webSocketMessage(viewer, JSON.stringify({ data }));
+  assert.deepEqual(tab.messages.at(-1), { type: 'signal', from: viewer.deserializeAttachment().id, data });
+  assert.deepEqual(text.messages, []);
+  assert.deepEqual(camera.messages, []);
+  room.webSocketMessage(tab, JSON.stringify({ to: viewer.deserializeAttachment().id, data: { answer: 'tab-only' } }));
+  assert.deepEqual(viewer.messages.at(-1), { type: 'signal', data: { answer: 'tab-only' } });
+  const collision = await edgeSocket(s, `/ws/${code}?role=host&tool=share-tab`, address);
+  assert.equal(collision.closed.code, 4409);
+  assert.equal(text.readyState, 1);
+  assert.equal(camera.readyState, 1);
+});
+
+test('a tab room has no discoverable lease unless the host explicitly opts in to both local flags', async () => {
+  const s = system(), address = '1.2.3.4';
+  const listed = await edgeSocket(s, '/discover?tool=share-tab', address);
+  const scope = listed.deserializeAttachment().scope;
+  const textList = await edgeSocket(s, '/discover', address);
+  const cameraList = await edgeSocket(s, '/discover?tool=remote-camera', address);
+  for (const [code, flags] of [['tab-ordinary', ''], ['tab-local-only', '&local=1'], ['tab-discover-only', '&discover=1']]) {
+    const tab = await edgeSocket(s, `/ws/${code}?role=host&tool=share-tab${flags}`, address);
+    assert.deepEqual(tab.messages, [], code);
+    assert.deepEqual(tab.deserializeAttachment(), { role: 'host', tool: 'share-tab' });
+    const claim = { code, lease: 'x'.repeat(36), tool: 'share-tab', scope };
+    assert.equal((await check(s, `share-tab:${code}`, claim)).status, 403);
+    await publish(s, listed, claim, scope);
+    assert.deepEqual(shares(listed).list, []);
+  }
+  const optedIn = await edgeSocket(s, '/ws/tab-offered?role=host&tool=share-tab&local=1&discover=1', address);
+  const claim = publication(optedIn);
+  assert.equal(claim.tool, 'share-tab');
+  await publish(s, listed, claim, scope);
+  assert.deepEqual(shares(listed), { type: 'shares', tool: 'share-tab', list: [{ code: 'tab-offered', local: true }] });
+  await publish(s, textList, claim, textList.deserializeAttachment().scope);
+  await publish(s, cameraList, claim, cameraList.deserializeAttachment().scope);
+  assert.deepEqual(shares(textList).list, []);
+  assert.deepEqual(shares(cameraList).list, []);
+});
+
+test('tab rooms preserve the existing viewer-only, once-per-socket relay request after hibernation', async () => {
+  for (const tool of ['share-text', 'remote-camera', 'share-tab']) {
+    const s = system(), address = '1.2.3.4';
+    const code = 'relay-check';
+    const host = await edgeSocket(s, `/ws/${code}?role=host&tool=${tool}`, address);
+    const viewer = await edgeSocket(s, `/ws/${code}?role=viewer&tool=${tool}`, address);
+    const key = tool === 'share-text' ? code : `${tool}:${code}`;
+    const room = s.room(key);
+    const relayed = [];
+    const answer = { type: 'relay', iceServers: null };
+    room.instance.relay = async (socket) => { relayed.push(socket); socket.send(JSON.stringify(answer)); };
+    await room.instance.webSocketMessage(host, JSON.stringify({ relay: true }));
+    assert.equal(relayed.length, 0, tool);
+    const hostMessages = host.messages.length;
+    await room.instance.webSocketMessage(viewer, JSON.stringify({ relay: true }));
+    assert.deepEqual(relayed, [viewer]);
+    assert.deepEqual(viewer.messages.at(-1), answer);
+    assert.equal(host.messages.length, hostMessages);
+    assert.equal(viewer.deserializeAttachment().relayed, true);
+    room.instance = new Room(room.ctx, s.env);
+    room.instance.relay = async (socket) => { relayed.push(socket); };
+    await room.instance.webSocketMessage(viewer, JSON.stringify({ relay: true }));
+    assert.equal(relayed.length, 1, tool);
+    const data = { candidate: 'opaque-setup' };
+    room.instance.webSocketMessage(viewer, JSON.stringify({ data }));
+    assert.deepEqual(host.messages.at(-1), { type: 'signal', from: viewer.deserializeAttachment().id, data });
+  }
+});
+
 test('unknown tool namespaces never reach a room or discovery object', async () => {
   const s = system();
-  for (const tool of ['', 'unknown', 'REMOTE-CAMERA']) {
+  for (const tool of ['', 'unknown', 'REMOTE-CAMERA', 'SHARE-TAB']) {
     for (const path of ['/discover', '/ws/kitchen?role=host']) {
       const separator = path.includes('?') ? '&' : '?';
       assert.equal((await worker.fetch(edgeRequest(`${path}${separator}tool=${tool}`, '1.2.3.4'), s.env)).status, 400);

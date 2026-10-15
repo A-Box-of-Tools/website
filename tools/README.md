@@ -34,6 +34,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
 | [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted. |
+| [Share a Browser Tab](share-tab/) | `/share-tab/` | Choose a tab on your computer and let one approved viewer watch it live in their browser. No extension, no sound, and no remote control. |
 | [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
 | [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged. |

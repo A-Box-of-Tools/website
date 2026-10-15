@@ -79,6 +79,23 @@ test("the site's own page reaches the room named in the path", async () => {
   assert.deepEqual(e.asked.rooms, ['id:brave-otter-42']);
 });
 
+test('tab hosts and viewers reach their own namespace without changing text or camera rooms', async () => {
+  const e = env();
+  for (const role of ['host', 'viewer']) {
+    for (const tool of ['share-text', 'remote-camera', 'share-tab']) {
+      const res = await worker.fetch(upgrade(`/ws/tab-same-code?role=${role}&tool=${tool}`, {
+        Origin: OURS, [DISCOVERY_SCOPE_HEADER]: 'a'.repeat(64),
+      }), e);
+      assert.equal(res.status, 200, `${role} ${tool}`);
+      assert.equal(e.asked.rooms.at(-1), `id:${tool === 'share-text' ? '' : `${tool}:`}tab-same-code`);
+      assert.equal(new URL(e.asked.roomRequests.at(-1).url).searchParams.get('tool'), tool);
+      assert.equal(e.asked.roomRequests.at(-1).headers.get(DISCOVERY_SCOPE_HEADER), null);
+    }
+  }
+  assert.deepEqual(e.asked.discoveries, []);
+  assert.equal(e.asked.keys.length, 6);
+});
+
 test('a localhost page reaches the room too, on any port', async () => {
   const e = env();
   for (const origin of ['http://localhost:8080', 'http://localhost:3000', 'http://127.0.0.1:8123']) {
