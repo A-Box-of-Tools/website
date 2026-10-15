@@ -4,11 +4,13 @@ const STAGES = new Set([
   'answer-sent', 'answer-accepted', 'channel-open', 'waiting-approval',
   'approval-requested', 'approved', 'sharing', 'received',
   'transfer-started', 'transfer-complete', 'transfer-failed',
+  'hello-received', 'approval-acknowledged', 'video-track',
 ]);
 const REASONS = new Set([
   'stopped', 'peer-left', 'ended', 'timeout', 'delivery-timeout',
   'signaling-error', 'socket-error', 'socket-closed', 'ice-failed',
   'channel-error', 'denied', 'mode-mismatch', 'unsupported',
+  'handshake-timeout', 'connection-failed', 'disconnected', 'approval-timeout', 'media-timeout',
 ]);
 const COUNTERS = [
   'offerSent', 'offerReceived', 'answerSent', 'answerAccepted',

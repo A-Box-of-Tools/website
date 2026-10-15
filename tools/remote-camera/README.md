@@ -13,6 +13,20 @@ flow. Video and enabled audio are added only after that acknowledgement; the ini
 media. The viewer note, hello and approval travel that encrypted channel.
 This makes approval a transport boundary rather than a hidden video element.
 
+A new manual request opens a native review dialog while the camera page is
+visible. Review later receives initial focus; it and Escape close the dialog
+without approving or denying anything. The same request stays in Viewer
+requests, whose per-viewer actions remain authoritative. Each new pending
+request is offered once: arrivals while a dialog is open stay in the list
+without replacing its current request or reopening it after dismissal. A new
+arrival can open a dialog once the page is idle again.
+Requests received while hidden or while Stop confirmation is open remain in
+the list without opening a popup on return. The note is rendered
+with `textContent`, never HTML. Approval and denial use the same session APIs
+and camera-change/recovery guards as the list. Request withdrawal closes its
+dialog; hiding the page, pagehide, Stop and Stop confirmation also dismiss it
+without granting approval. The two dialogs never overlap.
+
 The tool uses the existing rendezvous at `wss://rendezvous.abox.tools`.
 `src/session.js` names that origin. Start and Connect each open one socket;
 opening a viewer fragment only selects the form. The page also opens a
@@ -193,6 +207,29 @@ preview hosts. GitHub Pages ignores `_headers`: before releasing this feature,
 apply the matching `microphone=(self)` directive to the existing Cloudflare
 response-header rule. This PR does not change the live account rule.
 
+## Connection reports
+
+Connection details and troubleshooting offers Copy connection report and
+Download JSON on both devices. After a failed attempt, collect a report from
+each tab before reloading. Stop and failure retain the bounded report in
+memory; subsequent attempts append evidence without reopening a session.
+Clipboard refusal reveals a labelled readonly JSON field, focuses it and
+selects its content for manual copying. A failed download uses the same
+fallback. JSON is serialized only on an explicit copy/download action, so
+live events never replace a selected report.
+
+`main.js` passes the shared `createDiagnostics` collector to `CameraSession`.
+Exported reports identify the tool with the static `remote-camera` slug and
+take their tool version from the built module's `?v=` hash. The shared part
+retains only allowlisted browser/platform versions, relative timings,
+connection stages and states, aggregate candidate/transport counts, and safe
+error names and operation keys. It excludes raw user agents, addresses,
+candidate strings, SDP, pairing codes, viewer notes, media and exception
+messages. Its attempt/event/error limits bound retained evidence. It uses no
+storage, automatic upload or additional network request; only the user's
+copy/download action exports the report. The report describes where an
+attempt reached, not a proven cause such as Wi-Fi isolation.
+
 ## Checking a change
 
 Host setup descriptions use inline help beside the link name, approval choice
@@ -205,6 +242,15 @@ republishes after recovery, camera switching still works and Stop releases all
 resources. Before approval or live video, transport failure must still close
 the unfinished attempt. Confirm sound notices while playback is muted, and
 muted video plus an Unmute control after an audible autoplay rejection.
+
+Check that a new request focuses Review later, dismissal and Escape preserve
+the pending request without media, and another arrival cannot replace an open
+dialog. Approve and deny from both the dialog and request list; withdraw the
+current request and stop or hide the source while reviewing it. Confirm that
+Stop confirmation and approval never overlap. After connection failure and
+after Stop, copy and download reports from both devices. Deny clipboard access
+and verify the labelled JSON fallback stays selectable. Report exports must
+exclude the actual code, viewer note, network addresses and raw error text.
 
 Build the scoped page with `python build.py --only remote-camera --locale en
 --quiet`, then use the built page. A complete check joins a second browser,

@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { setImmediate as nextTurn } from 'node:timers/promises';
 import { CameraSession } from '../../tools/remote-camera/src/session.js';
 import { PROTOCOL } from '../../tools/remote-camera/src/protocol.js';
+import { createDiagnostics } from '../../shared/js/connection-diagnostics.js';
+
 const CODE = 'cam-abcdefghijkl';
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\na=mid:0\r\n';
 class Events extends EventTarget {
@@ -38,11 +40,11 @@ function sourceStream(audio = false) {
   return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
-function fixture(t) {
+function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
   const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [], viewers = [], bandwidth = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
-    constructor(url) { super(); this.url = url; sockets.push(this); queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
+    constructor(url) { super(); this.url = url; sockets.push(this); if (socketOpen) queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
     send(value) { assert.equal(this.readyState, 1); this.sent.push(value === 'ping' ? value : JSON.parse(value)); }
     receive(value) { this.emit('message', { data: JSON.stringify(value) }); }
     pong() { this.emit('message', { data: 'pong' }); }
@@ -74,7 +76,7 @@ function fixture(t) {
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
   t.after(() => session.stop());
   return { session, sockets, peers, requests, streams, publications, states, viewers, bandwidth };
 }
@@ -113,6 +115,50 @@ async function readyViewer(f) {
   peer.emit('datachannel', { channel }); channel.open(); channel.receive('hello'); await settle();
   return { peer, channel };
 }
+
+test('a remote hello delivered before the local open callback still sends our hello before requesting approval', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  channel.readyState = 'open'; channel.receive('hello');
+  assert.deepEqual(channel.sent, [
+    { protocol: PROTOCOL, type: 'hello', receiveAudio: true },
+    { protocol: PROTOCOL, type: 'request', note: 'Phone layout check' },
+  ]);
+  assert.equal(f.states.at(-1), 'viewer.waiting'); assert.equal(peer.closed, false);
+  channel.open(); channel.receive('hello');
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello', 'request']);
+  assert.equal(peer.closed, false);
+});
+
+test('a failed local hello while handling a remote hello cannot send an approval request', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  const sent = [];
+  channel.send = text => { sent.push(JSON.parse(text).type); throw new Error('Local hello failed'); };
+  channel.readyState = 'open'; channel.receive('hello');
+  assert.deepEqual(sent, ['hello']);
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1), 'connection.direct-failed');
+  channel.open(); channel.receive('hello');
+  assert.deepEqual(sent, ['hello']);
+});
+
+test('sending our hello early does not accept another control message before the remote hello', async t => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  channel.readyState = 'open'; channel.receive('approved');
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello']);
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.equal(f.states.at(-1), 'connection.invalid');
+  channel.open();
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello']);
+});
 
 test('opted-in microphone media waits for approval and acknowledgement beside video', async (t) => {
   const f = fixture(t), stream = sourceStream(true); await f.session.startHost(stream, CODE);
@@ -249,7 +295,7 @@ test('an introduced viewer receives no video sender before approval', async (t) 
   await f.session.startHost(stream, CODE);
   const peer = await requestViewer(f, 'v:1', 'Laptop');
   assert.deepEqual(peer.config.iceServers, []); assert.equal(peer.transceivers.length, 0);
-  assert.deepEqual(f.requests.at(-1), [{ id: 'v:1', note: 'Laptop' }]);
+  assert.deepEqual(f.requests.at(-1), [{ id: 'v:1', note: 'Laptop', autoAccept: false }]);
   assert.equal(stream.video.readyState, 'live');
 });
 test('approval and acknowledgement independently gate each concurrent viewer', async (t) => {
@@ -259,7 +305,7 @@ test('approval and acknowledgement independently gate each concurrent viewer', a
   assert.equal(f.session.approve('v:1'), true); first.channel.receive('approval-ack'); await settle();
   assert.deepEqual(first.getSenders().map((sender) => sender.track), [stream.video, stream.other]);
   assert.equal(second.transceivers.length, 0);
-  assert.deepEqual(f.requests.at(-1), [{ id: 'v:2', note: 'Second' }]);
+  assert.deepEqual(f.requests.at(-1), [{ id: 'v:2', note: 'Second', autoAccept: false }]);
   assert.equal(second.channel.sent.some((message) => message.type === 'busy'), false);
   assert.equal(f.session.approve('v:2'), true); await settle();
   assert.equal(second.transceivers.length, 0); assert.equal(f.session.viewerCount, 2);
@@ -288,7 +334,7 @@ test('a viewer leaving keeps the camera invitation open for a fresh request', as
   assert.equal(f.states.at(-1), 'camera.waiting');
   const fresh = await requestViewer(f, 'v:2');
   assert.equal(fresh.transceivers.length, 0);
-  assert.deepEqual(f.requests.at(-1), [{ id: 'v:2', note: 'My viewer' }]);
+  assert.deepEqual(f.requests.at(-1), [{ id: 'v:2', note: 'My viewer', autoAccept: false }]);
 });
 
 test('video waits for the approval acknowledgement across transports', async (t) => {
@@ -444,6 +490,25 @@ test('automatic requests held during acquisition use the committed stream', asyn
   const next = sourceStream(); await operation.commit(next);
   assert.equal(entry.approved, true); peer.channel.receive('approval-ack'); await settle();
   assert.equal(entry.sender.track, next.video); original.getTracks().forEach(track => track.stop());
+});
+
+test('request callbacks distinguish manual consent from automatic requests held during acquisition', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE);
+  const operation = f.session.prepareCameraChange();
+  const manual = await requestViewer(f, 'v:manual', 'Manual viewer');
+  f.session.setApprovalRequired(false);
+  const automatic = await requestViewer(f, 'v:automatic', 'Automatic viewer');
+  assert.deepEqual(f.requests.at(-1), [
+    { id: 'v:manual', note: 'Manual viewer', autoAccept: false },
+    { id: 'v:automatic', note: 'Automatic viewer', autoAccept: true },
+  ]);
+  assert.equal(f.session.viewerCount, 0);
+  assert.equal(manual.transceivers.length, 0); assert.equal(automatic.transceivers.length, 0);
+  operation.cancel(); await settle();
+  assert.deepEqual(f.requests.at(-1), [{ id: 'v:manual', note: 'Manual viewer', autoAccept: false }]);
+  assert.equal(f.session.peers.get('v:manual').approved, false);
+  assert.equal(f.session.peers.get('v:automatic').approved, true);
+  assert.equal(automatic.transceivers.length, 0);
 });
 
 test('stale replacement cannot overwrite a restarted host or its newer operation', async t => {
@@ -1041,4 +1106,249 @@ test('the shared socket fences replaced callbacks and owns camera heartbeat clea
   assert.equal(f.sockets.length, 2); assert.deepEqual(f.sockets[1].sent, ['ping']);
   assert.equal(f.session.role, null); assert.equal(f.session.keepalive, null); assert.equal(f.session.socketDeadline, null);
   assert.equal(original.video.stops, 1); assert.equal(next.video.stops, 1);
+});
+
+function diagnosticFixture(t, options = {}) {
+  let now = 0;
+  const diagnostics = createDiagnostics({
+    version: '0123456789', userAgent: 'Mozilla/5.0 (Android) Chrome/131.0.0.0', now: () => now,
+  });
+  return {
+    ...fixture(t, { ...options, diagnostics }), diagnostics,
+    advance(ms) { now += ms; t.mock.timers.tick(ms); },
+    attempts() { return diagnostics.report().attempts; },
+  };
+}
+
+for (const role of ['camera', 'viewer']) {
+  for (const [failure, key, outcome] of [
+    ['error', 'connection.server-failed', 'socket-error'],
+    ['refused', 'connection.not-found', 'socket-closed'],
+    ['timeout', 'connection.server-failed', 'timeout'],
+  ]) {
+    test(`${role} opening ${failure} retains a report before any peer is introduced`, async t => {
+      t.mock.timers.enable({ apis: ['setTimeout'] });
+      const f = diagnosticFixture(t, { socketOpen: false });
+      assert.deepEqual(f.attempts(), []);
+      const opening = role === 'camera' ? f.session.startHost(sourceStream(), CODE) : f.session.connect(CODE, 'Private opening note');
+      const result = opening.catch(error => error.message);
+      if (failure === 'error') { f.advance(25); f.sockets[0].emit('error'); }
+      else if (failure === 'refused') {
+        f.sockets[0].readyState = 1; f.sockets[0].emit('open'); await opening;
+        f.advance(25); f.sockets[0].drop(4404);
+      }
+      else f.advance(20000);
+      assert.equal(await result, failure === 'refused' ? undefined : key);
+      assert.equal(f.states.at(-1), key);
+      const report = f.attempts()[0];
+      assert.equal(f.attempts().length, 1); assert.equal(f.peers.length, 0);
+      assert.equal(report.role, role === 'camera' ? 'sharer' : 'receiver');
+      assert.equal(report.stage, failure === 'refused' ? 'server-open' : 'opening'); assert.equal(report.outcome, outcome);
+      assert.equal(report.finished, true); assert.equal(report.elapsedMs, failure === 'timeout' ? 20000 : 25);
+      assert.equal(report.socket.state, 'closed');
+      assert.equal(report.socket.closeCode, failure === 'refused' ? 4404 : null);
+      assert.equal(report.states.connection, null); assert.equal(f.session.role, null);
+      if (failure === 'error') assert.deepEqual(report.errors.map(({ operation, code }) => ({ operation, code })), [
+        { operation: 'websocket', code: 'NetworkError' },
+      ]);
+      const frozen = f.diagnostics.report(), text = JSON.stringify(frozen);
+      assert.ok(!text.includes(CODE)); assert.ok(!text.includes('Private opening note'));
+      f.sockets[0].emit('open'); f.sockets[0].emit('error'); f.session.stop();
+      f.advance(60000); await settle();
+      assert.deepEqual(f.diagnostics.report(), frozen);
+    });
+  }
+
+  test(`${role} opening evidence transfers to its first peer without a duplicate attempt`, async t => {
+    const f = diagnosticFixture(t);
+    assert.deepEqual(f.attempts(), []);
+    if (role === 'camera') await f.session.startHost(sourceStream(), CODE);
+    else await f.session.connect(CODE, 'Private viewer note');
+    const trace = f.session.openingTrace;
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].stage, 'server-open');
+    if (role === 'camera') signal(f.sockets[0], 'v:first', { dial: true });
+    else f.sockets[0].receive({ type: 'ready' });
+    await settle();
+    const entry = f.session.peers.get(role === 'camera' ? 'v:first' : 'viewer');
+    assert.equal(entry.trace, trace); assert.equal(f.session.openingTrace, null);
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].stage, role === 'camera' ? 'offer-sent' : 'room-ready');
+    assert.equal(f.attempts()[0].milestonesMs['server-open'], 0);
+    assert.equal(f.attempts()[0].milestonesMs['room-ready'], 0);
+    f.session.stop();
+    assert.equal(f.attempts().length, 1); assert.equal(f.attempts()[0].outcome, 'stopped');
+  });
+}
+
+test('a camera handshake timeout retains candidate and native state evidence before cleanup', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = diagnosticFixture(t), stream = sourceStream();
+  await f.session.startHost(stream, CODE);
+  signal(f.sockets[0], 'v:blocked', { dial: true }); await settle();
+  const peer = f.peers[0], entry = f.session.peers.get('v:blocked');
+  peer.connectionState = 'connecting'; peer.iceConnectionState = 'checking';
+  peer.iceGatheringState = 'complete'; peer.signalingState = 'have-local-offer';
+  peer.emit('connectionstatechange');
+  const host = { candidate: 'candidate:1 1 udp 123 phone-private.local 5000 typ host', sdpMid: '0', sdpMLineIndex: 0 };
+  const relay = { ...host, candidate: 'candidate:2 1 udp 123 203.0.113.9 5001 typ relay' };
+  peer.emit('icecandidate', { candidate: { ...host, toJSON: () => host } });
+  peer.emit('icecandidate', { candidate: { ...relay, toJSON: () => relay } });
+  signal(f.sockets[0], 'v:blocked', { candidate: host });
+  signal(f.sockets[0], 'v:blocked', { candidate: relay });
+  signal(f.sockets[0], 'v:blocked', { description: { type: 'answer', sdp: SDP } });
+  await settle();
+  peer.getStats = async () => new Map([
+    ['local', { type: 'local-candidate', candidateType: 'host', address: '192.168.1.20', protocol: 'udp' }],
+    ['remote', { type: 'remote-candidate', candidateType: 'host', address: 'phone-private.local', protocol: 'udp' }],
+    ['pair', { type: 'candidate-pair', state: 'in-progress', requestsSent: 3, responsesReceived: 0 }],
+  ]);
+  await entry.trace.sample();
+  f.advance(20000); await settle();
+  const report = f.attempts()[0];
+  assert.equal(report.role, 'sharer'); assert.equal(report.mode, 'local');
+  assert.equal(report.outcome, 'handshake-timeout'); assert.equal(report.finished, true);
+  assert.equal(report.elapsedMs, 20000);
+  assert.equal(report.states.connection, 'connecting'); assert.equal(report.states.ice, 'checking');
+  assert.equal(report.states.gathering, 'complete'); assert.equal(report.states.channel, 'connecting');
+  assert.equal(report.socket.state, 'open');
+  assert.equal(report.signaling.offerSent, 1); assert.equal(report.signaling.answerAccepted, 1);
+  assert.equal(report.signaling.candidatesSent, 1); assert.equal(report.signaling.candidatesReceived, 2);
+  assert.equal(report.signaling.candidatesAccepted, 1); assert.equal(report.signaling.candidatesFiltered, 2);
+  assert.equal(report.candidates.local.addressForms.mdns, 1);
+  assert.equal(report.candidates.local.results.sent, 1); assert.equal(report.candidates.local.results.filtered, 1);
+  assert.equal(report.candidates.remote.results.received, 2); assert.equal(report.candidates.remote.results.accepted, 1);
+  assert.equal(report.candidates.remote.results.filtered, 1);
+  assert.equal(report.stats.stun.requestsSent, 3); assert.equal(report.stats.stun.responsesReceived, 0);
+  assert.equal(report.milestonesMs['hello-received'], undefined);
+  assert.equal(peer.closed, true); assert.equal(stream.video.stops, 0);
+  assert.equal(f.states.at(-1), 'connection.direct-failed');
+  const frozen = f.diagnostics.report();
+  peer.connectionState = 'failed'; peer.emit('connectionstatechange');
+  peer.emit('icecandidate', { candidate: { ...host, toJSON: () => host } });
+  f.advance(60000); await settle();
+  assert.deepEqual(f.diagnostics.report(), frozen);
+});
+
+test('camera approval acknowledgement timeout is distinct from an initial handshake timeout', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = diagnosticFixture(t); await f.session.startHost(sourceStream(), CODE);
+  const peer = await requestViewer(f, 'v:approval');
+  peer.connectionState = 'connected'; peer.emit('connectionstatechange');
+  f.advance(1000);
+  assert.equal(f.session.approve('v:approval'), true);
+  f.advance(20000); await settle();
+  const report = f.attempts()[0];
+  assert.equal(report.outcome, 'approval-timeout');
+  assert.equal(report.states.connection, 'connected'); assert.equal(report.states.channel, 'open');
+  assert.equal(report.milestonesMs['hello-received'], 0);
+  assert.equal(report.milestonesMs['approval-requested'], 0);
+  assert.equal(report.milestonesMs.approved, 1000);
+  assert.equal(report.milestonesMs['approval-acknowledged'], undefined);
+  assert.equal(peer.closed, true);
+});
+
+for (const [state, delay, outcome] of [
+  ['failed', 0, 'connection-failed'], ['disconnected', 5000, 'disconnected'],
+]) {
+  test(`native camera ${state} keeps its distinct diagnostic outcome`, async (t) => {
+    t.mock.timers.enable({ apis: ['setTimeout'] });
+    const f = diagnosticFixture(t); await f.session.startHost(sourceStream(), CODE);
+    signal(f.sockets[0], 'v:native', { dial: true }); await settle();
+    const peer = f.peers[0];
+    peer.connectionState = state; peer.emit('connectionstatechange');
+    if (delay) f.advance(delay);
+    await settle();
+    const report = f.attempts()[0];
+    assert.equal(report.outcome, outcome); assert.equal(report.states.connection, state);
+    assert.equal(peer.closed, true); assert.equal(f.states.at(-1), 'connection.direct-failed');
+  });
+}
+
+test('a failed camera hello is diagnosed as a channel error before peer teardown', async (t) => {
+  const f = diagnosticFixture(t); await f.session.startHost(sourceStream(), CODE);
+  signal(f.sockets[0], 'v:hello', { dial: true }); await settle();
+  const peer = f.peers[0];
+  peer.channel.send = () => { const error = new Error('not retained'); error.name = 'OperationError'; throw error; };
+  peer.channel.open();
+  const report = f.attempts()[0];
+  assert.equal(report.outcome, 'channel-error'); assert.equal(report.states.channel, 'open');
+  assert.deepEqual(report.errors.map(({ operation, code }) => ({ operation, code })), [
+    { operation: 'channel', code: 'OperationError' },
+  ]);
+  assert.equal(peer.closed, true); assert.equal(f.states.at(-1), 'connection.direct-failed');
+});
+
+test('missing decoded-video stats retain the existing timeout behavior with a media-specific report', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = diagnosticFixture(t), { peer, channel } = await readyViewer(f);
+  peer.connectionState = 'connected'; peer.emit('connectionstatechange');
+  channel.receive('approved');
+  peer.emit('track', { track: new Track('video') });
+  f.advance(20000); await settle();
+  const report = f.attempts()[0];
+  assert.equal(report.outcome, 'media-timeout'); assert.equal(report.states.connection, 'connected');
+  assert.equal(report.states.channel, 'open');
+  assert.equal(report.milestonesMs.approved, 0);
+  assert.equal(report.milestonesMs['approval-acknowledged'], 0);
+  assert.equal(report.milestonesMs['video-track'], 0);
+  assert.equal(peer.closed, true); assert.equal(f.streams.at(-1), null);
+  assert.equal(f.states.at(-1), 'connection.direct-failed');
+});
+
+test('one camera viewer failure preserves every other viewer and cannot be overwritten by Stop', async (t) => {
+  const f = diagnosticFixture(t), stream = sourceStream(true); await f.session.startHost(stream, CODE);
+  const first = await acceptViewer(f, 'v:first'), second = await acceptViewer(f, 'v:second');
+  first.connectionState = 'failed'; first.emit('connectionstatechange');
+  let reports = f.attempts();
+  assert.equal(reports[0].outcome, 'connection-failed'); assert.equal(reports[0].finished, true);
+  assert.equal(reports[1].outcome, null); assert.equal(reports[1].finished, false);
+  assert.equal(f.session.viewerCount, 1); assert.equal(second.closed, false);
+  assert.equal(stream.video.stops, 0); assert.equal(stream.other.stops, 0);
+  f.session.stop();
+  reports = f.attempts();
+  assert.equal(reports[0].outcome, 'connection-failed');
+  assert.equal(reports[1].outcome, 'stopped'); assert.equal(reports[1].states.channel, 'open');
+  assert.ok(reports[1].milestonesMs['approval-acknowledged'] !== undefined);
+  assert.ok(reports[1].milestonesMs.sharing !== undefined);
+  assert.equal(second.closed, true);
+});
+
+test('a normal camera end remains distinct from an explicit Stop and stops diagnostic collection', async (t) => {
+  const f = diagnosticFixture(t), { peer, channel } = await readyViewer(f);
+  channel.receive('ended');
+  const report = f.diagnostics.report();
+  assert.equal(report.attempts[0].outcome, 'ended');
+  assert.equal(peer.closed, true);
+  peer.emit('icecandidateerror', { errorCode: 701 });
+  channel.receive('approved');
+  f.session.stop();
+  assert.deepEqual(f.diagnostics.report(), report);
+});
+
+test('camera diagnostics redact viewer notes, room codes, SDP, addresses and native error text', async (t) => {
+  const f = diagnosticFixture(t), code = 'private-camera-room', note = 'Private viewer note';
+  await f.session.connect(code, note);
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  const peer = f.peers[0], entry = f.session.peers.get('viewer');
+  const candidate = { candidate: 'candidate:1 1 udp 123 private-phone.local 5000 typ host', sdpMid: '0', sdpMLineIndex: 0 };
+  peer.getStats = async () => new Map([
+    ['private-row-id', { type: 'local-candidate', candidateType: 'host', address: '192.168.1.44', port: 5000, usernameFragment: 'private-ufrag', url: 'stun:private.example' }],
+  ]);
+  await entry.trace.sample();
+  peer.emit('icecandidateerror', { errorCode: 701, url: 'stun:private.example', errorText: note });
+  signal(f.sockets[0], 'host', { candidate }); await settle();
+  peer.setRemoteDescription = async () => {
+    const error = new Error(code + note + SDP + '192.168.1.44');
+    error.name = 'OperationError'; throw error;
+  };
+  signal(f.sockets[0], 'host', { description: { type: 'offer', sdp: SDP + 'a=ice-ufrag:private-ufrag\r\n' } });
+  await settle();
+  const report = f.diagnostics.report(), serialized = JSON.stringify(report);
+  assert.equal(report.attempts[0].outcome, 'signaling-error');
+  assert.deepEqual(report.attempts[0].errors.map(({ operation, code }) => ({ operation, code })), [
+    { operation: 'set-remote-description', code: 'OperationError' },
+  ]);
+  assert.equal(report.attempts[0].candidateErrors[701], 1);
+  for (const privateValue of [code, note, 'v=0', 'private-phone.local', '192.168.1.44', 'private-row-id', 'private-ufrag', 'stun:private.example']) {
+    assert.ok(!serialized.includes(privateValue), `report retained ${privateValue}`);
+  }
 });

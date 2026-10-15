@@ -105,9 +105,11 @@
   <section id="viewer-panel" data-role="viewer" class="card">
     <h2>Watch a camera</h2>
     <p class="card-lede">Choose an online camera above, or enter a code or viewer link below. This device does not need camera or microphone access.</p>
-    <div class="settings">
+    <div class="settings viewer-fields">
       <div class="field">
-        <label for="viewer-code">Camera code or viewer link</label>
+        <div class="camera-help-row">
+          <label for="viewer-code">Camera code or viewer link</label>
+        </div>
         <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
       </div>
       <div class="field">
@@ -165,6 +167,17 @@
   </section>
   </div>
 
+  <dialog id="camera-request-dialog" class="camera-stop-dialog camera-request-dialog" aria-labelledby="camera-request-heading" aria-describedby="camera-request-note camera-request-policy">
+    <h2 id="camera-request-heading">A viewer wants to join</h2>
+    <p id="camera-request-note" class="camera-request-note"></p>
+    <p id="camera-request-policy">Approve only a person or device you recognise. Review later or Escape keeps this request in Viewer requests without approving it.</p>
+    <div class="run-row">
+      <button id="camera-request-approve" type="button" class="big">Approve this viewer</button>
+      <button id="camera-request-deny" type="button" class="ghost danger">Turn away</button>
+      <button id="camera-request-later" type="button" class="ghost" autofocus>Review later</button>
+    </div>
+  </dialog>
+
   <dialog id="camera-stop-dialog" class="camera-stop-dialog" aria-labelledby="camera-stop-heading" aria-describedby="camera-stop-warning">
     <form method="dialog">
       <h2 id="camera-stop-heading">Stop sharing your camera?</h2>
@@ -182,6 +195,16 @@
     <p id="details-frames" hidden></p>
     <p>This tool offers only the browsers&rsquo; own host addresses, without public STUN servers or TURN relays. A VPN or operating-system route can affect the path. Guest Wi-Fi isolation, a firewall, blocked local address discovery, or browser and OS local-network permissions can prevent a connection.</p>
     <p>If pairing fails, stop on both devices, check that both are on the same reachable network, allow local-network access if asked, and try a new link. The camera device needs trusted HTTPS; ordinary HTTP on a LAN IP cannot request a camera.</p>
+    <p id="connection-report-note">A connection report includes browser and tool versions, stages, counts and error names, without addresses, pairing codes, viewer notes, video or audio. It stays in this tab. Copy or download it to share it yourself; nothing is uploaded automatically.</p>
+    <div class="camera-report-actions">
+      <button type="button" id="connection-copy" class="ghost">Copy connection report</button>
+      <button type="button" id="connection-download" class="ghost">Download JSON</button>
+    </div>
+    <p id="connection-report-status" class="field-note" role="status" aria-live="polite"></p>
+    <div id="connection-report-field" class="camera-report-field" hidden>
+      <label for="connection-report">Connection report JSON</label>
+      <textarea id="connection-report" rows="12" readonly spellcheck="false" dir="ltr" aria-describedby="connection-report-note" translate="no"></textarea>
+    </div>
   </details>
 
   <div id="phrases" hidden>
@@ -269,6 +292,10 @@
     <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
     <span data-phrase="copy.done">Viewer link copied.</span>
     <span data-phrase="copy.manual">Select and copy the viewer link from the field above.</span>
+    <span data-phrase="report.copied">Connection report copied.</span>
+    <span data-phrase="report.manual">Select and copy the connection report below.</span>
+    <span data-phrase="report.downloaded">Connection report download started.</span>
+    <span data-phrase="report.download-failed">The report could not be downloaded. Select and copy it below.</span>
     <span data-phrase="details.idle">No camera connection yet.</span>
     <span data-phrase="details.direct">The selected connection uses host candidates on both devices. No STUN server or TURN relay is configured.</span>
     <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>

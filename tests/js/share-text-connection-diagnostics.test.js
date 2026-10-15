@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createDiagnostics } from '../../tools/share-text/src/connection-diagnostics.js';
+import { createDiagnostics } from '../../shared/js/connection-diagnostics.js';
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/153.0.0.0 Safari/537.36';
 const SECRET = 'PRIVATE_DIAGNOSTIC_SENTINEL';

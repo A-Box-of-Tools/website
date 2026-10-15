@@ -81,6 +81,32 @@ approval requirement or restore a session the user ended. The shared parts
 never request devices, save session intent, or choose a server. No worker
 protocol or deployment changes are needed to use them.
 
+## Connection reports
+
+`connection-diagnostics.js` supplies the bounded in-tab collector used by
+Remote Camera. Add `"connection-diagnostics"` to `js_parts`, import
+`createDiagnostics`, and pass the instance to the protocol adapter. A built
+module's `?v=` hash identifies the tool version; browser identification is
+reduced from `navigator.userAgent` to allowlisted family/version/platform
+fields. An exported Camera report also contains the static tool slug
+`remote-camera`.
+
+Adapters record stage keys, connection states, relative timings, aggregate
+candidate and transport counts, and allowlisted error operation/name keys.
+Do not retain addresses, raw candidates or SDP, room names or credentials,
+viewer notes, content/media, raw user agents or exception messages. Attempts,
+events and errors are bounded. Finishing an attempt removes its listeners and
+sampling timer while retaining its summary, so failure and explicit Stop do
+not erase useful evidence or authorize recovery.
+
+The Camera UI creates JSON only when the user requests Copy connection report
+or Download JSON. Clipboard/download failure reveals a labelled readonly field
+for manual selection. Reports remain in memory until the tab reloads and are
+never uploaded or saved automatically. Collect reports from both devices to
+compare progress; their states alone do not establish a network or browser
+cause. Diagnostic sampling and export must never change admission, candidate
+policy, media state or session lifetime.
+
 The shared unit tests exercise socket retirement, timers, probes and page
 lifecycle coalescing. Existing session tests and browser QA exercise each
 adapter's permissions, direct connections and recovery. A browser can still

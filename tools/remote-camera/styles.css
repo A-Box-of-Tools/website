@@ -17,6 +17,8 @@
 .camera-policy.warn, .camera-switch-status.warn { color: var(--danger); }
 .camera-help-row { position: relative; display: flex; align-items: center; gap: 0.25rem; width: fit-content; max-width: 100%; margin: 0.25rem 0; }
 .camera-help-row > label { margin: 0; min-width: 0; }
+.viewer-fields > .field > .camera-help-row { flex: 1 0 auto; min-height: 2.25rem; }
+.viewer-fields > .field > input { flex: none; }
 .camera-help { flex: none; }
 .camera-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
 .camera-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -26,6 +28,7 @@
 .camera-help[data-placement="above"] > .camera-help-note::before { inset-block-start: 100%; inset-block-end: auto; }
 @media (pointer: coarse) {
   .camera-help > summary { min-width: 2.75rem; min-height: 2.75rem; }
+  .viewer-fields > .field > .camera-help-row { min-height: 2.75rem; }
 }
 .viewer-alert-options { margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; }
 .viewer-alert-options legend { font-weight: 600; padding: 0 0.4rem; }
@@ -55,6 +58,7 @@
 .camera-stop-dialog::backdrop { background: rgb(0 0 0 / 45%); }
 .camera-stop-dialog h2 { margin-top: 0; }
 .camera-stop-dialog p { line-height: 1.65; }
+.camera-request-note { overflow-wrap: anywhere; white-space: pre-wrap; font-weight: 600; }
 .camera-stop-dialog .run-row { margin-top: 1.25rem; }
 .camera-video-panel { margin: 1rem 0; }
 .camera-video-panel video { display: block; width: 100%; max-height: 32rem; min-height: 12rem; aspect-ratio: 16 / 9; object-fit: contain; background: #101418; border: 1px solid var(--border); border-radius: var(--radius); }
@@ -81,6 +85,9 @@
 .camera-details { margin: 1rem 0; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; }
 .camera-details summary { cursor: pointer; font-weight: 600; }
 .camera-details p { color: var(--text-dim); line-height: 1.65; }
+.camera-report-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.camera-report-field label { display: block; margin-bottom: 0.5rem; }
+#connection-report { display: block; box-sizing: border-box; width: 100%; min-height: 14rem; resize: vertical; font: 0.8rem/1.5 ui-monospace, monospace; text-align: left; }
 @media (max-width: 52rem) {
   .camera-workspace { grid-template-columns: minmax(0, 1fr); }
 }
