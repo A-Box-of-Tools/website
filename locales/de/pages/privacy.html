@@ -36,7 +36,7 @@
       Der <a href="../belege-rechnungen-auslesen/">Beleg- und Rechnungsextraktor</a> liest Bilder und erkennt Text lokal. Der freiwillige historische Kursabruf fragt Währungspaar und gewähltes Datum bei <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a> ab. Das Datum kann vom Beleg stammen. Der Anbieter sieht IP und Anfrage; Zugangsdaten und Referrer werden weggelassen. Bild, Dateiname, Händler, Betrag oder E-Mail-Adresse sind nicht enthalten. Manuelle Kurse brauchen keine Anfrage.
     </p>
     <p>
-      Die E-Mail- und Teilen-Schaltflächen bereiten Berichte und JPEG-Kopien lokal vor, laden dann eine E-Mail-Datei herunter oder übergeben sie an Ihre gewählte App. Die Seite sendet keine E-Mail. App, Anbieter und Empfänger übernehmen den nächsten Schritt nach ihren Richtlinien. <a href="../text-teilen/">Text und Dateien teilen</a> und <a href="../remote-camera/">Remote-Kamera</a> senden bewusst Inhalte an einen anderen Browser; Verbindungsmetadaten werden unten erklärt.
+      Die E-Mail- und Teilen-Schaltflächen bereiten Berichte und JPEG-Kopien lokal vor, laden dann eine E-Mail-Datei herunter oder übergeben sie an Ihre gewählte App. Die Seite sendet keine E-Mail. App, Anbieter und Empfänger übernehmen den nächsten Schritt nach ihren Richtlinien. <a href="../text-teilen/">Text und Dateien teilen</a>, <a href="../share-tab/">Browser-Tab teilen</a>, <a href="../remote-camera/">Remote-Kamera</a> und die Live-Sprachtools senden bewusst Inhalte an einen anderen Browser; Verbindungsmetadaten werden unten erklärt.
     </p>
   </section>
 
@@ -99,6 +99,14 @@
       darunter Ihre IP-Adresse, die angeforderte Seite und Ihren User-Agent, um
       die Seite auszuliefern und den Dienst verfügbar und sicher zu halten. Auf
       besucherbezogene Protokolle haben wir bei keinem der beiden Zugriff.
+    </p>
+
+    <h3>Browser-Tab teilen</h3>
+    <p>
+      <a href="../share-tab/">Browser-Tab teilen</a> verwendet die Auswahl eines Desktop-Browsers, um einen Tab aufzunehmen und dessen Livebild an einen zugelassenen Betrachter zu senden. Der Betrachter fragt an, der Host stimmt zu und der Betrachter bestätigt, bevor Video übertragen wird. Es gibt keine Suche nach Geräten in der Nähe und keine Audio-, Kamera- oder Mikrofonaufnahme. Sichtbare Informationen im gewählten Tab werden geteilt; der Betrachter kann das empfangene Bild aufzeichnen.
+    </p>
+    <p>
+      Für die Vermittlung ist Internet nötig. Die Vermittlungsstelle sieht Raumcodes, IP-Adressen, Zeiten, WebRTC-Beschreibungen und Verbindungskandidaten, aber keine Videos, Betrachternotizen oder Zulassungsentscheidungen. Cloudflare bewahrt Verbindungsmetadaten sieben Tage lang auf. Gewöhnliche Versuche verwenden STUN von Google und Cloudflare zur Adressermittlung. Scheitert der direkte Weg, kann der Betrachter ausdrücklich einen neuen Versuch über Cloudflare TURN wählen; dieser Dienst leitet verschlüsseltes Video ohne Medienschlüssel weiter. Die üblichen Seitenskripte können Adresse und Zustand einschließlich Einladungscode lesen; ein Link allein gewährt keinen Videozugang.
     </p>
 
     <h3>Remote-Kamera und Browser-Vermittlung</h3>

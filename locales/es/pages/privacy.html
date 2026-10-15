@@ -36,7 +36,7 @@
       El <a href="../extraer-recibos-facturas/">Extractor de recibos y facturas</a> lee fotos y reconoce texto localmente. Su botón opcional de cambio histórico solicita un par de monedas y la fecha elegida a <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. Puede ser la fecha impresa en el recibo. El proveedor ve tu IP y la solicitud; no se envían credenciales ni referencia de origen, foto, nombre, comercio, importe o correo. Los cambios manuales no hacen solicitudes.
     </p>
     <p>
-      Los botones de correo y compartir preparan informes y copias JPEG localmente; después descargan un archivo de correo o los entregan a la aplicación elegida. Esta página no envía correos. La aplicación, proveedor y destinatario que elijas realizan el siguiente paso con sus políticas. <a href="../compartir-texto/">Compartir texto y archivos</a> y <a href="../remote-camera/">Cámara remota</a> envían contenido a otro navegador de forma deliberada; sus metadatos se describen abajo.
+      Los botones de correo y compartir preparan informes y copias JPEG localmente; después descargan un archivo de correo o los entregan a la aplicación elegida. Esta página no envía correos. La aplicación, proveedor y destinatario que elijas realizan el siguiente paso con sus políticas. <a href="../compartir-texto/">Compartir texto y archivos</a>, <a href="../share-tab/">Compartir una pestaña del navegador</a>, <a href="../remote-camera/">Cámara remota</a> y las herramientas de voz en directo envían contenido a otro navegador de forma deliberada; sus metadatos se describen abajo.
     </p>
   </section>
 
@@ -96,6 +96,14 @@
       incluye tu dirección IP, la página pedida y tu agente de usuario, para
       entregar la página y mantener el servicio en pie y seguro. No tenemos acceso
       a los registros por visitante de ninguno de los dos.
+    </p>
+
+    <h3>Compartir una pestaña del navegador</h3>
+    <p>
+      <a href="../share-tab/">Compartir una pestaña del navegador</a> usa el selector de un navegador de escritorio para capturar una pestaña y enviar vídeo en directo a un espectador aprobado. El espectador solicita acceso, el anfitrión lo aprueba y el espectador lo confirma antes de enviar vídeo. No hay descubrimiento de dispositivos cercanos ni captura de audio, cámara o micrófono. La información visible en la pestaña elegida se comparte; el espectador puede grabar lo que recibe.
+    </p>
+    <p>
+      La presentación necesita internet. El servidor de encuentro ve códigos de sala, direcciones IP, horarios, descripciones WebRTC y candidatos de conexión, pero no vídeo, notas del espectador ni decisiones de aprobación. Cloudflare conserva registros de metadatos de conexión durante siete días. Los intentos normales usan STUN de Google y Cloudflare para descubrir direcciones. Tras un fallo directo, el espectador puede elegir explícitamente reintentar mediante Cloudflare TURN, que retransmite vídeo cifrado sin las claves del contenido. Los scripts habituales de la página pueden leer su dirección y estado, incluido el código de invitación; un enlace por sí solo nunca da acceso al vídeo.
     </p>
 
     <h3>Cámara remota y presentación entre navegadores</h3>

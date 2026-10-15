@@ -36,7 +36,7 @@
       <a href="../receipt-invoice-extractor/">Receipt &amp; Invoice Extractor</a> reads photos and recognises text locally. Its optional historical-rate button requests a currency pair and your chosen date from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. The date may be the date printed on a receipt. The provider sees your IP address and request; the request omits credentials and referrers and contains no photo, filename, merchant, amount or email address. Manual rates require no request.
     </p>
     <p>
-      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
+      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a>, <a href="../share-tab/">Share a Browser Tab</a>, <a href="../remote-camera/">Remote Camera</a> and the live voice tools deliberately send content to another browser; their connection metadata is described below.
     </p>
   </section>
 
@@ -96,6 +96,14 @@
       address, the page requested, and your user agent &mdash; in order to deliver
       the page and to keep the service up and secure. We do not have access to
       per-visitor logs from either of them.
+    </p>
+
+    <h3>Share a Browser Tab</h3>
+    <p>
+      <a href="../share-tab/">Share a Browser Tab</a> uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no nearby discovery, audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+    </p>
+    <p>
+      Internet is needed for introductions. The rendezvous sees room codes, IP addresses, times, WebRTC descriptions and candidates, but not video, viewer notes or approval decisions. Cloudflare retains connection metadata logs for seven days. Ordinary attempts use Google and Cloudflare STUN for address discovery. After a direct failure the viewer may explicitly retry through Cloudflare TURN, which forwards encrypted video without media keys. The page’s normal scripts can read its address and state, including the invitation code; a link alone never grants video access.
     </p>
 
     <h3>Remote Camera and browser introductions</h3>
