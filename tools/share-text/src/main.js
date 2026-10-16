@@ -141,6 +141,7 @@ function renderPairing() {
   $('link').hidden = offline;
   $('copylink').hidden = offline;
   for (const element of document.querySelectorAll('[data-text-online]')) element.hidden = offline;
+  document.querySelector('[data-text-sharing-step]').textContent = offline ? '2' : '3';
   $('local').closest('label').hidden = offline;
   $('local').closest('label').nextElementSibling.hidden = offline;
   $('discoverable').closest('.discoverable-row').hidden = offline;
