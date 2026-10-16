@@ -1,18 +1,21 @@
-<main id="main">
+<main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>この接続上のローカル共有</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>近くの共有</h2>
+        <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
-      <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 書くか、添付する</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

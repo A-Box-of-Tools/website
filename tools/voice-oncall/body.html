@@ -1,7 +1,18 @@
-<main id="main">
+<main id="main" class="paired-page">
 <div class="vi-tool">
+  <section id="vi-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="vi-nearby-title">
+    <div class="paired-nearby-head">
+      <h2 id="vi-nearby-title">Nearby pagers</h2>
+      <div class="paired-actions"><button type="button" class="vi-secondary" id="vi-refresh">Refresh</button></div>
+    </div>
+    {% include "partials/paired-network.html" %}
+    <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby pagers…</p>
+    <div class="vi-rooms paired-nearby-list" id="vi-rooms"></div>
+    <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
+    <p class="vi-note" id="vi-selection-help">Choose a pager, then Connect below. Choosing alone does not connect or request your microphone.</p>
+  </section>
   <p class="vi-intro">Create a Voice Oncall pager for people on the same local network. They connect and speak to the host without entering a name. The host listens, without using a microphone.</p>
-  <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall">
+  <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall" data-pairing-setup>
     <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
     <button type="button" role="tab" id="vi-tab-host" aria-controls="vi-host-panel" aria-selected="false" tabindex="-1">Host a pager</button>
   </div>
@@ -12,13 +23,6 @@
 
   <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
     <form id="vi-join-form">
-      <div class="vi-discovery-heading">
-        <h2>Nearby pagers</h2>
-        <button type="button" class="vi-secondary" id="vi-refresh">Refresh</button>
-      </div>
-      <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby pagers…</p>
-      <div class="vi-rooms" id="vi-rooms"></div>
-      <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
       <label for="vi-sender-password">Pager password, if required</label>
       <input id="vi-sender-password" type="password" autocomplete="current-password">
       <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>

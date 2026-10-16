@@ -3,8 +3,15 @@
 The website hosts one microphone and up to ten receive-only browsers. Nothing
 needs downloading or installing. Opening the page lists nearby channels over
 a discovery WebSocket; joining never requests microphone access. Starting the
-host or choosing a channel opens its own rendezvous connection; microphone audio
+host or confirming Join channel opens its own rendezvous connection; microphone audio
 travels over a separate direct WebRTC connection to each listener.
+
+The nearby list appears first, before hosting controls. Choose selects a channel
+without opening its voice connection or saving listener credentials; Join channel
+confirms the receive-only connection. A withdrawn listing clears the selection.
+Opening a listener invitation still joins automatically. Shared network guidance
+covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
+that discovery and pairing still need internet and a hotspot is not a guarantee.
 
 The broadcast protocol is separate from text and camera rooms. Its room code
 is the SHA-256 digest of a random host secret, so knowing a listener invitation

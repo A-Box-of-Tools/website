@@ -1,6 +1,6 @@
 <section>
   <h2>O que você precisa</h2>
-  <p>Use dois dispositivos com navegadores que aceitem acesso à câmera e WebRTC. Ambos precisam de internet para a apresentação inicial e de uma rede que permita a comunicação entre eles. Um celular no Wi-Fi e um computador por Ethernet podem funcionar se a rede permitir essa comunicação.</p>
+  <p>Use dois dispositivos com navegadores que aceitem acesso à câmera e WebRTC. Ambos precisam de internet para a apresentação inicial e de uma rede que permita a comunicação entre eles. Um celular no Wi-Fi e um computador por Ethernet podem funcionar se a rede permitir essa comunicação. O ponto de acesso de um celular também pode funcionar se os dois dispositivos tiverem internet para o emparelhamento e o ponto de acesso permitir a comunicação entre eles.</p>
   <p>Abra o endereço HTTPS confiável deste site. Um endereço HTTP comum com um IP da rede local não pode pedir a câmera. Se o navegador ou sistema operacional pedir acesso à rede local, permita para esta sessão.</p>
 </section>
 <section>
@@ -34,7 +34,7 @@
 <section>
   <h2>Conecte o espectador e aprove</h2>
   <ol>
-    <li>No outro dispositivo, você pode escrever em Watch a camera uma nota que o proprietário reconheça. Depois escolha um nome em Online cameras para pedir conexão imediatamente.</li>
+    <li>No outro dispositivo, você pode escrever em Watch a camera uma nota que o proprietário reconheça. Depois escolha um nome em Nearby cameras para preencher o código. Escolha Connect to camera quando quiser solicitar a conexão.</li>
     <li>Também é possível abrir o link, ler seu QR ou inserir o código em Watch a camera. Essas opções esperam você escolher Connect to camera.</li>
     <li>Se Require my approval estiver ligado, aprove cada solicitação esperada no dispositivo da câmera. Sem aprovação, os espectadores recebem vídeo automaticamente enquanto houver vagas.</li>
   </ol>
@@ -67,7 +67,7 @@
 </section>
 <section>
   <h2>O que o serviço de apresentação vê</h2>
-  <p>Abrir a página cria um WebSocket de descoberta para o rendezvous. Iniciar, conectar ou escolher uma câmera da lista acrescenta um WebSocket de sala. Ele fica aberto para receber solicitações, mas uma conexão direta já aceita continua se essa conexão de apresentação fechar. A câmera tenta reabrir o convite sem repetir a captura nem a aprovação do espectador. Se o serviço não conseguir se recuperar, a imagem existente continua; pare e inicie novamente antes de convidar outro espectador. O serviço vê o código, endereços IP, horários e descrições e candidatos de WebRTC. As mensagens de configuração são visíveis para ele; o vídeo ao vivo, o áudio ativado e a nota do espectador seguem pela conexão criptografada entre dispositivos.</p>
-  <p>A descoberta agrupa nomes de câmeras que aceitaram aparecer pela IPv4 pública ou pelo prefixo IPv6 /64 visto pelo serviço e pelo endereço deste site. Isso pode incluir desconhecidos atrás de VPNs ou redes de operadoras compartilhadas e deixar de mostrar câmeras próximas. Escolher um nome pede conexão e troca endereços de rede imediatamente. A origem pode exigir aprovação ou aceitar automaticamente. Abrir um link continua esperando Connect. Salas e listas só existem enquanto as conexões ficam abertas. A Cloudflare mantém por sete dias registros de conexão com metadados, nunca o conteúdo das mensagens. Os scripts de publicidade habituais podem ler o endereço da página, incluindo o código da câmera no fragmento. O código permite solicitar acesso; por isso a aprovação na origem continua essencial.</p>
+  <p>Abrir a página cria um WebSocket de descoberta para o rendezvous. Iniciar ou conectar acrescenta um WebSocket de sala. Ele fica aberto para receber solicitações, mas uma conexão direta já aceita continua se essa conexão de apresentação fechar. A câmera tenta reabrir o convite sem repetir a captura nem a aprovação do espectador. Se o serviço não conseguir se recuperar, a imagem existente continua; pare e inicie novamente antes de convidar outro espectador. O serviço vê o código, endereços IP, horários e descrições e candidatos de WebRTC. As mensagens de configuração são visíveis para ele; o vídeo ao vivo, o áudio ativado e a nota do espectador seguem pela conexão criptografada entre dispositivos.</p>
+  <p>A descoberta agrupa nomes de câmeras que aceitaram aparecer pela IPv4 pública ou pelo prefixo IPv6 /64 visto pelo serviço e pelo endereço deste site. Isso pode incluir desconhecidos atrás de VPNs ou redes de operadoras compartilhadas e deixar de mostrar câmeras próximas. Escolher um nome preenche o código e aguarda Connect. Connect solicita a conexão e troca os endereços de rede. A origem pode exigir aprovação ou aceitar automaticamente. Abrir um link continua esperando Connect. Salas e listas só existem enquanto as conexões ficam abertas. A Cloudflare mantém por sete dias registros de conexão com metadados, nunca o conteúdo das mensagens. Os scripts de publicidade habituais podem ler o endereço da página, incluindo o código da câmera no fragmento. O código permite solicitar acesso; por isso a aprovação na origem continua essencial.</p>
   <p>Esta é uma visualização de câmera no navegador. O áudio do microfone é opcional. Não tem função de gravação e não instala uma webcam do sistema para outros aplicativos.</p>
 </section>

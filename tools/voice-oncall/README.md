@@ -14,6 +14,14 @@ and healthy connections can continue in the background while the browser allows.
 No account, installation, Python
 helper, recording, STUN server or audio relay is involved.
 
+The nearby list appears first, before the role tabs. Selecting a pager switches
+to the Connect panel without opening a voice connection or asking for microphone
+permission. A pointer selection focuses the password field or Connect button;
+keyboard selection keeps focus in the radio group for arrow navigation. The list is
+hidden while a session is starting, active or paused. Shared network guidance
+covers Wi-Fi and phone hotspots that permit direct traffic; neither bypasses
+the internet requirement for discovery and pairing or guarantees reachability.
+
 The interface calls the listening endpoint a pager. Internal inbox and room
 identifiers retain their existing names so invitations, credentials and recovery
 remain compatible.

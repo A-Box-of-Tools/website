@@ -1,5 +1,4 @@
 .vi-tool {
-  max-width: 800px;
   margin-inline: auto;
 }
 
@@ -19,7 +18,6 @@
 }
 
 .vi-tabs,
-.vi-discovery-heading,
 .vi-live-heading,
 .vi-sender-actions,
 .vi-link-row {
@@ -29,6 +27,7 @@
 }
 
 .vi-tabs {
+  flex-wrap: wrap;
   margin-block: 1.5rem 1rem;
 }
 
@@ -93,13 +92,11 @@
   opacity: 1;
 }
 
-.vi-discovery-heading,
 .vi-live-heading {
   justify-content: space-between;
   margin-top: 1.5rem;
 }
 
-.vi-discovery-heading h2,
 .vi-live-heading h2 {
   margin: 0;
   overflow-wrap: anywhere;
@@ -156,12 +153,22 @@
 .vi-room {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: .8rem;
   min-height: 70px;
   padding: .8rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
+}
+
+.vi-rooms .vi-room > input {
+  flex: 0 0 1.1rem;
+}
+
+.vi-room > span {
+  flex: 1 1 10rem;
+  min-width: 0;
 }
 
 .vi-room:has(input:checked) {

@@ -9,10 +9,10 @@ favicon = "&#128251;"
 glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
-css_parts = ["form", "notes"]
+css_parts = ["form", "notes", "paired-tools"]
 js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-14"
+lastmod = "2026-10-15"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk, hands-free speech and microphone recovery within the same pairing."
@@ -72,7 +72,7 @@ title = "Start directly on this website."
 body = " On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
 title = "Invite listeners."
-body = " Listeners can choose Join beside your channel in Nearby channels when you start with Show this channel nearby selected. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
+body = " Listeners select your channel with Choose in Nearby channels, then choose Join channel when you start with Show this channel nearby selected. Choosing alone does not connect. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
 [[howto]]
 title = "Hold to talk or speak hands-free."
 body = " Hold the Talk button, or focus it and hold Space. Release, leave the page or switch focus to release a physical hold. For hands-free speech, choose Start talking; it can continue with the page hidden while the browser allows. Choose Stop talking to stop, and check the displayed talking state before setting the device down. Microphone mute overrides both modes, and a microphone interruption clears hands-free speech. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
@@ -94,7 +94,10 @@ q = "Can a phone host the channel?"
 a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Healthy connections and hands-free speech can continue with the page hidden while the browser permits. Screen lock, browser suspension or operating-system interruptions may still stop them; try your actual phone before relying on background use. Phones can also listen without granting microphone access."
 [[faq]]
 q = "How do listeners join?"
-a = "Choose Join beside a nearby channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
+a = "Select a nearby channel with Choose, then choose Join channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
+[[faq]]
+q = "Can we use a phone hotspot?"
+a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the listener link or QR code when the nearby list misses a channel. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
 [[faq]]
 q = "What happens when the host disappears?"
 a = "Receivers wait and check availability with a one-second target while active, keeping their mute choice. Hiding a healthy page does not deliberately disconnect it. A microphone interruption clears talking and keeps the pairing; an ended microphone can be replaced with Resume microphone or on returning to the page. If the browser suspends the page, returning tries to restore the same channel and invitation, with Resume channel as a fallback. Recovery leaves talking off. Background timers or service connection limits can delay retries. End broadcast stops receivers and prevents automatic resumption; the next channel uses a new invitation."

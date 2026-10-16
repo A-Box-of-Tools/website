@@ -292,6 +292,12 @@ guides_all_note = """
     <a href="{{ base }}">全都在这儿</a>。"""
 
 [ui.tool]
+pairing_network = "本地连接可使用同一 Wi-Fi、以太网或手机热点。附近发现和在线配对仍需互联网连接。"
+pairing_hotspot_heading = "使用 Wi-Fi 或手机热点"
+pairing_hotspot_enable = "在手机设置中开启 iPhone 的“个人热点”或 Android 的 Wi-Fi 热点。"
+pairing_hotspot_join = "在另一台设备的 Wi-Fi 设置中连接这个热点。保留互联网连接，以便使用附近发现和在线配对。"
+pairing_hotspot_connect = "在两台设备上打开本工具。选择预期的附近条目，再点击单独的连接、加入或请求按钮。找不到时，请使用主机提供的链接或代码。"
+pairing_hotspot_limits = "网络必须允许设备之间互通。有些热点、访客网络、VPN 和受管理设备会阻止直连。附近列表中出现条目，不代表它一定可连接或可信。此页面无法开启手机热点。"
 pairing_version_help = "关于工具版本"
 pairing_version_hint = "请比较两台设备上的这个值。如果不同，请重新加载两边的页面，然后开始新的分享。"
 pairing_version = "版本："

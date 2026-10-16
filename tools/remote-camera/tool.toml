@@ -12,9 +12,9 @@ favicon = "&#128247;"
 glyph = "camera"
 category = "connect-devices"
 roadmap_group = "video"
-css_parts = ["form", "notes"]
+css_parts = ["form", "notes", "paired-tools"]
 js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
-lastmod = "2026-10-14"
+lastmod = "2026-10-15"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
 og_title = "Watch another device's camera"
@@ -25,7 +25,7 @@ csp_note = """
   Local builds and HTTPS abox-preview.pages.dev previews use the separate
   rendezvous-dev.abox.tools service; other page addresses use production.
   Opening this page opens a discovery WebSocket to the rendezvous that lists
-  opted-in camera names. Start camera, Connect or choosing an online camera adds a room WebSocket carrying
+  opted-in camera names. Start camera or Connect adds a room WebSocket carrying
   WebRTC descriptions and host candidates, never video or audio. The encrypted control channel carries the viewer note and
   viewer acceptance; video and enabled audio are added only after the viewer acknowledges it.
   The owner chooses manual approval or automatic acceptance of new requests. Both peers configure no STUN
@@ -99,7 +99,7 @@ body = """
 title = "The introduction requires internet and exposes connection metadata."
 body = """
       Opening this page opens a discovery WebSocket to
-      <code>rendezvous.abox.tools</code>. Start camera, Connect or choosing an online camera adds a room
+      <code>rendezvous.abox.tools</code>. Start camera or Connect adds a room
       socket that stays open while the session is active. The service sees the code, IP addresses, connection times, and
       WebRTC setup descriptions and candidates; those setup messages are not
       encrypted from the service. It does not receive video, audio or the viewer note.
@@ -107,14 +107,14 @@ body = """
       address or IPv6 /64 seen by the service and the page origin. Shared VPNs
       or carrier networks can include strangers; nearby devices can be missed.
       Turn off listing before starting for a link-only camera. Choosing a
-      listed name requests a connection immediately. The source
+      listed name fills its code and waits for Connect. The source
       chooses whether its owner must approve the request.
       Rooms and listings exist only on open connections. Cloudflare keeps connection logs
       for seven days: the code, address and time, never a payload."""
 [[privacy]]
 title = "A direct connection shares addresses before video is approved."
 body = """
-      Opening a viewer link selects the viewing form and waits. Connect or choosing an online camera asks
+      Opening a viewer link or choosing a nearby camera fills the viewing form and waits. Connect asks
       the rendezvous to introduce the devices, and each browser then learns
       addresses offered by the other. Approval controls video and enabled audio, not that address
       exchange. The name you enter is a note for the source, not verified identity.
@@ -181,17 +181,17 @@ title = "Start on the camera device."
 body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Select Enable microphone before starting to request microphone access; stop before changing this choice."
 [[howto]]
 title = "Invite the viewing device."
-body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
+body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Nearby cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other. A Wi-Fi network or phone hotspot can work when it allows communication between the devices."
 [[howto]]
 title = "Connect the viewer."
-body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
+body = "Choosing a nearby camera fills its code. For every invitation, choose Connect to camera when you are ready. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
 title = "Resume if the browser pauses video, then stop."
 body = "The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. If the microphone was interrupted, choose Resume microphone when ready. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel."
 
 [[faq]]
 q = "Must both devices use the same Wi-Fi?"
-a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A shared Wi-Fi name alone does not establish reachability: guest isolation, firewalls, VPN routing and browser permissions can block it."
+a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A phone hotspot can also work if it allows device-to-device communication and both browsers have internet for pairing. A shared Wi-Fi name alone does not establish reachability: guest or hotspot isolation, firewalls, VPN routing and browser permissions can block it."
 [[faq]]
 q = "Does it work without internet?"
 a = "Internet is required to pair and invite new viewers through our public rendezvous. An already accepted direct view can continue if the introduction service disconnects; the camera retries its invitation without restarting capture or the existing view. Video and enabled audio travel directly between the browsers, with no configured internet relay. Losing that direct route still ends the view."

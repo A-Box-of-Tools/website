@@ -36,9 +36,9 @@ roadmap_group = "beyond"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
-css_parts = ["checks"]
+css_parts = ["checks", "paired-tools"]
 js_parts = ["connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
-lastmod = "2026-10-14"
+lastmod = "2026-10-15"
 
 # --- what search engines and chat apps are told ------------------------------
 

@@ -1,18 +1,21 @@
-<main id="main">
+<main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Chinese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>此连接上的本地分享</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>附近的分享</h2>
+        <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">正在寻找本地分享…</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">这个列表显示与你使用同一公网 IPv4 地址或 IPv6 子网的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv4 与 IPv6 混用或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
-      <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 写下来，或附上文件</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

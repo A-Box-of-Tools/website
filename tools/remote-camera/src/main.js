@@ -276,18 +276,21 @@ function renderDiscovery() {
   $('discovery-list').replaceChildren();
   for (const { code } of cameras) {
     const row = document.createElement('li');
-    const link = document.createElement('a');
-    link.href = viewerLink(location.href, code);
-    link.textContent = code;
-    link.dir = 'ltr';
-    link.addEventListener('click', (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
+    row.className = 'paired-nearby-row';
+    const name = document.createElement('code');
+    name.textContent = code;
+    name.dir = 'ltr';
+    const choose = document.createElement('button');
+    choose.type = 'button';
+    choose.className = 'ghost';
+    choose.textContent = phrase('discovery.choose', { code: ltr(code) });
+    choose.addEventListener('click', () => {
       if (activeRole) return;
-      $('viewer-code').value = code;
-      connectViewer();
+      fillViewerCode(code);
+      showStatus('viewer.selected', 'viewer');
+      $('viewer-connect').focus();
     });
-    row.append(link);
+    row.append(name, choose);
     $('discovery-list').append(row);
   }
 }

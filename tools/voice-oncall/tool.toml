@@ -9,10 +9,10 @@ favicon = "&#127897;"
 glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
-css_parts = ["form", "notes"]
+css_parts = ["form", "notes", "paired-tools"]
 js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-14"
+lastmod = "2026-10-15"
 
 title = "Voice Oncall &mdash; Receive Live Voice from Nearby Devices"
 description = "Let up to ten people send live voice directly to one host browser. Nearby discovery, optional pager password, push to talk, mute and remove controls."
@@ -75,7 +75,7 @@ title = "Open the listening pager."
 body = " Choose Host a pager, give the pager a name, optionally set a password and choose Start pager. The host needs speaker output but does not grant microphone access. Keep its page open. Healthy connections can continue in the background while the browser allows; screen-lock operation is not guaranteed. If sound is interrupted, return here and choose Restore sound when shown."
 [[howto]]
 title = "Find it nearby or use its link."
-body = " On a participating device, open this page and choose the named pager from the nearby list. Use the copied link or QR code if discovery does not find it. Both devices need internet for discovery and pairing, plus a reachable direct network path for audio."
+body = " On a participating device, open this page and choose the named pager from the nearby list at the top. This selects the pager without connecting or asking for a microphone; use Connect below when ready. Use the copied link or QR code if discovery does not find it. Both devices need internet for discovery and pairing, plus a reachable direct network path for audio."
 [[howto]]
 title = "Connect and deliberately speak."
 body = " Enter the pager password if required, then Connect and allow microphone access. You do not need to enter a name or wait for host approval. Hold Talk or focus it and hold Space; release to stop. Physical holds also release on blur or hiding. Start talking enables hands-free speech, which can continue in the background while the browser permits. Only the host hears your audio. A microphone interruption clears talking. Return to the page or choose Resume microphone if recovery is needed, then deliberately start talking again."
@@ -104,6 +104,9 @@ a = "Their retained participant session is blocked in the active pager. This is 
 [[faq]]
 q = "Can I keep talking with the screen locked?"
 a = "Hands-free speech and healthy connections remain active while the browser allows; physical holds release when the page loses focus or becomes hidden. A phone can still interrupt audio, suspend the page or close connections when locked, so this is not guaranteed. A microphone interruption stops talking and recovery stays silent until you deliberately speak again. Test the actual phones and browsers you plan to use. Disconnect and End pager prevent automatic restart."
+[[faq]]
+q = "Can we use a phone hotspot?"
+a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the pager link or QR code if the nearby list misses it. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
 [[faq]]
 q = "Why does the same Wi-Fi sometimes fail?"
 a = "Guest isolation, firewalls, VPN routes, browser local-network permissions or sleeping devices may prevent a direct connection. There is no public audio relay fallback. Try the actual phones and computers you intend to use."

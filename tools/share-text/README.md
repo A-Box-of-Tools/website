@@ -77,6 +77,14 @@ unchanged.
 
 ## Finding a share on the start page
 
+The nearby card is the first step, using the same `paired-tools` layout and
+translated Wi-Fi/hotspot help as the other Connect Devices tools. Its Open
+action keeps the existing consent page in another tab so it cannot discard
+an unsent draft. Browsing or opening that page never starts a peer connection;
+the reader still chooses Connect and, for Private shares, asks for approval.
+Hotspot guidance is conditional on devices being able to reach each other and
+does not change the selected Local/ordinary connection policy.
+
 The shared frame shows the tool's generated code version beside its heading,
 so both roles use the same display as Remote Camera. It is
 the same content hash used in this page's module URLs, so languages using the

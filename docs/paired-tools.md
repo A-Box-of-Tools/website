@@ -5,6 +5,30 @@ same pairing primitives. They live under `shared/js/`, have no dependencies,
 and are copied into each tool by `js_parts`, so every built tool remains a
 complete folder with versioned imports and its own service-worker cache.
 
+## A common starting point
+
+Each tool names the `paired-tools` CSS part and starts with a
+`data-pairing-nearby` card, before its `data-pairing-setup` controls. The shared
+`partials/paired-network.html` help is translated through `ui.tool` and explains
+Wi-Fi, phone hotspots, the internet requirement for discovery and online
+pairing, and device isolation. This is setup guidance, not a claim that a web
+page can enable a hotspot or that every hotspot permits direct connections.
+
+Choosing a nearby entry never starts pairing or requests media. Camera and
+Walkie-Talkie fill their invitation, Voice Oncall selects the pager, and Share
+Tab fills its code; a separate Connect, Join or Request action follows. Keyboard
+selection keeps focus in Voice Oncall's native radio group.
+Share Text opens its existing consent page in another tab so an unsent draft
+is retained. Its Connect action still precedes the introduction to the host.
+An active session cannot be replaced by choosing another nearby entry.
+
+The visual order does not alter when discovery is permitted: Share Tab still
+requires Find nearby tabs and offers no discovery in Offline mode; the other
+four tools retain their automatic directory browsing. Host discoverability
+defaults and approval rules remain tool-specific and are stated on each page.
+
+## Shared pairing primitives
+
 The library has two layers. `peer-pairing.js` owns a signaling socket's
 callbacks and timers. `foreground-recovery.js` observes page lifecycle events
 and supplies an optional bounded retry controller. `peer-network.js` already

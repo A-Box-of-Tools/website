@@ -1,16 +1,19 @@
-<main id="main">
+<main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Partages locaux sur cette connexion</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Partages à proximité</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">Recherche de partages locaux…</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
-      <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

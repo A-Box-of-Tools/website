@@ -1,10 +1,13 @@
-<main id="main">
-  <section id="camera-discovery" class="card camera-discovery" aria-labelledby="discovery-heading">
-    <h2 id="discovery-heading">Online cameras</h2>
+<main id="main" class="paired-page">
+  <section id="camera-discovery" class="card camera-discovery paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head">
+      <h2 id="discovery-heading">Nearby cameras</h2>
+      <div class="paired-actions"><button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button></div>
+    </div>
+    {% include "partials/paired-network.html" %}
     <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
-    <ul id="discovery-list" class="camera-discovery-list"></ul>
-    <button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button>
-    <p class="camera-consent">Choosing a camera requests a connection and shares network addresses. Its owner may require approval or accept viewers automatically. Choose a camera you recognise.</p>
+    <ul id="discovery-list" class="camera-discovery-list paired-nearby-list"></ul>
+    <p class="camera-consent">Choose a camera to fill its code, then select Connect to camera when you are ready. Connecting shares network addresses. Its owner may require approval or accept viewers automatically.</p>
     <details class="camera-discovery-details">
       <summary>How cameras are listed</summary>
       <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise.</p>
@@ -13,7 +16,7 @@
 
   <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video and optional audio travel directly between the browsers. No recording or internet relay.</p>
 
-  <div id="camera-workspace" class="camera-workspace">
+  <div id="camera-workspace" class="camera-workspace" data-pairing-setup>
   <section id="camera-panel" data-role="camera" class="card">
     <h2>Share my camera</h2>
     <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
@@ -30,8 +33,8 @@
         <button type="button" id="camera-suggest" class="ghost">New random name</button>
       </div>
     </div>
-    <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
-    <p class="field-note">The link name is visible to browsers in the discovery group described under Online cameras. Turn this off to invite viewers by link only.</p>
+    <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> Show this camera nearby</label>
+    <p class="field-note">The link name is visible to browsers in the discovery group described under Nearby cameras. Turn this off to invite viewers by link only.</p>
     <div class="camera-help-row">
       <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
       <details id="camera-approval-help" class="camera-help info-fold">
@@ -104,7 +107,7 @@
 
   <section id="viewer-panel" data-role="viewer" class="card">
     <h2>Watch a camera</h2>
-    <p class="card-lede">Choose an online camera above, or enter a code or viewer link below. This device does not need camera or microphone access.</p>
+    <p class="card-lede">Choose a nearby camera above, or enter a code or viewer link below. Then select Connect to camera. This device does not need camera or microphone access.</p>
     <div class="settings viewer-fields">
       <div class="field">
         <div class="camera-help-row">
@@ -249,6 +252,7 @@
     <span data-phrase="camera.approve">Approve this viewer</span>
     <span data-phrase="camera.deny">Turn away</span>
     <span data-phrase="viewer.ready">Enter a camera code to request a view.</span>
+    <span data-phrase="viewer.selected">Camera selected. Choose Connect to camera when you are ready to request a view.</span>
     <span data-phrase="viewer.waiting">Your request reached the camera device. If approval is required, wait for its owner; no video is being sent yet.</span>
     <span data-phrase="viewer.approved">The camera device accepted you. Waiting for live video&hellip;</span>
     <span data-phrase="viewer.receiving">Receiving live video directly from the camera device.</span>
@@ -301,9 +305,10 @@
     <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>
     <span data-phrase="details.frames">Video frames decoded on this device: {count}.</span>
     <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
-    <span data-phrase="discovery.connecting">Looking for online cameras&hellip;</span>
-    <span data-phrase="discovery.empty">No online cameras are listed in this group. You can still use a viewer link or code.</span>
-    <span data-phrase="discovery.ready">Choose a camera name to request a view.</span>
+    <span data-phrase="discovery.connecting">Looking for nearby cameras&hellip;</span>
+    <span data-phrase="discovery.empty">No nearby cameras are listed in this group. You can still use a viewer link or code.</span>
+    <span data-phrase="discovery.ready">Choose a camera, then use Connect to camera below.</span>
+    <span data-phrase="discovery.choose">Choose {code}</span>
     <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>
     <span data-phrase="discovery.publishing">Listing your camera&hellip;</span>
     <span data-phrase="discovery.published">Your camera name is listed. Your viewer approval setting still applies.</span>

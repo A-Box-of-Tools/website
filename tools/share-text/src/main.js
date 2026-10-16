@@ -345,7 +345,7 @@ function renderDiscovery() {
   list.textContent = '';
   for (const [index, share] of shares.entries()) {
     const row = document.createElement('div');
-    row.className = 'discovery-row';
+    row.className = 'discovery-row paired-nearby-row';
     const name = document.createElement('span');
     name.className = 'discovery-code';
     name.id = `discovery-code-${index}`;

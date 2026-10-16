@@ -1,7 +1,8 @@
 # Remote Camera
 
-Online cameras appear at the top of the idle page, above sharing and manual
-connection. Choosing a listed camera requests a connection immediately. Start
+Nearby cameras appear at the top of the idle page, above sharing and manual
+connection, with the shared Wi-Fi and hotspot guidance. Choosing a listed camera
+fills the code and focuses Connect to camera; only Connect starts pairing. Start
 or Connect focuses its active section until Stop or a failure returns
 to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
@@ -34,11 +35,11 @@ discovery socket using the shared `peer-discovery` part. Hosts are listed by
 default, with a link-only switch; publication requires the room's live lease
 and an explicit `remote-camera` namespace acknowledgement. Discovery groups
 public IPv4 addresses or IPv6 /64 networks and page origins, as Share Text does.
-Choosing a listed name starts the same viewing request as Connect, including
-network-address exchange and the source's approval policy. Modified clicks
-retain the viewer link; opening it still waits for Connect. Repeated clicks
-cannot start another request while viewing is active. The room socket remains
-open during the session. A lost room socket no longer closes an already
+Choosing a listed name selects its code without requesting capture or a room
+connection. Connect then starts the viewing request, including network-address
+exchange and the source's approval policy. Opening a viewer link also waits
+for Connect. Discovery choices are ignored while a session is active. The room
+socket remains open during the session. A lost room socket no longer closes an already
 approved, connected peer with live video and an open encrypted control channel.
 The source retries its invitation with the same code after 2, 4, 8, 15 and 30
 seconds, with each handshake bounded at 20 seconds and confirmed by a pong.
