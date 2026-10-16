@@ -1,11 +1,13 @@
   <section>
-    <h2>Choose the tab and a pairing method</h2>
+    <h2>Connect the devices and choose the tab</h2>
     <p>
       Open the website in one tab and <a href="../../share-tab/">Share a
       Browser Tab</a> in another on your computer. Both devices need a
-      reachable Wi-Fi, Ethernet or hotspot network. Choose <em>Online</em>
-      for an internet introduction and a viewer link, or <em>Offline</em>
-      to exchange connection blocks yourself. Then click <em>Choose a tab
+      reachable Wi-Fi, Ethernet or hotspot network. <em>Automatic</em> offers
+      online invitations unless the browser reports that it is offline.
+      Open <em>Connection options</em> to choose <em>Online</em> for an internet
+      introduction and a viewer link, or <em>Offline</em> to exchange connection
+      blocks yourself. Then click <em>Choose a tab
       to share</em> and select the website tab in your browser's own picker.
       Choose a browser tab,
       rather than a window or your whole screen: this tool refuses those
@@ -27,6 +29,13 @@
       or an account on the website you show. Online pairing needs internet
       for its introduction. The video connection itself uses host addresses,
       with no public STUN service or internet relay in either method.
+    </p>
+    <p>
+      The browser's network indication is only a hint; it does not test the
+      introduction service or the connection between your devices. An opened
+      viewer link keeps online pairing. An explicit choice in Connection
+      options stays selected when that indication changes, and the method
+      stays fixed while a capture or connection attempt is active.
     </p>
   </section>
 
@@ -67,8 +76,9 @@
     </p>
     <p>
       Connect the devices to a reachable Wi-Fi, Ethernet or hotspot network
-      yourself, then choose <em>Offline &mdash; exchange connection blocks</em>
-      on both pages. This page does not create a hotspot, Wi-Fi Direct or
+      yourself. Automatic may already show the offline controls; otherwise,
+      open <em>Connection options</em> and choose <em>Offline &mdash; exchange
+      connection blocks</em> on both pages. This page does not create a hotspot, Wi-Fi Direct or
       Bluetooth link. A hotspot can work without internet if it allows its
       devices to reach each other; client isolation can prevent that.
     </p>
@@ -174,6 +184,13 @@
       before a demonstration or support call. Neither method falls back to
       an internet relay, and online pairing is not a promise of continuity
       when its internet connection disappears.
+    </p>
+    <p>
+      If the introduction service cannot connect, Automatic offers offline
+      controls for a new attempt. You can also choose Offline under Connection
+      options. The host must start again, choose the tab again and exchange
+      fresh blocks with the viewer; the previous viewer link cannot become an
+      offline block. No capture, reply or connection starts automatically.
     </p>
   </section>
 

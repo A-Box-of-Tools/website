@@ -202,8 +202,8 @@ body = """
 title = "Open the website and this sharing tool on your computer."
 body = "Keep the website in its own tab. Use a desktop browser that supports browser-tab capture, such as Chrome or Edge, and open this tool at its HTTPS address. The viewer needs only a browser with WebRTC video playback."
 [[howto]]
-title = "Choose how to pair the devices."
-body = "Both devices need a reachable local network. Choose Online to use an internet introduction and a viewer link; optionally check Show in nearby shared tabs before starting. Choose Offline to exchange connection blocks without that service or discovery. For use without internet, load this HTTPS tool on both devices beforehand and wait for each offline indicator to say ready. Connect the devices to Wi-Fi, Ethernet or a hotspot yourself."
+title = "Connect the devices to the same local network."
+body = "Use reachable Wi-Fi, Ethernet or a hotspot. Automatic offers online invitations unless the browser reports that it is offline; you can choose Online or Offline under Connection options. Online pairing uses an internet introduction and a viewer link; optionally check Show in nearby shared tabs before starting. Offline pairing exchanges connection blocks without that service or discovery. Before losing internet, load this HTTPS tool on both devices and wait for each offline indicator to say ready."
 [[howto]]
 title = "Choose one browser tab."
 body = "Click Choose a tab to share, then select the website tab in the browser's picker. A window or whole screen is refused. No audio is requested. Check the local preview before inviting anyone."
@@ -243,7 +243,10 @@ q = "What does the connection service learn?"
 a = "In Online mode, the rendezvous sees the code, IP addresses, connection times and WebRTC setup descriptions and host candidates. If the host opts into discovery, its network group can see the random room code, never the captured tab's title, address or picture. Cloudflare retains request metadata for seven days. Offline mode does not contact that service. Both methods share connection addresses with the other browser and use no public STUN or TURN service. Viewer notes and approval controls use the encrypted peer channel. The tool page explains its usual third-party scripts separately."
 [[faq]]
 q = "Can I share without an internet connection?"
-a = "Yes, using Offline mode when both devices can reach each other through Wi-Fi, Ethernet or a hotspot. Before losing internet, open this HTTPS tool on both devices and wait for each offline indicator to say ready. Exchange the host block and viewer reply by a local method or transferred files, then connect and approve the viewer. No rendezvous, public STUN service or TURN relay is used. The website being shown must already be loaded or otherwise available offline. This page does not create or configure the network."
+a = "Yes, using Offline pairing when both devices can reach each other through Wi-Fi, Ethernet or a hotspot. Automatic offers it when the browser reports being offline, or you can select Offline under Connection options. Before losing internet, open this HTTPS tool on both devices and wait for each offline indicator to say ready. Exchange the host block and viewer reply by a local method or transferred files, then connect and approve the viewer. No rendezvous, public STUN service or TURN relay is used. The website being shown must already be loaded or otherwise available offline. This page does not create or configure the network."
+[[faq]]
+q = "Can Automatic always detect which pairing method will work?"
+a = "No. The browser's network indication is only a hint: a local network can be available without internet, and the introduction service can be blocked while other websites work. Automatic offers a starting method without opening a test connection. In Automatic, an opened viewer link keeps online pairing; you can choose another method under Connection options before starting. Your explicit choice stays selected when the network indication changes, and an active attempt never switches methods. Offline pairing still needs you and the host to exchange complete connection blocks."
 [[faq]]
 q = "Does being on the same Wi-Fi or hotspot guarantee a connection?"
 a = "No. Guest networks or hotspot client isolation can prevent devices from reaching each other. Firewalls, VPN routes and browser local-network permissions can also block it. Both methods accept only host connection addresses; that controls address types, not a physical building or the routes your device chooses. There is no internet relay fallback."
@@ -255,7 +258,7 @@ q = "Can I hide the sharing page or close my laptop?"
 a = "You can work in the selected website tab while the sharing page remains open. Healthy capture is kept when the page is hidden where the browser permits. A sleeping computer, closed laptop or suspended browser may interrupt or end it. Returning never silently starts a new capture after the track ends; start again and choose the tab again."
 [[faq]]
 q = "What if the connection fails?"
-a = "Keep both pages open and check that the devices can reach each other on the local network. Check client isolation, firewalls, VPN routes and browser local-network permissions. Online pairing additionally needs the introduction service; choose Offline if you need to pair without internet. For an expired or mismatched offline exchange, start again with fresh blocks. Neither method falls back to an internet relay."
+a = "Keep both pages open and check that the devices can reach each other on the local network. Check client isolation, firewalls, VPN routes and browser local-network permissions. Online pairing additionally needs the introduction service. If that introduction fails, Automatic offers offline controls for a new attempt; you can also select Offline under Connection options. The host must start again and choose the tab, then exchange fresh blocks with the viewer. No capture or connection starts automatically. For an expired or mismatched offline exchange, start again with fresh blocks. Neither method falls back to an internet relay."
 
 [schema]
 category = "MultimediaApplication"

@@ -16,12 +16,17 @@
       <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
     </section>
   </section>
-  <fieldset id="pairing-methods" class="tab-share-methods" data-pairing-setup aria-describedby="pairing-method-help">
-    <legend>Connection method</legend>
-    <label><input type="radio" id="pairing-online" name="pairing-method" value="online" checked> Online &mdash; invite with a link or find nearby</label>
-    <label><input type="radio" id="pairing-offline" name="pairing-method" value="offline"> Offline &mdash; exchange connection blocks</label>
-    <p id="pairing-method-help" class="field-note">Both methods need devices that can reach each other on the same Wi-Fi, Ethernet or hotspot. Online pairing uses internet for the introduction. Offline pairing uses a manual exchange instead.</p>
-  </fieldset>
+  <details id="pairing-options" class="tab-share-options" data-pairing-setup data-pairing-mode="online">
+    <summary>Connection options</summary>
+    <fieldset id="pairing-methods" class="tab-share-methods" aria-describedby="pairing-method-help">
+      <legend>How to pair</legend>
+      <label><input type="radio" id="pairing-auto" name="pairing-method" value="auto" checked data-no-remember> Automatic</label>
+      <label><input type="radio" id="pairing-online" name="pairing-method" value="online" data-no-remember> Online &mdash; invite with a link or find nearby</label>
+      <label><input type="radio" id="pairing-offline" name="pairing-method" value="offline" data-no-remember> Offline &mdash; exchange connection blocks</label>
+      <p id="pairing-method-help" class="field-note">Automatic uses online invitations unless your browser reports no internet. You can override that hint here. A viewer link keeps online pairing; manual blocks need a fresh exchange with the host. Both methods use the same reachable Wi-Fi, Ethernet or hotspot. The method stays fixed while sharing or connecting.</p>
+    </fieldset>
+  </details>
+  <p id="pairing-status" class="tab-share-help" role="status" aria-live="polite" hidden></p>
   <p id="offline-note" class="tab-share-help" hidden>For use without internet, open this HTTPS page on both devices beforehand and wait for each offline indicator to say ready. Connect the devices to a reachable local network yourself; this tool does not set one up. Exchange the blocks using a local method, such as files transferred by Bluetooth or USB through your devices. Blocks contain network addresses; share them only with the person you expect. The host must still approve the viewer before video starts.</p>
   <div class="tab-share-grid" id="tab-share-grid">
     <section id="host-panel" class="tab-share-card" aria-labelledby="host-heading">
@@ -91,7 +96,7 @@
     <section id="viewer-panel" class="tab-share-card" aria-labelledby="viewer-heading">
       <span class="tab-share-badge">Read-only live view</span>
       <h2 id="viewer-heading">Watch a shared tab</h2>
-      <p class="card-lede">Use the host&rsquo;s invitation for the selected connection method. The host must approve you before video starts.</p>
+      <p class="card-lede">Use the host&rsquo;s invitation. The host must approve you before video starts.</p>
       <div id="viewer-fields">
         <div id="online-viewer-fields" class="field">
           <label for="viewer-code">Viewer link or tab code</label>
@@ -158,6 +163,10 @@
   </details>
 
   <div id="phrases" hidden>
+    <span data-phrase="pairing.detected-offline">Your browser reports no internet, so manual connection blocks are shown. If that is incorrect, choose Online in Connection options. No connection has started.</span>
+    <span data-phrase="pairing.invitation-offline">This invitation needs online pairing, but your browser reports no internet. You can still try it, or ask the host for a fresh connection block and choose Offline in Connection options.</span>
+    <span data-phrase="pairing.unavailable">Online pairing was unavailable. Manual connection blocks are now shown for a fresh attempt. The host must choose a tab again, exchange fresh blocks with the viewer, and approve them. To retry the online service, choose Online in Connection options.</span>
+    <span data-phrase="pairing.manual-draft">Manual pairing stays selected while you prepare this host block. Use Connection options if you want to switch methods.</span>
     <span data-phrase="host.ready">Nothing is being captured or shared.</span>
     <span data-phrase="host.choosing">Choose the browser tab to share. You can stop this attempt at any time.</span>
     <span data-phrase="host.waiting">Your preview is on. Invite a viewer, then approve the request you recognise.</span>
@@ -197,7 +206,7 @@
     <span data-phrase="code.invalid">Enter a complete viewer link or tab code from this tool.</span>
     <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
     <span data-phrase="connection.connecting">Connecting to the other browser&hellip;</span>
-    <span data-phrase="connection.server-failed">The introduction service could not connect. Check your internet connection, or choose Offline to exchange connection blocks on a reachable local network.</span>
+    <span data-phrase="connection.server-failed">The introduction service could not connect. Check your internet connection, or use Connection options to exchange fresh blocks offline on a reachable local network.</span>
     <span data-phrase="connection.not-found">This invitation is no longer open. Ask the host for a new viewer link.</span>
     <span data-phrase="connection.taken">That invitation code is already in use. Stop and choose a tab again to create a new code.</span>
     <span data-phrase="connection.busy">A viewer is already watching, or too many requests are waiting. Ask the host before trying again.</span>
