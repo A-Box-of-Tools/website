@@ -28,11 +28,26 @@ again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
 
-The nearby card comes before the connection method and host/viewer controls,
+The nearby card comes before the connection options and host/viewer controls,
 using the common `paired-tools` layout and translated Wi-Fi/hotspot help.
-Choosing Offline or starting a session hides that browsing card. Selecting a
+Offline pairing or starting a session hides that browsing card. Selecting a
 listing still only fills the invitation and focuses Request; the layout does
 not grant consent, change discovery timing or create a hotspot.
+
+Automatic is the default pairing preference. While idle, it uses the browser's
+offline indication to offer manual blocks; otherwise it offers online links
+and optional nearby discovery. That indication is a hint, not a probe of the
+introduction service or proof that the local network works. In Automatic, an
+opened viewer link retains its online intent. Connection options exposes explicit Online and
+Offline overrides, which stay selected when the browser's network indication
+changes. Loading the page or changing that indication opens no socket.
+
+The chosen method stays fixed from the start of a capture or connection attempt
+until it ends, including while the browser picker is open. A failed introduction
+can offer offline controls for a new attempt; it never converts the existing
+session, captures again or creates a reply without another user action. A
+viewer needs the host's complete offline block, not an online invitation code,
+to use that alternative.
 
 An online session generates a fresh random `tab-` room code. Invitations are
 link-only by default. Before starting, the host can opt into Show in nearby
@@ -169,6 +184,13 @@ its network/origin/tool group, and selecting a listing sends no connection
 request until Request to watch. Stopping removes the listing; switching to
 Offline opens no discovery socket. An automated synthetic stream cannot
 establish real browser-picker support.
+
+Check Automatic with online and offline browser indications, and verify that
+explicit overrides remain selected when those indications change. An online
+viewer link must not become an offline block exchange because of that hint.
+While the picker, pairing or viewing is active, network events must not change
+the method. If the introduction fails, any offline fallback must require a
+fresh explicit start, with no automatic capture, reply or discovery request.
 
 The generator and JavaScript suites run in CI, in accordance with the
 repository's local-test rule. [The pairing library guide](../../docs/paired-tools.md)

@@ -26,6 +26,11 @@ The visual order does not alter when discovery is permitted: Share Tab still
 requires Find nearby tabs and offers no discovery in Offline mode; the other
 four tools retain their automatic directory browsing. Host discoverability
 defaults and approval rules remain tool-specific and are stated on each page.
+Share Tab's Automatic pairing preference uses a browser network hint while
+idle, with explicit Online and Offline overrides under Connection options.
+It does not probe the network or start discovery, and the method stays fixed
+for a capture or connection attempt. Offline fallback requires a new explicit
+attempt rather than changing an active session.
 
 ## Shared pairing primitives
 

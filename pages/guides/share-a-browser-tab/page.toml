@@ -11,8 +11,9 @@ heading = "How to share a browser tab live without an extension"
 lede = """
     Show someone the website you are using while you keep control of it.
     Your browser captures one chosen tab and sends its changing picture to
-    the viewer's browser over a reachable local network. Pair using an online
-    invitation or exchange connection blocks without internet. The viewer
+    the viewer's browser over a reachable local network. Automatic offers an
+    online invitation or offline connection blocks, with a manual choice under
+    Connection options. The viewer
     watches your scrolling and navigation, without operating your computer."""
 updated = "15 October 2026"
 published = "2026-10-15"

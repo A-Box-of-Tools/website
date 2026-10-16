@@ -5,6 +5,7 @@ import { phrase } from './shared/phrases.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { pairingChoice } from './pairing-choice.js';
 
 const $ = (id) => document.getElementById(id);
 let revision = 0;
@@ -20,6 +21,9 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
+let pairingPreference = 'auto';
+let pairingMethod = 'online';
+let introductionFailed = false;
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
@@ -107,7 +111,31 @@ function clearRemote() {
   $('viewer-play').hidden = true;
 }
 
-function isOffline() { return $('pairing-offline').checked; }
+function isOffline() { return pairingMethod === 'offline'; }
+
+function syncPairingChoice() {
+  // A hint must never change the method underneath a picker, block exchange,
+  // approval or live peer. Stop is the boundary for considering it again.
+  if (role) return;
+  const hash = location.hash.slice(1);
+  const choice = pairingChoice({
+    preference: pairingPreference,
+    online: navigator.onLine,
+    invitation: Boolean($('viewer-code').value.trim()),
+    invitationLink: Boolean(hash && hash !== 'main'),
+    manualDraft: isOffline() && Boolean($('offline-offer-input').value.trim()),
+    introductionFailed,
+  });
+  if (choice.method !== pairingMethod) {
+    revision += 1;
+    pairingMethod = choice.method;
+    closeDiscovery();
+    if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
+  }
+  $('pairing-options').dataset.pairingMode = pairingMethod;
+  $('pairing-status').hidden = !choice.notice;
+  status('pairing-status', choice.notice);
+}
 
 function renderDiscovery() {
   const list = $('discovery-list');
@@ -174,6 +202,8 @@ function updateControls() {
   const viewing = role === 'viewer';
   const busy = hosting || viewing;
   const offline = isOffline();
+  $('pairing-status').hidden = busy || !$('pairing-status').textContent;
+  $('pairing-auto').disabled = busy;
   $('pairing-online').disabled = busy;
   $('pairing-offline').disabled = busy;
   $('host-discovery-option').hidden = offline;
@@ -297,6 +327,11 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
   renderRequests([]);
   renderViewers([]);
   clearRemote();
+  if (key === 'connection.server-failed' && pairingPreference === 'auto') {
+    introductionFailed = true;
+    $('pairing-options').open = true;
+  }
+  syncPairingChoice();
   updateControls();
   if (previousRole) status(previousRole === 'host' ? 'host-status' : 'viewer-status', key, terminal.has(key));
 }
@@ -342,6 +377,7 @@ function knownPhrase(key) {
 }
 
 async function connectViewer() {
+  syncPairingChoice();
   if (role || !canConnect || isOffline()) return;
   const code = parseCode($('viewer-code').value);
   if (!code) { status('viewer-status', 'code.invalid', true); return; }
@@ -361,6 +397,7 @@ async function connectViewer() {
 }
 
 async function createViewerReply() {
+  syncPairingChoice();
   if (role || !canConnect || !isOffline()) return;
   const block = $('offline-offer-input').value.trim();
   const note = $('viewer-name').value.trim();
@@ -436,12 +473,14 @@ function showInvitation() {
   $('show-host').hidden = !watching;
   $('tab-share-grid').classList.toggle('tab-share-watching', watching);
   if (watching) {
-    $('pairing-online').checked = true;
-    $('pairing-offline').checked = false;
     const code = parseCode(hash);
     $('viewer-code').value = code || hash.slice(0, 2048);
+    syncPairingChoice();
     if (!code) status('viewer-status', 'code.invalid', true);
+    else if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
   }
+  syncPairingChoice();
+  updateControls();
 }
 
 const canConnect = globalThis.isSecureContext && typeof globalThis.RTCPeerConnection === 'function';
@@ -480,14 +519,22 @@ $('choose-offer').addEventListener('click', () => $('load-offer').click());
 $('choose-answer').addEventListener('click', () => $('load-answer').click());
 $('load-offer').addEventListener('change', () => loadBlock($('load-offer'), 'offline-offer-input', 'viewer-status'));
 $('load-answer').addEventListener('change', () => loadBlock($('load-answer'), 'offline-answer-input', 'offline-accept-status'));
-for (const id of ['pairing-online', 'pairing-offline']) {
+for (const id of ['pairing-auto', 'pairing-online', 'pairing-offline']) {
   $(id).addEventListener('change', () => {
     if (role) return;
     revision += 1;
+    pairingPreference = $(id).value;
+    introductionFailed = false;
     closeDiscovery();
+    syncPairingChoice();
     if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
     updateControls();
   });
+}
+$('viewer-code').addEventListener('input', () => { syncPairingChoice(); updateControls(); });
+$('offline-offer-input').addEventListener('input', () => { syncPairingChoice(); updateControls(); });
+for (const event of ['online', 'offline']) {
+  window.addEventListener(event, () => { syncPairingChoice(); updateControls(); });
 }
 for (const id of ['viewer-code', 'viewer-name']) {
   $(id).addEventListener('keydown', (event) => {
@@ -528,10 +575,11 @@ window.addEventListener('hashchange', (event) => {
     return;
   }
   stopAll();
+  introductionFailed = false;
   showInvitation();
 });
 window.addEventListener('pagehide', () => { pageSuspended = true; stopAll(); });
-window.addEventListener('pageshow', () => { pageSuspended = false; });
+window.addEventListener('pageshow', () => { pageSuspended = false; syncPairingChoice(); updateControls(); });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
   const open = panel.hidden;
