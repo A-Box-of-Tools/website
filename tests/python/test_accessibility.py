@@ -19,7 +19,7 @@ every rule here runs over the English body and every translation of it.
 
 WHAT THE RULES ARE
 
-  - every tool body opens with <main id="main">: the skip link in
+  - every tool body opens with one <main> carrying id="main": the skip link in
     templates/tool.html points at it, and a target that only exists in some
     languages is a link that only works in some languages;
   - every form control a visitor can reach has a name: a <label for=>, a
@@ -48,6 +48,8 @@ ROOT = Path(__file__).resolve().parents[2]
 CONTROL = re.compile(r'<(input|select|textarea)\b[^>]*>')
 LABEL_FOR = re.compile(r'<label[^>]*\bfor\s*=\s*"([^"]+)"')
 COMMENT = re.compile(r'<!--.*?-->', re.S)
+MAIN_OPENING = re.compile(r'''<main(?=[\s/>])(?:[^>"']|"[^"]*"|'[^']*')*>''')
+ATTRIBUTE = re.compile(r'''[^\s=/>]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?''')
 
 
 def tool_bodies():
@@ -81,6 +83,19 @@ def has_attr(tag, name):
     return re.search(rf'\b{name}\b', tag) is not None
 
 
+def main_skip_target_issues(text):
+    openings = list(MAIN_OPENING.finditer(text))
+    if len(openings) != 1 or text[:openings[0].start()].strip():
+        yield 'does not open with exactly one <main> carrying id="main"'
+        return
+    # Match whole attributes so data-id and id-like words inside another
+    # attribute's quoted value cannot stand in for the skip link's target.
+    attributes = ATTRIBUTE.findall(openings[0].group()[5:-1])
+    ids = [value for value in attributes if re.match(r'id(?:\s|=|$)', value)]
+    if len(ids) != 1 or not re.fullmatch(r'''id\s*=\s*(?:"main"|'main'|main)''', ids[0]):
+        yield 'the opening <main> does not carry exactly one id="main"'
+
+
 class BodyRules(unittest.TestCase):
     def check(self, rule, over=bodies):
         """Run one rule over every body and report every failure at once."""
@@ -90,10 +105,36 @@ class BodyRules(unittest.TestCase):
         self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
 
     def test_main_carries_the_skip_target(self):
-        def rule(text):
-            if text.count('<main id="main">') != 1 or re.search(r'<main[ >](?!id="main">)', text):
-                yield 'does not open with exactly one <main id="main">'
-        self.check(rule, over=tool_bodies)
+        self.check(main_skip_target_issues, over=tool_bodies)
+
+    def test_main_skip_target_accepts_additional_attributes(self):
+        for text in (
+            '<main id="main"></main>',
+            '<main id="main" class="paired-page"></main>',
+            '<main class="paired-page" id="main" aria-label="Tools"></main>',
+            '\n <main\nclass="paired-page"\nid = "main"></main>',
+            '<main data-id="other" id="main"></main>',
+            "<main title='A > B' id='main'></main>",
+        ):
+            with self.subTest(text=text):
+                self.assertEqual([], list(main_skip_target_issues(text)))
+
+    def test_main_skip_target_rejects_missing_wrong_or_disguised_ids(self):
+        for text in (
+            '<section id="main"></section>',
+            '<main class="paired-page"></main>',
+            '<main id="other"></main>',
+            '<main data-id="main"></main>',
+            "<main title='use id=\"main\" here'></main>",
+            '<main id="other" data-id="main"></main>',
+            '<main id="main" id="other"></main>',
+            '<main id="main"></main><main id="other"></main>',
+            '<main id="main"><main></main></main>',
+            '<main id="main"></main><main id="main"></main>',
+            '<section></section><main id="main"></main>',
+        ):
+            with self.subTest(text=text):
+                self.assertTrue(list(main_skip_target_issues(text)))
 
     def test_every_control_has_a_name(self):
         def rule(text):
