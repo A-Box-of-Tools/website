@@ -70,7 +70,22 @@ async function voiceHost(t, tool = 'voice-oncall') {
 }
 const authenticate = async (client, key = 's'.repeat(43), proof = PROOF, role = 'sender') => {
   const ws = await socket(client.Socket);
-  ws.send(JSON.stringify({ type: 'auth', role, key, passwordProof: proof })); await flush();
+  // Sender identity hashing runs outside the event loop. A fixed number of
+  // ticks cannot establish that the broker has admitted or rejected it.
+  const response = new Promise((resolve, reject) => {
+    const receive = ws.onmessage;
+    const timeout = setTimeout(() => reject(new Error('The broker did not answer authentication.')), 5000);
+    ws.onmessage = event => {
+      receive(event);
+      if (!['ready', 'error', 'kicked'].includes(ws.frames.at(-1)?.type)) return;
+      clearTimeout(timeout);
+      ws.onmessage = receive;
+      resolve();
+    };
+  });
+  ws.send(JSON.stringify({ type: 'auth', role, key, passwordProof: proof }));
+  await response;
+  await flush();
   return ws;
 };
 
