@@ -1,11 +1,15 @@
-<main id="main">
+<main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Compartilhamentos locais nesta conexão</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Compartilhamentos próximos</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Atualizar compartilhamentos locais</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">Procurando compartilhamentos locais&hellip;</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">
         Esta lista mostra os nomes de link de navegadores que compartilham
         seu endereço IPv4 público ou sua sub-rede IPv6. Normalmente isso
@@ -17,10 +21,9 @@
         um compartilhamento ainda pede consentimento antes de conectar, e
         os privados ainda precisam da aprovação de quem compartilha.
       </p>
-      <button type="button" id="discovery-refresh" class="ghost">Atualizar compartilhamentos locais</button>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Escreva, ou anexe</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

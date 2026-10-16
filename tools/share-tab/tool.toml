@@ -15,7 +15,7 @@ favicon = "&#128421;"
 glyph = "app-window"
 category = "connect-devices"
 roadmap_group = "video"
-css_parts = ["form", "notes"]
+css_parts = ["form", "notes", "paired-tools"]
 js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-discovery", "room-names", "clipboard-feedback"]
 lastmod = "2026-10-15"
 

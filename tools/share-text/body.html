@@ -1,11 +1,15 @@
-<main id="main">
+<main id="main" class="paired-page">
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Local shares on this connection</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Nearby shares</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Refresh local shares</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">Looking for local shares&hellip;</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">
         This list shows link names from browsers using the same public IPv4
         address or IPv6 subnet as yours. Usually that means the same router; a shared VPN
@@ -14,11 +18,10 @@
         Opening a share still asks before connecting, and Private shares
         still need the sharer&rsquo;s approval.
       </p>
-      <button type="button" id="discovery-refresh" class="ghost">Refresh local shares</button>
     </section>
 
     <!-- Step 1 &mdash; the content -->
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Write it, or attach it</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

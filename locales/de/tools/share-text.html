@@ -1,16 +1,19 @@
-<main id="main">
+<main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Lokale Freigaben an diesem Anschluss</h2>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Freigaben in der Nähe</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
+      </div>
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">Suche lokale Freigaben…</p>
-      <div id="discovery-list"></div>
+      <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
-      <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Schreiben Sie ihn, oder hängen Sie sie an</h2>
       <div class="panel" id="editor">
         <div class="toolbar">

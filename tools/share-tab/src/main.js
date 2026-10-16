@@ -117,6 +117,7 @@ function renderDiscovery() {
     const code = parseCode(share.code);
     if (!code || code !== share.code || code === session.code && role === 'host') continue;
     const item = document.createElement('li');
+    item.className = 'paired-nearby-row';
     const label = document.createElement('code');
     label.textContent = code;
     const button = document.createElement('button');
@@ -178,6 +179,7 @@ function updateControls() {
   $('host-discovery-option').hidden = offline;
   $('host-discoverable').disabled = busy || !canCapture;
   $('host-publication-status').hidden = offline || !hosting || !$('host-discoverable').checked;
+  $('nearby-section').hidden = offline || busy;
   $('discovery-controls').hidden = offline || busy;
   $('discovery-start').hidden = browsingNearby;
   $('discovery-start').disabled = !canConnect;

@@ -1,6 +1,6 @@
 <section>
   <h2>What you need</h2>
-  <p>Use two devices with browsers that support camera access and WebRTC. Both need internet access for an introduction and a network that lets them reach each other. A phone on Wi-Fi and a computer on Ethernet can work when that network permits communication between them.</p>
+  <p>Use two devices with browsers that support camera access and WebRTC. Both need internet access for an introduction and a network that lets them reach each other. A phone on Wi-Fi and a computer on Ethernet can work when that network permits communication between them. A phone hotspot can also work when both devices have internet for pairing and the hotspot allows them to communicate with each other.</p>
   <p>Open this site's trusted HTTPS address. An ordinary HTTP address on a LAN IP cannot request a camera. If your browser or operating system asks for local-network access, allow it for this session.</p>
 </section>
 <section>
@@ -34,7 +34,7 @@
 <section>
   <h2>Connect the viewer and approve it</h2>
   <ol>
-    <li>On the other device, optionally enter a note the source owner will recognise in Watch a camera, then choose a name under Online cameras to request a connection immediately.</li>
+    <li>On the other device, optionally enter a note the source owner will recognise in Watch a camera, then choose a name under Nearby cameras to fill its code. Select Connect to camera when you are ready to request a view.</li>
     <li>Alternatively, open the viewer link, scan its QR code or enter the code in Watch a camera. These wait for you to choose Connect to camera.</li>
     <li>If Require my approval is on, approve each expected request on the camera device. With approval off, viewers receive video automatically while space is available.</li>
   </ol>
@@ -67,7 +67,7 @@
 </section>
 <section>
   <h2>What the introduction service sees</h2>
-  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. It stays open for invitations, but an already accepted direct view continues if that introduction connection closes. The camera retries its invitation without repeating capture or viewer approval. If the introduction service cannot recover, the existing view continues; stop and start again before inviting another viewer. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video, enabled audio and the viewer note travel the encrypted peer connection instead.</p>
-  <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Choosing a listed name requests a connection immediately and exchanges network addresses. The source can require owner approval or accept a viewer automatically. Opening a viewer link still waits for Connect. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
+  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start or Connect adds a room WebSocket. It stays open for invitations, but an already accepted direct view continues if that introduction connection closes. The camera retries its invitation without repeating capture or viewer approval. If the introduction service cannot recover, the existing view continues; stop and start again before inviting another viewer. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video, enabled audio and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Choosing a listed name fills the code and waits for Connect, which requests a connection and exchanges network addresses. The source can require owner approval or accept a viewer automatically. Opening a viewer link still waits for Connect. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
   <p>This is a browser camera view: microphone audio is optional and it has no recording feature, and it does not install a system webcam for other applications.</p>
 </section>

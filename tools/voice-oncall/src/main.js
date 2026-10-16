@@ -20,7 +20,7 @@ function activateOncall() {
   const element = id => document.getElementById(`vi-${id}`);
   const ui = Object.fromEntries([
     'tab-join', 'tab-host', 'join-panel', 'host-panel', 'status-text', 'status-dot',
-    'join-form', 'refresh', 'discovery-status', 'rooms', 'empty',
+    'join-form', 'nearby', 'refresh', 'discovery-status', 'rooms', 'empty',
     'sender-password', 'join', 'sender', 'sender-room', 'sender-note', 'resume',
     'hold', 'toggle', 'leave', 'host-form', 'room-name', 'password-required',
     'host-password-field', 'host-password', 'saved-password', 'start', 'host-live',
@@ -151,6 +151,8 @@ function activateOncall() {
 
   function updateControls() {
     const occupied = hostActive || senderActive || senderPaused || starting;
+    ui.nearby.hidden = occupied || senderTerminal;
+    for (const radio of ui.rooms.querySelectorAll('input')) radio.disabled = occupied || senderTerminal;
     ui['tab-join'].disabled = occupied && view !== 'join';
     ui['tab-host'].disabled = occupied && view !== 'host';
     ui.start.disabled = starting;
@@ -441,12 +443,13 @@ function activateOncall() {
     ui.rooms.replaceChildren();
     for (const room of listed) {
       const label = document.createElement('label');
-      label.className = 'vi-room';
+      label.className = 'vi-room paired-nearby-row';
       const radio = document.createElement('input');
       radio.type = 'radio';
       radio.name = 'voice-oncall-room';
       radio.value = room.code;
       radio.checked = room.code === selectedCode;
+      radio.disabled = hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended;
       const content = document.createElement('span');
       const name = document.createElement('span');
       name.className = 'vi-room-name';
@@ -456,10 +459,15 @@ function activateOncall() {
       kind.textContent = room.locked === null ? '' : phrase(room.locked ? 'room-locked' : 'room-open');
       content.append(name, kind);
       label.append(radio, content);
-      radio.addEventListener('change', () => {
+      const chooseRoom = (event) => {
+        if (hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended) return;
+        if (selectedCode !== room.code) ui['sender-password'].value = '';
         selectedCode = room.code;
-        ui['sender-password'].value = '';
-      });
+        setView('join');
+        if (event.type === 'click' && event.detail > 0) (room.locked ? ui['sender-password'] : ui.join).focus();
+      };
+      radio.addEventListener('change', chooseRoom);
+      radio.addEventListener('click', chooseRoom);
       ui.rooms.append(label);
     }
     ui.empty.hidden = listed.length > 0;

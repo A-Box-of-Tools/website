@@ -1,0 +1,44 @@
+/* Discovery is the same first step across paired tools; each adapter keeps
+   its own permissions and session controls below it. */
+.paired-page .paired-nearby {
+  min-width: 0;
+  padding: 1.25rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.paired-nearby-head, .paired-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem;
+}
+.paired-nearby-head { justify-content: space-between; }
+.paired-nearby-head h2 { margin: 0; }
+.paired-nearby h2 { margin-top: 0; }
+.paired-network { margin: .75rem 0 1rem; color: var(--text-dim); font-size: .9rem; line-height: 1.6; }
+.paired-network > p { margin: 0 0 .5rem; }
+.paired-network summary { cursor: pointer; font-weight: 600; color: var(--text); }
+.paired-network ol { padding-inline-start: 1.5rem; }
+.paired-network li + li { margin-top: .4rem; }
+.paired-network-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+.paired-nearby-list { list-style: none; margin: .75rem 0; padding: 0; }
+.paired-nearby-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .75rem 0;
+  border-top: 1px solid var(--border);
+}
+.paired-nearby-row > *, .paired-actions > * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.paired-nearby [role=status] { overflow-wrap: anywhere; }
+.paired-nearby button, .paired-nearby a { white-space: normal; overflow-wrap: anywhere; }
+.paired-page [data-pairing-setup] { min-width: 0; }
+@media (max-width: 600px) {
+  .paired-page .paired-nearby { padding: 1rem; }
+  .paired-nearby-head { align-items: flex-start; }
+  .paired-nearby-row > :first-child { flex: 1 1 10rem; }
+}

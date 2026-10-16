@@ -442,6 +442,12 @@ guides_all_note = """
     <a href="{{ base }}">veja todas</a>."""
 
 [ui.tool]
+pairing_network = "Para conexões locais, use a mesma rede Wi-Fi, Ethernet ou um ponto de acesso do celular. A busca por dispositivos próximos e o pareamento online precisam de internet."
+pairing_hotspot_heading = "Usar Wi-Fi ou um ponto de acesso do celular"
+pairing_hotspot_enable = "Ative o Acesso Pessoal no iPhone ou o ponto de acesso Wi-Fi no Android, nas configurações do celular."
+pairing_hotspot_join = "Conecte o outro dispositivo a esse ponto de acesso pelas configurações de Wi-Fi. Mantenha o acesso à internet para a busca por dispositivos próximos e o pareamento online."
+pairing_hotspot_connect = "Abra esta ferramenta nos dois dispositivos. Escolha a entrada próxima esperada e depois use a ação separada para conectar, entrar ou solicitar acesso. Se ela não aparecer, use o link ou código do anfitrião."
+pairing_hotspot_limits = "A rede precisa permitir a comunicação entre os dispositivos. Alguns pontos de acesso, redes de convidados, VPNs e dispositivos gerenciados bloqueiam conexões diretas. Encontrar uma entrada próxima não comprova que ela é acessível ou confiável. Esta página não pode ativar um ponto de acesso."
 pairing_version_help = "Sobre a versão da ferramenta"
 pairing_version_hint = "Compare este valor nos dois dispositivos. Se for diferente, recarregue as duas páginas antes de iniciar um novo compartilhamento."
 pairing_version = "Versão:"

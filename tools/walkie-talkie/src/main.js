@@ -23,7 +23,7 @@ function activateChannel() {
     'microphone', 'microphone-note', 'resume-microphone', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
-    'discovery-status', 'publication', 'setup', 'room-name', 'discover',
+    'discovery-status', 'selected-channel', 'join', 'publication', 'setup', 'room-name', 'discover',
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
@@ -104,6 +104,7 @@ function activateChannel() {
   let stateTalking = false;
   let pageSuspended = false;
   let channels = [];
+  let selectedChannel = null;
   let lastPublication = null;
   let discovery = openDiscovery();
   if (credentials) {
@@ -118,49 +119,68 @@ function activateChannel() {
     ui.listener.hidden = role !== 'listener';
     ui['host-intro'].hidden = role !== 'host';
     ui.nearby.hidden = role !== 'host' || hostActive || starting || preparingCredentials;
+    const unavailable = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
+    ui.join.disabled = unavailable || !selectedChannel;
+    for (const button of ui.channels.querySelectorAll('button')) button.disabled = unavailable;
   }
   renderRole();
 
   function renderChannels() {
     ui.channels.replaceChildren();
     const available = channels.filter(channel => channel.code !== credentials?.code);
+    if (!available.some(channel => channel.code === selectedChannel?.code && channel.listenKey === selectedChannel?.listenKey)) selectedChannel = null;
+    ui['selected-channel'].textContent = phrase(selectedChannel ? 'channel-selected' : 'channel-unselected', { name: selectedChannel?.name });
+    ui.join.disabled = !selectedChannel || role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.empty.hidden = available.length > 0;
     for (const channel of available) {
       const item = document.createElement('li');
+      item.className = 'paired-nearby-row';
       const name = document.createElement('span');
       name.textContent = channel.name;
       const join = document.createElement('button');
       join.type = 'button';
-      join.textContent = phrase('join-channel');
-      join.setAttribute('aria-label', phrase('join-channel-name', { name: channel.name }));
+      join.textContent = phrase('choose-channel');
+      join.setAttribute('aria-label', phrase('choose-channel-name', { name: channel.name }));
+      join.setAttribute('aria-pressed', String(channel.code === selectedChannel?.code));
+      join.disabled = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
       join.addEventListener('click', () => {
         if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended) return;
-        hostWanted = false;
-        resumeHostOnReturn = false;
-        hostNeedsResume = false;
-        clearHostResumeTimer();
-        sessionGeneration++;
-        session?.stop({ notify: false, state: null });
-        session = null;
-        listenerIdentity = { code: channel.code, key: channel.listenKey, muted: false, ended: false };
-        if (!writeStored(listenerStorage, listenerIdentity)) {
-          const invitation = new URL(pageUrl.href);
-          invitation.hash = new URLSearchParams({ code: channel.code, listen: channel.listenKey }).toString();
-          try { history.replaceState(history.state, '', invitation.href); } catch {
-            // The current session can still listen when recovery storage is blocked.
-          }
-        }
-        listenerLeft = false;
-        listenerEnded = false;
-        listenerMuted = false;
-        playbackBlocked = false;
-        role = 'listener';
-        renderRole();
-        void startListener();
+        selectedChannel = channel;
+        renderChannels();
+        ui.join.focus();
       });
       item.append(name, join);
       ui.channels.append(item);
     }
+  }
+
+  function joinSelectedChannel() {
+    const channel = selectedChannel;
+    if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended
+        || !channel || !channels.some(row => row.code === channel.code && row.listenKey === channel.listenKey)) return;
+    hostWanted = false;
+    resumeHostOnReturn = false;
+    hostNeedsResume = false;
+    clearHostResumeTimer();
+    sessionGeneration++;
+    session?.stop({ notify: false, state: null });
+    session = null;
+    listenerIdentity = { code: channel.code, key: channel.listenKey, muted: false, ended: false };
+    if (!writeStored(listenerStorage, listenerIdentity)) {
+      const invitation = new URL(pageUrl.href);
+      invitation.hash = new URLSearchParams({ code: channel.code, listen: channel.listenKey }).toString();
+      try { history.replaceState(history.state, '', invitation.href); } catch {
+        // The current session can still listen when recovery storage is blocked.
+      }
+    }
+    listenerLeft = false;
+    listenerEnded = false;
+    listenerMuted = false;
+    playbackBlocked = false;
+    selectedChannel = null;
+    role = 'listener';
+    renderRole();
+    void startListener();
   }
 
   function openDiscovery() {
@@ -582,6 +602,7 @@ function activateChannel() {
   ui['resume-microphone'].addEventListener('click', () => void resumeHostMicrophone());
   ui['room-name'].addEventListener('input', () => ui['room-name'].setCustomValidity(''));
   ui.refresh.addEventListener('click', () => discovery.refresh());
+  ui.join.addEventListener('click', joinSelectedChannel);
   ui.hold.addEventListener('pointerdown', event => {
     if (event.button !== 0 || !hostActive || !canTransmit || microphoneMuted || activePointer !== null) return;
     event.preventDefault();

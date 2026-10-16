@@ -28,6 +28,12 @@ again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
 
+The nearby card comes before the connection method and host/viewer controls,
+using the common `paired-tools` layout and translated Wi-Fi/hotspot help.
+Choosing Offline or starting a session hides that browsing card. Selecting a
+listing still only fills the invitation and focuses Request; the layout does
+not grant consent, change discovery timing or create a hotspot.
+
 An online session generates a fresh random `tab-` room code. Invitations are
 link-only by default. Before starting, the host can opt into Show in nearby
 shared tabs; that choice stays fixed until the session ends. A viewer link or

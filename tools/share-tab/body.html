@@ -1,5 +1,22 @@
-<main id="main">
-  <fieldset id="pairing-methods" class="tab-share-methods" aria-describedby="pairing-method-help">
+<main id="main" class="paired-page">
+  <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head"><h2 id="discovery-heading">Nearby shared tabs</h2></div>
+    {% include "partials/paired-network.html" %}
+    <div id="discovery-controls" class="tab-share-discovery-controls">
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">Find nearby tabs</button>
+      <p id="discovery-help" class="field-note">Nearby discovery uses internet to match the network address seen by our introduction service. It can miss devices on your Wi-Fi or include strangers sharing a gateway or VPN. Check the code with the host.</p>
+    </div>
+    <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
+      <p id="discovery-status" role="status" aria-live="polite"></p>
+      <ul id="discovery-list" class="paired-nearby-list"></ul>
+      <div class="paired-actions">
+        <button type="button" id="discovery-refresh">Refresh nearby tabs</button>
+        <button type="button" id="discovery-close">Stop looking</button>
+      </div>
+      <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
+    </section>
+  </section>
+  <fieldset id="pairing-methods" class="tab-share-methods" data-pairing-setup aria-describedby="pairing-method-help">
     <legend>Connection method</legend>
     <label><input type="radio" id="pairing-online" name="pairing-method" value="online" checked> Online &mdash; invite with a link or find nearby</label>
     <label><input type="radio" id="pairing-offline" name="pairing-method" value="offline"> Offline &mdash; exchange connection blocks</label>
@@ -75,20 +92,6 @@
       <span class="tab-share-badge">Read-only live view</span>
       <h2 id="viewer-heading">Watch a shared tab</h2>
       <p class="card-lede">Use the host&rsquo;s invitation for the selected connection method. The host must approve you before video starts.</p>
-      <div id="discovery-controls" class="tab-share-discovery-controls">
-        <button type="button" id="discovery-start" aria-describedby="discovery-help">Find nearby tabs</button>
-        <p id="discovery-help" class="field-note">Nearby discovery uses internet to match the network address seen by our introduction service. It can miss devices on your Wi-Fi or include strangers sharing a gateway or VPN. Check the code with the host.</p>
-      </div>
-      <section id="discovery-panel" class="tab-share-nearby" aria-labelledby="discovery-heading" hidden>
-        <h3 id="discovery-heading">Nearby shared tabs</h3>
-        <p id="discovery-status" role="status" aria-live="polite"></p>
-        <ul id="discovery-list" class="tab-share-nearby-list"></ul>
-        <div class="run-row">
-          <button type="button" id="discovery-refresh">Refresh nearby tabs</button>
-          <button type="button" id="discovery-close">Stop looking</button>
-        </div>
-        <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
-      </section>
       <div id="viewer-fields">
         <div id="online-viewer-fields" class="field">
           <label for="viewer-code">Viewer link or tab code</label>
