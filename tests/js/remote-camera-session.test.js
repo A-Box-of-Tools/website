@@ -40,7 +40,7 @@ function sourceStream(audio = false) {
   return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
-function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
+function fixture(t, { diagnostics = null, socketOpen = true, now } = {}) {
   const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [], viewers = [], bandwidth = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
@@ -52,7 +52,7 @@ function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
     close() { this.closed = true; this.readyState = 3; }
   }
   class PeerConnection extends Events {
-    connectionState = 'new'; localDescription = null; remoteDescription = null;
+    connectionState = 'new'; iceGatheringState = 'complete'; localDescription = null; remoteDescription = null;
     transceivers = []; ice = []; closed = false;
     constructor(config) { super(); this.config = config; peers.push(this); }
     createDataChannel(label) { this.channel = new Channel(); this.channel.label = label; return this.channel; }
@@ -76,7 +76,7 @@ function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, now, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
   t.after(() => session.stop());
   return { session, sockets, peers, requests, streams, publications, states, viewers, bandwidth };
 }
@@ -115,6 +115,107 @@ async function readyViewer(f) {
   peer.emit('datachannel', { channel }); channel.open(); channel.receive('hello'); await settle();
   return { peer, channel };
 }
+
+async function offlineViewer(host, viewer, note = 'Offline viewer') {
+  const invitation = await host.session.createOfflineOffer();
+  const reply = await viewer.session.createOfflineAnswer(invitation.block, note);
+  await host.session.acceptOfflineAnswer(invitation.id, reply);
+  const source = host.peers.at(-1), peer = viewer.peers.at(-1), channel = new Channel();
+  channel.label = 'camera-control';
+  peer.emit('datachannel', { channel });
+  source.channel.open(); channel.open();
+  source.channel.receive('hello', { receiveAudio: true }); channel.receive('hello');
+  source.channel.receive('request', { note });
+  await settle();
+  return { invitation, reply, source, peer, channel };
+}
+
+test('offline camera blocks open no socket and media negotiation still waits for acceptance and acknowledgement', async (t) => {
+  const host = fixture(t), viewer = fixture(t), stream = sourceStream(true);
+  await host.session.startHost(stream, CODE, { method: 'offline' });
+  const { invitation, source, peer, channel } = await offlineViewer(host, viewer);
+  assert.deepEqual(host.sockets, []); assert.deepEqual(viewer.sockets, []);
+  assert.deepEqual(source.config.iceServers, []); assert.deepEqual(peer.config.iceServers, []);
+  assert.equal(source.getSenders().length, 0);
+  assert.equal(host.requests.at(-1)[0].id, invitation.id);
+  host.session.approve(invitation.id);
+  assert.equal(source.getSenders().length, 0);
+  channel.receive('approved');
+  assert.ok(channel.sent.some((message) => message.type === 'approval-ack'));
+  source.channel.receive('approval-ack'); await settle();
+  assert.deepEqual(source.getSenders().map((sender) => sender.track), [stream.video, stream.other]);
+  const offer = source.channel.sent.findLast((message) => message.type === 'signal' && message.description);
+  assert.equal(offer.description.type, 'offer');
+  channel.receive('signal', { description: offer.description }); await settle();
+  const answer = channel.sent.findLast((message) => message.type === 'signal' && message.description);
+  assert.equal(answer.description.type, 'answer');
+  source.channel.receive('signal', { description: answer.description }); await settle();
+  assert.equal(host.session.peers.get(invitation.id).mediaNegotiated, true);
+  assert.equal(await host.session.restoreSignaling({ manual: true }), false);
+  assert.deepEqual(host.sockets, []); assert.deepEqual(viewer.sockets, []);
+  host.session.stop();
+  assert.equal(source.closed, true); assert.equal(stream.video.stops, 1); assert.equal(stream.other.stops, 1);
+});
+
+test('offline camera requires fresh matching replies for each viewer and preserves admitted peers', async (t) => {
+  const host = fixture(t), first = fixture(t), second = fixture(t), stream = sourceStream();
+  await host.session.startHost(stream, CODE, { method: 'offline', requireApproval: false });
+  const connected = await offlineViewer(host, first);
+  assert.equal(host.session.viewerCount, 1);
+  assert.equal(connected.source.getSenders().length, 0);
+  connected.source.channel.receive('approval-ack'); await settle();
+  const unused = await host.session.createOfflineOffer();
+  const stale = await second.session.createOfflineAnswer(unused.block, 'Second');
+  host.session.cancelOfflineOffer(unused.id);
+  const fresh = await host.session.createOfflineOffer();
+  await assert.rejects(host.session.acceptOfflineAnswer(fresh.id, stale), { message: 'offline.invalid-answer' });
+  assert.equal(connected.source.closed, false); assert.equal(stream.video.readyState, 'live');
+  const reply = await second.session.createOfflineAnswer(fresh.block, 'Second');
+  await host.session.acceptOfflineAnswer(fresh.id, reply);
+  await assert.rejects(host.session.acceptOfflineAnswer(fresh.id, reply), { message: 'offline.invalid-answer' });
+  host.session.cancelOfflineOffer(fresh.id);
+  assert.ok(host.session.peers.has(fresh.id), 'a returned reply is no longer an unused invitation');
+  assert.equal(connected.source.closed, false);
+  host.session.stop();
+  assert.ok(host.peers.every((peer) => peer.closed)); assert.equal(stream.video.stops, 1);
+});
+
+test('offline camera rejects unsolicited media negotiation before viewer approval', async (t) => {
+  const host = fixture(t), viewer = fixture(t);
+  await host.session.startHost(sourceStream(), CODE, { method: 'offline' });
+  const { channel, peer } = await offlineViewer(host, viewer);
+  channel.receive('signal', { description: { type: 'offer', sdp: SDP } }); await settle();
+  assert.equal(peer.closed, true); assert.equal(viewer.session.role, null);
+  assert.equal(viewer.states.at(-1), 'connection.invalid');
+  assert.deepEqual(viewer.sockets, []);
+});
+
+test('offline camera expiry and Stop cannot accept a late reply or retain a pending peer', async (t) => {
+  let time = Date.now();
+  const host = fixture(t, { now: () => time }), viewer = fixture(t);
+  await host.session.startHost(sourceStream(), CODE, { method: 'offline' });
+  const invitation = await host.session.createOfflineOffer();
+  const reply = await viewer.session.createOfflineAnswer(invitation.block, 'Viewer');
+  time += 600001;
+  await assert.rejects(host.session.acceptOfflineAnswer(invitation.id, reply), { message: 'offline.expired' });
+  host.session.stop();
+  await assert.rejects(host.session.acceptOfflineAnswer(invitation.id, reply), { message: 'offline.invalid-answer' });
+  assert.equal(host.session.peers.size, 0); assert.equal(host.peers[0].closed, true);
+  assert.deepEqual(host.sockets, []);
+});
+
+test('offline camera Stop during gathering closes its pending peer and rejects the late block', async (t) => {
+  const host = fixture(t);
+  await host.session.startHost(sourceStream(), CODE, { method: 'offline' });
+  const original = host.session.newPeer.bind(host.session);
+  host.session.newPeer = (...args) => {
+    const entry = original(...args); entry.pc.iceGatheringState = 'gathering'; return entry;
+  };
+  const pending = host.session.createOfflineOffer();
+  await settle(); host.session.stop();
+  await assert.rejects(pending, { message: 'connection.stopped' });
+  assert.equal(host.peers[0].closed, true); assert.deepEqual(host.sockets, []);
+});
 
 test('a remote hello delivered before the local open callback still sends our hello before requesting approval', async t => {
   const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');

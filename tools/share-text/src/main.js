@@ -1,5 +1,7 @@
 /** UI wiring and the two roles: the sharer's tab, and a reader's. */
 
+import { OfflineTextHost, OfflineTextClient } from './offline-room.js';
+import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
 import { phrase } from './shared/phrases.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
@@ -108,6 +110,111 @@ const fmtSize = (n) => formatSize(n, sizeUnits);
 let sock = null;
 let hostPairing = null;
 let sharing = false;
+let offlineHost = null, offlineReader = null;
+let offlineBusy = false, offlineAccepted = false, readerActive = false;
+let readerStop = () => {};
+let pairing, blocks;
+const isOffline = () => pairing?.method === 'offline';
+function offlineStatus(key, target = 'text-offline-status') {
+  $(target).textContent = key ? phrase(key) : '';
+}
+function renderPairing() {
+  if (!pairing || !blocks) return;
+  pairing.refresh();
+  const offline = isOffline();
+  $('discovery').hidden = offline || readerActive;
+  $('text-offline-client').hidden = !offline || sharing;
+  $('share').hidden = readerActive;
+  $('offline-viewer-fields').hidden = !offline;
+  $('offline-reply').hidden = !offline;
+  $('offline-reply').disabled = readerActive || sharing || offlineBusy;
+  $('offline-offer-input').disabled = readerActive || sharing || offlineBusy;
+  $('choose-offer').disabled = readerActive || sharing || offlineBusy;
+  $('offline-viewer-reply').hidden = !offline || !readerActive || !$('offline-answer').value;
+  $('text-offline-stop').hidden = !readerActive;
+  $('offline-host').hidden = !offline || !sharing;
+  $('offline-new').hidden = !offline || !sharing;
+  $('offline-new').disabled = offlineBusy || !offlineHost?.ready;
+  $('offline-accept').disabled = !sharing || offlineBusy || offlineAccepted || !$('offline-offer').value;
+  $('offline-answer-input').disabled = offlineBusy || offlineAccepted || !offlineHost?.pending;
+  $('choose-answer').disabled = offlineBusy || offlineAccepted;
+  $('link').hidden = offline;
+  $('copylink').hidden = offline;
+  for (const element of document.querySelectorAll('[data-text-online]')) element.hidden = offline;
+  $('local').closest('label').hidden = offline;
+  $('local').closest('label').nextElementSibling.hidden = offline;
+  $('discoverable').closest('.discoverable-row').hidden = offline;
+  if (offline) { discovery?.close(); discovery = null; foundShares = []; }
+  else if (!readerActive && !discovery) startDiscovery();
+}
+async function newOfflineOffer() {
+  const owner = offlineHost;
+  if (!owner || offlineBusy || !sharing) return;
+  offlineBusy = true;
+  offlineAccepted = false;
+  blocks.setOffer('');
+  offlineStatus('offline.gathering', 'offline-accept-status');
+  renderPairing();
+  try {
+    const text = await owner.createOffer();
+    if (owner !== offlineHost || !sharing) return;
+    blocks.setOffer(text);
+    offlineStatus('offline.offer-ready', 'offline-accept-status');
+  } catch (error) {
+    if (owner === offlineHost) offlineStatus(error.message?.startsWith('offline.') ? error.message : 'offline.disconnected', 'offline-accept-status');
+  } finally {
+    if (owner === offlineHost) { offlineBusy = false; renderPairing(); }
+  }
+}
+async function acceptOfflineReply(text) {
+  const owner = offlineHost;
+  if (!owner || offlineBusy || offlineAccepted) return;
+  offlineBusy = true; renderPairing();
+  try {
+    await owner.acceptAnswer(text);
+    if (owner === offlineHost) { offlineAccepted = true; offlineStatus('', 'offline-accept-status'); }
+  } catch (error) {
+    if (owner === offlineHost) offlineStatus(error.message?.startsWith('offline.') ? error.message : 'offline.invalid-answer', 'offline-accept-status');
+  } finally { if (owner === offlineHost) { offlineBusy = false; renderPairing(); } }
+}
+function stopOfflineReader(key = '') {
+  const owner = offlineReader;
+  offlineReader = null;
+  readerStop(); readerStop = () => {};
+  owner?.close();
+  readerActive = false; offlineBusy = false;
+  resumeViewer = () => {};
+  blocks.clear();
+  $('view').hidden = true;
+  $('retryrow').hidden = true;
+  offlineStatus(key);
+  renderPairing();
+}
+async function createOfflineReply(text) {
+  if (!isOffline() || sharing || readerActive || offlineBusy) return;
+  offlineBusy = true; readerActive = true;
+  blocks.clear();
+  offlineStatus('offline.gathering'); renderPairing();
+  const owner = new OfflineTextClient({
+    onReady() {
+      if (offlineReader !== owner) return;
+      offlineStatus('offline.answer-ready');
+      view('offline-reader');
+    },
+    onClose(reason) {
+      if (offlineReader === owner) stopOfflineReader(reason === 'offline.expired' ? reason : 'offline.disconnected');
+    },
+  });
+  offlineReader = owner;
+  try {
+    const answer = await owner.createAnswer(text);
+    if (offlineReader !== owner) return;
+    blocks.setAnswer(answer);
+    offlineStatus('offline.answer-ready');
+  } catch (error) {
+    if (offlineReader === owner) stopOfflineReader(error.message?.startsWith('offline.') ? error.message : 'offline.invalid-offer');
+  } finally { if (offlineReader === owner) { offlineBusy = false; renderPairing(); } }
+}
 let activeCode = '';
 let hostHadRoom = false;
 let hostRetry = 0;
@@ -188,6 +295,7 @@ function unlock() {
   $('linkrow').hidden = true;
   $('requests').textContent = '';
   pending.clear();
+  renderPairing();
 }
 
 function setShareState(key = '') {
@@ -205,7 +313,7 @@ function refreshCount() {
   const n = channels.size;
   const w = pending.size;
   if (n === 0 && w === 0) {
-    setStatus(phrase(isLocal ? 'share.local-waiting' : 'share.waiting'));
+    setStatus(phrase(isOffline() ? 'offline.offer-ready' : isLocal ? 'share.local-waiting' : 'share.waiting'));
     return;
   }
   const parts = [n === 1 ? phrase('share.reader-count.one') : phrase('share.reader-count.many', { n })];
@@ -366,6 +474,7 @@ function renderDiscovery() {
 }
 
 function startDiscovery() {
+  if (discovery || isOffline() || readerActive) return;
   discovery = watchDiscovery(`${RENDEZVOUS}/discover`, {
     list(shares) {
       // A snapshot already in flight can arrive after Stop. Keep its code
@@ -382,8 +491,8 @@ function startDiscovery() {
         ? phrase(`discovery.${state}`) : '';
     },
   });
-  $('discovery-refresh').addEventListener('click', () => discovery.refresh());
 }
+$('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 
 $('local').addEventListener('change', () => {
   $('discoverable').disabled = !$('local').checked;
@@ -396,7 +505,7 @@ wireHelpTooltip($('tool-version-help'));
 function hostSocket(code) {
   const trace = diagnostics.begin('host', isLocal ? 'local' : 'internet');
   hostDiagnostic = trace;
-  const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
+  const ws = offlineHost ? new offlineHost.Socket() : new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
   hostPairing?.close();
   sock = ws;
   const pairing = new PairingSocket(ws, {
@@ -420,6 +529,8 @@ function hostSocket(code) {
       $('linkrow').hidden = false;
       $('stop').hidden = false;
       refreshCount();
+      renderPairing();
+      if (offlineHost && !$('offline-offer').value && !offlineBusy) void newOfflineOffer();
       if (isDiscoverable) {
         $('discovery-share-status').textContent = phrase('discovery.publishing');
         announcementTimer = setTimeout(() => {
@@ -472,6 +583,8 @@ function hostSocket(code) {
         return;
       }
       if (!sharing || $('publish').hidden === false) return;
+      if (offlineHost) { stopSharing(); return; }
+      if (!hostHadRoom) { stopSharing(); pairingChoiceUI.fail(); return; }
       // Connected readers are unaffected - the peer channels do not run
       // through the server - but new ones cannot join until this recovers.
       setStatus(phrase('share.lost-rendezvous'), true);
@@ -487,6 +600,7 @@ function hostSocket(code) {
 }
 
 function resumeHost() {
+  if (offlineHost) return;
   if (!sharing || document.visibilityState === 'hidden' || navigator.onLine === false) {
     hostPairing?.clear('foreground');
     return;
@@ -509,7 +623,7 @@ function resumeHost() {
   }
   const pairing = hostPairing;
   pairing.after('foreground', 8000, () => {
-    if (!sharing || sock !== ws || document.visibilityState === 'hidden' || navigator.onLine === false) return;
+    if (!sharing || sock !== ws || document.visibilityState === 'hidden' || (!offlineReader && navigator.onLine === false)) return;
     sock = null;
     pairing.close();
     resumeHost();
@@ -517,7 +631,9 @@ function resumeHost() {
 }
 
 function publish() {
-  const code = normalize($('code').value);
+  pairing.refresh();
+  if (sharing || readerActive) return;
+  const code = isOffline() ? makeCode() : normalize($('code').value);
   if (code === '') {
     setStatus(phrase('share.name-first'));
     return;
@@ -531,22 +647,28 @@ function publish() {
   $('suggest').disabled = true;
   isPrivate = $('private').checked;
   $('private').disabled = true;
-  isLocal = $('local').checked;
+  isLocal = isOffline() || $('local').checked;
   $('local').disabled = true;
-  isDiscoverable = isLocal && $('discoverable').checked;
+  isDiscoverable = !isOffline() && isLocal && $('discoverable').checked;
   $('discoverable').disabled = true;
   $('publish').hidden = true;
   setShareState('share.setting-up');
   renderDiscovery();
   setStatus('');
+  if (isOffline()) offlineHost = new OfflineTextHost({
+    onChange: renderPairing,
+    onError(reason) { if (offlineHost) offlineStatus(reason === 'offline.expired' ? reason : 'offline.disconnected', 'offline-accept-status'); },
+  });
+  renderPairing();
   try {
     hostSocket(code);
   } catch (error) {
     hostDiagnostic?.error('websocket', error);
     hostDiagnostic?.finish('socket-error');
     revealDiagnostics();
-    unlock();
-    throw error;
+    stopSharing();
+    pairing.fail();
+    setStatus(phrase('share.lost-rendezvous'), true);
   }
 }
 
@@ -751,6 +873,10 @@ $('publish').addEventListener('click', publish);
 
 function stopSharing() {
   sharing = false;
+  const stoppedOfflineHost = offlineHost;
+  offlineHost = null;
+  offlineBusy = false; offlineAccepted = false;
+  blocks?.clear();
   clearTimeout(hostRetry);
   hostPairing?.clear('foreground');
   const stoppedPeers = [...peers].map(([id, pc]) => ({ pc, dc: controlChannels.get(id) }));
@@ -785,6 +911,7 @@ function stopSharing() {
   foundShares = foundShares.filter((share) => share.code !== stoppedCode);
   hostPairing?.close();
   hostPairing = null;
+  stoppedOfflineHost?.close();
   unlock();
   setStatus(phrase('share.stopped'));
 }
@@ -836,9 +963,11 @@ let viewerLive = false;
 let resumeViewer = () => {};
 
 function view(code, recovered = null) {
+  readerActive = true;
+  renderPairing();
   $('share').hidden = true;
   $('view').hidden = false;
-  const localMode = recovered?.localMode ?? isLocalLink(location.href);
+  const localMode = recovered?.localMode ?? (Boolean(offlineReader) || isLocalLink(location.href));
   $('local-note').hidden = !localMode;
   let retryLocal = localMode;
 
@@ -849,7 +978,7 @@ function view(code, recovered = null) {
   // watched the direct attempt fail, and asked for the relay by name.
   let carried = false;
   let wantRelay = false;
-  if (!recovered) try {
+  if (!recovered && !offlineReader) try {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
@@ -865,7 +994,7 @@ function view(code, recovered = null) {
   const generation = ++session.generation;
   session.restart = () => { events.abort(); view(code, session); };
   session.retry ??= foregroundRecovery(() => session.restart(), {
-    visible: () => document.visibilityState !== 'hidden' && navigator.onLine !== false,
+    visible: () => document.visibilityState !== 'hidden' && (Boolean(offlineReader) || navigator.onLine !== false),
     exhausted() {
       $('view-status').hidden = false;
       $('view-status').textContent = phrase('view.interrupted');
@@ -876,7 +1005,7 @@ function view(code, recovered = null) {
 
   const trace = diagnostics.begin('viewer', localMode ? 'local' : wantRelay ? 'relay' : 'internet');
   let ws;
-  try { ws = new WebSocket(wsUrl(code, 'viewer')); }
+  try { ws = offlineReader ? new offlineReader.Socket() : new WebSocket(wsUrl(code, 'viewer')); }
   catch (error) {
     trace.error('websocket', error); trace.finish('socket-error');
     fail(phrase(recovered ? 'view.reconnecting' : 'view.error')); revealDiagnostics();
@@ -1135,6 +1264,8 @@ function view(code, recovered = null) {
     waitingForFile(owner);
   }
 
+  readerStop = () => { sharerGone(true); events.abort(); session.generation += 1; };
+
   function sharerGone(terminal = false) {
     if (session.generation !== generation) return;
     if (terminal) {
@@ -1170,7 +1301,7 @@ function view(code, recovered = null) {
   resumeViewer = () => {
     session.retry.foreground();
     if (document.visibilityState === 'hidden') { clearTimeout(foregroundProbe); return; }
-    if (done || !session.consent || !session.retry.active || navigator.onLine === false) return;
+    if (done || !session.consent || !session.retry.active || (!offlineReader && navigator.onLine === false)) return;
     if (dcRef?.readyState !== 'open') {
       if (connected || ws.readyState > 1) sharerGone();
       return;
@@ -1180,7 +1311,7 @@ function view(code, recovered = null) {
     // encrypted peer; it never opens another connection or changes consent.
     try { dcRef.send(JSON.stringify({ type: 'hello' })); } catch { sharerGone(); return; }
     foregroundProbe = setTimeout(() => {
-      if (!done && session.generation === generation && document.visibilityState !== 'hidden' && navigator.onLine !== false) sharerGone();
+      if (!done && session.generation === generation && document.visibilityState !== 'hidden' && (Boolean(offlineReader) || navigator.onLine !== false)) sharerGone();
     }, 8000);
   };
 
@@ -1268,7 +1399,11 @@ function view(code, recovered = null) {
       let msg;
       try { msg = JSON.parse(ev.data); } catch { return; }
       if (!msg || typeof msg !== 'object') return;
-      if (msg.type === 'ended') { sharerGone(true); return; }
+      if (msg.type === 'ended') {
+        if (offlineReader) stopOfflineReader('view.ended');
+        else sharerGone(true);
+        return;
+      }
       if (done) return;
       clearTimeout(foregroundProbe);
       if (msg.type === 'files') { renderFilelist(msg.list ?? [], msg.fileChannels); return; }
@@ -1478,6 +1613,10 @@ function view(code, recovered = null) {
         return;
       }
       if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
+      if (!offlineReader && !connected && ![4404, 4429].includes(e.code)) {
+        readerStop(); readerActive = false; $('view').hidden = true;
+        pairingChoiceUI.fail(); renderPairing(); return;
+      }
       if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
       else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
       else if (!connected) stopAttempt('view.error', false, 'socket-closed');
@@ -1485,7 +1624,10 @@ function view(code, recovered = null) {
   });
 }
 
-$('retry').addEventListener('click', () => location.reload());
+$('retry').addEventListener('click', () => {
+  if (isOffline()) stopOfflineReader();
+  else location.reload();
+});
 
 function resumePairedPage() {
   resumeHost();
@@ -1520,14 +1662,28 @@ window.addEventListener('unhandledrejection', (event) => bootError(event.reason?
 
 /* --------------------------------------------------------------- routing */
 
+const pairingChoiceUI = pairingOptions({
+  busy: () => sharing || readerActive || offlineBusy,
+  invitationLink: () => CODE_PATTERN.test(location.hash.slice(1).toLowerCase()),
+  onChange: renderPairing,
+});
+pairing = pairingChoiceUI;
+blocks = pairingBlocks({
+  createReply: createOfflineReply, acceptReply: acceptOfflineReply, newOffer: newOfflineOffer,
+  onChange: renderPairing,
+  onError(error, action) { offlineStatus(error.message?.startsWith('offline.') ? error.message : 'offline.file-invalid',
+    action.includes('answer') || action === 'offline-accept' ? 'offline-accept-status' : 'text-offline-status'); },
+});
+$('text-offline-stop').addEventListener('click', () => stopOfflineReader());
+pairing.refresh();
 const code = location.hash.replace(/^#/, '').toLowerCase();
 $('local').checked = isLocal;
-if (CODE_PATTERN.test(code)) view(code);
+if (CODE_PATTERN.test(code) && !isOffline()) view(code);
 else {
   $('discoverable').disabled = !isLocal;
   suggest();
   restore();
-  startDiscovery();
+  renderPairing();
 }
 
 // A share link pasted into an already-open page changes only the hash, and
@@ -1555,6 +1711,10 @@ addEventListener('click', (event) => {
       event.preventDefault();
       return;
     }
+  }
+  if (isOffline()) {
+    const target = new URL(anchor.href); target.searchParams.set('pairing', 'offline'); target.hash = '';
+    anchor.href = target.href; return;
   }
   if (location.hash === '') return;
   // A reader keeps their session across the switch: the flag stands in for

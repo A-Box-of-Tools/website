@@ -42,3 +42,14 @@
   .paired-nearby-head { align-items: flex-start; }
   .paired-nearby-row > :first-child { flex: 1 1 10rem; }
 }
+
+/* The connection choice and block exchange stay readable on a phone. */
+.paired-options { margin: 1rem 0 1.5rem; }
+.paired-options > summary { cursor: pointer; font-weight: 650; }
+.paired-options fieldset { margin-top: 1rem; border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; min-width: 0; }
+.paired-options fieldset > label { display: inline-flex; align-items: baseline; gap: .5rem; margin: .35rem 1rem .35rem 0; }
+.paired-options input { width: auto; }
+.paired-blocks { margin-top: 1rem; min-width: 0; }
+.paired-blocks textarea { display: block; width: 100%; box-sizing: border-box; max-width: 100%; font-family: var(--mono, monospace); font-size: .85rem; overflow-wrap: anywhere; }
+.paired-blocks .field { margin: .8rem 0; }
+.paired-blocks .paired-actions { margin: .65rem 0; }

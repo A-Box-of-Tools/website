@@ -47,7 +47,34 @@ why CSP alone can never fully describe a WebRTC page. Local network mode
 removes those public STUN servers and does not offer TURN, but still uses
 the public rendezvous for signalling.
 
-## Local network mode
+## Automatic and offline pairing
+
+Connection options uses the shared Automatic selector. A browser offline hint
+shows manual blocks before any discovery or room socket opens; an explicit
+Online/Offline choice overrides the hint. The choice stays fixed during a
+session, including recovery. Online retains the Local network checkbox and
+its existing explicit relay policy; offline always uses host-only ICE without
+public STUN or TURN.
+
+Offline Start sharing creates a ten-minute host invitation. A reader opens
+this same cached HTTPS tool, pastes that block and creates a reply. Returning
+the reply opens a data-only bootstrap. The reader still chooses Connect before
+the text/file session starts, and Private still requires a knock and approval.
+The bootstrap carries only the existing bounded signaling messages over
+`OfflineTextHost`/`OfflineTextClient`; content and files use the existing
+admitted data channels. Reader routing is bound to the bootstrap identity,
+and no remote role can act as host. A fresh invitation adds another reader
+without replacing current readers. Both methods allow sixteen readers.
+
+Blocks contain connection addresses, so exchange them only with the intended
+person and remove saved files when finished. Cache both pages while online,
+then use a reachable Wi-Fi, Ethernet or hotspot and a local means of transferring
+blocks. Nearby discovery requires internet and is hidden offline. Stop retires
+pending exchanges and live sessions. Foreground recovery can reuse a surviving
+bootstrap; if it has closed, a new manual exchange is required. No offline
+failure falls back to the public rendezvous.
+
+## Local network mode (online introductions)
 
 The sharer can select **Local network — no internet relay** before starting.
 The copied URL carries `?local=1#name`, so the reader knows the intended mode
@@ -94,7 +121,7 @@ asks devices with different values to reload before starting a new share.
 This helps identify an older open or cached page; it does not gate connections
 or claim that different versions cannot work together.
 
-Opening the tool without a share name opens one WebSocket to `/discover`.
+Opening the tool in Online mode without a share name opens one WebSocket to `/discover`.
 The list contains only advertised codes and the local-mode flag; opening an
 entry shows the usual consent page in another tab. It never opens WebRTC on
 its own and never bypasses Private approval. Starting a local share leaves

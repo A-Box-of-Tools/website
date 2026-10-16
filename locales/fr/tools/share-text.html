@@ -1,7 +1,6 @@
 <main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
-  <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
         <h2>Partages à proximité</h2>
@@ -12,6 +11,17 @@
       <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
     </section>
+  {% include "partials/pairing-options.html" %}
+  <p class="field-note">Sans internet : chargez la page sur les deux appareils, choisissez Offline dans Connection options et échangez le bloc d’invitation et la réponse. Un réseau local accessible et l’approbation des contenus privés restent nécessaires.</p>
+  <section id="text-offline-client" class="card" hidden>
+    <h2>{{ ui.tool.pairing_receive }}</h2>
+    {% include "partials/pairing-client.html" %}
+    {% include "partials/pairing-reply.html" %}
+    <button type="button" id="text-offline-stop" class="danger" hidden>{{ ui.tool.pairing_disconnect }}</button>
+    <p id="text-offline-status" role="status" aria-live="polite"></p>
+  </section>
+  <section id="share">
+
 
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
@@ -39,8 +49,8 @@
     </section>
 
     <section class="card">
-      <h2><span class="step">2</span> Nommez le lien</h2>
-      <div class="field">
+      <h2 data-text-online><span class="step">2</span> Nommez le lien</h2>
+      <div class="field" data-text-online>
         <label for="code">Nom du lien</label>
         <div class="namerow">
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
@@ -93,6 +103,7 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
+      {% include "partials/pairing-host.html" %}
       <div id="requests"></div>
     </section>
 
@@ -185,6 +196,7 @@
 
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="debug.idle">Aucune tentative de connexion pour le moment.</span>
     <span data-phrase="debug.attempt">Tentative de connexion {n}. {status}</span>
     <span data-phrase="debug.introduction">Prise de contact avec le serveur de mise en relation.</span>

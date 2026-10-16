@@ -16,18 +16,7 @@
       <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
     </section>
   </section>
-  <details id="pairing-options" class="tab-share-options" data-pairing-setup data-pairing-mode="online">
-    <summary>Connection options</summary>
-    <fieldset id="pairing-methods" class="tab-share-methods" aria-describedby="pairing-method-help">
-      <legend>How to pair</legend>
-      <label><input type="radio" id="pairing-auto" name="pairing-method" value="auto" checked data-no-remember> Automatic</label>
-      <label><input type="radio" id="pairing-online" name="pairing-method" value="online" data-no-remember> Online &mdash; invite with a link or find nearby</label>
-      <label><input type="radio" id="pairing-offline" name="pairing-method" value="offline" data-no-remember> Offline &mdash; exchange connection blocks</label>
-      <p id="pairing-method-help" class="field-note">Automatic uses online invitations unless your browser reports no internet. You can override that hint here. A viewer link keeps online pairing; manual blocks need a fresh exchange with the host. Both methods use the same reachable Wi-Fi, Ethernet or hotspot. The method stays fixed while sharing or connecting.</p>
-    </fieldset>
-  </details>
-  <p id="pairing-status" class="tab-share-help" role="status" aria-live="polite" hidden></p>
-  <p id="offline-note" class="tab-share-help" hidden>For use without internet, open this HTTPS page on both devices beforehand and wait for each offline indicator to say ready. Connect the devices to a reachable local network yourself; this tool does not set one up. Exchange the blocks using a local method, such as files transferred by Bluetooth or USB through your devices. Blocks contain network addresses; share them only with the person you expect. The host must still approve the viewer before video starts.</p>
+  {% include "partials/pairing-options.html" %}
   <div class="tab-share-grid" id="tab-share-grid">
     <section id="host-panel" class="tab-share-card" aria-labelledby="host-heading">
       <span class="tab-share-badge">No extension needed</span>
@@ -55,30 +44,7 @@
         </div>
         <p class="tab-share-help">Keep this page and the selected tab open. Only a viewer you approve receives video. One viewer can watch at a time.</p>
       </div>
-      <section id="offline-host-panel" class="tab-share-invite" hidden aria-labelledby="offline-host-heading">
-        <h3 id="offline-host-heading">Exchange connection blocks</h3>
-        <p class="tab-share-help">Send your host block to the viewer, then paste or load their reply here. Keep this page open throughout the exchange.</p>
-        <div class="field">
-          <label for="offline-offer">1. Host connection block &mdash; send to the viewer</label>
-          <textarea id="offline-offer" class="tab-share-block" rows="5" maxlength="65536" readonly spellcheck="false" dir="ltr" data-no-remember></textarea>
-        </div>
-        <div class="run-row">
-          <button type="button" id="copy-offer">Copy host block</button>
-          <button type="button" id="save-offer">Save host block as file</button>
-          <span id="offer-copy-status" role="status" aria-live="polite"></span>
-        </div>
-        <div class="field">
-          <label for="offline-answer-input">2. Viewer reply block</label>
-          <textarea id="offline-answer-input" class="tab-share-block" rows="5" maxlength="65536" autocomplete="off" spellcheck="false" dir="ltr" data-no-remember></textarea>
-        </div>
-        <input type="file" id="load-answer" accept=".json,.txt,application/json,text/plain" aria-label="Load a viewer reply file" hidden data-no-remember>
-        <div class="run-row">
-          <button type="button" id="choose-answer">Load viewer reply file</button>
-          <button type="button" id="offline-accept">Connect viewer</button>
-        </div>
-        <p id="offline-accept-status" role="status" aria-live="polite"></p>
-        <p class="tab-share-help">Connecting exchanges network addresses. After the request arrives, approve the viewer you recognise below. Connecting alone sends no video.</p>
-      </section>
+      {% include "partials/pairing-host.html" %}
       <div id="host-preview-panel" class="tab-share-video" hidden>
         <video id="local-video" autoplay muted playsinline aria-label="Preview of the tab you are sharing"></video>
       </div>
@@ -102,15 +68,7 @@
           <label for="viewer-code">Viewer link or tab code</label>
           <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="tab-abcdefghijklmnop" data-no-remember>
         </div>
-        <div id="offline-viewer-fields" hidden>
-          <div class="field">
-            <label for="offline-offer-input">Host connection block</label>
-            <textarea id="offline-offer-input" class="tab-share-block" rows="5" maxlength="65536" autocomplete="off" spellcheck="false" dir="ltr" data-no-remember></textarea>
-          </div>
-          <input type="file" id="load-offer" accept=".json,.txt,application/json,text/plain" aria-label="Load a host connection file" hidden data-no-remember>
-          <button type="button" id="choose-offer">Load host block file</button>
-          <p class="field-note">Paste the complete block or load the file from the host. Creating a reply shares this browser&rsquo;s connection addresses with them.</p>
-        </div>
+        {% include "partials/pairing-client.html" %}
         <div class="field">
           <label for="viewer-name">A note the host will recognise (optional)</label>
           <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop" data-no-remember>
@@ -120,23 +78,10 @@
       <p class="tab-share-help">Online pairing contacts our introduction service. Offline pairing uses only the exchanged blocks. Both methods exchange network addresses with the other browser. This device does not need screen, camera or microphone permission.</p>
       <div class="run-row">
         <span id="online-viewer-controls"><button type="button" id="viewer-connect" class="big">Request to watch</button></span>
-        <button type="button" id="offline-reply" class="big" hidden>Create viewer reply</button>
         <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       </div>
       <p id="viewer-status" class="tab-share-status" role="status" aria-live="polite">Enter a viewer link or tab code to begin.</p>
-      <section id="offline-answer-panel" class="tab-share-invite" hidden aria-labelledby="offline-answer-heading">
-        <h3 id="offline-answer-heading">Return your reply to the host</h3>
-        <div class="field">
-          <label for="offline-answer">Viewer reply block &mdash; send to the host</label>
-          <textarea id="offline-answer" class="tab-share-block" rows="5" maxlength="65536" readonly spellcheck="false" dir="ltr" data-no-remember></textarea>
-        </div>
-        <div class="run-row">
-          <button type="button" id="copy-answer">Copy viewer reply</button>
-          <button type="button" id="save-answer">Save viewer reply as file</button>
-          <span id="answer-copy-status" role="status" aria-live="polite"></span>
-        </div>
-        <p class="tab-share-help">Send this complete reply to the host. Keep this page open while they connect and approve your request.</p>
-      </section>
+      {% include "partials/pairing-reply.html" %}
       <div id="viewer-video-panel" hidden>
         <div id="viewer-video-frame" class="tab-share-video">
           <video id="remote-video" autoplay muted playsinline aria-label="Live video of the host's shared browser tab"></video>
@@ -163,10 +108,7 @@
   </details>
 
   <div id="phrases" hidden>
-    <span data-phrase="pairing.detected-offline">Your browser reports no internet, so manual connection blocks are shown. If that is incorrect, choose Online in Connection options. No connection has started.</span>
-    <span data-phrase="pairing.invitation-offline">This invitation needs online pairing, but your browser reports no internet. You can still try it, or ask the host for a fresh connection block and choose Offline in Connection options.</span>
-    <span data-phrase="pairing.unavailable">Online pairing was unavailable. Manual connection blocks are now shown for a fresh attempt. The host must choose a tab again, exchange fresh blocks with the viewer, and approve them. To retry the online service, choose Online in Connection options.</span>
-    <span data-phrase="pairing.manual-draft">Manual pairing stays selected while you prepare this host block. Use Connection options if you want to switch methods.</span>
+    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="host.ready">Nothing is being captured or shared.</span>
     <span data-phrase="host.choosing">Choose the browser tab to share. You can stop this attempt at any time.</span>
     <span data-phrase="host.waiting">Your preview is on. Invite a viewer, then approve the request you recognise.</span>
@@ -217,15 +159,7 @@
     <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
     <span data-phrase="copy.done">Copied.</span>
     <span data-phrase="copy.manual">Select and copy the text above.</span>
-    <span data-phrase="offline.gathering">Preparing the connection block. Keep this page open&hellip;</span>
-    <span data-phrase="offline.offer-ready">Host block ready. Send it to the viewer, then paste or load their reply here.</span>
-    <span data-phrase="offline.answer-ready">Viewer reply ready. Send it to the host, then wait here for connection and approval.</span>
-    <span data-phrase="offline.invalid-offer">That host block is incomplete or unsupported. Ask the host for the complete current block or file.</span>
-    <span data-phrase="offline.invalid-answer">That reply does not match this connection. Paste or load the complete reply created from the current host block.</span>
-    <span data-phrase="offline.expired">This connection exchange expired. Stop both attempts and start again with a fresh host block.</span>
-    <span data-phrase="offline.file-invalid">That file is not a supported connection block, or it is too large. Use the complete JSON or text file from this tool.</span>
     <span data-phrase="offline.saved">Connection file download started.</span>
-    <span data-phrase="offline.copied">Connection block copied.</span>
     <span data-phrase="net.clean">{total} page resources checked. {platform} Connection setup and live WebRTC video are disclosed above; this resource list does not inspect WebRTC traffic.</span>
     <span data-phrase="net.dirty">Unexpected resource hosts: {hosts}. {platform} WebRTC traffic is separate from this resource check.</span>
     <span data-phrase="offline.ready">The page is cached on this device. Offline block exchange can pair reachable local devices without internet. Online invitations still need internet.</span>

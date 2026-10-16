@@ -37,7 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks", "paired-tools"]
-js_parts = ["connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
+js_parts = ["connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names", "pairing-choice", "pairing-ui", "offline-pairing", "offline-channel"]
 lastmod = "2026-10-15"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -63,7 +63,8 @@ csp_note = """
   channel without a key to it. The worker's whole source is in the
   repository at workers/rendezvous/. Local network mode uses only host ICE
   candidates, with no public STUN server or TURN relay; its introduction
-  still uses the rendezvous. The start page automatically opens a discovery
+  still uses the rendezvous in Online mode. Offline pairing exchanges manual
+  blocks and opens no discovery or room WebSocket. In Online mode, the start page opens a discovery
   WebSocket for opted-in link names on the same public IPv4 address or IPv6 subnet. Sharing
   opens a second socket for the actual share; a reader uses its own single
   introduction socket. The discovery directory never carries text or files."""
@@ -73,7 +74,8 @@ csp_note = """
 pledge = """
     What you share here travels from your browser to each reader's browser
     over a WebRTC channel that is encrypted end to end, and it goes nowhere
-    else. The one server involved &mdash; named in this page's
+    else. Offline pairing exchanges connection blocks directly, with no
+    introduction-service connection. In Online mode, the server &mdash; named in this page's
     <code>Content-Security-Policy</code>, source in the repository &mdash;
     introduces the two browsers and lists discoverable local link names.
     It keeps no shared text or files, and the content never passes through
@@ -84,11 +86,11 @@ pledge = """
     Content they already copied or downloaded remains theirs."""
 
 live_hint = """
-      Open DevTools and watch the Network tab while you share. You will see
+      Open DevTools and watch the Network tab while you share. In Online mode you will see
       a WebSocket to the rendezvous for local link names when this start page
       opens. Starting a share adds another for connection set-up. A reader
       uses one introduction socket. However much you type or attach, none
-      of these carries the text or files."""
+      of these carries the text or files. In Offline mode, the pairing tool opens none of them."""
 
 # --- the "how this is verified" panel ----------------------------------------
 
@@ -162,7 +164,8 @@ body = """
 title = "What the rendezvous is, and the whole of what it sees."
 body = """
  A direct connection needs an
-      introduction. This start page automatically opens a WebSocket to our
+      introduction. Offline pairing uses manual blocks instead of a server.
+      In Online mode, this start page opens a WebSocket to our
       rendezvous for discoverable local link names; starting a share opens
       another for the share itself. A reader uses one introduction socket.
       The server matches the person who typed
@@ -212,7 +215,9 @@ body = """
       share link only asks the rendezvous whether anyone is sharing, and the
       page then says plainly that connecting reveals each side's IP address
       to the other, and waits for a click. Until that click, the sharer has
-      not even learned the reader exists."""
+      not even learned the reader exists. Offline pairing discloses addresses
+      when the invitation and reply blocks are exchanged; creating a reply is
+      a separate explicit action, before Connect or private approval."""
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -385,12 +390,16 @@ a = """
 [[faq]]
 q = "Does it work offline?"
 a = """
-        Half of it, honestly: the editor does &mdash; the page loads, your
-        draft is here, markdown renders, and you can write and save with no
-        network at all. Sharing does not, and cannot: reaching another
-        person's browser is a network act, and the introduction needs the
-        rendezvous. This is a tool on this site with a job that is
-        impossible offline, and it would be dishonest to imply otherwise."""
+        Yes, without internet, if both devices can reach each other on Wi-Fi,
+        Ethernet or a hotspot. Load this HTTPS tool on both devices beforehand
+        and wait for offline ready. Automatic shows manual connection blocks
+        when your browser reports no internet; you can also choose Offline in
+        Connection options. The sharer sends an invitation block, the reader
+        creates a reply, and the sharer accepts it. The reader still chooses
+        Connect, and Private still needs approval. Exchange fresh blocks for
+        each reader. Blocks expire after ten minutes and contain connection
+        addresses. Offline mode uses no introduction service, nearby directory,
+        public STUN or internet relay. The editor also works with no network."""
 
 [[faq]]
 q = "What if we can't connect?"
@@ -427,7 +436,7 @@ a = """
 [[faq]]
 q = "Can two people share under the same name?"
 a = """
-        Not at the same time. One live share per name, enforced at the
+        For online links, not at the same time. One live share per name, enforced at the
         rendezvous: a second sharer is refused and asked to pick another. The
         moment a share ends its name is free again, which also means a saved
         link is only as fresh as the share behind it &mdash; the same name
@@ -446,14 +455,15 @@ a = """
 [[faq]]
 q = "Can I share files over my local network?"
 a = """
-        Yes. Before starting, choose Local network &mdash; no internet relay,
+        Yes. To use manual blocks without internet, choose Offline in
+        Connection options. For online invitations, choose Local network &mdash; no internet relay,
         connect both devices to the same Wi-Fi or Ethernet, and start
         sharing. Discoverable is on by default in this mode: the other
         browser can open the tool page and choose your name from the list
         on this connection. Uncheck it to share only by link. You can still
         copy the link to the reader. The link carries that mode, and a mismatched
         reader must choose explicitly before retrying with the sharer's
-        mode. Internet is still needed for the rendezvous that introduces
+        mode. Online pairing needs internet for the rendezvous that introduces
         the browsers. Local mode uses no public address-discovery server
         and never falls back to an internet relay. A VPN or browser network
         policy can change the route or prevent a connection; the setting
@@ -464,7 +474,7 @@ a = """
 [[faq]]
 q = "How does the list find local shares?"
 a = """
-        Opening this tool's start page asks the rendezvous for discoverable
+        In Online mode, opening this tool's start page asks the rendezvous for discoverable
         link names from browsers using the same public IPv4 address or IPv6 subnet. Usually
         that means the same router, but a shared VPN or an ISP sharing one
         address can include other networks; mixed IPv4 and IPv6 connections

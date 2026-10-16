@@ -1,7 +1,7 @@
 # Local Walkie-Talkie
 
 The website hosts one microphone and up to ten receive-only browsers. Nothing
-needs downloading or installing. Opening the page lists nearby channels over
+needs downloading or installing. In Online mode, opening the page lists nearby channels over
 a discovery WebSocket; joining never requests microphone access. Starting the
 host or confirming Join channel opens its own rendezvous connection; microphone audio
 travels over a separate direct WebRTC connection to each listener.
@@ -11,7 +11,8 @@ without opening its voice connection or saving listener credentials; Join channe
 confirms the receive-only connection. A withdrawn listing clears the selection.
 Opening a listener invitation still joins automatically. Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
-that discovery and pairing still need internet and a hotspot is not a guarantee.
+that online discovery and pairing need internet and a hotspot is not a guarantee.
+Offline mode exchanges blocks over a reachable network without internet pairing.
 
 The broadcast protocol is separate from text and camera rooms. Its room code
 is the SHA-256 digest of a random host secret, so knowing a listener invitation
@@ -72,7 +73,7 @@ available if an action is required. End invalidates pending capture, stops late 
 grants, retires the host identity and prevents automatic resumption and listener
 retries.
 
-The worker's Broadcast binding must be deployed before the updated page can
+For Online mode, the worker's Broadcast binding must be deployed before the updated page can
 pair. Existing text and camera routes keep their protocol and room identifiers.
 CI owns the JS and Python suites. Build the page, use it in a browser, verify
 multiple receive-only peers, audible media, hold/release, hands-free state,
@@ -92,3 +93,28 @@ come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
 and how another tool can use them. This tool still owns its protocol, consent,
 credentials, approval and media policy; a foreground event cannot grant any of
 those permissions or undo an explicit Stop.
+
+## Offline pairing
+
+The shared pairing selector chooses Online when internet is available and offers
+Offline when the browser reports it is offline; either can be chosen explicitly.
+Offline starts no discovery or room WebSocket. Load the page on both devices first.
+Start the host, exchange its invitation for one participant's reply, and accept
+that reply. New invitation replaces only a pending exchange; established peers
+remain connected. Every additional participant needs a fresh exchange. Blocks
+expire after ten minutes and replies are bound to their original invitation.
+
+`shared/js/offline-channel.js` owns a host-only, data-only bootstrap connection.
+`shared/js/voice-offline.js` runs the bounded voice admission and moderation
+broker in the host browser. The existing `voice-session.js` uses a local Socket
+adapter over this channel to negotiate separate direct audio, preserving capture,
+quiet recovery, password admission and host controls. Host authority never comes
+from a remote role field. No host key or password-derived proof is in a block or
+the bootstrap greeting. Oncall's explicit Connect requests a quiet microphone
+only after the block exchange; Walkie listeners never request one.
+
+Media can recover while the direct signaling channel survives. Losing it or
+reloading requires fresh blocks; offline pairing never falls back to the internet
+or a relay. End/Leave/Disconnect and pending Cancel pairing invalidate late work,
+close every owned bootstrap and stop media. The host retains up to ten independent
+participants and bounded per-session moderation history.

@@ -3,7 +3,6 @@
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
-  <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
         <h2>近くの共有</h2>
@@ -14,6 +13,17 @@
       <div id="discovery-list" class="paired-nearby-list"></div>
       <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
     </section>
+  {% include "partials/pairing-options.html" %}
+  <p class="field-note">インターネットなしで使うには、両端末にページを読み込み、Connection optionsでOfflineを選び、招待ブロックと返答を交換します。互いに通信できるローカルネットワークと、非公開の共有への承認は引き続き必要です。</p>
+  <section id="text-offline-client" class="card" hidden>
+    <h2>{{ ui.tool.pairing_receive }}</h2>
+    {% include "partials/pairing-client.html" %}
+    {% include "partials/pairing-reply.html" %}
+    <button type="button" id="text-offline-stop" class="danger" hidden>{{ ui.tool.pairing_disconnect }}</button>
+    <p id="text-offline-status" role="status" aria-live="polite"></p>
+  </section>
+  <section id="share">
+
 
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 書くか、添付する</h2>
@@ -38,8 +48,8 @@
     </section>
 
     <section class="card">
-      <h2><span class="step">2</span> リンクに名前を付ける</h2>
-      <div class="field">
+      <h2 data-text-online><span class="step">2</span> リンクに名前を付ける</h2>
+      <div class="field" data-text-online>
         <label for="code">リンク名</label>
         <div class="namerow">
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
@@ -88,6 +98,7 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
+      {% include "partials/pairing-host.html" %}
       <div id="requests"></div>
     </section>
 
@@ -171,6 +182,7 @@
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
        One line per phrase - phrase() collapses a wrap into a space. -->
   <div id="phrases" hidden aria-hidden="true">
+    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="debug.idle">まだ接続を試みていません。</span>
     <span data-phrase="debug.attempt">接続試行{n}。{status}</span>
     <span data-phrase="debug.introduction">仲介サーバーに接続しています。</span>

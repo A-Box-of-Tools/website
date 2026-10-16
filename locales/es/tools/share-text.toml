@@ -16,27 +16,9 @@ og_title = "Algo compartido que se acaba en cuanto cierras la pestaña"
 og_description = "El texto y los archivos viajan cifrados, directos de tu navegador al del lector. El servidor solo os presenta y nunca ve el contenido. Sin almacenamiento, sin historial, sin cuenta. Cerrar la pestaña elimina la fuente; la copia mostrada se borra cuando se detecta la desconexión."
 og_image_alt = "Compartir texto y archivos - directo de navegador a navegador, sin guardar nada"
 
-pledge = """
-    Lo que compartes aquí viaja de tu navegador al de cada lector por un
-    canal WebRTC cifrado de extremo a extremo, y a ningún otro sitio. El
-    único servidor implicado &mdash; nombrado en la
-    <code>Content-Security-Policy</code> de esta página, con el código en el
-    repositorio &mdash; presenta a los dos navegadores y enumera los nombres
-    de enlace locales visibles en la lista. No guarda texto ni archivos
-    compartidos, y el contenido nunca pasa por él. Los nombres de la lista
-    duran solo mientras quien comparte sigue conectado. No hay historial
-    de contenido ni cuenta. Al cerrar esta pestaña, la fuente desaparece.
-    Las páginas de los lectores borran la copia mostrada al recibir el aviso
-    de finalización o detectar un fallo de conexión. El contenido que ya
-    hayan copiado o descargado sigue siendo suyo."""
+pledge = "Las siguientes descripciones del servidor y del descubrimiento corresponden a Online. Offline intercambia bloques de conexión sin contactar con esos servicios.     Lo que compartes aquí viaja de tu navegador al de cada lector por un\n    canal WebRTC cifrado de extremo a extremo, y a ningún otro sitio. El\n    único servidor implicado &mdash; nombrado en la\n    <code>Content-Security-Policy</code> de esta página, con el código en el\n    repositorio &mdash; presenta a los dos navegadores y enumera los nombres\n    de enlace locales visibles en la lista. No guarda texto ni archivos\n    compartidos, y el contenido nunca pasa por él. Los nombres de la lista\n    duran solo mientras quien comparte sigue conectado. No hay historial\n    de contenido ni cuenta. Al cerrar esta pestaña, la fuente desaparece.\n    Las páginas de los lectores borran la copia mostrada al recibir el aviso\n    de finalización o detectar un fallo de conexión. El contenido que ya\n    hayan copiado o descargado sigue siendo suyo."
 
-live_hint = """
-      Abre las herramientas de desarrollo y mira la pestaña «Red» mientras
-      compartes. Verás un WebSocket al intermediario para los nombres de
-      enlace locales al abrir esta página inicial. Empezar a compartir añade
-      otro para establecer conexiones. Un lector usa un solo socket de
-      presentación. Por mucho que escribas o adjuntes, ninguno lleva el texto
-      ni los archivos."""
+live_hint = "En modo Online:       Abre las herramientas de desarrollo y mira la pestaña «Red» mientras\n      compartes. Verás un WebSocket al intermediario para los nombres de\n      enlace locales al abrir esta página inicial. Empezar a compartir añade\n      otro para establecer conexiones. Un lector usa un solo socket de\n      presentación. Por mucho que escribas o adjuntes, ninguno lleva el texto\n      ni los archivos."
 
 read_first = """
 , <code>src/main.js</code> para las dos
@@ -90,30 +72,7 @@ El texto y los archivos viajan por un canal de datos WebRTC: una conexión direc
 
 [[privacy]]
 title = "Qué es el intermediario, y todo lo que ve."
-body = """
- Una conexión directa
-      necesita una presentación. Esta página inicial abre automáticamente
-      un WebSocket a nuestro intermediario para los nombres de enlace
-      locales visibles en la lista; empezar a compartir abre otro para la
-      propia compartición. Un lector usa un solo socket de presentación. Ese servidor
-      junta a quien tecleó un nombre de enlace con quien comparte bajo ese
-      nombre, les pasa unos kilobytes de negociación y no retiene nada:
-      nunca escribe almacenamiento, y una sala deja de existir en cuanto
-      quien comparte se desconecta. Puede ver que un nombre está en uso,
-      cuándo llega y se va cada uno, y sus direcciones IP. No puede ver el
-      texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta
-      la llamada a una compartición privada viaja por el canal directo
-      cifrado. Su código completo está en el repositorio, junto al de esta
-      herramienta. El directorio enumera solo los nombres anunciados por
-      quienes siguen conectados con la misma dirección IPv4 pública o la
-      misma subred IPv6. Puede
-      incluir otras redes detrás de una VPN compartida o de una dirección
-      compartida por el proveedor. Si unos dispositivos usan IPv4 y otros
-      IPv6, o siguen rutas distintas, pueden no aparecer aunque estén en la
-      misma red local. Lo que sobrevive a una compartición es una sola cosa:
-      Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión
-      durante siete días, con el nombre de enlace, la dirección y la hora,
-      nunca el contenido."""
+body = "En modo Online:  Una conexión directa\n      necesita una presentación. Esta página inicial abre automáticamente\n      un WebSocket a nuestro intermediario para los nombres de enlace\n      locales visibles en la lista; empezar a compartir abre otro para la\n      propia compartición. Un lector usa un solo socket de presentación. Ese servidor\n      junta a quien tecleó un nombre de enlace con quien comparte bajo ese\n      nombre, les pasa unos kilobytes de negociación y no retiene nada:\n      nunca escribe almacenamiento, y una sala deja de existir en cuanto\n      quien comparte se desconecta. Puede ver que un nombre está en uso,\n      cuándo llega y se va cada uno, y sus direcciones IP. No puede ver el\n      texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta\n      la llamada a una compartición privada viaja por el canal directo\n      cifrado. Su código completo está en el repositorio, junto al de esta\n      herramienta. El directorio enumera solo los nombres anunciados por\n      quienes siguen conectados con la misma dirección IPv4 pública o la\n      misma subred IPv6. Puede\n      incluir otras redes detrás de una VPN compartida o de una dirección\n      compartida por el proveedor. Si unos dispositivos usan IPv4 y otros\n      IPv6, o siguen rutas distintas, pueden no aparecer aunque estén en la\n      misma red local. Lo que sobrevive a una compartición es una sola cosa:\n      Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión\n      durante siete días, con el nombre de enlace, la dirección y la hora,\n      nunca el contenido."
 
 [[privacy]]
 title = "Nada se guarda: cerrar la pestaña es el borrado."
@@ -219,46 +178,15 @@ body = """
 
 [[faq]]
 q = "¿Se sube algo, a alguna parte?"
-a = """
-        No. El texto y los archivos van de tu navegador al de cada lector
-        por un canal WebRTC cifrado, directamente. El único servidor
-        implicado lleva la presentación y los nombres de enlace locales
-        cuya publicación se haya elegido, nunca el contenido. No guarda
-        texto ni bytes de archivos. Las salas y las entradas de búsqueda
-        terminan con sus conexiones abiertas; los registros de conexión
-        de siete días de Cloudflare contienen metadatos, nunca el contenido."""
+a = "En modo Online:         No. El texto y los archivos van de tu navegador al de cada lector\n        por un canal WebRTC cifrado, directamente. El único servidor\n        implicado lleva la presentación y los nombres de enlace locales\n        cuya publicación se haya elegido, nunca el contenido. No guarda\n        texto ni bytes de archivos. Las salas y las entradas de búsqueda\n        terminan con sus conexiones abiertas; los registros de conexión\n        de siete días de Cloudflare contienen metadatos, nunca el contenido."
 
 [[faq]]
 q = "¿Y por qué esta herramienta habla con un servidor, precisamente en este sitio?"
-a = """
-        Porque dos navegadores no pueden encontrarse solos: algo tiene que
-        juntar a quien tecleó <code>brave-otter-42</code> con quien comparte
-        bajo ese nombre, y llevar la oferta de conexión entre ambos. Ese
-        algo es el intermediario, la única dependencia de red de esta
-        página, nombrado en su <code>Content-Security-Policy</code> y
-        publicado en el mismo repositorio que la página. Es el servidor más
-        pequeño capaz de hacer el trabajo. También enumera los nombres de
-        enlace locales cuya publicación se haya elegido, para navegadores
-        que usan la misma dirección IPv4 pública o la misma subred IPv6.
-        No guarda contenido ni
-        puede leer el canal cifrado entre los navegadores."""
+a = "En modo Online:         Porque dos navegadores no pueden encontrarse solos: algo tiene que\n        juntar a quien tecleó <code>brave-otter-42</code> con quien comparte\n        bajo ese nombre, y llevar la oferta de conexión entre ambos. Ese\n        algo es el intermediario, la única dependencia de red de esta\n        página, nombrado en su <code>Content-Security-Policy</code> y\n        publicado en el mismo repositorio que la página. Es el servidor más\n        pequeño capaz de hacer el trabajo. También enumera los nombres de\n        enlace locales cuya publicación se haya elegido, para navegadores\n        que usan la misma dirección IPv4 pública o la misma subred IPv6.\n        No guarda contenido ni\n        puede leer el canal cifrado entre los navegadores."
 
 [[faq]]
 q = "¿Qué puede ver exactamente ese servidor?"
-a = """
-        Que un nombre de enlace está en uso, cuándo se conectan y se van
-        quien comparte y los lectores, sus direcciones IP y el
-        establecimiento de la conexión cifrada que intercambian, y los
-        nombres de enlace cuya publicación en la lista se haya elegido.
-        La lista agrupa los nombres por la dirección IPv4 pública o la
-        subred IPv6 que ve el servidor, y por el origen de la página. No el
-        texto, no los archivos, no sus nombres ni tamaños, no a quién se
-        dejó entrar en una compartición privada, y no lo que nadie escribió
-        al presentarse: todo eso viaja por el canal directo, cifrado de
-        extremo a extremo, que no pasa por el servidor. Cloudflare, que
-        ejecuta el servidor, guarda un registro de cada conexión durante siete
-        días: el nombre de enlace, la dirección y la hora. Nada más sobrevive
-        a la compartición."""
+a = "En modo Online:         Que un nombre de enlace está en uso, cuándo se conectan y se van\n        quien comparte y los lectores, sus direcciones IP y el\n        establecimiento de la conexión cifrada que intercambian, y los\n        nombres de enlace cuya publicación en la lista se haya elegido.\n        La lista agrupa los nombres por la dirección IPv4 pública o la\n        subred IPv6 que ve el servidor, y por el origen de la página. No el\n        texto, no los archivos, no sus nombres ni tamaños, no a quién se\n        dejó entrar en una compartición privada, y no lo que nadie escribió\n        al presentarse: todo eso viaja por el canal directo, cifrado de\n        extremo a extremo, que no pasa por el servidor. Cloudflare, que\n        ejecuta el servidor, guarda un registro de cada conexión durante siete\n        días: el nombre de enlace, la dirección y la hora. Nada más sobrevive\n        a la compartición."
 
 [[faq]]
 q = "¿Qué pasa cuando cierro la pestaña?"
@@ -304,32 +232,11 @@ Hasta 200&nbsp;MB por archivo, de cualquier tipo, a la velocidad de la conexión
 
 [[faq]]
 q = "¿Funciona sin conexión?"
-a = """
-        La mitad, siendo honestos: el editor sí. La página carga, tu
-        borrador está ahí, el Markdown se renderiza, y puedes escribir y
-        guardar sin red ninguna. Compartir no, y no puede: llegar al
-        navegador de otra persona es un acto de red, y la presentación
-        necesita el intermediario. Es la única herramienta de este sitio
-        cuyo trabajo es imposible sin conexión, y dar a entender otra cosa
-        sería deshonesto."""
+a = "Sí, sin internet, si ambos dispositivos se pueden comunicar por Wi-Fi, Ethernet o un punto de acceso. Carga antes esta herramienta HTTPS en ambos y espera a que esté lista para funcionar sin conexión. Automatic muestra bloques manuales cuando el navegador indica que no hay internet; también puedes elegir Offline en Connection options. Quien comparte entrega un bloque de invitación, el lector crea una respuesta y quien comparte la acepta. El lector todavía elige Conectar y el modo Privado sigue necesitando aprobación. Intercambia bloques nuevos para cada lector. Caducan a los diez minutos y contienen direcciones de conexión. Offline no usa el servicio de contacto, el directorio cercano, STUN público ni retransmisor de internet. El editor también funciona sin ninguna red."
 
 [[faq]]
 q = "¿Y si no conseguimos conectar?"
-a = """
-La oferta de retransmisor que se describe a continuación solo se aplica al modo de conexión normal. La mayoría de los pares de navegadores se alcanzan directamente una
-        vez presentados; una minoría no, normalmente cuando un lado está en
-        la red de direcciones compartidas de una operadora móvil o tras una
-        red corporativa estricta. Esta página nunca pasa a un relevo en
-        silencio &mdash; eso cambiaría lo que esta herramienta es sin
-        decirlo &mdash;, así que a los veinte segundos dice claramente que
-        no hubo conexión directa y le ofrece uno al lector: un relevo de
-        Cloudflare que reenvía los bytes cifrados entre los dos navegadores
-        y no puede leerlos, porque la clave nunca sale de los dos extremos.
-        El lector lo elige por su nombre, en su propia página, tras saber
-        qué ve &mdash; las dos direcciones, como la conexión directa
-        &mdash;, y ahí tampoco se guarda nada. Tu lado no cambia: tu
-        navegador sigue enviando a ese único lector, como lo haría si
-        estuviera tras una VPN. El modo Red local nunca ofrece un retransmisor. Comprueba que ambos dispositivos usan la misma red Wi-Fi o Ethernet y que el aislamiento de la red de invitados, un cortafuegos o una VPN no bloquean la conexión."""
+a = "En modo Online: La oferta de retransmisor que se describe a continuación solo se aplica al modo de conexión normal. La mayoría de los pares de navegadores se alcanzan directamente una\n        vez presentados; una minoría no, normalmente cuando un lado está en\n        la red de direcciones compartidas de una operadora móvil o tras una\n        red corporativa estricta. Esta página nunca pasa a un relevo en\n        silencio &mdash; eso cambiaría lo que esta herramienta es sin\n        decirlo &mdash;, así que a los veinte segundos dice claramente que\n        no hubo conexión directa y le ofrece uno al lector: un relevo de\n        Cloudflare que reenvía los bytes cifrados entre los dos navegadores\n        y no puede leerlos, porque la clave nunca sale de los dos extremos.\n        El lector lo elige por su nombre, en su propia página, tras saber\n        qué ve &mdash; las dos direcciones, como la conexión directa\n        &mdash;, y ahí tampoco se guarda nada. Tu lado no cambia: tu\n        navegador sigue enviando a ese único lector, como lo haría si\n        estuviera tras una VPN. El modo Red local nunca ofrece un retransmisor. Comprueba que ambos dispositivos usan la misma red Wi-Fi o Ethernet y que el aislamiento de la red de invitados, un cortafuegos o una VPN no bloquean la conexión."
 
 [[faq]]
 q = "¿Es seguro renderizar Markdown, si cualquiera puede compartir cualquier cosa?"
@@ -345,14 +252,7 @@ a = """
 
 [[faq]]
 q = "¿Pueden dos personas compartir bajo el mismo nombre?"
-a = """
-        A la vez, no. Una compartición viva por nombre, impuesto en el
-        intermediario: quien llega segundo es rechazado y se le pide otro
-        nombre. En cuanto una compartición termina, su nombre queda libre
-        &mdash; lo que también significa que un enlace guardado vale lo que
-        valga la compartición que tenga detrás: el mismo nombre, la semana
-        que viene, puede ser de otra persona. Trata un enlace como algo de
-        un momento, no de una persona."""
+a = "En modo Online:         A la vez, no. Una compartición viva por nombre, impuesto en el\n        intermediario: quien llega segundo es rechazado y se le pide otro\n        nombre. En cuanto una compartición termina, su nombre queda libre\n        &mdash; lo que también significa que un enlace guardado vale lo que\n        valga la compartición que tenga detrás: el mismo nombre, la semana\n        que viene, puede ser de otra persona. Trata un enlace como algo de\n        un momento, no de una persona."
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
@@ -366,36 +266,11 @@ a = """
 
 [[faq]]
 q = "¿Puedo compartir archivos por mi red local?"
-a = """
-Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200&nbsp;MB por archivo. Una sesión puede incluir hasta 256 archivos.
-        Visible en la lista viene activado en este modo: el otro navegador
-        puede abrir la página de la herramienta y elegir tu nombre en la
-        lista de esta conexión. Desmárcalo para compartir solo por enlace;
-        también puedes seguir copiando el enlace para el lector."""
+a = "En modo Online: Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200&nbsp;MB por archivo. Una sesión puede incluir hasta 256 archivos.\n        Visible en la lista viene activado en este modo: el otro navegador\n        puede abrir la página de la herramienta y elegir tu nombre en la\n        lista de esta conexión. Desmárcalo para compartir solo por enlace;\n        también puedes seguir copiando el enlace para el lector."
 
 [[faq]]
 q = "¿Cómo encuentra la lista las comparticiones locales?"
-a = """
-        Al abrir la página inicial de esta herramienta se piden al
-        intermediario los nombres de enlace visibles en la lista de
-        navegadores que usan la misma dirección IPv4 pública o la misma
-        subred IPv6. Normalmente
-        significa el mismo router, pero una VPN compartida o un proveedor
-        que comparte una dirección pueden incluir otras redes. Si unos
-        dispositivos usan IPv4 y otros IPv6, o siguen rutas distintas,
-        pueden no aparecer aunque estén en la misma red local. La lista no
-        demuestra que sea una misma red local física. Se necesita internet.
-        Solo aparecen las comparticiones en modo Red local. Elige este modo
-        antes de empezar, ya que está desactivado por defecto. Las
-        comparticiones locales se anuncian por defecto; desmarca
-        Visible en la lista para compartir solo por enlace y mantén
-        Privado activado en redes compartidas. Al elegir un nombre se abre
-        la página de consentimiento de la compartición; nunca conecta
-        automáticamente ni evita la aprobación privada. El directorio
-        conserva solo los nombres de enlace mientras quien comparte sigue
-        conectado, nunca el texto, los nombres de archivo ni sus bytes.
-        Si la búsqueda no está disponible, compartir por enlace sigue
-        funcionando."""
+a = "En modo Online:         Al abrir la página inicial de esta herramienta se piden al\n        intermediario los nombres de enlace visibles en la lista de\n        navegadores que usan la misma dirección IPv4 pública o la misma\n        subred IPv6. Normalmente\n        significa el mismo router, pero una VPN compartida o un proveedor\n        que comparte una dirección pueden incluir otras redes. Si unos\n        dispositivos usan IPv4 y otros IPv6, o siguen rutas distintas,\n        pueden no aparecer aunque estén en la misma red local. La lista no\n        demuestra que sea una misma red local física. Se necesita internet.\n        Solo aparecen las comparticiones en modo Red local. Elige este modo\n        antes de empezar, ya que está desactivado por defecto. Las\n        comparticiones locales se anuncian por defecto; desmarca\n        Visible en la lista para compartir solo por enlace y mantén\n        Privado activado en redes compartidas. Al elegir un nombre se abre\n        la página de consentimiento de la compartición; nunca conecta\n        automáticamente ni evita la aprobación privada. El directorio\n        conserva solo los nombres de enlace mientras quien comparte sigue\n        conectado, nunca el texto, los nombres de archivo ni sus bytes.\n        Si la búsqueda no está disponible, compartir por enlace sigue\n        funcionando."
 
 [schema]
 description = "Comparte texto y archivos de un navegador a otro por una conexión WebRTC directa y cifrada de extremo a extremo. Nombres de enlace que se pueden decir en voz alta, actualización en vivo al escribir, Markdown y aprobación por lector. Ningún servidor guarda nada; lo compartido se acaba cuando quien comparte cierra la pestaña."

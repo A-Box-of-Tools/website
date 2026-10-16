@@ -16,7 +16,7 @@ glyph = "app-window"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-discovery", "room-names", "clipboard-feedback"]
+js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-discovery", "room-names", "clipboard-feedback", "pairing-choice", "pairing-ui", "offline-pairing"]
 lastmod = "2026-10-15"
 
 title = "Share a Browser Tab Live &mdash; Read-Only Viewing, No Extension"

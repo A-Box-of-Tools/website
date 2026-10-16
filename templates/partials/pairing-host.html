@@ -1,0 +1,10 @@
+<section id="offline-host" class="paired-blocks" aria-labelledby="offline-host-heading" hidden>
+  <h3 id="offline-host-heading">{{ ui.tool.pairing_exchange_heading }}</h3>
+  <p class="field-note">{{ ui.tool.pairing_exchange_help }}</p>
+  <div class="field"><label for="offline-offer">{{ ui.tool.pairing_offer_label }}</label><textarea id="offline-offer" rows="5" maxlength="65536" readonly spellcheck="false" dir="ltr" data-no-remember></textarea></div>
+  <div class="paired-actions"><button type="button" id="copy-offer">{{ ui.tool.pairing_copy_offer }}</button><button type="button" id="save-offer">{{ ui.tool.pairing_save_offer }}</button><span id="offer-copy-status" role="status" aria-live="polite"></span></div>
+  <div class="field"><label for="offline-answer-input">{{ ui.tool.pairing_answer_input }}</label><textarea id="offline-answer-input" rows="5" maxlength="65536" autocomplete="off" spellcheck="false" dir="ltr" data-no-remember></textarea></div>
+  <input type="file" id="load-answer" accept=".json,.txt,application/json,text/plain" aria-label="{{ ui.tool.pairing_load_answer }}" hidden data-no-remember>
+  <div class="paired-actions"><button type="button" id="choose-answer">{{ ui.tool.pairing_load_answer }}</button><button type="button" id="offline-accept">{{ ui.tool.pairing_accept }}</button><button type="button" id="offline-new" hidden>{{ ui.tool.pairing_new }}</button></div>
+  <p id="offline-accept-status" role="status" aria-live="polite"></p>
+</section>

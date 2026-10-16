@@ -4,6 +4,8 @@ import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
+import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
+import { OfflineVoiceHost, OfflineVoiceClient } from './shared/voice-offline.js';
 
 activateChannel();
 const privacyToggle = document.getElementById('privacy-toggle');
@@ -61,7 +63,7 @@ function activateChannel() {
   }
 
   const cachedListener = readStored(listenerStorage);
-  let listenerIdentity = hasInvitation ? { code: fragment.get('code'), key: fragment.get('listen'), muted: false, ended: false } : validIdentity(cachedListener) ? cachedListener : null;
+  let listenerIdentity = hasInvitation ? { code: fragment.get('code'), key: fragment.get('listen'), muted: false, ended: false } : validIdentity(cachedListener) && !cachedListener.offline ? cachedListener : null;
   let role = hasInvitation || listenerIdentity ? 'listener' : 'host';
   if (validIdentity(listenerIdentity)) {
     listenerIdentity.code = listenerIdentity.code.toLowerCase();
@@ -106,7 +108,24 @@ function activateChannel() {
   let channels = [];
   let selectedChannel = null;
   let lastPublication = null;
-  let discovery = openDiscovery();
+  let offlineHost = null, offlineClient = null, offlineBusy = false;
+  let offlineEpoch = 0;
+  const field = id => document.getElementById(id);
+  const quietDiscovery = () => ({ close() {}, refresh() {}, unpublish() {}, publish() { return false; } });
+  let discovery = quietDiscovery(), discoveryOnline = false;
+  const pairing = pairingOptions({
+    busy: () => starting || preparingCredentials || hostActive || role === 'listener' && Boolean(session) && !listenerLeft && !listenerEnded
+      || offlineBusy || Boolean(offlineHost || offlineClient),
+    invitationLink: () => hasInvitation,
+    invitation: () => validIdentity(listenerIdentity) && !listenerIdentity.offline,
+    onChange: ({ method }) => {
+      if (method === 'online' && !discoveryOnline && !pageSuspended) { discoveryOnline = true; discovery = openDiscovery(); }
+      else if (method === 'offline' && discoveryOnline) { discovery.close(); discovery = quietDiscovery(); discoveryOnline = false; }
+      renderOffline();
+    },
+  });
+  const blocks = pairingBlocks({ createReply: createOfflineReply, acceptReply: acceptOfflineReply,
+    newOffer: newOfflineOffer, onError: offlineError, onChange: renderOffline });
   if (credentials) {
     if (typeof credentials.roomName === 'string') ui['room-name'].value = credentials.roomName;
     // A channel created before discovery was offered keeps its private link.
@@ -118,11 +137,92 @@ function activateChannel() {
     ui.host.hidden = role !== 'host';
     ui.listener.hidden = role !== 'listener';
     ui['host-intro'].hidden = role !== 'host';
-    ui.nearby.hidden = role !== 'host' || hostActive || starting || preparingCredentials;
+    ui.nearby.hidden = pairing.method === 'offline' || role !== 'host' || hostActive || starting || preparingCredentials;
     const unavailable = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.join.disabled = unavailable || !selectedChannel;
     for (const button of ui.channels.querySelectorAll('button')) button.disabled = unavailable;
+    pairing.refresh();
   }
+  function renderOffline() {
+    const offline = pairing.method === 'offline';
+    ui.nearby.hidden = offline || role !== 'host' || hostActive || starting || preparingCredentials;
+    field('wt-offline-join').hidden = !offline || hostActive || starting || role === 'listener';
+    field('offline-host').hidden = !offline || !hostActive;
+    field('offline-viewer-fields').hidden = !offline || Boolean(offlineClient);
+    field('offline-reply').hidden = !offline || Boolean(offlineClient);
+    field('offline-reply').disabled = offlineBusy || starting || hostActive;
+    field('offline-viewer-reply').hidden = !offline || !field('offline-answer').value;
+    field('wt-offline-cancel').hidden = !offline || !offlineClient;
+    field('offline-new').disabled = offlineBusy || starting || !offlineHost?.ready;
+    field('offline-new').hidden = !offline || !hostActive;
+    field('offline-accept').disabled = offlineBusy || !offlineHost?.pending;
+    field('offline-offer-input').disabled = offlineBusy || Boolean(offlineClient);
+    field('offline-answer-input').disabled = offlineBusy || !offlineHost?.pending;
+    ui.start.disabled = starting || preparingCredentials || Boolean(offlineClient) || offlineBusy;
+    ui.discover.closest('label').hidden = offline;
+    field('wt-discovery-help').hidden = offline;
+    ui.invite.hidden = offline || !hostActive || !ui.link.value;
+  }
+  function offlineError(error) {
+    const key = typeof error === 'string' ? error : error?.message;
+    field('offline-accept-status').textContent = phrase(['error-full', 'offline.invalid-offer', 'offline.invalid-answer', 'offline.expired', 'offline.file-invalid'].includes(key) ? key : 'offline.disconnected');
+    field('wt-offline-status').textContent = field('offline-accept-status').textContent;
+    renderOffline();
+  }
+  function closeOffline() {
+    offlineEpoch++;
+    const host = offlineHost, client = offlineClient;
+    offlineHost = offlineClient = null;
+    offlineBusy = false;
+    host?.close(); client?.close();
+    blocks.clear();
+    field('wt-offline-status').textContent = '';
+    pairing.refresh();
+  }
+  async function newOfflineOffer() {
+    if (pairing.method !== 'offline' || !offlineHost?.ready || offlineBusy) return;
+    const host = offlineHost, epoch = offlineEpoch;
+    offlineBusy = true; renderOffline();
+    field('offline-accept-status').textContent = phrase('offline.gathering');
+    try {
+      const text = await host.createOffer();
+      if (epoch === offlineEpoch && offlineHost === host) { field('offline-accept-status').textContent = phrase('offline.offer-ready'); return text; }
+    } finally { if (epoch === offlineEpoch) { offlineBusy = false; renderOffline(); } }
+  }
+  async function acceptOfflineReply(text) {
+    if (!offlineHost?.pending || offlineBusy) return;
+    const epoch = offlineEpoch;
+    offlineBusy = true; renderOffline();
+    try { await offlineHost.acceptAnswer(text); }
+    finally { if (epoch === offlineEpoch) { offlineBusy = false; renderOffline(); } }
+  }
+  async function createOfflineReply(text) {
+    if (pairing.method !== 'offline' || hostActive || starting || offlineBusy || offlineClient) return;
+    const epoch = ++offlineEpoch;
+    const client = new OfflineVoiceClient({ tool: 'walkie-talkie',
+      onReady: identity => {
+        if (epoch !== offlineEpoch || offlineClient !== client) return;
+        listenerIdentity = { ...identity, muted: false, ended: false, offline: true };
+        listenerLeft = listenerEnded = listenerMuted = false;
+        role = 'listener';
+        renderRole();
+        void startListener();
+      },
+      onClose: () => {
+        if (epoch !== offlineEpoch) return;
+        sessionGeneration++; session?.stop({ notify: false, state: null }); session = null;
+        listenerEnded = true; receiveStream(null);
+        offlineError('offline.disconnected');
+        renderState('broadcast-ended');
+      },
+    });
+    offlineClient = client;
+    offlineBusy = true; pairing.refresh();
+    try { return await client.createAnswer(text); }
+    catch (error) { if (epoch === offlineEpoch) { offlineClient = null; client.close(); } throw error; }
+    finally { if (epoch === offlineEpoch) { offlineBusy = false; pairing.refresh(); } }
+  }
+  field('wt-offline-cancel').addEventListener('click', closeOffline);
   renderRole();
 
   function renderChannels() {
@@ -186,7 +286,10 @@ function activateChannel() {
   function openDiscovery() {
     return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=walkie-talkie`, {
       list: rows => { channels = rows; renderChannels(); },
-      status: status => { ui['discovery-status'].textContent = phrase(`discovery-${status}`); },
+      status: status => {
+        ui['discovery-status'].textContent = phrase(`discovery-${status}`);
+        if (status === 'unavailable') pairing.fail();
+      },
       publication: status => {
         ui.publication.hidden = status === null;
         ui.publication.textContent = status === null ? '' : phrase(`publication-${status}`);
@@ -240,6 +343,7 @@ function activateChannel() {
     ui['resume-microphone'].disabled = microphoneResuming;
     ui['resume-microphone'].textContent = phrase(microphoneResuming ? 'microphone-resuming' : 'resume-microphone');
     ui['listener-count'].textContent = phrase(listenerCount === 1 ? 'host-count-one' : 'host-count', { count: listenerCount });
+    renderOffline();
   }
 
   function updateListenerControls() {
@@ -390,14 +494,16 @@ function activateChannel() {
     microphoneResuming = false;
     captureRecoveryTried = false;
     session = new BroadcastSession({
+      ...(pairing.method === 'offline' ? { Socket: (role === 'host' ? offlineHost : offlineClient).Socket } : {}),
       role,
       code: identity.code,
       key: identity.key,
       listenKey: role === 'host' ? identity.listenKey : undefined,
       roomName: role === 'host' ? identity.roomName : undefined,
-      discover: role === 'host' && identity.discover === true,
+      discover: pairing.method === 'online' && role === 'host' && identity.discover === true,
       onState: (key, detail) => {
         if (generation !== sessionGeneration) return;
+        if (key === 'error-connection' && pairing.method === 'online') pairing.fail();
         if (role === 'host' && hostNeedsResume && errors.has(key) && key !== 'error-full') {
           requireHostResume(key);
           return;
@@ -498,7 +604,8 @@ function activateChannel() {
   }
 
   async function startHost(automatic = false) {
-    if (role !== 'host' || starting || hostActive || preparingCredentials || pageSuspended || document.hidden) return;
+    if (role !== 'host' || starting || hostActive || preparingCredentials || pageSuspended || document.hidden || offlineClient || offlineBusy) return;
+    pairing.refresh();
     if (!automatic) {
       const name = ui['room-name'].value.trim();
       ui['room-name'].setCustomValidity(name && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f]/.test(name) ? '' : phrase('name-invalid'));
@@ -533,6 +640,9 @@ function activateChannel() {
         sessionGeneration++;
         session.stop({ notify: false, state: null });
       }
+      if (pairing.method === 'offline' && (!offlineHost || offlineHost.closed)) offlineHost = new OfflineVoiceHost({
+        tool: 'walkie-talkie', identity, onChange: renderOffline, onError: offlineError,
+      });
       const currentSession = createSession(identity);
       drawInvitation();
       if (hostNeedsResume) {
@@ -544,6 +654,11 @@ function activateChannel() {
       const success = await currentSession.start();
       if (epoch !== sourceEpoch || pageSuspended || document.hidden) return;
       hostActive = success;
+      if (!success && offlineHost && !offlineHost.links.size) closeOffline();
+      if (success && pairing.method === 'offline' && !offlineHost.pending && !offlineHost.links.size) {
+        try { const offer = await newOfflineOffer(); if (offer) blocks.setOffer(offer); }
+        catch (error) { if (epoch === sourceEpoch) offlineError(error); }
+      }
       if (!success && hostNeedsResume) requireHostResume();
     } catch {
       if (epoch === sourceEpoch) {
@@ -585,6 +700,7 @@ function activateChannel() {
 
   async function startListener() {
     if (listenerLeft || listenerEnded || pageSuspended || !validIdentity(listenerIdentity)) return;
+    if (pairing.method === 'offline' && !offlineClient?.identity) return;
     if (!globalThis.crypto?.subtle || !window.RTCPeerConnection) {
       renderState('error-browser');
       return;
@@ -667,6 +783,7 @@ function activateChannel() {
     releaseTransmission();
     session?.stop({ notify: true, state: null });
     session = null;
+    closeOffline();
     credentials = null;
     unpublish();
     removeStored(hostStorage);
@@ -707,6 +824,7 @@ function activateChannel() {
     sessionGeneration++;
     session?.stop({ notify: true, state: null });
     session = null;
+    closeOffline();
     removeStored(listenerStorage);
     try {
       history.replaceState(history.state, '', pageUrl.href);
@@ -754,11 +872,13 @@ function activateChannel() {
     },
     restore(event) {
       pageSuspended = false;
-      if (event.persisted) discovery = openDiscovery();
+      if (event.persisted && pairing.method === 'online') { discovery = openDiscovery(); discoveryOnline = true; }
       resumeListenerOnReturn = event.persisted && role === 'listener' && !listenerLeft && !listenerEnded;
     },
   });
 
+  if (pairing.method === 'offline') { role = 'host'; listenerIdentity = null; }
+  pairing.refresh();
   if (role === 'host') renderState(hostNeedsResume ? 'host-resume-needed' : 'host-idle');
   else if (!validIdentity(listenerIdentity)) renderState('error-access');
   else if (listenerEnded) renderState('broadcast-ended');
