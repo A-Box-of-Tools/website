@@ -585,7 +585,7 @@ function hostSocket(code) {
       }
       if (!sharing || $('publish').hidden === false) return;
       if (offlineHost) { stopSharing(); return; }
-      if (!hostHadRoom) { stopSharing(); pairingChoiceUI.fail(); return; }
+      if (!hostHadRoom && pairingChoiceUI.preference === 'auto') { stopSharing(); pairingChoiceUI.fail(); return; }
       // Connected readers are unaffected - the peer channels do not run
       // through the server - but new ones cannot join until this recovers.
       setStatus(phrase('share.lost-rendezvous'), true);
@@ -1614,7 +1614,7 @@ function view(code, recovered = null) {
         return;
       }
       if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
-      if (!offlineReader && !connected && ![4404, 4429].includes(e.code)) {
+      if (!offlineReader && !connected && pairingChoiceUI.preference === 'auto' && ![4404, 4429].includes(e.code)) {
         readerStop(); readerActive = false; $('view').hidden = true;
         pairingChoiceUI.fail(); renderPairing(); return;
       }

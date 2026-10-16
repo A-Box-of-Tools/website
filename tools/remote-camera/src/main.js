@@ -257,7 +257,7 @@ const session = new CameraSession({
     showStatus(awaitingPairing ? session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable' : key, role);
     if (session.role === null) {
       const retain = role === 'camera' && cameraIntent !== null
-        && !(cameraStarting && key === 'connection.server-failed')
+        && !(cameraStarting && key === 'connection.server-failed' && pairing?.preference === 'auto')
         && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
       closeStopDialog();
       closeApprovalDialog();
