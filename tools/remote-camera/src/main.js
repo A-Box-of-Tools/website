@@ -53,6 +53,7 @@ let blocks = null;
 let offlineOfferId = null;
 let offlineAccepted = false;
 let offlineWorking = false;
+let viewerStatusKey = 'viewer.ready';
 const watchedTracks = new WeakSet();
 const capture = new CameraCapture({ getUserMedia: (constraints) => {
   // Exclusive-camera retries can outlive the gesture that opened them.
@@ -67,6 +68,7 @@ const pairingBusy = () => Boolean(activeRole || cameraIntent || cameraStarting |
 function renderPairing() {
   if (!pairing) return;
   const manual = offline(), busy = pairingBusy();
+  if (viewerStatusKey === 'viewer.ready') showStatus(viewerStatusKey, 'viewer');
   $('camera-discovery').hidden = manual || busy;
   $('camera-online-options').hidden = manual;
   $('online-viewer-fields').hidden = manual;
@@ -159,7 +161,8 @@ async function createOfflineReply(text) {
 
 function showStatus(key, role = mode) {
   const element = $(role === 'camera' ? 'camera-status' : 'viewer-status');
-  element.textContent = phrase(key);
+  if (role !== 'camera') viewerStatusKey = key;
+  element.textContent = role !== 'camera' && key === 'viewer.ready' && offline() ? '' : phrase(key);
   element.classList.toggle('warn', warning(key));
 }
 

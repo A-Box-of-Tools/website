@@ -81,11 +81,13 @@ class ToolClaims(unittest.TestCase):
         pledge = self.html_pledge(tool, ui)
         twin = self.twin(tool, ui)
         self.assertEqual(pledge, tool['pledge_line'])
-        self.assertIn('Internet introduces the browsers.', pledge)
+        self.assertIn('directly to accepted viewers', pledge)
+        self.assertIn('Pair online or exchange offline connection blocks.', pledge)
         self.assertIn(
             '## ' + markdown.inline(tool['pledge_line'], tool['url']), twin)
         self.assertIn(markdown.inline(tool['md_note'], tool['url']), twin)
-        self.assertIn('Internet rendezvous carries setup metadata', twin)
+        self.assertIn('Online rendezvous carries setup metadata, never video or audio;', twin)
+        self.assertIn('offline pairing uses manually exchanged connection blocks.', twin)
         self.assertNotIn(markdown.inline(ui['md_note'], tool['url']), twin)
         self.assertNotIn(
             '## ' + markdown.inline(ui['pledge_line'], tool['url']), twin)

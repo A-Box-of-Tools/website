@@ -130,6 +130,24 @@ async function offlineViewer(host, viewer, note = 'Offline viewer') {
   return { invitation, reply, source, peer, channel };
 }
 
+test('offline camera rejects malformed and foreign offers before allocating peers or stopping a live host', async (t) => {
+  const host = fixture(t), viewer = fixture(t), stream = sourceStream();
+  await assert.rejects(viewer.session.createOfflineAnswer('{', 'Viewer'), { message: 'offline.invalid-offer' });
+  assert.deepEqual(viewer.peers, []);
+  await host.session.startHost(stream, CODE, { method: 'offline' });
+  const invitation = await host.session.createOfflineOffer();
+  const foreign = JSON.parse(invitation.block);
+  foreign.format = 'share-tab-offline-v1';
+  await assert.rejects(viewer.session.createOfflineAnswer(JSON.stringify(foreign), 'Viewer'), { message: 'offline.invalid-offer' });
+  await assert.rejects(host.session.createOfflineAnswer('{', 'Viewer'), { message: 'offline.invalid-offer' });
+  assert.deepEqual(viewer.peers, []);
+  assert.deepEqual(viewer.sockets, []);
+  assert.equal(host.session.role, 'camera');
+  assert.equal(host.peers.length, 1);
+  assert.equal(host.peers[0].closed, false);
+  assert.equal(stream.video.readyState, 'live');
+});
+
 test('offline camera blocks open no socket and media negotiation still waits for acceptance and acknowledgement', async (t) => {
   const host = fixture(t), viewer = fixture(t), stream = sourceStream(true);
   await host.session.startHost(stream, CODE, { method: 'offline' });

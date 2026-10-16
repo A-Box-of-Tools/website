@@ -75,6 +75,7 @@ function activateOncall() {
   const removedIds = new Set();
   const participantNodes = new Map();
   let participants = new Map();
+  let renderedStatusKey = 'join-idle';
   let offlineHost = null, offlineClient = null, offlineBusy = false;
   let offlineEpoch = 0;
   const field = id => document.getElementById(id);
@@ -94,6 +95,7 @@ function activateOncall() {
 
   function renderOffline() {
     const offline = pairing.method === 'offline';
+    if (['join-idle', 'host-idle'].includes(renderedStatusKey)) ui['status-text'].textContent = phrase(offline ? `${renderedStatusKey}-offline` : renderedStatusKey);
     ui.nearby.hidden = offline || hostActive || senderActive || senderPaused || starting || senderTerminal;
     field('vi-offline-join').hidden = !offline || senderActive || senderPaused || senderTerminal;
     field('offline-host').hidden = !offline || !hostActive;
@@ -110,7 +112,7 @@ function activateOncall() {
     field('vi-invite').hidden = offline;
     ui.join.disabled = starting || offlineBusy || offline && !offlineClient?.identity;
     ui.start.disabled = starting || Boolean(offlineClient) || offlineBusy;
-    if (offlineClient || offlineBusy) ui['tab-host'].disabled = true;
+    ui['tab-host'].disabled = Boolean(offlineClient) || offlineBusy || (hostActive || senderActive || senderPaused || starting) && view !== 'host';
   }
   function offlineError(error) {
     const key = typeof error === 'string' ? error : error?.message;
@@ -172,7 +174,13 @@ function activateOncall() {
     catch (error) { if (epoch === offlineEpoch) { offlineClient = null; client.close(); } throw error; }
     finally { if (epoch === offlineEpoch) { offlineBusy = false; pairing.refresh(); } }
   }
-  field('vi-offline-cancel').addEventListener('click', () => { closeOffline(); selectedCode = null; updateControls(); });
+  field('vi-offline-cancel').addEventListener('click', () => {
+    leaveSender();
+    selectedCode = null;
+    ui['sender-password'].value = '';
+    ui['sender-password'].setCustomValidity('');
+    renderState('join-idle');
+  });
 
   function readStored(key) {
     try {
@@ -457,6 +465,7 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
+    renderedStatusKey = key;
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (activeRole === 'sender' && detail.captureState) {
       captureState = detail.captureState;
@@ -532,8 +541,9 @@ function activateOncall() {
       rememberSenderTerminal(key);
       stripInvitation();
     }
-    ui['status-text'].textContent = phrase(activeRole === 'sender' && senderActive && captureState !== 'ready'
-      ? microphoneResuming ? 'microphone-resuming' : 'sender-microphone-paused' : key);
+    const statusKey = activeRole === 'sender' && senderActive && captureState !== 'ready'
+      ? microphoneResuming ? 'microphone-resuming' : 'sender-microphone-paused' : key;
+    ui['status-text'].textContent = phrase(pairing.method === 'offline' && ['join-idle', 'host-idle'].includes(statusKey) ? `${statusKey}-offline` : statusKey);
     ui['status-dot'].dataset.state = activeRole === 'sender' && senderActive && captureState !== 'ready'
       ? 'waiting' : key === 'sender-talking' ? 'talking' : ['host-ready', 'sender-ready'].includes(key) ? 'ready' : 'waiting';
     updateControls();

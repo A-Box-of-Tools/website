@@ -1,6 +1,6 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
 import { PairingSocket } from './shared/peer-pairing.js';
-import { OfflineExchange } from './shared/offline-pairing.js';
+import { OfflineExchange, readOfflineBlock } from './shared/offline-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
@@ -148,6 +148,7 @@ export class CameraSession {
   }
 
   async createOfflineAnswer(text, note) {
+    readOfflineBlock(TOOL, text, 'offer', { checkExpiry: false });
     this.stop();
     this.role = 'viewer'; this.mode = 'offline';
     this.note = String(note ?? '').trim().slice(0, 80);

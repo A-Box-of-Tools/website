@@ -34,7 +34,11 @@ Offline pairing or starting a session hides that browsing card. Selecting a
 listing still only fills the invitation and focuses Request; the layout does
 not grant consent, change discovery timing or create a hotspot.
 
-Automatic is the default pairing preference. While idle, it uses the browser's
+Automatic is the default pairing preference. The selector, translated controls,
+block file/copy handling and bounded exchange come from shared pairing parts
+used by all five Connect Devices tools. The local pairing-choice and
+offline-pairing files are compatibility wrappers for existing imports;
+[the library guide](../../docs/paired-tools.md) describes the shared contract. While idle, it uses the browser's
 offline indication to offer manual blocks; otherwise it offers online links
 and optional nearby discovery. That indication is a hint, not a probe of the
 introduction service or proof that the local network works. In Automatic, an

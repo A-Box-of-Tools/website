@@ -108,6 +108,7 @@ function activateChannel() {
   let channels = [];
   let selectedChannel = null;
   let lastPublication = null;
+  let renderedStatusKey = 'host-idle';
   let offlineHost = null, offlineClient = null, offlineBusy = false;
   let offlineEpoch = 0;
   const field = id => document.getElementById(id);
@@ -145,6 +146,8 @@ function activateChannel() {
   }
   function renderOffline() {
     const offline = pairing.method === 'offline';
+    ui['host-intro'].hidden = offline || role !== 'host';
+    if (renderedStatusKey === 'host-idle') ui['status-text'].textContent = phrase(offline ? 'host-idle-offline' : 'host-idle');
     ui.nearby.hidden = offline || role !== 'host' || hostActive || starting || preparingCredentials;
     field('wt-offline-join').hidden = !offline || hostActive || starting || role === 'listener';
     field('offline-host').hidden = !offline || !hostActive;
@@ -409,7 +412,8 @@ function activateChannel() {
       : role === 'host' && hostNeedsResume
       ? starting ? 'host-resuming' : errors.has(key) ? 'host-resume-needed' : key
       : key;
-    ui['status-text'].textContent = phrase(statusKey);
+    renderedStatusKey = statusKey;
+    ui['status-text'].textContent = phrase(statusKey === 'host-idle' && pairing.method === 'offline' ? 'host-idle-offline' : statusKey);
     ui['status-dot'].dataset.state = role === 'host' && hostActive && captureState !== 'ready'
       ? 'waiting' : stateTalking ? 'talking' : key === 'host-ready' || key === 'listener-listening' ? 'ready' : 'waiting';
     ui.error.hidden = !errors.has(key);
