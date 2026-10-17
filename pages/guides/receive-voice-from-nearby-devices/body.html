@@ -1,6 +1,6 @@
   <section>
     <h2>Open the listening pager</h2>
-    <p>Open <a href="../../voice-oncall/">Voice Oncall</a> on the device that will listen. Choose Host a pager, enter a recognisable pager name and optionally set a password. Start pager prepares speaker playback and advertises the pager; it does not request microphone permission.</p>
+    <p>Open <a href="../../voice-oncall/">Voice Oncall</a> on the device that will listen. Choose Host a pager, enter a recognisable pager name and optionally set a password. Start pager prepares speaker playback and, in Online mode, advertises the pager; it does not request microphone permission.</p>
     <p>Use the website's HTTPS address. There is no installation, Python helper or account. Keep the host page open and its device awake while people are connected.</p>
     <p>If the phone interrupts the host's sound, return to the page and choose Restore sound when shown. The pager stays open while sound is paused.</p>
   </section>
@@ -8,6 +8,10 @@
     <h2>Let nearby people connect</h2>
     <p>Participants open the same tool and choose the pager in the nearby list at the top. Choosing only selects the pager; it does not connect or ask for a microphone. They enter the pager password when required, then choose Connect and allow microphone access. Callers do not need to enter a name. Admission is automatic: the host does not accept each person separately.</p>
     <p>The list groups pages by their public internet address and this website's origin. That often matches people using the same connection, but it does not scan Wi-Fi or prove physical proximity. VPNs and separate routes can hide a nearby pager, while a shared carrier gateway can include strangers. Use the host's copied invitation or QR code when the list does not find it. Share passwords separately from the link.</p>
+  </section>
+  <section>
+    <h2>Pair without internet</h2>
+    <p>Load the page on both devices, select Offline, and start the host pager. Give one participant the invitation block, then paste their reply on the host. This exchange does not request a microphone. Once the host accepts, the participant enters the pager password if required and chooses Connect; their microphone starts quiet. Give each additional participant a fresh invitation. Password admission, Mute and Remove work directly through the host browser. Keep the tabs open: losing the direct signaling connection or reloading requires new blocks. Both devices still need a reachable Wi-Fi or hotspot route. Offline mode opens no internet discovery or pairing socket and uses no relay.</p>
   </section>
   <section>
     <h2>Speak only when you intend to</h2>
@@ -18,12 +22,12 @@
   <section>
     <h2>Choose who the host hears</h2>
     <p>The host's participant list shows each caller with a short identifier and their speaking state. Mute silences one participant in the host browser, and Unmute allows that participant to be heard again. The normal speaking page also stops transmitting when muted; unmuting does not deliberately start its microphone.</p>
-    <p>Remove silences the participant locally while the service confirms removal, then closes its connection and blocks its retained session identity. If the service refuses the remembered action, the row stays visible and the host can choose Unmute again. Session identifiers are not verified accounts, so removal cannot permanently ban a person who creates a fresh identity. A password helps control admission. End pager closes the current pager; a new pager uses a fresh invitation and resets moderation history.</p>
+    <p>Remove silences the participant locally while the online service or offline host confirms removal, then closes its connection and blocks its retained session identity. If the remembered action is refused, the row stays visible and the host can choose Unmute again. Session identifiers are not verified accounts, so removal cannot permanently ban a person who creates a fresh identity. A password helps control admission. End pager closes the current pager; a new pager uses a fresh invitation and resets moderation history.</p>
   </section>
   <section>
     <h2>Understand the connection</h2>
-    <p>A phone hotspot can work when it lets the participating devices reach one another directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the pager link or QR code if the nearby list misses it. Some hotspots and managed devices block direct traffic, so test your actual devices before relying on it.</p>
-    <p>Internet access is required for discovery, admission and connection setup. That service carries pager names, temporary participant identifiers, password-derived credentials, moderation and network details, never voice. Older pages may also send participant display names. Audio travels on separate encrypted direct browser connections without a STUN server or public audio relay fallback.</p>
+    <p>A phone hotspot can work when it lets the participating devices reach one another directly. Connect the devices to the same hotspot and use Online for internet discovery and pairing, or Offline for exchanged blocks. Use the pager link or QR code if the nearby list misses it. Some hotspots and managed devices block direct traffic, so test your actual devices before relying on it.</p>
+    <p>In Online mode, internet access is required for discovery, admission and connection setup. That service carries pager names, temporary participant identifiers, password-derived credentials, moderation and network details, never voice. Older pages may also send participant display names. Audio travels on separate encrypted direct browser connections without a STUN server or public audio relay fallback.</p>
     <p>Waiting participants check for the host with a one-second foreground target. Sleeping devices, background timers and connection limits can delay recovery. Guest isolation, firewalls, VPN routes or browser local-network permissions may prevent direct audio even when both devices are on the same Wi-Fi. Try the actual phones and computers you intend to use.</p>
     <p>If your goal is for one person to speak to many listeners, use <a href="../../walkie-talkie/">Local Walkie-Talkie</a> instead. Voice Oncall receives many separate voices at one host.</p>
   </section>

@@ -5,7 +5,7 @@ import { phrase } from './shared/phrases.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
-import { pairingChoice } from './pairing-choice.js';
+import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
 
 const $ = (id) => document.getElementById(id);
 let revision = 0;
@@ -21,9 +21,7 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
-let pairingPreference = 'auto';
 let pairingMethod = 'online';
-let introductionFailed = false;
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
@@ -113,29 +111,7 @@ function clearRemote() {
 
 function isOffline() { return pairingMethod === 'offline'; }
 
-function syncPairingChoice() {
-  // A hint must never change the method underneath a picker, block exchange,
-  // approval or live peer. Stop is the boundary for considering it again.
-  if (role) return;
-  const hash = location.hash.slice(1);
-  const choice = pairingChoice({
-    preference: pairingPreference,
-    online: navigator.onLine,
-    invitation: Boolean($('viewer-code').value.trim()),
-    invitationLink: Boolean(hash && hash !== 'main'),
-    manualDraft: isOffline() && Boolean($('offline-offer-input').value.trim()),
-    introductionFailed,
-  });
-  if (choice.method !== pairingMethod) {
-    revision += 1;
-    pairingMethod = choice.method;
-    closeDiscovery();
-    if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
-  }
-  $('pairing-options').dataset.pairingMode = pairingMethod;
-  $('pairing-status').hidden = !choice.notice;
-  status('pairing-status', choice.notice);
-}
+function syncPairingChoice() { pairing.refresh(); }
 
 function renderDiscovery() {
   const list = $('discovery-list');
@@ -198,6 +174,7 @@ function publishDiscovery() {
 }
 
 function updateControls() {
+  pairing.refresh();
   const hosting = role === 'host';
   const viewing = role === 'viewer';
   const busy = hosting || viewing;
@@ -216,7 +193,7 @@ function updateControls() {
   $('discovery-panel').hidden = offline || busy || !browsingNearby;
   $('online-viewer-fields').hidden = offline;
   $('offline-viewer-fields').hidden = !offline;
-  $('offline-note').hidden = !offline;
+  $('offline-help').hidden = !offline;
   $('host-start').disabled = hosting || viewing || !canCapture;
   $('host-stop').hidden = !hosting;
   $('viewer-connect').hidden = offline;
@@ -229,8 +206,8 @@ function updateControls() {
   $('offline-offer-input').readOnly = busy;
   $('choose-offer').disabled = busy;
   $('host-invitation').hidden = offline || !hosting || !invitation;
-  $('offline-host-panel').hidden = !offline || !hosting || !$('offline-offer').value;
-  $('offline-answer-panel').hidden = !offline || !viewing || !$('offline-answer').value;
+  $('offline-host').hidden = !offline || !hosting || !$('offline-offer').value;
+  $('offline-viewer-reply').hidden = !offline || !viewing || !$('offline-answer').value;
   $('offline-answer-input').readOnly = offlineAccepted || offlineAccepting;
   $('choose-answer').disabled = offlineAccepted || offlineAccepting;
   $('offline-accept').disabled = !hosting || offlineAccepted || offlineAccepting;
@@ -286,24 +263,6 @@ const linkCopy = clipboardFeedback({
   restore: () => { $('copy-status').textContent = ''; },
 });
 
-function blockCopy(field, feedback, expectedRole) {
-  return clipboardFeedback({
-    read: () => ({ text: $(field).value }),
-    current: (value) => role === expectedRole && isOffline() && Boolean(value.text) && value.text === $(field).value,
-    write: (value) => navigator.clipboard.writeText(value),
-    done: () => status(feedback, 'copy.done'),
-    selected: () => {
-      $(field).focus();
-      $(field).select();
-      status(feedback, 'copy.manual');
-    },
-    restore: () => { $(feedback).textContent = ''; },
-  });
-}
-
-const offerCopy = blockCopy('offline-offer', 'offer-copy-status', 'host');
-const answerCopy = blockCopy('offline-answer', 'answer-copy-status', 'viewer');
-
 function stopAll(key = 'connection.stopped', previousRole = role) {
   revision += 1;
   role = null;
@@ -313,8 +272,7 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
   discoveryPublication = null;
   closeDiscovery();
   linkCopy.invalidate();
-  offerCopy.invalidate();
-  answerCopy.invalidate();
+  blocks.clear();
   session.stop();
   capture.stop();
   $('local-video').srcObject = null;
@@ -327,10 +285,7 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
   renderRequests([]);
   renderViewers([]);
   clearRemote();
-  if (key === 'connection.server-failed' && pairingPreference === 'auto') {
-    introductionFailed = true;
-    $('pairing-options').open = true;
-  }
+  if (key === 'connection.server-failed') pairing.fail();
   syncPairingChoice();
   updateControls();
   if (previousRole) status(previousRole === 'host' ? 'host-status' : 'viewer-status', key, terminal.has(key));
@@ -354,7 +309,7 @@ async function startHost() {
     if (offline) {
       const block = await session.startOfflineHost(stream);
       if (owner !== revision || role !== 'host') return;
-      $('offline-offer').value = block;
+      blocks.setOffer(block);
     } else {
       const code = makeCode();
       if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
@@ -409,7 +364,7 @@ async function createViewerReply() {
   try {
     const answer = await session.createOfflineAnswer(block, note);
     if (owner !== revision || role !== 'viewer') return;
-    $('offline-answer').value = answer;
+    blocks.setAnswer(answer);
     updateControls();
   } catch (error) {
     if (owner !== revision || role !== 'viewer') return;
@@ -437,35 +392,6 @@ async function acceptViewerReply() {
   }
 }
 
-async function loadBlock(input, field, feedback) {
-  const file = input.files?.[0];
-  input.value = '';
-  if (!file) return;
-  const owner = revision;
-  try {
-    if (file.size > 65536) throw new Error('offline.file-invalid');
-    const text = await file.text();
-    if (owner !== revision || !isOffline()) return;
-    if (field === 'offline-answer-input' && (offlineAccepted || offlineAccepting)) return;
-    if (!text.trim() || text.length > 65536) throw new Error('offline.file-invalid');
-    $(field).value = text;
-  } catch { if (owner === revision) status(feedback, 'offline.file-invalid', true); }
-}
-
-function saveBlock(field, filename, feedback) {
-  const text = $(field).value;
-  if (!text || !isOffline() || !role) return;
-  const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.append(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-  status(feedback, 'offline.saved');
-}
-
 function showInvitation() {
   const hash = location.hash.slice(1);
   const watching = Boolean(hash) && hash !== 'main';
@@ -485,6 +411,26 @@ function showInvitation() {
 
 const canConnect = globalThis.isSecureContext && typeof globalThis.RTCPeerConnection === 'function';
 const canCapture = canConnect && typeof navigator.mediaDevices?.getDisplayMedia === 'function';
+const pairing = pairingOptions({
+  busy: () => Boolean(role),
+  invitation: () => Boolean($('viewer-code').value.trim()),
+  invitationLink: () => Boolean(location.hash && location.hash !== '#main'),
+  onChange({ method }) {
+    if (pairingMethod !== method) {
+      revision += 1;
+      pairingMethod = method;
+      closeDiscovery();
+      if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
+    }
+    updateControls();
+  },
+});
+const blocks = pairingBlocks({
+  createReply: createViewerReply, acceptReply: acceptViewerReply,
+  onChange: updateControls,
+  onError(error, action) { status(action.includes('answer') || action === 'offline-accept' ? 'offline-accept-status' : 'viewer-status',
+    knownPhrase(error.message) ? error.message : 'offline.file-invalid', true); },
+});
 if (!canCapture) {
   $('capture-support').textContent = phrase('capture.unsupported');
   status('host-status', 'capture.unsupported');
@@ -508,34 +454,7 @@ $('discovery-close').addEventListener('click', () => {
   updateControls();
   $('discovery-start').focus();
 });
-$('offline-reply').addEventListener('click', createViewerReply);
-$('offline-accept').addEventListener('click', acceptViewerReply);
 $('copy-link').addEventListener('click', () => linkCopy.copy());
-$('copy-offer').addEventListener('click', () => offerCopy.copy());
-$('copy-answer').addEventListener('click', () => answerCopy.copy());
-$('save-offer').addEventListener('click', () => saveBlock('offline-offer', 'tab-offer.json', 'offer-copy-status'));
-$('save-answer').addEventListener('click', () => saveBlock('offline-answer', 'tab-answer.json', 'answer-copy-status'));
-$('choose-offer').addEventListener('click', () => $('load-offer').click());
-$('choose-answer').addEventListener('click', () => $('load-answer').click());
-$('load-offer').addEventListener('change', () => loadBlock($('load-offer'), 'offline-offer-input', 'viewer-status'));
-$('load-answer').addEventListener('change', () => loadBlock($('load-answer'), 'offline-answer-input', 'offline-accept-status'));
-for (const id of ['pairing-auto', 'pairing-online', 'pairing-offline']) {
-  $(id).addEventListener('change', () => {
-    if (role) return;
-    revision += 1;
-    pairingPreference = $(id).value;
-    introductionFailed = false;
-    closeDiscovery();
-    syncPairingChoice();
-    if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
-    updateControls();
-  });
-}
-$('viewer-code').addEventListener('input', () => { syncPairingChoice(); updateControls(); });
-$('offline-offer-input').addEventListener('input', () => { syncPairingChoice(); updateControls(); });
-for (const event of ['online', 'offline']) {
-  window.addEventListener(event, () => { syncPairingChoice(); updateControls(); });
-}
 for (const id of ['viewer-code', 'viewer-name']) {
   $(id).addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -575,7 +494,7 @@ window.addEventListener('hashchange', (event) => {
     return;
   }
   stopAll();
-  introductionFailed = false;
+  pairing.reset();
   showInvitation();
 });
 window.addEventListener('pagehide', () => { pageSuspended = true; stopAll(); });

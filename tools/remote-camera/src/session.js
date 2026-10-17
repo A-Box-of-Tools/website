@@ -1,5 +1,6 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
 import { PairingSocket } from './shared/peer-pairing.js';
+import { OfflineExchange, readOfflineBlock } from './shared/offline-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
@@ -15,7 +16,7 @@ export class CameraSession {
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
     onViewers = () => {}, onBandwidth = () => {},
     onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
-    diagnostics = null,
+    diagnostics = null, now = () => Date.now(), random = globalThis.crypto,
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -29,6 +30,10 @@ export class CameraSession {
     this.onSignaling = onSignaling;
     this.visible = visible;
     this.diagnostics = diagnostics;
+    this.now = now;
+    this.random = random;
+    this.mode = null;
+    this.offlineSerial = 0;
     this.openingTrace = null;
     this.signalingLost = false;
     this.signalingRetry = null;
@@ -63,7 +68,10 @@ export class CameraSession {
 
   // Stopping also interrupts viewers whose connection has not reached the
   // approval request yet, so counting accepted viewers alone is not enough.
-  get hasViewers() { return this.role === 'camera' && this.peers.size > 0; }
+  get hasViewers() {
+    return this.role === 'camera' && [...this.peers.values()].some((entry) =>
+      this.mode !== 'offline' || entry.offlineAnswered || entry.hello);
+  }
 
   get viewerCount() { return this.role === 'camera' ? [...this.peers.values()].filter((entry) => entry.approved).length : 0; }
 
@@ -96,9 +104,10 @@ export class CameraSession {
     if (this.role === 'camera') this.state(this.hostState());
   }
 
-  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000 } = {}) {
+  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, method = 'online' } = {}) {
     this.stop();
     this.role = 'camera';
+    this.mode = method === 'offline' ? 'offline' : 'online';
     this.requireApproval = Boolean(requireApproval);
     this.setVideoBudget(videoBudget);
     this.stream = stream;
@@ -106,14 +115,64 @@ export class CameraSession {
       this.stop('camera.ended');
       throw new Error('camera.ended');
     }
+    if (this.mode === 'offline') { this.state(this.hostState()); return; }
     return this.open(code, discoverable);
   }
 
   async connect(code, note) {
     this.stop();
     this.role = 'viewer';
+    this.mode = 'online';
     this.note = String(note ?? '').trim().slice(0, 80);
     return this.open(code);
+  }
+
+  makeOfflineExchange(entry) {
+    return new OfflineExchange({ tool: TOOL, pc: entry.pc, current: () => this.current(entry),
+      now: this.now, random: this.random,
+      onExpire: () => this.peerFailed(entry, 'offline.expired') });
+  }
+
+  async createOfflineOffer() {
+    if (this.role !== 'camera' || this.mode !== 'offline') throw new Error('offline.invalid-offer');
+    const pending = [...this.peers.values()].filter((entry) => !entry.approved).length;
+    if (this.viewerCount >= this.maxViewers || pending >= MAX_PENDING) throw new Error('connection.busy');
+    const entry = this.newPeer(`offline:${++this.offlineSerial}`, true);
+    entry.exchange = this.makeOfflineExchange(entry);
+    try {
+      this.channel(entry, entry.pc.createDataChannel('camera-control'));
+      const block = await entry.exchange.createOffer();
+      if (!this.current(entry)) throw new Error('connection.stopped');
+      return { id: entry.id, block };
+    } catch (error) { if (this.current(entry)) this.removePeer(entry.id); throw error; }
+  }
+
+  async createOfflineAnswer(text, note) {
+    readOfflineBlock(TOOL, text, 'offer', { checkExpiry: false });
+    this.stop();
+    this.role = 'viewer'; this.mode = 'offline';
+    this.note = String(note ?? '').trim().slice(0, 80);
+    const entry = this.newPeer('viewer', true);
+    entry.exchange = this.makeOfflineExchange(entry);
+    try {
+      const block = await entry.exchange.createAnswer(text);
+      if (!this.current(entry)) throw new Error('connection.stopped');
+      return block;
+    } catch (error) { if (this.current(entry)) this.stop(error.message); throw error; }
+  }
+
+  async acceptOfflineAnswer(id, text) {
+    const entry = this.peers.get(id);
+    if (this.role !== 'camera' || this.mode !== 'offline' || !entry?.exchange || entry.offlineAnswered) throw new Error('offline.invalid-answer');
+    await entry.exchange.acceptAnswer(text);
+    if (!this.current(entry)) throw new Error('connection.stopped');
+    entry.offlineAnswered = true;
+    if (!entry.hello) this.deadline(entry, () => { if (!entry.hello) this.peerFailed(entry, 'connection.direct-failed'); }, CONNECT_TIMEOUT);
+  }
+
+  cancelOfflineOffer(id) {
+    const entry = this.peers.get(id);
+    if (this.mode === 'offline' && this.role === 'camera' && entry && !entry.hello && !entry.offlineAnswered) this.removePeer(id);
   }
 
   open(code, discoverable = false, recovering = false) {
@@ -136,7 +195,7 @@ export class CameraSession {
         this.openingTrace?.socket('closed');
         this.openingTrace?.finish('socket-error');
         this.openingTrace = null;
-        throw error;
+        throw new Error('connection.server-failed');
       }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
@@ -290,6 +349,7 @@ export class CameraSession {
   }
 
   restoreSignaling({ manual = false } = {}) {
+    if (this.mode === 'offline') return Promise.resolve(false);
     if (this.role !== 'camera' || !this.signalingLost || !this.visible()) return Promise.resolve(false);
     if (this.signalingRetry) return this.signalingRetry.promise;
     if (manual) this.retryAttempts = 0;
@@ -367,6 +427,10 @@ export class CameraSession {
     }
     const entry = this.peers.get(id);
     if (!entry || entry.signalingDetached) return;
+    this.receiveSignal(entry, data);
+  }
+
+  receiveSignal(entry, data) {
     this.queue(entry, async () => {
       let operation = 'signaling', adding = null;
       try {
@@ -375,6 +439,7 @@ export class CameraSession {
           const expected = this.role === 'camera' ? 'answer' : 'offer';
           if (description?.type !== expected || typeof description.sdp !== 'string'
               || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
+          if (this.mode === 'offline' && (!entry.hello || !entry.approved || (this.role === 'camera' && !entry.acknowledged))) throw new Error('connection.invalid');
           if (expected === 'offer') { entry.trace?.count('offerReceived'); entry.trace?.mark('offer-received'); }
           operation = 'set-remote-description';
           await entry.pc.setRemoteDescription(localDescription(description));
@@ -428,7 +493,7 @@ export class CameraSession {
 
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
-  newPeer(id) {
+  newPeer(id, offline = false) {
     const pc = new this.PeerConnection(rtcConfig(true));
     // The invitation's opening evidence becomes the first peer's evidence,
     // rather than adding an otherwise duplicate attempt after admission.
@@ -437,9 +502,9 @@ export class CameraSession {
     const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], pending: false, approved: false, timers: new Set() };
     this.peers.set(id, entry);
     trace?.attach(pc);
-    trace?.socket(this.socket?.readyState === 1 ? 'open' : this.socket?.readyState > 1 ? 'closed' : 'connecting');
+    if (!offline) trace?.socket(this.socket?.readyState === 1 ? 'open' : this.socket?.readyState > 1 ? 'closed' : 'connecting');
     trace?.mark('room-ready');
-    this.deadline(entry, () => this.peerFailed(entry, 'connection.direct-failed', 'handshake-timeout'), CONNECT_TIMEOUT);
+    if (!offline) this.deadline(entry, () => this.peerFailed(entry, 'connection.direct-failed', 'handshake-timeout'), CONNECT_TIMEOUT);
     pc.addEventListener('icecandidate', (event) => {
       if (!this.current(entry) || !event.candidate) return;
       if (!allowedCandidate(event.candidate, true)) {
@@ -507,6 +572,13 @@ export class CameraSession {
   }
 
   signal(entry, data) {
+    if (this.mode === 'offline') {
+      // Complete bootstrap candidates belong to the exchanged blocks. Once
+      // hello has crossed the encrypted channel, it carries renegotiation.
+      if (!entry.hello) return;
+      this.control(entry, 'signal', data);
+      return;
+    }
     if (entry.signalingDetached) return;
     try {
       this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null);
@@ -572,6 +644,8 @@ export class CameraSession {
       if (!message) return this.peerFailed(entry, 'connection.invalid');
       if (message.type === 'hello') {
         if (entry.hello) return;
+        try { entry.exchange?.connected(); }
+        catch (error) { this.peerFailed(entry, error.message); return; }
         entry.hello = true;
         entry.trace?.mark('hello-received');
         entry.receiveAudio = message.receiveAudio === true;
@@ -584,6 +658,8 @@ export class CameraSession {
         }
       } else if (!entry.hello) {
         this.peerFailed(entry, 'connection.invalid');
+      } else if (message.type === 'signal' && this.mode === 'offline') {
+        this.receiveSignal(entry, message);
       } else if (message.type === 'request' && this.role === 'camera' && !entry.approved) {
         if (entry.pending || entry.refused) return;
         entry.pending = true;
@@ -795,6 +871,7 @@ export class CameraSession {
     if (!entry) return;
     entry.trace?.finish(reason);
     this.peers.delete(id);
+    entry.exchange?.close();
     for (const timer of entry.timers) clearTimeout(timer);
     entry.dc?.close();
     entry.pc.close();
@@ -842,6 +919,7 @@ export class CameraSession {
     this.socket = null;
     this.pairing = null;
     this.role = null;
+    this.mode = null;
     for (const id of [...this.peers.keys()]) this.removePeer(id);
     this.stream = null;
     pairing?.close();

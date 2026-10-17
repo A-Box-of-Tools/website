@@ -2,7 +2,7 @@ import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-net
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
-import { newOfflinePairing, offlineBlock, readOfflineBlock, OFFLINE_LIFETIME } from './offline-pairing.js';
+import { OfflineExchange, readOfflineBlock } from './shared/offline-pairing.js';
 
 const RENDEZVOUS = rendezvousEndpoint();
 const TIMEOUT = 20000;
@@ -75,20 +75,15 @@ export class TabSession {
     this.prepareHost(stream, 'offline');
     const revision = this.revision;
     try {
-      this.offline = newOfflinePairing(this.random, this.now());
       const entry = this.newPeer('offline', true);
+      entry.exchange = this.offlineExchange(entry);
       this.channel(entry, entry.pc.createDataChannel(CHANNEL));
-      this.expireOffline(entry);
       this.state('offline.gathering');
-      const offer = await entry.pc.createOffer();
+      const block = await entry.exchange.createOffer();
       if (!this.current(entry)) throw new Error('connection.stopped');
-      await entry.pc.setLocalDescription(localDescription(offer));
-      if (!this.current(entry)) throw new Error('connection.stopped');
-      await this.gather(entry);
-      this.checkOffline(entry);
-      entry.awaitingAnswer = true;
+      this.offline = entry.exchange.pairing;
       this.state('offline.offer-ready');
-      return offlineBlock(this.offline, entry.pc.localDescription);
+      return block;
     } catch (error) {
       if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
       throw error;
@@ -96,22 +91,22 @@ export class TabSession {
   }
 
   async createOfflineAnswer(text, note) {
-    // The host owns the offer's expiry. A viewer starts its own bounded wait,
-    // so devices with different clocks can still exchange the two blocks.
-    const offer = readOfflineBlock(text, 'offer', { checkExpiry: false });
+    // Bad input cannot retire a running session. The common exchange applies
+    // the host's binding and a separate bounded wait for the viewer's clock.
+    readOfflineBlock(TOOL, text, 'offer', { checkExpiry: false });
     this.stop();
     this.role = 'viewer'; this.mode = 'offline';
     this.note = String(note ?? '').trim().slice(0, 80);
-    this.offline = { session: offer.session, expires: offer.expires, deadline: this.now() + OFFLINE_LIFETIME };
     const revision = this.revision;
     try {
       const entry = this.newPeer('offline', true);
-      this.expireOffline(entry);
+      entry.exchange = this.offlineExchange(entry);
       this.state('offline.gathering');
-      await this.receiveSignal(entry, { description: offer.description }, true);
-      this.checkOffline(entry);
+      const block = await entry.exchange.createAnswer(text);
+      if (!this.current(entry)) throw new Error('connection.stopped');
+      this.offline = entry.exchange.pairing;
       this.state('offline.answer-ready');
-      return offlineBlock(this.offline, entry.pc.localDescription);
+      return block;
     } catch (error) {
       if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
       throw error;
@@ -120,13 +115,11 @@ export class TabSession {
 
   async acceptOfflineAnswer(text) {
     const entry = this.peers.get('offline');
-    if (this.mode !== 'offline' || this.role !== 'host' || !entry || this.offline?.answered) throw new Error('offline.invalid-answer');
-    const answer = readOfflineBlock(text, 'answer', { now: this.now(), pairing: this.offline });
-    this.offline.answered = true;
+    if (this.mode !== 'offline' || this.role !== 'host' || !entry?.exchange || entry.exchange.answered) throw new Error('offline.invalid-answer');
+    readOfflineBlock(TOOL, text, 'answer', { now: this.now(), pairing: entry.exchange.pairing });
     try {
-      await this.receiveSignal(entry, { description: answer.description }, true);
-      this.checkOffline(entry);
-      this.clear(entry, 'manual');
+      await entry.exchange.acceptAnswer(text);
+      if (!this.current(entry)) throw new Error('connection.stopped');
       if (!entry.hello) {
         this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
         this.state('connection.connecting');
@@ -137,33 +130,9 @@ export class TabSession {
     }
   }
 
-  checkOffline(entry) {
-    if (!this.current(entry)) throw new Error('connection.stopped');
-    if ((this.offline.deadline ?? this.offline.expires) <= this.now()) throw new Error('offline.expired');
-  }
-
-  expireOffline(entry) {
-    const deadline = this.offline.deadline ?? this.offline.expires;
-    this.deadline(entry, 'manual', Math.max(0, deadline - this.now()), () => this.stop('offline.expired'));
-  }
-
-  gather(entry) {
-    if (!this.current(entry)) return Promise.reject(new Error('connection.stopped'));
-    if (entry.pc.iceGatheringState === 'complete') return Promise.resolve();
-    return new Promise((resolve, reject) => {
-      const finish = (error) => {
-        entry.pc.removeEventListener('icegatheringstatechange', changed);
-        this.clear(entry, 'gather');
-        if (entry.cancelGather === cancel) entry.cancelGather = null;
-        if (error) reject(error); else resolve();
-      };
-      const changed = () => { if (entry.pc.iceGatheringState === 'complete') finish(); };
-      const cancel = () => finish(new Error('connection.stopped'));
-      entry.cancelGather = cancel;
-      entry.pc.addEventListener('icegatheringstatechange', changed);
-      this.deadline(entry, 'gather', TIMEOUT, () => finish(new Error('connection.direct-failed')));
-      changed();
-    });
+  offlineExchange(entry) {
+    return new OfflineExchange({ tool: TOOL, pc: entry.pc, random: this.random, now: this.now,
+      current: () => this.current(entry), onExpire: () => this.stop('offline.expired') });
   }
 
   open(code) {
@@ -275,7 +244,7 @@ export class TabSession {
     this.queue(entry, () => this.receiveSignal(entry, data));
   }
 
-  async receiveSignal(entry, data, manual = false) {
+  async receiveSignal(entry, data) {
       if (!this.current(entry)) return;
       if (data.description !== undefined) {
         const description = data.description;
@@ -295,8 +264,7 @@ export class TabSession {
           if (!this.current(entry)) return;
           await entry.pc.setLocalDescription(localDescription(answer));
           if (!this.current(entry)) return;
-          if (manual) await this.gather(entry);
-          else this.signal(entry, { description: entry.pc.localDescription });
+          this.signal(entry, { description: entry.pc.localDescription });
         } else {
           entry.awaitingAnswer = false;
           if (entry.media) { this.clear(entry, 'media'); entry.negotiated = true; this.viewers(); this.state(this.hostState()); }
@@ -314,8 +282,7 @@ export class TabSession {
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
   newPeer(id, manual = false) {
-    // Pairing still uses the public introduction service, but it must never
-    // widen the media route beyond the host candidates of these browsers.
+    // Both introduction methods keep the same direct host-candidate policy.
     const pc = new this.PeerConnection(rtcConfig(true));
     const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, 'local');
     this.openingTrace = null;
@@ -416,9 +383,9 @@ export class TabSession {
       try {
         if (message.type === 'hello') {
           if (entry.hello) return;
+          entry.exchange?.connected();
           entry.hello = true;
           this.clear(entry, 'connect');
-          this.clear(entry, 'manual');
           if (this.role === 'viewer') { this.control(entry, 'request', { note: this.note }); this.state('viewer.waiting'); }
           else this.deadline(entry, 'request', TIMEOUT, () => this.peerFailed(entry));
         } else if (!entry.hello) this.peerFailed(entry, 'connection.invalid');
@@ -526,7 +493,7 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (!entry) return;
     this.peers.delete(id);
-    entry.cancelGather?.();
+    entry.exchange?.close();
     for (const timer of entry.timers.values()) clearTimeout(timer);
     entry.timers.clear();
     entry.trace?.finish('ended');

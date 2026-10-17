@@ -1,12 +1,21 @@
 # Remote Camera
 
-Nearby cameras appear at the top of the idle page, above sharing and manual
+In Online mode, nearby cameras appear at the top of the idle page, above sharing and manual
 connection, with the shared Wi-Fi and hotspot guidance. Choosing a listed camera
 fills the code and focuses Connect to camera; only Connect starts pairing. Start
 or Connect focuses its active section until Stop or a failure returns
 to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
 viewer fragment so the URL no longer suggests a different camera.
+
+Automatic uses the shared pairing preference: it offers online invitations
+normally and offline connection blocks when the browser reports no internet or
+an introduction attempt fails. That hint does not prove connectivity. Connection
+options contains explicit Online and Offline choices; the choice stays locked
+while starting, sharing, viewing or retaining a recoverable camera. Existing
+viewer-link intent and edited connection fields take priority over an idle hint.
+A failed attempt offers another method for a new explicit action, without
+starting capture or a viewer request automatically.
 
 One browser opens a camera and accepts up to eight viewers. Approval is on by default;
 turning it off accepts new requests through the same encrypted acknowledgement
@@ -28,7 +37,7 @@ and camera-change/recovery guards as the list. Request withdrawal closes its
 dialog; hiding the page, pagehide, Stop and Stop confirmation also dismiss it
 without granting approval. The two dialogs never overlap.
 
-The tool uses the existing rendezvous at `wss://rendezvous.abox.tools`.
+Online pairing uses the existing rendezvous at `wss://rendezvous.abox.tools`.
 `src/session.js` names that origin. Start and Connect each open one socket;
 opening a viewer fragment only selects the form. The page also opens a
 discovery socket using the shared `peer-discovery` part. Hosts are listed by
@@ -49,6 +58,39 @@ established view continues, but new invitations need Restore pairing. An idle
 source with no established peer ends after the retry budget is exhausted.
 The worker sees descriptions, candidates, room code, addresses and timing,
 never media or the viewer note. Cloudflare keeps seven-day metadata logs.
+
+## Offline pairing
+
+Load the page on both devices before taking the network offline. Offline mode
+closes discovery and never opens a room socket. Start camera keeps the same
+explicit capture permission flow and creates a data-only connection block.
+The viewer pastes or loads that block, chooses Create reply, and returns the
+reply for the camera to accept. A block is for one viewer. Create another
+invitation retires only an unused pending block, preserving previously accepted
+viewers, capture, approval settings and shared bandwidth. The existing pending
+and accepted viewer limits still apply.
+
+`shared/js/offline-pairing.js` owns gathering, bounded block validation, host-only
+descriptions, a ten-minute exchange lifetime and matching single-use replies.
+The receiving device gets its own bounded wait so different device clocks do
+not reject a valid offer. Blocks contain setup and network addresses; only
+explicit copy or file actions export them. They contain no video, audio or
+viewer note. The tool does not persist them or send them to the introduction
+service. Remove any copies made outside the page when finished.
+
+The camera adapter owns each peer and its encrypted `camera-control` channel.
+Bootstrap candidates are carried in the blocks, with no trickle socket.
+After both peers exchange protocol hellos, later SDP and host candidates travel
+as bounded `signal` messages on that channel. Media negotiation still requires
+viewer acceptance and acknowledgement; a block is never permission to send
+media. Camera replacement works on existing offline senders. If suspension
+destroys the direct connection, resuming the camera creates a fresh block and
+each viewer must pair again. It never reopens an introduction socket. Stop
+cancels pending exchanges and gathering, closes peers and releases capture;
+late replies and grants cannot revive them.
+
+Offline pairing needs a reachable Wi-Fi, Ethernet or hotspot route just as
+online pairing does. It cannot work around device isolation or a firewall.
 
 Both peers configure `iceServers: []`. The shared `peer-network` part rejects
 non-host trickled candidates and removes them from SDP in both directions.
@@ -284,6 +326,8 @@ The guide is `/guides/watch-camera-from-another-device/`.
 
 Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events
 come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
+Automatic selection, connection options, block input/output and bounded offline
+introductions use `pairing-choice.js`, `pairing-ui.js` and `offline-pairing.js`.
 [The pairing library guide](../../docs/paired-tools.md) describes their contract
 and how another tool can use them. This tool still owns its protocol, consent,
 credentials, approval and media policy; a foreground event cannot grant any of
