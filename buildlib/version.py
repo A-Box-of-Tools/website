@@ -30,10 +30,10 @@ scripts/next_version.py asks git what changed since the last version tag,
 applies it. A pull request carries no version at all, so there is nothing to
 conflict over and no order to merge in.
 
-A person who decides the site has reached 2.0.0 pushes that tag by hand. The
-deploy reads the latest tag as its starting point, so a tag placed deliberately
-is simply where counting continues from - the override needs no code and cannot
-drift from the thing it overrides.
+A person who decides the site has reached 2.0.0 tags the final reviewed
+candidate before the authorized release merge, whose tree must match it.
+The deploy reads the highest tag as its starting point; visible changes after
+that tag would bump it again. See the manual-major sequence in docs/deploying.md.
 
 One step per deploy, not per commit, and the diff is measured from the last
 tag rather than from the previous commit. So a push that lands several merges
@@ -45,7 +45,8 @@ The footer displays a version derived from those tags. Local and preview
 builds read only tags already in the checkout, preferring one on HEAD so a
 historical release can be rebuilt with its own number. The deploy calculates
 its next version before building and supplies that number to the build, then
-creates the tag after publishing. No page needs to ask GitHub for its version.
+creates an automatic tag after publishing. No page needs to ask GitHub for its
+version.
 
 WHY THE ANSWER COMES FROM A LIST OF PATHS
 
