@@ -183,14 +183,19 @@ or worker failure must not cause a main-thread retry: that recreates the freeze
 the worker isolates. A later user attempt starts a fresh check. This protects
 against a stuck worker script; it cannot recover native work that hangs or
 crashes the shared browser process. Linux WebKit has exhibited that broader
-failure even in a worker (#317). Encoder checks therefore return `null` before
-starting a worker when the browser reports Linux, Apple's vendor string and a
-WebKit user agent without Chromium or Firefox tokens. Apple Safari and Linux
-Chromium continue through the worker. This deliberately conservative exception
-can decline a working Linux WebKit installation; it must be revisited when
-independent native probes and exports work there. Browser identity strings can
-be overridden, so they are compatibility evidence, not proof of the host OS.
-A successful support check also does not guarantee encoding will succeed.
+failure with a cold media backend (#317). When the browser reports Linux,
+Apple's vendor string and a WebKit user agent without Chromium or Firefox
+tokens, the helper initializes that backend on the page with a detached video
+element's `canPlayType` before starting the encoder worker. No media is loaded
+or played, and the playback answer is ignored: even an empty answer continues
+to the real worker query. Missing or throwing initialization APIs return
+`null`, with a fresh attempt allowed later. Its elapsed time counts against
+the same deadline, and a late return does not start a worker, although a timer
+cannot interrupt a synchronous native initialization hang. Apple Safari,
+Chromium, decoder checks and audio checks keep their existing paths. Browser
+identity strings can be overridden, so they are compatibility evidence, not
+proof of the host OS. A successful support check also does not guarantee
+encoding will succeed.
 
 The five reading parts stack on top of those and are worth taking as a set too.
 A tool wants `pdf-text` — where the words are — and gets `pdf-content`,

@@ -175,15 +175,22 @@ choose WebM when the browser can record it; a failed MP4 check does not silently
 change the requested output format.
 
 This boundary protects the page from a stuck worker script. It cannot recover
-a native hang or crash of the process shared by the worker and page. The
-independent Linux WebKit diagnostic still reproduces that broader failure
-(#317). Browsers reporting Linux, Apple's vendor string and a WebKit user
-agent without Chromium or Firefox tokens therefore receive no encoder probe:
-MP4 uses the existing refusal without entering the native encoder. WebM remains
-available if their MediaRecorder supports it. Apple Safari and Linux Chromium
-retain their normal checks. This conservative exception may decline a working
-Linux WebKit build, and spoofed identity strings can evade it; it is not a
-claim that every Linux encoder is unsupported.
+a native hang or crash of the process shared by the worker and page. A cold
+Linux WebKit encoder query reproduced that broader failure (#317), while
+initializing the media backend on the page first let the same worker query
+finish. For browsers reporting Linux, Apple's vendor string and a WebKit user
+agent without Chromium or Firefox tokens, the helper first calls `canPlayType`
+on a detached video element. It loads no source and starts no playback. The
+playback answer is ignored, including an empty string: only the worker decides
+whether the requested encoder configuration is supported.
+
+Missing or throwing initialization APIs use the existing refusal and remain
+retryable. Initialization counts against the same two-second deadline; if it
+returns after that deadline, no worker starts. A timer cannot interrupt a
+synchronous native initialization hang, so this workaround does not promise
+process isolation. Apple Safari and Chromium keep their existing worker path.
+Browser identity strings can be overridden; they identify this compatibility
+workaround, not a guarantee about the host OS or codec support.
 
 A successful capability check does not guarantee that a supported encoder
 will complete a later export. Native encoder failures still use the export's
