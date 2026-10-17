@@ -2,8 +2,10 @@
  * A capability query must not leave an export waiting forever. VideoEncoder
  * can block synchronously on WebKit (#317), so its queries run in a disposable
  * same-origin worker with the deadline on the page's thread. A timer racing a
- * promise on the blocked thread cannot help. This isolates a stuck query, not
- * a crash of the browser process that owns both the page and its worker.
+ * promise on the blocked thread cannot help. This isolates a worker's script
+ * stall, not native work that hangs or crashes the process shared by the page
+ * and worker. Reported Linux WebKit therefore declines encoder probes before
+ * entering native code (#317); its query hangs even from a healthy worker.
  */
 
 /**
@@ -15,6 +17,24 @@
 const PATIENCE = 2000;
 
 const CODECS = new Set(['VideoEncoder', 'VideoDecoder', 'AudioEncoder', 'AudioDecoder']);
+
+/**
+ * This is containment for a native hang, not a codec support guess. Linux
+ * WebKit exposes VideoEncoder but its capability call can stop the entire
+ * page process, so probing to detect the defect would already be too late.
+ * Require its affirmative reported platform, vendor and engine together:
+ * Safari's Mac/iPhone/iPad identities and Linux Chromium keep their probes.
+ * Some functional Linux WebKit builds may be conservatively declined. Remove
+ * this exception only after the independent native diagnostic and exports work.
+ */
+function avoidNativeEncoderProbe() {
+  const platform = globalThis.navigator;
+  const ua = platform?.userAgent ?? '';
+  return /^Linux\b/i.test(platform?.platform ?? '')
+    && platform?.vendor === 'Apple Computer, Inc.'
+    && /\bAppleWebKit\//.test(ua)
+    && !/\b(?:Chromium|Chrome|CriOS|Edg|EdgA|EdgiOS|OPR|Firefox|FxiOS)\//.test(ua);
+}
 
 /**
  * Ask about an ordered batch in one worker, under one deadline. Only plain
@@ -30,6 +50,7 @@ const CODECS = new Set(['VideoEncoder', 'VideoDecoder', 'AudioEncoder', 'AudioDe
 export function firstSupported(codec, configs, ms = PATIENCE) {
   if (!CODECS.has(codec) || !Array.isArray(configs)) return Promise.resolve(null);
   if (!configs.length) return Promise.resolve(-1);
+  if (codec === 'VideoEncoder' && avoidNativeEncoderProbe()) return Promise.resolve(null);
   if (typeof Worker !== 'function' || !Number.isFinite(ms) || ms <= 0) return Promise.resolve(null);
 
   return new Promise((resolve) => {

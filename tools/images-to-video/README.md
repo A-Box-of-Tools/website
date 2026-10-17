@@ -175,9 +175,19 @@ choose WebM when the browser can record it; a failed MP4 check does not silently
 change the requested output format.
 
 This boundary protects the page from a stuck worker script. It cannot recover
-a WebKit WebContent or other browser-process crash, and it does not guarantee
-that a supported encoder will complete a later export. Native encoder failures
-still use the export's existing error handling.
+a native hang or crash of the process shared by the worker and page. The
+independent Linux WebKit diagnostic still reproduces that broader failure
+(#317). Browsers reporting Linux, Apple's vendor string and a WebKit user
+agent without Chromium or Firefox tokens therefore receive no encoder probe:
+MP4 uses the existing refusal without entering the native encoder. WebM remains
+available if their MediaRecorder supports it. Apple Safari and Linux Chromium
+retain their normal checks. This conservative exception may decline a working
+Linux WebKit build, and spoofed identity strings can evade it; it is not a
+claim that every Linux encoder is unsupported.
+
+A successful capability check does not guarantee that a supported encoder
+will complete a later export. Native encoder failures still use the export's
+existing error handling.
 
 ### About the MP4 muxer
 

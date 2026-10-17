@@ -97,6 +97,7 @@ function workerHarness(t, { constructThrows = false, postThrows = false } = {}) 
   });
   return {
     workers, timers,
+    get timersScheduled() { return nextTimer; },
     elapse(ms) { now += ms; },
     expire() {
       assert.equal(timers.size, 1, 'one deadline must cover the whole batch');
@@ -118,6 +119,87 @@ const candidates = [
   { codec: 'avc1.42001e', width: 320, height: 240 },
   { codec: 'avc1.4d001e', width: 320, height: 240 },
 ];
+
+const desktopSafariUA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15';
+const mobileSafariUA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/15E148 Safari/604.1';
+const linuxWebKit = {
+  platform: 'Linux x86_64',
+  vendor: 'Apple Computer, Inc.',
+  userAgent: desktopSafariUA,
+};
+
+test('reported Linux WebKit refuses video encoder probes before starting a worker or deadline', async (t) => {
+  for (const [name, identity] of [
+    ['default browser', linuxWebKit],
+    ['desktop Safari emulation', { ...linuxWebKit, userAgent: desktopSafariUA }],
+    ['iPhone emulation', { ...linuxWebKit, userAgent: mobileSafariUA }],
+    ['Linux user agent', { ...linuxWebKit, userAgent: desktopSafariUA.replace('Macintosh; Intel Mac OS X 10_15_7', 'X11; Linux x86_64') }],
+    ['case-insensitive Linux platform', { ...linuxWebKit, platform: 'linux aarch64' }],
+  ]) {
+    await t.test(name, async (t) => {
+      const f = workerHarness(t);
+      replaceGlobal(t, 'navigator', identity);
+      replaceGlobal(t, 'VideoEncoder', {
+        isConfigSupported() { assert.fail('guarded native queries must not reach the page'); },
+      });
+      assert.equal(await firstSupported('VideoEncoder', candidates), null);
+      assert.equal(f.workers.length, 0);
+      assert.equal(f.timersScheduled, 0, 'a known native hang must be refused before scheduling work');
+    });
+  }
+});
+
+test('Linux WebKit containment preserves Apple devices, other engines and unknown identities', async (t) => {
+  for (const [name, identity] of [
+    ['Mac Safari', { ...linuxWebKit, platform: 'MacIntel', userAgent: desktopSafariUA }],
+    ['iPhone Safari', { ...linuxWebKit, platform: 'iPhone', userAgent: mobileSafariUA }],
+    ['iPad Safari', { ...linuxWebKit, platform: 'iPad', userAgent: mobileSafariUA.replaceAll('iPhone', 'iPad') }],
+    ['iPad desktop mode', { ...linuxWebKit, platform: 'MacIntel', userAgent: desktopSafariUA, maxTouchPoints: 5 }],
+    ['Linux Chrome', { ...linuxWebKit, vendor: 'Google Inc.', userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36' }],
+    ['Linux Chrome with a Safari user agent', { ...linuxWebKit, vendor: 'Google Inc.', userAgent: desktopSafariUA }],
+    ['Linux Firefox', { ...linuxWebKit, vendor: '', userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:156.0) Gecko/20100101 Firefox/156.0' }],
+    ['unknown platform', { ...linuxWebKit, platform: '' }],
+    ['unknown vendor', { ...linuxWebKit, vendor: '' }],
+    ['unknown user agent', { ...linuxWebKit, userAgent: '' }],
+    ['missing identity fields', {}],
+    ['missing navigator', undefined],
+    ...['Chromium', 'Chrome', 'CriOS', 'Edg', 'EdgA', 'EdgiOS', 'OPR', 'Firefox', 'FxiOS'].map(token => [
+      `${token} token takes precedence over WebKit compatibility tokens`,
+      { ...linuxWebKit, userAgent: `${desktopSafariUA} ${token}/156.0` },
+    ]),
+  ]) {
+    await t.test(name, async (t) => {
+      const f = workerHarness(t);
+      replaceGlobal(t, 'navigator', identity);
+      const pending = firstSupported('VideoEncoder', candidates);
+      assert.equal(f.workers.length, 1, 'an identity outside the guard must retain its capability query');
+      const worker = f.workers[0];
+      worker.onmessage({ data: { index: 0 } });
+      assert.equal(await pending, 0);
+      f.disposed(worker);
+    });
+  }
+});
+
+test('Linux WebKit containment leaves decoder and audio capability queries available', async (t) => {
+  for (const [name, configs] of [
+    ['VideoDecoder', [{ codec: 'avc1.64001f' }]],
+    ['AudioEncoder', [{ codec: 'opus', sampleRate: 48000, numberOfChannels: 2 }]],
+    ['AudioDecoder', [{ codec: 'opus', sampleRate: 48000, numberOfChannels: 2 }]],
+  ]) {
+    await t.test(name, async (t) => {
+      const f = workerHarness(t);
+      replaceGlobal(t, 'navigator', linuxWebKit);
+      const pending = firstSupported(name, configs);
+      assert.equal(f.workers.length, 1);
+      const worker = f.workers[0];
+      assert.deepEqual(worker.messages, [{ codec: name, configs }]);
+      worker.onmessage({ data: { index: 0 } });
+      assert.equal(await pending, 0);
+      f.disposed(worker);
+    });
+  }
+});
 
 test('encoder candidates travel together to a module worker without probing the page', async (t) => {
   const f = workerHarness(t);

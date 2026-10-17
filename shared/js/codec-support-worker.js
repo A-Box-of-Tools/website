@@ -1,6 +1,7 @@
 /**
  * Only codec settings arrive here, never media. The page owns the deadline
- * and terminates this worker even if a native query blocks its event loop.
+ * and can terminate this worker when its own event loop is still responsive.
+ * A native call that hangs their shared process is outside that boundary.
  */
 const CODECS = new Set(['VideoEncoder', 'VideoDecoder', 'AudioEncoder', 'AudioDecoder']);
 

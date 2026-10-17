@@ -180,9 +180,17 @@ the request to match that cache. It needs no Blob URL or wider CSP.
 index, `-1` when the worker rejects every candidate, or `null` when the check
 cannot complete. The parent terminates the worker on every outcome. A timeout
 or worker failure must not cause a main-thread retry: that recreates the freeze
-the worker prevents. A later user attempt starts a fresh check. This protects
-against a stuck worker script; it cannot recover a crashed browser process,
-and a successful support check does not guarantee encoding will succeed.
+the worker isolates. A later user attempt starts a fresh check. This protects
+against a stuck worker script; it cannot recover native work that hangs or
+crashes the shared browser process. Linux WebKit has exhibited that broader
+failure even in a worker (#317). Encoder checks therefore return `null` before
+starting a worker when the browser reports Linux, Apple's vendor string and a
+WebKit user agent without Chromium or Firefox tokens. Apple Safari and Linux
+Chromium continue through the worker. This deliberately conservative exception
+can decline a working Linux WebKit installation; it must be revisited when
+independent native probes and exports work there. Browser identity strings can
+be overridden, so they are compatibility evidence, not proof of the host OS.
+A successful support check also does not guarantee encoding will succeed.
 
 The five reading parts stack on top of those and are worth taking as a set too.
 A tool wants `pdf-text` — where the words are — and gets `pdf-content`,
