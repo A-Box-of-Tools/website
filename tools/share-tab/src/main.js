@@ -5,14 +5,11 @@ import { phrase } from './shared/phrases.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
-import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
 
 const $ = (id) => document.getElementById(id);
 let revision = 0;
 let role = null;
 let invitation = '';
-let offlineAccepted = false;
-let offlineAccepting = false;
 let remoteRevision = 0;
 let waitingRequests = [];
 let discovery = null;
@@ -21,11 +18,10 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
-let pairingMethod = 'online';
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
-  'viewer.denied', 'host.ended', 'offline.expired',
+  'viewer.denied', 'host.ended',
 ]);
 
 function status(id, key, error = false) {
@@ -109,10 +105,6 @@ function clearRemote() {
   $('viewer-play').hidden = true;
 }
 
-function isOffline() { return pairingMethod === 'offline'; }
-
-function syncPairingChoice() { pairing.refresh(); }
-
 function renderDiscovery() {
   const list = $('discovery-list');
   const focused = document.activeElement?.dataset.code;
@@ -128,9 +120,9 @@ function renderDiscovery() {
     button.type = 'button';
     button.dataset.code = code;
     button.textContent = phrase('discovery.choose', { code });
-    button.disabled = Boolean(role) || isOffline();
+    button.disabled = Boolean(role);
     button.addEventListener('click', () => {
-      if (role || isOffline() || !browsingNearby || !nearbyShares.some((entry) => entry.code === code)) return;
+      if (role || !browsingNearby || !nearbyShares.some((entry) => entry.code === code)) return;
       $('viewer-code').value = code;
       status('viewer-status', 'discovery.selected');
       $('viewer-connect').focus();
@@ -144,7 +136,7 @@ function renderDiscovery() {
 }
 
 function startDiscovery() {
-  if (discovery || isOffline() || pageSuspended || !canConnect) return;
+  if (discovery || pageSuspended || !canConnect) return;
   discovery = watchDiscovery(`${rendezvousEndpoint()}/discover?tool=share-tab`, {
     list(shares) { nearbyShares = shares; renderDiscovery(); },
     status(state) { discoveryState = state; renderDiscovery(); },
@@ -165,7 +157,7 @@ function closeDiscovery() {
 }
 
 function publishDiscovery() {
-  if (!discoveryPublication || role !== 'host' || isOffline() || !$('host-discoverable').checked || pageSuspended) {
+  if (!discoveryPublication || role !== 'host' || !$('host-discoverable').checked || pageSuspended) {
     discovery?.unpublish();
     return;
   }
@@ -174,43 +166,23 @@ function publishDiscovery() {
 }
 
 function updateControls() {
-  pairing.refresh();
   const hosting = role === 'host';
   const viewing = role === 'viewer';
   const busy = hosting || viewing;
-  const offline = isOffline();
-  $('pairing-status').hidden = busy || !$('pairing-status').textContent;
-  $('pairing-auto').disabled = busy;
-  $('pairing-online').disabled = busy;
-  $('pairing-offline').disabled = busy;
-  $('host-discovery-option').hidden = offline;
   $('host-discoverable').disabled = busy || !canCapture;
-  $('host-publication-status').hidden = offline || !hosting || !$('host-discoverable').checked;
-  $('nearby-section').hidden = offline || busy;
-  $('discovery-controls').hidden = offline || busy;
+  $('host-publication-status').hidden = !hosting || !$('host-discoverable').checked;
+  $('nearby-section').hidden = busy;
+  $('discovery-controls').hidden = busy;
   $('discovery-start').hidden = browsingNearby;
   $('discovery-start').disabled = !canConnect;
-  $('discovery-panel').hidden = offline || busy || !browsingNearby;
-  $('online-viewer-fields').hidden = offline;
-  $('offline-viewer-fields').hidden = !offline;
-  $('offline-help').hidden = !offline;
-  $('host-start').disabled = hosting || viewing || !canCapture;
+  $('discovery-panel').hidden = busy || !browsingNearby;
+  $('host-start').disabled = busy || !canCapture;
   $('host-stop').hidden = !hosting;
-  $('viewer-connect').hidden = offline;
   $('viewer-connect').disabled = busy || !canConnect;
-  $('offline-reply').hidden = !offline;
-  $('offline-reply').disabled = busy || !canConnect;
   $('viewer-stop').hidden = !viewing;
   $('viewer-code').readOnly = busy;
   $('viewer-name').readOnly = busy;
-  $('offline-offer-input').readOnly = busy;
-  $('choose-offer').disabled = busy;
-  $('host-invitation').hidden = offline || !hosting || !invitation;
-  $('offline-host').hidden = !offline || !hosting || !$('offline-offer').value;
-  $('offline-viewer-reply').hidden = !offline || !viewing || !$('offline-answer').value;
-  $('offline-answer-input').readOnly = offlineAccepted || offlineAccepting;
-  $('choose-answer').disabled = offlineAccepted || offlineAccepting;
-  $('offline-accept').disabled = !hosting || offlineAccepted || offlineAccepting;
+  $('host-invitation').hidden = !hosting || !invitation;
 }
 
 const session = new TabSession({
@@ -267,26 +239,17 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
   revision += 1;
   role = null;
   invitation = '';
-  offlineAccepted = false;
-  offlineAccepting = false;
   discoveryPublication = null;
   closeDiscovery();
   linkCopy.invalidate();
-  blocks.clear();
   session.stop();
   capture.stop();
   $('local-video').srcObject = null;
   $('host-preview-panel').hidden = true;
   $('share-link').value = '';
-  $('offline-offer').value = '';
-  $('offline-answer').value = '';
-  $('offline-answer-input').value = '';
-  $('offline-accept-status').textContent = '';
   renderRequests([]);
   renderViewers([]);
   clearRemote();
-  if (key === 'connection.server-failed') pairing.fail();
-  syncPairingChoice();
   updateControls();
   if (previousRole) status(previousRole === 'host' ? 'host-status' : 'viewer-status', key, terminal.has(key));
 }
@@ -296,7 +259,6 @@ async function startHost() {
   stopAll();
   const owner = revision;
   role = 'host';
-  const offline = isOffline();
   status('host-status', 'host.choosing');
   updateControls();
   try {
@@ -306,18 +268,12 @@ async function startHost() {
     $('local-video').srcObject = stream;
     $('host-preview-panel').hidden = false;
     $('local-video').play().catch(() => {});
-    if (offline) {
-      const block = await session.startOfflineHost(stream);
-      if (owner !== revision || role !== 'host') return;
-      blocks.setOffer(block);
-    } else {
-      const code = makeCode();
-      if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
-      await session.startHost(stream, code, { discoverable: $('host-discoverable').checked });
-      if (owner !== revision || role !== 'host') return;
-      invitation = viewerLink(location.href, code);
-      $('share-link').value = invitation;
-    }
+    const code = makeCode();
+    if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
+    await session.startHost(stream, code, { discoverable: $('host-discoverable').checked });
+    if (owner !== revision || role !== 'host') return;
+    invitation = viewerLink(location.href, code);
+    $('share-link').value = invitation;
     updateControls();
   } catch (error) {
     if (owner !== revision) return;
@@ -332,8 +288,7 @@ function knownPhrase(key) {
 }
 
 async function connectViewer() {
-  syncPairingChoice();
-  if (role || !canConnect || isOffline()) return;
+  if (role || !canConnect) return;
   const code = parseCode($('viewer-code').value);
   if (!code) { status('viewer-status', 'code.invalid', true); return; }
   const note = $('viewer-name').value.trim();
@@ -351,47 +306,6 @@ async function connectViewer() {
   }
 }
 
-async function createViewerReply() {
-  syncPairingChoice();
-  if (role || !canConnect || !isOffline()) return;
-  const block = $('offline-offer-input').value.trim();
-  const note = $('viewer-name').value.trim();
-  if (!block || block.length > 65536) { status('viewer-status', 'offline.invalid-offer', true); return; }
-  stopAll();
-  const owner = revision;
-  role = 'viewer';
-  updateControls();
-  try {
-    const answer = await session.createOfflineAnswer(block, note);
-    if (owner !== revision || role !== 'viewer') return;
-    blocks.setAnswer(answer);
-    updateControls();
-  } catch (error) {
-    if (owner !== revision || role !== 'viewer') return;
-    const key = error.code || error.message;
-    stopAll(knownPhrase(key) ? key : 'offline.invalid-offer', 'viewer');
-  }
-}
-
-async function acceptViewerReply() {
-  if (role !== 'host' || !isOffline() || offlineAccepted || offlineAccepting) return;
-  const owner = revision;
-  offlineAccepting = true;
-  updateControls();
-  try {
-    await session.acceptOfflineAnswer($('offline-answer-input').value.trim());
-    if (owner !== revision || role !== 'host') return;
-    offlineAccepted = true;
-    $('offline-accept-status').textContent = '';
-  } catch (error) {
-    if (owner !== revision || role !== 'host') return;
-    const key = error.code || error.message;
-    status('offline-accept-status', knownPhrase(key) ? key : 'offline.invalid-answer', true);
-  } finally {
-    if (owner === revision) { offlineAccepting = false; updateControls(); }
-  }
-}
-
 function showInvitation() {
   const hash = location.hash.slice(1);
   const watching = Boolean(hash) && hash !== 'main';
@@ -401,36 +315,14 @@ function showInvitation() {
   if (watching) {
     const code = parseCode(hash);
     $('viewer-code').value = code || hash.slice(0, 2048);
-    syncPairingChoice();
     if (!code) status('viewer-status', 'code.invalid', true);
-    else if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
+    else if (canConnect) status('viewer-status', 'viewer.ready');
   }
-  syncPairingChoice();
   updateControls();
 }
 
 const canConnect = globalThis.isSecureContext && typeof globalThis.RTCPeerConnection === 'function';
 const canCapture = canConnect && typeof navigator.mediaDevices?.getDisplayMedia === 'function';
-const pairing = pairingOptions({
-  busy: () => Boolean(role),
-  invitation: () => Boolean($('viewer-code').value.trim()),
-  invitationLink: () => Boolean(location.hash && location.hash !== '#main'),
-  onChange({ method }) {
-    if (pairingMethod !== method) {
-      revision += 1;
-      pairingMethod = method;
-      closeDiscovery();
-      if (canConnect) status('viewer-status', isOffline() ? 'offline.viewer-ready' : 'viewer.ready');
-    }
-    updateControls();
-  },
-});
-const blocks = pairingBlocks({
-  createReply: createViewerReply, acceptReply: acceptViewerReply,
-  onChange: updateControls,
-  onError(error, action) { status(action.includes('answer') || action === 'offline-accept' ? 'offline-accept-status' : 'viewer-status',
-    knownPhrase(error.message) ? error.message : 'offline.file-invalid', true); },
-});
 if (!canCapture) {
   $('capture-support').textContent = phrase('capture.unsupported');
   status('host-status', 'capture.unsupported');
@@ -442,7 +334,7 @@ $('host-stop').addEventListener('click', () => stopAll('host.stopped'));
 $('viewer-connect').addEventListener('click', () => connectViewer());
 $('viewer-stop').addEventListener('click', () => stopAll());
 $('discovery-start').addEventListener('click', () => {
-  if (role || isOffline() || !canConnect || pageSuspended) return;
+  if (role || !canConnect || pageSuspended) return;
   browsingNearby = true;
   startDiscovery();
   updateControls();
@@ -459,8 +351,7 @@ for (const id of ['viewer-code', 'viewer-name']) {
   $(id).addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (isOffline()) createViewerReply();
-      else connectViewer();
+      connectViewer();
     }
   });
 }
@@ -494,11 +385,10 @@ window.addEventListener('hashchange', (event) => {
     return;
   }
   stopAll();
-  pairing.reset();
   showInvitation();
 });
 window.addEventListener('pagehide', () => { pageSuspended = true; stopAll(); });
-window.addEventListener('pageshow', () => { pageSuspended = false; syncPairingChoice(); updateControls(); });
+window.addEventListener('pageshow', () => { pageSuspended = false; updateControls(); });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
   const open = panel.hidden;

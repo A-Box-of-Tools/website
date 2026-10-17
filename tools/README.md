@@ -73,4 +73,4 @@ browser and uploads nothing; how the site around them is built is in the
 | [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Other devices find it nearby or use your listener link, with Mute and Leave controls. |
 | [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants. |
 | [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and watch it in another browser, with optional viewer approval. Live video travels directly between them, encrypted. |
-| [Share a Browser Tab](share-tab/) | `/share-tab/` | Choose a tab on your computer and let one approved viewer watch it on your local network. Pair online or exchange connection blocks offline. No extension, sound or remote control. |
+| [Share a Browser Tab](share-tab/) | `/share-tab/` | Choose a tab on your computer and let one approved viewer watch it on your local network. Invite them by link or nearby discovery. No extension, sound or remote control. |

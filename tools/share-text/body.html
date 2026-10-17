@@ -1,6 +1,7 @@
 <main id="main" class="paired-page">
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
+  <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
         <h2>Nearby shares</h2>
@@ -18,16 +19,6 @@
         still need the sharer&rsquo;s approval.
       </p>
     </section>
-  {% include "partials/pairing-options.html" %}
-  <section id="text-offline-client" class="card" hidden>
-    <h2>{{ ui.tool.pairing_receive }}</h2>
-    {% include "partials/pairing-client.html" %}
-    {% include "partials/pairing-reply.html" %}
-    <button type="button" id="text-offline-stop" class="danger" hidden>{{ ui.tool.pairing_disconnect }}</button>
-    <p id="text-offline-status" role="status" aria-live="polite"></p>
-  </section>
-  <section id="share">
-
 
     <!-- Step 1 &mdash; the content -->
     <section class="card" data-pairing-setup>
@@ -58,8 +49,8 @@
 
     <!-- Step 2 &mdash; the address, and who gets in -->
     <section class="card">
-      <h2 data-text-online><span class="step">2</span> Name the link</h2>
-      <div class="field" data-text-online>
+      <h2><span class="step">2</span> Name the link</h2>
+      <div class="field">
         <label for="code">Link name</label>
         <div class="namerow">
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
@@ -117,7 +108,7 @@
 
     <!-- Step 3 &mdash; the share itself -->
     <section class="card">
-      <h2><span class="step" data-text-sharing-step>3</span> Share it</h2>
+      <h2><span class="step">3</span> Share it</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
         <button type="button" id="publish" class="primary">Start sharing</button>
@@ -129,7 +120,6 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      {% include "partials/pairing-host.html" %}
       <div id="requests"></div>
     </section>
 
@@ -137,9 +127,8 @@
       <h2>Nothing is stored anywhere</h2>
       <p>
         The text and the files travel straight from this tab to each
-        reader&rsquo;s, encrypted. Online pairing uses the rendezvous to introduce the browsers and
-        lists discoverable link names; it never sees the text or files. Offline pairing uses the blocks exchanged
-        between devices instead.
+        reader&rsquo;s, encrypted. The rendezvous introduces the browsers and
+        lists discoverable link names; it never sees the text or files.
         Closing this tab ends the
         share and clears readers&rsquo; open pages too &mdash; though what
         someone already copied or downloaded is theirs.
@@ -244,7 +233,6 @@
   <!-- The sentences main.js puts on the page. Hidden here so the locale
        machinery reaches them; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
-    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="debug.idle">No connection attempt yet.</span>
     <span data-phrase="debug.attempt">Connection attempt {n}. {status}</span>
     <span data-phrase="debug.introduction">Contacting the introduction server.</span>

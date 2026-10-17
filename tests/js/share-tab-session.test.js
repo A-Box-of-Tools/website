@@ -68,7 +68,6 @@ function fixture(t, overrides = {}) {
   }
   class PeerConnection extends Events {
     connectionState = 'new'; localDescription = null; remoteDescription = null;
-    iceGatheringState = 'complete';
     transceivers = []; ice = []; closed = false;
     constructor(config) { super(); this.config = config; peers.push(this); }
     createDataChannel(label) { this.channel = new Channel(); this.channel.label = label; return this.channel; }
@@ -259,21 +258,18 @@ test('stopping an opening host cannot accept a late publication or revive captur
   assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
 });
 
-test('moving from a discoverable host to offline pairing retires its lease without another socket', async (t) => {
+test('replacing a discoverable host with a private invitation retires its old lease', async (t) => {
   const f = fixture(t); await f.session.startHost(source(), CODE, { discoverable: true });
   const lateMessage = f.sockets[0].onmessage;
   f.sockets[0].receive({ type: 'host-ready', discovery: PUBLICATION });
-  const offer = await f.session.startOfflineHost(source(), { discoverable: true });
-  assert.equal(JSON.parse(offer).description.type, 'offer');
-  assert.equal(f.session.mode, 'offline');
+  await f.session.startHost(source(), CODE);
   assert.equal(f.session.discoverable, false);
-  assert.equal(f.sockets.length, 1);
+  assert.equal(f.sockets.length, 2);
   assert.equal(f.sockets[0].readyState, 3);
   lateMessage({ data: JSON.stringify({ type: 'host-ready', discovery: PUBLICATION }) });
   f.session.message({ type: 'host-ready', discovery: PUBLICATION });
   assert.deepEqual(f.discoveries, [PUBLICATION, null]);
-  assert.deepEqual(f.peers[0].config, { iceServers: [] });
-  assert.equal(f.peers[0].transceivers.length, 0);
+  assert.equal(f.peers.length, 0);
 });
 
 test('a forged acknowledgement never substitutes for the host approval', async (t) => {
@@ -502,147 +498,4 @@ test('invalid names are rejected without opening a room', async (t) => {
   await assert.rejects(f.session.startHost(stream, undefined), /code.invalid/);
   assert.equal(f.sockets.length, 0);
   assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
-});
-
-test('one offline offer and answer establishes control, then media negotiates only after approval and acknowledgement', async (t) => {
-  const host = fixture(t), watching = fixture(t), held = [];
-  const offer = await host.session.startOfflineHost(source());
-  const answer = await watching.session.createOfflineAnswer(offer, 'My laptop');
-  await host.session.acceptOfflineAnswer(answer);
-  assert.equal(host.session.mode, 'offline'); assert.equal(watching.session.mode, 'offline');
-  assert.equal(host.sockets.length, 0); assert.equal(watching.sockets.length, 0);
-  assert.equal(/^m=(video|audio)\s/m.test(JSON.parse(offer).description.sdp), false);
-  assert.equal(/^m=(video|audio)\s/m.test(JSON.parse(answer).description.sdp), false);
-  const a = host.peers[0].channel, b = new Channel();
-  watching.peers[0].emit('datachannel', { channel: b });
-  for (const [from, to] of [[a, b], [b, a]]) {
-    const send = from.send.bind(from);
-    from.send = (text) => {
-      send(text);
-      if (JSON.parse(text).type === 'approval-ack') held.push(() => to.emit('message', { data: text }));
-      else queueMicrotask(() => to.emit('message', { data: text }));
-    };
-  }
-  a.open(); b.open(); await settle();
-  assert.deepEqual(host.requests.at(-1), [{ id: 'offline', note: 'My laptop' }]);
-  assert.equal(host.peers[0].transceivers.length, 0);
-  host.session.approve('offline'); await settle();
-  assert.equal(held.length, 1); assert.equal(host.peers[0].transceivers.length, 0);
-  held[0](); await settle();
-  assert.equal(host.peers[0].transceivers.length, 1);
-  assert.equal(host.peers[0].transceivers[0].direction, 'sendonly');
-  assert.ok(a.sent.some((frame) => frame.type === 'signal' && frame.data.description.type === 'offer'));
-  assert.ok(b.sent.some((frame) => frame.type === 'signal' && frame.data.description.type === 'answer'));
-  assert.equal(host.session.peers.get('offline').negotiated, true);
-  assert.equal(host.sockets.length + watching.sockets.length, 0);
-});
-
-test('offline answers are bound to their offer and cannot be replayed', async (t) => {
-  const host = fixture(t), watching = fixture(t);
-  const offer = await host.session.startOfflineHost(source());
-  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
-  const foreign = { ...JSON.parse(answer), session: 'f'.repeat(32) };
-  if (foreign.session === JSON.parse(offer).session) foreign.session = 'e'.repeat(32);
-  await assert.rejects(host.session.acceptOfflineAnswer(JSON.stringify(foreign)), /offline.invalid-answer/);
-  assert.equal(host.peers[0].remoteDescription, null);
-  await host.session.acceptOfflineAnswer(answer);
-  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
-  assert.equal(host.peers[0].transceivers.length, 0);
-});
-
-test('hello arriving during answer import cannot reinstall a connection deadline over human approval', async (t) => {
-  t.mock.timers.enable({ apis: ['setTimeout'] });
-  const host = fixture(t), watching = fixture(t);
-  const offer = await host.session.startOfflineHost(source());
-  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
-  const peer = host.peers[0];
-  peer.setRemoteDescription = async (description) => {
-    peer.remoteDescription = description;
-    peer.channel.open(); peer.channel.receive('hello');
-    peer.channel.receive('request', { note: 'Already connected' });
-  };
-  await host.session.acceptOfflineAnswer(answer);
-  t.mock.timers.tick(20001); await settle();
-  assert.equal(peer.closed, false);
-  assert.equal(host.session.approve('offline'), true);
-  assert.equal(peer.transceivers.length, 0);
-});
-
-test('a stopped or replaced offline offer cannot accept its old answer', async (t) => {
-  const host = fixture(t), watching = fixture(t), first = source();
-  const offer = await host.session.startOfflineHost(first);
-  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
-  host.session.stop();
-  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
-  await host.session.startOfflineHost(source());
-  await assert.rejects(host.session.acceptOfflineAnswer(answer), /offline.invalid-answer/);
-  assert.equal(host.peers[1].remoteDescription, null);
-  assert.ok(first.getTracks().every((track) => track.readyState === 'ended'));
-});
-
-test('offline gathering waits for complete candidates and Stop cancels without creating a socket', async (t) => {
-  const f = fixture(t), stream = source(), pending = f.session.startOfflineHost(stream);
-  const peer = f.peers[0]; peer.iceGatheringState = 'gathering'; await settle();
-  assert.equal(f.states.at(-1).key, 'offline.gathering');
-  f.session.stop();
-  await assert.rejects(pending, /connection.stopped/);
-  peer.iceGatheringState = 'complete'; peer.emit('icegatheringstatechange'); await settle();
-  assert.equal(f.session.mode, null); assert.equal(f.sockets.length, 0);
-  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
-});
-
-test('a manual offer is exported only after gathering finishes and includes only filtered host candidates', async (t) => {
-  const f = fixture(t), pending = f.session.startOfflineHost(source());
-  const peer = f.peers[0]; peer.iceGatheringState = 'gathering'; await settle();
-  assert.equal(f.states.at(-1).key, 'offline.gathering');
-  peer.localDescription = { type: 'offer', sdp: MIXED_SDP };
-  peer.iceGatheringState = 'complete'; peer.emit('icegatheringstatechange');
-  const block = await pending;
-  assert.equal(JSON.parse(block).description.sdp, LOCAL_SDP);
-  assert.equal(f.states.at(-1).key, 'offline.offer-ready');
-  assert.equal(f.sockets.length, 0);
-});
-
-test('an offline host gets ten minutes for human exchange rather than the transport deadline', async (t) => {
-  t.mock.timers.enable({ apis: ['setTimeout'] });
-  const f = fixture(t), stream = source(); await f.session.startOfflineHost(stream);
-  t.mock.timers.tick(20001); await settle();
-  assert.equal(f.session.mode, 'offline'); assert.equal(f.peers[0].closed, false);
-  t.mock.timers.tick(600000); await settle();
-  assert.equal(f.session.mode, null); assert.equal(f.states.at(-1).key, 'offline.expired');
-  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
-});
-
-test('an offline viewer keeps its answer alive beyond twenty seconds while the human returns it', async (t) => {
-  t.mock.timers.enable({ apis: ['setTimeout'] });
-  const host = fixture(t), watching = fixture(t);
-  const offer = await host.session.startOfflineHost(source());
-  await watching.session.createOfflineAnswer(offer, 'Viewer');
-  t.mock.timers.tick(20001); await settle();
-  assert.equal(watching.session.mode, 'offline'); assert.equal(watching.peers[0].closed, false);
-  assert.equal(watching.states.at(-1).key, 'offline.answer-ready');
-  t.mock.timers.tick(600000); await settle();
-  assert.equal(watching.session.mode, null); assert.equal(watching.states.at(-1).key, 'offline.expired');
-});
-
-test('offline pairing tolerates different device clocks while the host still enforces its own expiry', async (t) => {
-  let hostNow = Date.now();
-  const host = fixture(t, { now: () => hostNow }), watching = fixture(t, { now: () => hostNow + 24 * 60 * 60 * 1000 });
-  const offer = await host.session.startOfflineHost(source());
-  const answer = await watching.session.createOfflineAnswer(offer, 'Viewer');
-  assert.equal(JSON.parse(answer).expires, JSON.parse(offer).expires);
-  await host.session.acceptOfflineAnswer(answer);
-  const newer = await host.session.startOfflineHost(source());
-  const newerAnswer = await watching.session.createOfflineAnswer(newer, 'Viewer');
-  hostNow = JSON.parse(newer).expires;
-  await assert.rejects(host.session.acceptOfflineAnswer(newerAnswer), /offline.expired/);
-  assert.equal(host.peers[1].remoteDescription, null);
-});
-
-test('offline in-band media signaling before approval cannot attach a track', async (t) => {
-  const f = fixture(t); await f.session.startOfflineHost(source());
-  const peer = f.peers[0]; peer.channel.open(); peer.channel.receive('hello');
-  peer.channel.receive('signal', { data: { description: { type: 'answer', sdp: SDP } } }); await settle();
-  assert.equal(peer.closed, true); assert.equal(peer.transceivers.length, 0);
-  assert.equal(f.session.mode, null);
 });

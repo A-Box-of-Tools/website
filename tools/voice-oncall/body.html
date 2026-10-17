@@ -11,7 +11,6 @@
     <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
     <p class="vi-note" id="vi-selection-help">Choose a pager, then Connect below. Choosing alone does not connect or request your microphone.</p>
   </section>
-  {% include "partials/pairing-options.html" %}
   <p class="vi-intro">Create a Voice Oncall pager for people on the same local network. They connect and speak to the host without entering a name. The host listens, without using a microphone.</p>
   <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall" data-pairing-setup>
     <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
@@ -23,13 +22,6 @@
   </div>
 
   <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
-    <div id="vi-offline-join" hidden>
-      <p class="vi-note">Paste the host's invitation and create a reply to give back. After the host accepts it, enter the pager password if required and choose Connect. Creating a reply does not request your microphone.</p>
-      {% include "partials/pairing-client.html" %}
-      {% include "partials/pairing-reply.html" %}
-      <button type="button" id="vi-offline-cancel" hidden>Cancel pairing</button>
-      <p id="vi-offline-status" class="vi-note" role="status" aria-live="polite"></p>
-    </div>
     <form id="vi-join-form">
       <label for="vi-sender-password">Pager password, if required</label>
       <input id="vi-sender-password" type="password" autocomplete="current-password">
@@ -77,8 +69,7 @@
       <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let nearby people find it.</p>
       <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
-      {% include "partials/pairing-host.html" %}
-      <section class="vi-invite" id="vi-invite" aria-labelledby="vi-invite-title">
+      <section class="vi-invite" aria-labelledby="vi-invite-title">
         <div class="vi-invite-fields">
           <h3 id="vi-invite-title">Invite people</h3>
           <p class="vi-note">Share this link or let people scan the QR code. Share a password separately if your pager requires one.</p>
@@ -101,20 +92,15 @@
 
   <details class="vi-details">
     <summary>How nearby voices connect</summary>
-    <p>In Online mode, an internet service lists pagers in your internet-address group and introduces their browsers. This is not a scan of your Wi-Fi, and a listed pager is not guaranteed to be on your physical network.</p>
-    <p>For Offline mode, load the page on both devices first. The host creates a fresh invitation for each participant. Each participant returns a reply; after the host accepts it, Connect checks the password and starts the microphone quietly. Setup and moderation travel directly, without discovery or pairing WebSockets. If this direct connection closes or a page reloads, exchange fresh blocks.</p>
+    <p>An internet service lists pagers in your internet-address group and introduces their browsers. This is not a scan of your Wi-Fi, and a listed pager is not guaranteed to be on your physical network.</p>
     <p>Voice travels directly between browsers and is encrypted. There is no audio relay or recording. Use a trusted network where devices can reach one another; guest Wi-Fi, firewalls, and some VPNs may prevent connections.</p>
     <p>Anyone who can find your pager can try to connect. A password limits access, and the host can mute or remove participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
     <p>Remove ends one participant session. A new tab or cleared browser storage can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
   </details>
 </div>
 <div id="phrases" hidden>
-  {% include "partials/pairing-phrases.html" %}
-  <span data-phrase="offline-ready">The offline link is ready. Enter the pager password if required, then Connect to allow your microphone.</span>
   <span data-phrase="join-idle">Choose a nearby pager or open a link from its host.</span>
-  <span data-phrase="join-idle-offline">Paste the host's invitation below and create a reply to give back.</span>
   <span data-phrase="host-idle">Name your pager, then open it for nearby people.</span>
-  <span data-phrase="host-idle-offline">Name your pager, then start it to create an invitation.</span>
   <span data-phrase="host-starting">Opening your Voice Oncall pager…</span>
   <span data-phrase="host-ready">Your pager is open.</span>
   <span data-phrase="host-reconnecting">Reconnecting your pager…</span>
@@ -177,7 +163,7 @@
   <span data-phrase="toggle-stop">Stop talking</span>
   <span data-phrase="copy-success">Pager link copied.</span>
   <span data-phrase="copy-error">Select and copy the pager link above.</span>
-  <span data-phrase="net.clean">Online discovery introduces browsers; Offline exchanges blocks. Voice travels directly between them.</span>
-  <span data-phrase="net.dirty">Online discovery needs internet. Offline pairing uses exchanged blocks and a direct connection.</span>
+  <span data-phrase="net.clean">Internet discovery and pairing introduce browsers. Voice travels directly between them.</span>
+  <span data-phrase="net.dirty">Internet discovery and pairing are needed to find or reconnect a pager.</span>
 </div>
 </main>

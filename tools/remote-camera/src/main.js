@@ -5,7 +5,6 @@ import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { createDiagnostics } from './shared/connection-diagnostics.js';
-import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
 import { alertCapabilities, ViewerAlerts } from './alerts.js';
@@ -48,12 +47,6 @@ let pendingApprovalRequests = new Map();
 let approvalDialogPeer = null;
 let approvalDialogRevision = 0;
 let reportAction = 0;
-let pairing = null;
-let blocks = null;
-let offlineOfferId = null;
-let offlineAccepted = false;
-let offlineWorking = false;
-let viewerStatusKey = 'viewer.ready';
 const watchedTracks = new WeakSet();
 const capture = new CameraCapture({ getUserMedia: (constraints) => {
   // Exclusive-camera retries can outlive the gesture that opened them.
@@ -62,107 +55,9 @@ const capture = new CameraCapture({ getUserMedia: (constraints) => {
 } });
 
 const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
-const offline = () => pairing?.method === 'offline';
-const pairingBusy = () => Boolean(activeRole || cameraIntent || cameraStarting || cameraResuming);
-
-function renderPairing() {
-  if (!pairing) return;
-  const manual = offline(), busy = pairingBusy();
-  if (viewerStatusKey === 'viewer.ready') showStatus(viewerStatusKey, 'viewer');
-  $('camera-discovery').hidden = manual || busy;
-  $('camera-online-options').hidden = manual;
-  $('online-viewer-fields').hidden = manual;
-  $('offline-viewer-fields').hidden = !manual;
-  $('viewer-connect').hidden = manual || activeRole === 'viewer';
-  $('offline-reply').hidden = !manual || activeRole === 'camera';
-  $('offline-reply').disabled = busy;
-  $('offline-offer-input').readOnly = busy;
-  $('choose-offer').disabled = busy;
-  $('offline-host').hidden = !manual || activeRole !== 'camera' || !capture.stream;
-  $('offline-viewer-reply').hidden = !manual || activeRole !== 'viewer' || !$('offline-answer').value;
-  $('offline-new').disabled = offlineWorking || session.role !== 'camera' || cameraResumeNeeded || cameraResuming;
-  $('offline-new').hidden = !manual || activeRole !== 'camera';
-  $('offline-accept').disabled = offlineWorking || offlineAccepted || !offlineOfferId || session.role !== 'camera';
-  $('offline-answer-input').readOnly = offlineWorking || offlineAccepted;
-  $('choose-answer').disabled = offlineWorking || offlineAccepted || !offlineOfferId;
-  if (manual) {
-    discovery?.unpublish(); discovery?.close(); discovery = null;
-    foundCameras = [];
-    $('camera-invite').hidden = true;
-    $('camera-publication-status').textContent = '';
-  } else if (!discovery && !pageSuspended) startDiscovery();
-}
-
-function clearOffline() {
-  offlineOfferId = null; offlineAccepted = false; offlineWorking = false;
-  blocks?.clear();
-}
-
-async function newOfflineOffer() {
-  if (offlineWorking || session.role !== 'camera' || session.mode !== 'offline') return;
-  const current = epoch;
-  offlineWorking = true;
-  if (offlineOfferId && !offlineAccepted) session.cancelOfflineOffer(offlineOfferId);
-  offlineOfferId = null; offlineAccepted = false;
-  blocks?.setOffer('');
-  $('offline-accept-status').textContent = phrase('offline.gathering');
-  $('offline-answer-input').value = '';
-  renderPairing();
-  try {
-    const offer = await session.createOfflineOffer();
-    if (current !== epoch || session.mode !== 'offline') return;
-    offlineOfferId = offer.id;
-    blocks?.setOffer(offer.block);
-    $('offline-accept-status').textContent = phrase('offline.offer-ready');
-    return offer.block;
-  } catch (error) {
-    if (current === epoch) showStatus(captureError(error), 'camera');
-    throw error;
-  } finally {
-    if (current === epoch) { offlineWorking = false; renderPairing(); }
-  }
-}
-
-async function acceptOfflineReply(text) {
-  if (!offlineOfferId || offlineAccepted || offlineWorking) return;
-  const current = epoch, id = offlineOfferId;
-  offlineWorking = true; renderPairing();
-  try {
-    await session.acceptOfflineAnswer(id, text);
-    if (current !== epoch || id !== offlineOfferId) return;
-    offlineAccepted = true;
-    $('offline-accept-status').textContent = phrase('connection.connecting');
-  } finally {
-    if (current === epoch) { offlineWorking = false; renderPairing(); }
-  }
-}
-
-async function createOfflineReply(text) {
-  if (pairingBusy() || !offline()) return;
-  if (!globalThis.isSecureContext || !globalThis.RTCPeerConnection) throw new Error('connection.unsupported');
-  stop();
-  mode = 'viewer'; showActiveRole('viewer');
-  const current = ++epoch;
-  $('viewer-name').disabled = true;
-  $('viewer-stop').hidden = false;
-  showStatus('offline.gathering', 'viewer');
-  renderPairing();
-  try {
-    const reply = await session.createOfflineAnswer(text, $('viewer-name').value);
-    if (current !== epoch || activeRole !== 'viewer') return;
-    blocks.setAnswer(reply); renderPairing(); watchDetails();
-    showStatus('offline.answer-ready', 'viewer');
-    return reply;
-  } catch (error) {
-    if (current === epoch) stop(error.message);
-    throw error;
-  }
-}
-
 function showStatus(key, role = mode) {
   const element = $(role === 'camera' ? 'camera-status' : 'viewer-status');
-  if (role !== 'camera') viewerStatusKey = key;
-  element.textContent = role !== 'camera' && key === 'viewer.ready' && offline() ? '' : phrase(key);
+  element.textContent = phrase(key);
   element.classList.toggle('warn', warning(key));
 }
 
@@ -257,13 +152,11 @@ const session = new CameraSession({
     showStatus(awaitingPairing ? session.signalingRetry ? 'connection.reconnecting' : 'connection.unavailable' : key, role);
     if (session.role === null) {
       const retain = role === 'camera' && cameraIntent !== null
-        && !(cameraStarting && key === 'connection.server-failed' && pairing?.preference === 'auto')
         && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
       closeStopDialog();
       closeApprovalDialog();
       discovery?.unpublish();
       epoch += 1;
-      clearOffline();
       clearDetails();
       if (role === 'camera') {
         cameraStarting = false;
@@ -281,7 +174,6 @@ const session = new CameraSession({
       }
       else idleViewer();
       showActiveRole(retain ? 'camera' : null);
-      if (!retain && key === 'connection.server-failed') pairing?.fail();
     } else if (role === 'camera' && key === 'camera.paused') {
       cameraResumeNeeded = true;
       renderCameraRecovery();
@@ -404,7 +296,6 @@ function renderDiscovery() {
 }
 
 function startDiscovery() {
-  if (discovery || offline() || pageSuspended) return;
   discovery = watchDiscovery(`${rendezvousEndpoint()}/discover?tool=${TOOL}`, {
     list(list) { foundCameras = list; renderDiscovery(); },
     status(state) { discoveryState = state; renderDiscovery(); },
@@ -421,7 +312,6 @@ function stop(key = 'connection.stopped') {
   closeStopDialog();
   closeApprovalDialog();
   epoch += 1;
-  clearOffline();
   discovery?.unpublish();
   session.stop(key);
   capture.stop();
@@ -433,7 +323,6 @@ function stop(key = 'connection.stopped') {
   showStatus('viewer.ready', 'viewer');
   showStatus(key);
   showActiveRole(null);
-  if (key === 'connection.server-failed') pairing?.fail();
 }
 
 function closeStopDialog() {
@@ -504,17 +393,15 @@ function showActiveRole(role) {
   activeRole = role;
   $('camera-panel').hidden = role === 'viewer';
   $('viewer-panel').hidden = role === 'camera';
-  $('camera-discovery').hidden = role !== null || offline();
+  $('camera-discovery').hidden = role !== null;
   if (role) $('camera-workspace').dataset.active = role;
   else delete $('camera-workspace').dataset.active;
-  pairing?.refresh();
 }
 
 function fillViewerCode(code) {
   if (activeRole) stop();
   mode = 'viewer';
   $('viewer-code').value = code;
-  pairing?.refresh();
   showStatus('viewer.ready', 'viewer');
   $('viewer-code').focus();
 }
@@ -592,7 +479,7 @@ async function keepAwake(current) {
 function captureError(error) {
   if (error?.name === 'NotAllowedError' || error?.name === 'SecurityError') return 'camera.denied';
   if (error?.name === 'NotFoundError' || error?.name === 'OverconstrainedError') return 'camera.missing';
-  if (/^(?:camera|connection|offline)\./.test(error?.message ?? '')) return error.message;
+  if (error?.message?.startsWith('camera.') || error?.message?.startsWith('connection.')) return error.message;
   return 'camera.busy';
 }
 
@@ -744,7 +631,6 @@ function updateCameraAudio() {
 }
 
 function showCameraIdentity(code) {
-  if (cameraIntent?.method === 'offline') { $('camera-invite').hidden = true; renderPairing(); return; }
   hostCode = code;
   const link = viewerLink(location.href, code);
   $('camera-link').value = link;
@@ -771,7 +657,6 @@ function renderCameraRecovery() {
   $('camera-audio').disabled = true;
   $('camera-device').disabled = cameraResuming || cameraResumeNeeded || capture.switching;
   session.requests();
-  renderPairing();
 }
 
 function pauseCameraCapture() {
@@ -793,7 +678,6 @@ function suspendCameraResources() {
   closeStopDialog();
   closeApprovalDialog();
   epoch += 1;
-  clearOffline();
   discovery?.unpublish();
   session.stop('camera.paused');
   capture.stop();
@@ -862,7 +746,6 @@ async function resumeCamera({ manual = true } = {}) {
       if (document.hidden || pageSuspended) { suspendCameraResources(); return; }
       prepareAudio(stream);
       await session.startHost(stream, identity.code, identity);
-      if (current === epoch && identity.method === 'offline') await newOfflineOffer();
     }
     if (current !== epoch || cameraIntent !== identity) return;
     if (stream === null) {
@@ -995,8 +878,7 @@ async function switchCamera() {
 async function startCamera() {
   if (cameraIntent) return resumeCamera();
   if (document.hidden || pageSuspended) return;
-  const method = pairing.method;
-  const code = method === 'offline' ? makeCode() : normalize($('camera-name').value);
+  const code = normalize($('camera-name').value);
   if (!code) return showStatus('code.name-invalid', 'camera');
   if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) return showStatus('camera.unsupported', 'camera');
   if (!globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'camera');
@@ -1004,7 +886,7 @@ async function startCamera() {
   mode = 'camera';
   cameraIntent = { code, discoverable: $('camera-discoverable').checked,
     requireApproval: $('camera-require-approval').checked, deviceId: null,
-    audio: $('camera-audio').checked, videoBudget: Number($('camera-bandwidth').value), method };
+    audio: $('camera-audio').checked, videoBudget: Number($('camera-bandwidth').value) };
   if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   showActiveRole('camera');
   const current = ++epoch;
@@ -1029,8 +911,6 @@ async function startCamera() {
     renderDiscovery();
     await session.startHost(stream, code, cameraIntent);
     if (current !== epoch) return;
-    if (cameraIntent.method === 'offline') await newOfflineOffer();
-    if (current !== epoch) return;
     showCameraIdentity(code);
     watchDetails();
     keepAwake(current);
@@ -1045,7 +925,6 @@ async function startCamera() {
 }
 
 async function connectViewer() {
-  if (offline()) return;
   if (activeRole === 'viewer') return;
   const code = parseCode($('viewer-code').value);
   if (!code) return showStatus('code.invalid', 'viewer');
@@ -1214,7 +1093,7 @@ observeForeground({
   },
   restore() {
     pageSuspended = false;
-    pairing?.refresh();
+    if (!discovery) startDiscovery();
   },
 });
 window.addEventListener('hashchange', () => {
@@ -1229,20 +1108,9 @@ $('privacy-toggle').addEventListener('click', () => {
 });
 const code = parseCode(location.hash);
 $('camera-name').value = makeCode();
-pairing = pairingOptions({ busy: pairingBusy,
-  invitation: () => Boolean($('viewer-code').value.trim()),
-  invitationLink: () => Boolean(parseCode(location.hash)), onChange: renderPairing });
-blocks = pairingBlocks({ createReply: createOfflineReply, acceptReply: acceptOfflineReply, newOffer: newOfflineOffer,
-  onChange: renderPairing,
-  onError: (error, id) => {
-    const key = captureError(error);
-    showStatus(key, activeRole === 'camera' ? 'camera' : 'viewer');
-    if (id === 'offline-accept' || id === 'load-answer') $('offline-accept-status').textContent = phrase(key);
-  } });
 showActiveRole(null);
 if (code) fillViewerCode(code);
-pairing.refresh();
-$('viewer-code').addEventListener('input', () => pairing.refresh());
+startDiscovery();
 showApprovalPolicy();
 
 // The frame keeps its warning until every control has been initialised.

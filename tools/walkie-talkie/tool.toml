@@ -10,9 +10,9 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "voice-session", "voice-offline", "offline-channel", "offline-pairing", "pairing-ui", "pairing-choice", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-16"
+lastmod = "2026-10-15"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk, hands-free speech and microphone recovery within the same pairing."
@@ -20,14 +20,14 @@ og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
 og_card = "Hold to talk. Everyone on your local link can listen."
-csp_note = "Online pairing opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, setup and status. Local builds and HTTPS abox-preview.pages.dev previews use rendezvous-dev.abox.tools. Offline pairing exchanges invitation and reply blocks and opens no discovery or pairing WebSocket. Both modes use direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
-pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Online or offline pairing, no recording or audio relay."
-pledge = "Host and listen in your browser without installing anything. Automatic pairing uses the internet service when available, or offers manual offline pairing when the browser reports no internet. You can explicitly choose either method. Online pairing handles temporary connection metadata, never microphone audio. Offline pairing exchanges an invitation and reply for each listener. Each listener receives encrypted WebRTC audio directly from the host browser. Use a trusted reachable network and share invitations carefully."
-live_hint = "Online mode intentionally contacts rendezvous.abox.tools for discovery, connection setup and status. It sees channel names, listener invitations for listed channels, room identifiers, addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Offline mode uses exchanged blocks and a direct signaling channel, with no pairing service. Neither mode configures STUN or TURN."
+csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Local builds and HTTPS abox-preview.pages.dev previews use the separate wss://rendezvous-dev.abox.tools service. Starting or joining a channel opens a separate secure WebSocket for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
+pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet discovery and pairing, no recording or audio relay."
+pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect; the rendezvous handles temporary connection metadata, never microphone audio. Each listener receives encrypted WebRTC audio directly from the host browser. Anyone with the listener link and a reachable direct route can listen. Use a trusted local network and share the link carefully."
+live_hint = "This tool intentionally contacts rendezvous.abox.tools for discovery, connection setup and status. It sees channel names, listener invitations for listed channels, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
 read_first = ", <code>src/session.js</code> for microphone cleanup and reconnects, and <code>workers/rendezvous/broadcast.js</code> for the authenticated setup protocol"
 howto_heading = "How to open a local voice channel"
 card = "One browser host and up to ten receive-only listeners, with push to talk and automatic reconnection."
-md_note = "Choose Start channel on this website and allow microphone access. Use nearby discovery or a listener link online, or exchange a fresh invitation and reply for each listener offline. No Python, download or account is needed. Audio travels directly between reachable devices."
+md_note = "Choose Start channel on this website, allow microphone access and share the listener link or QR code. No Python, download or account is needed. Internet access is needed for pairing; audio travels directly between reachable devices."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
@@ -72,7 +72,7 @@ title = "Start directly on this website."
 body = " On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
 title = "Invite listeners."
-body = " Listeners select your channel with Choose in Nearby channels, then choose Join channel when you start with Show this channel nearby selected. Choosing alone does not connect. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Online discovery and link pairing need internet access. In Offline mode, exchange a fresh invitation and reply for each listener instead."
+body = " Listeners select your channel with Choose in Nearby channels, then choose Join channel when you start with Show this channel nearby selected. Choosing alone does not connect. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
 [[howto]]
 title = "Hold to talk or speak hands-free."
 body = " Hold the Talk button, or focus it and hold Space. Release, leave the page or switch focus to release a physical hold. For hands-free speech, choose Start talking; it can continue with the page hidden while the browser allows. Choose Stop talking to stop, and check the displayed talking state before setting the device down. Microphone mute overrides both modes, and a microphone interruption clears hands-free speech. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
@@ -88,7 +88,7 @@ q = "Does voice go through an internet server?"
 a = "No. The internet service exchanges connection setup and status; voice uses a separate direct encrypted browser connection to each listener. No audio relay fallback is configured."
 [[faq]]
 q = "Does it work without internet?"
-a = "Yes. Load the page on both devices before losing internet, select Offline, and start the host. Give its invitation block to one listener, then paste that listener's reply on the host. Create a fresh invitation for each additional listener. Both devices still need a reachable Wi-Fi or hotspot route. If the direct signaling connection closes or the page reloads, exchange new blocks. No relay is used."
+a = "Internet access is required for new pairing and recovery. A healthy direct audio connection may continue during a brief internet or pairing-service outage. A cached page alone cannot introduce new devices."
 [[faq]]
 q = "Can a phone host the channel?"
 a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Healthy connections and hands-free speech can continue with the page hidden while the browser permits. Screen lock, browser suspension or operating-system interruptions may still stop them; try your actual phone before relying on background use. Phones can also listen without granting microphone access."
@@ -97,7 +97,7 @@ q = "How do listeners join?"
 a = "Select a nearby channel with Choose, then choose Join channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
 [[faq]]
 q = "Can we use a phone hotspot?"
-a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and use Online for internet discovery and pairing, or Offline to exchange invitation and reply blocks. Use the listener link or QR code when the nearby list misses a channel. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
+a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the listener link or QR code when the nearby list misses a channel. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
 [[faq]]
 q = "What happens when the host disappears?"
 a = "Receivers wait and check availability with a one-second target while active, keeping their mute choice. Hiding a healthy page does not deliberately disconnect it. A microphone interruption clears talking and keeps the pairing; an ended microphone can be replaced with Resume microphone or on returning to the page. If the browser suspends the page, returning tries to restore the same channel and invitation, with Resume channel as a fallback. Recovery leaves talking off. Background timers or service connection limits can delay retries. End broadcast stops receivers and prevents automatic resumption; the next channel uses a new invitation."
@@ -110,5 +110,5 @@ a = "Guest isolation, firewalls, VPN routes or browser local-network permissions
 
 [schema]
 category = "CommunicationApplication"
-description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and online or offline pairing."
-features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link, QR and offline block pairing", "No recording, STUN or TURN"]
+description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and secure internet pairing."
+features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link and QR pairing", "No recording, STUN or TURN"]

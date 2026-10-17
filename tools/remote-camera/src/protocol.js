@@ -31,18 +31,10 @@ export function viewerLink(href, code) {
 }
 
 export function controlMessage(text) {
-  if (typeof text !== 'string' || text.length > 65536) return null;
+  if (typeof text !== 'string' || text.length > 1024) return null;
   try {
     const value = JSON.parse(text);
     if (!value || value.protocol !== PROTOCOL) return null;
-    if (value.type === 'signal') {
-      if (value.description && !value.candidate && ['offer', 'answer'].includes(value.description.type)
-          && typeof value.description.sdp === 'string' && value.description.sdp.length <= 60000) return value;
-      if (value.candidate && !value.description && typeof value.candidate.candidate === 'string'
-          && value.candidate.candidate.length <= 2048) return value;
-      return null;
-    }
-    if (text.length > 1024) return null;
     if (['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) {
       if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
       return value;

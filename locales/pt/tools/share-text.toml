@@ -16,9 +16,27 @@ og_title = "Um compartilhamento que acaba assim que você fecha a aba"
 og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta. Fechar a aba encerra a origem do compartilhamento; a cópia exibida é apagada quando a desconexão é detectada."
 og_image_alt = "Compartilhar texto e arquivos - de navegador a navegador, nada armazenado"
 
-pledge = "As descrições a seguir sobre servidor e descoberta se aplicam a Online. Offline troca blocos de conexão sem contactar esses serviços.     O que você compartilha aqui viaja do seu navegador para o de cada\n    leitor por um canal WebRTC criptografado de ponta a ponta, e para nenhum\n    outro lugar. O único servidor envolvido &mdash; nomeado na\n    <code>Content-Security-Policy</code> desta página, código no\n    repositório &mdash; apresenta os dois navegadores um ao outro e lista\n    os nomes de link locais visíveis na lista. Não guarda texto ou arquivos\n    compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta\n    duram só enquanto quem compartilha continua conectado. Não há histórico\n    de conteúdo nem conta. Feche esta aba e a origem do compartilhamento\n    desaparece. As páginas dos leitores limpam a cópia exibida ao receber o\n    aviso de encerramento ou detectar uma falha de conexão. O conteúdo já\n    copiado ou baixado permanece com quem o recebeu."
+pledge = """
+    O que você compartilha aqui viaja do seu navegador para o de cada
+    leitor por um canal WebRTC criptografado de ponta a ponta, e para nenhum
+    outro lugar. O único servidor envolvido &mdash; nomeado na
+    <code>Content-Security-Policy</code> desta página, código no
+    repositório &mdash; apresenta os dois navegadores um ao outro e lista
+    os nomes de link locais visíveis na lista. Não guarda texto ou arquivos
+    compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta
+    duram só enquanto quem compartilha continua conectado. Não há histórico
+    de conteúdo nem conta. Feche esta aba e a origem do compartilhamento
+    desaparece. As páginas dos leitores limpam a cópia exibida ao receber o
+    aviso de encerramento ou detectar uma falha de conexão. O conteúdo já
+    copiado ou baixado permanece com quem o recebeu."""
 
-live_hint = "No modo Online:       Abra as ferramentas do desenvolvedor e observe a aba\n      &ldquo;Rede&rdquo; enquanto compartilha. Você verá um WebSocket até o\n      intermediário para os nomes de link locais ao abrir esta página\n      inicial. Começar a compartilhar adiciona outro para estabelecer\n      conexões. Um leitor usa um único socket de apresentação. Por mais\n      que você digite ou anexe, nenhum deles carrega o texto ou os arquivos."
+live_hint = """
+      Abra as ferramentas do desenvolvedor e observe a aba
+      &ldquo;Rede&rdquo; enquanto compartilha. Você verá um WebSocket até o
+      intermediário para os nomes de link locais ao abrir esta página
+      inicial. Começar a compartilhar adiciona outro para estabelecer
+      conexões. Um leitor usa um único socket de apresentação. Por mais
+      que você digite ou anexe, nenhum deles carrega o texto ou os arquivos."""
 
 read_first = """
 , <code>src/main.js</code> para as duas
@@ -68,7 +86,30 @@ O texto e os arquivos passam por um canal de dados WebRTC: uma conexão direta, 
 
 [[privacy]]
 title = "O que é o intermediário, e tudo o que ele vê."
-body = "No modo Online:  Uma conexão direta precisa\n      de uma apresentação. Esta página inicial abre automaticamente um\n      WebSocket para o nosso intermediário para os nomes de link locais\n      visíveis na lista; começar a compartilhar abre outro para o próprio\n      compartilhamento. Um leitor usa um único socket de apresentação.\n      Ele junta quem digitou um\n      nome de link com quem compartilha sob esse nome, repassa alguns\n      kilobytes de negociação e não retém nada: nunca grava armazenamento, e\n      uma sala deixa de existir assim que quem compartilha se desconecta.\n      Ele pode ver que um nome está em uso, quando cada um chega e sai, e os\n      endereços IP. Não pode ver o texto, os arquivos, quem foi admitido nem\n      o que alguém escreveu: até a batida numa porta privada viaja pelo\n      canal direto criptografado. O código completo dele está no\n      repositório, ao lado do desta ferramenta. O diretório lista só os nomes\n      anunciados por quem continua conectado com o mesmo endereço IPv4\n      público ou a mesma sub-rede IPv6.\n      Isso pode incluir outras redes por trás de uma VPN compartilhada ou de\n      um endereço compartilhado pelo provedor. Se alguns dispositivos usam\n      IPv4 e outros IPv6, ou seguem caminhos diferentes, podem não aparecer\n      mesmo estando na mesma rede local. O que sobrevive a um\n      compartilhamento é uma coisa só: a Cloudflare, que executa o servidor,\n      guarda um registro de cada conexão por sete dias, com o nome de link, o\n      endereço e a hora, nunca o conteúdo."
+body = """
+ Uma conexão direta precisa
+      de uma apresentação. Esta página inicial abre automaticamente um
+      WebSocket para o nosso intermediário para os nomes de link locais
+      visíveis na lista; começar a compartilhar abre outro para o próprio
+      compartilhamento. Um leitor usa um único socket de apresentação.
+      Ele junta quem digitou um
+      nome de link com quem compartilha sob esse nome, repassa alguns
+      kilobytes de negociação e não retém nada: nunca grava armazenamento, e
+      uma sala deixa de existir assim que quem compartilha se desconecta.
+      Ele pode ver que um nome está em uso, quando cada um chega e sai, e os
+      endereços IP. Não pode ver o texto, os arquivos, quem foi admitido nem
+      o que alguém escreveu: até a batida numa porta privada viaja pelo
+      canal direto criptografado. O código completo dele está no
+      repositório, ao lado do desta ferramenta. O diretório lista só os nomes
+      anunciados por quem continua conectado com o mesmo endereço IPv4
+      público ou a mesma sub-rede IPv6.
+      Isso pode incluir outras redes por trás de uma VPN compartilhada ou de
+      um endereço compartilhado pelo provedor. Se alguns dispositivos usam
+      IPv4 e outros IPv6, ou seguem caminhos diferentes, podem não aparecer
+      mesmo estando na mesma rede local. O que sobrevive a um
+      compartilhamento é uma coisa só: a Cloudflare, que executa o servidor,
+      guarda um registro de cada conexão por sete dias, com o nome de link, o
+      endereço e a hora, nunca o conteúdo."""
 
 [[privacy]]
 title = "Nada é armazenado: fechar a aba é a exclusão."
@@ -174,15 +215,46 @@ body = """
 
 [[faq]]
 q = "Alguma coisa é enviada para algum lugar?"
-a = "No modo Online:         Não. O texto e os arquivos vão do seu navegador para o de cada\n        leitor por um canal WebRTC criptografado, diretamente. O único\n        servidor envolvido carrega a apresentação e os nomes de link locais\n        cuja publicação foi escolhida, nunca o conteúdo. Não guarda texto\n        nem bytes de arquivos. Salas e entradas de descoberta acabam com\n        suas conexões abertas; os registros de conexão de sete dias da\n        Cloudflare contêm metadados, nunca o conteúdo."
+a = """
+        Não. O texto e os arquivos vão do seu navegador para o de cada
+        leitor por um canal WebRTC criptografado, diretamente. O único
+        servidor envolvido carrega a apresentação e os nomes de link locais
+        cuja publicação foi escolhida, nunca o conteúdo. Não guarda texto
+        nem bytes de arquivos. Salas e entradas de descoberta acabam com
+        suas conexões abertas; os registros de conexão de sete dias da
+        Cloudflare contêm metadados, nunca o conteúdo."""
 
 [[faq]]
 q = "Então por que esta ferramenta fala com um servidor, logo neste site?"
-a = "No modo Online:         Porque dois navegadores não conseguem se encontrar sozinhos: algo\n        precisa juntar quem digitou <code>brave-otter-42</code> com quem\n        compartilha sob esse nome, e levar a oferta de conexão entre os\n        dois. Esse algo é o intermediário, a única dependência de rede desta\n        página, nomeado na sua <code>Content-Security-Policy</code> e\n        publicado no mesmo repositório da página. É o menor servidor capaz\n        de fazer o trabalho. Ele também lista os nomes de link locais cuja\n        publicação foi escolhida, para navegadores que usam o mesmo endereço\n        IPv4 público ou a mesma sub-rede IPv6. Não guarda conteúdo nem\n        consegue ler o canal criptografado\n        entre os navegadores."
+a = """
+        Porque dois navegadores não conseguem se encontrar sozinhos: algo
+        precisa juntar quem digitou <code>brave-otter-42</code> com quem
+        compartilha sob esse nome, e levar a oferta de conexão entre os
+        dois. Esse algo é o intermediário, a única dependência de rede desta
+        página, nomeado na sua <code>Content-Security-Policy</code> e
+        publicado no mesmo repositório da página. É o menor servidor capaz
+        de fazer o trabalho. Ele também lista os nomes de link locais cuja
+        publicação foi escolhida, para navegadores que usam o mesmo endereço
+        IPv4 público ou a mesma sub-rede IPv6. Não guarda conteúdo nem
+        consegue ler o canal criptografado
+        entre os navegadores."""
 
 [[faq]]
 q = "O que exatamente esse servidor pode ver?"
-a = "No modo Online:         Que um nome de link está em uso, quando quem compartilha e os\n        leitores se conectam e saem, seus endereços IP e o estabelecimento\n        da conexão criptografada que trocam, e os nomes de link cuja\n        publicação na descoberta foi escolhida. A lista de descoberta\n        agrupa os nomes pelo endereço IPv4 público ou pela sub-rede IPv6\n        vistos pelo servidor, e pela origem da página.\n        Não o texto, não os arquivos,\n        não seus nomes nem tamanhos, não quem foi admitido a um\n        compartilhamento privado, e não o que alguém escreveu ao se\n        apresentar: tudo isso viaja pelo canal direto, criptografado de\n        ponta a ponta, que não passa pelo servidor. A Cloudflare, que executa\n        o servidor, guarda um registro de cada conexão por sete dias: o nome\n        de link, o endereço e a hora. Nada mais sobrevive ao compartilhamento."
+a = """
+        Que um nome de link está em uso, quando quem compartilha e os
+        leitores se conectam e saem, seus endereços IP e o estabelecimento
+        da conexão criptografada que trocam, e os nomes de link cuja
+        publicação na descoberta foi escolhida. A lista de descoberta
+        agrupa os nomes pelo endereço IPv4 público ou pela sub-rede IPv6
+        vistos pelo servidor, e pela origem da página.
+        Não o texto, não os arquivos,
+        não seus nomes nem tamanhos, não quem foi admitido a um
+        compartilhamento privado, e não o que alguém escreveu ao se
+        apresentar: tudo isso viaja pelo canal direto, criptografado de
+        ponta a ponta, que não passa pelo servidor. A Cloudflare, que executa
+        o servidor, guarda um registro de cada conexão por sete dias: o nome
+        de link, o endereço e a hora. Nada mais sobrevive ao compartilhamento."""
 
 [[faq]]
 q = "O que acontece quando fecho a aba?"
@@ -233,11 +305,26 @@ a = """
 
 [[faq]]
 q = "Funciona offline?"
-a = "Sim, sem internet, se os dispositivos conseguirem se comunicar por Wi-Fi, Ethernet ou ponto de acesso. Carregue antes esta ferramenta HTTPS nos dois e espere a indicação de que está pronta para uso offline. Automatic mostra blocos manuais quando o navegador informa que está sem internet; você também pode escolher Offline em Connection options. Quem compartilha entrega um bloco de convite, o leitor cria uma resposta e quem compartilha a aceita. O leitor ainda escolhe Conectar, e Privado continua exigindo aprovação. Troque novos blocos para cada leitor. Eles expiram após dez minutos e contêm endereços de conexão. Offline não usa o serviço de apresentação, diretório de proximidade, STUN público ou retransmissor de internet. O editor também funciona sem nenhuma rede."
+a = "O editor funciona sem internet depois que a página é salva: você pode escrever, visualizar Markdown e manter um rascunho. Para compartilhar, os dois dispositivos precisam de internet para que o serviço de apresentação conecte os navegadores. Salvar a página não permite parear sem internet. O modo de rede local também precisa dessa apresentação, embora o conteúdo viaje diretamente entre os navegadores."
 
 [[faq]]
 q = "E se a gente não conseguir conectar?"
-a = "No modo Online: A oferta de retransmissor descrita abaixo vale apenas para o modo de conexão normal. A maioria dos pares de navegadores se alcança diretamente depois de\n        apresentada; uma minoria não, geralmente quando um dos lados está na\n        rede de endereços compartilhados de uma operadora de celular ou\n        atrás de uma rede corporativa rígida. Esta página nunca passa para\n        um retransmissor em silêncio &mdash; isso mudaria o que esta\n        ferramenta é sem dizer &mdash;: depois de vinte segundos ela diz com\n        clareza que não houve conexão direta e oferece um ao leitor: um\n        retransmissor mantido pela Cloudflare que repassa os bytes\n        criptografados entre os dois navegadores e não consegue lê-los,\n        porque a chave nunca sai das duas pontas. O leitor o escolhe de\n        forma explícita, na própria página, depois de saber o que ele vê\n        &mdash; os dois endereços, como a conexão direta veria &mdash;, e\n        ali também nada é guardado. O seu lado não muda: seu navegador\n        continua enviando só para aquele leitor, como faria se ele estivesse\n        atrás de uma VPN. O modo Rede local nunca oferece um retransmissor. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet e se o isolamento da rede de convidados, um firewall ou uma VPN está bloqueando a conexão."
+a = """
+A oferta de retransmissor descrita abaixo vale apenas para o modo de conexão normal. A maioria dos pares de navegadores se alcança diretamente depois de
+        apresentada; uma minoria não, geralmente quando um dos lados está na
+        rede de endereços compartilhados de uma operadora de celular ou
+        atrás de uma rede corporativa rígida. Esta página nunca passa para
+        um retransmissor em silêncio &mdash; isso mudaria o que esta
+        ferramenta é sem dizer &mdash;: depois de vinte segundos ela diz com
+        clareza que não houve conexão direta e oferece um ao leitor: um
+        retransmissor mantido pela Cloudflare que repassa os bytes
+        criptografados entre os dois navegadores e não consegue lê-los,
+        porque a chave nunca sai das duas pontas. O leitor o escolhe de
+        forma explícita, na própria página, depois de saber o que ele vê
+        &mdash; os dois endereços, como a conexão direta veria &mdash;, e
+        ali também nada é guardado. O seu lado não muda: seu navegador
+        continua enviando só para aquele leitor, como faria se ele estivesse
+        atrás de uma VPN. O modo Rede local nunca oferece um retransmissor. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet e se o isolamento da rede de convidados, um firewall ou uma VPN está bloqueando a conexão."""
 
 [[faq]]
 q = "Renderizar Markdown é seguro, se qualquer um pode compartilhar qualquer coisa?"
@@ -253,7 +340,14 @@ a = """
 
 [[faq]]
 q = "Duas pessoas podem compartilhar sob o mesmo nome?"
-a = "No modo Online:         Ao mesmo tempo, não. Um compartilhamento vivo por nome, imposto no\n        intermediário: quem chega em segundo é recusado e convidado a\n        escolher outro nome. Assim que um compartilhamento acaba, o nome\n        fica livre de novo &mdash; o que também significa que um link\n        guardado vale o que valer o compartilhamento por trás dele: o mesmo\n        nome, semana que vem, pode ser de outra pessoa. Trate um link como\n        algo de um momento, não de uma pessoa."
+a = """
+        Ao mesmo tempo, não. Um compartilhamento vivo por nome, imposto no
+        intermediário: quem chega em segundo é recusado e convidado a
+        escolher outro nome. Assim que um compartilhamento acaba, o nome
+        fica livre de novo &mdash; o que também significa que um link
+        guardado vale o que valer o compartilhamento por trás dele: o mesmo
+        nome, semana que vem, pode ser de outra pessoa. Trate um link como
+        algo de um momento, não de uma pessoa."""
 
 [[faq]]
 q = "É grátis? Preciso de conta?"
@@ -267,11 +361,35 @@ a = """
 
 [[faq]]
 q = "Posso compartilhar arquivos pela minha rede local?"
-a = "No modo Online: Sim. Antes de começar, escolha Rede local — sem retransmissor de internet, conecte os dois dispositivos à mesma rede Wi-Fi ou Ethernet e copie o link para o leitor. O link inclui o modo; um leitor que usa outro modo precisa escolher explicitamente antes de tentar de novo com o modo de quem compartilha. A apresentação dos navegadores ainda precisa de internet. Este modo não usa descoberta pública de endereços e nunca passa a um retransmissor de internet. Uma VPN ou as políticas de rede do navegador podem mudar o caminho ou impedir a conexão; a opção não prova que os bytes ficam dentro de um prédio. A aprovação privada continua ativada por padrão e o limite continua sendo de 200&nbsp;MB por arquivo. Uma sessão pode incluir até 256 arquivos.\n        Visível na lista vem ativado neste modo: o outro navegador pode abrir\n        a página da ferramenta e escolher seu nome na lista desta conexão.\n        Desmarque para compartilhar só por link; você também pode continuar\n        copiando o link para o leitor."
+a = """
+Sim. Antes de começar, escolha Rede local — sem retransmissor de internet, conecte os dois dispositivos à mesma rede Wi-Fi ou Ethernet e copie o link para o leitor. O link inclui o modo; um leitor que usa outro modo precisa escolher explicitamente antes de tentar de novo com o modo de quem compartilha. A apresentação dos navegadores ainda precisa de internet. Este modo não usa descoberta pública de endereços e nunca passa a um retransmissor de internet. Uma VPN ou as políticas de rede do navegador podem mudar o caminho ou impedir a conexão; a opção não prova que os bytes ficam dentro de um prédio. A aprovação privada continua ativada por padrão e o limite continua sendo de 200&nbsp;MB por arquivo. Uma sessão pode incluir até 256 arquivos.
+        Visível na lista vem ativado neste modo: o outro navegador pode abrir
+        a página da ferramenta e escolher seu nome na lista desta conexão.
+        Desmarque para compartilhar só por link; você também pode continuar
+        copiando o link para o leitor."""
 
 [[faq]]
 q = "Como a lista encontra compartilhamentos locais?"
-a = "No modo Online:         Abrir a página inicial desta ferramenta pede ao intermediário os\n        nomes de link visíveis na lista de navegadores que usam o mesmo\n        endereço IPv4 público ou a mesma sub-rede IPv6. Normalmente isso\n        significa o mesmo roteador,\n        mas uma VPN compartilhada ou um provedor que compartilha um endereço\n        pode incluir outras redes. Se alguns dispositivos usam IPv4 e outros\n        IPv6, ou seguem caminhos diferentes, podem não aparecer mesmo estando\n        na mesma rede local. A lista não comprova uma mesma rede local\n        física. É preciso ter internet. Só aparecem compartilhamentos no\n        modo Rede local. Escolha esse modo antes de começar, pois vem\n        desativado por padrão. Compartilhamentos locais são\n        anunciados por padrão; desmarque Visível na lista para compartilhar\n        só por link e mantenha Privado ativado em redes compartilhadas.\n        Escolher um nome abre a página de consentimento do compartilhamento;\n        nunca conecta automaticamente nem dispensa a aprovação privada.\n        O diretório mantém só os nomes de link enquanto quem compartilha\n        continua conectado, nunca o texto, os nomes de arquivo ou os bytes\n        dos arquivos. Se a descoberta estiver indisponível, compartilhar\n        por link continua funcionando."
+a = """
+        Abrir a página inicial desta ferramenta pede ao intermediário os
+        nomes de link visíveis na lista de navegadores que usam o mesmo
+        endereço IPv4 público ou a mesma sub-rede IPv6. Normalmente isso
+        significa o mesmo roteador,
+        mas uma VPN compartilhada ou um provedor que compartilha um endereço
+        pode incluir outras redes. Se alguns dispositivos usam IPv4 e outros
+        IPv6, ou seguem caminhos diferentes, podem não aparecer mesmo estando
+        na mesma rede local. A lista não comprova uma mesma rede local
+        física. É preciso ter internet. Só aparecem compartilhamentos no
+        modo Rede local. Escolha esse modo antes de começar, pois vem
+        desativado por padrão. Compartilhamentos locais são
+        anunciados por padrão; desmarque Visível na lista para compartilhar
+        só por link e mantenha Privado ativado em redes compartilhadas.
+        Escolher um nome abre a página de consentimento do compartilhamento;
+        nunca conecta automaticamente nem dispensa a aprovação privada.
+        O diretório mantém só os nomes de link enquanto quem compartilha
+        continua conectado, nunca o texto, os nomes de arquivo ou os bytes
+        dos arquivos. Se a descoberta estiver indisponível, compartilhar
+        por link continua funcionando."""
 
 [schema]
 description = "Compartilhe texto e arquivos de um navegador para outro por uma conexão WebRTC direta e criptografada de ponta a ponta. Nomes de link faláveis, atualização ao vivo enquanto digita, Markdown e aprovação por leitor. Nenhum servidor guarda nada; o compartilhamento acaba quando quem compartilha fecha a aba."

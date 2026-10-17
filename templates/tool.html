@@ -178,7 +178,7 @@
 -->
 <div id="frame-phrases" hidden aria-hidden="true">
   <span data-phrase="card.waiting">{{ ui.tool.card_waiting }}</span>
-  <span data-phrase="offline.ready">{{ ui.tool.offline_ready }}</span>
+  <span data-phrase="offline.ready">{% if tool.requires_pairing %}{{ ui.tool.pairing_cached }}{% else %}{{ ui.tool.offline_ready }}{% endif %}</span>
   <span data-phrase="offline.none">{{ ui.tool.offline_none }}</span>
   <span data-phrase="offline.insecure">{{ ui.tool.offline_insecure }}</span>
   <span data-phrase="offline.failed">{{ ui.tool.offline_failed }}</span>

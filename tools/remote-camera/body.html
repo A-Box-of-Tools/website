@@ -14,14 +14,12 @@
     </details>
   </section>
 
-  {% include "partials/pairing-options.html" %}
-  <p class="camera-requirements">Both devices need this page open and a local network that lets them reach each other. Online invitations need internet; offline pairing uses connection blocks you exchange. Video and optional audio travel directly between the browsers. No recording or internet relay.</p>
+  <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video and optional audio travel directly between the browsers. No recording or internet relay.</p>
 
   <div id="camera-workspace" class="camera-workspace" data-pairing-setup>
   <section id="camera-panel" data-role="camera" class="card">
     <h2>Share my camera</h2>
-    <p class="card-lede">Allow camera access on this device. Invite viewers with a link online or exchange connection blocks offline. Choose whether you want to approve each viewer.</p>
-    <div id="camera-online-options">
+    <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
     <div class="field camera-name-field">
       <div class="camera-help-row">
         <label for="camera-name">Viewer link name</label>
@@ -37,7 +35,6 @@
     </div>
     <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> Show this camera nearby</label>
     <p class="field-note">The link name is visible to browsers in the discovery group described under Nearby cameras. Turn this off to invite viewers by link only.</p>
-    </div>
     <div class="camera-help-row">
       <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
       <details id="camera-approval-help" class="camera-help info-fold">
@@ -76,7 +73,6 @@
     </div>
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
     <p id="camera-publication-status" class="field-note" role="status" aria-live="polite"></p>
-    {% include "partials/pairing-host.html" %}
     <div id="camera-preview-panel" class="camera-video-panel" hidden>
       <div id="camera-device-field" class="field camera-device-field" hidden>
         <label for="camera-device">Camera</label>
@@ -111,15 +107,14 @@
 
   <section id="viewer-panel" data-role="viewer" class="card">
     <h2>Watch a camera</h2>
-    <p class="card-lede">Use a nearby camera, code or viewer link online, or paste a connection block offline. This device does not need camera or microphone access.</p>
+    <p class="card-lede">Choose a nearby camera above, or enter a code or viewer link below. Then select Connect to camera. This device does not need camera or microphone access.</p>
     <div class="settings viewer-fields">
-      <div id="online-viewer-fields" class="field">
+      <div class="field">
         <div class="camera-help-row">
           <label for="viewer-code">Camera code or viewer link</label>
         </div>
         <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
       </div>
-      {% include "partials/pairing-client.html" %}
       <div class="field">
         <div class="camera-help-row">
           <label for="viewer-name">A name the camera device will recognise</label>
@@ -137,11 +132,10 @@
       <div class="camera-help-row">
         <details id="viewer-connection-help" class="camera-help info-fold">
           <summary aria-describedby="viewer-connection-note"><span class="visually-hidden">About connecting to a camera</span></summary>
-          <p id="viewer-connection-note" class="camera-help-note" role="tooltip">Connecting shares each browser&rsquo;s network address with the other. Online pairing contacts our introduction service; offline pairing uses the exchanged blocks. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
+          <p id="viewer-connection-note" class="camera-help-note" role="tooltip">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
         </details>
       </div>
     </div>
-    {% include "partials/pairing-reply.html" %}
     <p id="viewer-status" class="camera-status" role="status" aria-live="polite">Enter a camera code to request a view.</p>
     <div id="viewer-video-panel" class="camera-video-panel" hidden>
       <div id="viewer-video-frame" class="viewer-video-frame">
@@ -217,7 +211,6 @@
   </details>
 
   <div id="phrases" hidden>
-    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="camera.ready">Your camera is off. Nothing is paired.</span>
     <span data-phrase="camera.start">Start camera</span>
     <span data-phrase="camera.resume">Resume camera</span>
