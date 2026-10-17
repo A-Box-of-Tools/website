@@ -20,16 +20,9 @@ test('tab control accepts only bounded admission and ending messages', () => {
   const frame = (type, values = {}) => JSON.stringify({ protocol: PROTOCOL, type, ...values });
   assert.equal(controlMessage(frame('request', { note: 'My screen' })).note, 'My screen');
   assert.equal(controlMessage(frame('approval-ack')).type, 'approval-ack');
-  for (const type of ['click', 'keypress', 'navigate', 'execute', 'relay']) assert.equal(controlMessage(frame(type)), null);
+  for (const type of ['click', 'keypress', 'navigate', 'execute', 'relay', 'signal']) assert.equal(controlMessage(frame(type)), null);
   assert.equal(controlMessage(frame('request', { note: 'x'.repeat(81) })), null);
   assert.equal(controlMessage(frame('request')), null);
   assert.equal(controlMessage(JSON.stringify({ protocol: 'share-text', type: 'approved' })), null);
   assert.equal(controlMessage('x'.repeat(1025)), null);
-});
-
-test('offline encrypted signaling has its own bounded object envelope', () => {
-  const frame = { protocol: PROTOCOL, type: 'signal', data: { description: { type: 'offer', sdp: 'v=0\r\n' } } };
-  assert.equal(controlMessage(JSON.stringify(frame)).type, 'signal');
-  assert.equal(controlMessage(JSON.stringify({ ...frame, data: [] })), null);
-  assert.equal(controlMessage(JSON.stringify({ ...frame, data: { description: { sdp: 'x'.repeat(65536) } } })), null);
 });

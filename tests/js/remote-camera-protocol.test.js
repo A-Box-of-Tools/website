@@ -42,15 +42,3 @@ test('control messages require the protocol, a known type and bounded note', () 
   assert.deepEqual(controlMessage(message('request', { note })), { protocol: PROTOCOL, type: 'request', note });
   for (const fields of [{}, { note: 42 }, { note: null }, { note: 'x'.repeat(81) }]) assert.equal(controlMessage(message('request', fields)), null);
 });
-
-test('offline control signaling admits one bounded description or candidate while ordinary control stays small', () => {
-  const description = { type: 'offer', sdp: `v=0\r\n${'a=x\r\n'.repeat(300)}` };
-  const candidate = { candidate: 'candidate:1 1 udp 1 192.0.2.1 5000 typ host', sdpMid: '0' };
-  assert.deepEqual(controlMessage(message('signal', { description })), { protocol: PROTOCOL, type: 'signal', description });
-  assert.deepEqual(controlMessage(message('signal', { candidate })), { protocol: PROTOCOL, type: 'signal', candidate });
-  for (const fields of [{}, { description, candidate }, { description: { type: 'rollback', sdp: 'v=0' } },
-    { description: { type: 'offer', sdp: 'x'.repeat(60001) } }, { candidate: { candidate: 'x'.repeat(2049) } },
-    { candidate: { candidate: 1 } }]) assert.equal(controlMessage(message('signal', fields)), null);
-  assert.equal(controlMessage(message('signal', { description }).padEnd(65537, ' ')), null);
-  assert.equal(controlMessage(message('hello', { padding: 'x'.repeat(1024) })), null);
-});

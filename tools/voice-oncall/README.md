@@ -20,8 +20,7 @@ permission. A pointer selection focuses the password field or Connect button;
 keyboard selection keeps focus in the radio group for arrow navigation. The list is
 hidden while a session is starting, active or paused. Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic; neither bypasses
-the internet requirement for online discovery and pairing or guarantees reachability.
-Offline mode exchanges blocks without an internet pairing service.
+the internet requirement for discovery and pairing or guarantees reachability.
 
 The interface calls the listening endpoint a pager. Internal inbox and room
 identifiers retain their existing names so invitations, credentials and recovery
@@ -61,7 +60,7 @@ can hide physically nearby devices, so the page does not call this a LAN scan.
 tools. Inbox hosts offer receive-only audio; participants answer send-only audio.
 The same bounded connection-generation, ICE, backpressure, retry and idle ping/pong
 logic serves both directions. Only audio SDP and host ICE candidates are accepted.
-In Online mode, internet pairing is required; a healthy direct voice path can outlive a brief
+Internet pairing is required; a healthy direct voice path can outlive a brief
 signaling outage, and foreground waiting participants probe at a one-second target.
 
 The host routes each incoming stream through its own Web Audio gain. Muting sets
@@ -124,28 +123,3 @@ come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
 and how another tool can use them. This tool still owns its protocol, consent,
 credentials, approval and media policy; a foreground event cannot grant any of
 those permissions or undo an explicit Stop.
-
-## Offline pairing
-
-The shared pairing selector chooses Online when internet is available and offers
-Offline when the browser reports it is offline; either can be chosen explicitly.
-Offline starts no discovery or room WebSocket. Load the page on both devices first.
-Start the host, exchange its invitation for one participant's reply, and accept
-that reply. New invitation replaces only a pending exchange; established peers
-remain connected. Every additional participant needs a fresh exchange. Blocks
-expire after ten minutes and replies are bound to their original invitation.
-
-`shared/js/offline-channel.js` owns a host-only, data-only bootstrap connection.
-`shared/js/voice-offline.js` runs the bounded voice admission and moderation
-broker in the host browser. The existing `voice-session.js` uses a local Socket
-adapter over this channel to negotiate separate direct audio, preserving capture,
-quiet recovery, password admission and host controls. Host authority never comes
-from a remote role field. No host key or password-derived proof is in a block or
-the bootstrap greeting. Oncall's explicit Connect requests a quiet microphone
-only after the block exchange; Walkie listeners never request one.
-
-Media can recover while the direct signaling channel survives. Losing it or
-reloading requires fresh blocks; offline pairing never falls back to the internet
-or a relay. End/Leave/Disconnect and pending Cancel pairing invalidate late work,
-close every owned bootstrap and stop media. The host retains up to ten independent
-participants and bounded per-session moderation history.

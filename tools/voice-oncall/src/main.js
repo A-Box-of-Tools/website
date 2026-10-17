@@ -4,8 +4,6 @@ import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
-import { pairingOptions, pairingBlocks } from './shared/pairing-ui.js';
-import { OfflineVoiceHost, OfflineVoiceClient } from './shared/voice-offline.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
@@ -75,112 +73,6 @@ function activateOncall() {
   const removedIds = new Set();
   const participantNodes = new Map();
   let participants = new Map();
-  let renderedStatusKey = 'join-idle';
-  let offlineHost = null, offlineClient = null, offlineBusy = false;
-  let offlineEpoch = 0;
-  const field = id => document.getElementById(id);
-  const quietDiscovery = () => ({ close() {}, refresh() {}, unpublish() {}, publish() { return false; } });
-  let discovery = quietDiscovery(), discoveryOnline = false;
-  const pairing = pairingOptions({
-    busy: () => starting || hostActive || senderActive || senderPaused || offlineBusy || Boolean(offlineHost || offlineClient),
-    invitationLink: () => validCode(invitationCode),
-    onChange: ({ method }) => {
-      if (method === 'online' && !discoveryOnline && !pageSuspended) { discoveryOnline = true; discovery = openDiscovery(); }
-      else if (method === 'offline' && discoveryOnline) { discovery.close(); discovery = quietDiscovery(); discoveryOnline = false; }
-      renderOffline();
-    },
-  });
-  const blocks = pairingBlocks({ createReply: createOfflineReply, acceptReply: acceptOfflineReply,
-    newOffer: newOfflineOffer, onError: offlineError, onChange: renderOffline });
-
-  function renderOffline() {
-    const offline = pairing.method === 'offline';
-    if (['join-idle', 'host-idle'].includes(renderedStatusKey)) ui['status-text'].textContent = phrase(offline ? `${renderedStatusKey}-offline` : renderedStatusKey);
-    ui.nearby.hidden = offline || hostActive || senderActive || senderPaused || starting || senderTerminal;
-    field('vi-offline-join').hidden = !offline || senderActive || senderPaused || senderTerminal;
-    field('offline-host').hidden = !offline || !hostActive;
-    field('offline-viewer-fields').hidden = !offline || Boolean(offlineClient);
-    field('offline-reply').hidden = !offline || Boolean(offlineClient);
-    field('offline-reply').disabled = offlineBusy || starting || hostActive;
-    field('offline-viewer-reply').hidden = !offline || !field('offline-answer').value || Boolean(offlineClient?.identity);
-    field('vi-offline-cancel').hidden = !offline || !offlineClient;
-    field('offline-new').disabled = offlineBusy || starting || !offlineHost?.ready;
-    field('offline-new').hidden = !offline || !hostActive;
-    field('offline-accept').disabled = offlineBusy || !offlineHost?.pending;
-    field('offline-offer-input').disabled = offlineBusy || Boolean(offlineClient);
-    field('offline-answer-input').disabled = offlineBusy || !offlineHost?.pending;
-    field('vi-invite').hidden = offline;
-    ui.join.disabled = starting || offlineBusy || offline && !offlineClient?.identity;
-    ui.start.disabled = starting || Boolean(offlineClient) || offlineBusy;
-    ui['tab-host'].disabled = Boolean(offlineClient) || offlineBusy || (hostActive || senderActive || senderPaused || starting) && view !== 'host';
-  }
-  function offlineError(error) {
-    const key = typeof error === 'string' ? error : error?.message;
-    field('offline-accept-status').textContent = phrase(['error-full', 'offline.invalid-offer', 'offline.invalid-answer', 'offline.expired', 'offline.file-invalid'].includes(key) ? key : 'offline.disconnected');
-    field('vi-offline-status').textContent = field('offline-accept-status').textContent;
-    renderOffline();
-  }
-  function closeOffline() {
-    offlineEpoch++;
-    const host = offlineHost, client = offlineClient;
-    offlineHost = offlineClient = null;
-    offlineBusy = false;
-    host?.close(); client?.close();
-    blocks.clear();
-    field('vi-offline-status').textContent = '';
-    pairing.refresh();
-  }
-  async function newOfflineOffer() {
-    if (pairing.method !== 'offline' || !offlineHost?.ready || offlineBusy) return;
-    const host = offlineHost, epoch = offlineEpoch;
-    offlineBusy = true; renderOffline();
-    field('offline-accept-status').textContent = phrase('offline.gathering');
-    try {
-      const text = await host.createOffer();
-      if (epoch === offlineEpoch && offlineHost === host) { field('offline-accept-status').textContent = phrase('offline.offer-ready'); return text; }
-    } finally { if (epoch === offlineEpoch) { offlineBusy = false; renderOffline(); } }
-  }
-  async function acceptOfflineReply(text) {
-    if (!offlineHost?.pending || offlineBusy) return;
-    const epoch = offlineEpoch;
-    offlineBusy = true; renderOffline();
-    try { await offlineHost.acceptAnswer(text); }
-    finally { if (epoch === offlineEpoch) { offlineBusy = false; renderOffline(); } }
-  }
-  async function createOfflineReply(text) {
-    if (pairing.method !== 'offline' || hostActive || starting || offlineBusy || offlineClient) return;
-    const epoch = ++offlineEpoch;
-    const client = new OfflineVoiceClient({ tool: 'voice-oncall',
-      onReady: identity => {
-        if (epoch !== offlineEpoch || offlineClient !== client) return;
-        selectedCode = identity.code;
-        field('vi-offline-status').textContent = phrase('offline-ready');
-        updateControls();
-        (identity.locked ? ui['sender-password'] : ui.join).focus();
-      },
-      onClose: () => {
-        if (epoch !== offlineEpoch) return;
-        operationEpoch++; stopSession(false); clearTransmitFlags();
-        starting = senderActive = senderPaused = false;
-        canTransmit = false;
-        resumeRoleOnReturn = null;
-        offlineError('offline.disconnected');
-        updateControls();
-      },
-    });
-    offlineClient = client;
-    offlineBusy = true; pairing.refresh();
-    try { return await client.createAnswer(text); }
-    catch (error) { if (epoch === offlineEpoch) { offlineClient = null; client.close(); } throw error; }
-    finally { if (epoch === offlineEpoch) { offlineBusy = false; pairing.refresh(); } }
-  }
-  field('vi-offline-cancel').addEventListener('click', () => {
-    leaveSender();
-    selectedCode = null;
-    ui['sender-password'].value = '';
-    ui['sender-password'].setCustomValidity('');
-    renderState('join-idle');
-  });
 
   function readStored(key) {
     try {
@@ -242,12 +134,11 @@ function activateOncall() {
   }
 
   function currentRoom() {
-    if (pairing.method === 'offline') return offlineClient?.identity ? { ...offlineClient.identity, name: offlineClient.identity.roomName } : null;
     return rooms.find(room => room.code === selectedCode) || (selectedCode ? { code: selectedCode, name: phrase('invited-room'), locked: null } : null);
   }
 
   function setView(next) {
-    if (hostActive || senderActive || senderPaused || starting || offlineBusy || offlineClient) return;
+    if (hostActive || senderActive || senderPaused || starting) return;
     view = next;
     for (const role of ['join', 'host']) {
       const selected = role === next;
@@ -284,7 +175,6 @@ function activateOncall() {
     ui['sender-note'].hidden = !senderMuted && !senderPaused && !capturePaused;
     ui['sender-note'].textContent = senderMuted ? phrase('sender-muted') : capturePaused ? phrase('sender-microphone-paused') : senderPaused ? phrase('sender-paused') : '';
     updateHostSound();
-    pairing.refresh();
   }
 
   function interruptedHostAudio() {
@@ -465,7 +355,6 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
-    renderedStatusKey = key;
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (activeRole === 'sender' && detail.captureState) {
       captureState = detail.captureState;
@@ -541,9 +430,8 @@ function activateOncall() {
       rememberSenderTerminal(key);
       stripInvitation();
     }
-    const statusKey = activeRole === 'sender' && senderActive && captureState !== 'ready'
-      ? microphoneResuming ? 'microphone-resuming' : 'sender-microphone-paused' : key;
-    ui['status-text'].textContent = phrase(pairing.method === 'offline' && ['join-idle', 'host-idle'].includes(statusKey) ? `${statusKey}-offline` : statusKey);
+    ui['status-text'].textContent = phrase(activeRole === 'sender' && senderActive && captureState !== 'ready'
+      ? microphoneResuming ? 'microphone-resuming' : 'sender-microphone-paused' : key);
     ui['status-dot'].dataset.state = activeRole === 'sender' && senderActive && captureState !== 'ready'
       ? 'waiting' : key === 'sender-talking' ? 'talking' : ['host-ready', 'sender-ready'].includes(key) ? 'ready' : 'waiting';
     updateControls();
@@ -585,6 +473,7 @@ function activateOncall() {
     ui.empty.hidden = listed.length > 0;
   }
 
+  let discovery;
   function openDiscovery() {
     return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=voice-oncall`, {
     list(shares) {
@@ -597,13 +486,13 @@ function activateOncall() {
     },
     status(key) {
       ui['discovery-status'].textContent = phrase(`discovery-${key}`);
-      if (key === 'unavailable') pairing.fail();
     },
     publication(key) {
       ui['publication-status'].textContent = key ? phrase(`publication-${key}`) : '';
     },
     });
   }
+  discovery = openDiscovery();
 
   function disconnectGraph(id) {
     const graph = audioGraphs.get(id);
@@ -785,17 +674,13 @@ function activateOncall() {
     microphoneResuming = false;
     captureRecoveryTried = false;
     session = new InboxSession({
-      ...(pairing.method === 'offline' ? { Socket: (role === 'host' ? offlineHost : offlineClient).Socket } : {}),
       role,
       code: identity.code,
       key: identity.key,
       roomName: role === 'host' ? identity.roomName : undefined,
       passwordProof: identity.passwordProof,
       onState: (key, detail) => {
-        if (generation === sessionGeneration) {
-          if (key === 'error-connection' && pairing.method === 'online') pairing.fail();
-          renderState(key, detail);
-        }
+        if (generation === sessionGeneration) renderState(key, detail);
       },
       onStream: (stream, id) => {
         if (generation === sessionGeneration && role === 'host') receiveStream(stream, id);
@@ -860,8 +745,7 @@ function activateOncall() {
   }
 
   async function startHost(automatic = false) {
-    if (starting || hostActive || pageSuspended || offlineClient || offlineBusy || !validateName(ui['room-name']) || !browserReady(false)) return;
-    pairing.refresh();
+    if (starting || hostActive || pageSuspended || !validateName(ui['room-name']) || !browserReady(false)) return;
     const Context = window.AudioContext || window.webkitAudioContext;
     if (!Context) {
       renderState('error-audio');
@@ -914,18 +798,10 @@ function activateOncall() {
       renderParticipants([]);
       ui['moderation-note'].hidden = true;
       drawInvitation();
-      if (pairing.method === 'offline' && (!offlineHost || offlineHost.closed)) offlineHost = new OfflineVoiceHost({
-        tool: 'voice-oncall', identity: hostIdentity, onChange: renderOffline, onError: offlineError,
-      });
       const current = createSession('host', hostIdentity);
       const success = await current.start();
       if (epoch !== operationEpoch) return;
       hostActive = success;
-      if (!success && offlineHost && !offlineHost.links.size) closeOffline();
-      if (success && pairing.method === 'offline' && !offlineHost.pending && !offlineHost.links.size) {
-        try { const offer = await newOfflineOffer(); if (offer) blocks.setOffer(offer); }
-        catch (error) { if (epoch === operationEpoch) offlineError(error); }
-      }
       if (!success) clearAudio();
     } catch {
       if (epoch === operationEpoch) {
@@ -944,7 +820,6 @@ function activateOncall() {
 
   async function startSender(resume = false) {
     if (starting || senderActive || pageSuspended || !browserReady(true)) return;
-    if (pairing.method === 'offline' && (!offlineClient?.identity || offlineClient.closed)) return;
     if (!validCode(selectedCode)) {
       renderState('room-required');
       return;
@@ -1023,7 +898,6 @@ function activateOncall() {
     operationEpoch++;
     releaseTransmission();
     stopSession(true);
-    closeOffline();
     starting = false;
     senderActive = false;
     senderPaused = false;
@@ -1041,7 +915,6 @@ function activateOncall() {
     resumeRoleOnReturn = null;
     operationEpoch++;
     stopSession(true);
-    closeOffline();
     discovery.unpublish();
     lastPublication = null;
     hostIdentity = null;
@@ -1187,7 +1060,7 @@ function activateOncall() {
     },
     restore(event) {
       pageSuspended = false;
-      if (event.persisted && pairing.method === 'online') { discovery = openDiscovery(); discoveryOnline = true; }
+      if (event.persisted) discovery = openDiscovery();
     },
   });
 

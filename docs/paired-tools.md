@@ -10,7 +10,7 @@ complete folder with versioned imports and its own service-worker cache.
 Each tool names the `paired-tools` CSS part and starts with a
 `data-pairing-nearby` card, before its `data-pairing-setup` controls. The shared
 `partials/paired-network.html` help is translated through `ui.tool` and explains
-Wi-Fi, phone hotspots, the internet requirement for discovery and online
+Wi-Fi, phone hotspots, the internet requirement for discovery and
 pairing, and device isolation. This is setup guidance, not a claim that a web
 page can enable a hotspot or that every hotspot permits direct connections.
 
@@ -23,15 +23,15 @@ is retained. Its Connect action still precedes the introduction to the host.
 An active session cannot be replaced by choosing another nearby entry.
 
 The visual order does not alter when discovery is permitted: Share Tab still
-requires Find nearby tabs and offers no discovery in Offline mode; the other
-four tools retain their automatic directory browsing in Online mode. Offline
-mode opens no directory or room WebSocket. Host discoverability
+requires Find nearby tabs; the other
+four tools retain their automatic directory browsing. Host discoverability
 defaults and approval rules remain tool-specific and are stated on each page.
-Every tool's shared Automatic pairing preference uses a browser network hint while
-idle, with explicit Online and Offline overrides under Connection options.
-It does not probe the network or start discovery, and the method stays fixed
-for a capture or connection attempt. Offline fallback requires a new explicit
-attempt rather than changing an active session.
+All five tools use internet introductions for pairing. The user chooses a
+nearby entry, invitation link or code rather than a connection method. A saved
+page cache does not replace the introduction service. A healthy direct session
+may outlive a brief internet interruption, but new peers and recovery still
+depend on the service. Local reachability and the tools' existing approval,
+password and media boundaries remain separate requirements.
 
 ## Shared pairing primitives
 
@@ -41,51 +41,6 @@ and supplies an optional bounded retry controller. `peer-network.js` already
 owns ICE configuration and local candidate/SDP filtering; `peer-discovery.js`
 and `room-names.js` supply the existing discovery and room-name primitives.
 Both voice tools also share their authenticated protocol in `voice-session.js`.
-
-## Automatic and offline setup
-
-Add `pairing-choice`, `pairing-ui` and `offline-pairing` to `js_parts`.
-The shared `pairing-options`, `pairing-host`, `pairing-client`,
-`pairing-reply` and `pairing-phrases` template partials provide translated
-controls; the phrases partial belongs inside the tool's `#phrases`.
-`pairingOptions` selects only the setup method. The adapter supplies its busy
-predicate and refreshes before opening any directory or session. Browser
-network hints never override an active attempt, a recovery intent, an explicit
-preference or an unfinished manual draft. An actual initial introduction failure
-can call `fail()` to offer a fresh manual attempt. Selection never grants media
-permission or starts a session.
-
-`pairingBlocks` owns bounded copy, save and file-load controls. Its generation
-fences retire late file reads and clipboard feedback after Stop or replacement.
-The adapter owns button state and the create/accept/new-invitation callbacks.
-
-`OfflineExchange` owns a ten-minute, single-use offer/reply exchange for one
-caller-owned peer. Blocks have a tool-specific format, random session nonce,
-expiry and a data-only SDP description. Readers tolerate clock skew; the
-offering browser enforces its own expiry. Replies cannot cross tools or
-invitations. Gathering is bounded, only host candidates survive filtering,
-and Stop cancels outstanding work. A connected exchange releases its deadline.
-The helper does not approve participants, attach media or choose a server.
-
-Camera and tab sharing keep their control channel as the offline signaling
-path, with the existing approval and acknowledgement boundary before video.
-`OfflineChannel` and `OfflineSocket` provide a bounded data-only local
-transport for the text and voice adapters. Those adapters route only between
-the local host and an assigned participant; a remote peer cannot claim host
-authority or route to another participant. Their existing native WebRTC
-text/file/audio sessions and consent rules remain responsible for content.
-
-Each additional text reader, camera viewer or voice participant receives a
-fresh exchange without replacing existing admitted peers. Share Tab retains
-its one-viewer limit and one exchange per capture. If an offline transport
-cannot recover, exchange fresh blocks; no mode silently contacts the online
-service. Offline mode always omits public STUN and TURN. It requires the
-HTTPS tool already loaded or cached and a reachable Wi-Fi, Ethernet or hotspot; it cannot create
-a network or overcome device isolation.
-
-`OfflineExchange.close()` retires only its own work. The adapter must close
-its peer and media when ending a session. Do not persist blocks, host authority
-or recovery intent in the shared selector.
 
 ## Choosing the pairing service
 
@@ -101,8 +56,7 @@ Both WSS origins belong in the tool's `connect-src` policy. A development
 outage remains a development outage: there is no fallback to production.
 Consequently local builds and preview deployments need the development
 worker and pair only with pages selecting that same service. This separates
-rooms, discovery and runtime bindings from the live worker. Share a Browser
-Tab and the other four tools open neither service during offline pairing.
+rooms, discovery and runtime bindings from the live worker.
 
 ## Owning an introduction
 
@@ -167,7 +121,7 @@ camera and voice keep their established retry schedules and readiness rules.
 | Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
-| Share a Browser Tab | A click and browser-tab-only capture, online invitations with opt-in code-only nearby discovery or offline offer/reply blocks, host-only ICE without STUN or TURN in both methods, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch; offline media renegotiation uses the established encrypted control channel. An ended track requires a new picker choice; returning cannot recapture. |
+| Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code-only nearby discovery, host-only ICE without STUN or TURN, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
 approval requirement or restore a session the user ended. The socket and
@@ -206,10 +160,3 @@ lifecycle coalescing. Existing session tests and browser QA exercise each
 adapter's permissions, direct connections and recovery. A browser can still
 suspend a locked phone; sharing this code makes recovery consistent but does
 not change the operating system's background execution policy.
-
-Native camera, display and voice QA uses Chromium with synthetic media inputs.
-WebKit control and desktop text-pairing checks do not verify physical
-iPhone–Android pairing, real permission prompts, hotspot isolation or OS
-lock/unlock. Any reported native transport capability skip remains a coverage
-gap. Complete the separate personal-device check before treating those
-behaviors as verified.

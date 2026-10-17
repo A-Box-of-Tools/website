@@ -13,7 +13,7 @@ glyph = "camera"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip", "pairing-choice", "pairing-ui", "offline-pairing"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
 lastmod = "2026-10-15"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
@@ -24,15 +24,13 @@ og_card = "A live camera, straight from one browser to another."
 csp_note = """
   Local builds and HTTPS abox-preview.pages.dev previews use the separate
   rendezvous-dev.abox.tools service; other page addresses use production.
-  Online mode opens a discovery WebSocket to the rendezvous that lists
+  Opening this page opens a discovery WebSocket to the rendezvous that lists
   opted-in camera names. Start camera or Connect adds a room WebSocket carrying
   WebRTC descriptions and host candidates, never video or audio. The encrypted control channel carries the viewer note and
   viewer acceptance; video and enabled audio are added only after the viewer acknowledges it.
   The owner chooses manual approval or automatic acceptance of new requests. Both peers configure no STUN
   server or TURN relay and filter remote descriptions and candidates too.
-  Offline mode opens no discovery or introduction socket: complete data-only
-  connection blocks introduce each viewer, then the encrypted control channel
-  carries media negotiation after acceptance. WebRTC media is outside CSP's connect-src. The existing worker source is
+  WebRTC media is outside CSP's connect-src. The existing worker source is
   workers/rendezvous/worker.js; it keeps no media or room content."""
 pledge = """
     Your camera video and enabled audio go directly to accepted viewers over
@@ -42,17 +40,14 @@ pledge = """
     feature. Stop or close the camera page and capture ends. Hiding it keeps the
     connection where the browser permits; a locked phone may pause capture until
     you return. An interrupted microphone stays quiet until you choose Resume
-    microphone. Online invitations use internet for the introduction; offline
-    pairing uses connection blocks you exchange with each viewer instead.
-    Pairing also reveals network addresses to the other browser. Viewer
+    microphone. Internet access is required for the introduction;
+    pairing also reveals network addresses to the other browser. Viewer
     approval is on by default; turning it off lets anyone who knows your link
-    or finds your listed camera watch while space is available. Offline viewers
-    need their own connection block and accepted reply, with the same approval policy."""
+    or finds your listed camera watch while space is available."""
 live_hint = """
-      Watch DevTools: Online mode uses one WebSocket to list camera names, and starting or
+      Watch DevTools: one WebSocket lists camera names, and starting or
       connecting adds one for setup messages. Camera frames, enabled audio and the viewer's note travel the encrypted
-      peer connection. Offline mode uses exchanged connection blocks and opens neither socket.
-      Load the page on both devices before going offline."""
+      peer connection. The page stays available offline; pairing needs internet."""
 read_first = """
 , <code>src/capture.js</code> for permission cancellation and track cleanup,
       <code>src/session.js</code> for acceptance before media, camera replacement and host-only
@@ -60,8 +55,8 @@ read_first = """
       <code>workers/rendezvous/worker.js</code> in the same repository"""
 howto_heading = "How to watch another device's camera"
 card = "A phone or computer camera in another browser, with optional viewer approval, camera switching and direct encrypted video."
-pledge_line = "Camera video goes <strong>directly to accepted viewers</strong>. You choose whether approval is required. Pair online or exchange offline connection blocks."
-md_note = "Camera video travels directly between connected browsers, with viewer approval on by default. Online rendezvous carries setup metadata, never video or audio; offline pairing uses manually exchanged connection blocks. Audio is off by default; optional viewer alerts analyze media locally. No recording feature."
+pledge_line = "Camera video goes <strong>directly to accepted viewers</strong>. You choose whether approval is required. Internet introduces the browsers."
+md_note = "Camera video travels directly between connected browsers, with viewer approval on by default. Internet rendezvous carries setup metadata, never video or audio. Audio is off by default; optional viewer alerts analyze media locally. No recording feature."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
@@ -101,9 +96,9 @@ body = """
       A viewer can still capture their own screen; ending the link stops future
       video and cannot remove anything they already kept."""
 [[privacy]]
-title = "Online introduction requires internet and exposes connection metadata."
+title = "The introduction requires internet and exposes connection metadata."
 body = """
-      Online mode opens a discovery WebSocket to
+      Opening this page opens a discovery WebSocket to
       <code>rendezvous.abox.tools</code>. Start camera or Connect adds a room
       socket that stays open while the session is active. The service sees the code, IP addresses, connection times, and
       WebRTC setup descriptions and candidates; those setup messages are not
@@ -116,19 +111,6 @@ body = """
       chooses whether its owner must approve the request.
       Rooms and listings exist only on open connections. Cloudflare keeps connection logs
       for seven days: the code, address and time, never a payload."""
-[[privacy]]
-title = "Offline pairing uses connection blocks you exchange."
-body = """
-      Load this page on both devices before going offline. Automatic uses the
-      browser's offline hint while idle; Connection options lets you choose
-      Offline yourself. Offline mode opens no discovery or introduction socket.
-      Give one connection block to one viewer, then paste their reply on the camera.
-      Blocks contain network addresses and connection setup, not video, audio or
-      viewer notes. Keep them private, use a fresh block for every viewer, and
-      remove any saved copies when finished. The invitation expires after ten
-      minutes and accepts only its matching reply once. After pairing, encrypted
-      control messages negotiate media with the same approval and acknowledgement
-      checks. Offline pairing cannot bypass network isolation or firewalls."""
 [[privacy]]
 title = "A direct connection shares addresses before video is approved."
 body = """
@@ -155,8 +137,7 @@ body = """
       Closing its page does the same without waiting for confirmation. Hiding
       the tab keeps healthy capture and connections where the browser permits.
       If a phone interrupts capture, returning offers recovery with the same
-      viewer link online; an offline view whose direct connection was lost needs
-      fresh connection blocks. Interrupted microphone audio waits for Resume microphone.
+      viewer link; interrupted microphone audio waits for Resume microphone.
       A lost introduction connection leaves an already accepted direct view
       running while the source retries its invitation. A permission granted after
       Stop is immediately released.
@@ -197,10 +178,10 @@ body = """
 
 [[howto]]
 title = "Start on the camera device."
-body = "Open this HTTPS page on the phone or computer whose camera you want. Automatic offers online invitations normally or offline blocks when the browser reports no internet. Connection options lets you choose either method yourself before starting. In Online mode, choose a viewer link name or keep the random suggestion. Choose Start camera and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Select Enable microphone before starting to request microphone access; stop before changing this choice."
+body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Select Enable microphone before starting to request microphone access; stop before changing this choice."
 [[howto]]
 title = "Invite the viewing device."
-body = "Online, open the viewer link or scan the QR code on the other device. You can also choose a name under Nearby cameras, or enter the code in Watch a camera. Offline, send the camera's connection block to the viewer. They paste or load it, choose Create reply, and return their reply for the camera to accept. Create another connection block for each additional viewer. Both devices need a network that lets them reach each other; Wi-Fi, Ethernet or a phone hotspot can work when it allows device-to-device communication."
+body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Nearby cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other. A Wi-Fi network or phone hotspot can work when it allows communication between the devices."
 [[howto]]
 title = "Connect the viewer."
 body = "Choosing a nearby camera fills its code. For every invitation, choose Connect to camera when you are ready. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
@@ -210,10 +191,10 @@ body = "The connection stays open when the source tab is hidden where the browse
 
 [[faq]]
 q = "Must both devices use the same Wi-Fi?"
-a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A phone hotspot can also work if it allows device-to-device communication. Online invitations need internet; offline connection blocks do not. A shared Wi-Fi name alone does not establish reachability: guest or hotspot isolation, firewalls, VPN routing and browser permissions can block it."
+a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A phone hotspot can also work if it allows device-to-device communication and both browsers have internet for pairing. A shared Wi-Fi name alone does not establish reachability: guest or hotspot isolation, firewalls, VPN routing and browser permissions can block it."
 [[faq]]
 q = "Does it work without internet?"
-a = "Yes, after this page has loaded on both devices. Open Connection options and choose Offline, start the camera, then exchange its connection block and the viewer's reply. Use a fresh block for each viewer. Both devices still need a reachable local network. Automatic uses the browser's offline hint while idle; it cannot prove network reachability or change an active session. An already accepted online view can also continue if the introduction service disconnects. Video and enabled audio travel directly between browsers, with no internet relay."
+a = "Internet is required to pair and invite new viewers through our public rendezvous. An already accepted direct view can continue if the introduction service disconnects; the camera retries its invitation without restarting capture or the existing view. Video and enabled audio travel directly between the browsers, with no configured internet relay. Losing that direct route still ends the view."
 [[faq]]
 q = "Does this turn my phone into a webcam for meeting apps?"
 a = "It provides a live view in another browser. It does not install a system webcam or make that camera available to desktop meeting applications."
@@ -248,4 +229,4 @@ a = "Guest networks and client isolation can separate devices. Firewalls, blocke
 [schema]
 category = "MultimediaApplication"
 description = "Watch a device camera in another browser with optional viewer approval and camera switching over a direct encrypted WebRTC connection, with optional microphone audio and viewer motion or sound notifications, without recording."
-features = ["Camera video with optional microphone audio", "Up to eight viewers with individual approval and disconnect", "Shared video bandwidth and per-connection adaptation", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Automatic connection selection and offline pairing blocks", "Switch cameras without reconnecting viewers", "Host-only ICE without STUN or TURN", "Best-effort background continuity and same-link camera recovery", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]
+features = ["Camera video with optional microphone audio", "Up to eight viewers with individual approval and disconnect", "Shared video bandwidth and per-connection adaptation", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery", "Switch cameras without reconnecting viewers", "Host-only ICE without STUN or TURN", "Best-effort background continuity and same-link camera recovery", "Internet introduction with disclosed connection metadata", "Optional browser motion and sound notifications with local detection"]

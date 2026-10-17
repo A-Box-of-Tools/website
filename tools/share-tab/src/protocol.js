@@ -31,12 +31,10 @@ export function viewerLink(href, code) {
 }
 
 export function controlMessage(text) {
-  if (typeof text !== 'string' || text.length > 65536) return null;
+  if (typeof text !== 'string' || text.length > 1024) return null;
   try {
     const value = JSON.parse(text);
     if (!value || value.protocol !== PROTOCOL || Array.isArray(value)) return null;
-    if (value.type === 'signal') return value.data && typeof value.data === 'object' && !Array.isArray(value.data) ? value : null;
-    if (text.length > 1024) return null;
     if (!['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) return null;
     if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
     return value;

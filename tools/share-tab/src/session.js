@@ -2,7 +2,6 @@ import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-net
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
-import { OfflineExchange, readOfflineBlock } from './shared/offline-pairing.js';
 
 const RENDEZVOUS = rendezvousEndpoint();
 const TIMEOUT = 20000;
@@ -12,15 +11,12 @@ export class TabSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, onDiscovery = () => {}, diagnostics = null,
-    random = globalThis.crypto, now = () => Date.now(),
   } = {}) {
-    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, onDiscovery, diagnostics, random, now });
+    Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, onDiscovery, diagnostics });
     this.revision = 0;
     this.role = null;
-    this.mode = null;
     this.code = null;
     this.discoverable = false;
-    this.offline = null;
     this.stream = null;
     this.socket = null;
     this.pairing = null;
@@ -44,10 +40,9 @@ export class TabSession {
       .map(({ id, note, media, negotiated, pc }) => ({ id, note, streaming: Boolean(media && negotiated && pc.connectionState === 'connected') })));
   }
 
-  prepareHost(stream, mode) {
+  prepareHost(stream) {
     this.stop();
     this.role = 'host';
-    this.mode = mode;
     this.stream = stream;
     const track = stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.stop('host.ended'); throw new Error('host.ended'); }
@@ -58,7 +53,7 @@ export class TabSession {
   }
 
   async startHost(stream, code, { discoverable = false } = {}) {
-    this.prepareHost(stream, 'online');
+    this.prepareHost(stream);
     this.discoverable = discoverable === true;
     return this.open(code);
   }
@@ -66,73 +61,8 @@ export class TabSession {
   async connect(code, note) {
     this.stop();
     this.role = 'viewer';
-    this.mode = 'online';
     this.note = String(note ?? '').trim().slice(0, 80);
     return this.open(code);
-  }
-
-  async startOfflineHost(stream) {
-    this.prepareHost(stream, 'offline');
-    const revision = this.revision;
-    try {
-      const entry = this.newPeer('offline', true);
-      entry.exchange = this.offlineExchange(entry);
-      this.channel(entry, entry.pc.createDataChannel(CHANNEL));
-      this.state('offline.gathering');
-      const block = await entry.exchange.createOffer();
-      if (!this.current(entry)) throw new Error('connection.stopped');
-      this.offline = entry.exchange.pairing;
-      this.state('offline.offer-ready');
-      return block;
-    } catch (error) {
-      if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
-      throw error;
-    }
-  }
-
-  async createOfflineAnswer(text, note) {
-    // Bad input cannot retire a running session. The common exchange applies
-    // the host's binding and a separate bounded wait for the viewer's clock.
-    readOfflineBlock(TOOL, text, 'offer', { checkExpiry: false });
-    this.stop();
-    this.role = 'viewer'; this.mode = 'offline';
-    this.note = String(note ?? '').trim().slice(0, 80);
-    const revision = this.revision;
-    try {
-      const entry = this.newPeer('offline', true);
-      entry.exchange = this.offlineExchange(entry);
-      this.state('offline.gathering');
-      const block = await entry.exchange.createAnswer(text);
-      if (!this.current(entry)) throw new Error('connection.stopped');
-      this.offline = entry.exchange.pairing;
-      this.state('offline.answer-ready');
-      return block;
-    } catch (error) {
-      if (this.revision === revision) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
-      throw error;
-    }
-  }
-
-  async acceptOfflineAnswer(text) {
-    const entry = this.peers.get('offline');
-    if (this.mode !== 'offline' || this.role !== 'host' || !entry?.exchange || entry.exchange.answered) throw new Error('offline.invalid-answer');
-    readOfflineBlock(TOOL, text, 'answer', { now: this.now(), pairing: entry.exchange.pairing });
-    try {
-      await entry.exchange.acceptAnswer(text);
-      if (!this.current(entry)) throw new Error('connection.stopped');
-      if (!entry.hello) {
-        this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
-        this.state('connection.connecting');
-      }
-    } catch (error) {
-      if (this.current(entry)) this.stop(error.message === 'offline.expired' ? error.message : 'connection.direct-failed');
-      throw error;
-    }
-  }
-
-  offlineExchange(entry) {
-    return new OfflineExchange({ tool: TOOL, pc: entry.pc, random: this.random, now: this.now,
-      current: () => this.current(entry), onExpire: () => this.stop('offline.expired') });
   }
 
   open(code) {
@@ -143,7 +73,7 @@ export class TabSession {
     const revision = this.revision;
     return new Promise((resolve, reject) => {
       let settled = false, ready = false, socket;
-      const offered = this.role === 'host' && this.mode === 'online' && this.discoverable;
+      const offered = this.role === 'host' && this.discoverable;
       try { socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`); }
       catch { this.stop('connection.server-failed'); reject(new Error('connection.server-failed')); return; }
       const current = () => this.revision === revision && this.socket === socket;
@@ -208,7 +138,7 @@ export class TabSession {
   message(message) {
     if (message.type === 'host-ready') {
       const publication = message.discovery;
-      if (this.role === 'host' && this.mode === 'online' && this.discoverable
+      if (this.role === 'host' && this.discoverable
           && publication?.tool === TOOL && publication.code === this.code && CODE_PATTERN.test(publication.code)
           && typeof publication.lease === 'string' && /^[a-z0-9-]{16,128}$/i.test(publication.lease)) {
         this.onDiscovery({ code: publication.code, lease: publication.lease, tool: TOOL });
@@ -281,15 +211,16 @@ export class TabSession {
 
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
-  newPeer(id, manual = false) {
-    // Both introduction methods keep the same direct host-candidate policy.
+  newPeer(id) {
+    // Pairing still uses the public introduction service, but it must never
+    // widen the media route beyond the host candidates of these browsers.
     const pc = new this.PeerConnection(rtcConfig(true));
     const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, 'local');
     this.openingTrace = null;
-    const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], timers: new Map(), approved: false, pending: false, manualInitial: manual };
+    const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], timers: new Map(), approved: false, pending: false };
     this.peers.set(id, entry);
     trace?.attach(pc);
-    if (!manual) this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
+    this.deadline(entry, 'connect', TIMEOUT, () => this.peerFailed(entry));
     pc.addEventListener('icecandidate', (event) => {
       if (!this.current(entry) || !event.candidate) return;
       try {
@@ -337,13 +268,6 @@ export class TabSession {
 
   signal(entry, data) {
     const frame = data.description === undefined ? data : { ...data, description: localDescription(data.description) };
-    if (this.mode === 'offline') {
-      // The initial two blocks contain all gathered candidates. After that,
-      // renegotiation stays on the authenticated encrypted control channel.
-      if (entry.manualInitial) return;
-      this.control(entry, 'signal', { data: frame });
-      return;
-    }
     this.send({ protocol: PROTOCOL, ...frame }, this.role === 'host' ? entry.id : null);
   }
 
@@ -366,7 +290,6 @@ export class TabSession {
     const opened = () => {
       if (!this.current(entry) || entry.opened) return;
       entry.opened = true;
-      entry.manualInitial = false;
       try { this.control(entry, 'hello'); } catch { this.peerFailed(entry); }
     };
     channel.addEventListener('open', opened);
@@ -383,17 +306,11 @@ export class TabSession {
       try {
         if (message.type === 'hello') {
           if (entry.hello) return;
-          entry.exchange?.connected();
           entry.hello = true;
           this.clear(entry, 'connect');
           if (this.role === 'viewer') { this.control(entry, 'request', { note: this.note }); this.state('viewer.waiting'); }
           else this.deadline(entry, 'request', TIMEOUT, () => this.peerFailed(entry));
         } else if (!entry.hello) this.peerFailed(entry, 'connection.invalid');
-        else if (message.type === 'signal') {
-          const consent = this.role === 'host' ? entry.acknowledged : entry.localAckSent;
-          if (this.mode !== 'offline' || !entry.approved || !consent) return this.peerFailed(entry, 'connection.invalid');
-          this.queue(entry, () => this.receiveSignal(entry, message.data));
-        }
         else if (message.type === 'request' && this.role === 'host' && !entry.approved) {
           if (!entry.pending && !entry.refused) {
             this.clear(entry, 'request'); entry.note = message.note; entry.pending = true; this.requests();
@@ -403,7 +320,6 @@ export class TabSession {
           entry.approved = true;
           this.state('viewer.approved');
           this.control(entry, 'approval-ack');
-          entry.localAckSent = true;
           this.deadline(entry, 'media', TIMEOUT, async () => {
             try {
               const stats = await entry.pc.getStats();
@@ -456,10 +372,7 @@ export class TabSession {
     entry.refused = true;
     entry.pending = false;
     this.requests();
-    this.deadline(entry, 'denied', 150, () => {
-      if (this.mode === 'offline') this.stop('connection.ended');
-      else this.removePeer(id);
-    });
+    this.deadline(entry, 'denied', 150, () => this.removePeer(id));
     return true;
   }
 
@@ -467,8 +380,7 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (this.role !== 'host' || !entry?.approved) return false;
     try { this.control(entry, 'ended'); } catch {}
-    if (this.mode === 'offline') this.stop('connection.ended');
-    else this.removePeer(id);
+    this.removePeer(id);
     return true;
   }
 
@@ -485,7 +397,7 @@ export class TabSession {
 
   peerFailed(entry, key = 'connection.direct-failed') {
     if (!this.current(entry)) return;
-    if (this.role === 'viewer' || this.mode === 'offline') this.stop(key);
+    if (this.role === 'viewer') this.stop(key);
     else this.removePeer(entry.id);
   }
 
@@ -493,7 +405,6 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (!entry) return;
     this.peers.delete(id);
-    entry.exchange?.close();
     for (const timer of entry.timers.values()) clearTimeout(timer);
     entry.timers.clear();
     entry.trace?.finish('ended');
@@ -510,10 +421,8 @@ export class TabSession {
     this.revision += 1;
     if (role === 'host') for (const entry of this.peers.values()) { try { this.control(entry, 'ended'); } catch {} }
     this.role = null;
-    this.mode = null;
     this.code = null;
     this.discoverable = false;
-    this.offline = null;
     this.cancelOpen?.(); this.cancelOpen = null;
     this.openingTrace?.finish('stopped'); this.openingTrace = null;
     const pairing = this.pairing;

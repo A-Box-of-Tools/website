@@ -234,27 +234,21 @@
   </section>
 
   <section>
-    <h2>Sharing without internet</h2>
-    <p>Load this tool over HTTPS on both devices before losing internet access, and keep the pages ready or cached. The devices still need a reachable shared Wi-Fi, Ethernet or hotspot. Automatic offers Offline when the browser reports no internet; you can also open <em>Connection options</em> and choose <em>Offline</em>.</p>
-    <p>Start sharing, copy or save the connection block, and give it to the reader. The reader pastes or loads it, creates a reply, and returns that reply to the sharer to accept. The reader then chooses <em>Connect</em>; with <em>Private</em> enabled, the sharer must still approve them. Create a fresh block for each reader. Unused exchanges expire after ten minutes.</p>
-    <p>Offline opens no introduction or discovery connection and uses no public STUN or TURN server. It cannot bypass network isolation. Connection blocks contain network addresses, so exchange them privately. Saved block files remain until you delete them.</p>
-  </section>
-
-  <section>
     <h2>When this is the wrong tool</h2>
     <p>
       Both ends have to be present: this is a hand-off, not a mailbox. If the
       other person is asleep, use something that stores &mdash; knowingly.
       The sharing tab has to stay open and awake, which in practice means a
       desktop or laptop does the sharing; phones suspend background tabs in
-      seconds, though they read a share perfectly well. Offline sharing still
-      needs a local network path; the editor alone needs no connection.
-      And a small minority of network pairs &mdash; typically one
+      seconds, though they read a share perfectly well. It cannot work
+      offline, because reaching another machine is a
+      network act &mdash; although the editor half works with no connection
+      at all. And a small minority of network pairs &mdash; typically one
       end on a mobile carrier's shared-address network or a strict corporate
       one &mdash; cannot be joined directly at all; the tool says so plainly
-      after twenty seconds, and in ordinary Online mode offers the reader an encrypted relay that
+      after twenty seconds, and in ordinary mode offers the reader an encrypted relay that
       forwards the bytes without being able to read them, rather than
-      switching to one quietly. Online local network mode and Offline offer no relay and
+      switching to one quietly. Local network mode offers no relay and
       asks you to check the shared network and its connection settings.
     </p>
     <p>

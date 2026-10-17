@@ -1,6 +1,7 @@
 <main id="main" class="paired-page">
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
         <h2>Compartilhamentos próximos</h2>
@@ -21,17 +22,6 @@
         os privados ainda precisam da aprovação de quem compartilha.
       </p>
     </section>
-  {% include "partials/pairing-options.html" %}
-  <p class="field-note">Sem internet: carregue a página nos dois dispositivos, escolha Offline em Connection options e troque o bloco de convite e a resposta. Uma rede local acessível e a aprovação para conteúdo privado continuam necessárias.</p>
-  <section id="text-offline-client" class="card" hidden>
-    <h2>{{ ui.tool.pairing_receive }}</h2>
-    {% include "partials/pairing-client.html" %}
-    {% include "partials/pairing-reply.html" %}
-    <button type="button" id="text-offline-stop" class="danger" hidden>{{ ui.tool.pairing_disconnect }}</button>
-    <p id="text-offline-status" role="status" aria-live="polite"></p>
-  </section>
-  <section id="share">
-
 
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Escreva, ou anexe</h2>
@@ -59,8 +49,8 @@
     </section>
 
     <section class="card">
-      <h2 data-text-online><span class="step">2</span> Dê um nome ao link</h2>
-      <div class="field" data-text-online>
+      <h2><span class="step">2</span> Dê um nome ao link</h2>
+      <div class="field">
         <label for="code">Nome do link</label>
         <div class="namerow">
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
@@ -114,7 +104,7 @@
     </section>
 
     <section class="card">
-      <h2><span class="step" data-text-sharing-step>3</span> Compartilhe</h2>
+      <h2><span class="step">3</span> Compartilhe</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
         <button type="button" id="publish" class="primary">Começar a compartilhar</button>
@@ -126,7 +116,6 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      {% include "partials/pairing-host.html" %}
       <div id="requests"></div>
     </section>
 
@@ -226,7 +215,6 @@
 
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
-    {% include "partials/pairing-phrases.html" %}
     <span data-phrase="debug.idle">Nenhuma tentativa de conexão ainda.</span>
     <span data-phrase="debug.attempt">Tentativa de conexão {n}. {status}</span>
     <span data-phrase="debug.introduction">Entrando em contato com o servidor de apresentação.</span>

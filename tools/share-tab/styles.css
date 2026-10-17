@@ -1,17 +1,10 @@
 /* The preview stays contained so the controls remain reachable on a phone. */
 .tab-share-grid{display:grid;gap:1.5rem;grid-template-columns:repeat(2,minmax(0,1fr))}
 .tab-share-grid.tab-share-watching{grid-template-columns:minmax(0,1fr)}
-.tab-share-options{margin:0 0 1.5rem}
-.tab-share-options summary{cursor:pointer;font-weight:600}
-.tab-share-methods{border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.4rem;margin:1rem 0 0;min-width:0}
-.tab-share-methods legend{font-weight:600;padding:0 .35rem}
-.tab-share-methods label{display:inline-flex;align-items:baseline;gap:.5rem;margin:.35rem 1.5rem .35rem 0}
 .tab-share-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;min-width:0}
 .tab-share-card h2{margin-top:0}
 .tab-share-card .field{margin-bottom:1rem}
 .tab-share-card input[type=text]{width:100%;box-sizing:border-box}
-.tab-share-card textarea{width:100%;box-sizing:border-box;min-height:7rem;resize:vertical;font-family:var(--mono,monospace);font-size:.85rem;overflow-wrap:anywhere}
-.tab-share-card textarea[readonly]{background:var(--bg-subtle,var(--bg))}
 .tab-share-status{min-height:1.6em;margin:1rem 0 0;overflow-wrap:anywhere}
 .tab-share-status[data-error=true]{color:var(--danger,#b42318)}
 .tab-share-invite{margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
