@@ -80,7 +80,7 @@ fresh exchange without replacing existing admitted peers. Share Tab retains
 its one-viewer limit and one exchange per capture. If an offline transport
 cannot recover, exchange fresh blocks; no mode silently contacts the online
 service. Offline mode always omits public STUN and TURN. It requires the
-cached HTTPS tool and a reachable Wi-Fi, Ethernet or hotspot; it cannot create
+HTTPS tool already loaded or cached and a reachable Wi-Fi, Ethernet or hotspot; it cannot create
 a network or overcome device isolation.
 
 `OfflineExchange.close()` retires only its own work. The adapter must close
@@ -206,3 +206,10 @@ lifecycle coalescing. Existing session tests and browser QA exercise each
 adapter's permissions, direct connections and recovery. A browser can still
 suspend a locked phone; sharing this code makes recovery consistent but does
 not change the operating system's background execution policy.
+
+Native camera, display and voice QA uses Chromium with synthetic media inputs.
+WebKit control and desktop text-pairing checks do not verify physical
+iPhone–Android pairing, real permission prompts, hotspot isolation or OS
+lock/unlock. Any reported native transport capability skip remains a coverage
+gap. Complete the separate personal-device check before treating those
+behaviors as verified.
