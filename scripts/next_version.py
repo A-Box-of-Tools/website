@@ -1,9 +1,10 @@
 """
 What the next version tag should be, or nothing at all.
 
-Run by the deploy, after it has published. Asks git for the highest version
-tag, asks git what has changed since that tag, and turns the two into an
-answer using the rule in buildlib/version.py:
+Run by the deploy before building. The workflow saves the answer for the
+builds and creates the tag and release page after publication. Asks git for
+the highest version tag, asks git what has changed since that tag, and turns
+the two into an answer using the rule in buildlib/version.py:
 
     python scripts/next_version.py [<head>]
 

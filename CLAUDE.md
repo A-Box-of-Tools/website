@@ -338,14 +338,18 @@ python scripts/next_version.py
 ```
 
 It prints the version and the reason, or nothing when the version stands.
-`.github/workflows/build.yml` runs it after publishing and creates the tag and
-a GitHub release; the arithmetic is unit tested in
+`.github/workflows/build.yml` runs it before building, saves that decision for
+both builds, and creates the tag and GitHub release after publishing. The
+arithmetic is unit tested in
 `tests/python/test_version.py`.
 
-**To ship a major**, push the tag by hand — `git tag -a 2.0.0 -m "…" && git
-push origin 2.0.0`. The deploy counts on from the highest version tag it can
-find, so a tag placed deliberately is simply where counting continues. The
-override needs no code and cannot drift from the thing it overrides.
+**To ship a major**, follow [the manual-major sequence](docs/deploying.md#choosing-a-major-version)
+as part of an explicitly authorized `dev` → `main` release. After the final
+candidate passes full QA, tag that exact reviewed commit before merging; its
+tree must match the release merge tree. The deploy preserves `2.0.0` only when
+nothing versioned changed after that tag. Tagging an older commit can instead
+produce `2.0.1`, or `2.1.0` if the remaining changes add a tool. A tag-only push
+does not deploy, and this instruction does not authorize a release.
 
 It starts at `1.0.0` rather than a number worked backwards from the tools
 already here: a version is a promise about what happens next, and inventing a
