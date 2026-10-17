@@ -62,7 +62,7 @@ css_parts = ["progress", "form", "checks", "notes", "results"]
 # are for the example alone: a WebM with sound, built in the page, whose
 # frames are drawn from the shared photograph and whose sound is the shared
 # recording, encoded as VP8 and Opus and written by the Matroska writer.
-js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "copy-tracks", "reencode-video", "reencode-sound", "video-support", "codec-support", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "mp4-muxer", "wav", "mkv-writer"]
+js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "copy-tracks", "reencode-video", "reencode-sound", "video-support", "codec-support", "codec-support-worker", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "mp4-muxer", "wav", "mkv-writer"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the result once there is one. A
 # file converted so that it will upload is often then too big to, or wants

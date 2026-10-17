@@ -24,7 +24,7 @@ The point of this app is that it is *checkable*, not that it is promised.
 | Claim | How you verify it |
 |---|---|
 | Your images have nowhere to be uploaded **to** | The page names every address it may contact, from the one list in `config/site.toml`, and not one of them belongs to this site. There is no endpoint here that your files could be collected at |
-| The encoder never touches the network | Read `src/encoder.js` and `src/compose.js`. Neither imports anything that can make a request |
+| The encoder sends no image data | Read `src/encoder.js` and `src/compose.js`. The codec check loads a same-origin worker and passes only codec settings; images and frames stay in the page |
 | Nothing is sent during an export | Open DevTools, Network tab, create a video. No request carries image data |
 | Google is never handed an image | Read `analytics.js` - it counts page visits and the first useful tool result with only the fixed tool slug; optional feedback is separate. Neither event receives a file, thumbnail, name, dimension or other input or output detail |
 | It works with no network at all | Load once, disconnect, reload. Everything except web-address loading still works; the ads simply do not appear |
@@ -144,6 +144,7 @@ File  →  createImageBitmap  →  <canvas>  →  VideoFrame  →  VideoEncoder 
 | `src/recorder.js` | MediaRecorder → WebM (fallback path) |
 | `src/remote.js` | Downloading images from web addresses into local blobs |
 | `src/support.js` | Codec and API feature detection |
+| `src/shared/codec-support.js` and `codec-support-worker.js` | The ordered encoder capability check, isolated from the page and bounded by a parent timer |
 
 `index.html`, `sw.js` and `analytics.js` are generated; the CSP comes from
 `config/site.toml`, and the frame from `templates/tool.html`.
@@ -158,6 +159,25 @@ typical laptop), with exact frame timing, so "3 seconds" is exactly 3 seconds. R
 Works almost everywhere, but records in real time (a two-minute slideshow takes two
 minutes) and needs the tab to stay visible, because browsers pause canvas capture in
 background tabs. The app warns you if the tab was hidden mid-recording.
+
+Before encoding MP4, the support helper sends the ordered H.264 configurations
+to a fresh same-origin worker. The page owns a two-second deadline and
+terminates the worker after its answer or failure. A timer beside the native
+query was not enough: a query that blocks its JavaScript thread also prevents
+that timer from firing. The worker receives configuration values, not image
+data, and ships in the tool's versioned offline cache.
+
+If the worker cannot start, cannot answer, or finds no supported configuration,
+the attempt ends with the existing MP4 refusal and restores the export controls.
+It never repeats the query on the main thread or remembers the failure as a
+permanent capability result. The user can retry, reduce the output size, or
+choose WebM when the browser can record it; a failed MP4 check does not silently
+change the requested output format.
+
+This boundary protects the page from a stuck worker script. It cannot recover
+a WebKit WebContent or other browser-process crash, and it does not guarantee
+that a supported encoder will complete a later export. Native encoder failures
+still use the export's existing error handling.
 
 ### About the MP4 muxer
 

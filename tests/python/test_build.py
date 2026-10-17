@@ -923,6 +923,32 @@ class BuildTheSite(unittest.TestCase):
                             self.assertTrue(specifier.endswith(f'?v={version}'),
                                             f'{specifier} is not on this deploy\'s version')
 
+    def test_codec_probe_workers_ship_on_the_same_version_and_offline_cache(self):
+        """Moving a capability check off the page must also work after reload
+        without a network. A missing shared part, bare URL or stale precache
+        would otherwise make a supported encoder look unavailable.
+        """
+        consumers = [
+            path.parent.name for path in sorted(ROOT.glob('tools/*/tool.toml'))
+            if 'codec-support' in buildmod.sitelib.load_toml(path).get('js_parts', [])
+        ]
+        self.assertTrue(consumers)
+        for minify in (False, True):
+            out, _ = site_build(minify=minify)
+            for slug in consumers:
+                for locale in self.locales:
+                    folder = out / buildmod.i18n.locale_path(locale, slug).strip('/')
+                    with self.subTest(tool=slug, lang=locale['lang'], minify=minify):
+                        page = (folder / 'index.html').read_text(encoding='utf-8')
+                        version = re.search(r'src="src/main\.js\?v=([0-9a-f]{10})"', page)
+                        self.assertIsNotNone(version)
+                        expected = f'codec-support-worker.js?v={version[1]}'
+                        helper = (folder / 'src/shared/codec-support.js').read_text(encoding='utf-8')
+                        self.assertIn(f'./{expected}', helper)
+                        self.assertTrue((folder / 'src/shared/codec-support-worker.js').is_file())
+                        service_worker = (folder / 'sw.js').read_text(encoding='utf-8')
+                        self.assertIn(f'src/shared/{expected}', service_worker)
+
     def test_share_text_shows_its_code_version_in_every_language(self):
         """A diagnostic label must identify the code actually loaded, and
         changing the page's language must not invent a code mismatch between
