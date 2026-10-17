@@ -4,8 +4,8 @@
  * same-origin worker with the deadline on the page's thread. A timer racing a
  * promise on the blocked thread cannot help. This isolates a worker's script
  * stall, not native work that hangs or crashes the process shared by the page
- * and worker. Reported Linux WebKit therefore declines encoder probes before
- * entering native code (#317); its query hangs even from a healthy worker.
+ * and worker. Linux WebKit needs its media backend initialized on the page
+ * before the worker enters the native encoder (#317).
  */
 
 /**
@@ -19,21 +19,31 @@ const PATIENCE = 2000;
 const CODECS = new Set(['VideoEncoder', 'VideoDecoder', 'AudioEncoder', 'AudioDecoder']);
 
 /**
- * This is containment for a native hang, not a codec support guess. Linux
- * WebKit exposes VideoEncoder but its capability call can stop the entire
- * page process, so probing to detect the defect would already be too late.
- * Require its affirmative reported platform, vendor and engine together:
- * Safari's Mac/iPhone/iPad identities and Linux Chromium keep their probes.
- * Some functional Linux WebKit builds may be conservatively declined. Remove
- * this exception only after the independent native diagnostic and exports work.
+ * A cold Linux WebKit encoder query can hang the shared page process. Calling
+ * canPlayType on the page first initializes its media backend; the worker can
+ * then ask the real encoder question. Limit this initialization to the observed
+ * platform, vendor and engine together, leaving Apple Safari and Chromium alone.
  */
-function avoidNativeEncoderProbe() {
+function needsMediaInitialization() {
   const platform = globalThis.navigator;
   const ua = platform?.userAgent ?? '';
   return /^Linux\b/i.test(platform?.platform ?? '')
     && platform?.vendor === 'Apple Computer, Inc.'
     && /\bAppleWebKit\//.test(ua)
     && !/\b(?:Chromium|Chrome|CriOS|Edg|EdgA|EdgiOS|OPR|Firefox|FxiOS)\//.test(ua);
+}
+
+function initializeMedia() {
+  try {
+    const video = globalThis.document?.createElement?.('video');
+    if (typeof video?.canPlayType !== 'function') return false;
+    // The answer concerns playback, not encoding. Even an empty answer leaves
+    // the actual codec decision to the worker. No source is loaded or played.
+    video.canPlayType('video/mp4; codecs="avc1.640034"');
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -43,20 +53,24 @@ function avoidNativeEncoderProbe() {
  *
  * @param {string} codec a WebCodecs class name
  * @param {object[]} configs configurations in preference order
- * @param {number} [ms] deadline including worker startup
+ * @param {number} [ms] deadline including media initialization and worker startup
  * @returns {Promise<number|null>} first supported index, -1 for none, null if
  *          no trustworthy answer arrived; never retry on the page's thread
  */
 export function firstSupported(codec, configs, ms = PATIENCE) {
   if (!CODECS.has(codec) || !Array.isArray(configs)) return Promise.resolve(null);
   if (!configs.length) return Promise.resolve(-1);
-  if (codec === 'VideoEncoder' && avoidNativeEncoderProbe()) return Promise.resolve(null);
   if (typeof Worker !== 'function' || !Number.isFinite(ms) || ms <= 0) return Promise.resolve(null);
+  const deadline = performance.now() + ms;
+  if (codec === 'VideoEncoder' && needsMediaInitialization() && !initializeMedia()) return Promise.resolve(null);
+  const remaining = deadline - performance.now();
+  // A timer cannot interrupt synchronous native initialization. If it returns
+  // too late, do not compound that delay by starting another native operation.
+  if (remaining <= 0) return Promise.resolve(null);
 
   return new Promise((resolve) => {
     let worker;
     let settled = false;
-    const deadline = performance.now() + ms;
     const finish = (answer) => {
       if (settled) return;
       settled = true;
@@ -69,7 +83,7 @@ export function firstSupported(codec, configs, ms = PATIENCE) {
       }
       resolve(answer);
     };
-    const timer = setTimeout(() => finish(null), ms);
+    const timer = setTimeout(() => finish(null), remaining);
     try {
       worker = new Worker(new URL('./codec-support-worker.js', import.meta.url), { type: 'module' });
       worker.onmessage = ({ data }) => {

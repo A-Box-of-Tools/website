@@ -128,7 +128,7 @@ const linuxWebKit = {
   userAgent: desktopSafariUA,
 };
 
-test('reported Linux WebKit refuses video encoder probes before starting a worker or deadline', async (t) => {
+test('reported Linux WebKit initializes media before asking the worker about encoders', async (t) => {
   for (const [name, identity] of [
     ['default browser', linuxWebKit],
     ['desktop Safari emulation', { ...linuxWebKit, userAgent: desktopSafariUA }],
@@ -140,16 +140,36 @@ test('reported Linux WebKit refuses video encoder probes before starting a worke
       const f = workerHarness(t);
       replaceGlobal(t, 'navigator', identity);
       replaceGlobal(t, 'VideoEncoder', {
-        isConfigSupported() { assert.fail('guarded native queries must not reach the page'); },
+        isConfigSupported() { assert.fail('native encoder queries must not reach the page'); },
       });
-      assert.equal(await firstSupported('VideoEncoder', candidates), null);
-      assert.equal(f.workers.length, 0);
-      assert.equal(f.timersScheduled, 0, 'a known native hang must be refused before scheduling work');
+      let initialized = 0;
+      replaceGlobal(t, 'document', {
+        createElement(tag) {
+          assert.equal(tag, 'video');
+          return {
+            set src(value) { assert.fail('media initialization must not load a source'); },
+            canPlayType(type) {
+              assert.equal(type, 'video/mp4; codecs="avc1.640034"');
+              assert.equal(f.workers.length, 0, 'media must initialize before a worker can query it');
+              initialized++;
+              return '';
+            },
+          };
+        },
+      });
+      const pending = firstSupported('VideoEncoder', candidates);
+      assert.equal(initialized, 1);
+      assert.equal(f.workers.length, 1, 'an empty playback answer must still allow an encoder query');
+      const worker = f.workers[0];
+      assert.deepEqual(worker.messages, [{ codec: 'VideoEncoder', configs: candidates }]);
+      worker.onmessage({ data: { index: 1 } });
+      assert.equal(await pending, 1);
+      f.disposed(worker);
     });
   }
 });
 
-test('Linux WebKit containment preserves Apple devices, other engines and unknown identities', async (t) => {
+test('Linux WebKit initialization leaves Apple devices, other engines and unknown identities alone', async (t) => {
   for (const [name, identity] of [
     ['Mac Safari', { ...linuxWebKit, platform: 'MacIntel', userAgent: desktopSafariUA }],
     ['iPhone Safari', { ...linuxWebKit, platform: 'iPhone', userAgent: mobileSafariUA }],
@@ -171,8 +191,11 @@ test('Linux WebKit containment preserves Apple devices, other engines and unknow
     await t.test(name, async (t) => {
       const f = workerHarness(t);
       replaceGlobal(t, 'navigator', identity);
+      replaceGlobal(t, 'document', {
+        createElement() { assert.fail('other engines must not need media initialization'); },
+      });
       const pending = firstSupported('VideoEncoder', candidates);
-      assert.equal(f.workers.length, 1, 'an identity outside the guard must retain its capability query');
+      assert.equal(f.workers.length, 1, 'other identities must retain their direct worker query');
       const worker = f.workers[0];
       worker.onmessage({ data: { index: 0 } });
       assert.equal(await pending, 0);
@@ -181,7 +204,7 @@ test('Linux WebKit containment preserves Apple devices, other engines and unknow
   }
 });
 
-test('Linux WebKit containment leaves decoder and audio capability queries available', async (t) => {
+test('Linux WebKit decoder and audio queries do not need video initialization', async (t) => {
   for (const [name, configs] of [
     ['VideoDecoder', [{ codec: 'avc1.64001f' }]],
     ['AudioEncoder', [{ codec: 'opus', sampleRate: 48000, numberOfChannels: 2 }]],
@@ -190,6 +213,9 @@ test('Linux WebKit containment leaves decoder and audio capability queries avail
     await t.test(name, async (t) => {
       const f = workerHarness(t);
       replaceGlobal(t, 'navigator', linuxWebKit);
+      replaceGlobal(t, 'document', {
+        createElement() { assert.fail('decoder and audio checks must not initialize video'); },
+      });
       const pending = firstSupported(name, configs);
       assert.equal(f.workers.length, 1);
       const worker = f.workers[0];
@@ -199,6 +225,87 @@ test('Linux WebKit containment leaves decoder and audio capability queries avail
       f.disposed(worker);
     });
   }
+});
+
+test('playback support never substitutes for the worker encoder answer', async (t) => {
+  const f = workerHarness(t);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  replaceGlobal(t, 'document', {
+    createElement: () => ({ canPlayType: () => 'probably' }),
+  });
+  const pending = firstSupported('VideoEncoder', candidates);
+  const worker = f.workers[0];
+  worker.onmessage({ data: { index: -1 } });
+  assert.equal(await pending, -1);
+  f.disposed(worker);
+});
+
+test('missing or throwing media initialization refuses before a native encoder query', async (t) => {
+  for (const [name, document] of [
+    ['no document', undefined],
+    ['no createElement', {}],
+    ['createElement throws', { createElement() { throw new Error('unavailable'); } }],
+    ['no video element', { createElement: () => null }],
+    ['no canPlayType', { createElement: () => ({}) }],
+    ['canPlayType throws', { createElement: () => ({ canPlayType() { throw new Error('unavailable'); } }) }],
+  ]) {
+    await t.test(name, async (t) => {
+      const f = workerHarness(t);
+      replaceGlobal(t, 'navigator', linuxWebKit);
+      replaceGlobal(t, 'document', document);
+      assert.equal(await firstSupported('VideoEncoder', candidates), null);
+      assert.equal(f.workers.length, 0);
+      assert.equal(f.timersScheduled, 0);
+    });
+  }
+});
+
+test('media initialization failure remains retryable', async (t) => {
+  const f = workerHarness(t);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  let attempts = 0;
+  replaceGlobal(t, 'document', {
+    createElement: () => ({
+      canPlayType() {
+        if (++attempts === 1) throw new Error('not ready');
+        return '';
+      },
+    }),
+  });
+  assert.equal(await firstSupported('VideoEncoder', candidates), null);
+  const pending = firstSupported('VideoEncoder', candidates);
+  assert.equal(attempts, 2);
+  assert.equal(f.workers.length, 1);
+  const worker = f.workers[0];
+  worker.onmessage({ data: { index: 0 } });
+  assert.equal(await pending, 0);
+  f.disposed(worker);
+});
+
+test('media initialization shares the worker deadline rather than extending it', async (t) => {
+  const f = workerHarness(t);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  replaceGlobal(t, 'document', {
+    createElement: () => ({ canPlayType() { f.elapse(12); return ''; } }),
+  });
+  const pending = firstSupported('VideoEncoder', candidates, 37);
+  assert.equal([...f.timers.values()][0].ms, 25);
+  const worker = f.workers[0];
+  f.elapse(26);
+  worker.onmessage({ data: { index: 0 } });
+  assert.equal(await pending, null);
+  f.disposed(worker);
+});
+
+test('media initialization that exhausts the deadline cannot start a worker', async (t) => {
+  const f = workerHarness(t);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  replaceGlobal(t, 'document', {
+    createElement: () => ({ canPlayType() { f.elapse(37); return ''; } }),
+  });
+  assert.equal(await firstSupported('VideoEncoder', candidates, 37), null);
+  assert.equal(f.workers.length, 0);
+  assert.equal(f.timersScheduled, 0);
 });
 
 test('encoder candidates travel together to a module worker without probing the page', async (t) => {
@@ -296,6 +403,10 @@ test('an unresponsive worker expires once and cannot answer a fresh attempt', as
 
 test('missing workers never fall back to a potentially blocking page probe', async (t) => {
   replaceGlobal(t, 'Worker', undefined);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  replaceGlobal(t, 'document', {
+    createElement() { assert.fail('missing workers must refuse before native initialization'); },
+  });
   replaceGlobal(t, 'VideoEncoder', {
     isConfigSupported() { assert.fail('unavailable worker must not run a page probe'); },
   });
@@ -315,6 +426,10 @@ test('a reply queued after the deadline is not mistaken for a timely success', a
 
 test('invalid probe requests do not launch a worker and an empty batch means no match', async (t) => {
   const f = workerHarness(t);
+  replaceGlobal(t, 'navigator', linuxWebKit);
+  replaceGlobal(t, 'document', {
+    createElement() { assert.fail('invalid requests must not initialize media'); },
+  });
   assert.equal(await firstSupported('VideoEncoder', []), -1);
   for (const [name, configs, deadline] of [
     ['Worker', candidates, 100], ['VideoEncoder', {}, 100],
