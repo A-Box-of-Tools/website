@@ -525,6 +525,12 @@ def load_tool(path, site):
     # The existing pairing transport implies the display even when a future
     # tool forgets to ask. Other pairing transports can opt in explicitly.
     tool['requires_pairing'] = pairing or 'peer-network' in tool.get('js_parts', [])
+    relay = tool.get('supports_relay', False)
+    if not isinstance(relay, bool):
+        raise ConfigError(f'{path}: supports_relay must be true or false')
+    if relay and 'peer-transport' not in tool.get('js_parts', []):
+        raise ConfigError(f'{path}: supports_relay requires peer-transport in js_parts')
+    tool['supports_relay'] = relay
 
     for key in ('plural', 'choose'):
         if key not in tool['words']:

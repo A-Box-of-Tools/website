@@ -2,9 +2,10 @@
     <h2>Connect the devices and choose the tab</h2>
     <p>
       Open the website in one tab and <a href="../../share-tab/">Share a
-      Browser Tab</a> in another on your computer. Both devices need a
-      reachable local network and internet access for pairing. Home Wi-Fi or
-      Ethernet is a useful starting point. Then click <em>Choose a tab
+      Browser Tab</a> in another on your computer. Both devices need internet access for pairing. The default Direct choice
+      also needs a network that lets them reach each other. Home Wi-Fi or
+      Ethernet is a useful starting point. Choose Cloud relay before starting if
+      Direct cannot reach the other device; the invitation carries that choice. Then click <em>Choose a tab
       to share</em> and select the website tab in your browser's own picker.
       Choose a browser tab,
       rather than a window or your whole screen: this tool refuses those
@@ -24,8 +25,8 @@
       A current desktop Chrome or Edge browser is the intended host. The
       viewer needs a browser that can play WebRTC video, without an extension
       or an account on the website you show. Pairing needs internet
-      for its introduction. The video connection itself uses host addresses,
-      with no public STUN service or internet relay.
+      for its introduction. Direct video uses host addresses without public STUN or TURN. Cloud relay
+      instead forwards encrypted video through Cloudflare and needs internet throughout.
     </p>
   </section>
 
@@ -34,7 +35,7 @@
     <p>
       The host can check <em>Show in nearby shared tabs</em> before
       choosing a tab to share. It is off by default and cannot be changed
-      during a session. The list shows the random invitation code, never
+      during a session. The list shows the random invitation code and connection choice, never
       the captured tab's title, address or picture.
     </p>
     <p>
@@ -132,7 +133,7 @@
       metadata for seven days. The service writes no room content to storage.
     </p>
     <p>
-      Video uses a direct encrypted WebRTC connection with no STUN
+      Direct video uses an encrypted WebRTC connection with no STUN
       server or TURN relay. Setup accepts only the browsers' host connection
       addresses, and each browser learns addresses from the other before
       video approval. Host addresses can include public interfaces or follow
@@ -143,8 +144,10 @@
       Guest-network or hotspot isolation, firewalls, VPN routes and browser
       local-network permissions can block the connection. Sharing a Wi-Fi
       name alone does not establish reachability. Try the actual network
-      before a demonstration or support call. There is no fallback to
-      an internet relay, and pairing is not a promise of continuity
+      before a demonstration or support call. Direct never falls back automatically. For Cloud relay, stop and start a
+      new session with that choice. Cloudflare forwards encrypted video and
+      control messages without their decryption keys, but sees addresses,
+      timing and traffic volume. Pairing is not a promise of continuity
       when its internet connection disappears.
     </p>
     <p>

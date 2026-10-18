@@ -13,25 +13,22 @@
 // to end, and no byte of them passes through here.
 //
 // Deployed by hand: `npx wrangler deploy` from this directory, logged in to
-// the site's Cloudflare account. The free plan carries it - the object
-// hibernates between messages and writes nothing to storage, so an idle
-// room costs nothing at all.
+// the site's Cloudflare account. Hibernation avoids active-object duration
+// between messages; request and TURN charges follow the account's plan.
 //
 // It answers only the site's own pages, and lets one address knock only so
 // often. Both are the least that keeps a switchboard with no login from being
 // borrowed, and neither reads anything. The lines it ever prints are the
-// close code of a refusal and the status of a relay credential it could not
-// mint.
+// close code of a refusal. Relay credentials and API responses are never logged.
 //
-// A viewer whose direct attempt has
-// failed may ask, once, for a relay. The room then mints a short-lived
-// credential for Cloudflare's TURN service and hands it back on the same
+// An explicitly selected Cloud relay room may mint bounded, short-lived
+// credentials for Cloudflare's TURN service and receive them on the same
 // socket. The relay forwards the DTLS-encrypted bytes between the two
 // browsers and cannot read them - it holds no key - so what changes is the
 // path, not what anyone can see. Two secrets make it possible, set with
 // `npx wrangler secret put`: TURN_KEY_ID and TURN_KEY_TOKEN, from a TURN key
-// made in the dashboard under Realtime. Without them the ask goes unanswered
-// and the page says no relay is available, which is exactly what is true.
+// made in the dashboard under Realtime. Without them the request returns
+// unavailable. Direct rooms cannot silently widen their transport policy.
 
 // A browser sends Origin on every WebSocket handshake and a page cannot forge
 // it, so checking it keeps the rendezvous from becoming free signalling for
@@ -41,8 +38,14 @@
 import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, roomName, validPublication, validScope } from "./discovery.js";
 import { Broadcast } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
+import { answerRelayRequest, relayEnabled, relayPolicy, relayServers } from "./relay.js";
 
-export { Broadcast, Discovery, Inbox };
+export { Broadcast, Discovery, Inbox, relayServers };
+
+function roomTransport(url) {
+  const values = url.searchParams.getAll('transport');
+  return values.length > 1 || values.length && !['direct', 'relay'].includes(values[0]) ? null : values[0] ?? 'direct';
+}
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
 // (see the `preview` job in .github/workflows/build.yml), at
 // https://pr-<n>.abox-preview.pages.dev, and the QA suite is run against it -
@@ -95,6 +98,7 @@ export default {
     if (room || url.pathname === "/discover") {
       const tool = rendezvousTool(url.searchParams.get("tool"));
       if (tool === null) return new Response("unknown tool", { status: 400 });
+      if (room && roomTransport(url) === null) return new Response("invalid transport", { status: 400 });
       if (room && ["voice-oncall", "walkie-talkie"].includes(tool)) return new Response("not found", { status: 404 });
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
@@ -130,49 +134,6 @@ export default {
   },
 };
 
-// How long a relay credential stays good. It is checked when the relay
-// allocation is made and each time it is refreshed, so a reader relayed for
-// longer than this loses the connection at the next refresh; a working day
-// covers the classroom and the long call, and bounds what a credential that
-// leaked out of a page could be used for.
-const RELAY_TTL = 8 * 60 * 60;
-const RELAY_API = "https://rtc.live.cloudflare.com/v1/turn/keys/";
-
-// The TURN entry a viewer redials with, or null when there is none to give:
-// no key configured, or Cloudflare declined. Only the entry carrying a
-// credential is returned - the page already knows the STUN servers, and a
-// relay is the one thing it is asking for.
-export async function relayServers(env, fetchImpl = fetch) {
-  if (!env.TURN_KEY_ID || !env.TURN_KEY_TOKEN) return null;
-  let res;
-  try {
-    res = await fetchImpl(`${RELAY_API}${env.TURN_KEY_ID}/credentials/generate-ice-servers`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.TURN_KEY_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ttl: RELAY_TTL }),
-    });
-  } catch {
-    console.log(JSON.stringify({ relay: "unreachable" }));
-    return null;
-  }
-  if (!res.ok) {
-    console.log(JSON.stringify({ relay: res.status }));
-    return null;
-  }
-  let body;
-  try {
-    body = await res.json();
-  } catch {
-    return null;
-  }
-  const servers = Array.isArray(body?.iceServers) ? body.iceServers : [];
-  const turn = servers.filter((s) => typeof s?.username === "string" && typeof s?.credential === "string");
-  return turn.length > 0 ? turn : null;
-}
-
 const MAX_VIEWERS = 16;
 // UTF-16 units, not bytes, so up to three times this on the wire: a bound on
 // nonsense rather than a budget. A session description is a few kilobytes.
@@ -202,12 +163,15 @@ export class Room {
       } catch { return new Response(null, { status: 400 }); }
       const tool = rendezvousTool(claim?.tool);
       if (!validPublication(claim) || !validScope(claim.scope) || tool === null) return new Response(null, { status: 400 });
-      const live = this.ctx.getWebSockets("host").some((host) => {
+      const live = this.ctx.getWebSockets("host").find((host) => {
         const who = host.deserializeAttachment();
         return host.readyState === 1 && who?.role === "host" && who.local === true && who.discover === true
           && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope
           && (who.tool ?? "share-text") === tool;
       });
+      if (live?.deserializeAttachment()?.transport === 'relay') {
+        return Response.json({ transport: 'relay' });
+      }
       return new Response(null, { status: live ? 204 : 403 });
     }
     const code = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/)?.[1];
@@ -215,6 +179,9 @@ export class Room {
     const role = url.searchParams.get("role");
     const tool = rendezvousTool(url.searchParams.get("tool"));
     if (tool === null) return new Response(null, { status: 400 });
+    const transport = roomTransport(url);
+    if (transport === null) return new Response(null, { status: 400 });
+    const transportPinned = url.searchParams.has('transport');
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
     // Discovery can be unavailable behind a proxy or an address transform.
     // The local share still works through its copied link; it simply has no
@@ -240,25 +207,31 @@ export class Room {
     const hosts = this.ctx.getWebSockets("host");
     if (role === "host") {
       if (hosts.length > 0) return refuse(4409, "taken");
+      if (transport === 'relay' && !relayEnabled(this.env, tool)) return refuse(4413, 'relay-unavailable');
       this.ctx.acceptWebSocket(server, ["host"]);
+      const policy = { transport, transportPinned, generation: crypto.randomUUID() };
       if (offered) {
         const lease = crypto.randomUUID();
-        server.serializeAttachment({ role: "host", code, scope, tool, local: true, discover: true, lease });
-        server.send(JSON.stringify({ type: "host-ready", discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }) } }));
+        server.serializeAttachment({ role: "host", code, scope, tool, local: true, discover: true, lease, ...policy });
+        server.send(JSON.stringify({ type: "host-ready", ...(transport === 'relay' ? { transport } : {}), discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }), ...(transport === 'relay' ? { transport } : {}) } }));
       } else {
-        server.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }) });
+        server.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }), local: url.searchParams.get('local') === '1', ...policy });
+        if (transport === 'relay') server.send(JSON.stringify({ type: 'host-ready', transport }));
       }
     } else if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
-      if (this.ctx.getWebSockets("viewer").length >= MAX_VIEWERS) return refuse(4429, "full");
+      const owner = hosts[0].deserializeAttachment();
+      if ((owner?.transport ?? 'direct') !== transport) return refuse(4412, 'transport-mismatch');
+      const limit = transport === 'relay' ? Math.min(MAX_VIEWERS, relayPolicy(this.env)?.maxPeers ?? 0) : MAX_VIEWERS;
+      if (this.ctx.getWebSockets("viewer").length >= limit) return refuse(4429, "full");
       // Tags are one namespace - "host", "viewer" and every id - so an id is
       // prefixed to be unmistakable for a role, and a host's `to` is honoured
       // only in that shape. Without both, `to: "viewer"` would reach the room.
       const id = "v:" + crypto.randomUUID();
       this.ctx.acceptWebSocket(server, ["viewer", id]);
-      server.serializeAttachment({ role: "viewer", id });
+      server.serializeAttachment({ role: "viewer", id, transport, generation: owner?.generation });
       this.toHost({ type: "join", id });
-      server.send(JSON.stringify({ type: "ready" }));
+      server.send(JSON.stringify({ type: "ready", ...(transport === 'relay' ? { transport } : {}) }));
     } else {
       return refuse(4400, "bad-role");
     }
@@ -276,8 +249,22 @@ export class Room {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return;
     const who = ws.deserializeAttachment();
     if (who === null) return;
+    if (parsed.type === 'relay-request') {
+      const host = this.ctx.getWebSockets('host')[0];
+      const owner = host?.deserializeAttachment();
+      const current = () => ws.deserializeAttachment()?.generation === who.generation
+        && this.ctx.getWebSockets('host')[0] === host && host?.readyState === 1
+        && host.deserializeAttachment()?.generation === owner?.generation;
+      return answerRelayRequest(ws, parsed, { env: this.env, tool: owner?.tool ?? 'share-text', current,
+        authorized: () => current() && who.transport === 'relay' && owner?.transport === 'relay'
+          && (who.role === 'host' ? ws === host : who.role === 'viewer' && who.generation === owner.generation) });
+    }
     if (who.role === "viewer") {
       if (parsed.relay === true) {
+        const host = this.ctx.getWebSockets('host')[0]?.deserializeAttachment();
+        // Cached text pages retain their old explicit fallback. A new Direct
+        // host, a local share, or any other tool never grants that authority.
+        if (!host || (host.tool ?? 'share-text') !== 'share-text' || host.transportPinned || host.local === true) return;
         // Once per socket: the flag lives in the attachment, so hibernation
         // cannot forget it and a page cannot mint credentials by the dozen.
         if (who.relayed) return;
@@ -332,7 +319,7 @@ export class Room {
   }
 
   async relay(ws) {
-    const iceServers = await relayServers(this.env);
+    const iceServers = relayEnabled(this.env, 'share-text') ? await relayServers(this.env) : null;
     try {
       ws.send(JSON.stringify({ type: "relay", iceServers }));
     } catch {}

@@ -71,7 +71,8 @@ function fixture(t, overrides = {}) {
     transceivers = []; ice = []; closed = false;
     constructor(config) { super(); this.config = config; peers.push(this); }
     createDataChannel(label) { this.channel = new Channel(); this.channel.label = label; return this.channel; }
-    async createOffer() { return { type: 'offer', sdp: SDP }; }
+    async createOffer(options) { (this.offerOptions ??= []).push(options); return { type: 'offer', sdp: SDP }; }
+    setConfiguration(config) { this.config = config; }
     async createAnswer() { return { type: 'answer', sdp: SDP }; }
     async setLocalDescription(value) { this.localDescription = value; }
     async setRemoteDescription(value) { this.remoteDescription = value; }
@@ -90,6 +91,80 @@ function fixture(t, overrides = {}) {
 }
 
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
+const RELAY_SERVERS = [{ urls: ['turns:relay.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
+function relayReply(socket, values = {}) {
+  const request = socket.sent.findLast((frame) => frame.type === 'relay-request');
+  assert.ok(request, 'relay credentials requested through the live room');
+  socket.receive({ type: 'relay-credentials', id: request.id, iceServers: RELAY_SERVERS, expiresAt: Date.now() + 3600000, ...values });
+}
+
+test('tab relay waits for credentials and retains approval before media', async (t) => {
+  const f = fixture(t), stream = source();
+  const opening = f.session.startHost(stream, CODE, { transport: 'relay' });
+  await settle();
+  assert.equal(new URL(f.sockets[0].url).searchParams.get('transport'), 'relay');
+  signal(f.sockets[0], 'v:1', { dial: true });
+  assert.equal(f.peers.length, 0);
+  relayReply(f.sockets[0]); await opening; await settle();
+  const peer = f.peers[0];
+  assert.equal(peer.config.iceTransportPolicy, 'relay');
+  assert.deepEqual(peer.config.iceServers, RELAY_SERVERS);
+  assert.equal(peer.transceivers.length, 0);
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  signal(f.sockets[0], 'v:1', { restart: true }); await settle();
+  assert.deepEqual(peer.offerOptions.at(-1), { iceRestart: true }, 'viewer renewal asks the host to restart');
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  signal(f.sockets[0], 'v:1', { candidate: { candidate: HOST_CANDIDATE } });
+  const relay = { candidate: OTHER_CANDIDATES[1] };
+  signal(f.sockets[0], 'v:1', { candidate: relay }); await settle();
+  assert.deepEqual(peer.ice, [relay]);
+  peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note: 'Viewer' });
+  assert.equal(f.session.approve('v:1'), true); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+  const offers = peer.offerOptions.length;
+  f.session.renewRelay(RELAY_SERVERS); await settle();
+  assert.equal(peer.offerOptions.length, offers);
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  assert.deepEqual(peer.offerOptions.at(-1), { iceRestart: true });
+  f.session.stop();
+  assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+  assert.equal(f.session.relay, null);
+});
+
+test('tab relay viewer buffers ready until credentials and mismatch cannot create a peer', async (t) => {
+  for (const outcome of ['ready', 'mismatch', 'disabled']) {
+    const f = fixture(t);
+    const opening = f.session.connect(CODE, 'Viewer', { transport: 'relay' });
+    const rejected = outcome !== 'ready' ? assert.rejects(opening, outcome === 'mismatch' ? /transport.mismatch/ : /transport.unavailable/) : null;
+    await settle();
+    assert.equal(f.peers.length, 0);
+    if (outcome !== 'ready') { f.sockets[0].drop(outcome === 'mismatch' ? 4412 : 4413); await rejected; }
+    else {
+      relayReply(f.sockets[0]); await opening;
+      assert.equal(f.peers[0].config.iceTransportPolicy, 'relay');
+      f.session.renewRelay(RELAY_SERVERS);
+      assert.ok(f.sockets[0].sent.some((frame) => frame.data?.restart === true));
+    }
+  }
+});
+
+test('tab unavailable relay and Stop release capture without a direct retry', async (t) => {
+  for (const outcome of ['unavailable', 'stopped']) {
+    const f = fixture(t), stream = source();
+    const opening = f.session.startHost(stream, CODE, { transport: 'relay' });
+    const rejected = assert.rejects(opening, new RegExp(outcome === 'stopped' ? 'connection.stopped' : 'transport.unavailable'));
+    await settle();
+    if (outcome === 'stopped') f.session.stop();
+    relayReply(f.sockets[0], outcome === 'unavailable' ? { error: 'unavailable' } : {});
+    await rejected; await settle();
+    assert.equal(f.peers.length, 0);
+    assert.equal(f.sockets.length, 1);
+    assert.ok(stream.getTracks().every((track) => track.readyState === 'ended'));
+    assert.equal(f.session.role, null);
+  }
+});
 async function request(f, id = 'v:1') {
   signal(f.sockets[0], id, { dial: true }); await settle();
   const peer = f.peers.at(-1);
@@ -154,6 +229,8 @@ test('a tab host uses its own pairing room and no ICE servers or media before co
   assert.equal(url.searchParams.get('tool'), 'share-tab');
   assert.equal(url.searchParams.has('local'), false);
   assert.equal(url.searchParams.has('discover'), false);
+  assert.equal(url.searchParams.get('transport'), 'direct');
+  assert.equal(f.sockets[0].sent.some((frame) => frame.type === 'relay-request'), false);
   const peer = await request(f);
   assert.deepEqual(peer.config, { iceServers: [] });
   assert.equal(peer.transceivers.length, 0);

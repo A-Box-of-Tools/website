@@ -1,4 +1,4 @@
-import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
+import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
@@ -20,6 +20,9 @@ export class TabSession {
     this.stream = null;
     this.socket = null;
     this.pairing = null;
+    this.transport = 'direct';
+    this.iceServers = [];
+    this.relay = null;
     this.peers = new Map();
     this.cancelOpen = null;
     this.openingTrace = null;
@@ -52,15 +55,19 @@ export class TabSession {
     }, { once: true });
   }
 
-  async startHost(stream, code, { discoverable = false } = {}) {
+  async startHost(stream, code, { discoverable = false, transport = 'direct' } = {}) {
     this.prepareHost(stream);
+    this.transport = transportMode(transport);
+    if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     this.discoverable = discoverable === true;
     return this.open(code);
   }
 
-  async connect(code, note) {
+  async connect(code, note, { transport = 'direct' } = {}) {
     this.stop();
     this.role = 'viewer';
+    this.transport = transportMode(transport);
+    if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     this.note = String(note ?? '').trim().slice(0, 80);
     return this.open(code);
   }
@@ -69,17 +76,18 @@ export class TabSession {
     if (typeof code !== 'string' || !CODE_PATTERN.test(code)) { this.stop('code.invalid'); return Promise.reject(new Error('code.invalid')); }
     this.code = code;
     this.state('connection.starting');
-    this.openingTrace = this.diagnostics?.begin(this.role, 'local') ?? null;
+    this.openingTrace = this.diagnostics?.begin(this.role, this.transport === 'relay' ? 'relay' : 'local') ?? null;
     const revision = this.revision;
     return new Promise((resolve, reject) => {
-      let settled = false, ready = false, socket;
+      let settled = false, ready = false, confirmed = false, configured = this.transport === 'direct', socket;
+      const waiting = [];
       const offered = this.role === 'host' && this.discoverable;
-      try { socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`); }
+      try { socket = this.socket = new this.Socket(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`, this.transport)); }
       catch { this.stop('connection.server-failed'); reject(new Error('connection.server-failed')); return; }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
       const finish = () => {
-        if (settled || !current()) return;
+        if (settled || !current() || !configured || (this.role === 'host' && !confirmed)) return;
         settled = true;
         pairing.clear('opening');
         this.cancelOpen = null;
@@ -94,6 +102,20 @@ export class TabSession {
         this.stop(key);
         if (pending) reject(new Error(key));
       };
+      const dispatch = (message) => {
+        if (message.type === 'ready' && this.role === 'viewer' && !ready) {
+          ready = true;
+          finish();
+          this.dial();
+        } else {
+          try { this.message(message); } catch { fail('connection.invalid'); }
+        }
+      };
+      if (!configured) this.relay = new RelayCredentials({
+        send: (frame) => pairing.send(frame), current,
+        onRenew: (servers) => this.renewRelay(servers),
+        onError: (error) => fail(error.message),
+      });
       this.cancelOpen = () => { if (!settled) { settled = true; reject(new Error('connection.stopped')); } };
       pairing.after('opening', TIMEOUT, () => fail('connection.server-failed'));
       pairing.listen({
@@ -103,22 +125,27 @@ export class TabSession {
           pairing.every('heartbeat', 25000, () => {
             if (!pairing.probe({ timeout: 10000, onTimeout: () => fail('connection.server-failed') })) fail('connection.server-failed');
           });
+          if (!configured) this.relay.prepare().then((servers) => {
+            if (!current()) return;
+            this.iceServers = servers;
+            configured = true;
+            if (this.role === 'host') finish();
+            for (const message of waiting.splice(0)) { if (current()) dispatch(message); }
+          }).catch((error) => { if (current()) fail(error.message); });
         },
         error: () => fail('connection.server-failed'),
-        close: (event) => fail(({ 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' })[event.code] ?? 'connection.server-failed'),
+        close: (event) => fail(({ 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' })[event.code] ?? 'connection.server-failed'),
         message: (event) => {
-          if (event.data === 'pong') { if (this.role === 'host') finish(); return; }
+          if (event.data === 'pong') { confirmed = true; if (this.role === 'host') finish(); return; }
           if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
           let message;
           try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
           if (!message || typeof message !== 'object' || Array.isArray(message)) return fail('connection.invalid');
-          if (message.type === 'ready' && this.role === 'viewer' && !ready) {
-            ready = true;
-            finish();
-            this.dial();
-          } else {
-            try { this.message(message); } catch { fail('connection.invalid'); }
-          }
+          if (this.relay?.receive(message)) return;
+          if (!configured) {
+            if (waiting.length >= 64) return fail('connection.invalid');
+            waiting.push(message);
+          } else dispatch(message);
         },
       });
     });
@@ -132,7 +159,7 @@ export class TabSession {
     try {
       this.newPeer('viewer');
       this.send({ protocol: PROTOCOL, dial: true });
-    } catch { this.stop('connection.direct-failed'); }
+    } catch { this.stop(this.transport === 'relay' ? 'transport.failed' : 'connection.direct-failed'); }
   }
 
   message(message) {
@@ -141,7 +168,7 @@ export class TabSession {
       if (this.role === 'host' && this.discoverable
           && publication?.tool === TOOL && publication.code === this.code && CODE_PATTERN.test(publication.code)
           && typeof publication.lease === 'string' && /^[a-z0-9-]{16,128}$/i.test(publication.lease)) {
-        this.onDiscovery({ code: publication.code, lease: publication.lease, tool: TOOL });
+        this.onDiscovery({ code: publication.code, lease: publication.lease, tool: TOOL, ...(publication.transport ? { transport: publication.transport } : {}) });
       }
       return;
     }
@@ -171,6 +198,11 @@ export class TabSession {
     if (data.refused === 'protocol' && this.role === 'viewer') { this.stop('connection.invalid'); return; }
     const entry = this.peers.get(id);
     if (!entry) return;
+    if (data.restart === true && this.role === 'host' && this.transport === 'relay') {
+      entry.restartPending = true;
+      this.queue(entry, () => this.offer(entry));
+      return;
+    }
     this.queue(entry, () => this.receiveSignal(entry, data));
   }
 
@@ -182,7 +214,7 @@ export class TabSession {
         if (description?.type !== expected || typeof description.sdp !== 'string' || description.sdp.length > 60000
             || !description.sdp.startsWith('v=0') || (expected === 'answer' && !entry.awaitingAnswer)
             || (expected === 'offer' && (/^m=audio\s/m.test(description.sdp) || (!entry.approved && /^m=video\s/m.test(description.sdp))))) throw new Error('connection.invalid');
-        await entry.pc.setRemoteDescription(localDescription(description));
+        await entry.pc.setRemoteDescription(transportDescription(description, this.transport));
         if (!this.current(entry)) return;
         for (const candidate of entry.candidates.splice(0)) {
           await entry.pc.addIceCandidate(candidate);
@@ -192,17 +224,18 @@ export class TabSession {
           entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
           const answer = await entry.pc.createAnswer();
           if (!this.current(entry)) return;
-          await entry.pc.setLocalDescription(localDescription(answer));
+          await entry.pc.setLocalDescription(transportDescription(answer, this.transport));
           if (!this.current(entry)) return;
           this.signal(entry, { description: entry.pc.localDescription });
         } else {
           entry.awaitingAnswer = false;
           if (entry.media) { this.clear(entry, 'media'); entry.negotiated = true; this.viewers(); this.state(this.hostState()); }
+          if (entry.offerPending) this.queue(entry, () => this.offer(entry));
         }
       } else if (data.candidate !== undefined) {
         const candidate = data.candidate;
         if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048) throw new Error('connection.invalid');
-        if (!allowedCandidate(candidate, true)) return;
+        if (!transportCandidate(candidate, this.transport)) return;
         if (entry.pc.remoteDescription) await entry.pc.addIceCandidate(candidate);
         else if (entry.candidates.length < 64) entry.candidates.push(candidate);
         else throw new Error('connection.invalid');
@@ -212,10 +245,9 @@ export class TabSession {
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
   newPeer(id) {
-    // Pairing still uses the public introduction service, but it must never
-    // widen the media route beyond the host candidates of these browsers.
-    const pc = new this.PeerConnection(rtcConfig(true));
-    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, 'local');
+    // The selected route is a boundary, never an automatic fallback.
+    const pc = new this.PeerConnection(peerConfiguration(this.transport, this.iceServers));
+    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role, this.transport === 'relay' ? 'relay' : 'local');
     this.openingTrace = null;
     const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], timers: new Map(), approved: false, pending: false };
     this.peers.set(id, entry);
@@ -225,7 +257,7 @@ export class TabSession {
       if (!this.current(entry) || !event.candidate) return;
       try {
         const candidate = event.candidate.toJSON();
-        if (allowedCandidate(candidate, true)) this.signal(entry, { candidate });
+        if (transportCandidate(candidate, this.transport)) this.signal(entry, { candidate });
       } catch { this.peerFailed(entry); }
     });
     pc.addEventListener('datachannel', (event) => {
@@ -267,14 +299,29 @@ export class TabSession {
   }
 
   signal(entry, data) {
-    const frame = data.description === undefined ? data : { ...data, description: localDescription(data.description) };
+    const frame = data.description === undefined ? data : { ...data, description: transportDescription(data.description, this.transport) };
     this.send({ protocol: PROTOCOL, ...frame }, this.role === 'host' ? entry.id : null);
   }
 
+  renewRelay(servers) {
+    this.iceServers = servers;
+    for (const entry of this.peers.values()) {
+      entry.pc.setConfiguration(peerConfiguration(this.transport, servers));
+      if (this.role === 'host') {
+        entry.restartPending = true;
+        this.queue(entry, () => this.offer(entry));
+      } else if (this.role === 'viewer') this.signal(entry, { restart: true });
+    }
+  }
+
   async offer(entry) {
-    const offer = await entry.pc.createOffer();
+    if (entry.awaitingAnswer) { entry.offerPending = true; return; }
+    const restarting = entry.restartPending === true;
+    entry.restartPending = false;
+    entry.offerPending = false;
+    const offer = await entry.pc.createOffer(restarting ? { iceRestart: true } : undefined);
     if (!this.current(entry)) return;
-    await entry.pc.setLocalDescription(localDescription(offer));
+    await entry.pc.setLocalDescription(transportDescription(offer, this.transport));
     if (!this.current(entry)) return;
     entry.awaitingAnswer = true;
     this.signal(entry, { description: entry.pc.localDescription });
@@ -397,6 +444,7 @@ export class TabSession {
 
   peerFailed(entry, key = 'connection.direct-failed') {
     if (!this.current(entry)) return;
+    if (key === 'connection.direct-failed' && this.transport === 'relay') key = 'transport.failed';
     if (this.role === 'viewer') this.stop(key);
     else this.removePeer(entry.id);
   }
@@ -419,6 +467,9 @@ export class TabSession {
     const role = this.role;
     // Retire asynchronous offers before closing anything that can emit events.
     this.revision += 1;
+    this.relay?.close();
+    this.relay = null;
+    this.iceServers = [];
     if (role === 'host') for (const entry of this.peers.values()) { try { this.control(entry, 'ended'); } catch {} }
     this.role = null;
     this.code = null;
@@ -445,7 +496,7 @@ export class TabSession {
     const transport = values.find((item) => item.type === 'transport' && item.selectedCandidatePairId);
     const pair = transport && stats.get(transport.selectedCandidatePairId);
     const video = values.find((item) => item.type === 'inbound-rtp' && item.kind === 'video');
-    return { state: entry.pc.connectionState, local: pair && stats.get(pair.localCandidateId)?.candidateType,
+    return { state: entry.pc.connectionState, route: selectedTransport(stats), local: pair && stats.get(pair.localCandidateId)?.candidateType,
       remote: pair && stats.get(pair.remoteCandidateId)?.candidateType, frames: video?.framesDecoded ?? 0 };
   }
 }

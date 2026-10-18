@@ -1,33 +1,34 @@
-# The host receives separate direct streams, so it can silence one participant
+# The host receives separate encrypted streams, so it can silence one participant
 # without trusting that participant to stop transmitting.
 slug = "voice-oncall"
 name = "Voice Oncall"
 heading = "Voice Oncall"
-tagline = "Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants."
+tagline = "Open a pager and hear live voice from people who connect. Use Direct on your local network or choose Cloud relay over the internet, with a password and individual mute or remove controls."
 icon = "&#127897;"
 favicon = "&#127897;"
 glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "voice-session", "peer-network", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "voice-session", "peer-network", "peer-transport", "peer-transport-ui", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-15"
+supports_relay = true
+lastmod = "2026-10-17"
 
-title = "Voice Oncall &mdash; Receive Live Voice from Nearby Devices"
-description = "Let up to ten people send live voice directly to one host browser. Nearby discovery, optional pager password, push to talk, mute and remove controls."
+title = "Voice Oncall &mdash; Receive Live Voice from Other Devices"
+description = "Let up to ten people send live voice to one host browser. Direct local connections or optional Cloud relay, with a pager password, push to talk and moderation."
 og_title = "Voice Oncall — One Listening Host"
 og_description = "A browser voice pager with nearby discovery, an optional password, and individual mute and remove controls."
 og_image_alt = "Voice Oncall - several speakers and one listening host"
 og_card = "Nearby people speak. One host listens and chooses who to hear."
-csp_note = "This page opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, connection setup and status. Local builds and HTTPS abox-preview.pages.dev previews use the separate rendezvous-dev.abox.tools service. Live audio uses direct encrypted WebRTC with host candidates only, without STUN or TURN. The rendezvous never carries audio."
-pledge_line = "Live voice goes <strong>directly to the host</strong>. Internet discovery and pairing, no recording or audio relay."
-pledge = "People send live voice from their browsers to one listening host. Internet discovery groups pages sharing a public network address and page origin; it cannot prove they are on the same physical Wi-Fi. The service carries pager names, temporary participant identifiers and credentials, moderation and connection details, never audio. Each participant has a separate encrypted WebRTC connection to the host."
-live_hint = "This page intentionally contacts rendezvous.abox.tools for discovery and pairing. It sees pager names, temporary participant identifiers, addresses, timing, password-derived credentials and moderation status, never voice. Cloudflare keeps seven-day invocation metadata logs."
+csp_note = "This page opens secure WebSockets to rendezvous.abox.tools for nearby discovery, authentication, connection setup and status. Local builds and HTTPS abox-preview.pages.dev previews use rendezvous-dev.abox.tools. Direct is the default, using host candidates only without STUN or TURN. Optional Cloud relay uses temporary TURN credentials and forwards encrypted voice through Cloudflare. The introduction service never carries audio."
+pledge_line = "<strong>Direct voice by default.</strong> Choose Cloud relay when needed. No recording."
+pledge = "People send live voice to one listening host. Discovery groups pages sharing a public network address and origin; it cannot prove physical Wi-Fi membership. The introduction service carries pager names, participant identifiers and credentials, moderation and connection details, never audio. Each participant has a separate encrypted WebRTC connection. Cloud relay is an explicit alternative that forwards encrypted audio through Cloudflare."
+live_hint = "The introduction service sees pager names, temporary participant identifiers, addresses, timing, password-derived credentials and moderation status, never voice. Cloudflare keeps seven-day invocation metadata logs. Optional Cloud relay also forwards encrypted audio and sees addresses, timing and traffic volume, but cannot decrypt the WebRTC audio. The page never switches routes automatically."
 read_first = ", <code>src/main.js</code> for individual playback controls, <code>shared/js/voice-session.js</code> for direct connections, and <code>workers/rendezvous/inbox.js</code> for admission and moderation"
 howto_heading = "How to receive voice from nearby people"
 card = "Several people send live voice to one host, with nearby discovery, an optional password and individual moderation."
-md_note = "The host opens a named pager without microphone access. Participants find it nearby or open its link, enter its password if required, and Connect without entering a name. They allow microphone access and deliberately hold or tap Talk. The host can mute or remove each participant. Internet is needed for discovery and pairing; voice stays on direct browser connections."
+md_note = "The host chooses Direct or Cloud relay and opens a named pager without microphone access. Participants find it nearby or open its link, review the route, enter its password if required, and Connect without entering a name. They allow microphone access and deliberately hold or tap Talk. The host can mute or remove each participant. Internet is needed for pairing and for relayed audio."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
@@ -49,7 +50,7 @@ mark = "&#10003;"
 text = "Individual mute and remove"
 [[facts]]
 mark = "&#10007;"
-text = "No recording or audio relay"
+text = "Direct or optional Cloud relay"
 
 [[privacy]]
 title = "Discovery is a nearby hint."
@@ -58,8 +59,8 @@ body = " Opening this page connects to the rendezvous to list live pagers sharin
 title = "Passwords control admission without a host approval prompt."
 body = " An open pager accepts reachable participants without asking its host to approve them. A protected pager checks a credential derived from its password in the participant's browser before negotiating voice. The password is not put in an invitation or sent as plain text. The derived credential travels inside encrypted signaling messages and acts as an access credential. Choose a strong password and share it separately. Callers do not need a name; their temporary session identifiers do not verify who they are."
 [[privacy]]
-title = "The host hears separate direct audio streams."
-body = " Each admitted participant sends encrypted WebRTC audio directly to the host browser. Other participants do not receive it. No STUN server, TURN relay or recording feature is configured. The host never requests microphone access. Participants grant microphone permission and start with transmission stopped; Hold to talk or Start talking deliberately enables it. Physical holds release on blur or hiding. Explicit hands-free speech can continue while the page is hidden and the browser permits it. A microphone interruption clears talking without deliberately closing the pairing. Recipients can independently record what they hear."
+title = "The host hears separate encrypted audio streams."
+body = " Each admitted participant sends encrypted WebRTC audio to the host browser. Other participants do not receive it. Direct uses host candidates only and no relay. Cloud relay must be chosen explicitly and uses relay candidates only; Cloudflare forwards encrypted audio and sees connection metadata, but cannot decrypt the audio. There is no automatic fallback or recording feature. The host never requests microphone access. Participants grant permission and start with transmission stopped; Hold to talk or Start talking deliberately enables it. Physical holds release on blur or hiding. Hands-free speech can continue while the browser permits it. An interruption clears talking. Recipients can independently record what they hear."
 [[privacy]]
 title = "Mute and Remove belong to the host."
 body = " Mute silences that participant's stream in the host browser even if a modified participant page keeps sending audio. The normal participant page also stops transmission when muted. Remove closes that participant's direct connection and rejects its retained session identity. This is a session block, not a permanent ban on a person: someone can create a new identity, especially in an open pager. Per-pager moderation history is bounded; ending the pager clears it."
@@ -75,7 +76,7 @@ title = "Open the listening pager."
 body = " Choose Host a pager, give the pager a name, optionally set a password and choose Start pager. The host needs speaker output but does not grant microphone access. Keep its page open. Healthy connections can continue in the background while the browser allows; screen-lock operation is not guaranteed. If sound is interrupted, return here and choose Restore sound when shown."
 [[howto]]
 title = "Find it nearby or use its link."
-body = " On a participating device, open this page and choose the named pager from the nearby list at the top. This selects the pager without connecting or asking for a microphone; use Connect below when ready. Use the copied link or QR code if discovery does not find it. Both devices need internet for discovery and pairing, plus a reachable direct network path for audio."
+body = " On a participating device, choose the pager from the nearby list or open its invitation. Review Direct or Cloud relay before choosing Connect. Selecting alone never connects or requests a microphone. Both devices need internet for discovery and pairing. Direct needs a reachable network path; Cloud relay needs internet throughout. A pager keeps its host's chosen route, so changing that choice requires a new invitation."
 [[howto]]
 title = "Connect and deliberately speak."
 body = " Enter the pager password if required, then Connect and allow microphone access. You do not need to enter a name or wait for host approval. Hold Talk or focus it and hold Space; release to stop. Physical holds also release on blur or hiding. Start talking enables hands-free speech, which can continue in the background while the browser permits. Only the host hears your audio. A microphone interruption clears talking. Return to the page or choose Resume microphone if recovery is needed, then deliberately start talking again."
@@ -97,7 +98,7 @@ q = "Can it discover every device on my Wi-Fi?"
 a = "No. Nearby discovery groups active pages by their public internet address and this website's origin. It does not scan the LAN and cannot prove physical Wi-Fi membership. VPNs, shared carrier gateways and different routes affect the list. Use an invitation link when discovery misses the pager."
 [[faq]]
 q = "Does any server receive our voice?"
-a = "The rendezvous carries discovery, admission and connection details, never audio. Audio travels on separate direct encrypted browser connections. No audio relay fallback is configured. Internet remains necessary for introductions and recovery."
+a = "Direct sends encrypted audio between the browsers without a relay. When both devices choose Cloud relay, Cloudflare forwards encrypted WebRTC audio and sees addresses, timing and traffic volume, but cannot decrypt the audio. The introduction service carries setup and status only. Internet remains necessary for pairing and for relayed audio."
 [[faq]]
 q = "Can a removed person return?"
 a = "Their retained participant session is blocked in the active pager. This is not a verified account or permanent person-level ban: a new browser identity can try again. A password helps control who can connect. End the pager and create a new protected one if you need a fresh invitation."
@@ -106,12 +107,12 @@ q = "Can I keep talking with the screen locked?"
 a = "Hands-free speech and healthy connections remain active while the browser allows; physical holds release when the page loses focus or becomes hidden. A phone can still interrupt audio, suspend the page or close connections when locked, so this is not guaranteed. A microphone interruption stops talking and recovery stays silent until you deliberately speak again. Test the actual phones and browsers you plan to use. Disconnect and End pager prevent automatic restart."
 [[faq]]
 q = "Can we use a phone hotspot?"
-a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the pager link or QR code if the nearby list misses it. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
+a = "A phone hotspot can work with Direct if it allows the devices to reach one another. Keep internet for discovery and pairing, and use the pager link or QR code if discovery misses it. Cloud relay offers another route when both devices permit it; it requires an explicit choice and internet throughout."
 [[faq]]
 q = "Why does the same Wi-Fi sometimes fail?"
-a = "Guest isolation, firewalls, VPN routes, browser local-network permissions or sleeping devices may prevent a direct connection. There is no public audio relay fallback. Try the actual phones and computers you intend to use."
+a = "Guest isolation, firewalls, VPN routes, browser permissions or sleeping devices may prevent Direct. Try a reachable trusted network or explicitly start a new Cloud relay pager. Managed devices may restrict either route. Test the actual phones and computers you intend to use."
 
 [schema]
 category = "CommunicationApplication"
 description = "A browser-hosted live voice pager with nearby discovery, automatic password-gated admission, direct audio and per-participant host controls."
-features = ["One listening host and up to ten speakers", "Nearby pager discovery", "Optional pager password", "Connect without host approval", "Hold or tap to talk", "Individual mute and remove", "Direct encrypted WebRTC", "No recording, STUN or TURN"]
+features = ["One listening host and up to ten speakers", "Nearby pager discovery", "Optional pager password", "Connect without host approval", "Hold or tap to talk", "Individual mute and remove", "Direct by default with optional Cloud relay", "No recording"]

@@ -184,6 +184,7 @@ export class Discovery {
       if (publication?.verified) codes.set(publication.code, publication);
     }
     const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true,
+      ...(codes.get(code).transport === 'relay' ? { transport: 'relay' } : {}),
       ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}),
       ...(tool === "walkie-talkie" ? { name: codes.get(code).name, listenKey: codes.get(code).listenKey } : {}) }));
     return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL ? {} : { tool }), list });
@@ -214,22 +215,26 @@ export class Discovery {
         body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool,
           ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}) }),
       });
-      if (!metadataTool(tool)) return result.status === 204;
+      if (!metadataTool(tool) && result.status === 204) return true;
       if (result.status !== 200) return false;
       const text = await result.text();
       if (text.length > MAX_MESSAGE) return false;
       const metadata = JSON.parse(text);
-      if (!metadata || typeof metadata !== "object" || Array.isArray(metadata) || Object.keys(metadata).length !== 2
+      if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)
+          || (metadata.transport !== undefined && !['direct', 'relay'].includes(metadata.transport))) return false;
+      const transport = metadata.transport === 'relay' ? { transport: 'relay' } : {};
+      if (!metadataTool(tool)) return Object.keys(metadata).length === 1 && metadata.transport === 'relay' ? transport : false;
+      if (Object.keys(metadata).length !== (metadata.transport === undefined ? 2 : 3)
           || typeof metadata.name !== "string" || metadata.name.length === 0 || metadata.name.length > 80
           || !metadata.name.isWellFormed() || metadata.name.trim().length === 0
           || /[\x00-\x1f\x7f-\x9f]/.test(metadata.name)) return false;
       if (tool === "walkie-talkie") {
         if (typeof metadata.listenKey !== "string" || !LISTEN_KEY_PATTERN.test(metadata.listenKey)
             || metadata.listenKey !== publication.listenKey) return false;
-        return { name: metadata.name, listenKey: metadata.listenKey };
+        return { name: metadata.name, listenKey: metadata.listenKey, ...transport };
       }
       if (typeof metadata.locked !== "boolean") return false;
-      return { name: metadata.name, locked: metadata.locked };
+      return { name: metadata.name, locked: metadata.locked, ...transport };
     } catch {
       return false;
     }
@@ -253,7 +258,7 @@ export class Discovery {
       const current = ws.deserializeAttachment();
       if (current !== null && current.generation === who.generation
           && current.publication?.code === who.publication.code && current.publication.lease === who.publication.lease) {
-        if (valid && metadataTool(who.tool ?? DEFAULT_TOOL)) {
+        if (valid && typeof valid === 'object') {
           ws.serializeAttachment({ ...current, publication: { ...current.publication, ...valid } });
         } else if (!valid) ws.serializeAttachment({ ...current, generation: current.generation + 1, publication: null });
       }
@@ -295,7 +300,7 @@ export class Discovery {
     const listed = JSON.parse(this.snapshot()).list;
     if (valid && listed.length >= MAX_SHARES && !listed.some((item) => item.code === publication.code)) valid = false;
     ws.serializeAttachment({ ...current, publication: valid ? { ...publication, verified: true,
-      ...(metadataTool(who.tool ?? DEFAULT_TOOL) ? valid : {}) } : null });
+      ...(typeof valid === 'object' ? valid : {}) } : null });
     this.broadcast();
   }
 

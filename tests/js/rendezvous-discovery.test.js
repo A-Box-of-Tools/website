@@ -262,7 +262,13 @@ test('a tab room has no discoverable lease unless the host explicitly opts in to
   for (const [code, flags] of [['tab-ordinary', ''], ['tab-local-only', '&local=1'], ['tab-discover-only', '&discover=1']]) {
     const tab = await edgeSocket(s, `/ws/${code}?role=host&tool=share-tab${flags}`, address);
     assert.deepEqual(tab.messages, [], code);
-    assert.deepEqual(tab.deserializeAttachment(), { role: 'host', tool: 'share-tab' });
+    const attachment = tab.deserializeAttachment();
+    assert.equal(attachment.role, 'host');
+    assert.equal(attachment.tool, 'share-tab');
+    assert.equal(attachment.transport, 'direct');
+    assert.equal(attachment.transportPinned, false);
+    assert.equal(attachment.local, flags.includes('local=1'));
+    assert.match(attachment.generation, /^[a-f0-9-]{36}$/);
     const claim = { code, lease: 'x'.repeat(36), tool: 'share-tab', scope };
     assert.equal((await check(s, `share-tab:${code}`, claim)).status, 403);
     await publish(s, listed, claim, scope);
@@ -279,7 +285,7 @@ test('a tab room has no discoverable lease unless the host explicitly opts in to
   assert.deepEqual(shares(cameraList).list, []);
 });
 
-test('tab rooms preserve the existing viewer-only, once-per-socket relay request after hibernation', async () => {
+test('only cached non-local text rooms retain the viewer-only once-per-socket relay fallback', async () => {
   for (const tool of ['share-text', 'remote-camera', 'share-tab']) {
     const s = system(), address = '1.2.3.4';
     const code = 'relay-check';
@@ -294,6 +300,11 @@ test('tab rooms preserve the existing viewer-only, once-per-socket relay request
     assert.equal(relayed.length, 0, tool);
     const hostMessages = host.messages.length;
     await room.instance.webSocketMessage(viewer, JSON.stringify({ relay: true }));
+    if (tool !== 'share-text') {
+      assert.deepEqual(relayed, [], tool);
+      assert.equal(host.messages.length, hostMessages);
+      continue;
+    }
     assert.deepEqual(relayed, [viewer]);
     assert.deepEqual(viewer.messages.at(-1), answer);
     assert.equal(host.messages.length, hostMessages);
@@ -317,6 +328,75 @@ test('unknown tool namespaces never reach a room or discovery object', async () 
     }
   }
   assert.equal(s.calls.length, 0);
+});
+
+test('Room pins the host transport and rejects incompatible or malformed invitations', async () => {
+  const s = system(), address = '1.2.3.4';
+  for (const tool of ['share-text', 'share-tab', 'remote-camera']) {
+    const suffix = `&tool=${tool}`;
+    const owner = await edgeSocket(s, `/ws/policy?role=host&transport=relay${suffix}`, address);
+    assert.equal(owner.messages[0].transport, 'relay');
+    for (const mode of ['', '&transport=direct']) {
+      const refused = await edgeSocket(s, `/ws/policy?role=viewer${mode}${suffix}`, address);
+      assert.equal(refused.closed.code, 4412);
+    }
+    const accepted = await edgeSocket(s, `/ws/policy?role=viewer&transport=relay${suffix}`, address);
+    assert.equal(accepted.messages.at(-1).transport, 'relay');
+    const key = tool === 'share-text' ? 'policy' : `${tool}:policy`;
+    const room = s.room(key);
+    room.instance = new Room(room.ctx, s.env);
+    for (const socket of [owner, accepted]) {
+      await room.instance.webSocketMessage(socket, JSON.stringify({ type: 'relay-request', id: 'test-1' }));
+      assert.deepEqual(socket.messages.at(-1), { type: 'relay-credentials', id: 'test-1', error: 'unavailable' });
+    }
+  }
+  for (const query of ['transport=RELAY', 'transport=', 'transport=relay&transport=direct']) {
+    assert.equal((await worker.fetch(edgeRequest(`/ws/invalid?role=host&${query}`, address), s.env)).status, 400);
+  }
+});
+
+test('explicit Direct never grants modern or legacy relay credentials', async () => {
+  const s = system(), address = '1.2.3.4';
+  for (const flags of ['&transport=direct', '&local=1']) {
+    const code = flags.includes('local') ? 'local-policy' : 'direct-policy';
+    const owner = await edgeSocket(s, `/ws/${code}?role=host${flags}`, address);
+    const viewer = await edgeSocket(s, `/ws/${code}?role=viewer`, address);
+    const room = s.room(code).instance;
+    room.relay = () => { throw new Error('Direct must not request credentials'); };
+    for (const socket of [owner, viewer]) {
+      await room.webSocketMessage(socket, JSON.stringify({ type: 'relay-request', id: 'denied' }));
+      assert.equal(socket.messages.at(-1).error, 'forbidden');
+    }
+    await room.webSocketMessage(viewer, JSON.stringify({ relay: true }));
+    assert.equal(viewer.deserializeAttachment().relayed, undefined);
+  }
+});
+
+test('relay admission honors per-service enablement and the concurrent viewer cap', async () => {
+  const s = system(), address = '1.2.3.4';
+  s.env.RELAY_TOOLS = 'share-text';
+  const disabled = await edgeSocket(s, '/ws/no-relay?role=host&tool=share-tab&transport=relay', address);
+  assert.equal(disabled.closed.code, 4413);
+  s.env.RELAY_MAX_PEERS = '1';
+  await edgeSocket(s, '/ws/capped?role=host&transport=relay', address);
+  const first = await edgeSocket(s, '/ws/capped?role=viewer&transport=relay', address);
+  assert.equal(first.readyState, 1);
+  const second = await edgeSocket(s, '/ws/capped?role=viewer&transport=relay', address);
+  assert.equal(second.closed.code, 4429);
+});
+
+test('nearby transport comes from the live host, never a publisher claim', async () => {
+  const s = system();
+  const direct = await host(s, 'direct');
+  const relay = await host(s, 'relay', SCOPE, '&local=1&discover=1&transport=relay');
+  const publisher = await observer(s);
+  await publish(s, publisher, { ...publication(direct), transport: 'relay' });
+  assert.deepEqual(shares(publisher).list, [{ code: 'direct', local: true }]);
+  await publish(s, publisher, { ...publication(relay), transport: 'direct' });
+  assert.deepEqual(shares(publisher).list, [{ code: 'relay', local: true, transport: 'relay' }]);
+  s.discovery().instance = new Discovery(s.discovery().ctx, s.env);
+  await s.discovery().instance.webSocketMessage(publisher, JSON.stringify({ refresh: true }));
+  assert.deepEqual(shares(publisher).list, [{ code: 'relay', local: true, transport: 'relay' }]);
 });
 
 test('Cloudflare Pseudo IPv4 overwrite mode joins the preserved public IPv6 /64', async () => {
@@ -371,13 +451,18 @@ test('only an explicitly discoverable local host receives a server-issued lease'
   for (const [code, flags] of [['ordinary', ''], ['local-only', '&local=1'], ['direct-discover', '&discover=1']]) {
     const plain = await host(s, code, SCOPE, flags);
     assert.deepEqual(plain.messages, []);
-    assert.deepEqual(plain.deserializeAttachment(), { role: 'host' });
+    const attachment = plain.deserializeAttachment();
+    assert.equal(attachment.role, 'host');
+    assert.equal(attachment.transport, 'direct');
+    assert.equal(attachment.local, flags.includes('local=1'));
+    assert.equal(attachment.lease, undefined);
     assert.equal((await check(s, code, { code, lease: claim.lease, scope: SCOPE })).status, 403);
   }
   const unscoped = await s.room('unscoped').instance.fetch(new Request('https://room.internal/ws/unscoped?role=host&local=1&discover=1'));
   assert.equal(unscoped.status, 101);
   assert.deepEqual(unscoped.webSocket.peer.messages, []);
-  assert.deepEqual(unscoped.webSocket.peer.deserializeAttachment(), { role: 'host' });
+  assert.equal(unscoped.webSocket.peer.deserializeAttachment().role, 'host');
+  assert.equal(unscoped.webSocket.peer.deserializeAttachment().lease, undefined);
   const collision = await s.room(claim.code).instance.fetch(new Request(`https://room.internal/ws/${claim.code}?role=host&local=1&discover=1`, {
     headers: { [DISCOVERY_SCOPE_HEADER]: SCOPE },
   }));

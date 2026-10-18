@@ -1,6 +1,6 @@
   <section>
     <h2>Open the listening pager</h2>
-    <p>Open <a href="../../voice-oncall/">Voice Oncall</a> on the device that will listen. Choose Host a pager, enter a recognisable pager name and optionally set a password. Start pager prepares speaker playback and advertises the pager; it does not request microphone permission.</p>
+    <p>Open <a href="../../voice-oncall/">Voice Oncall</a> on the device that will listen. Choose Host a pager, enter a recognisable pager name and optionally set a password. Keep Connection set to Direct, or choose Cloud relay before starting when direct access is unavailable. Start pager prepares speaker playback and advertises the pager; it does not request microphone permission.</p>
     <p>Use the website's HTTPS address. There is no installation, Python helper or account. Keep the host page open and its device awake while people are connected.</p>
     <p>If the phone interrupts the host's sound, return to the page and choose Restore sound when shown. The pager stays open while sound is paused.</p>
   </section>
@@ -23,7 +23,7 @@
   <section>
     <h2>Understand the connection</h2>
     <p>A phone hotspot can work when it lets the participating devices reach one another directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the pager link or QR code if the nearby list misses it. Some hotspots and managed devices block direct traffic, so test your actual devices before relying on it.</p>
-    <p>Internet access is required for discovery, admission and connection setup. That service carries pager names, temporary participant identifiers, password-derived credentials, moderation and network details, never voice. Older pages may also send participant display names. Audio travels on separate encrypted direct browser connections without a STUN server or public audio relay fallback.</p>
+    <p>Internet access is required for discovery, admission and connection setup. That service carries pager names, temporary participant identifiers, password-derived credentials, moderation and network details, never voice. Older pages may also send participant display names. Direct audio travels on separate encrypted browser connections without STUN or TURN. Optional Cloud relay forwards encrypted audio through Cloudflare, which sees addresses, timing and traffic volume and needs internet throughout. The invitation carries the host’s route; participants see it before connecting. Direct never switches to a relay automatically.</p>
     <p>Waiting participants check for the host with a one-second foreground target. Sleeping devices, background timers and connection limits can delay recovery. Guest isolation, firewalls, VPN routes or browser local-network permissions may prevent direct audio even when both devices are on the same Wi-Fi. Try the actual phones and computers you intend to use.</p>
     <p>If your goal is for one person to speak to many listeners, use <a href="../../walkie-talkie/">Local Walkie-Talkie</a> instead. Voice Oncall receives many separate voices at one host.</p>
   </section>

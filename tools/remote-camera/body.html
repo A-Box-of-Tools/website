@@ -14,7 +14,8 @@
     </details>
   </section>
 
-  <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video and optional audio travel directly between the browsers. No recording or internet relay.</p>
+  {% include "partials/paired-transport.html" %}
+  <p class="camera-requirements">Both devices need this page open and internet for pairing. Direct uses a local network that lets the devices reach each other. Cloud relay carries encrypted video and optional audio through the relay service when both people choose it. Nothing is recorded by this tool.</p>
 
   <div id="camera-workspace" class="camera-workspace" data-pairing-setup>
   <section id="camera-panel" data-role="camera" class="card">
@@ -196,7 +197,7 @@
     <summary>Connection details and troubleshooting</summary>
     <p id="details-route">No camera connection yet.</p>
     <p id="details-frames" hidden></p>
-    <p>This tool offers only the browsers&rsquo; own host addresses, without public STUN servers or TURN relays. A VPN or operating-system route can affect the path. Guest Wi-Fi isolation, a firewall, blocked local address discovery, or browser and OS local-network permissions can prevent a connection.</p>
+    <p>Direct offers only the browsers&rsquo; own host addresses, without public STUN servers or TURN relays. A VPN or operating-system route can affect the path. Guest Wi-Fi isolation, a firewall or local-network permissions can prevent Direct. You can start a new Cloud relay session to send encrypted traffic through the relay service; the viewer must explicitly connect using that choice. A managed device can block either mode.</p>
     <p>If pairing fails, stop on both devices, check that both are on the same reachable network, allow local-network access if asked, and try a new link. The camera device needs trusted HTTPS; ordinary HTTP on a LAN IP cannot request a camera.</p>
     <p id="connection-report-note">A connection report includes browser and tool versions, stages, counts and error names, without addresses, pairing codes, viewer notes, video or audio. It stays in this tab. Copy or download it to share it yourself; nothing is uploaded automatically.</p>
     <div class="camera-report-actions">
@@ -226,7 +227,7 @@
     <span data-phrase="camera.open-waiting">Camera preview is on. A viewer can connect without asking you for approval.</span>
     <span data-phrase="camera.approval-required">Approve viewer requests on this device. Changes to this setting apply to new requests.</span>
     <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while space is available. Changes apply to new requests; accepted viewers stay connected.</span>
-    <span data-phrase="camera.approved">Viewer accepted. Waiting for the direct video connection.</span>
+    <span data-phrase="camera.approved">Viewer accepted. Waiting for the video connection.</span>
     <span data-phrase="camera.streaming">Sharing live video with accepted viewers. Your browser may pause video while this device is locked.</span>
     <span data-phrase="camera.viewer-count">Accepted viewers: {count}. New-viewer limit: {limit}.</span>
     <span data-phrase="camera.viewer-preparing">Waiting for live video</span>
@@ -255,8 +256,8 @@
     <span data-phrase="viewer.selected">Camera selected. Choose Connect to camera when you are ready to request a view.</span>
     <span data-phrase="viewer.waiting">Your request reached the camera device. If approval is required, wait for its owner; no video is being sent yet.</span>
     <span data-phrase="viewer.approved">The camera device accepted you. Waiting for live video&hellip;</span>
-    <span data-phrase="viewer.receiving">Receiving live video directly from the camera device.</span>
-    <span data-phrase="viewer.signaling-lost">The introduction service disconnected. Your existing direct camera connection continues.</span>
+    <span data-phrase="viewer.receiving">Receiving encrypted live video from the camera device.</span>
+    <span data-phrase="viewer.signaling-lost">The introduction service disconnected. Your existing camera connection is still active; pairing and relay credential renewal need the service.</span>
     <span data-phrase="viewer.denied">The camera device turned away your request. Ask its owner before trying again.</span>
     <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
     <span data-phrase="viewer.fullscreen-failed">Full screen is unavailable here. You can still watch the video in this page.</span>
@@ -281,7 +282,7 @@
     <span data-phrase="code.invalid">Enter the complete camera code or viewer link from this tool.</span>
     <span data-phrase="code.name-invalid">Choose a viewer link name with letters, numbers or hyphens.</span>
     <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
-    <span data-phrase="connection.connecting">Connecting directly to the camera device&hellip;</span>
+    <span data-phrase="connection.connecting">Connecting to the camera device&hellip;</span>
     <span data-phrase="connection.stopped">Disconnected. Camera capture and the live connection are closed on this device.</span>
     <span data-phrase="connection.ended">The camera link ended. Ask the camera device to start again and send a new link.</span>
     <span data-phrase="connection.not-found">This camera link is no longer open. Check the code or ask the camera device for a new link.</span>
@@ -291,7 +292,7 @@
     <span data-phrase="connection.unavailable">Pairing is unavailable. Your approved video connection can keep working while the browser allows.</span>
     <span data-phrase="connection.reconnecting">Restoring pairing…</span>
     <span data-phrase="connection.resume">Restore pairing</span>
-    <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions; no internet relay will be used.</span>
+    <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions, or stop and deliberately start a Cloud relay session. The connection mode will not change automatically.</span>
     <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and pair again.</span>
     <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
     <span data-phrase="copy.done">Viewer link copied.</span>

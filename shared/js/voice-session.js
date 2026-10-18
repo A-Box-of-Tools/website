@@ -1,4 +1,5 @@
-import { rtcConfig, allowedCandidate, localDescription } from './peer-network.js';
+import { transportMode, peerConfiguration, transportCandidate, transportDescription,
+  selectedTransport, RelayCredentials } from './peer-transport.js';
 import { PairingSocket } from './peer-pairing.js';
 import { rendezvousEndpoint } from './peer-endpoint.js';
 
@@ -20,7 +21,7 @@ const uuid = () => {
 };
 
 class VoiceSession {
-  constructor({ role, code, key, listenKey, mode = 'broadcast', roomName = '', discover = false, passwordProof = null, name = '',
+  constructor({ role, code, key, listenKey, mode = 'broadcast', transport = 'direct', roomName = '', discover = false, passwordProof = null, name = '',
     onState = () => {}, onStream = () => {}, onParticipants = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
     mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
@@ -33,6 +34,7 @@ class VoiceSession {
     this.discover = discover === true;
     this.passwordProof = passwordProof;
     this.name = name;
+    this.transport = transportMode(transport);
     this.onParticipants = onParticipants;
     this._inbox = mode === 'inbox';
     this._client = role !== 'host';
@@ -74,6 +76,7 @@ class VoiceSession {
     this._talking = this._remoteTalking = false;
     this._stream = this._activePeer = null;
     this._peers = new Map();
+    this._preparingPeers = new Map();
     this._hostIds = new Set();
     this._orphanIce = [];
     this._resolveStart = null;
@@ -86,7 +89,7 @@ class VoiceSession {
     this._failures = 0;
     this._waiting = true;
     this._state(this.role === 'host' ? 'host-starting' : 'listener-connecting');
-    if (!/^[0-9a-f]{64}$/.test(this.code || '') || !/^[A-Za-z0-9_-]{43}$/.test(this.key || '') ||
+    if (!this.transport || !/^[0-9a-f]{64}$/.test(this.code || '') || !/^[A-Za-z0-9_-]{43}$/.test(this.key || '') ||
         !(this._inbox ? ['host', 'sender'] : ['host', 'listener']).includes(this.role) ||
         (!this._inbox && this.role === 'host' && !/^[A-Za-z0-9_-]{43}$/.test(this.listenKey || '')) ||
         (this._inbox && this.passwordProof !== null && !/^[A-Za-z0-9_-]{43}$/.test(this.passwordProof || '')) ||
@@ -319,6 +322,7 @@ class VoiceSession {
     this._socket = null;
     for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
     this._hostIds.clear();
+    this._preparingPeers.clear();
     this._orphanIce = [];
     this._resetControlFlight();
     this._controls.clear();
@@ -353,7 +357,8 @@ class VoiceSession {
   _state(key, extra = {}) {
     if (this._inbox) key = key.replace(/^listener-/, 'sender-').replace('broadcast-ended', 'inbox-ended');
     this.onState(key, { talking: this._source ? this._talking : this._remoteTalking,
-      captureState: this._captureState,
+      captureState: this._captureState, transport: this.transport,
+      route: this._connected().length && this._connected().every(peer => peer.route === this.transport) ? this.transport : 'unknown',
       muted: this._muted, participants: this._participants.size, discovery: this._discovery,
       listeners: this.role === 'host' ? this._connected().filter(p => !p.departed).length : 0,
       signaling: this._canSignal(), waiting: this._waiting, directReady: this._connected().length > 0, ...extra });
@@ -391,6 +396,12 @@ class VoiceSession {
       clock: this._clock, maxBuffered: 65536,
       onSendError: () => this._lost(ctx, 1006),
     });
+    if (this.transport === 'relay') ctx.relay = new RelayCredentials({
+      send: frame => this._currentSocket(ctx) && ctx.auth && ctx.pairing.send(frame),
+      current: () => this._currentSocket(ctx), clock: this._clock, now: this._clock.now,
+      onRenew: servers => this._renewRelay(ctx, servers),
+      onError: error => { if (this._currentSocket(ctx)) this._finish(this._transportError(error)); },
+    });
     ctx.pairing.after('auth', DEADLINE, () => this._lost(ctx, 1006));
     ctx.pairing.listen({ open: () => {
       this._send(this._authFrame());
@@ -407,8 +418,11 @@ class VoiceSession {
       }
       let frame;
       try { frame = JSON.parse(event.data); } catch { this._lost(ctx, 1006); return; }
+      // A queued offer may be awaiting these credentials. Deliver the response
+      // outside that queue so a successful mint cannot deadlock its own offer.
+      if (ctx.relay?.receive(frame)) return;
       if (['ended', 'replaced', 'kicked'].includes(frame?.type) ||
-          (frame?.type === 'error' && ['password', 'unauthorized'].includes(frame.error))) {
+          (frame?.type === 'error' && ['password', 'unauthorized', 'transport-mismatch', 'relay-unavailable'].includes(frame.error))) {
         // Terminal control must release capture even if an earlier SDP operation has stalled.
         void this._message(frame, ctx).catch(() => {
           if (this._currentSocket(ctx)) this._lost(ctx, 1006);
@@ -428,6 +442,7 @@ class VoiceSession {
 
   _closeSocket(ctx) {
     if (!ctx) return;
+    ctx.relay?.close();
     ctx.pairing.close();
   }
   _lost(ctx, code) {
@@ -471,6 +486,8 @@ class VoiceSession {
     if (frame.type === 'replaced') { this._finish('error-access'); return; }
     if (frame.type === 'error') {
       if (this._inbox && frame.error === 'password') this._finish('error-password');
+      else if (frame.error === 'transport-mismatch') this._finish('transport.mismatch');
+      else if (frame.error === 'relay-unavailable') this._finish('transport.unavailable');
       else if (this._inbox && frame.error === 'moderation-full') this._refusedControl();
       else if (['full', 'busy'].includes(frame.error)) this._lost(ctx, 4429);
       else if (frame.error === 'timeout') this._lost(ctx, 1006);
@@ -481,6 +498,7 @@ class VoiceSession {
       return;
     }
     if (frame.type === 'host-ready' && this.role === 'host' && UUID.test(frame.generation || '')) {
+      if (transportMode(frame.transport) !== this.transport) { this._finish('transport.mismatch'); return; }
       if (frame.generation !== this._generation) this._generationChange(frame.generation);
       this._authenticated(ctx);
       this._waiting = false;
@@ -499,6 +517,7 @@ class VoiceSession {
       return;
     }
     if (this._client && frame.type === 'ready' && this._validId(frame.id) && UUID.test(frame.generation || '')) {
+      if (transportMode(frame.transport) !== this.transport) { this._finish('transport.mismatch'); return; }
       if (this._generation !== frame.generation) {
         this._generationChange(frame.generation);
         this._offerAt = this._clock.now();
@@ -562,6 +581,7 @@ class VoiceSession {
   _generationChange(generation) {
     for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
     this._hostIds.clear();
+    this._preparingPeers.clear();
     this._orphanIce = [];
     this._participants.clear();
     this._emitParticipants();
@@ -589,6 +609,7 @@ class VoiceSession {
         for (const peer of this._peers.values()) this._flushOutgoing(peer);
         this._flushControls();
       }
+      for (const peer of this._connected()) if (peer.route === 'unknown') this._observeRoute(peer);
       if (this._client && this._socket?.auth) {
         if (this._waiting) this._send({ type: 'check' });
         else if (!this._peers.has(this._id) && this._clock.now() - this._offerAt >= DEADLINE) this._lost(this._socket, 1000);
@@ -602,10 +623,10 @@ class VoiceSession {
     }, INTERVAL);
   }
 
-  _peer(id, connection, epoch) {
-    const pc = new this._Peer({ ...rtcConfig(true), iceTransportPolicy: 'all' });
+  _peer(id, connection, epoch, configuration) {
+    const pc = new this._Peer(configuration);
     const peer = { id, connection, pc, epoch, generation: this._generation, ice: [], outgoing: [],
-      timer: null, departed: false, stream: null };
+      timer: null, departed: false, stream: null, route: 'unknown' };
     this._peers.set(id, peer);
     const deadline = () => {
       this._clock.clearTimeout(peer.timer);
@@ -615,7 +636,7 @@ class VoiceSession {
     };
     deadline();
     pc.onicecandidate = event => {
-      if (!this._current(peer) || !allowedCandidate(event.candidate, true)) return;
+      if (!this._current(peer) || !transportCandidate(event.candidate, this.transport)) return;
       this._signal(peer, { type: 'candidate', candidate: event.candidate?.toJSON() || null });
     };
     pc.onconnectionstatechange = () => {
@@ -627,6 +648,7 @@ class VoiceSession {
         else if (this._inbox) this._dropRetiring(peer.id);
         this._emitParticipants();
         this._voiceState();
+        this._observeRoute(peer);
       } else if (pc.connectionState === 'failed') this._failPeer(peer);
       else if (pc.connectionState === 'disconnected' && !peer.timer) deadline();
     };
@@ -639,15 +661,21 @@ class VoiceSession {
   }
   async _offer(id, epoch) {
     if (!this._live(epoch) || !this._canSignal() || !this._hostIds.has(id) ||
-        this._policies.get(id)?.kicked || this._policies.get(id)?.pendingRemoval) return;
+        this._preparingPeers.has(id) || this._peers.has(id) || this._policies.get(id)?.kicked || this._policies.get(id)?.pendingRemoval) return;
     if (this._peers.size >= 10) {
       const departed = [...this._peers.values()].find(peer => peer.departed);
       if (!departed) return;
       this._drop(departed.id);
     }
     let peer;
+    const flight = {}, ctx = this._socket, generation = this._generation;
+    this._preparingPeers.set(id, flight);
     try {
-      peer = this._peer(id, uuid(), epoch);
+      const configuration = await this._configuration(ctx);
+      if (!this._live(epoch) || !this._currentSocket(ctx) || this._generation !== generation
+          || this._preparingPeers.get(id) !== flight || !this._hostIds.has(id)
+          || this._policies.get(id)?.kicked || this._policies.get(id)?.pendingRemoval) return;
+      peer = this._peer(id, uuid(), epoch, configuration);
       if (this._source) {
         for (const track of this._stream.getAudioTracks()) peer.pc.addTrack(track, this._stream);
         for (const transceiver of peer.pc.getTransceivers()) transceiver.direction = 'sendonly';
@@ -655,8 +683,45 @@ class VoiceSession {
       const offer = await peer.pc.createOffer();
       if (!this._current(peer)) return;
       await peer.pc.setLocalDescription(offer);
-      if (this._current(peer)) this._signal(peer, localDescription(peer.pc.localDescription));
+      if (this._current(peer)) this._signal(peer, transportDescription(peer.pc.localDescription, this.transport));
     } catch { this._failPeer(peer); }
+    finally { if (this._preparingPeers.get(id) === flight) this._preparingPeers.delete(id); }
+  }
+  async _configuration(ctx) {
+    try {
+      const servers = this.transport === 'relay' ? await ctx.relay.prepare() : [];
+      return { iceTransportPolicy: 'all', ...peerConfiguration(this.transport, servers) };
+    } catch (error) {
+      if (this._currentSocket(ctx)) this._finish(this._transportError(error));
+      throw error;
+    }
+  }
+  _transportError(error) {
+    return /^transport\.(invalid|unavailable|limited|forbidden|timeout)$/.test(error?.message)
+      ? error.message : 'transport.unavailable';
+  }
+  _renewRelay(ctx, servers) {
+    if (!this._currentSocket(ctx)) return;
+    const configuration = peerConfiguration(this.transport, servers);
+    for (const peer of this._peers.values()) {
+      try { peer.pc.setConfiguration(configuration); } catch { this._failPeer(peer); }
+    }
+    // A fresh offer carries the renewed allocation through the existing
+    // generation checks. Clients rejoin to ask their host for that offer.
+    if (this._client) { this._lost(ctx, 1000); return; }
+    for (const id of [...this._hostIds]) {
+      this._drop(id);
+      void this._offer(id, ctx.epoch);
+    }
+  }
+  _observeRoute(peer) {
+    if (peer.routePending || typeof peer.pc.getStats !== 'function') return;
+    peer.routePending = true;
+    Promise.resolve().then(() => peer.pc.getStats()).then(stats => {
+      if (!this._current(peer) || peer.pc.connectionState !== 'connected') return;
+      peer.route = selectedTransport(stats);
+      this._voiceState();
+    }).catch(() => {}).finally(() => { peer.routePending = false; });
   }
   _signal(peer, data) {
     if (!this._current(peer) || this._peers.get(peer.id) !== peer || (this._client && peer.id !== this._id)) return;
@@ -680,7 +745,7 @@ class VoiceSession {
     const peer = this._peers.get(frame.from);
     if (!peer || frame.to !== 'host' || frame.connection !== peer.connection || !this._current(peer)) return;
     if (frame.type === 'answer' && !peer.pc.remoteDescription) {
-      await peer.pc.setRemoteDescription(localDescription({ type: 'answer', sdp: frame.sdp }));
+      await peer.pc.setRemoteDescription(transportDescription({ type: 'answer', sdp: frame.sdp }, this.transport));
       await this._flushIce(peer);
     } else if (frame.type === 'candidate') await this._candidate(peer, frame.candidate);
   }
@@ -689,6 +754,9 @@ class VoiceSession {
     let peer = this._peers.get(this._id);
     if (frame.type === 'offer') {
       if (peer?.connection === frame.connection) return;
+      const ctx = this._socket, generation = this._generation, id = this._id;
+      const configuration = await this._configuration(ctx);
+      if (!this._live(epoch) || !this._currentSocket(ctx) || this._generation !== generation || this._id !== id) return;
       if (this._inbox) {
         if (peer) this._retire(peer.id);
       } else {
@@ -696,10 +764,10 @@ class VoiceSession {
         for (const other of [...this._peers.values()]) if (other !== this._activePeer) this._drop(other.id);
         if (peer?.id === this._id) this._drop(peer.id);
       }
-      peer = this._peer(this._id, frame.connection, epoch);
+      peer = this._peer(this._id, frame.connection, epoch, configuration);
       peer.ice = this._orphanIce.filter(item => item.connection === frame.connection).map(item => item.candidate);
       this._orphanIce = [];
-      await peer.pc.setRemoteDescription(localDescription({ type: 'offer', sdp: frame.sdp }));
+      await peer.pc.setRemoteDescription(transportDescription({ type: 'offer', sdp: frame.sdp }, this.transport));
       if (!this._current(peer)) return;
       if (this._source) for (const track of this._stream.getAudioTracks()) peer.pc.addTrack(track, this._stream);
       for (const transceiver of peer.pc.getTransceivers()) transceiver.direction = this._source ? 'sendonly' : 'recvonly';
@@ -707,14 +775,14 @@ class VoiceSession {
       const answer = await peer.pc.createAnswer();
       if (!this._current(peer)) return;
       await peer.pc.setLocalDescription(answer);
-      if (this._current(peer)) this._signal(peer, localDescription(peer.pc.localDescription));
-    } else if (allowedCandidate(frame.candidate, true)) {
+      if (this._current(peer)) this._signal(peer, transportDescription(peer.pc.localDescription, this.transport));
+    } else if (transportCandidate(frame.candidate, this.transport)) {
       if (peer?.connection === frame.connection) await this._candidate(peer, frame.candidate);
       else if (this._orphanIce.length < MAX_ICE) this._orphanIce.push(frame);
     }
   }
   async _candidate(peer, candidate) {
-    if (!this._current(peer) || !allowedCandidate(candidate, true)) return;
+    if (!this._current(peer) || !transportCandidate(candidate, this.transport)) return;
     if (!peer.pc.remoteDescription) {
       if (peer.ice.length < MAX_ICE) peer.ice.push(candidate);
     } else {
@@ -742,6 +810,7 @@ class VoiceSession {
   }
   _depart(id) {
     this._hostIds.delete(id);
+    this._preparingPeers.delete(id);
     const row = this._participants.get(id);
     if (row?.pendingRemoval) {
       this._remember(id, { ...this._policies.get(id), kicked: true, pendingRemoval: false, muted: true });
@@ -795,10 +864,11 @@ class VoiceSession {
   }
 
   _authFrame() {
-    if (!this._inbox) return { type: 'auth', role: this.role, key: this.key,
+    const transport = this.transport === 'relay' ? { transport: this.transport } : {};
+    if (!this._inbox) return { type: 'auth', role: this.role, key: this.key, ...transport,
       ...(this.role === 'host' ? { listenKey: this.listenKey,
         ...(this.discover ? { roomName: this.roomName, discover: true } : {}) } : {}) };
-    return { type: 'auth', role: this.role, key: this.key, passwordProof: this.passwordProof,
+    return { type: 'auth', role: this.role, key: this.key, passwordProof: this.passwordProof, ...transport,
       ...(this.role === 'host' ? { roomName: this.roomName } : this.name ? { name: this.name } : {}) };
   }
   _applyMuted(muted) {

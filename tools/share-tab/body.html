@@ -16,6 +16,7 @@
       <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
     </section>
   </section>
+  {% include "partials/paired-transport.html" %}
   <div class="tab-share-grid" id="tab-share-grid" data-pairing-setup>
     <section id="host-panel" class="tab-share-card" aria-labelledby="host-heading">
       <span class="tab-share-badge">No extension needed</span>
@@ -96,7 +97,7 @@
     <summary>What is shared, and how the connection works</summary>
     <p>The browser captures the selected tab&rsquo;s picture, including visible signed-in content. Close private panels before sharing. Tab audio, your microphone and your camera are not requested. Selecting another browser tab does not automatically share it.</p>
     <p>A control connection carries the viewer&rsquo;s request. Video is attached only after host approval and the viewer&rsquo;s acknowledgement. Viewer actions have no remote-control path to the host.</p>
-    <p>The browsers use a direct encrypted connection with no public STUN server or internet relay. Pairing uses rendezvous.abox.tools for setup messages, never video or viewer notes.</p>
+    <p>Direct is the default and uses no public STUN server or internet relay. Optional Cloud relay forwards encrypted traffic through the relay service and needs internet throughout. The connection mode never changes automatically. Pairing uses rendezvous.abox.tools for setup messages, never video or viewer notes.</p>
     <p>Nearby discovery is optional. A host can list their invitation code, and a viewer can ask the introduction service for matching listings. Matching uses the public IPv4 address or IPv6 network prefix, page address and tool, not a scan of your Wi-Fi. A match does not prove that a device is trusted or reachable.</p>
     <p>Use the same reachable Wi-Fi, Ethernet or hotspot. This page does not create a hotspot, Wi-Fi Direct or Bluetooth connection. Network isolation, firewalls, VPN routes and browser local-network permissions can block a connection. Local address settings do not prove that traffic stays inside a building.</p>
     <p>Stop sharing, use the browser&rsquo;s Stop sharing control, or close this page to end capture. Hiding this control tab while browsing the selected tab keeps sharing where the browser permits. When capture ends, choosing a tab again always needs a new click and browser permission.</p>
@@ -147,7 +148,7 @@
     <span data-phrase="connection.busy">A viewer is already watching, or too many requests are waiting. Ask the host before trying again.</span>
     <span data-phrase="connection.ended">The host ended this session. Ask them to start a fresh invitation.</span>
     <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and start a fresh connection.</span>
-    <span data-phrase="connection.direct-failed">The browsers could not connect. Use the same reachable Wi-Fi, Ethernet or hotspot, and check client isolation, firewalls, VPN routes and browser local-network permissions. There is no internet relay.</span>
+    <span data-phrase="connection.direct-failed">The browsers could not connect directly. Check reachable Wi-Fi, Ethernet or hotspot, client isolation, firewalls, VPN routes and local-network permissions. You can stop and deliberately start a Cloud relay session; the mode never changes automatically.</span>
     <span data-phrase="connection.stopped">Disconnected. The live view is closed on this device.</span>
     <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
     <span data-phrase="copy.done">Copied.</span>

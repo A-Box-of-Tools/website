@@ -88,7 +88,7 @@ function microphone() {
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, discover = false, roomName = '' } = {}) {
+function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, discover = false, roomName = '', transport = 'direct' } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -148,7 +148,7 @@ function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, d
     fail() { this.connectionState = 'failed'; this.onconnectionstatechange?.(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new BroadcastSession({ role, code: CODE, discover, roomName,
+  const session = new BroadcastSession({ role, code: CODE, discover, roomName, transport,
     key: role === 'host' ? KEY : LISTEN_KEY,
     ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, audioSession, clock, endpoint,
     onState: (key, detail) => states.push({ key, detail }), onStream: stream => streams.push(stream) });
@@ -164,13 +164,43 @@ function harness(t, { role = 'listener', mediaDevices, endpoint, audioSession, d
     await flush();
     const ws = sockets.at(-1);
     ws.open();
-    ws.message(frame || (role === 'host' ? { type: 'host-ready', generation: GEN_A } : { type: 'waiting' }));
+    ws.message(frame || { ...(role === 'host' ? { type: 'host-ready', generation: GEN_A } : { type: 'waiting' }),
+      ...(transport === 'relay' ? { transport } : {}) });
     await flush();
     assert.equal(await starting, true);
     return ws;
   };
   return { session, clock, sockets, peers, states, streams, begin };
 }
+
+test('relay listeners stay receive-only and discard every non-relay ICE candidate', async t => {
+  let captures = 0;
+  const h = harness(t, { transport: 'relay', mediaDevices: { getUserMedia: async () => { captures++; throw new Error(); } } });
+  const ws = await h.begin();
+  ws.message({ ...ready(), transport: 'relay' });
+  ws.message(offer());
+  await flush();
+  assert.equal(h.peers.length, 0);
+  const request = ws.sent.find(frame => frame.type === 'relay-request');
+  ws.message({ type: 'relay-credentials', id: request.id,
+    iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }], expiresAt: 3600000 });
+  await flush();
+  const peer = h.peers[0];
+  assert.equal(peer.config.iceTransportPolicy, 'relay');
+  assert.equal(peer.senders.length, 0);
+  assert.equal(peer.transceivers[0].direction, 'recvonly');
+  const host = { candidate: 'candidate:1 1 UDP 1 192.168.1.2 40000 typ host', sdpMid: '0' };
+  const relay = { candidate: 'candidate:2 1 UDP 1 198.51.100.5 50000 typ relay', sdpMid: '0' };
+  const sent = ws.sent.length;
+  peer.candidate(host); peer.candidate(relay);
+  assert.equal(ws.sent.length, sent + 1);
+  assert.deepEqual(ws.sent.at(-1).candidate, relay);
+  ws.message({ type: 'candidate', from: 'host', to: ID_A, generation: GEN_A, connection: CONN_A, candidate: host });
+  ws.message({ type: 'candidate', from: 'host', to: ID_A, generation: GEN_A, connection: CONN_A, candidate: relay });
+  await flush();
+  assert.deepEqual(peer.candidates, [relay]);
+  assert.equal(captures, 0);
+});
 
 test('nearby host opts in explicitly and forwards a fresh lease after reconnecting', async t => {
   const mic = microphone();

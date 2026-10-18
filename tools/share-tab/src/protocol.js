@@ -1,4 +1,5 @@
 import { CODE_PATTERN as ROOM_CODE_PATTERN } from './shared/room-names.js';
+import { transportUrl } from './shared/peer-transport.js';
 
 // A tab invitation must never join another tool's identically named room.
 export const TOOL = 'share-tab';
@@ -22,12 +23,12 @@ export function parseCode(value) {
   return ROOM_CODE_PATTERN.test(code) && CODE_PATTERN.test(code) ? code : null;
 }
 
-export function viewerLink(href, code) {
+export function viewerLink(href, code, transport = 'direct') {
   if (typeof code !== 'string' || !CODE_PATTERN.test(code)) throw new Error('code.invalid');
   const url = new URL(href);
   url.search = '';
   url.hash = code;
-  return url.href;
+  return transportUrl(url.href, transport);
 }
 
 export function controlMessage(text) {

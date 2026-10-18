@@ -11,8 +11,8 @@ its invitation, enter the password when required, and Connect without supplying 
 name. Their microphone starts disabled until they hold Talk or enable the talking
 toggle. A physical hold releases on blur or hiding; explicit hands-free speech
 and healthy connections can continue in the background while the browser allows.
-No account, installation, Python
-helper, recording, STUN server or audio relay is involved.
+No account, installation, Python helper or recording is involved. Direct is
+the default; Cloud relay is an explicit alternative selected before connecting.
 
 The nearby list appears first, before the role tabs. Selecting a pager switches
 to the Connect panel without opening a voice connection or asking for microphone
@@ -59,9 +59,26 @@ can hide physically nearby devices, so the page does not call this a LAN scan.
 `shared/js/voice-session.js` is the native voice transport used by both voice
 tools. Inbox hosts offer receive-only audio; participants answer send-only audio.
 The same bounded connection-generation, ICE, backpressure, retry and idle ping/pong
-logic serves both directions. Only audio SDP and host ICE candidates are accepted.
+logic serves both directions. Only audio SDP is accepted. Direct admits only
+host ICE candidates and uses no STUN or TURN. Cloud relay admits only relay
+candidates and configures iceTransportPolicy: 'relay'.
 Internet pairing is required; a healthy direct voice path can outlive a brief
 signaling outage, and foreground waiting participants probe at a one-second target.
+
+The host's route is pinned in the invitation, authenticated admission and the
+room's retained moderation anchor. Password validation still precedes admission
+and TURN credential issuance. Both devices must choose the same mode; a mismatch
+is refused, and changing the host mode creates a new pager identity. Nearby
+selection exposes the verified mode without connecting or requesting capture.
+The selector locks while starting, active or paused. Actual-route status comes
+from the selected candidate pair, not from the user's choice alone.
+
+`peer-transport.js` supplies temporary credential validation and renewal. Replies
+are handled before the sequential offer queue to avoid deadlocking a pending
+offer. Renewal updates peer configuration and negotiates replacement connections
+in the same mode. Failure stops the session and capture; it never falls back to
+another route. End and Disconnect invalidate pending replies and renewal timers.
+The worker's per-service switch, participant cap and credential limits apply.
 
 The host routes each incoming stream through its own Web Audio gain. Muting sets
 that gain to zero before attaching any replacement stream, which is the authority
@@ -95,9 +112,11 @@ moderation history on socket attachments without persistent storage. Creating a
 new identity can bypass a session block, so the page does not promise a permanent
 ban on a person. End creates a new room and clears the old moderation history.
 
-The service carries room names, participant identifiers, derived admission
+The introduction service carries room names, participant identifiers, derived admission
 credentials, moderation and connection metadata, never audio. Older clients may
-also send participant display names. Cloudflare keeps seven-day
+also send participant display names. Optional Cloud relay separately forwards
+encrypted audio and sees addresses, timing and traffic volume, but cannot decrypt
+the WebRTC audio. Cloudflare keeps seven-day
 invocation metadata logs. The website's normal scripts run on the page and can
 read its address and browser storage. The tool page and Privacy page disclose
 these boundaries together.

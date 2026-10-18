@@ -1,5 +1,6 @@
 <section>
   <h2>O que você precisa</h2>
+  <p>Direct é a opção padrão. As orientações de alcance direto abaixo se referem a esse modo. Para usar Cloud relay, o anfitrião escolhe essa opção antes de iniciar e compartilha o novo convite. A outra pessoa vê a escolha e confirma antes de conectar. Direct nunca muda automaticamente. A Cloudflare encaminha conteúdo criptografado e vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Aprovação, senha e controles do microfone continuam valendo.</p>
   <p>Use dois dispositivos com navegadores que aceitem acesso à câmera e WebRTC. Ambos precisam de internet para a apresentação inicial e de uma rede que permita a comunicação entre eles. Um celular no Wi-Fi e um computador por Ethernet podem funcionar se a rede permitir essa comunicação. O ponto de acesso de um celular também pode funcionar se os dois dispositivos tiverem internet para o emparelhamento e o ponto de acesso permitir a comunicação entre eles.</p>
   <p>Abra o endereço HTTPS confiável deste site. Um endereço HTTP comum com um IP da rede local não pode pedir a câmera. Se o navegador ou sistema operacional pedir acesso à rede local, permita para esta sessão.</p>
 </section>
@@ -12,7 +13,7 @@
     <li><strong>Uma entrada interna.</strong> Observe a porta de outro cômodo. É uma imagem ao vivo enquanto você assiste, sem gravação. Navegadores compatíveis podem avisar quando detectarem movimento ou som enquanto a página do espectador puder continuar funcionando.</li>
     <li><strong>Inspeções de reparos.</strong> Aponte o celular para uma conexão de canos sob a pia, um parafuso atrás de um armário ou uma abertura por onde você está passando cabos. O notebook permite enxergar onde sua cabeça não cabe.</li>
   </ul>
-  <p>Para uma imagem mais confiável, mantenha a página da câmera visível e o celular acordado. A página mantém uma conexão que funciona ao ficar oculta, mas o navegador do celular pode pausar a captura ou suspender a página ao trocar de aplicativo ou bloquear a tela. A ferramenta oferece vídeo ao vivo em uma rede acessível, sem retransmissor de internet para assistir de outro lugar.</p>
+  <p>Para uma imagem mais confiável, mantenha a página da câmera visível e o celular acordado. A página mantém uma conexão que funciona ao ficar oculta, mas o navegador do celular pode pausar a captura ou suspender a página ao trocar de aplicativo ou bloquear a tela. Direct exige uma rede local acessível. A retransmissão na nuvem é uma alternativa escolhida explicitamente e requer internet durante toda a sessão.</p>
 </section>
 <section>
   <h2>Prepare uma imagem para inspeção</h2>
@@ -63,7 +64,7 @@
 <section>
   <h2>Se os dispositivos não conectarem</h2>
   <p>O mesmo nome de Wi-Fi não garante comunicação. Isolamento de convidados, firewalls, bloqueio de descoberta de endereços locais, permissões de rede do navegador ou sistema e rotas VPN podem impedir a conexão direta. Pare dos dois lados, confira permissões e rede e tente um link novo.</p>
-  <p>Connection details mostra os tipos de candidatos escolhidos e a quantidade de quadros decodificados pelo espectador. A ferramenta usa apenas candidatos de host, sem servidor STUN, retransmissor TURN ou alternativa por retransmissão. Uma VPN, interface pública ou rota do sistema pode mudar o caminho; candidatos de host não provam que o tráfego fica dentro de um prédio.</p>
+  <p>Connection details mostra os tipos de candidatos escolhidos e a quantidade de quadros decodificados pelo espectador. Direct usa apenas candidatos de host, sem servidor STUN, retransmissor TURN ou alternativa por retransmissão. Uma VPN, interface pública ou rota do sistema pode mudar o caminho; candidatos de host não provam que o tráfego fica dentro de um prédio.</p>
 </section>
 <section>
   <h2>O que o serviço de apresentação vê</h2>

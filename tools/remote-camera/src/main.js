@@ -9,8 +9,16 @@ import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
 import { alertCapabilities, ViewerAlerts } from './alerts.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
+import { readTransport } from './shared/peer-transport.js';
+import { bindTransportControl } from './shared/peer-transport-ui.js';
 
 const $ = (id) => document.getElementById(id);
+let invalidInvitationTransport = false;
+const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; } });
+function selectTransport(value) {
+  invalidInvitationTransport = !transportControl.set(value);
+  if (invalidInvitationTransport) showStatus('transport.invalid', 'viewer');
+}
 const diagnostics = createDiagnostics({
   version: new URL(import.meta.url).searchParams.get('v'),
   userAgent: navigator.userAgent,
@@ -126,6 +134,7 @@ function idleViewer() {
 function clearDetails() {
   clearInterval(detailsTimer);
   detailsTimer = null;
+  transportControl.route(null);
   $('details-route').textContent = phrase('details.idle');
   $('details-frames').hidden = true;
 }
@@ -274,7 +283,7 @@ function renderDiscovery() {
   $('discovery-status').textContent = phrase(discoveryState === 'ready'
     ? cameras.length ? 'discovery.ready' : 'discovery.empty' : `discovery.${discoveryState}`);
   $('discovery-list').replaceChildren();
-  for (const { code } of cameras) {
+  for (const { code, transport } of cameras) {
     const row = document.createElement('li');
     row.className = 'paired-nearby-row';
     const name = document.createElement('code');
@@ -286,6 +295,7 @@ function renderDiscovery() {
     choose.textContent = phrase('discovery.choose', { code: ltr(code) });
     choose.addEventListener('click', () => {
       if (activeRole) return;
+      selectTransport(transport ?? 'direct');
       fillViewerCode(code);
       showStatus('viewer.selected', 'viewer');
       $('viewer-connect').focus();
@@ -391,6 +401,7 @@ function requestCameraStop() {
 
 function showActiveRole(role) {
   activeRole = role;
+  transportControl.lock(role !== null);
   $('camera-panel').hidden = role === 'viewer';
   $('viewer-panel').hidden = role === 'camera';
   $('camera-discovery').hidden = role !== null;
@@ -433,11 +444,13 @@ async function updateDetails() {
   const result = await session.inspect().catch(() => null);
   if (current !== epoch) return;
   if (!result) {
+    transportControl.route('unknown');
     $('details-route').textContent = phrase('details.idle');
     $('details-frames').hidden = true;
     return;
   }
-  $('details-route').textContent = phrase(result.local === 'host' && result.remote === 'host' ? 'details.direct' : 'details.host-policy');
+  transportControl.route(result.route);
+  $('details-route').textContent = phrase(result.route === 'direct' ? 'details.direct' : result.route === 'relay' ? 'transport.route.relay' : 'transport.route.unknown');
   $('details-frames').hidden = mode !== 'viewer';
   $('details-frames').textContent = phrase('details.frames', { count: ltr(result.frames.toLocaleString(document.documentElement.lang)) });
 }
@@ -479,7 +492,7 @@ async function keepAwake(current) {
 function captureError(error) {
   if (error?.name === 'NotAllowedError' || error?.name === 'SecurityError') return 'camera.denied';
   if (error?.name === 'NotFoundError' || error?.name === 'OverconstrainedError') return 'camera.missing';
-  if (error?.message?.startsWith('camera.') || error?.message?.startsWith('connection.')) return error.message;
+  if (error?.message?.startsWith('camera.') || error?.message?.startsWith('connection.') || error?.message?.startsWith('transport.')) return error.message;
   return 'camera.busy';
 }
 
@@ -632,7 +645,7 @@ function updateCameraAudio() {
 
 function showCameraIdentity(code) {
   hostCode = code;
-  const link = viewerLink(location.href, code);
+  const link = viewerLink(location.href, code, cameraIntent?.transport ?? session.transport);
   $('camera-link').value = link;
   $('camera-code').textContent = code;
   $('camera-invite').hidden = false;
@@ -882,9 +895,11 @@ async function startCamera() {
   if (!code) return showStatus('code.name-invalid', 'camera');
   if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) return showStatus('camera.unsupported', 'camera');
   if (!globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'camera');
+  if (!transportControl.value() || invalidInvitationTransport) return showStatus('transport.invalid', 'camera');
   stop();
   mode = 'camera';
   cameraIntent = { code, discoverable: $('camera-discoverable').checked,
+    transport: transportControl.value(),
     requireApproval: $('camera-require-approval').checked, deviceId: null,
     audio: $('camera-audio').checked, videoBudget: Number($('camera-bandwidth').value) };
   if (location.hash) history.replaceState(null, '', location.pathname + location.search);
@@ -925,10 +940,24 @@ async function startCamera() {
 }
 
 async function connectViewer() {
-  if (activeRole === 'viewer') return;
+  if (activeRole) return;
+  const input = $('viewer-code').value.trim();
+  if (/^https?:\/\//i.test(input)) {
+    const invited = readTransport(input);
+    if (!invited) return showStatus('transport.invalid', 'viewer');
+    // A pasted invitation must display its route before a second explicit
+    // action starts pairing, even when input events were not delivered.
+    if (invited !== transportControl.value()) {
+      selectTransport(invited);
+      $('viewer-connect').focus();
+      return;
+    }
+  }
   const code = parseCode($('viewer-code').value);
   if (!code) return showStatus('code.invalid', 'viewer');
   if (!globalThis.isSecureContext || !globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'viewer');
+  const transport = transportControl.value();
+  if (!transport || invalidInvitationTransport) return showStatus('transport.invalid', 'viewer');
   stop();
   mode = 'viewer';
   showActiveRole('viewer');
@@ -940,11 +969,9 @@ async function connectViewer() {
   $('viewer-connect').hidden = true;
   $('viewer-stop').hidden = false;
   $('viewer-stop').focus();
-  const url = new URL(location.href);
-  url.hash = code;
-  history.replaceState(null, '', url);
+  history.replaceState(null, '', viewerLink(location.href, code, transport));
   try {
-    await session.connect(code, $('viewer-name').value);
+    await session.connect(code, $('viewer-name').value, { transport });
     if (current === epoch) watchDetails();
   } catch (error) {
     if (current === epoch) stop(error?.message ?? 'connection.server-failed');
@@ -1017,6 +1044,12 @@ $('camera-request-dialog').addEventListener('cancel', (event) => {
   closeApprovalDialog({ restoreFocus: true });
 });
 $('viewer-connect').addEventListener('click', connectViewer);
+$('viewer-code').addEventListener('input', () => {
+  if (activeRole) return;
+  const value = $('viewer-code').value.trim();
+  if (/^https?:\/\//i.test(value)) selectTransport(readTransport(value));
+  else invalidInvitationTransport = false;
+});
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', () => playVideo(true));
 $('viewer-listen').addEventListener('click', listenToAudio);
@@ -1098,7 +1131,7 @@ observeForeground({
 });
 window.addEventListener('hashchange', () => {
   const code = parseCode(location.hash);
-  if (code) fillViewerCode(code);
+  if (code) { fillViewerCode(code); selectTransport(readTransport(location.href)); }
 });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
@@ -1109,7 +1142,7 @@ $('privacy-toggle').addEventListener('click', () => {
 const code = parseCode(location.hash);
 $('camera-name').value = makeCode();
 showActiveRole(null);
-if (code) fillViewerCode(code);
+if (code) { fillViewerCode(code); selectTransport(readTransport(location.href)); }
 startDiscovery();
 showApprovalPolicy();
 

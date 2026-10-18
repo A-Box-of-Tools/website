@@ -5,8 +5,17 @@ import { phrase } from './shared/phrases.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { readTransport } from './shared/peer-transport.js';
+import { bindTransportControl } from './shared/peer-transport-ui.js';
 
 const $ = (id) => document.getElementById(id);
+let invalidInvitationTransport = false;
+const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; } });
+function selectTransport(value) {
+  invalidInvitationTransport = !transportControl.set(value);
+  if (invalidInvitationTransport) status('viewer-status', 'transport.invalid', true);
+}
+let routeTimer = null;
 let revision = 0;
 let role = null;
 let invitation = '';
@@ -22,6 +31,8 @@ const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
   'viewer.denied', 'host.ended',
+  'transport.invalid', 'transport.unavailable', 'transport.limited', 'transport.forbidden',
+  'transport.timeout', 'transport.mismatch', 'transport.failed', 'transport.stopped',
 ]);
 
 function status(id, key, error = false) {
@@ -123,6 +134,7 @@ function renderDiscovery() {
     button.disabled = Boolean(role);
     button.addEventListener('click', () => {
       if (role || !browsingNearby || !nearbyShares.some((entry) => entry.code === code)) return;
+      selectTransport(share.transport ?? 'direct');
       $('viewer-code').value = code;
       status('viewer-status', 'discovery.selected');
       $('viewer-connect').focus();
@@ -169,6 +181,7 @@ function updateControls() {
   const hosting = role === 'host';
   const viewing = role === 'viewer';
   const busy = hosting || viewing;
+  transportControl.lock(busy);
   $('host-discoverable').disabled = busy || !canCapture;
   $('host-publication-status').hidden = !hosting || !$('host-discoverable').checked;
   $('nearby-section').hidden = busy;
@@ -237,6 +250,9 @@ const linkCopy = clipboardFeedback({
 
 function stopAll(key = 'connection.stopped', previousRole = role) {
   revision += 1;
+  clearInterval(routeTimer);
+  routeTimer = null;
+  transportControl.route(null);
   role = null;
   invitation = '';
   discoveryPublication = null;
@@ -256,6 +272,8 @@ function stopAll(key = 'connection.stopped', previousRole = role) {
 
 async function startHost() {
   if (role || !canCapture || !canConnect) return;
+  const transport = transportControl.value();
+  if (!transport || invalidInvitationTransport) { status('host-status', 'transport.invalid', true); return; }
   stopAll();
   const owner = revision;
   role = 'host';
@@ -270,11 +288,12 @@ async function startHost() {
     $('local-video').play().catch(() => {});
     const code = makeCode();
     if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
-    await session.startHost(stream, code, { discoverable: $('host-discoverable').checked });
+    await session.startHost(stream, code, { discoverable: $('host-discoverable').checked, transport });
     if (owner !== revision || role !== 'host') return;
-    invitation = viewerLink(location.href, code);
+    invitation = viewerLink(location.href, code, transport);
     $('share-link').value = invitation;
     updateControls();
+    watchRoute();
   } catch (error) {
     if (owner !== revision) return;
     const key = error.code || error.message;
@@ -283,27 +302,51 @@ async function startHost() {
 }
 
 function knownPhrase(key) {
-  return typeof key === 'string' && Array.from(document.querySelectorAll('#phrases [data-phrase]'))
+  return typeof key === 'string' && Array.from(document.querySelectorAll('[data-phrase]'))
     .some((element) => element.dataset.phrase === key);
 }
 
 async function connectViewer() {
   if (role || !canConnect) return;
+  const input = $('viewer-code').value.trim();
+  if (/^https?:\/\//i.test(input)) {
+    const invited = readTransport(input);
+    if (!invited) { status('viewer-status', 'transport.invalid', true); return; }
+    if (invited !== transportControl.value()) {
+      selectTransport(invited);
+      $('viewer-connect').focus();
+      return;
+    }
+  }
   const code = parseCode($('viewer-code').value);
   if (!code) { status('viewer-status', 'code.invalid', true); return; }
   const note = $('viewer-name').value.trim();
+  const transport = transportControl.value();
+  if (!transport || invalidInvitationTransport) { status('viewer-status', 'transport.invalid', true); return; }
   stopAll();
   const owner = revision;
   role = 'viewer';
   $('viewer-code').value = code;
   updateControls();
   try {
-    await session.connect(code, note);
+    await session.connect(code, note, { transport });
+    if (owner === revision && role === 'viewer') watchRoute();
   } catch (error) {
     if (owner !== revision || role !== 'viewer') return;
     const key = error.code || error.message;
     stopAll(knownPhrase(key) ? key : 'connection.server-failed', 'viewer');
   }
+}
+
+function watchRoute() {
+  clearInterval(routeTimer);
+  const owner = revision;
+  const update = async () => {
+    const result = await session.inspect().catch(() => null);
+    if (owner === revision) transportControl.route(result?.route ?? 'unknown');
+  };
+  routeTimer = setInterval(update, 1000);
+  update();
 }
 
 function showInvitation() {
@@ -313,9 +356,11 @@ function showInvitation() {
   $('show-host').hidden = !watching;
   $('tab-share-grid').classList.toggle('tab-share-watching', watching);
   if (watching) {
+    selectTransport(readTransport(location.href));
     const code = parseCode(hash);
     $('viewer-code').value = code || hash.slice(0, 2048);
     if (!code) status('viewer-status', 'code.invalid', true);
+    else if (invalidInvitationTransport) status('viewer-status', 'transport.invalid', true);
     else if (canConnect) status('viewer-status', 'viewer.ready');
   }
   updateControls();
@@ -332,6 +377,12 @@ if (!canConnect) status('viewer-status', 'connection.unsupported', true);
 $('host-start').addEventListener('click', startHost);
 $('host-stop').addEventListener('click', () => stopAll('host.stopped'));
 $('viewer-connect').addEventListener('click', () => connectViewer());
+$('viewer-code').addEventListener('input', () => {
+  if (role) return;
+  const value = $('viewer-code').value.trim();
+  if (/^https?:\/\//i.test(value)) selectTransport(readTransport(value));
+  else invalidInvitationTransport = false;
+});
 $('viewer-stop').addEventListener('click', () => stopAll());
 $('discovery-start').addEventListener('click', () => {
   if (role || !canConnect || pageSuspended) return;
@@ -406,7 +457,7 @@ addEventListener('click', (event) => {
   const anchor = event.target.closest('a[href]');
   if (!anchor || anchor.origin !== location.origin || !alternates.has(anchor.pathname)) return;
   const code = parseCode(location.hash.slice(1));
-  if (code) anchor.href = viewerLink(anchor.href, code);
+  if (code) anchor.href = viewerLink(anchor.href, code, transportControl.value());
 }, true);
 
 showInvitation();

@@ -63,6 +63,102 @@ const deferred = () => {
   return { promise, resolve };
 };
 
+const RELAY_SERVERS = [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
+function relayReply(ws, expiresAt = 3600000) {
+  const request = ws.sent.findLast(frame => frame.type === 'relay-request');
+  assert.ok(request, 'Relay credentials follow authenticated admission.');
+  ws.message({ type: 'relay-credentials', id: request.id, iceServers: RELAY_SERVERS, expiresAt });
+}
+
+test('relay sender waits for authenticated credentials without deadlocking the offer queue and remains quiet', async t => {
+  const h = harness(t, { role: 'sender', passwordProof: PROOF, name: null, transport: 'relay' });
+  const ws = await h.begin();
+  assert.equal(ws.sent[0].transport, 'relay');
+  assert.equal(ws.sent[0].passwordProof, PROOF);
+  ws.message(offer());
+  await flush();
+  assert.equal(h.peers.length, 0);
+  assert.equal(h.mic.track.enabled, false);
+  relayReply(ws);
+  await flush();
+  assert.equal(h.peers.length, 1);
+  const peer = h.peers[0];
+  assert.equal(peer.config.iceTransportPolicy, 'relay');
+  assert.deepEqual(peer.config.iceServers, RELAY_SERVERS);
+  assert.equal(peer.transceivers[0].direction, 'sendonly');
+  const answer = ws.sent.find(frame => frame.type === 'answer');
+  assert.ok(answer);
+  assert.doesNotMatch(answer.sdp, /typ (host|srflx)/);
+  peer.connect();
+  h.session.setTalking(true);
+  ws.message({ type: 'moderated', generation: GEN_A, muted: true });
+  await flush();
+  assert.equal(h.mic.track.enabled, false);
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, false);
+});
+
+test('relay host shares one pending credential request across participants and reports the selected route', async t => {
+  const h = harness(t, { transport: 'relay' }), ws = await h.begin();
+  ws.message(join(ID_A)); ws.message(join(ID_B));
+  await flush();
+  await h.clock.advance(1000);
+  assert.equal(ws.sent.filter(frame => frame.type === 'relay-request').length, 1);
+  assert.equal(h.peers.length, 0);
+  assert.equal(h.captures(), 0);
+  relayReply(ws);
+  await flush();
+  assert.equal(h.peers.length, 2);
+  for (const peer of h.peers) {
+    assert.equal(peer.config.iceTransportPolicy, 'relay');
+    peer.stats = new Map([
+      ['pair', { type: 'candidate-pair', state: 'succeeded', nominated: true, localCandidateId: 'local', remoteCandidateId: 'remote' }],
+      ['local', { type: 'local-candidate', candidateType: 'relay' }],
+      ['remote', { type: 'remote-candidate', candidateType: 'relay' }],
+    ]);
+    peer.connect();
+  }
+  await flush();
+  assert.equal(h.states.at(-1).detail.route, 'relay');
+  assert.equal(h.states.at(-1).detail.transport, 'relay');
+});
+
+test('relay credential failure releases capture without retrying Direct', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' }), ws = await h.begin();
+  ws.message(offer()); await flush();
+  const request = ws.sent.find(frame => frame.type === 'relay-request');
+  ws.message({ type: 'relay-credentials', id: request.id, error: 'unavailable' });
+  await flush();
+  assert.equal(h.states.at(-1).key, 'transport.unavailable');
+  assert.equal(h.mic.track.stops, 1);
+  assert.equal(h.peers.length, 0);
+  await h.clock.advance(30000);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('Stop during relay mint prevents late credentials from creating a peer or resuming capture', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' }), ws = await h.begin();
+  ws.message(offer()); await flush();
+  const late = ws.onmessage, request = ws.sent.find(frame => frame.type === 'relay-request');
+  h.session.stop();
+  late({ data: JSON.stringify({ type: 'relay-credentials', id: request.id, iceServers: RELAY_SERVERS, expiresAt: 3600000 }) });
+  await flush();
+  assert.equal(h.peers.length, 0);
+  assert.equal(h.mic.track.stops, 1);
+  assert.equal(h.clock.tasks.size, 0);
+});
+
+test('a relay session refuses a Direct ready frame and stops its microphone', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' });
+  const pending = h.session.start(); await flush();
+  const ws = h.sockets[0]; ws.open(); ws.message(ready());
+  await flush();
+  assert.equal(await pending, false);
+  assert.equal(h.states.at(-1).key, 'transport.mismatch');
+  assert.equal(h.mic.track.stops, 1);
+  assert.equal(ws.sent.some(frame => frame.type === 'relay-request'), false);
+});
+
 class Clock {
   time = 0;
   nextId = 0;
@@ -124,7 +220,7 @@ function microphone() {
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession, name = 'Alice' } = {}) {
+function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession, name = 'Alice', transport = 'direct' } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
@@ -192,9 +288,11 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     candidate(value) { this.onicecandidate?.({ candidate: value && { toJSON: () => value, ...value } }); }
     fail() { this.connectionState = 'failed'; this.onconnectionstatechange?.(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
+    setConfiguration(configuration) { this.config = configuration; }
+    async getStats() { return this.stats || new Map(); }
   }
   const session = new InboxSession({
-    role, code: CODE, key: role === 'host' ? KEY : SENDER_KEY,
+    role, transport, code: CODE, key: role === 'host' ? KEY : SENDER_KEY,
     roomName: 'Support desk', passwordProof, ...(name === null ? {} : { name }),
     endpoint: 'ws://127.0.0.1:8794', Socket, Peer, clock, audioSession,
     mediaDevices: mediaDevices || { async getUserMedia(options) {
@@ -219,7 +317,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     const ws = sockets.at(-1);
     assert.ok(ws);
     ws.open();
-    ws.message(frame || (role === 'host' ? hostReady() : ready()));
+    ws.message(frame || { ...(role === 'host' ? hostReady() : ready()), ...(transport === 'relay' ? { transport } : {}) });
     await flush();
     assert.equal(await starting, true);
     return ws;

@@ -50,11 +50,37 @@ source with no established peer ends after the retry budget is exhausted.
 The worker sees descriptions, candidates, room code, addresses and timing,
 never media or the viewer note. Cloudflare keeps seven-day metadata logs.
 
-Both peers configure `iceServers: []`. The shared `peer-network` part rejects
-non-host trickled candidates and removes them from SDP in both directions.
-A VPN, public interface or OS route can still influence host routing. This
-policy requires direct reachability and has no relay fallback; it cannot
-prove that a physical Wi-Fi network contains every byte.
+Direct is the default. Both peers configure `iceServers: []`, and the shared
+`peer-transport` part delegates host-only filtering to `peer-network`. A VPN,
+public interface or OS route can still influence host routing; this policy
+does not prove that every byte stays inside a physical Wi-Fi network.
+
+Cloud relay is an explicit alternative, fixed for the session. The shared
+control appears after Nearby and before setup, and is locked while starting,
+connected or holding a recoverable camera identity. Links and QR codes carry
+`transport=direct|relay`; discovery carries the host's authoritative choice.
+Selecting a listing or opening/pasting a link selects the mode but never
+opens a room or requests capture. The viewer explicitly chooses Connect after
+seeing the relay disclosure. A plain code uses the visible selected mode.
+The worker rejects a mismatched mode with 4412; no client silently changes it.
+
+After its room socket opens, each relay participant requests short-lived TURN
+credentials through `RelayCredentials`. Ordinary room messages wait until
+credentials arrive; no peer can be created with empty relay configuration.
+Cloud relay forces `iceTransportPolicy: 'relay'`, filters both SDP and trickled
+candidates to relay addresses, and never falls back to Direct. Credential
+failure ends the session and releases capture. Renewal updates peer configuration
+and queues a host ICE restart after any outstanding answer; viewers wait for
+that offer. Stop retires pending requests, renewal timers and late responses.
+The route badge uses selected candidate-pair statistics, not the selected label.
+When a relay room socket is lost, its peers are retired because they cannot
+renew credentials or exchange another ICE restart under the old room identity.
+The host retries the same invitation while healthy capture remains available;
+viewers explicitly reconnect and pass the current approval policy again.
+Direct peers retain their existing best-effort continuity behavior.
+The relay sees addresses, timing and traffic volume while forwarding encrypted
+media and control traffic. It requires internet throughout and can still be
+blocked by a managed device. The introduction service never carries media.
 
 Random suggestions are `cam-` followed by twelve uniformly sampled base32
 characters, with 60 random bits. A custom name uses the same normalization
@@ -122,7 +148,8 @@ approval; viewer notes are never treated as admission credentials.
 Source Stop sends the existing direct ended control before closing capture,
 peers and sockets. Navigation and page close also release resources. Initial
 pairing failure still releases capture and offers Resume camera with the same
-chosen identity. There is no worker or room-protocol change.
+chosen identity. Relay credential errors end that identity rather than silently
+retrying through a different mode. Recovery preserves its selected mode.
 
 Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
@@ -155,7 +182,7 @@ Existing senders are rebalanced before a new video starts. Sender parameter
 updates are serialized and stale peers are ignored. Unsupported bitrate limits
 leave native congestion control in place and produce an explicit host status;
 the selected shared ceiling is not promised on that browser. No connection
-speed test, STUN/TURN service or extra network request is introduced. The
+speed test or extra network request is introduced by bandwidth adaptation. The
 [WebRTC encoding parameters](https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters-maxbitrate)
 define that ceiling excluding transport overhead and permit lower rates.
 
@@ -271,6 +298,13 @@ With no viewer, Stop ends sharing directly.
 The website's capture, protocol and session tests run in CI. Functional browser
 coverage lives in the sibling `A-Box-of-Tools/qa` repository. Do not run the
 website suites locally; reproduce a named failure only after CI reports it.
+
+Check both connection modes. Direct must never request relay credentials.
+Cloud relay must wait for credentials, show a verified relay route, and retain
+the same approval, acknowledgement, audio and Stop boundaries. Check a refused
+credential request, a stopped request followed by a late reply, mismatched
+invitation modes and renewal during an outstanding media answer. None may
+fall back to Direct or reacquire capture after Stop.
 
 For acceptance use two physical devices and test camera permissions, QR/link
 pairing, browser camera selection, mid-share camera switching, both approval

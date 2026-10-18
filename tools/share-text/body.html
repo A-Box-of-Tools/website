@@ -20,6 +20,7 @@
       </p>
     </section>
 
+    {% include "partials/paired-transport.html" %}
     <!-- Step 1 &mdash; the content -->
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Write it, or attach it</h2>
@@ -41,7 +42,7 @@
       <input id="fileinput" type="file" multiple hidden aria-label="Files to attach">
       <div id="attachlist"></div>
       <p class="field-note">
-        Files ride the same direct connection as the text, up to 200&nbsp;MB
+        Files use the same encrypted connection as the text, up to 200&nbsp;MB
         apiece, with up to 256 files in one share. Readers see the list and
         fetch each file only if they ask for it.
       </p>
@@ -76,7 +77,7 @@
           needed to introduce the browsers; this mode uses no public
           address-discovery server or relay. VPNs and browser settings can
           affect the network path. The copied link carries this setting.
-          Local network is off by default; choose it to list your share in local discovery.
+          In Direct mode, choose Local network to list your share nearby. Cloud relay can also be listed nearby when Discoverable is selected.
         </p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
@@ -124,10 +125,11 @@
     </section>
 
     <section class="card note-card">
-      <h2>Nothing is stored anywhere</h2>
+      <h2>No server content storage</h2>
       <p>
-        The text and the files travel straight from this tab to each
-        reader&rsquo;s, encrypted. The rendezvous introduces the browsers and
+        Text and files travel encrypted from this tab to each reader.
+        Cloud relay, when selected, forwards encrypted packets through
+        Cloudflare. The rendezvous introduces the browsers and
         lists discoverable link names; it never sees the text or files.
         Closing this tab ends the
         share and clears readers&rsquo; open pages too &mdash; though what
@@ -144,11 +146,11 @@
 
       <div id="consent" hidden>
         <p>
-          Connecting lets the sharer send the text and files straight to
-          your browser over an encrypted channel. Like any direct
-          connection, it lets each side see the other&rsquo;s network (IP)
-          address. The sharer does not learn that you opened this link until
-          you choose to connect.
+          Connecting lets the sharer send text and files to your browser
+          over an encrypted channel. Direct exchanges network addresses
+          between devices. Cloud relay forwards encrypted packets through
+          Cloudflare, which sees connection addresses and traffic metadata.
+          Check the connection choice above before continuing.
         </p>
         <p id="local-note" hidden>
           This link uses Local network mode. Both devices need to be on the
@@ -174,22 +176,7 @@
         </div>
       </div>
 
-      <!-- Shown only after a direct attempt has failed. The relay is the
-           reader's choice and is described before the click, in the same
-           terms as the direct connection above. -->
-      <div id="relayrow" hidden>
-        <p>
-          The alternative is an encrypted relay. Your browser would send and
-          receive through a relay server run by Cloudflare, which forwards
-          the encrypted bytes and cannot read them; it learns your network
-          address and the sharer&rsquo;s, as the direct connection would
-          have. Nothing is stored there either, and the sharer&rsquo;s page
-          still sends to you alone.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Try again through the relay</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Retry with the sharer&rsquo;s connection mode</button>
@@ -298,7 +285,7 @@
     <span data-phrase="view.no-content">The connection opened, but the share did not arrive. Ask the sharer to keep their tab open and awake, then check this link again.</span>
     <span data-phrase="view.local-connecting">Connecting over the local network&hellip;</span>
     <span data-phrase="view.mode-local">The sharer uses Local network mode. Retry with their mode to connect without an internet relay.</span>
-    <span data-phrase="view.mode-direct">The sharer uses the ordinary connection mode. Retry with their mode to connect; a relay is offered only if you choose it after a direct attempt fails.</span>
+    <span data-phrase="view.mode-direct">The sharer uses the ordinary connection mode. Retry with their mode to connect; Direct will not switch to a relay. The host must start a new Cloud relay session to change routes.</span>
     <span data-phrase="view.private">The sharer set this to private.</span>
     <span data-phrase="view.asked">Asked. Waiting for the sharer to let you in&hellip;</span>
     <span data-phrase="view.denied">The sharer didn&rsquo;t let you in.</span>

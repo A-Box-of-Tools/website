@@ -1,4 +1,4 @@
-import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
+import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
@@ -36,6 +36,9 @@ export class CameraSession {
     this.role = null;
     this.socket = null;
     this.pairing = null;
+    this.transport = 'direct';
+    this.iceServers = [];
+    this.relay = null;
     this.stream = null;
     this.peers = new Map();
     this.keepalive = null;
@@ -96,12 +99,14 @@ export class CameraSession {
     if (this.role === 'camera') this.state(this.hostState());
   }
 
-  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000 } = {}) {
+  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, transport = 'direct' } = {}) {
     this.stop();
     this.role = 'camera';
     this.requireApproval = Boolean(requireApproval);
     this.setVideoBudget(videoBudget);
     this.stream = stream;
+    this.transport = transportMode(transport);
+    if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
       throw new Error('camera.ended');
@@ -109,9 +114,11 @@ export class CameraSession {
     return this.open(code, discoverable);
   }
 
-  async connect(code, note) {
+  async connect(code, note, { transport = 'direct' } = {}) {
     this.stop();
     this.role = 'viewer';
+    this.transport = transportMode(transport);
+    if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     this.note = String(note ?? '').trim().slice(0, 80);
     return this.open(code);
   }
@@ -124,24 +131,26 @@ export class CameraSession {
     const revision = this.revision;
     this.code = code;
     this.discoverable = discoverable;
-    if (!recovering) this.openingTrace = this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local') ?? null;
+    if (!recovering) this.openingTrace = this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', this.transport === 'relay' ? 'relay' : 'local') ?? null;
     if (!recovering) this.state('connection.starting');
     return new Promise((resolve, reject) => {
-      let settled = false, opened = false;
+      let settled = false, opened = false, configured = this.transport === 'direct', confirmed = false;
+      const waiting = [];
       let socket;
       try {
-        socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
+        socket = this.socket = new this.Socket(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`, this.transport));
       } catch (error) {
         this.openingTrace?.error('websocket', error);
         this.openingTrace?.socket('closed');
         this.openingTrace?.finish('socket-error');
         this.openingTrace = null;
+        this.stop('connection.server-failed');
         throw new Error('connection.server-failed');
       }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
       const finish = () => {
-        if (!current() || settled) return;
+        if (!current() || settled || !configured || (recovering && !confirmed)) return;
         settled = true;
         pairing.clear('opening');
         this.socketDeadline = null;
@@ -164,6 +173,13 @@ export class CameraSession {
         this.detachSocket(socket);
         this.openingTrace?.finish(reason);
         this.openingTrace = null;
+        if (key.startsWith('transport.')) {
+          const pending = !settled;
+          settled = true;
+          this.stop(key);
+          if (pending) reject(new Error(key));
+          return;
+        }
         if (recovering) {
           if (!settled) {
             this.onDiscovery(null);
@@ -176,6 +192,14 @@ export class CameraSession {
           if (!settled) { settled = true; reject(new Error(key)); }
         }
       };
+      const dispatch = (message) => {
+        try { this.message(message); } catch { fail('connection.invalid'); }
+      };
+      if (!configured) this.relay = new RelayCredentials({
+        send: (frame) => pairing.send(frame), current,
+        onRenew: (servers) => this.renewRelay(servers),
+        onError: (error) => fail(error.message),
+      });
       this.socketDeadline = pairing.after('opening', CONNECT_TIMEOUT, () => fail('connection.server-failed', 'timeout'));
       this.cancelOpen = () => {
         if (!settled) { settled = true; reject(new Error('connection.stopped')); }
@@ -194,6 +218,13 @@ export class CameraSession {
           if (recovering) {
             if (!pairing.send('ping')) fail('connection.server-failed');
           } else finish();
+          if (!configured) this.relay.prepare().then((servers) => {
+            if (!current()) return;
+            this.iceServers = servers;
+            configured = true;
+            finish();
+            for (const message of waiting.splice(0)) { if (current()) dispatch(message); }
+          }).catch((error) => { if (current()) fail(error.message); });
         },
         error: () => {
           this.openingTrace?.error('websocket', { name: 'NetworkError' });
@@ -203,15 +234,19 @@ export class CameraSession {
         close: (event) => {
           this.openingTrace?.socket('closed', event.code);
           for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
-          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended' };
+          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
           fail(reasons[event.code] ?? 'connection.server-failed', 'socket-closed');
         },
         message: (event) => {
-          if (event.data === 'pong') { if (recovering && opened) finish(); return; }
+          if (event.data === 'pong') { confirmed = opened; if (recovering) finish(); return; }
           if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
           let message;
           try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
-          try { this.message(message); } catch { fail('connection.invalid'); }
+          if (this.relay?.receive(message)) return;
+          if (!configured) {
+            if (waiting.length >= 64) return fail('connection.invalid');
+            waiting.push(message);
+          } else dispatch(message);
         },
       });
     });
@@ -233,6 +268,8 @@ export class CameraSession {
     this.openingTrace?.socket('closed');
     for (const entry of this.peers.values()) entry.trace?.socket('closed');
     const pairing = this.pairing;
+    this.relay?.close();
+    this.relay = null;
     this.socket = null;
     this.pairing = null;
     this.keepalive = null;
@@ -245,6 +282,9 @@ export class CameraSession {
     this.signalingLost = true;
     const established = [...this.peers.values()].filter((entry) => this.established(entry, true));
     if (this.role === 'viewer') {
+      // Relay renewal needs this viewer's room identity. A detached peer
+      // cannot exchange the next ICE restart and must request admission anew.
+      if (this.transport === 'relay') return this.stop(key);
       if (!established.length) return this.stop(key);
       established.forEach((entry) => { entry.signalingDetached = true; });
       this.signalingUnavailable = true;
@@ -265,7 +305,7 @@ export class CameraSession {
     // Worker viewer IDs belong to the lost sockets. Existing direct peers
     // remain private, while unfinished peers cannot cross a new room lease.
     for (const entry of [...this.peers.values()]) {
-      if (this.established(entry, true)) entry.signalingDetached = true;
+      if (this.transport === 'direct' && this.established(entry, true)) entry.signalingDetached = true;
       else this.removePeer(entry.id, 'signaling-error');
     }
   }
@@ -341,7 +381,7 @@ export class CameraSession {
       // The old worker socket can disappear while its direct peer is live.
       // It no longer owns that peer's lifetime after introduction is lost.
       const entry = this.peers.get(message.id);
-      if (this.established(entry)) entry.signalingDetached = true;
+      if (this.transport === 'direct' && this.established(entry)) entry.signalingDetached = true;
       else if (!entry?.signalingDetached) this.removePeer(message.id);
       return;
     }
@@ -367,6 +407,11 @@ export class CameraSession {
     }
     const entry = this.peers.get(id);
     if (!entry || entry.signalingDetached) return;
+    if (data.restart === true && this.role === 'camera' && this.transport === 'relay') {
+      entry.restartPending = true;
+      this.queue(entry, () => this.offer(entry));
+      return;
+    }
     this.queue(entry, async () => {
       let operation = 'signaling', adding = null;
       try {
@@ -377,9 +422,10 @@ export class CameraSession {
               || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
           if (expected === 'offer') { entry.trace?.count('offerReceived'); entry.trace?.mark('offer-received'); }
           operation = 'set-remote-description';
-          await entry.pc.setRemoteDescription(localDescription(description));
+          await entry.pc.setRemoteDescription(transportDescription(description, this.transport));
           if (!this.current(entry)) return;
           if (expected === 'answer') { entry.trace?.count('answerAccepted'); entry.trace?.mark('answer-accepted'); }
+          if (expected === 'answer') entry.awaitingAnswer = false;
           if (expected === 'answer' && entry.video) {
             entry.mediaNegotiated = true;
             entry.trace?.mark('sharing');
@@ -398,12 +444,13 @@ export class CameraSession {
             const answer = await entry.pc.createAnswer();
             operation = 'set-local-description';
             await entry.pc.setLocalDescription(answer);
-            if (this.current(entry)) this.signal(entry, { description: localDescription(entry.pc.localDescription) });
+            if (this.current(entry)) this.signal(entry, { description: transportDescription(entry.pc.localDescription, this.transport) });
           }
+          if (expected === 'answer' && entry.offerPending) this.queue(entry, () => this.offer(entry));
         } else if (data.candidate !== undefined) {
           const candidate = data.candidate;
           entry.trace?.count('candidatesReceived'); entry.trace?.candidate('remote', candidate, 'received');
-          if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048 || !allowedCandidate(candidate, true)) {
+          if (typeof candidate?.candidate !== 'string' || candidate.candidate.length > 2048 || !transportCandidate(candidate, this.transport)) {
             entry.trace?.count('candidatesFiltered'); entry.trace?.candidate('remote', candidate, 'filtered');
             return;
           }
@@ -429,10 +476,10 @@ export class CameraSession {
   current(entry) { return this.peers.get(entry.id) === entry && entry.revision === this.revision; }
 
   newPeer(id) {
-    const pc = new this.PeerConnection(rtcConfig(true));
+    const pc = new this.PeerConnection(peerConfiguration(this.transport, this.iceServers));
     // The invitation's opening evidence becomes the first peer's evidence,
     // rather than adding an otherwise duplicate attempt after admission.
-    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', 'local');
+    const trace = this.openingTrace ?? this.diagnostics?.begin(this.role === 'camera' ? 'host' : 'viewer', this.transport === 'relay' ? 'relay' : 'local');
     this.openingTrace = null;
     const entry = { id, pc, trace, revision: this.revision, queue: Promise.resolve(), queued: 0, candidates: [], pending: false, approved: false, timers: new Set() };
     this.peers.set(id, entry);
@@ -442,7 +489,7 @@ export class CameraSession {
     this.deadline(entry, () => this.peerFailed(entry, 'connection.direct-failed', 'handshake-timeout'), CONNECT_TIMEOUT);
     pc.addEventListener('icecandidate', (event) => {
       if (!this.current(entry) || !event.candidate) return;
-      if (!allowedCandidate(event.candidate, true)) {
+      if (!transportCandidate(event.candidate, this.transport)) {
         trace?.candidate('local', event.candidate, 'filtered'); trace?.count('candidatesFiltered');
         return;
       }
@@ -528,14 +575,33 @@ export class CameraSession {
     }
   }
 
+  renewRelay(servers) {
+    this.iceServers = servers;
+    for (const entry of this.peers.values()) {
+      entry.pc.setConfiguration(peerConfiguration(this.transport, servers));
+      if (this.role === 'camera' && !entry.signalingDetached) {
+        entry.restartPending = true;
+        this.queue(entry, () => this.offer(entry));
+      } else if (this.role === 'viewer') this.signal(entry, { restart: true });
+    }
+  }
+
   async offer(entry) {
+    if (entry.awaitingAnswer) { entry.offerPending = true; return; }
+    const restarting = entry.restartPending === true;
+    entry.restartPending = false;
+    entry.offerPending = false;
     let operation = 'create-offer';
     try {
-      const offer = await entry.pc.createOffer();
+      const offer = await entry.pc.createOffer(restarting ? { iceRestart: true } : undefined);
+      if (!this.current(entry)) return;
       operation = 'set-local-description';
       await entry.pc.setLocalDescription(offer);
     } catch (error) { entry.trace?.error(operation, error); throw error; }
-    if (this.current(entry)) this.signal(entry, { description: localDescription(entry.pc.localDescription) });
+    if (this.current(entry)) {
+      entry.awaitingAnswer = true;
+      this.signal(entry, { description: transportDescription(entry.pc.localDescription, this.transport) });
+    }
   }
 
   control(entry, type, values = {}) {
@@ -780,6 +846,7 @@ export class CameraSession {
 
   peerFailed(entry, key, reason = key === 'connection.ended' ? 'ended' : 'signaling-error') {
     if (!this.current(entry)) return;
+    if (key === 'connection.direct-failed' && this.transport === 'relay') key = 'transport.failed';
     entry.trace?.finish(reason);
     if (this.role === 'viewer') this.stop(key);
     else {
@@ -821,6 +888,9 @@ export class CameraSession {
       }
     }
     this.revision += 1;
+    this.relay?.close();
+    this.relay = null;
+    this.iceServers = [];
     this.signalingRetry = null;
     this.signalingLost = false;
     const tracks = new Set([...(this.cameraChange?.candidate?.getTracks() ?? []), ...(this.stream?.getTracks() ?? [])]);
@@ -851,15 +921,16 @@ export class CameraSession {
   }
 
   async inspect() {
-    const entry = this.role === 'viewer' ? this.peers.get('viewer') : [...this.peers.values()].find((peer) => peer.video);
+    const entry = this.role === 'viewer' ? this.peers.get('viewer') : [...this.peers.values()].find((peer) => peer.video) ?? this.peers.values().next().value;
     if (!entry) return null;
     const stats = await entry.pc.getStats();
+    if (!this.current(entry)) return null;
     const values = [...stats.values()];
     const transport = values.find((item) => item.type === 'transport' && item.selectedCandidatePairId);
     const pair = transport && stats.get(transport.selectedCandidatePairId);
     const local = pair && stats.get(pair.localCandidateId);
     const remote = pair && stats.get(pair.remoteCandidateId);
     const video = values.find((item) => item.type === 'inbound-rtp' && item.kind === 'video');
-    return { state: entry.pc.connectionState, local: local?.candidateType, remote: remote?.candidateType, frames: video?.framesDecoded ?? 0 };
+    return { state: entry.pc.connectionState, route: selectedTransport(stats), local: local?.candidateType, remote: remote?.candidateType, frames: video?.framesDecoded ?? 0 };
   }
 }

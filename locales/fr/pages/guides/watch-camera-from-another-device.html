@@ -1,5 +1,6 @@
 <section>
   <h2>Ce qu’il vous faut</h2>
+  <p>Direct est le choix par défaut. Les indications de joignabilité directe ci-dessous concernent ce mode. Pour utiliser Cloud relay, l’hôte le choisit avant de démarrer et partage la nouvelle invitation. L’autre personne voit ce choix et le confirme avant la connexion. Direct ne bascule jamais automatiquement. Cloudflare transmet le contenu chiffré et voit les adresses, les horaires et le volume de trafic. Les deux appareils ont besoin d’internet pendant toute la session. Approbation, mot de passe et commandes du microphone restent nécessaires.</p>
   <p>Utilisez deux appareils dont les navigateurs prennent en charge l’accès à la caméra et WebRTC. Tous deux ont besoin d’internet pour la mise en relation et d’un réseau qui leur permet de se joindre. Un téléphone en Wi-Fi et un ordinateur en Ethernet peuvent fonctionner si le réseau autorise leur communication. Un point d’accès partagé par un téléphone peut aussi fonctionner si les deux appareils ont accès à internet pour la mise en relation et si le point d’accès permet leur communication.</p>
   <p>Ouvrez l’adresse HTTPS de confiance de ce site. Une adresse HTTP ordinaire sur une IP du réseau local ne peut pas demander la caméra. Si le navigateur ou le système demande l’accès au réseau local, autorisez-le pour cette session.</p>
 </section>
@@ -12,7 +13,7 @@
     <li><strong>Une entrée intérieure.</strong> Gardez un œil sur la porte depuis une autre pièce. Il s’agit d’un direct pendant que vous regardez, sans enregistrement. Les navigateurs compatibles peuvent vous signaler un mouvement ou un son détecté tant que la page du spectateur peut fonctionner.</li>
     <li><strong>Une inspection de bricolage.</strong> Orientez le téléphone vers un raccord sous l’évier, une vis tombée derrière un meuble ou un passage de câbles. Le portable permet de voir là où votre tête ne passe pas.</li>
   </ul>
-  <p>Pour une image plus fiable, gardez la page de caméra visible et le téléphone éveillé. La page conserve une connexion fonctionnelle lorsqu’elle est masquée, mais le navigateur du téléphone peut suspendre la capture ou la page lors d’un changement d’application ou du verrouillage de l’écran. L’outil fournit une vidéo en direct sur un réseau accessible, sans relais internet pour regarder depuis ailleurs.</p>
+  <p>Pour une image plus fiable, gardez la page de caméra visible et le téléphone éveillé. La page conserve une connexion fonctionnelle lorsqu’elle est masquée, mais le navigateur du téléphone peut suspendre la capture ou la page lors d’un changement d’application ou du verrouillage de l’écran. Direct nécessite un réseau local accessible. Le relais cloud est une autre option à choisir explicitement, avec internet pendant toute la session.</p>
 </section>
 <section>
   <h2>Installer une vue pour une inspection</h2>
@@ -63,7 +64,7 @@
 <section>
   <h2>Si les appareils ne se connectent pas</h2>
   <p>Un même nom de Wi-Fi ne garantit pas qu’ils puissent se joindre. Isolation des invités, pare-feu, découverte locale bloquée, permissions réseau du navigateur ou du système et routage VPN peuvent empêcher la connexion directe. Arrêtez des deux côtés, vérifiez les permissions et le réseau, puis essayez un nouveau lien.</p>
-  <p>Connection details affiche les types de candidats sélectionnés et le nombre d’images décodées côté spectateur. L’outil utilise uniquement des candidats hôtes, sans serveur STUN, relais TURN ni solution de repli par relais. Un VPN, une interface publique ou une route du système peut influencer le trajet ; les candidats hôtes ne prouvent pas que le trafic reste dans un bâtiment.</p>
+  <p>Connection details affiche les types de candidats sélectionnés et le nombre d’images décodées côté spectateur. Direct utilise uniquement des candidats hôtes, sans serveur STUN, relais TURN ni solution de repli par relais. Un VPN, une interface publique ou une route du système peut influencer le trajet ; les candidats hôtes ne prouvent pas que le trafic reste dans un bâtiment.</p>
 </section>
 <section>
   <h2>Ce que voit le service de mise en relation</h2>

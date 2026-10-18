@@ -54,8 +54,8 @@ new_sqlite_classes = ["Room"]
 tag = "v2"
 new_sqlite_classes = ["Discovery"]
 
-# Voice rooms authenticate capabilities inside the socket and carry no relay
-# requests. Their namespace cannot reinterpret an existing text/camera room.
+# Voice rooms authenticate capabilities inside the socket. Their namespace
+# cannot reinterpret an existing text/camera room or grant its authority.
 [[migrations]]
 tag = "v3"
 new_sqlite_classes = ["Broadcast"]
@@ -81,7 +81,7 @@ namespace_id = "1001"
   limit = 30
   period = 60
 
-# The relay a reader may ask for after a direct attempt has failed is
+# The explicit Cloud relay option uses
 # Cloudflare's TURN service, and minting a credential for it takes a TURN key:
 # made in the dashboard under Realtime, and handed to the worker as two secrets
 # rather than two lines here, since one of them is a bearer token -
@@ -89,10 +89,13 @@ namespace_id = "1001"
 #     npx wrangler secret put TURN_KEY_ID
 #     npx wrangler secret put TURN_KEY_TOKEN
 #
-# Without them the worker answers a relay ask with nothing and the page says so.
-# The first 1,000 GB a month of relayed traffic are free; a relay carries the
-# same encrypted bytes the direct path would, and only for the pairs that
-# could not connect directly.
+# Without them the worker returns unavailable. TURN traffic is separately
+# billed; these admission and issuance limits are not a byte or spending cap.
+[vars]
+RELAY_TOOLS = "share-text,share-tab,remote-camera,walkie-talkie,voice-oncall"
+RELAY_MAX_PEERS = "10"
+RELAY_MAX_SESSION_SECONDS = "28800"
+RELAY_MAX_CREDENTIALS = "12"
 
 # Persisted logs, switched on in the dashboard and written down here so a later
 # `wrangler deploy` from this file agrees with it rather than quietly switching
@@ -126,6 +129,14 @@ workers_dev = true
 routes = [
   { pattern = "rendezvous-dev.abox.tools", custom_domain = true },
 ]
+
+# Environment vars are not inherited. Development has its own TURN secrets
+# and the same bounded admission policy; an empty RELAY_TOOLS disables relay.
+[env.dev.vars]
+RELAY_TOOLS = "share-text,share-tab,remote-camera,walkie-talkie,voice-oncall"
+RELAY_MAX_PEERS = "10"
+RELAY_MAX_SESSION_SECONDS = "28800"
+RELAY_MAX_CREDENTIALS = "12"
 
 # Bindings are not inherited. Omitting script_name binds each class to this
 # environment's Worker and therefore creates separate object namespaces/state.

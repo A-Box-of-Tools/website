@@ -4,6 +4,8 @@ import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
+import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
+import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
@@ -34,6 +36,7 @@ function activateOncall() {
   pageUrl.hash = '';
   const invitationCode = new URLSearchParams(location.hash.slice(1)).get('code');
   let selectedCode = validCode(invitationCode) ? invitationCode.toLowerCase() : null;
+  let selectedTransport = readTransport(location.href);
   let rooms = [];
   let roomsSignature = null;
   let view = 'join';
@@ -111,6 +114,11 @@ function activateOncall() {
   if (removedStoredNames) writeStored(senderStorage, senderRecords);
   const savedHost = readStored(hostStorage);
   let hostIdentity = savedHost && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
+  const transportControl = bindTransportControl({ onChange: () => {
+    transportControl.route(null);
+    updateHostPassword();
+  } });
+  transportControl.set(selectedCode ? selectedTransport || 'direct' : 'direct');
   if (hostIdentity) {
     ui['room-name'].value = hostIdentity.roomName;
     ui['password-required'].checked = Boolean(hostIdentity.passwordProof);
@@ -128,18 +136,22 @@ function activateOncall() {
     const locked = ui['password-required'].checked;
     ui['host-password-field'].hidden = !locked;
     ui['host-password'].disabled = !locked;
-    const canKeepPassword = Boolean(hostIdentity?.passwordProof && hostIdentity.roomName === ui['room-name'].value.trim());
+    const canKeepPassword = Boolean(hostIdentity?.passwordProof && transportMode(hostIdentity.transport) === transportControl.value()
+      && hostIdentity.roomName === ui['room-name'].value.trim());
     ui['host-password'].required = locked && !canKeepPassword;
     ui['saved-password'].hidden = !locked || !canKeepPassword;
   }
 
   function currentRoom() {
-    return rooms.find(room => room.code === selectedCode) || (selectedCode ? { code: selectedCode, name: phrase('invited-room'), locked: null } : null);
+    return rooms.find(room => room.code === selectedCode) || (selectedCode ? { code: selectedCode, name: phrase('invited-room'), locked: null, transport: selectedTransport } : null);
   }
 
   function setView(next) {
     if (hostActive || senderActive || senderPaused || starting) return;
     view = next;
+    if (next === 'host' && hostIdentity) transportControl.set(transportMode(hostIdentity.transport) || 'direct');
+    if (next === 'join' && selectedCode) transportControl.set(selectedTransport || 'direct');
+    updateHostPassword();
     for (const role of ['join', 'host']) {
       const selected = role === next;
       ui[`tab-${role}`].setAttribute('aria-selected', String(selected));
@@ -151,6 +163,7 @@ function activateOncall() {
 
   function updateControls() {
     const occupied = hostActive || senderActive || senderPaused || starting;
+    transportControl.lock(occupied);
     ui.nearby.hidden = occupied || senderTerminal;
     for (const radio of ui.rooms.querySelectorAll('input')) radio.disabled = occupied || senderTerminal;
     ui['tab-join'].disabled = occupied && view !== 'join';
@@ -355,6 +368,17 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
+    const connecting = ['host-starting', 'host-reconnecting', 'sender-connecting', 'sender-reconnecting'].includes(key);
+    transportControl.route(detail.directReady ? detail.route || 'unknown' : connecting ? 'unknown' : null);
+    if (key.startsWith('transport.')) {
+      resumeRoleOnReturn = null;
+      senderActive = senderPaused = hostActive = false;
+      canTransmit = false;
+      clearTransmitFlags();
+      discovery?.unpublish();
+      lastPublication = null;
+      clearAudio();
+    }
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (activeRole === 'sender' && detail.captureState) {
       captureState = detail.captureState;
@@ -439,7 +463,7 @@ function activateOncall() {
 
   function renderRooms() {
     const listed = rooms.slice();
-    if (selectedCode && !listed.some(room => room.code === selectedCode)) listed.unshift({ code: selectedCode, name: phrase('invited-room'), locked: null });
+    if (selectedCode && !listed.some(room => room.code === selectedCode)) listed.unshift({ code: selectedCode, name: phrase('invited-room'), locked: null, transport: selectedTransport });
     ui.rooms.replaceChildren();
     for (const room of listed) {
       const label = document.createElement('label');
@@ -463,6 +487,7 @@ function activateOncall() {
         if (hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended) return;
         if (selectedCode !== room.code) ui['sender-password'].value = '';
         selectedCode = room.code;
+        selectedTransport = transportMode(room.transport);
         setView('join');
         if (event.type === 'click' && event.detail > 0) (room.locked ? ui['sender-password'] : ui.join).focus();
       };
@@ -477,7 +502,7 @@ function activateOncall() {
   function openDiscovery() {
     return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=voice-oncall`, {
     list(shares) {
-      const next = (Array.isArray(shares) ? shares : []).filter(room => validCode(room.code) && typeof room.name === 'string').map(room => ({ code: room.code.toLowerCase(), name: room.name, locked: Boolean(room.locked) })).sort((a, b) => a.name.localeCompare(b.name));
+      const next = (Array.isArray(shares) ? shares : []).filter(room => validCode(room.code) && typeof room.name === 'string').map(room => ({ code: room.code.toLowerCase(), name: room.name, locked: Boolean(room.locked), transport: transportMode(room.transport) })).sort((a, b) => a.name.localeCompare(b.name));
       const signature = JSON.stringify(next);
       if (signature === roomsSignature) return;
       roomsSignature = signature;
@@ -677,6 +702,7 @@ function activateOncall() {
       role,
       code: identity.code,
       key: identity.key,
+      transport: transportMode(identity.transport),
       roomName: role === 'host' ? identity.roomName : undefined,
       passwordProof: identity.passwordProof,
       onState: (key, detail) => {
@@ -699,7 +725,7 @@ function activateOncall() {
   }
 
   function drawInvitation() {
-    const invitation = new URL(pageUrl.href);
+    const invitation = new URL(transportUrl(pageUrl.href, hostIdentity.transport));
     invitation.hash = new URLSearchParams({ code: hostIdentity.code }).toString();
     ui.link.value = invitation.href;
     ui['copy-note'].textContent = '';
@@ -768,7 +794,7 @@ function activateOncall() {
       const roomName = ui['room-name'].value.trim();
       const locked = ui['password-required'].checked;
       const password = ui['host-password'].value;
-      const reusable = hostIdentity && hostIdentity.roomName === roomName && Boolean(hostIdentity.passwordProof) === locked && !password && await codeForKey(hostIdentity.key) === hostIdentity.code;
+      const reusable = hostIdentity && transportMode(hostIdentity.transport) === transportControl.value() && hostIdentity.roomName === roomName && Boolean(hostIdentity.passwordProof) === locked && !password && await codeForKey(hostIdentity.key) === hostIdentity.code;
       if (locked && !password && !reusable) {
         hostActive = false;
         clearAudio();
@@ -781,6 +807,7 @@ function activateOncall() {
       if (!reusable) {
         const identity = await makeInboxIdentity();
         identity.roomName = roomName;
+        identity.transport = transportControl.value();
         identity.passwordProof = locked ? await derivePasswordProof(identity.code, password) : null;
         nextIdentity = identity;
       }
@@ -825,6 +852,10 @@ function activateOncall() {
       return;
     }
     const room = currentRoom();
+    if (selectedTransport === null || transportMode(room?.transport) !== transportControl.value()) {
+      renderState(selectedTransport === null ? 'transport.invalid' : 'transport.mismatch');
+      return;
+    }
     const record = senderRecords[selectedCode];
     if (record?.blocked) {
       activeRole = 'sender';
@@ -853,12 +884,13 @@ function activateOncall() {
     try {
       const identity = resume && senderIdentity ? senderIdentity : {
         code: selectedCode,
+        transport: transportControl.value(),
         key: validKey(record?.key) ? record.key : makeSenderKey(),
         passwordProof: password ? await derivePasswordProof(selectedCode, password) : validKey(record?.passwordProof) ? record.passwordProof : null,
       };
       if (epoch !== operationEpoch || pageSuspended || document.hidden) return;
       senderIdentity = identity;
-      senderRecords[selectedCode] = { key: identity.key, passwordProof: identity.passwordProof };
+      senderRecords[selectedCode] = { key: identity.key, passwordProof: identity.passwordProof, transport: identity.transport };
       writeStored(senderStorage, senderRecords);
       ui['sender-password'].value = '';
       const current = createSession('sender', identity);

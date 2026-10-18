@@ -13,6 +13,7 @@
       <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
     </section>
 
+    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Schreiben Sie ihn, oder hängen Sie sie an</h2>
       <div class="panel" id="editor">
@@ -32,10 +33,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Anzuhängende Dateien">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Dateien nutzen dieselbe direkte Verbindung wie der Text, bis
-        200&nbsp;MB pro Stück. Leser sehen die Liste und holen jede Datei
-        nur, wenn sie danach fragen. Eine Freigabe kann bis zu 256 Dateien enthalten.</p>
+      <p class="field-note">Dateien nutzen denselben verschlüsselten Kanal wie der Text, bis zu 200&nbsp;MB pro Datei und 256 Dateien pro Freigabe. Leser sehen die Liste und laden Dateien nur auf Wunsch.</p>
     </section>
 
     <section class="card">
@@ -57,7 +55,7 @@
           <input type="checkbox" id="local">
           Lokales Netzwerk — kein Internet-Relais
         </label>
-        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Lokales Netzwerk ist standardmäßig aus; wählen Sie es, um Ihre Freigabe in der lokalen Suche aufzulisten.</p>
+        <p class="field-note">Für Direkt können Sie Lokales Netzwerk wählen: Die Geräte brauchen eine erreichbare Wi-Fi- oder Ethernet-Verbindung und Internet zur Vermittlung. Dieser Modus nutzt keine öffentliche Adressermittlung und kein Relais. VPNs und Browsereinstellungen können den Weg beeinflussen. Der Link übernimmt die Auswahl. Lokale Direktfreigaben und Cloud-Relais-Freigaben erscheinen in der Nähe, wenn Auffindbar aktiviert ist.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
@@ -97,8 +95,8 @@
     </section>
 
     <section class="card note-card">
-      <h2>Nichts wird irgendwo gespeichert</h2>
-      <p>Text und Dateien wandern verschlüsselt direkt aus diesem Tab in den jedes Lesers. Der Vermittler stellt die Browser einander vor und listet auffindbare Link-Namen; Text und Dateien sieht er nie. Das Schließen dieses Tabs beendet die Freigabe und leert die offenen Seiten der Leser — was jemand bereits kopiert oder heruntergeladen hat, gehört ihm weiterhin.</p>
+      <h2>Keine Inhaltsablage auf Servern</h2>
+      <p>Text und Dateien sind zwischen Ihrem Browser und jedem Leser verschlüsselt. Direkt ist der Standard. Bei ausgewähltem Cloud-Relais werden verschlüsselte Pakete über Cloudflare weitergeleitet; das Relais kann den Inhalt nicht lesen. Der Vermittler überträgt nur Verbindungsaufbau und auffindbare Link-Namen. Wir speichern keine geteilten Inhalte auf einem Server. Schließen Sie den Tab, endet die Quelle; Leser leeren ihre Ansicht nach der Endnachricht oder einem erkannten Verbindungsfehler. Bereits gespeicherte Kopien bleiben ihnen erhalten.</p>
     </section>
   </section>
 
@@ -109,7 +107,7 @@
       <p id="view-status" role="status" aria-live="polite">Suche den Teilenden&hellip;</p>
 
       <div id="consent" hidden>
-        <p>Durch das Verbinden kann der Teilende Text und Dateien über einen verschlüsselten Kanal direkt an Ihren Browser senden. Wie jede Direktverbindung zeigt sie beiden Seiten die Netzwerkadresse (IP) der jeweils anderen. Der Teilende erfährt erst, dass Sie diesen Link geöffnet haben, wenn Sie sich zum Verbinden entscheiden.</p>
+        <p>Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie die Verbindungsart oben, bevor Sie ausdrücklich Verbinden wählen.</p>
         <p id="local-note" hidden>Dieser Link nutzt den Modus Lokales Netzwerk. Beide Geräte müssen im selben WLAN oder Ethernet-Netz sein; für die Vermittlung ist weiterhin Internet nötig. Es werden weder öffentliche Server zur Adressermittlung noch ein Internet-Relais genutzt. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
@@ -129,20 +127,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          Die Alternative ist ein verschlüsselter Umweg über ein Relais.
-          Ihr Browser würde über einen Relais-Server von Cloudflare senden
-          und empfangen, der die verschlüsselten Bytes weiterreicht und
-          nicht lesen kann; er erfährt Ihre Netzadresse und die des
-          Teilenden, wie es auch die Direktverbindung getan hätte.
-          Gespeichert wird auch dort nichts, und die Seite des Teilenden
-          sendet weiterhin allein an Sie.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Erneut versuchen, über das Relais</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Mit dem Verbindungsmodus des Teilenden erneut versuchen</button>
@@ -267,7 +252,7 @@
     <span data-phrase="share.local-waiting">Freigabe im Modus Lokales Netzwerk läuft. Warte, bis jemand den Link öffnet — lassen Sie diesen Tab offen.</span>
     <span data-phrase="view.local-connecting">Verbinde über das lokale Netzwerk…</span>
     <span data-phrase="view.mode-local">Der Teilende nutzt den Modus Lokales Netzwerk. Versuchen Sie es mit seinem Modus erneut, um sich ohne Internet-Relais zu verbinden.</span>
-    <span data-phrase="view.mode-direct">Der Teilende nutzt den normalen Verbindungsmodus. Versuchen Sie es mit seinem Modus erneut; ein Relais wird erst nach einem gescheiterten Direktversuch angeboten und nur genutzt, wenn Sie es wählen.</span>
+    <span data-phrase="view.mode-direct">Der Host nutzt den normalen Direktmodus. Wiederholen Sie die Verbindung mit seinem Modus; Direkt wechselt nicht zu einem Relais. Für einen anderen Weg muss der Host eine neue Cloud-Relais-Sitzung starten.</span>
     <span data-phrase="view.local-no-connect">Der Teilende ist im Modus Lokales Netzwerk nicht erreichbar. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen; die Geräteisolierung im Gastnetz, ein VPN, eine Firewall oder Browsereinstellungen können die Verbindung blockieren. In diesem Modus wird kein Internet-Relais angeboten.</span>
     <span data-phrase="view.file-failed">Der Download konnte nicht abgeschlossen werden. Versuchen Sie diese Datei erneut, solange die Freigabe geöffnet ist.</span>
 

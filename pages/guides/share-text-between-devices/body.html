@@ -7,14 +7,18 @@
       <code>brave-otter-42</code>; on the other device, open the same page and
       put <code>#brave-otter-42</code> on the end of the address &mdash; or
       just follow the copied link. The other device asks before connecting,
-      you let it in, and the text or file crosses directly from one browser to
-      the other, encrypted. Close the sharing tab and the share is over,
-      everywhere.
+      you let it in, and the text or file crosses an encrypted connection.
+      Direct is the default. The host can instead choose Cloud relay before
+      starting, and the reader confirms that choice before connecting.
+      Close the sharing tab to end live sharing; copies already saved by a
+      recipient remain theirs.
     </p>
     <p>
-      No shared text or file was uploaded to a server. That is the shape
-      of the thing. The rest of this page is why that matters, and
-      what the honest limits of it are.
+      No sharing server stores a copy to collect later. With Cloud relay,
+      Cloudflare forwards the encrypted content without its decryption keys,
+      but sees addresses, timing and traffic volume. Both devices need
+      internet throughout a relayed session. Direct never switches to that
+      route automatically.
     </p>
 
     <figure class="shot">
@@ -79,7 +83,7 @@
   <section>
     <h2>What &ldquo;direct&rdquo; actually means</h2>
     <p>
-      The tool uses WebRTC, the same machinery as browser video calls: two
+      In Direct, the tool uses WebRTC, the same machinery as browser video calls: two
       browsers open an encrypted channel to each other and send data through
       it without a server in the path. Two devices with a working local
       connection can transfer at the speed of that network; the route also
@@ -132,7 +136,7 @@
       still works.
     </p>
     <p>
-      The copied link carries the setting as <code>?local=1#brave-otter-42</code>.
+      The copied link carries the setting as <code>?local=1&amp;transport=direct#brave-otter-42</code>.
       If you say the name aloud, include the Local network setting too:
       <code>#brave-otter-42</code> alone asks for the ordinary connection
       mode. If the reader uses a different mode from the sharer, the page
@@ -166,7 +170,7 @@
       within that group. For anything sensitive, keep the default &mdash; shares are
       <em>private</em> unless you untick the box, which means every arriving
       reader has to introduce themselves and you decide, message by message,
-      who gets in. The introduction travels the encrypted direct channel, so
+      who gets in. The introduction travels the encrypted peer channel, so
       not even the rendezvous learns who asked.
     </p>
 
@@ -246,10 +250,12 @@
       at all. And a small minority of network pairs &mdash; typically one
       end on a mobile carrier's shared-address network or a strict corporate
       one &mdash; cannot be joined directly at all; the tool says so plainly
-      after twenty seconds, and in ordinary mode offers the reader an encrypted relay that
-      forwards the bytes without being able to read them, rather than
-      switching to one quietly. Local network mode offers no relay and
-      asks you to check the shared network and its connection settings.
+      after twenty seconds. Direct never switches to a relay automatically.
+      The host can stop and start a new share with Cloud relay, then send its
+      new invitation. The reader sees that choice before connecting. Cloudflare
+      forwards encrypted text and files without their decryption keys, but sees
+      addresses, timing and traffic volume. Both devices need internet throughout.
+      Local network restricts Direct and does not use a relay.
     </p>
     <p>
       For everything else &mdash; the note, the password, the config file,

@@ -121,6 +121,60 @@ const offer = (host, listener, connection = CONNECTION) => ({
   type: 'offer', generation: generation(host), connection, to: id(listener), sdp: SDP,
 });
 
+test('broadcast relay mode is authenticated, pinned across host loss and enforced on candidates', async t => {
+  const s = await system();
+  s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+  let mints = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    mints++;
+    return new NativeResponse(JSON.stringify({ iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }] }));
+  });
+  const host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, transport: 'relay' });
+  assert.equal(last(host).transport, 'relay');
+  const direct = await s.listener();
+  assert.equal(last(direct).error, 'transport-mismatch');
+  const listener = await s.open();
+  await s.send(listener, { type: 'auth', role: 'listener', key: LISTEN_KEY, transport: 'relay' });
+  assert.equal(last(listener).transport, 'relay');
+  await s.send(listener, { type: 'relay-request', id: 'test-1' });
+  assert.equal(last(listener).type, 'relay-credentials');
+  assert.equal(last(listener).iceServers[0].username, 'temporary');
+  assert.equal(mints, 1);
+  const relay = { ...CANDIDATE, candidate: 'candidate:1 1 udp 1 198.51.100.5 12345 typ relay' };
+  const signal = { type: 'candidate', generation: generation(host), connection: CONNECTION, to: id(listener), candidate: relay };
+  await s.send(host, signal);
+  assert.deepEqual(last(listener).candidate, relay);
+  await s.send(host, { ...signal, candidate: CANDIDATE });
+  assert.equal(last(host).error, 'invalid');
+  s.room().instance.webSocketClose(host); host.close(1000, 'gone');
+  const replacement = await s.host();
+  assert.equal(last(replacement).error, 'transport-mismatch');
+  await s.send(listener, { type: 'relay-request', id: 'test-2' });
+  assert.equal(last(listener).error, 'forbidden');
+  assert.equal(mints, 1);
+});
+
+test('broadcast Direct rooms never mint relay credentials and service limits preserve admission bounds', async () => {
+  const direct = await system(), host = await direct.host();
+  await direct.send(host, { type: 'relay-request', id: 'direct' });
+  assert.equal(last(host).error, 'forbidden');
+  const relay = await system();
+  relay.env.RELAY_TOOLS = 'voice-oncall';
+  const denied = await relay.open();
+  await relay.send(denied, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, transport: 'relay' });
+  assert.equal(last(denied).error, 'relay-unavailable');
+  relay.env.RELAY_TOOLS = 'walkie-talkie'; relay.env.RELAY_MAX_PEERS = '1';
+  const owner = await relay.open();
+  await relay.send(owner, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, transport: 'relay' });
+  for (let i = 0; i < 2; i++) {
+    const peer = await relay.open();
+    await relay.send(peer, { type: 'auth', role: 'listener', key: LISTEN_KEY, transport: 'relay' });
+    assert.equal(last(peer).type, i ? 'error' : 'ready');
+    if (i) assert.equal(last(peer).error, 'full');
+  }
+});
+
 test('broadcast uses a separate binding with the existing origin and address gates', async () => {
   const s = await system();
   assert.equal((await worker.fetch(new Request(`https://rendezvous.abox.tools/broadcast/${s.code}`), s.env)).status, 426);

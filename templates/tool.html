@@ -177,6 +177,21 @@
   #phrases block of its own body.html, which is looked up first.
 -->
 <div id="frame-phrases" hidden aria-hidden="true">
+{% if tool.supports_relay %}
+  <span data-phrase="transport.note.direct">{{ ui.tool.transport_note_direct }}</span>
+  <span data-phrase="transport.note.relay">{{ ui.tool.transport_note_relay }}</span>
+  <span data-phrase="transport.route.direct">{{ ui.tool.transport_route_direct }}</span>
+  <span data-phrase="transport.route.relay">{{ ui.tool.transport_route_relay }}</span>
+  <span data-phrase="transport.route.unknown">{{ ui.tool.transport_route_unknown }}</span>
+  <span data-phrase="transport.invalid">{{ ui.tool.transport_invalid }}</span>
+  <span data-phrase="transport.unavailable">{{ ui.tool.transport_unavailable }}</span>
+  <span data-phrase="transport.limited">{{ ui.tool.transport_limited }}</span>
+  <span data-phrase="transport.forbidden">{{ ui.tool.transport_forbidden }}</span>
+  <span data-phrase="transport.timeout">{{ ui.tool.transport_timeout }}</span>
+  <span data-phrase="transport.mismatch">{{ ui.tool.transport_mismatch }}</span>
+  <span data-phrase="transport.stopped">{{ ui.tool.transport_stopped }}</span>
+  <span data-phrase="transport.failed">{{ ui.tool.transport_failed }}</span>
+{% endif %}
   <span data-phrase="card.waiting">{{ ui.tool.card_waiting }}</span>
   <span data-phrase="offline.ready">{% if tool.requires_pairing %}{{ ui.tool.pairing_cached }}{% else %}{{ ui.tool.offline_ready }}{% endif %}</span>
   <span data-phrase="offline.none">{{ ui.tool.offline_none }}</span>

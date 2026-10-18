@@ -6,7 +6,8 @@ processing uploads, no account.
 
 Local processing keeps your files on your device. Intentional sharing sends
 chosen content to another browser; those tools explain online introductions,
-manual offline pairing where offered, permissions and any optional relay. Everything below is written to
+permissions, Direct connections and optional Cloud relay. Pairing requires
+internet; saving a tool for offline use does not replace introductions. Everything below is written to
 keep those boundaries explicit.
 
 Most of these tools are also small enough to read in one sitting, and that is

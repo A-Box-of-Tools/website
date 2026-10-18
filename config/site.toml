@@ -768,6 +768,22 @@ guides_all_note = """
 #
 
 [ui.tool]
+transport_label = "Connection"
+transport_direct = "Direct"
+transport_relay = "Cloud relay"
+transport_note_direct = "Content travels directly between your devices. This choice never switches to a relay automatically."
+transport_note_relay = "Encrypted content passes through Cloudflare’s relay. Internet is required on both devices. Choose this when a direct connection cannot reach the other device."
+transport_route_direct = "Connected directly"
+transport_route_relay = "Connected through Cloud relay"
+transport_route_unknown = "Connection route is being checked."
+transport_invalid = "This connection choice is not supported. Open a new invitation from the host."
+transport_unavailable = "Cloud relay is unavailable. Try again later, or ask the host to start a new Direct session."
+transport_limited = "Cloud relay has reached its session limit. Ask the host to start a new session later."
+transport_forbidden = "Cloud relay is not allowed for this session. Open the host’s current invitation."
+transport_timeout = "Cloud relay did not respond in time. Try connecting again."
+transport_mismatch = "Your connection choice differs from the host’s. Open their current invitation and check its connection choice."
+transport_stopped = "The connection has ended."
+transport_failed = "Cloud relay could not connect these devices. Check internet access and your network’s WebRTC restrictions."
 pairing_network = "Keep internet access available on both devices for nearby discovery and pairing. For direct local connections, use a reachable shared Wi-Fi or Ethernet network."
 pairing_cached = "Page saved. Internet is still needed to pair or reconnect devices."
 pairing_hotspot_heading = "Use Wi-Fi or a phone hotspot"
@@ -1061,7 +1077,7 @@ licence = """
 summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Share a Browser Tab, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. These paired tools require internet introductions: their public rendezvous carries connection setup, status and discovery metadata, not shared content. The voice tools host directly in the browser, with internet pairing and direct WebRTC audio. Both voice tools offer nearby discovery using names chosen by hosts. Walkie-Talkie lists the listener invitations of channels offered nearby. Voice Oncall uses password-derived admission credentials and moderation status; callers need no display name, although older clients may still send one. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
+Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Share a Browser Tab, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. These paired tools require internet introductions: their public rendezvous carries connection setup, status and discovery metadata, not shared content. Direct is the default and never switches to a relay automatically. Share Text’s ordinary Direct mode uses public STUN; its Local network setting and the other four tools use host addresses without STUN or TURN. The host may explicitly choose Cloud relay before starting. Both peers then use Cloudflare TURN to forward encrypted content, while the relay sees addresses, timing and traffic volume and requires internet throughout. Approval, password and microphone controls still apply. The voice tools host in the browser and use encrypted WebRTC audio. Both voice tools offer nearby discovery using names chosen by hosts. Walkie-Talkie lists the listener invitations of channels offered nearby. Voice Oncall uses password-derived admission credentials and moderation status; callers need no display name, although older clients may still send one. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
 
 The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
 

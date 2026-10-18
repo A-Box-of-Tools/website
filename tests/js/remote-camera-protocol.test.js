@@ -24,7 +24,9 @@ test('invalid and oversized pairing input is refused', () => {
 test('viewer links carry the code in the fragment and discard old queries', () => {
   const url = new URL(viewerLink('https://example.test/remote-camera/?old=value#old', code));
   assert.equal(url.origin, 'https://example.test'); assert.equal(url.pathname, '/remote-camera/');
-  assert.equal(url.search, ''); assert.equal(parseCode(url.href), code);
+  assert.equal(url.search, '?transport=direct'); assert.equal(parseCode(url.href), code);
+  assert.equal(new URL(viewerLink(url.href, code, 'relay')).search, '?transport=relay');
+  assert.throws(() => viewerLink(url.href, code, 'automatic'), /transport.invalid/);
   assert.throws(() => viewerLink(url.href, 'bad name'), /code.invalid/);
 });
 

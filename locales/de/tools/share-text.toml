@@ -7,16 +7,16 @@
 #
 
 name = "Text & Dateien teilen"
-heading = "Text &amp; Dateien teilen <span class=\"h1-kw\">&mdash; direkt von Ihrem Browser in ihren, ohne Upload</span>"
-tagline = "Die Freigabe lebt in diesem offenen Tab. Leser holen sie verschlüsselt direkt aus Ihrem Browser, und mit dem Schließen des Tabs endet sie - auf keinem Server ist irgendetwas gespeichert."
+heading = "Text &amp; Dateien teilen <span class=\"h1-kw\">&mdash; eine verschlüsselte Freigabe, die mit Ihrem Tab endet</span>"
+tagline = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
 
-title = "Text &amp; Dateien zwischen Geräten teilen &mdash; direkt, verschlüsselt, nichts gespeichert"
-description = "Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen schicken. Ein aussprechbarer Link-Name, Live-Aktualisierung beim Tippen, Freigabe pro Leser - und niemals etwas auf einem Server. Kostenlos, ohne Anmeldung."
+title = "Text &amp; Dateien zwischen Geräten teilen &mdash; verschlüsselt, keine Inhalte auf Servern gespeichert"
+description = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
 og_title = "Eine Freigabe, die endet, sobald Sie den Tab schließen"
-og_description = "Text und Dateien wandern verschlüsselt direkt von Ihrem Browser in den des Lesers. Der Server stellt die beiden nur einander vor und sieht den Inhalt nie. Kein Speicher, kein Verlauf, kein Konto. Das Schließen des Tabs beendet die Quelle; die Leserseiten leeren ihre angezeigte Kopie, sobald die Unterbrechung erkannt wird."
-og_image_alt = "Text & Dateien teilen - direkt von Browser zu Browser, nichts gespeichert"
+og_description = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
+og_image_alt = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
 
-pledge = "Was Sie hier teilen, wandert über einen Ende-zu-Ende-verschlüsselten WebRTC-Kanal von Ihrem Browser in den jedes Lesers, und nirgendwohin sonst. Der eine beteiligte Server — in der <code>Content-Security-Policy</code> dieser Seite benannt, Quelltext im Repository — stellt die Browser einander vor und listet auffindbare lokale Link-Namen. Er hält weder geteilten Text noch Dateien; der Inhalt läuft nie durch ihn. Die Namen in der Suche bestehen nur, solange der Teilende verbunden ist. Es gibt keinen Inhaltsverlauf und kein Konto. Wenn Sie diesen Tab schließen, fällt die Quelle weg. Die Leserseiten leeren ihre angezeigte Kopie, sobald sie die Endnachricht empfangen oder einen Verbindungsfehler erkennen. Bereits kopierte oder heruntergeladene Inhalte bleiben den Lesern erhalten."
+pledge = "Text und Dateien sind zwischen Ihrem Browser und jedem Leser verschlüsselt. Direkt ist der Standard. Bei ausgewähltem Cloud-Relais werden verschlüsselte Pakete über Cloudflare weitergeleitet; das Relais kann den Inhalt nicht lesen. Der Vermittler überträgt nur Verbindungsaufbau und auffindbare Link-Namen. Wir speichern keine geteilten Inhalte auf einem Server. Schließen Sie den Tab, endet die Quelle; Leser leeren ihre Ansicht nach der Endnachricht oder einem erkannten Verbindungsfehler. Bereits gespeicherte Kopien bleiben ihnen erhalten."
 
 live_hint = "Öffnen Sie die DevTools und beobachten Sie beim Teilen den Tab „Netzwerk“. Beim Öffnen dieser Startseite erscheint ein WebSocket zum Vermittler für lokale Link-Namen. Das Starten einer Freigabe öffnet einen weiteren für den Verbindungsaufbau. Ein Leser nutzt einen Vermittlungssocket. Wie viel Sie auch tippen oder anhängen: Keiner davon trägt Text oder Dateien."
 
@@ -30,12 +30,9 @@ read_first = """
       selben Repository: ein Raum pro Link-Name, der nichts hält als die
       offenen Verbindungen. Die zusätzliche Suche hält nur veröffentlichte Link-Namen an offenen Verbindungen, niemals Text oder Dateien."""
 
-howto_heading = "So teilen Sie Text und Dateien, ohne sie irgendwohin hochzuladen"
+howto_heading = "So teilen Sie Text und Dateien zwischen Browsern"
 
-card = """
-            Text und Dateien, von Browser zu Browser über eine verschlüsselte
-            Direktverbindung. Nirgendwo gespeichert; die Freigabe endet, wenn
-            Sie den Tab schließen."""
+card = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
 
 [words]
 plural = "geteilte Texte und Dateien"
@@ -65,9 +62,8 @@ mark = "&#10003;"
 text = "Open Source"
 
 [[privacy]]
-title = "Der Inhalt geht zu Ihrem Leser, und nirgendwohin sonst."
-body = """
-Text und Dateien reisen über einen WebRTC-Datenkanal: eine direkte, DTLS-verschlüsselte Verbindung zwischen Ihrem Browser und dem jedes Lesers. In diesem Weg steht kein Server. Der Modus Lokales Netzwerk nutzt die eigenen Netzwerkadressen der Browser ohne öffentliche Adressermittlung oder Internet-Relais. Ein VPN oder die Netzwerkrichtlinien des Browsers können den Weg dieser Adressen beeinflussen; das ist keine Garantie für ein bestimmtes Gebäude. Im normalen Modus kann ein direkt nicht erreichbarer Leser auf seiner Seite ein verschlüsseltes Relais wählen, das denselben Chiffretext weiterreicht und nicht lesen kann."""
+title = "Sie wählen den Weg der verschlüsselten Verbindung."
+body = "Direkt überträgt Inhalte ohne Relais zwischen Browsern. Der normale Direktmodus nutzt öffentliche Adressermittlung; Lokales Netzwerk beschränkt ihn auf Host-Kandidaten. Das Cloud-Relais leitet verschlüsselte Pakete über Cloudflare TURN weiter und kann Geräte in verschiedenen Netzwerken verbinden. Der Host wählt den Modus vor dem Start; die Einladung übernimmt ihn, und Leser prüfen ihn vor dem Verbinden. Direkt wechselt niemals automatisch. Netzwerk- oder Browserbeschränkungen können beide Wege verhindern."
 
 [[privacy]]
 title = "Was der Vermittler ist, und alles, was er sieht."
@@ -91,14 +87,7 @@ body = "Wer einen Namen kennt oder errät, kann die Freigabe dahinter öffnen. A
 
 [[privacy]]
 title = "Eine Direktverbindung zeigt jeder Seite die Adresse der anderen."
-body = """
- Das ist es, was
-      Peer-to-Peer bedeutet, und der Leser erfährt es, bevor es passiert:
-      Das Öffnen eines Freigabe-Links fragt nur beim Vermittler nach, ob
-      jemand teilt; dann sagt die Seite klar, dass eine Direktverbindung
-      beiden Seiten die IP-Adresse der jeweils anderen zeigt, und wartet auf
-      einen Klick. Bis zu diesem Klick hat der Teilende nicht einmal
-      erfahren, dass der Leser existiert."""
+body = "Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie die Verbindungsart oben, bevor Sie ausdrücklich Verbinden wählen."
 
 [[privacy]]
 title = "Was Google lädt, und was es nicht bekommt."
@@ -164,7 +153,7 @@ body = """
 
 [[faq]]
 q = "Wird irgendetwas hochgeladen, irgendwohin?"
-a = "Kein Text und keine Datei werden hochgeladen. Sie reisen direkt über einen verschlüsselten WebRTC-Kanal von Ihrem Browser in den jedes Lesers. Der Server trägt die Vorstellung und veröffentlichte lokale Link-Namen, niemals den Inhalt. Räume und Sucheinträge enden mit ihren offenen Verbindungen. Cloudflares siebentägige Verbindungsprotokolle enthalten Metadaten, niemals eine Nutzlast."
+a = "Text und Dateien sind zwischen Ihrem Browser und jedem Leser verschlüsselt. Direkt ist der Standard. Bei ausgewähltem Cloud-Relais werden verschlüsselte Pakete über Cloudflare weitergeleitet; das Relais kann den Inhalt nicht lesen. Der Vermittler überträgt nur Verbindungsaufbau und auffindbare Link-Namen. Wir speichern keine geteilten Inhalte auf einem Server. Schließen Sie den Tab, endet die Quelle; Leser leeren ihre Ansicht nach der Endnachricht oder einem erkannten Verbindungsfehler. Bereits gespeicherte Kopien bleiben ihnen erhalten. Cloudflare bewahrt Metadaten der Vermittlungsverbindungen sieben Tage auf; unsere Anwendung protokolliert keine geteilten Inhalte."
 
 [[faq]]
 q = "Warum spricht dieses Werkzeug überhaupt mit einem Server, ausgerechnet auf dieser Website?"
@@ -203,20 +192,11 @@ a = """
 
 [[faq]]
 q = "Warum sieht der Leser meine IP-Adresse?"
-a = """
-        Weil die Verbindung wirklich direkt ist, und eine Direktverbindung
-        zwischen zwei Adressen besteht &mdash; jedes Ende erfährt
-        notwendigerweise das andere, wie bei einem Telefonat. Der Leser wird
-        gewarnt, bevor irgendeine Verbindung existiert, und verbindet sich
-        nur durch eigene Entscheidung; bis dahin haben Sie nicht einmal
-        erfahren, dass er den Link geöffnet hat. Wenn dieser Tausch für eine
-        bestimmte Freigabe falsch ist, ist ein Dienst, der über einen Server
-        weiterleitet, die Alternative &mdash; mit dem umgekehrten Tausch."""
+a = "Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie die Verbindungsart oben, bevor Sie ausdrücklich Verbinden wählen."
 
 [[faq]]
 q = "Wie groß dürfen die Dateien sein, und wie schnell ist es?"
-a = """
-Bis 200&nbsp;MB pro Datei, jeder Typ, und so schnell wie die langsamere der beiden Verbindungen. Eine funktionierende lokale Verbindung überträgt mit der Geschwindigkeit dieses Netzes; VPNs und Browser-Routing können den Weg beeinflussen. Leser holen jede Datei auf Anforderung, sodass eine große angehängte Datei erst übertragen wird, wenn jemand sie anfordert."""
+a = "Bis zu 200&nbsp;MB pro Datei. Die Geschwindigkeit hängt von beiden Geräten und dem Verbindungsweg ab. Direkt kann lokale Netzwerkgeschwindigkeit erreichen; das Cloud-Relais hängt zusätzlich von Internetbandbreite und Dienstlimits ab. Dateien werden nur auf Anforderung übertragen."
 
 [[faq]]
 q = "Funktioniert es offline?"
@@ -224,23 +204,7 @@ a = "Der Editor funktioniert nach dem Speichern der Seite ohne Internet: Sie kö
 
 [[faq]]
 q = "Was, wenn wir keine Verbindung bekommen?"
-a = """
-Das folgende Relais-Angebot gilt nur für den normalen Verbindungsmodus. Die meisten Browserpaare erreichen einander direkt, sobald sie
-        vorgestellt sind; eine Minderheit nicht, typischerweise wenn eine
-        Seite im Mobilfunknetz eines Anbieters mit geteilten Adressen oder
-        hinter einem strengen Firmennetz sitzt. Diese Seite wechselt nie
-        stillschweigend auf ein Relais &mdash; das würde ändern, was dieses
-        Werkzeug ist, ohne es zu sagen &mdash;, sondern sagt nach zwanzig
-        Sekunden klar, dass keine Direktverbindung zustande kam, und bietet
-        dem Leser eines an: ein von Cloudflare betriebenes Relais, das die
-        verschlüsselten Bytes zwischen den beiden Browsern weiterreicht und
-        sie nicht lesen kann, weil der Schlüssel die beiden Enden nie
-        verlässt. Der Leser wählt es ausdrücklich, auf seiner eigenen Seite,
-        nachdem ihm gesagt wurde, was es sieht &mdash; beide Adressen, wie
-        die Direktverbindung auch &mdash;, und gespeichert wird auch dort
-        nichts. Ihre Seite der Freigabe ändert sich nicht: Ihr Browser
-        sendet weiterhin an diesen einen Leser, so wie er es täte, säße der
-        Leser hinter einem VPN. Der Modus Lokales Netzwerk bietet nie ein Relais an. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen und ob die Geräteisolierung im Gastnetz, eine Firewall oder ein VPN die Verbindung blockiert."""
+a = "Prüfen Sie auf beiden Geräten den Internetzugang. Bei Lokales Netzwerk müssen Wi-Fi oder Ethernet Verbindungen zwischen Geräten erlauben. Scheitert Direkt, kann der Host stoppen, Cloud-Relais wählen, neu starten und die neue Einladung senden. Leser prüfen diese Auswahl vor dem Verbinden. Eine laufende Direktfreigabe wird nie automatisch umgestellt. Verwaltete Geräte oder restriktive Netzwerke können auch das Relais blockieren."
 
 [[faq]]
 q = "Ist das Markdown-Rendern sicher, wenn jeder alles teilen kann?"
@@ -281,8 +245,8 @@ a = "Ja. Wählen Sie vor dem Start Lokales Netzwerk — kein Internet-Relais, ve
 
 [[faq]]
 q = "Wie findet die Liste lokale Freigaben?"
-a = "Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden. Lokale Freigaben werden standardmäßig veröffentlicht; schalten Sie Auffindbar aus, um nur per Link zu teilen. Das Wählen eines Namens öffnet die Zustimmungsseite und stellt nie automatisch eine Verbindung her oder umgeht die private Freigabe. Die Suche hält nur Link-Namen, solange der Teilende verbunden ist, niemals Text, Dateinamen oder Dateiinhalte. Ist die Suche nicht verfügbar, funktioniert der Freigabe-Link weiterhin. In der Liste erscheinen nur Freigaben im Modus Lokales Netzwerk. Wählen Sie ihn vor dem Start; er ist standardmäßig aus."
+a = "Die Liste gruppiert Freigaben nach öffentlicher IPv4-Adresse oder IPv6-Subnetz und Seitenursprung, nicht nach physischer Nähe. Geteilte Gateways oder VPNs können Fremde einschließen oder Geräte verbergen. Internet ist nötig. Nur aktivierte lokale Direktfreigaben oder Cloud-Relais-Freigaben werden aufgeführt. Auffindbar ist standardmäßig ausgewählt, sofern verfügbar; deaktivieren Sie es für Freigaben nur per Link und lassen Sie Privat auf gemeinsamen Netzwerken an. Die Auswahl öffnet nur die Zustimmungsseite; sie verbindet nicht automatisch und umgeht keine Freigabe."
 
 [schema]
-description = "Text und Dateien über eine direkte, Ende-zu-Ende-verschlüsselte WebRTC-Verbindung von einem Browser in einen anderen teilen. Aussprechbare Link-Namen, Live-Aktualisierung beim Tippen, Markdown-Rendern und Freigabe pro Leser. Auf keinem Server wird etwas gespeichert; die Freigabe endet, wenn der Teilende den Tab schließt."
-features = ["Text und Dateien reisen von Browser zu Browser, Ende-zu-Ende-verschlüsselt, nie durch einen Server", "Die Freigabe lebt im offenen Tab: ihn zu schließen beendet sie und leert die Seiten der Leser", "Aussprechbare Link-Namen - brave-otter-42 -, änderbar, eine lebende Freigabe pro Name", "Standardmäßig privat: jeder Leser stellt sich vor, und der Teilende lässt ein oder weist ab", "Leser stimmen zu, bevor eine Verbindung existiert, klar gewarnt, dass IPs sichtbar werden", "Live-Aktualisierung: Änderungen erreichen verbundene Leser, während der Teilende tippt", "Markdown, auf beiden Seiten umschaltbar, gerendert von einem maskierenden eingebauten Renderer", "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei", "Der Entwurf bleibt nur im Browser des Teilenden - oder nirgends, als einmalig markiert", "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository", "Optionaler Modus für das lokale Netzwerk ohne öffentliche Adressermittlung oder Internet-Relais", "Auffindbare lokale Link-Namen für Browser mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz, weiterhin mit Zustimmung und privater Freigabe"]
+description = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."
+features = ["Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten.", "Die Freigabe lebt im offenen Tab: ihn zu schließen beendet sie und leert die Seiten der Leser", "Aussprechbare Link-Namen - brave-otter-42 -, änderbar, eine lebende Freigabe pro Name", "Standardmäßig privat: jeder Leser stellt sich vor, und der Teilende lässt ein oder weist ab", "Leser stimmen zu, bevor eine Verbindung existiert, klar gewarnt, dass IPs sichtbar werden", "Live-Aktualisierung: Änderungen erreichen verbundene Leser, während der Teilende tippt", "Markdown, auf beiden Seiten umschaltbar, gerendert von einem maskierenden eingebauten Renderer", "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei", "Ein quelloffener Vermittler führt Browser zusammen; optional leitet Cloudflare TURN verschlüsselte Pakete weiter.", "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository", "Optionaler Modus für das lokale Netzwerk ohne öffentliche Adressermittlung oder Internet-Relais", "Auffindbare lokale Link-Namen für Browser mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz, weiterhin mit Zustimmung und privater Freigabe"]

@@ -182,6 +182,69 @@ const offer = (host, sender, connection = CONNECTION) => ({
   type: 'offer', generation: state(host).generation, connection, to: state(sender).id, sdp: SDP,
 });
 
+test('relay pager keeps password admission, individual moderation and a pinned route after host loss', async () => {
+  const s = await system(), host = await s.open();
+  const hostAuth = { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, transport: 'relay' };
+  await s.send(host, hostAuth);
+  assert.equal(last(host).transport, 'relay');
+  const connect = async (passwordProof, transport = 'relay') => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'sender', key: key(0), passwordProof, transport });
+    return ws;
+  };
+  assert.equal(last(await connect(WRONG)).error, 'password');
+  assert.equal(last(await connect(PASSWORD, 'direct')).error, 'transport-mismatch');
+  const sender = await connect(PASSWORD);
+  assert.equal(last(sender).transport, 'relay');
+  const relay = { ...CANDIDATE, candidate: 'candidate:1 1 udp 1 198.51.100.5 12345 typ relay' };
+  const signal = { type: 'candidate', generation: state(host).generation, connection: CONNECTION, to: state(sender).id, candidate: relay };
+  await s.send(host, signal);
+  assert.deepEqual(last(sender).candidate, relay);
+  await s.send(host, { ...signal, candidate: CANDIDATE });
+  assert.equal(last(host).error, 'invalid');
+  await s.moderate(host, sender, true);
+  assert.equal(last(sender).muted, true);
+  s.room().instance.webSocketClose(host); host.close(1000, 'gone');
+  const wrongMode = await s.host(PASSWORD);
+  assert.equal(last(wrongMode).error, 'transport-mismatch');
+  const resumedHost = await s.open();
+  await s.send(resumedHost, hostAuth);
+  assert.equal(last(sender).muted, true);
+  await s.kick(resumedHost, sender);
+  assert.equal(last(sender).type, 'kicked');
+  assert.equal(last(await connect(PASSWORD)).type, 'kicked');
+});
+
+test('relay pager issuance requires a live verified relay participant and respects the service switch', async t => {
+  const s = await system();
+  s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+  let mints = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    mints++;
+    return new NativeResponse(JSON.stringify({ iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }] }));
+  });
+  const parked = await s.open();
+  await s.send(parked, { type: 'auth', role: 'sender', key: key(0), passwordProof: PASSWORD, transport: 'relay' });
+  await s.send(parked, { type: 'relay-request', id: 'parked' });
+  assert.equal(last(parked).error, 'forbidden');
+  assert.equal(mints, 0);
+  s.env.RELAY_TOOLS = 'walkie-talkie';
+  const disabled = await s.open();
+  const auth = { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, transport: 'relay' };
+  await s.send(disabled, auth);
+  assert.equal(last(disabled).error, 'relay-unavailable');
+  s.env.RELAY_TOOLS = 'voice-oncall';
+  const host = await s.open(); await s.send(host, auth);
+  await s.send(parked, { type: 'relay-request', id: 'admitted' });
+  assert.equal(last(parked).type, 'relay-credentials');
+  assert.equal(last(parked).iceServers[0].username, 'temporary');
+  assert.equal(mints, 1);
+  await s.send(host, { type: 'end', generation: state(host).generation });
+  await s.send(parked, { type: 'relay-request', id: 'ended' });
+  assert.equal(last(parked).error, 'forbidden');
+  assert.equal(mints, 1);
+});
+
 test('inbox uses separate routing, trusted scope, existing origin gates and no capability URL', async () => {
   const s = await system();
   assert.equal((await worker.fetch(new Request(`https://rendezvous.abox.tools/inbox/${s.code}`), s.env)).status, 426);
@@ -237,6 +300,67 @@ test('unverified senders wait without choosing room password or blocking the gen
   assert.equal(host.messages.filter((value) => value.type === 'join').length, 3);
   await s.send(intended, { type: 'check' });
   assert.equal(host.messages.filter((value) => value.type === 'join').length, 3);
+});
+
+test('inbox SDP direction follows the audio scope without relaxing one-way media', () => {
+  const scoped = (session, media) => SDP.replace('a=recvonly\r\n', media.map(value => `a=${value}\r\n`).join(''))
+    .replace('m=audio', `${session.map(value => `a=${value}\r\n`).join('')}m=audio`);
+  for (const transport of ['direct', 'relay']) {
+    for (const role of ['host', 'sender']) {
+      const expected = role === 'host' ? 'recvonly' : 'sendonly';
+      const wrong = role === 'host' ? 'sendonly' : 'recvonly';
+      const signal = { type: role === 'host' ? 'offer' : 'answer', generation: CONNECTION, connection: REPLACEMENT,
+        ...(role === 'host' ? { to: '1'.repeat(64) } : {}) };
+      const accepted = [
+        [[], [expected]], [[expected], []], [['sendrecv'], [expected]],
+        [['inactive'], [expected]], [[wrong], [expected]], [[expected], [expected]],
+      ];
+      for (const [session, media] of accepted) {
+        const sdp = scoped(session, media);
+        assert.equal(validInboxSignal({ ...signal, sdp }, role, transport)?.sdp, sdp,
+          `${transport} ${role} accepts session=${session} audio=${media}`);
+      }
+      const rejected = [
+        [[], []], [[], [wrong]], [['sendrecv'], []], [[wrong], []],
+        [[expected], ['sendrecv']], [[expected], ['inactive']], [[expected], [wrong]],
+        [[expected, expected], []], [[], [expected, expected]],
+        [['sendrecv', expected], [expected]], [[expected], [expected, 'sendrecv']],
+      ];
+      for (const [session, media] of rejected) {
+        assert.equal(validInboxSignal({ ...signal, sdp: scoped(session, media) }, role, transport), null,
+          `${transport} ${role} rejects session=${session} audio=${media}`);
+      }
+      for (const sdp of [
+        scoped(['sendrecv'], [expected]) + 'm=audio 9 UDP/TLS/RTP/SAVPF 111\r\n',
+        scoped(['sendrecv'], [expected]).replace('m=audio', 'm=video'),
+        scoped(['sendrecv'], [expected]).replace('UDP/TLS/RTP/SAVPF', 'RTP/AVP'),
+      ]) assert.equal(validInboxSignal({ ...signal, sdp }, role, transport), null);
+    }
+  }
+});
+
+test('inbox SDP direction overrides forward unchanged only between admitted participants', async () => {
+  for (const transport of ['direct', 'relay']) {
+    const s = await system(), host = await s.open(), sender = await s.open(), other = await s.open();
+    await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, transport });
+    await s.send(sender, { type: 'auth', role: 'sender', key: key(0), passwordProof: PASSWORD, transport });
+    await s.send(other, { type: 'auth', role: 'sender', key: key(1), passwordProof: PASSWORD, transport });
+    const valid = { ...offer(host, sender), sdp: SDP.replace('m=audio', 'a=sendrecv\r\nm=audio') };
+    await s.send(host, valid);
+    assert.deepEqual(last(sender), { ...valid, from: 'host' });
+    assert.equal(other.messages.some(value => value.type === 'offer'), false);
+    const answer = { type: 'answer', generation: state(host).generation, connection: CONNECTION,
+      sdp: valid.sdp.replace('a=recvonly', 'a=sendonly') };
+    await s.send(sender, answer);
+    assert.deepEqual(last(host), { ...answer, from: state(sender).id, to: 'host' });
+    const hostCount = host.messages.length;
+    await s.send(other, answer);
+    assert.deepEqual(last(other), { type: 'error', error: 'stale' });
+    assert.equal(host.messages.length, hostCount);
+    await s.send(sender, { ...answer, from: state(other).id });
+    assert.deepEqual(last(sender), { type: 'error', error: 'invalid' });
+    assert.equal(host.messages.length, hostCount);
+  }
 });
 
 test('signals admit only inbound audio and cannot claim another participant identity', async () => {

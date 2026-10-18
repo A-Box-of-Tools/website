@@ -1,4 +1,5 @@
 import { CODE_PATTERN, normalize } from './shared/room-names.js';
+import { transportUrl } from './shared/peer-transport.js';
 
 // The worker's tool namespace and this control handshake keep an identically
 // named text share from becoming a camera invitation.
@@ -22,12 +23,12 @@ export function parseCode(value) {
   return CODE_PATTERN.test(code) ? code : null;
 }
 
-export function viewerLink(href, code) {
+export function viewerLink(href, code, transport = 'direct') {
   if (!CODE_PATTERN.test(code)) throw new Error('code.invalid');
   const url = new URL(href);
   url.search = '';
   url.hash = code;
-  return url.href;
+  return transportUrl(url.href, transport);
 }
 
 export function controlMessage(text) {
