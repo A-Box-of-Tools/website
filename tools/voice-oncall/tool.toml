@@ -3,7 +3,7 @@
 slug = "voice-oncall"
 name = "Voice Oncall"
 heading = "Voice Oncall"
-tagline = "Open a pager, let nearby people connect, and hear their live voice. Set a password and mute or remove individual participants."
+tagline = "Open a pager and hear live voice from people who connect. Use Direct on your local network or choose Cloud relay over the internet, with a password and individual mute or remove controls."
 icon = "&#127897;"
 favicon = "&#127897;"
 glyph = "audio-waveform"
@@ -15,8 +15,8 @@ requires_pairing = true
 supports_relay = true
 lastmod = "2026-10-17"
 
-title = "Voice Oncall &mdash; Receive Live Voice from Nearby Devices"
-description = "Let up to ten people send live voice directly to one host browser. Nearby discovery, optional pager password, push to talk, mute and remove controls."
+title = "Voice Oncall &mdash; Receive Live Voice from Other Devices"
+description = "Let up to ten people send live voice to one host browser. Direct local connections or optional Cloud relay, with a pager password, push to talk and moderation."
 og_title = "Voice Oncall — One Listening Host"
 og_description = "A browser voice pager with nearby discovery, an optional password, and individual mute and remove controls."
 og_image_alt = "Voice Oncall - several speakers and one listening host"

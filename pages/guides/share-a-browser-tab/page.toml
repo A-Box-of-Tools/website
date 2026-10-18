@@ -6,17 +6,12 @@ nav = "Sharing a browser tab"
 group = "doing-the-job"
 tool = "share-tab"
 title = "How to Share a Browser Tab Live Without an Extension"
-description = "Show a browser tab to an approved viewer on your local network. Invite by link or nearby discovery, with internet for pairing. No remote control."
+description = "Show a browser tab to an approved viewer. Choose Direct on a reachable local network or an optional encrypted Cloud relay. No extension or remote control."
 heading = "How to share a browser tab live without an extension"
-lede = """
-    Show someone the website you are using while you keep control of it.
-    Your browser captures one chosen tab and sends its changing picture to
-    the viewer's browser over a reachable local network. Internet introduces
-    the browsers through an invitation link or nearby discovery. The viewer
-    watches your scrolling and navigation, without operating your computer."""
+lede = "Show someone the website you are using while you keep control of it. Your browser captures one chosen tab and sends its changing picture to the viewer. Direct uses a reachable local network; Cloud relay is an explicit option that forwards encrypted video through Cloudflare. Invite by link or nearby discovery and approve the viewer before sending video."
 updated = "15 October 2026"
 published = "2026-10-15"
 lastmod = "2026-10-15"
 og_title = "A live browser tab, with you in control"
-og_description = "Live tab video on a reachable local network. Invite by link or nearby discovery, with approval and no remote control."
+og_description = "Live tab video with approval and no remote control. Use Direct on a reachable local network or choose an encrypted Cloud relay."
 og_image_alt = "abox.tools - share a browser tab with an approved viewer"

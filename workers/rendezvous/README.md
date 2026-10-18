@@ -296,7 +296,7 @@ transport, host approval, password or microphone consent.
   does not read them.
 - A live matching Cloud relay host or viewer sends
   `{type: "relay-request", id}`. The Worker answers
-  `{type: "relay-credentials", id, iceServers, expiresAt}` or an `error` of
+  `{type: "relay-credentials", id, iceServers, issuedAt, expiresAt}` or an `error` of
   `forbidden`, `limited`, or `unavailable`. This request is consumed rather than
   forwarded. Authorization is checked again after the credential service
   returns, so a stopped or replaced session cannot receive late credentials.

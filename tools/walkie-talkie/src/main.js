@@ -111,7 +111,7 @@ function activateChannel() {
   let selectedChannel = null;
   let lastPublication = null;
   const transportControl = bindTransportControl({ onChange: () => {
-    transportControl.route('unknown');
+    transportControl.route(null);
     updateHostControls();
     updateListenerControls();
   } });
@@ -272,7 +272,8 @@ function activateChannel() {
   }
 
   function renderState(key, detail = {}) {
-    transportControl.route(detail.route || 'unknown');
+    const connecting = ['host-starting', 'host-reconnecting', 'listener-connecting', 'listener-reconnecting'].includes(key);
+    transportControl.route(detail.directReady ? detail.route || 'unknown' : connecting ? 'unknown' : null);
     const activeHostError = role === 'host' && key === 'error-full' && Boolean(detail.directReady);
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (role === 'host' && detail.captureState) {

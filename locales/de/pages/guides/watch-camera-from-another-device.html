@@ -1,5 +1,6 @@
 <section>
   <h2>Was Sie brauchen</h2>
+  <p>Direct ist voreingestellt. Die folgenden Hinweise zur direkten Erreichbarkeit gelten für diesen Modus. Soll die Verbindung über Cloud relay laufen, wählt der Host dies vor dem Start und teilt die neue Einladung. Die andere Person sieht die Wahl und bestätigt sie vor dem Verbinden. Direct wechselt niemals automatisch. Cloudflare leitet verschlüsselte Inhalte weiter und sieht Adressen, Zeitpunkte und Datenvolumen. Beide Geräte brauchen dabei durchgehend Internet. Zustimmung, Passwort und Mikrofonsteuerung gelten unverändert.</p>
   <p>Verwenden Sie zwei Geräte mit Browsern, die Kamerazugriff und WebRTC unterstützen. Beide brauchen Internet für die Kontaktvermittlung und ein Netz, in dem sie einander erreichen können. Ein Telefon im WLAN und ein Computer am Ethernet können funktionieren, wenn das Netz die Kommunikation erlaubt. Ein Smartphone-Hotspot kann ebenfalls funktionieren, wenn beide Geräte für die Vermittlung Internetzugang haben und der Hotspot die Kommunikation zwischen ihnen erlaubt.</p>
   <p>Öffnen Sie die vertrauenswürdige HTTPS-Adresse dieser Website. Eine gewöhnliche HTTP-Adresse mit einer LAN-IP kann keine Kamera anfordern. Fragt der Browser oder das Betriebssystem nach Zugriff auf das lokale Netz, erlauben Sie ihn für diese Sitzung.</p>
 </section>
@@ -12,7 +13,7 @@
     <li><strong>Ein Eingangsbereich innen.</strong> Behalten Sie die Haustür von einem anderen Raum aus im Blick. Sie sehen das Livebild während des Zuschauens; eine Aufzeichnung gibt es nicht. Unterstützte Browser können Sie über erkannte Bewegung oder Geräusche benachrichtigen, solange die Zuschauerseite laufen kann.</li>
     <li><strong>Heimwerkerprüfungen.</strong> Richten Sie das Telefon auf eine Rohrverbindung unter der Spüle, eine Schraube hinter einem Schrank oder einen Spalt zum Kabelziehen. Der Laptop zeigt Ihnen Stellen, an die Ihr Kopf nicht passt.</li>
   </ul>
-  <p>Am zuverlässigsten ist die Ansicht, wenn die Kameraseite sichtbar und das Telefon wach bleibt. Die Seite erhält eine funktionierende Verbindung auch im Hintergrund. Beim App-Wechsel oder Sperren des Bildschirms kann der Telefonbrowser die Aufnahme oder die ganze Seite jedoch pausieren. Das Werkzeug bietet Livevideo in einem erreichbaren Netz; für das Zuschauen von außerhalb gibt es kein Internet-Relay.</p>
+  <p>Am zuverlässigsten ist die Ansicht, wenn die Kameraseite sichtbar und das Telefon wach bleibt. Die Seite erhält eine funktionierende Verbindung auch im Hintergrund. Beim App-Wechsel oder Sperren des Bildschirms kann der Telefonbrowser die Aufnahme oder die ganze Seite jedoch pausieren. Direct setzt ein erreichbares lokales Netz voraus. Cloud-Relay ist eine ausdrücklich gewählte Alternative mit durchgehendem Internetzugang.</p>
 </section>
 <section>
   <h2>Eine Ansicht für eine Heimwerkerprüfung einrichten</h2>
@@ -63,7 +64,7 @@
 <section>
   <h2>Wenn die Geräte keine Verbindung herstellen</h2>
   <p>Derselbe WLAN-Name beweist keine Erreichbarkeit. Gastisolation, Firewalls, blockierte lokale Adresserkennung, lokale Netzwerkberechtigungen von Browser und Betriebssystem oder VPN-Routing können die direkte Verbindung verhindern. Stoppen Sie beide Seiten, prüfen Sie Berechtigungen und Netzwerk und versuchen Sie einen neuen Link.</p>
-  <p>Connection details zeigt die ausgewählten Kandidatentypen und die Zahl der vom Zuschauer dekodierten Frames. Das Werkzeug verwendet nur Host-Kandidaten, ohne STUN-Server, TURN-Relay oder Relay-Ausweichweg. VPN, öffentliche Schnittstellen oder Betriebssystemrouten können den Pfad verändern; Host-Kandidaten beweisen nicht, dass der Verkehr innerhalb eines Gebäudes bleibt.</p>
+  <p>Connection details zeigt die ausgewählten Kandidatentypen und die Zahl der vom Zuschauer dekodierten Frames. Direct verwendet nur Host-Kandidaten, ohne STUN-Server, TURN-Relay oder Relay-Ausweichweg. VPN, öffentliche Schnittstellen oder Betriebssystemrouten können den Pfad verändern; Host-Kandidaten beweisen nicht, dass der Verkehr innerhalb eines Gebäudes bleibt.</p>
 </section>
 <section>
   <h2>Was der Vermittlungsdienst sieht</h2>

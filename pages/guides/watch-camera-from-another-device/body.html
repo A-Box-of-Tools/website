@@ -1,18 +1,18 @@
 <section>
   <h2>What you need</h2>
-  <p>Use two devices with browsers that support camera access and WebRTC. Both need internet access for an introduction and a network that lets them reach each other. A phone on Wi-Fi and a computer on Ethernet can work when that network permits communication between them. A phone hotspot can also work when both devices have internet for pairing and the hotspot allows them to communicate with each other.</p>
+  <p>Use two devices with browsers that support camera access and WebRTC. Both need internet access for an introduction. The default Direct choice also needs a network that lets them reach each other. A phone on Wi-Fi and a computer on Ethernet can work when that network permits communication between them. A phone hotspot can also work when both devices have internet for pairing and the hotspot allows them to communicate with each other.</p>
   <p>Open this site's trusted HTTPS address. An ordinary HTTP address on a LAN IP cannot request a camera. If your browser or operating system asks for local-network access, allow it for this session.</p>
 </section>
 <section>
   <h2>Ways to reuse an old phone at home</h2>
-  <p>A spare phone can show you another room or a spot you cannot easily see. These uses need the same direct connection as any other camera session: both devices need internet for pairing and a home network that lets them reach each other.</p>
+  <p>A spare phone can show you another room or a spot you cannot easily see. For Direct, both devices need internet for pairing and a home network that lets them reach each other.</p>
   <ul>
     <li><strong>Nursery checks.</strong> Use a live view for an extra visual check from another room while you are at home. Place the phone on a stable support out of the child's reach. Optional audio and activity alerts can be missed or paused by the browser; this is not a safety monitor.</li>
     <li><strong>Pets in another room.</strong> See whether a dog has settled in its bed or what a cat is doing in its favourite corner while you work elsewhere in the house.</li>
     <li><strong>An indoor entryway.</strong> Keep an eye on the front door from another room. This is a live view while you watch, with no recording. Supported browsers can notify you about detected motion or sound while the viewer page can run.</li>
     <li><strong>DIY inspections.</strong> Aim a phone at a pipe joint under a sink, a dropped screw behind a cabinet, or a gap where you are routing cables. A laptop gives you a second pair of eyes where your head will not fit.</li>
   </ul>
-  <p>For the most reliable view, keep the camera page visible and the phone awake. The page keeps a healthy connection when hidden, but a phone browser may pause capture or suspend the page when you switch apps or lock the screen. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
+  <p>For the most reliable view, keep the camera page visible and the phone awake. The page keeps a healthy connection when hidden, but a phone browser may pause capture or suspend the page when you switch apps or lock the screen. Direct needs a reachable network. For devices that cannot connect directly, the host can choose Cloud relay before starting and share the new invitation. Cloudflare then forwards encrypted video and enabled audio; it sees addresses, timing and traffic volume. Both devices need internet throughout, and approval still applies.</p>
 </section>
 <section>
   <h2>Set up a DIY inspection view</h2>
@@ -26,7 +26,7 @@
 <section>
   <h2>Start on the camera device</h2>
   <ol>
-    <li>Choose a viewer link name or keep the random suggestion. Leave Require my approval on to approve viewers yourself, or turn it off for automatic viewing. Then choose Start camera. Your browser chooses the initial camera.</li>
+    <li>Choose a viewer link name or keep the random suggestion. Leave Require my approval on to approve viewers yourself, or turn it off for automatic viewing. Check the Connection choice, then choose Start camera. Your browser chooses the initial camera.</li>
     <li>Allow camera access. Audio is off by default; select Enable microphone before starting if you also want to request microphone access. Stop before changing this choice.</li>
   </ol>
   <p>Your local preview appears along with a viewer link, your chosen code and a QR code. No video or audio is sent until a viewer is accepted. Keep this page visible and the device awake for reliable capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only. If this browser exposes more than one camera, the Camera selector appears after permission. Choose another camera there to keep the same link and viewer connections; a brief pause may occur on devices that must release the old camera first.</p>
@@ -42,7 +42,7 @@
 </section>
 <section>
   <h2>Share with several viewers</h2>
-  <p>Up to eight accepted viewers can watch the same camera using separate direct connections. The source lists accepted viewers under Connected viewers. Disconnect this viewer ends only that person's view; Stop camera ends all views.</p>
+  <p>Up to eight accepted viewers can watch the same camera using separate encrypted connections with the host’s chosen route. The source lists accepted viewers under Connected viewers. Disconnect this viewer ends only that person's view; Stop camera ends all views.</p>
   <p>Choose Shared video bandwidth on the source to leave room for other Wi-Fi traffic. The default is 6 Mbps; the choices are 1, 2, 4, 6 and 10 Mbps. The video ceiling is divided between viewers, and each browser can reduce its rate further when congested. At 1 Mbps, new viewers are accepted only while fewer than four viewers are already accepted; higher choices use a limit of eight. Lowering the limit keeps existing viewers connected, even above the new admission threshold. Audio and network overhead are additional.</p>
   <p>The browser cannot measure your Wi-Fi's total shared capacity. If video slows down, lower the chosen ceiling or disconnect some viewers. Device performance can limit sharing too. A browser that cannot apply the video limits displays that on the source; its normal connection adaptation continues.</p>
 </section>
@@ -53,7 +53,7 @@
 </section>
 <section>
   <h2>Return after a screen lock or interruption</h2>
-  <p>When you return, the page tries to continue with the same viewer link and chosen camera. If it cannot resume, choose Resume camera; your browser may ask for camera permission again. A viewer stays approved while the original direct connection survives. If that direct connection was lost, the viewer must reconnect and receive fresh approval when Require my approval is on. Background capture on a locked phone is not guaranteed.</p>
+  <p>When you return, the page tries to continue with the same viewer link and chosen camera. If it cannot resume, choose Resume camera; your browser may ask for camera permission again. A viewer stays approved while the original direct connection survives. If that direct connection was lost, the viewer must reconnect and receive fresh approval when Require my approval is on. Cloud relay needs signaling for credential renewal; if it is lost, the viewer must reconnect and pass approval again when required. Background capture on a locked phone is not guaranteed.</p>
 </section>
 <section>
   <h2>Stop when finished</h2>
@@ -63,7 +63,7 @@
 <section>
   <h2>If the devices cannot connect</h2>
   <p>A shared Wi-Fi name does not establish reachability. Guest isolation, firewalls, blocked local address discovery, browser and OS local-network permissions, or VPN routing can block the direct connection. Stop on both devices, check permissions and the network, then try a fresh link.</p>
-  <p>Connection details reports the selected candidate types and the viewer's decoded frame count. The tool uses only host candidates, with no STUN server, TURN relay or relay fallback. A VPN, public interface or operating-system route can affect the path; host candidates do not prove that traffic stays inside a physical building.</p>
+  <p>Connection details reports the selected candidate types and the viewer's decoded frame count. Direct uses only host candidates, with no STUN or TURN and no automatic relay fallback. Cloud relay is a separate choice made before starting; the invitation carries it and the viewer sees it before connecting. A VPN, public interface or operating-system route can affect the path; host candidates do not prove that traffic stays inside a physical building.</p>
 </section>
 <section>
   <h2>What the introduction service sees</h2>

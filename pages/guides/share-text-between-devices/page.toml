@@ -17,21 +17,16 @@ nav = "Sharing between devices"
 group = "doing-the-job"
 tool = "share-text"
 
-title = "How to Share Text and Files Between Devices Without Uploading Them"
-description = "Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later."
+title = "How to Share Text and Files Without Storing Them on a Server"
+description = "Move text or files between browsers with Direct by default or an optional encrypted Cloud relay. No account or stored server copy; recipients can keep what they receive."
 
-heading = "How to share text and files between devices without uploading them"
-lede = """
-    The usual ways to move a note or a file to another machine all leave a
-    copy behind: in a sent folder, a chat history, or on a sharing site's
-    server behind a delete button you have to trust. There is a way to move
-    it that leaves nothing anywhere, because nothing is ever stored - and it
-    is also the only way that works with a name you can say across a room."""
+heading = "How to share text and files without storing them on a server"
+lede = "Move a note or file to another device without leaving a copy in an email inbox, chat history or sharing server. Direct connects the browsers by default. If they cannot reach each other, the host can start a new share with Cloud relay, which forwards encrypted content through Cloudflare. Recipients can still save their own copies."
 
 updated = "13 October 2026"
 published = "2026-08-26"
 lastmod = "2026-10-13"
 
 og_title = "Sharing between devices, without a server keeping a copy"
-og_description = "Text and files from one browser to another over a direct encrypted connection - a speakable link name, nothing stored anywhere, and a share that ends when the tab closes."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "Share text and files by a direct encrypted connection or an optional encrypted Cloud relay. No stored server copy; recipients can save what they receive."
+og_image_alt = "abox.tools - sharing text and files between browsers"

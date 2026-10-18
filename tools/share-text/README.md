@@ -2,9 +2,9 @@
 
 The share lives in the sharer's open tab. Readers who follow the link — or
 type its name — receive the text and files over a WebRTC data channel,
-directly from the sharer's browser, encrypted end to end; the share ends,
-completely and physically, when the tab closes, because the tab is the only
-place it ever existed.
+from the sharer's browser, encrypted end to end, either directly or through
+the explicitly chosen Cloud relay. Closing the tab ends live sharing;
+recipients keep content they already copied or downloaded.
 
 Two properties set this apart from every pastebin and file-drop, and every
 use case falls out of them: **the code word is speakable**, and **presence
@@ -40,9 +40,9 @@ to production. Both origins are named in `tool.toml`'s `[csp]`. They are
 subdomains of the site rather than the worker's
 own `workers.dev` name, because that whole domain is blocked inside mainland
 China and the site's is not.
-In ordinary mode, STUN (Cloudflare's and Google's public servers) helps the
-browsers discover their own addresses; ICE traffic — STUN and, when a reader
-chooses it, the TURN relay — is outside `connect-src`'s vocabulary, which is
+In ordinary Direct, STUN (Cloudflare's and Google's public servers) helps the
+browsers discover their own addresses. ICE traffic — STUN and the explicitly
+selected TURN relay — is outside `connect-src`'s vocabulary, which is
 why CSP alone can never fully describe a WebRTC page. Local network mode
 removes those public STUN servers and does not offer TURN, but still uses
 the public rendezvous for signalling.
@@ -50,7 +50,7 @@ the public rendezvous for signalling.
 ## Local network mode
 
 The sharer can select **Local network — no internet relay** before starting.
-The copied URL carries `?local=1#name`, so the reader knows the intended mode
+The copied URL carries `?local=1&transport=direct#name`, so the reader knows the intended mode
 before consenting; `#name` by itself keeps the ordinary mode. A reader and a
 sharer with different modes do not connect until the reader explicitly
 chooses to retry with the sharer's mode. There is no automatic downgrade.
@@ -59,9 +59,9 @@ Both peers construct their connection with no ICE servers, and allow only
 host candidates in both SDP descriptions and trickled candidate messages.
 Filtering both directions matters: removing our STUN configuration alone
 would still let a peer offer a relayed or server-reflexive address. Local
-mode also ignores any saved relay retry and never asks the worker for TURN
-credentials. The worker carries the mode in its existing opaque negotiation
-messages; it needs no new deployment.
+Direct never asks the worker for TURN credentials. The local flag remains
+part of the peer negotiation; the new Worker separately pins Direct or Cloud
+relay for both room sockets.
 The discovery directory described below does need the newer worker and its
 additional Durable Object binding; transport by link still works with an
 older worker.
@@ -239,36 +239,42 @@ from both physical devices are needed to investigate those boundaries.
   unguessable; a discoverable local share publishes it to its address group.
   Private admission is the access control in either case.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
-  all with one-off checked. Nothing else is ever stored.
+  all with one-off checked. Temporary reader consent and admission tokens may
+  also use session storage for a language switch; they are separate from the draft.
 
-## The relay, and why it is the reader's
+## Direct and Cloud relay
 
-In ordinary mode, direct first: the page dials with STUN alone, and a pair that cannot
-be joined that way — typically a phone on a carrier's address-sharing network
-against a laptop behind a strict router, which is the tool's headline use
-case at its unluckiest — fails after twenty seconds with an honest message.
-That used to be the end of it. It is now followed by an offer, on the
-reader's page only: redial through Cloudflare's TURN service. The reader
-sends `{relay: true}` on the rendezvous socket, the room mints a
-short-lived credential (`relayServers` in the worker, `TURN_KEY_ID` and
-`TURN_KEY_TOKEN` as secrets, eight-hour TTL, once per socket) and hands it
-back as `{relay, iceServers}`, and the page reloads with a flag in
-`sessionStorage` so the redial is a fresh socket and a fresh peer connection
-rather than a renegotiation of a failed one. The sharer's side does not
-change at all: its own candidates pair with the reader's relayed one, and
-ICE's peer-reflexive discovery handles the sharer being the one behind the
-strict NAT.
+The shared Connection control defaults to Direct. Ordinary Direct retains
+public STUN address discovery; Local network restricts it to host candidates.
+Both reject relay candidates, including candidates embedded in SDP. A failed
+Direct attempt never changes route automatically.
 
-Why the reader and not the sharer: the relay forwards DTLS ciphertext it holds
-no key to, so what it changes is the path, not what anyone can see — and the
-path on the reader's side is the reader's business, exactly as a VPN would be.
-The sharer's page still sends to that one reader and nowhere else. The relay
-is never chosen for anyone: the page says what it is and what it sees (both
-addresses, as the direct connection would have) and waits for a click, which
-is the same shape as the consent before the direct connection. A rendezvous
-with no key configured, or an older one that does not know the question,
-leaves the ask unanswered, and five seconds of silence becomes "no relay is
-available" — the page degrades to exactly what it was.
+The host may choose Cloud relay before publishing. The invitation carries
+`transport=relay`; the reader sees that choice before Connect. Both room sockets
+must match the host's pinned mode. Each participant requests short-lived TURN
+credentials through `RelayCredentials` before creating a peer, and configures
+`iceTransportPolicy: 'relay'`. Credential failure does not fall back to Direct.
+Host availability is checked before the share link and nearby listing appear.
+
+Cloudflare forwards encrypted text, files and control traffic without their
+decryption keys, but sees addresses, timing and traffic volume. Internet is
+required throughout. The rendezvous still carries only setup and credential
+messages. Private approval and reader consent remain separate gates.
+
+Credentials normally last one hour and renew before expiry. The worker returns
+issuance and expiry times; the browser derives a bounded lifetime from them and
+anchors it at its own request time so clock skew and minting latency cannot
+extend the credential. Host renewal asks the viewer offerer to restart ICE;
+viewer renewal does the same after updating its own configuration. Queues avoid
+overlapping answers and buffer early candidates. Stops and terminal refusals
+cancel pending requests and renewal timers.
+
+The worker enforces a tool allowlist, concurrent-peer limit, per-socket issuance
+budget and credential-session duration. These are not a byte quota or global
+spending cap. TURN configuration, limits and pricing are documented in
+[`workers/rendezvous/README.md`](../../workers/rendezvous/README.md#the-relays-two-secrets).
+Cached non-local text clients retain their old reader-only relay request only
+when their host did not pin a transport; the current page never uses it.
 
 ## Foreground continuity
 
@@ -279,6 +285,11 @@ or coming back online probes the existing connection first. A host with active
 sharing intent reconnects its introduction socket under the same code. A clean
 WebSocket close is not treated as a user Stop. A name now held by another host
 ends that recovery rather than silently selecting a different code.
+
+A relay peer is replaced when its signaling socket is lost, because renewed
+credentials need a current room identity. A short grace lets an explicit ended
+control arrive before recovery; Stop remains final. Direct peers can survive
+a signaling interruption while their encrypted channel remains healthy.
 
 A reader who already chose Connect can retry a lost transport in the same
 page, with at most three foreground attempts. The Local/ordinary mode and any

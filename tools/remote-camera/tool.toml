@@ -21,7 +21,7 @@ description = "Watch a camera with Direct or optional Cloud relay, multiple view
 og_title = "Watch another device's camera"
 og_description = "An encrypted camera view between browsers with Direct or optional Cloud relay, camera permission, optional viewer approval and camera switching."
 og_image_alt = "Remote Camera - watch a camera from another device"
-og_card = "A live camera, straight from one browser to another."
+og_card = "A live camera view, encrypted between your devices."
 csp_note = """
   Local builds and HTTPS abox-preview.pages.dev previews use the separate
   rendezvous-dev.abox.tools service; other page addresses use production.

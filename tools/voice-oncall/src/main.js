@@ -115,7 +115,7 @@ function activateOncall() {
   const savedHost = readStored(hostStorage);
   let hostIdentity = savedHost && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
   const transportControl = bindTransportControl({ onChange: () => {
-    transportControl.route('unknown');
+    transportControl.route(null);
     updateHostPassword();
   } });
   transportControl.set(selectedCode ? selectedTransport || 'direct' : 'direct');
@@ -368,7 +368,8 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
-    transportControl.route(detail.route || 'unknown');
+    const connecting = ['host-starting', 'host-reconnecting', 'sender-connecting', 'sender-reconnecting'].includes(key);
+    transportControl.route(detail.directReady ? detail.route || 'unknown' : connecting ? 'unknown' : null);
     if (key.startsWith('transport.')) {
       resumeRoleOnReturn = null;
       senderActive = senderPaused = hostActive = false;

@@ -37,6 +37,10 @@
   a full run dirties every og.png whether or not the wording changed. If you
   changed one tool, name it. Use -Only site to redraw only the root card.
 
+.PARAMETER CardsOnly
+  Draw cards without rewriting app icons. Combine with -Only when only a
+  tool's card wording has changed.
+
 .EXAMPLE
   .\og-image.ps1
 
@@ -44,15 +48,20 @@
   .\og-image.ps1 -Only resize-image
 
 .EXAMPLE
+  .\og-image.ps1 -Only share-text -CardsOnly
+
+.EXAMPLE
   .\og-image.ps1 -Icons
 #>
 
 param(
   [string]$Only,
-  [switch]$Icons
+  [switch]$Icons,
+  [switch]$CardsOnly
 )
 
 $ErrorActionPreference = 'Stop'
+if ($Icons -and $CardsOnly) { throw '-Icons and -CardsOnly cannot be combined.' }
 Add-Type -AssemblyName System.Drawing
 
 # The same line on every card, so it is written once.
@@ -156,38 +165,49 @@ function Get-HtmlImage {
     [Parameter(Mandatory)][int]$Size
   )
 
-  $htmlPath = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.html'
-  $pngPath  = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.png'
-  Set-Content -Path $htmlPath -Value $Html -Encoding utf8
+  $tempRoot = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
+  $captureName = 'abox-og-' + [guid]::NewGuid().ToString('N')
+  $capturePath = [System.IO.Path]::GetFullPath((Join-Path $tempRoot $captureName))
+  $htmlPath = Join-Path $capturePath 'mark.html'
+  $pngPath = Join-Path $capturePath 'mark.png'
+  $profilePath = Join-Path $capturePath 'profile'
+  $errorPath = Join-Path $capturePath 'browser-error.log'
+  New-Item -ItemType Directory -Path $capturePath | Out-Null
+  try {
+    Set-Content -LiteralPath $htmlPath -Value $Html -Encoding utf8
 
-  # --default-background-color=00000000 is what keeps the ground transparent;
-  # without it the shot comes back on opaque white and the mark cannot be laid
-  # over a card.
-  $args = @(
-    '--headless', '--disable-gpu', '--default-background-color=00000000',
-    "--screenshot=$pngPath", "--window-size=$Size,$Size",
-    ('file:///' + $htmlPath.Replace('\', '/'))
-  )
-  # Edge writes a progress line to stderr even on success, and with
-  # $ErrorActionPreference = 'Stop' PowerShell turns that into a terminating
-  # error - the screenshot is already on disk by the time it throws. Only the
-  # preference is relaxed, and only around this one call.
-  $wasStopping = $ErrorActionPreference
-  $ErrorActionPreference = 'Continue'
-  & (Find-Chromium) $args | Out-Null
-  $ErrorActionPreference = $wasStopping
+    # A private profile prevents Edge from handing this command to an open
+    # browser and returning without a screenshot. Unique files also prevent a
+    # failed capture from silently reusing an older mark.
+    $browserArgs = @(
+      '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
+      '--default-background-color=00000000',
+      ('"--user-data-dir=' + $profilePath + '"'),
+      ('"--screenshot=' + $pngPath + '"'), "--window-size=$Size,$Size",
+      ('"file:///' + $htmlPath.Replace('\', '/') + '"')
+    )
+    $captureProcess = Start-Process -FilePath (Find-Chromium) -ArgumentList $browserArgs `
+      -WindowStyle Hidden -PassThru -Wait -RedirectStandardError $errorPath
+    if ($captureProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $pngPath)) {
+      if (Test-Path -LiteralPath $errorPath) {
+        Get-Content -LiteralPath $errorPath -Tail 8 | Write-Warning
+      }
+      throw "The headless browser did not produce the requested screenshot (exit $($captureProcess.ExitCode))."
+    }
 
-  if (-not (Test-Path $pngPath)) { throw "The headless browser wrote no screenshot to $pngPath." }
-
-  # Copied into a new bitmap so the file on disk can be deleted straight away -
-  # Image::FromFile keeps the file locked for as long as the image lives.
-  $shot = [System.Drawing.Image]::FromFile($pngPath)
-  $image = New-Object System.Drawing.Bitmap $shot
-  $shot.Dispose()
-
-  Remove-Item $htmlPath, $pngPath -Force
-
-  return $image
+    # Copying releases the file lock before the task's temporary files go away.
+    $shot = [System.Drawing.Image]::FromFile($pngPath)
+    try { return New-Object System.Drawing.Bitmap $shot }
+    finally { $shot.Dispose() }
+  } finally {
+    # Never let cleanup expand beyond the unique directory created above.
+    $expected = Join-Path $tempRoot $captureName
+    if ($capturePath -ne [System.IO.Path]::GetFullPath($expected) -or
+        [System.IO.Path]::GetFileName($capturePath) -notmatch '^abox-og-[a-f0-9]{32}$') {
+      throw 'The screenshot temporary directory failed its cleanup boundary check.'
+    }
+    Remove-Item -LiteralPath $capturePath -Recurse -Force
+  }
 }
 
 <#
@@ -452,7 +472,7 @@ function New-ToolIconPng {
 # and the maskable copy is the 512 again with the margin Android's crop needs.
 # The insets are about a tenth of the size for the first three and 22% for the
 # last, which is what keeps the mark inside the circle a launcher may cut it to.
-if (-not $Only) {
+if (-not $Only -and -not $CardsOnly) {
   New-IconPng -Path 'shared\icon-180.png'          -Size 180 -Inset 18
   New-IconPng -Path 'shared\icon-192.png'          -Size 192 -Inset 19
   New-IconPng -Path 'shared\icon-512.png'          -Size 512 -Inset 51
@@ -494,8 +514,8 @@ foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filte
     }
   }
 
-  $cardFooter = if ($slug -in @('share-text', 'remote-camera')) {
-    'Peer connection | No accounts | Open source'
+  $cardFooter = if ($slug -in @('share-text', 'remote-camera', 'share-tab', 'walkie-talkie', 'voice-oncall')) {
+    'Encrypted sharing | No accounts | Open source'
   } else { $footer }
 
   if (-not $Icons) {
@@ -504,6 +524,8 @@ foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filte
       -Subtitle $fields['og_card'] `
       -Footer $cardFooter
   }
+
+  if ($CardsOnly) { continue }
 
   # The em box at 0.82 of the tile for the plain icon and 0.55 for the maskable
   # one. An emoji sits inside its em box with padding of its own, so the drawn

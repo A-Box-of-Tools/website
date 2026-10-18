@@ -26,12 +26,53 @@ The visual order does not alter when discovery is permitted: Share Tab still
 requires Find nearby tabs; the other
 four tools retain their automatic directory browsing. Host discoverability
 defaults and approval rules remain tool-specific and are stated on each page.
-All five tools use internet introductions for pairing. The user chooses a
-nearby entry, invitation link or code rather than a connection method. A saved
+All five tools use internet introductions for pairing. Direct is the default;
+Cloud relay is an explicit alternative chosen before hosting and carried by
+the invitation. The joining browser displays a relay choice before its explicit
+Connect, Join or Request action. Direct Walkie-Talkie invitations retain their
+existing automatic receive-only join. Changing a live route requires ending that
+session and creating a new invitation. A saved
 page cache does not replace the introduction service. A healthy direct session
 may outlive a brief internet interruption, but new peers and recovery still
 depend on the service. Local reachability and the tools' existing approval,
 password and media boundaries remain separate requirements.
+
+## Connection choices
+
+Tools declare `supports_relay = true`, include `partials/paired-transport.html`
+and ship `peer-transport` and `peer-transport-ui`. The shared control must remain
+visible on an invitation page, be locked while a session or recoverable identity
+is active, and must not trigger pairing or capture from a change event.
+`bindTransportControl()` exposes `value`, `set`, `lock`, `route` and `destroy`.
+Invalid invitation modes fail closed; missing modes select Direct for legacy
+links. New links and room URLs pin `transport=direct|relay`. Discovery metadata
+comes from the authoritative host mode rather than a viewer's preference.
+
+`peer-transport.js` owns mode parsing, URL encoding, strict candidate and SDP
+filtering, selected-route statistics and `RelayCredentials`. Direct uses
+host-only candidates in the camera, tab and voice tools. Share Text also offers
+ordinary Direct with public STUN discovery, while its Local network setting
+restricts Direct to host candidates. No Direct configuration accepts relay
+candidates or falls back automatically.
+
+Cloud relay requests short-lived TURN credentials over the admitted room socket,
+uses `iceTransportPolicy: 'relay'` and accepts relay candidates only. No credential
+is embedded in a page or invitation. Adapters must prepare credentials before
+peer creation, continue processing credential replies while awaiting offers,
+and release pending capture on terminal preparation failure. Renewal updates
+peer configuration and queues a controlled ICE restart without overlapping
+an unanswered offer. A viewer’s renewal asks its host offerer for a restart.
+Voice replaces peers through its authenticated generation protocol while
+reusing capture and retaining mute and transmission choices. Stop retires pending requests and renewal timers.
+Relay peers cannot be retained indefinitely after their room identity is lost:
+recovery creates fresh peers and preserves each tool's admission rules.
+
+Route labels come from the selected candidate pair, never merely from the
+selected option. An unavailable route remains unverified. The relay forwards
+encrypted content but sees connection addresses, timing and traffic volume;
+it requires internet throughout. A managed device or firewall can still block
+it. Neither a relay choice nor foreground recovery grants capture, approval,
+password admission or microphone transmission.
 
 ## Shared pairing primitives
 
@@ -117,17 +158,18 @@ camera and voice keep their established retry schedules and readiness rules.
 
 | Tool | Pairing and recovery decisions |
 |---|---|
-| Share Text & Files | Explicit Connect, Local/direct/relay selection, private admission tokens, reader mode and partial-file retirement. Reader recovery is ready after the private/text introduction; socket open alone does not reset its retry budget. |
-| Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, local ICE and explicit Talk. |
+| Share Text & Files | Explicit Connect, pinned Direct/Cloud relay with Local network within Direct, private admission tokens, reader mode and partial-file retirement. Reader recovery is ready after the private/text introduction; socket open alone does not reset its retry budget. |
+| Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, pinned Direct/Cloud relay and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
-| Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code-only nearby discovery, host-only ICE without STUN or TURN, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
+| Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code/mode discovery, Direct or explicit Cloud relay, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
 approval requirement or restore a session the user ended. The socket and
 lifecycle parts never request devices, save session intent, or choose a
 server. `peer-endpoint.js` makes only the fixed environment choice described
-above. These primitives require no worker protocol changes.
+above. The socket and lifecycle primitives require no worker protocol changes; the
+Cloud relay credential and mode policy requires the updated Worker.
 
 ## Connection reports
 
