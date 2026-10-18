@@ -111,6 +111,9 @@ test('tab relay waits for credentials and retains approval before media', async 
   assert.deepEqual(peer.config.iceServers, RELAY_SERVERS);
   assert.equal(peer.transceivers.length, 0);
   signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  signal(f.sockets[0], 'v:1', { restart: true }); await settle();
+  assert.deepEqual(peer.offerOptions.at(-1), { iceRestart: true }, 'viewer renewal asks the host to restart');
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
   signal(f.sockets[0], 'v:1', { candidate: { candidate: HOST_CANDIDATE } });
   const relay = { candidate: OTHER_CANDIDATES[1] };
   signal(f.sockets[0], 'v:1', { candidate: relay }); await settle();
@@ -131,14 +134,19 @@ test('tab relay waits for credentials and retains approval before media', async 
 });
 
 test('tab relay viewer buffers ready until credentials and mismatch cannot create a peer', async (t) => {
-  for (const outcome of ['ready', 'mismatch']) {
+  for (const outcome of ['ready', 'mismatch', 'disabled']) {
     const f = fixture(t);
     const opening = f.session.connect(CODE, 'Viewer', { transport: 'relay' });
-    const rejected = outcome === 'mismatch' ? assert.rejects(opening, /transport.mismatch/) : null;
+    const rejected = outcome !== 'ready' ? assert.rejects(opening, outcome === 'mismatch' ? /transport.mismatch/ : /transport.unavailable/) : null;
     await settle();
     assert.equal(f.peers.length, 0);
-    if (outcome === 'mismatch') { f.sockets[0].drop(4412); await rejected; }
-    else { relayReply(f.sockets[0]); await opening; assert.equal(f.peers[0].config.iceTransportPolicy, 'relay'); }
+    if (outcome !== 'ready') { f.sockets[0].drop(outcome === 'mismatch' ? 4412 : 4413); await rejected; }
+    else {
+      relayReply(f.sockets[0]); await opening;
+      assert.equal(f.peers[0].config.iceTransportPolicy, 'relay');
+      f.session.renewRelay(RELAY_SERVERS);
+      assert.ok(f.sockets[0].sent.some((frame) => frame.data?.restart === true));
+    }
   }
 });
 

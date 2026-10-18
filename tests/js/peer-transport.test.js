@@ -90,6 +90,27 @@ test('concurrent preparations share one request and a valid response is privatel
   assert.deepEqual(await f.credentials.prepare(), TURN); assert.equal(f.requests.length, 1);
 });
 
+test('server timestamps tolerate clock skew without adding response latency to the credential life', async (t) => {
+  for (const issuedAt of [100, 9000000000000]) {
+    const f = fixture(); t.after(() => f.credentials.close());
+    const pending = f.credentials.prepare();
+    await f.tick(4000);
+    f.reply({ issuedAt, expiresAt: issuedAt + 3600000 });
+    assert.deepEqual(await pending, TURN);
+    assert.equal(f.credentials.cached.expiresAt, 4600000);
+  }
+});
+
+test('server timestamp pairs cannot smuggle an excessive or exhausted lifetime', async () => {
+  for (const fields of [{ issuedAt: '100', expiresAt: 3600100 },
+    { issuedAt: 100, expiresAt: 3600101 }, { issuedAt: 100, expiresAt: 60100 },
+    { issuedAt: 100, expiresAt: 99 }]) {
+    const f = fixture(), pending = f.credentials.prepare();
+    const rejected = assert.rejects(pending, /transport.invalid/);
+    f.reply(fields); await rejected; f.credentials.close();
+  }
+});
+
 test('credentials renew before expiry and a failed renewal is surfaced without fallback', async (t) => {
   const f = fixture(); t.after(() => f.credentials.close());
   const initial = f.credentials.prepare(); f.reply(); await initial;
@@ -106,6 +127,14 @@ test('Stop rejects pending credentials and a late response cannot rearm renewal'
   f.credentials.close(); f.reply(); await rejected;
   assert.equal(f.timers.size, 0); assert.equal(f.credentials.cached, null);
   await assert.rejects(f.credentials.prepare(), /transport.stopped/);
+});
+
+test('a browser configuration exception during renewal becomes a localized transport failure', async (t) => {
+  const f = fixture(); t.after(() => f.credentials.close());
+  f.credentials.onRenew = () => { throw new Error('private browser detail'); };
+  const pending = f.credentials.prepare(); f.reply(); await pending;
+  await f.tick(3300000); f.reply(); await Promise.resolve();
+  assert.deepEqual(f.errors, ['transport.failed']);
 });
 
 test('invalid expiries, unavailable credentials and request timeout fail closed', async () => {

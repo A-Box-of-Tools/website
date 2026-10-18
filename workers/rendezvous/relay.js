@@ -97,6 +97,6 @@ export async function answerRelayRequest(ws, frame, {
   catch { reply({ error: 'limited' }); return true; }
   const iceServers = await relayServers(env, fetchImpl, ttl);
   if (!allowed() || ws.deserializeAttachment()?.relayRequestedAt !== issuedAt) return true;
-  reply(iceServers ? { iceServers, expiresAt: issuedAt + ttl * 1000 } : { error: 'unavailable' });
+  reply(iceServers ? { iceServers, issuedAt, expiresAt: issuedAt + ttl * 1000 } : { error: 'unavailable' });
   return true;
 }

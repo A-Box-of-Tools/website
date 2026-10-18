@@ -234,7 +234,7 @@ export class CameraSession {
         close: (event) => {
           this.openingTrace?.socket('closed', event.code);
           for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
-          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch' };
+          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
           fail(reasons[event.code] ?? 'connection.server-failed', 'socket-closed');
         },
         message: (event) => {
@@ -407,6 +407,11 @@ export class CameraSession {
     }
     const entry = this.peers.get(id);
     if (!entry || entry.signalingDetached) return;
+    if (data.restart === true && this.role === 'camera' && this.transport === 'relay') {
+      entry.restartPending = true;
+      this.queue(entry, () => this.offer(entry));
+      return;
+    }
     this.queue(entry, async () => {
       let operation = 'signaling', adding = null;
       try {
@@ -577,7 +582,7 @@ export class CameraSession {
       if (this.role === 'camera' && !entry.signalingDetached) {
         entry.restartPending = true;
         this.queue(entry, () => this.offer(entry));
-      }
+      } else if (this.role === 'viewer') this.signal(entry, { restart: true });
     }
   }
 

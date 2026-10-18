@@ -50,6 +50,8 @@ test('credential limits survive helper recreation and preserve the room attachme
 test('renewed credentials cannot outlive the bounded session deadline', async () => {
   const f = fixture({ RELAY_MAX_SESSION_SECONDS: '4000' });
   await f.request(); assert.equal(JSON.parse(f.calls[0].init.body).ttl, 3600);
+  assert.equal(f.sent.at(-1).issuedAt, 1000000);
+  assert.equal(f.sent.at(-1).expiresAt - f.sent.at(-1).issuedAt, 3600000);
   f.advance(3300000); await f.request('relay-2');
   assert.equal(JSON.parse(f.calls[1].init.body).ttl, 700);
   assert.equal(f.sent.at(-1).expiresAt, 5000000);

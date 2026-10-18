@@ -124,6 +124,9 @@ test('camera relay waits for credentials, admits only relay candidates and prese
   assert.deepEqual(peer.config.iceServers, RELAY_SERVERS);
   assert.equal(peer.transceivers.length, 0);
   signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  signal(f.sockets[0], 'v:1', { restart: true }); await settle();
+  assert.deepEqual(peer.offerOptions.at(-1), { iceRestart: true }, 'viewer renewal asks the host to restart');
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
   signal(f.sockets[0], 'v:1', { candidate: { candidate: 'candidate:lan 1 udp 2122260223 device.local 5000 typ host' } });
   const relay = { candidate: 'candidate:relay 1 udp 1686052607 198.51.100.2 5002 typ relay' };
   signal(f.sockets[0], 'v:1', { candidate: relay }); await settle();
@@ -176,6 +179,21 @@ test('camera relay viewer waits for credentials and mismatched host route fails 
   await rejected;
   assert.equal(f.session.role, null);
   assert.equal(f.peers.length, 0);
+});
+
+test('camera relay viewer renewal requests a fresh host offer and disabled relay releases capture', async (t) => {
+  const f = fixture(t);
+  const opening = f.session.connect(CODE, 'Viewer', { transport: 'relay' });
+  await settle(); relayReply(f.sockets[0]); await opening;
+  f.sockets[0].receive({ type: 'ready' }); await settle();
+  f.session.renewRelay(RELAY_SERVERS);
+  assert.ok(f.sockets[0].sent.some((frame) => frame.data?.restart === true));
+  const host = fixture(t), stream = sourceStream();
+  const starting = host.session.startHost(stream, CODE, { transport: 'relay' });
+  const rejected = assert.rejects(starting, /transport.unavailable/);
+  await settle(); host.sockets[0].drop(4413); await rejected;
+  assert.equal(stream.video.readyState, 'ended');
+  assert.equal(host.session.reconnecting, false);
 });
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
 async function requestViewer(f, id, note = 'My viewer', hello = {}) {

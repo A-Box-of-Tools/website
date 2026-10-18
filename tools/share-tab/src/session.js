@@ -134,7 +134,7 @@ export class TabSession {
           }).catch((error) => { if (current()) fail(error.message); });
         },
         error: () => fail('connection.server-failed'),
-        close: (event) => fail(({ 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch' })[event.code] ?? 'connection.server-failed'),
+        close: (event) => fail(({ 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' })[event.code] ?? 'connection.server-failed'),
         message: (event) => {
           if (event.data === 'pong') { confirmed = true; if (this.role === 'host') finish(); return; }
           if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
@@ -198,6 +198,11 @@ export class TabSession {
     if (data.refused === 'protocol' && this.role === 'viewer') { this.stop('connection.invalid'); return; }
     const entry = this.peers.get(id);
     if (!entry) return;
+    if (data.restart === true && this.role === 'host' && this.transport === 'relay') {
+      entry.restartPending = true;
+      this.queue(entry, () => this.offer(entry));
+      return;
+    }
     this.queue(entry, () => this.receiveSignal(entry, data));
   }
 
@@ -305,7 +310,7 @@ export class TabSession {
       if (this.role === 'host') {
         entry.restartPending = true;
         this.queue(entry, () => this.offer(entry));
-      }
+      } else if (this.role === 'viewer') this.signal(entry, { restart: true });
     }
   }
 

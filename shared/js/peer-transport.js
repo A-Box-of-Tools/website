@@ -116,7 +116,7 @@ export class RelayCredentials {
     const id = `relay-${++requestSerial}`;
     let resolve, reject;
     const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
-    const pending = { id, promise, resolve, reject, timer: null };
+    const pending = { id, promise, resolve, reject, timer: null, requestedAt: this.now() };
     this.pending = pending;
     pending.timer = this.clock.setTimeout(() => this.finish(pending, new Error('transport.timeout')), 10000);
     try {
@@ -144,12 +144,22 @@ export class RelayCredentials {
       return true;
     }
     const iceServers = relayIceServers(frame.iceServers), now = this.now();
-    if (!iceServers || !Number.isSafeInteger(frame.expiresAt) || frame.expiresAt <= now + 60000
-        || frame.expiresAt > now + 2 * 60 * 60 * 1000) {
+    let expiresAt = frame.expiresAt;
+    if (frame.issuedAt !== undefined) {
+      const lifetime = frame.expiresAt - frame.issuedAt;
+      // The phone's wall clock need not agree with the Worker. Anchor its
+      // bounded lifetime at the local request time, not response time, so
+      // minting and network latency can only shorten the usable credential.
+      if (!Number.isSafeInteger(frame.issuedAt) || !Number.isSafeInteger(frame.expiresAt)
+          || !Number.isSafeInteger(lifetime) || lifetime <= 60000 || lifetime > 60 * 60 * 1000) expiresAt = null;
+      else expiresAt = pending.requestedAt + lifetime;
+    }
+    if (!iceServers || !Number.isSafeInteger(expiresAt) || expiresAt <= now + 60000
+        || expiresAt > now + 2 * 60 * 60 * 1000) {
       this.finish(pending, new Error('transport.invalid'));
       return true;
     }
-    this.cached = { iceServers, expiresAt: frame.expiresAt };
+    this.cached = { iceServers, expiresAt };
     this.finish(pending, null, iceServers);
     this.scheduleRenewal();
     return true;
@@ -168,7 +178,9 @@ export class RelayCredentials {
       } catch (error) {
         if (!this.live()) return;
         this.cached = null;
-        this.onError(error);
+        const key = /^transport\.(invalid|unavailable|limited|forbidden|timeout|stopped|failed)$/.test(error?.message)
+          ? error.message : 'transport.failed';
+        this.onError(new Error(key));
       }
     }, Math.max(1000, expected.expiresAt - this.now() - Math.min(5 * 60 * 1000, (expected.expiresAt - this.now()) / 10)));
   }
