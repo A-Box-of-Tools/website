@@ -5,6 +5,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { shareConfiguration, shareCandidate, shareDescription } from '../../tools/share-text/src/transport.js';
 
 import {
   allowedCandidate, isLocalLink, localDescription, makeShareUrl, rtcConfig,
@@ -13,6 +14,37 @@ import {
 const host = 'candidate:1 1 udp 2122260223 192.168.1.7 50000 typ host generation 0';
 const relay = 'candidate:2 1 udp 1677734911 203.0.113.7 50001 typ relay raddr 192.168.1.7 rport 50000';
 const mapped = 'candidate:3 1 udp 1686052607 203.0.113.8 50002 typ srflx raddr 192.168.1.7 rport 50000';
+
+test('ordinary Direct keeps STUN but rejects relay candidates from an untrusted reader', () => {
+  const turn = [{ urls: 'turn:relay.example:3478', username: 'test', credential: 'test' }];
+  assert.equal(shareConfiguration('direct', false, turn).iceServers.length, 1);
+  assert.equal(shareConfiguration('direct', false, turn).iceServers[0].urls.every(url => url.startsWith('stun:')), true);
+  assert.equal(shareCandidate(host, 'direct', false), true);
+  assert.equal(shareCandidate(mapped, 'direct', false), true);
+  assert.equal(shareCandidate({ candidate: relay, type: 'host' }, 'direct', false), false);
+  assert.equal(shareCandidate(host + ' typ relay', 'direct', false), false);
+  const sdp = `v=0\r\na=${host}\r\na=${mapped}\r\na=${relay}\r\n`;
+  assert.equal(shareDescription(sdp, 'direct', false), `v=0\r\na=${host}\r\na=${mapped}\r\n`);
+  assert.deepEqual(shareConfiguration('direct', true, turn), { iceServers: [] });
+  assert.equal(shareCandidate(mapped, 'direct', true), false);
+});
+
+test('Share Text Cloud relay is forced and cannot fall back to host or mapped candidates', () => {
+  const turn = [{ urls: 'turn:relay.example:3478', username: 'test', credential: 'test' }];
+  assert.equal(shareConfiguration('relay', false, turn).iceTransportPolicy, 'relay');
+  assert.equal(shareCandidate(host, 'relay', false), false);
+  assert.equal(shareCandidate(mapped, 'relay', false), false);
+  assert.equal(shareCandidate(relay, 'relay', false), true);
+  assert.throws(() => shareConfiguration('relay', false, null), /transport.unavailable/);
+});
+
+test('an invalid Share Text transport cannot silently enable ordinary internet pairing', () => {
+  for (const mode of [null, '', 'automatic', 'RELAY']) {
+    assert.throws(() => shareConfiguration(mode, false, null), /transport.invalid/);
+    assert.equal(shareCandidate(host, mode, false), false);
+    assert.throws(() => shareDescription(`v=0\r\na=${host}\r\n`, mode, false), /transport.invalid/);
+  }
+});
 
 test('a local attempt has no STUN or TURN even when an old relay was supplied', () => {
   const turn = { urls: 'turn:relay.example', username: 'reader', credential: 'secret' };

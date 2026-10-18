@@ -1,5 +1,5 @@
 # Browser hosting uses a separate authenticated voice room in the rendezvous.
-# The service carries connection metadata; only direct peers carry microphone audio.
+# The introduction service carries metadata; relay is an explicit separate route.
 slug = "walkie-talkie"
 name = "Local Walkie-Talkie"
 heading = "One voice <span class=\"h1-kw\">&mdash; several listeners on your local network</span>"
@@ -10,9 +10,10 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "voice-session", "peer-discovery", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-lastmod = "2026-10-15"
+supports_relay = true
+lastmod = "2026-10-17"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice to up to ten receive-only browsers. Nearby discovery, push to talk, hands-free speech and microphone recovery within the same pairing."
@@ -20,14 +21,14 @@ og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
 og_card = "Hold to talk. Everyone on your local link can listen."
-csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Local builds and HTTPS abox-preview.pages.dev previews use the separate wss://rendezvous-dev.abox.tools service. Starting or joining a channel opens a separate secure WebSocket for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
-pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet discovery and pairing, no recording or audio relay."
-pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect; the rendezvous handles temporary connection metadata, never microphone audio. Each listener receives encrypted WebRTC audio directly from the host browser. Anyone with the listener link and a reachable direct route can listen. Use a trusted local network and share the link carefully."
-live_hint = "This tool intentionally contacts rendezvous.abox.tools for discovery, connection setup and status. It sees channel names, listener invitations for listed channels, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
+csp_note = "Opening this page connects to wss://rendezvous.abox.tools for nearby discovery. Local builds and HTTPS abox-preview.pages.dev previews use the separate wss://rendezvous-dev.abox.tools service. Starting or joining opens a secure WebSocket for authentication, setup and status. Direct is the default and uses host candidates only, without STUN or TURN. Choosing Cloud relay uses temporary TURN credentials and sends encrypted voice through Cloudflare. The introduction service does not carry audio."
+pledge_line = "<strong>Direct voice by default.</strong> Choose Cloud relay when needed. No recording."
+pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect. Each listener has a separate encrypted WebRTC connection to the host. Direct uses no relay; Cloud relay sends encrypted audio through Cloudflare when both devices choose that route. Anyone with the listener invitation can listen while the channel is open. Share it carefully."
+live_hint = "The introduction service sees channel names, listed listener invitations, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Optional Cloud relay also forwards encrypted audio and sees connection addresses, timing and traffic volume; it cannot decrypt the WebRTC audio. The tool never switches routes automatically."
 read_first = ", <code>src/session.js</code> for microphone cleanup and reconnects, and <code>workers/rendezvous/broadcast.js</code> for the authenticated setup protocol"
 howto_heading = "How to open a local voice channel"
 card = "One browser host and up to ten receive-only listeners, with push to talk and automatic reconnection."
-md_note = "Choose Start channel on this website, allow microphone access and share the listener link or QR code. No Python, download or account is needed. Internet access is needed for pairing; audio travels directly between reachable devices."
+md_note = "Keep Direct for reachable devices, or choose Cloud relay before starting. Choose Start channel, allow microphone access and share the listener link or QR code. Relay invitations ask listeners to confirm Join channel. Internet is required for pairing and for relayed audio."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
@@ -49,17 +50,17 @@ mark = "&#10003;"
 text = "Receive-only listeners"
 [[facts]]
 mark = "&#10007;"
-text = "No recording or audio relay"
+text = "Direct or optional Cloud relay"
 
 [[privacy]]
 title = "Internet discovery and pairing carry setup, never audio."
-body = " Opening the page opens a secure discovery WebSocket. Starting or joining opens a separate channel connection. Show this channel nearby shares its name and listener invitation with browsers grouped by public IPv4 address or IPv6 /64 subnet and website origin. That group can include strangers behind shared gateways; VPNs can hide nearby devices. Turn the option off before starting for link-only invitations. Browsing never opens an audio connection or asks for a microphone. Channel state and directory entries live on open sockets without a stored history. Cloudflare keeps seven-day request metadata logs; keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
+body = " Opening the page opens a secure discovery WebSocket. Starting or joining opens a separate channel connection. Show this channel nearby shares its name, listener invitation and chosen route with browsers grouped by public IPv4 address or IPv6 /64 subnet and website origin. That group can include strangers behind shared gateways; VPNs can hide nearby devices. Turn the option off before starting for link-only invitations. Browsing never opens an audio connection or asks for a microphone. Channel state and directory entries live on open sockets without a stored history. Cloudflare keeps seven-day request metadata logs; keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. Optional Cloud relay forwards encrypted audio; it cannot decrypt it. There is no recording feature, but recipients can independently record what they hear."
 [[privacy]]
 title = "A listener invitation cannot control the host."
-body = " Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
+body = " Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character and identifies the chosen route. The tool saves it in per-tab session storage and removes the fragment when storage is available. Direct invitations join automatically; Cloud relay invitations require Join channel before the first connection. These are temporary browser credentials, not accounts. An invitation is not proof of physical Wi-Fi membership."
 [[privacy]]
 title = "Direct reachability still depends on your network."
-body = " Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and try the actual devices you intend to use. Background or locked-screen operation depends on the browser and operating system and is not guaranteed."
+body = " Direct offers and accepts host candidates only. VPNs, public interfaces and operating-system routes can affect the path, so Direct does not prove a physical LAN boundary. Guest isolation, firewalls and browser permissions may block it. Cloud relay is a separate explicit choice that uses relay candidates only and needs internet throughout. A failed Direct connection never switches to relay automatically. Changing the host's route creates a new invitation. Background or locked-screen operation still depends on the browser and operating system."
 [[privacy]]
 title = "Temporary loss reconnects; End and Leave stop retries."
 body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Healthy hidden connections and explicitly enabled hands-free speech continue while the browser allows. A physical hold releases on blur or hiding. A microphone interruption stops talking while preserving the channel; an ended microphone can be replaced on returning to the page or with Resume microphone. Recovery stays silent until you deliberately talk again. If the browser suspends the page, returning attempts to restore the same channel and invitation, with Resume channel available when an action is required. End broadcast prevents automatic resumption and creates a new invitation on the next Start. Leave closes one listener and its retries. Background timers, connection limits and sleeping devices can delay recovery."
@@ -69,10 +70,10 @@ body = " The page uses the site's usual advertising, measurement and donate-butt
 
 [[howto]]
 title = "Start directly on this website."
-body = " On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
+body = " On the speaking device, keep Direct or explicitly choose Cloud relay, then choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
 title = "Invite listeners."
-body = " Listeners select your channel with Choose in Nearby channels, then choose Join channel when you start with Show this channel nearby selected. Choosing alone does not connect. You can also share the listener link or QR code. Opening an invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for discovery and pairing."
+body = " Listeners select your channel with Choose in Nearby channels, review the route, then choose Join channel. Choosing alone does not connect. You can also share the listener link or QR code. Direct invitations join automatically; Cloud relay invitations require Join channel. Listening never asks for microphone access. Both sides need internet access for discovery and pairing, and Cloud relay also needs it for audio."
 [[howto]]
 title = "Hold to talk or speak hands-free."
 body = " Hold the Talk button, or focus it and hold Space. Release, leave the page or switch focus to release a physical hold. For hands-free speech, choose Start talking; it can continue with the page hidden while the browser allows. Choose Stop talking to stop, and check the displayed talking state before setting the device down. Microphone mute overrides both modes, and a microphone interruption clears hands-free speech. Listening starts automatically where permitted; Unmute starts sound if the browser blocks playback."
@@ -85,19 +86,19 @@ q = "Do I need Python or a download?"
 a = "No. The host starts directly in this website and listeners open its link. Only the host requests microphone access."
 [[faq]]
 q = "Does voice go through an internet server?"
-a = "No. The internet service exchanges connection setup and status; voice uses a separate direct encrypted browser connection to each listener. No audio relay fallback is configured."
+a = "Direct sends voice between the browsers without a relay. If both devices explicitly choose Cloud relay, Cloudflare forwards encrypted WebRTC audio and sees connection metadata and traffic volume, but cannot decrypt the audio. The introduction service only exchanges setup and status."
 [[faq]]
 q = "Does it work without internet?"
-a = "Internet access is required for new pairing and recovery. A healthy direct audio connection may continue during a brief internet or pairing-service outage. A cached page alone cannot introduce new devices."
+a = "Internet access is required for new pairing and recovery. Healthy Direct audio may continue during a brief internet or introduction-service outage. Cloud relay needs internet for audio as well. A cached page alone cannot introduce new devices."
 [[faq]]
 q = "Can a phone host the channel?"
 a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Healthy connections and hands-free speech can continue with the page hidden while the browser permits. Screen lock, browser suspension or operating-system interruptions may still stop them; try your actual phone before relying on background use. Phones can also listen without granting microphone access."
 [[faq]]
 q = "How do listeners join?"
-a = "Select a nearby channel with Choose, then choose Join channel, or open its listener link. Playback starts automatically where permitted. If the browser requires an interaction for sound, Unmute starts it. Joining never requests microphone access; Mute/Unmute and Leave control the listening session."
+a = "Select a nearby channel with Choose, review its route, then choose Join channel, or open its listener link. Cloud relay invitations also require Join channel. Playback starts where permitted; Unmute starts sound if the browser requires an interaction. Listening never requests microphone access."
 [[faq]]
 q = "Can we use a phone hotspot?"
-a = "A phone hotspot can work if it allows the participating devices to reach each other directly. Connect the devices to the same hotspot and keep internet access for discovery and pairing. Use the listener link or QR code when the nearby list misses a channel. Some hotspots, VPNs and managed devices block direct traffic; there is no audio relay fallback."
+a = "A phone hotspot can work with Direct if it allows the devices to reach one another. Keep internet for discovery and pairing, and use the listener link or QR code if discovery misses the channel. Cloud relay can provide another route when both devices permit it; it requires an explicit choice and internet throughout."
 [[faq]]
 q = "What happens when the host disappears?"
 a = "Receivers wait and check availability with a one-second target while active, keeping their mute choice. Hiding a healthy page does not deliberately disconnect it. A microphone interruption clears talking and keeps the pairing; an ended microphone can be replaced with Resume microphone or on returning to the page. If the browser suspends the page, returning tries to restore the same channel and invitation, with Resume channel as a fallback. Recovery leaves talking off. Background timers or service connection limits can delay retries. End broadcast stops receivers and prevents automatic resumption; the next channel uses a new invitation."
@@ -106,9 +107,9 @@ q = "How many listeners are supported?"
 a = "A channel admits up to ten listeners, including waiting connections. The host sends a separate audio stream to each. Actual capacity depends on its browser, device and network; ten is a limit, not a guarantee for every phone."
 [[faq]]
 q = "Why can the same Wi-Fi fail?"
-a = "Guest isolation, firewalls, VPN routes or browser local-network permissions can block direct connectivity. Use a reachable trusted network. There is no public audio relay fallback."
+a = "Guest isolation, firewalls, VPN routes or browser local-network permissions can block Direct. Try a reachable trusted network or explicitly start a new Cloud relay channel. Managed devices can restrict either route."
 
 [schema]
 category = "CommunicationApplication"
 description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and secure internet pairing."
-features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link and QR pairing", "No recording, STUN or TURN"]
+features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Push to talk and hands-free speech", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Microphone recovery within the same pairing", "Listener link and QR pairing", "Direct by default with optional Cloud relay"]

@@ -4,12 +4,15 @@ The website hosts one microphone and up to ten receive-only browsers. Nothing
 needs downloading or installing. Opening the page lists nearby channels over
 a discovery WebSocket; joining never requests microphone access. Starting the
 host or confirming Join channel opens its own rendezvous connection; microphone audio
-travels over a separate direct WebRTC connection to each listener.
+travels over a separate encrypted WebRTC connection to each listener. Direct is
+the default; Cloud relay is an explicit alternative shared by the host and listener.
 
 The nearby list appears first, before hosting controls. Choose selects a channel
 without opening its voice connection or saving listener credentials; Join channel
 confirms the receive-only connection. A withdrawn listing clears the selection.
-Opening a listener invitation still joins automatically. Shared network guidance
+Opening a Direct listener invitation still joins automatically. A Cloud relay
+invitation shows the chosen route and requires Join channel before connecting.
+Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
 that discovery and pairing still need internet and a hotspot is not a guarantee.
 
@@ -21,10 +24,28 @@ retain bounded temporary state while browsers remain connected. The service
 carries setup and availability messages, never audio, and writes no room history.
 Cloudflare retains seven-day invocation metadata logs.
 
-Both sides use iceServers: [] and the shared peer-network filters inline and
-trickled candidates to host candidates only. VPNs and operating-system routes
-can still affect their path; the policy does not prove a physical LAN boundary.
-Direct reachability is required and there is no relay fallback.
+Direct uses iceServers: [] and filters inline and trickled candidates to host
+candidates only. VPNs and operating-system routes can still affect the path;
+this policy does not prove a physical LAN boundary. Cloud relay requests
+temporary TURN credentials only after authenticated admission, uses
+iceTransportPolicy: 'relay', and filters both directions to relay candidates.
+Cloudflare forwards encrypted audio and sees connection metadata and traffic
+volume, but cannot decrypt the WebRTC audio. There is no automatic fallback.
+
+The host's mode is pinned in invitations, authentication and retained room
+attachments. A mismatch is refused, including after host reconnection. Changing
+the host mode creates a fresh identity. Nearby discovery includes the verified
+mode, never TURN credentials. The shared selector is locked during connection
+and an active session. Actual-route status comes from selected candidate-pair
+statistics, with unknown shown until those statistics establish a route.
+
+`peer-transport.js` owns credential validation, expiry and renewal. The voice
+adapter consumes credential replies outside its sequential offer queue, so an
+offer awaiting credentials cannot block their response. Renewal updates peer
+configuration and negotiates replacement connections in the same selected mode.
+Credential failure stops the session and capture instead of trying Direct.
+The worker's per-service switch, participant cap and credential limits apply;
+End and Leave invalidate pending mints and stop all renewal timers.
 
 Starting with Show this channel nearby selected publishes a bounded channel
 name and its listener capability to the trusted address-and-origin group.

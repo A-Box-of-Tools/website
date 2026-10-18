@@ -25,7 +25,7 @@ export function isLocalLink(href) {
   }
 }
 
-function candidateParts(value) {
+export function candidateParts(value) {
   if (typeof value !== 'string' || /[\r\n]/.test(value)) return null;
   const fields = value.trim().replace(/^a=/i, '').split(/\s+/);
   if (fields.length < 8 || (fields.length - 8) % 2 !== 0) return null;

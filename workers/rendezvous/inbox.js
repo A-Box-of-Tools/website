@@ -3,6 +3,7 @@
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope } from "./discovery.js";
+import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const ID = /^[a-f0-9]{64}$/;
@@ -26,6 +27,8 @@ const validKey = (value) => typeof value === "string" && KEY.test(value);
 const proof = (value) => value === null || validKey(value);
 const bytes = (value) => new TextEncoder().encode(JSON.stringify(value)).length;
 const fits = (value) => bytes(value) <= MAX_ATTACHMENT;
+const mode = (value) => value === undefined || value === "direct" ? "direct" : value === "relay" ? "relay" : null;
+const transportFrame = (transport) => transport === "relay" ? { transport } : {};
 
 function cleanName(value, limit) {
   if (typeof value !== "string" || value.length > limit || !value.isWellFormed()
@@ -35,17 +38,17 @@ function cleanName(value, limit) {
 }
 
 const anchor = (owner) => ({ name: owner.name, passwordHash: owner.passwordHash,
-  moderation: owner.moderation, ended: owner.ended });
+  moderation: owner.moderation, ended: owner.ended, ...transportFrame(mode(owner.transport)) });
 // A 128-bit digest prefix bounds remembered identities within the platform's
 // 2 KB attachment limit, without putting a reusable participant key there.
 const token = (id) => id.slice(0, 32);
 const moderation = (owner, id) => owner.moderation.find((entry) => entry.startsWith(token(id)))?.slice(-1) ?? null;
 
-export function validInboxSignal(value, role) {
+export function validInboxSignal(value, role, transport = "direct") {
   if (!object(value) || !["host", "sender"].includes(role)) return null;
   if (role === "host" && !identity(value.to)) return null;
   const signal = validBroadcastSignal(role === "host" ? { ...value, to: SIGNAL_TARGET } : value,
-    role === "host" ? "host" : "listener");
+    role === "host" ? "host" : "listener", transport);
   if (signal?.sdp !== undefined) {
     const directions = signal.sdp.split(/\r?\n/).filter((line) => /^a=(sendonly|recvonly|sendrecv|inactive)$/.test(line));
     if (directions.length !== 1 || directions[0] !== (role === "host" ? "a=recvonly" : "a=sendonly")) return null;
@@ -96,7 +99,7 @@ export class Inbox {
       if (!owner || owner.ended || owner.code !== claim.code || owner.scope !== claim.scope || owner.lease !== claim.lease) {
         return new Response(null, { status: 403 });
       }
-      return new Response(JSON.stringify({ name: owner.name, locked: owner.passwordHash !== null }), {
+      return new Response(JSON.stringify({ name: owner.name, locked: owner.passwordHash !== null, ...transportFrame(mode(owner.transport)) }), {
         headers: { "content-type": "application/json" },
       });
     }
@@ -148,9 +151,11 @@ export class Inbox {
 
   async authenticate(ws, value, who) {
     const isHost = value.role === "host";
+    const transport = mode(value.transport);
     const anonymous = value.role === "sender" && !Object.hasOwn(value, "name");
     const name = anonymous ? "" : cleanName(isHost ? value.roomName : value.name, isHost ? 80 : 64);
-    if (!fields(value, ["type", "role", "key", ...(anonymous ? [] : [isHost ? "roomName" : "name"]), "passwordProof"])
+    if (transport === null || !fields(value, ["type", "role", "key", ...(anonymous ? [] : [isHost ? "roomName" : "name"]), "passwordProof",
+      ...(Object.hasOwn(value, "transport") ? ["transport"] : [])])
         || value.type !== "auth" || !["host", "sender"].includes(value.role)
         || !validKey(value.key) || !proof(value.passwordProof) || name === null) {
       this.refuse(ws, 4400, "invalid"); return;
@@ -165,9 +170,11 @@ export class Inbox {
     const trusted = this.trusted();
     if (isHost) {
       if (keyHash !== who.code) { this.refuse(ws, 4403, "unauthorized"); return; }
+      if (transport === "relay" && !relayEnabled(this.env, "voice-oncall")) { this.refuse(ws, 4403, "relay-unavailable"); return; }
       if (trusted?.ended) { this.terminal(ws, "ended", 1000); return; }
+      if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
       const previous = this.sockets("host"), generation = crypto.randomUUID(), lease = crypto.randomUUID();
-      const owner = { role: "host", code: who.code, scope: who.scope, lease, generation,
+      const owner = { role: "host", code: who.code, scope: who.scope, lease, generation, ...transportFrame(transport),
         name: trusted?.name ?? name, passwordHash: trusted ? trusted.passwordHash : passwordHash,
         moderation: trusted?.moderation ?? [], ended: false, window: Date.now(), updates: 0 };
       if (!this.attach(ws, owner)) { this.refuse(ws, 4429, "full"); return; }
@@ -180,22 +187,24 @@ export class Inbox {
       }
       const discovery = validScope(owner.scope) ? { code: owner.code, lease, name: owner.name,
         locked: owner.passwordHash !== null, tool: "voice-oncall" } : null;
-      if (!this.send(ws, { type: "host-ready", generation, discovery })) return;
+      if (!this.send(ws, { type: "host-ready", generation, discovery, ...transportFrame(transport) })) return;
       for (const sender of this.sockets("sender")) this.ready(sender);
       return;
     }
     if (trusted?.passwordHash !== undefined && trusted.passwordHash !== passwordHash) {
       this.refuse(ws, 4403, "password"); return;
     }
+    if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
     if (trusted?.ended) { this.terminal(ws, "ended", 1000); return; }
     if (trusted && moderation(trusted, keyHash) === "k") { this.terminal(ws, "kicked"); return; }
     const previous = this.sockets("sender").filter((peer) => peer.deserializeAttachment().id === keyHash);
     const verified = trusted !== null;
     const peers = this.sockets("sender").filter((peer) => !previous.includes(peer));
-    if (peers.filter((peer) => peer.deserializeAttachment().verified === verified).length >= (verified ? MAX_SENDERS : MAX_PROBES)) {
+    const limit = transport === "relay" ? Math.min(MAX_SENDERS, relayPolicy(this.env)?.maxPeers ?? 0) : MAX_SENDERS;
+    if (peers.filter((peer) => peer.deserializeAttachment().verified === verified).length >= (verified ? limit : Math.min(limit, MAX_PROBES))) {
       this.refuse(ws, 4429, "full"); return;
     }
-    const sender = { role: "sender", id: keyHash, name, passwordHash, verified,
+    const sender = { role: "sender", id: keyHash, name, passwordHash, verified, ...transportFrame(transport),
       generation: null, connection: null, muted: trusted ? moderation(trusted, keyHash) === "m" : false,
       talking: false, anchor: trusted ? anchor(trusted) : null, window: Date.now(), updates: 0 };
     if (!this.attach(ws, sender)) { this.refuse(ws, 4429, "full"); return; }
@@ -213,9 +222,11 @@ export class Inbox {
     const host = this.host(), owner = host?.deserializeAttachment();
     if (!owner) { this.send(ws, { type: who.anchor?.ended ? "ended" : "waiting" }); return; }
     if (who.passwordHash !== owner.passwordHash) { this.refuse(ws, 4403, "password"); return; }
+    if (mode(who.transport) !== mode(owner.transport)) { this.refuse(ws, 4403, "transport-mismatch"); return; }
     if (owner.ended) { this.terminal(ws, "ended", 1000); return; }
     if (moderation(owner, who.id) === "k") { this.terminal(ws, "kicked"); return; }
-    if (!who.verified && this.sockets("sender").filter((peer) => peer.deserializeAttachment().verified).length >= MAX_SENDERS) {
+    const limit = owner.transport === "relay" ? Math.min(MAX_SENDERS, relayPolicy(this.env)?.maxPeers ?? 0) : MAX_SENDERS;
+    if (!who.verified && this.sockets("sender").filter((peer) => peer.deserializeAttachment().verified).length >= limit) {
       this.refuse(ws, 4429, "full"); return;
     }
     const joining = !who.verified || who.generation !== owner.generation;
@@ -223,7 +234,7 @@ export class Inbox {
       muted: moderation(owner, who.id) === "m", ...(joining ? { connection: null, talking: false } : {}) };
     if (!this.attach(ws, updated)) { this.refuse(ws, 4429, "full"); return; }
     if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation,
-      muted: updated.muted, talking: updated.talking }) && joining) {
+      muted: updated.muted, talking: updated.talking, ...transportFrame(mode(owner.transport)) }) && joining) {
       this.send(host, { type: "join", id: who.id, generation: owner.generation,
         name: updated.name, muted: updated.muted, talking: updated.talking });
     }
@@ -259,6 +270,17 @@ export class Inbox {
     if (who.role === "pending") {
       if (who.authenticating) { this.refuse(ws, 4400, "invalid"); return; }
       return this.authenticate(ws, value, who);
+    }
+    if (value.type === "relay-request") {
+      const generation = who.generation;
+      const authorized = () => {
+        const current = ws.deserializeAttachment(), owner = this.host()?.deserializeAttachment();
+        return ws.readyState === 1 && current?.generation === generation && owner?.generation === generation
+          && !owner.ended && owner.transport === "relay" && current.transport === "relay"
+          && (current.role === "host" || current.role === "sender" && current.verified);
+      };
+      return answerRelayRequest(ws, value, { env: this.env, tool: "voice-oncall", authorized,
+        current: () => ws.readyState === 1 && ws.deserializeAttachment()?.generation === generation });
     }
     if (who.role === "sender" && fields(value, ["type"]) && value.type === "leave") {
       this.drop(ws); try { ws.close(1000, "left"); } catch {} return;
@@ -301,7 +323,7 @@ export class Inbox {
       this.send(ws, { type: "moderated", id: value.to, generation: owner.generation, muted: value.muted });
       return;
     }
-    const signal = validInboxSignal(value, who.role);
+    const signal = validInboxSignal(value, who.role, mode(owner.transport));
     if (signal === null) { this.send(ws, { type: "error", error: "invalid" }); return; }
     if (who.role === "host") {
       const sender = this.sockets("sender").find((peer) => peer.deserializeAttachment().id === value.to);

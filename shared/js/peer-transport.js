@@ -1,0 +1,184 @@
+import { allowedCandidate, localDescription } from './peer-network.js';
+
+/** Transport is a session policy, not permission to capture or admit a peer. */
+export function transportMode(value) {
+  return value === undefined || value === 'direct' ? 'direct' : value === 'relay' ? 'relay' : null;
+}
+
+export function readTransport(href) {
+  try {
+    const values = new URL(href).searchParams.getAll('transport');
+    return values.length > 1 ? null : transportMode(values[0]);
+  } catch { return null; }
+}
+
+export function transportUrl(href, mode) {
+  if (transportMode(mode) === null) throw new Error('transport.invalid');
+  const url = new URL(href);
+  // Explicit Direct differs from a cached text client that offered relay fallback.
+  url.searchParams.set('transport', transportMode(mode));
+  return url.href;
+}
+
+export function relayIceServers(value) {
+  if (!Array.isArray(value) || !value.length || value.length > 8) return null;
+  const result = [];
+  for (const server of value) {
+    if (!server || typeof server !== 'object' || typeof server.username !== 'string'
+        || !server.username || server.username.length > 1024 || typeof server.credential !== 'string'
+        || !server.credential || server.credential.length > 2048) return null;
+    const urls = typeof server.urls === 'string' ? [server.urls] : server.urls;
+    if (!Array.isArray(urls) || !urls.length || urls.length > 8 || urls.some((url) =>
+      typeof url !== 'string' || url.length > 256 || /\s/.test(url)
+      || !/^turns?:[a-z0-9.-]+(?::\d{1,5})?(?:\?transport=(?:udp|tcp))?$/i.test(url))) return null;
+    result.push({ urls: [...urls], username: server.username, credential: server.credential });
+  }
+  return result;
+}
+
+export function peerConfiguration(mode, iceServers = null) {
+  if (transportMode(mode) === 'direct') return { iceServers: [] };
+  if (mode !== 'relay') throw new Error('transport.invalid');
+  const valid = relayIceServers(iceServers);
+  if (!valid) throw new Error('transport.unavailable');
+  return { iceServers: valid, iceTransportPolicy: 'relay' };
+}
+
+export function transportCandidate(candidate, mode) {
+  if (transportMode(mode) === 'direct') return allowedCandidate(candidate, true);
+  if (mode !== 'relay') return false;
+  if (candidate === null || candidate === undefined) return true;
+  const text = typeof candidate === 'string' ? candidate : candidate.candidate;
+  if (text === '') return true;
+  if (typeof text !== 'string' || /[\r\n]/.test(text)) return false;
+  const fields = text.trim().replace(/^a=/i, '').split(/\s+/);
+  if (fields[6]?.toLowerCase() !== 'typ' || fields[7]?.toLowerCase() !== 'relay') return false;
+  // Reuse the host parser's bounds and ambiguity checks without trusting .type.
+  fields[7] = 'host';
+  return allowedCandidate(fields.join(' '), true);
+}
+
+export function transportDescription(description, mode) {
+  if (transportMode(mode) === 'direct') return localDescription(description);
+  if (mode !== 'relay') throw new Error('transport.invalid');
+  const filter = (sdp) => sdp.replace(/^a=candidate(?:[: \t])[^\r\n]*(?:\r\n|\n|\r|$)/gmi, (line) => {
+    const ending = line.match(/(?:\r\n|\n|\r)$/)?.[0] ?? '';
+    const text = line.slice(0, line.length - ending.length);
+    if (!transportCandidate(text, 'relay')) return '';
+    const fields = text.trim().replace(/^a=/i, '').split(/\s+/);
+    // A relay invitation does not need the related host address in its SDP.
+    const kept = fields.slice(0, 8);
+    for (let i = 8; i < fields.length; i += 2) {
+      if (!/^(raddr|rport)$/i.test(fields[i])) kept.push(fields[i], fields[i + 1]);
+    }
+    return `a=${kept.join(' ')}${ending}`;
+  });
+  if (typeof description === 'string') return filter(description);
+  return typeof description?.sdp === 'string' ? { type: description.type, sdp: filter(description.sdp) } : description;
+}
+
+export function selectedTransport(stats) {
+  const values = [...stats.values()];
+  const transport = values.find((entry) => entry.type === 'transport' && entry.selectedCandidatePairId);
+  const pair = transport && stats.get(transport.selectedCandidatePairId);
+  const selected = pair ?? values.find((entry) => entry.type === 'candidate-pair' && entry.state === 'succeeded'
+    && (entry.selected === true || entry.nominated === true));
+  if (!selected) return 'unknown';
+  const local = stats.get(selected.localCandidateId), remote = stats.get(selected.remoteCandidateId);
+  if (local?.candidateType === 'relay' || remote?.candidateType === 'relay') return 'relay';
+  return local?.candidateType && remote?.candidateType ? 'direct' : 'unknown';
+}
+
+let requestSerial = 0;
+
+/** A credential response may arrive while the adapter's offer queue is awaiting it. */
+export class RelayCredentials {
+  constructor({ send, current = () => true, onRenew = () => {}, onError = () => {},
+    now = () => Date.now(), clock = globalThis } = {}) {
+    Object.assign(this, { send, current, onRenew, onError, now, clock });
+    this.pending = null;
+    this.cached = null;
+    this.renewal = null;
+    this.retired = false;
+  }
+
+  live() { return !this.retired && this.current(); }
+
+  prepare() {
+    if (!this.live()) return Promise.reject(new Error('transport.stopped'));
+    if (this.cached?.expiresAt > this.now() + 60000) return Promise.resolve(structuredClone(this.cached.iceServers));
+    return this.request();
+  }
+
+  request() {
+    if (!this.live()) return Promise.reject(new Error('transport.stopped'));
+    if (this.pending) return this.pending.promise;
+    const id = `relay-${++requestSerial}`;
+    let resolve, reject;
+    const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
+    const pending = { id, promise, resolve, reject, timer: null };
+    this.pending = pending;
+    pending.timer = this.clock.setTimeout(() => this.finish(pending, new Error('transport.timeout')), 10000);
+    try {
+      if (this.send({ type: 'relay-request', id }) === false) this.finish(pending, new Error('transport.unavailable'));
+    } catch { this.finish(pending, new Error('transport.unavailable')); }
+    return promise;
+  }
+
+  finish(pending, error, value) {
+    if (this.pending !== pending) return;
+    this.pending = null;
+    this.clock.clearTimeout(pending.timer);
+    if (!this.live()) pending.reject(new Error('transport.stopped'));
+    else if (error) pending.reject(error);
+    else pending.resolve(structuredClone(value));
+  }
+
+  receive(frame) {
+    if (frame?.type !== 'relay-credentials') return false;
+    const pending = this.pending;
+    if (!pending || frame.id !== pending.id || !this.live()) return true;
+    if (frame.error !== undefined) {
+      const error = ['limited', 'forbidden', 'unavailable'].includes(frame.error) ? frame.error : 'invalid';
+      this.finish(pending, new Error(`transport.${error}`));
+      return true;
+    }
+    const iceServers = relayIceServers(frame.iceServers), now = this.now();
+    if (!iceServers || !Number.isSafeInteger(frame.expiresAt) || frame.expiresAt <= now + 60000
+        || frame.expiresAt > now + 2 * 60 * 60 * 1000) {
+      this.finish(pending, new Error('transport.invalid'));
+      return true;
+    }
+    this.cached = { iceServers, expiresAt: frame.expiresAt };
+    this.finish(pending, null, iceServers);
+    this.scheduleRenewal();
+    return true;
+  }
+
+  scheduleRenewal() {
+    if (this.renewal !== null) this.clock.clearTimeout(this.renewal);
+    if (!this.live() || !this.cached) return;
+    const expected = this.cached;
+    this.renewal = this.clock.setTimeout(async () => {
+      this.renewal = null;
+      if (!this.live() || this.cached !== expected) return;
+      try {
+        const servers = await this.request();
+        if (this.live()) await this.onRenew(servers);
+      } catch (error) {
+        if (!this.live()) return;
+        this.cached = null;
+        this.onError(error);
+      }
+    }, Math.max(1000, expected.expiresAt - this.now() - Math.min(5 * 60 * 1000, (expected.expiresAt - this.now()) / 10)));
+  }
+
+  close() {
+    if (this.retired) return;
+    this.retired = true;
+    if (this.renewal !== null) this.clock.clearTimeout(this.renewal);
+    this.renewal = null;
+    this.cached = null;
+    if (this.pending) this.finish(this.pending, new Error('transport.stopped'));
+  }
+}

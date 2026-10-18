@@ -4,7 +4,7 @@ import { phrase } from './shared/phrases.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
-import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
+import { makeShareUrl, isLocalLink } from './network.js';
 import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive-file.js';
 import { watchDiscovery } from './discovery.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
@@ -13,6 +13,9 @@ import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { foregroundRecovery, observeForeground } from './shared/foreground-recovery.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { readTransport, transportUrl, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
+import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
 // The environment's address, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -23,28 +26,22 @@ import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 // mainland China, and this one is not.
 const RENDEZVOUS = rendezvousEndpoint();
 
-// A direct connection is what this page is, and it is also what a minority of
-// network pairs cannot make: a phone on a carrier's address-sharing network
-// and a laptop behind a strict router have no path a STUN server can
-// discover. For that case, and only after the direct attempt has failed, the
-// reader may ask for a relay. The rendezvous mints a short-lived credential
-// for Cloudflare's TURN service, the reader redials with it, and the relay
-// forwards the DTLS-encrypted bytes it cannot read - the same ciphertext the
-// direct path carries. It is the reader's choice, made on the reader's page,
-// and the sharer's side of the exchange does not change: its bytes still go
-// to that one reader and nowhere else, the way they would if the reader sat
-// behind a VPN. The choice rides a reload so the redial is a fresh socket
-// and a fresh peer connection rather than a renegotiation of a failed one.
-const RELAY_FLAG = (code) => `share-text-relay:${code}`;
-const RELAY_WAIT = 5000;
+// A host chooses the route before publishing. Both browsers use that route
+// for the lifetime of the share; failure never widens a Direct session.
 
-const wsUrl = (code, role, advertise = false) => `${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? '&local=1&discover=1' : ''}`;
-const shareUrl = (code) => makeShareUrl(location.href, code, isLocal);
+const wsUrl = (code, role, advertise = false, mode = 'direct') => transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? '&local=1&discover=1' : ''}`, mode);
+const shareUrl = (code) => transportUrl(makeShareUrl(location.href, code, isLocal), hostTransport);
+const transportError = error => /^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
+  ? error.message : 'transport.failed';
 
 const MAX_FILE = 200 * 1024 * 1024;
 const MAX_FILES = 256;
 
 const $ = (id) => document.getElementById(id);
+const transportControl = bindTransportControl({ onChange(mode) {
+  $('local').disabled = mode === 'relay';
+  $('discoverable').disabled = mode === 'direct' && !$('local').checked;
+} });
 
 const diagnostics = createDiagnostics({
   version: $('tool-version')?.textContent.trim(),
@@ -107,6 +104,8 @@ const fmtSize = (n) => formatSize(n, sizeUnits);
 
 let sock = null;
 let hostPairing = null;
+let hostCredentials = null;
+let hostTransport = 'direct';
 let sharing = false;
 let activeCode = '';
 let hostHadRoom = false;
@@ -122,6 +121,7 @@ let foundShares = [];
 const withdrawing = new Set();
 let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
+const peerCandidates = new WeakMap();
 const controlChannels = new Map(); // includes readers still waiting to knock
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
@@ -170,6 +170,8 @@ function suggest() {
 }
 
 function unlock() {
+  transportControl.lock(false);
+  transportControl.route(null);
   sharing = false;
   clearTimeout(hostRetry);
   hostPairing?.clear('foreground');
@@ -181,8 +183,8 @@ function unlock() {
   $('code').disabled = false;
   $('suggest').disabled = false;
   $('private').disabled = false;
-  $('local').disabled = false;
-  $('discoverable').disabled = !$('local').checked;
+  $('local').disabled = transportControl.value() === 'relay';
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked;
   $('discovery-share-status').textContent = '';
   $('stop').hidden = true;
   $('linkrow').hidden = true;
@@ -352,7 +354,7 @@ function renderDiscovery() {
     name.textContent = share.code;
     const open = document.createElement('a');
     open.className = 'discovery-open';
-    open.href = makeShareUrl(location.href, share.code, true);
+    open.href = transportUrl(makeShareUrl(location.href, share.code, share.transport !== 'relay'), share.transport ?? 'direct');
     // Opening a listed share must not end this tab's own share or draft.
     open.target = '_blank';
     open.rel = 'noopener';
@@ -395,9 +397,10 @@ wireHelpTooltip($('tool-version-help'));
 /* ------------------------------------------------- the sharer's connection */
 
 function hostSocket(code) {
-  const trace = diagnostics.begin('host', isLocal ? 'local' : 'internet');
+  const trace = diagnostics.begin('host', hostTransport === 'relay' ? 'relay' : isLocal ? 'local' : 'internet');
   hostDiagnostic = trace;
-  const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
+  const ws = new WebSocket(wsUrl(code, 'host', isDiscoverable, hostTransport));
+  hostCredentials?.close();
   hostPairing?.close();
   sock = ws;
   const pairing = new PairingSocket(ws, {
@@ -405,6 +408,40 @@ function hostSocket(code) {
     onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
   });
   hostPairing = pairing;
+  const credentials = new RelayCredentials({
+    send: frame => pairing.send(frame),
+    current: () => sock === ws && sharing,
+    onRenew: servers => {
+      for (const [id, pc] of peers) {
+        pc.setConfiguration(shareConfiguration(hostTransport, isLocal, servers));
+        pairing.send({ to: id, data: { renew: true, local: isLocal } });
+      }
+    },
+    onError: error => {
+      if (sock !== ws || !sharing) return;
+      stopSharing();
+      setStatus(phrase(transportError(error)), true);
+    },
+  });
+  hostCredentials = credentials;
+  let signals = Promise.resolve();
+  let ready = Promise.resolve();
+  const announce = () => {
+    if (sock !== ws || !sharing || ws.readyState !== 1) return;
+    setShareState('share.active');
+    attempts = 0;
+    linkCopy.invalidate();
+    $('link').value = shareUrl(code);
+    $('linkrow').hidden = false;
+    $('stop').hidden = false;
+    refreshCount();
+    if (isDiscoverable) {
+      $('discovery-share-status').textContent = phrase('discovery.publishing');
+      announcementTimer = setTimeout(() => {
+        if (sock === ws && isDiscoverable) $('discovery-share-status').textContent = phrase('discovery.not-published');
+      }, 8000);
+    }
+  };
   pairing.listen({
     open() {
       hostPairing?.clear('foreground');
@@ -412,21 +449,15 @@ function hostSocket(code) {
       trace.socket('open');
       trace.mark('server-open');
       pairing.every('heartbeat', 30000, () => pairing.send('ping'));
-      setShareState('share.active');
       // The first socket may fail before opening. Its replacement must also
       // expose the link and Stop control when the same share becomes ready.
-      attempts = 0;
-      linkCopy.invalidate();
-      $('link').value = shareUrl(code);
-      $('linkrow').hidden = false;
       $('stop').hidden = false;
-      refreshCount();
-      if (isDiscoverable) {
-        $('discovery-share-status').textContent = phrase('discovery.publishing');
-        announcementTimer = setTimeout(() => {
-          if (sock === ws && isDiscoverable) $('discovery-share-status').textContent = phrase('discovery.not-published');
-        }, 8000);
-      }
+      if (hostTransport === 'relay') ready = credentials.prepare().then(announce).catch(error => {
+        if (sock !== ws || !sharing) return;
+        stopSharing();
+        setStatus(phrase(transportError(error)), true);
+      });
+      else announce();
     },
     message(e) {
       hostPairing?.clear('foreground');
@@ -434,8 +465,12 @@ function hostSocket(code) {
       let m;
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
-      if (m.type === 'host-ready' && isLocal && isDiscoverable && m.discovery?.code === code) {
-        if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
+      if (credentials.receive(m)) return;
+      if (m.type === 'host-ready' && isDiscoverable && m.discovery?.code === code) {
+        void ready.then(() => {
+          if (sock !== ws || !sharing) return;
+          if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
+        });
         return;
       }
       if (m.type === 'leave') {
@@ -443,24 +478,41 @@ function hostSocket(code) {
         // encrypted channel. Native peer failure still retires a dead reader.
         const dc = controlChannels.get(m.id);
         const pc = peers.get(m.id);
-        if (dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
+        if (hostTransport === 'direct' && dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
         dropViewer(m.id);
         return;
       }
-      if (m.type === 'signal') void hostSignal(m.from, m.data).catch(error => {
+      if (m.type === 'signal') signals = signals.then(async () => {
+        await ready;
+        if (sock !== ws || !sharing) return;
+        const servers = hostTransport === 'relay' ? await credentials.prepare() : null;
+        if (sock === ws && sharing) await hostSignal(m.from, m.data, servers);
+      }).catch(error => {
+        if (sock !== ws || !sharing) return;
         trace.error('signaling', error); revealDiagnostics();
+        setStatus(phrase(transportError(error)), true);
       });
     },
     error() {
       trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics();
     },
     close(e) {
+      credentials.close();
       pairing.close();
       trace.socket('closed', e.code);
       trace.finish(sharing ? 'socket-closed' : 'stopped');
       if (sock !== ws) return;
+      if (hostTransport === 'relay') {
+        for (const id of [...peers.keys()]) dropViewer(id, 'socket-closed');
+        transportControl.route(null);
+      }
       clearTimeout(announcementTimer);
       discovery?.unpublish();
+      if (e.code === 4412 || e.code === 4413) {
+        stopSharing();
+        setStatus(phrase(e.code === 4412 ? 'transport.mismatch' : 'transport.unavailable'), true);
+        return;
+      }
       if (e.code === 4409) {
         withdrawing.delete(code);
         // A collision on our own suggestion is bad luck, silently retried; a
@@ -512,18 +564,26 @@ function resumeHost() {
   pairing.after('foreground', 8000, () => {
     if (!sharing || sock !== ws || document.visibilityState === 'hidden' || navigator.onLine === false) return;
     sock = null;
+    hostCredentials?.close();
+    if (hostTransport === 'relay') {
+      for (const id of [...peers.keys()]) dropViewer(id, 'socket-closed');
+      transportControl.route(null);
+    }
     pairing.close();
     resumeHost();
   });
 }
 
 function publish() {
+  hostTransport = transportControl.value();
+  if (!hostTransport) { setStatus(phrase('transport.invalid'), true); return; }
   const code = normalize($('code').value);
   if (code === '') {
     setStatus(phrase('share.name-first'));
     return;
   }
   $('code').value = code;
+  transportControl.lock(true);
   sharing = true;
   activeCode = code;
   hostHadRoom = false;
@@ -532,9 +592,9 @@ function publish() {
   $('suggest').disabled = true;
   isPrivate = $('private').checked;
   $('private').disabled = true;
-  isLocal = $('local').checked;
+  isLocal = hostTransport === 'direct' && $('local').checked;
   $('local').disabled = true;
-  isDiscoverable = isLocal && $('discoverable').checked;
+  isDiscoverable = (isLocal || hostTransport === 'relay') && $('discoverable').checked;
   $('discoverable').disabled = true;
   $('publish').hidden = true;
   setShareState('share.setting-up');
@@ -551,7 +611,7 @@ function publish() {
   }
 }
 
-async function hostSignal(from, data) {
+async function hostSignal(from, data, servers) {
   if (!sharing || !data || typeof data !== 'object') return;
   // The copied link carries the mode for convenience; the sharer enforces
   // it too, so removing its query cannot enable a relay on a local share.
@@ -563,16 +623,16 @@ async function hostSignal(from, data) {
   const pairing = hostPairing;
   let pc = peers.get(from);
   let trace = peerDiagnostics.get(from);
-  if (data.candidate && !allowedCandidate(data.candidate, isLocal)) {
+  if (data.candidate && !shareCandidate(data.candidate, hostTransport, isLocal)) {
     (trace ?? hostDiagnostic)?.count('candidatesReceived');
     (trace ?? hostDiagnostic)?.candidate('remote', data.candidate, 'filtered');
     (trace ?? hostDiagnostic)?.count('candidatesFiltered');
     return;
   }
   if (!pc) {
-    trace = diagnostics.begin('host', isLocal ? 'local' : 'internet');
+    trace = diagnostics.begin('host', hostTransport === 'relay' ? 'relay' : isLocal ? 'local' : 'internet');
     trace.socket('open');
-    try { pc = new RTCPeerConnection(rtcConfig(isLocal)); }
+    try { pc = new RTCPeerConnection(shareConfiguration(hostTransport, isLocal, servers)); }
     catch (error) {
       trace.error('offer', error);
       trace.finish(typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
@@ -580,10 +640,11 @@ async function hostSignal(from, data) {
     }
     peerDiagnostics.set(from, trace);
     peers.set(from, pc);
+    peerCandidates.set(pc, []);
     trace.attach(pc);
     pc.onicecandidate = (e) => {
       if (!e.candidate || peers.get(from) !== pc) return;
-      const allowed = allowedCandidate(e.candidate, isLocal);
+      const allowed = shareCandidate(e.candidate, hostTransport, isLocal);
       if (!allowed) {
         trace.candidate('local', e.candidate, 'filtered'); trace.count('candidatesFiltered'); return;
       }
@@ -621,6 +682,9 @@ async function hostSignal(from, data) {
       const introduce = () => {
         if (!sharing || peers.get(from) !== pc || introduced || dc.readyState !== 'open') return;
         introduced = true;
+        void pc.getStats().then(stats => {
+          if (sharing && peers.get(from) === pc) transportControl.route(selectedTransport(stats));
+        }).catch(() => {});
         if (isPrivate) {
           trace.mark('waiting-approval');
           dc.send(JSON.stringify({ type: 'private' })); refreshCount();
@@ -666,13 +730,20 @@ async function hostSignal(from, data) {
   try {
     if (data.sdp) {
       trace.count('offerReceived'); trace.mark('offer-received');
-      await pc.setRemoteDescription(isLocal ? localDescription(data.sdp) : data.sdp);
+      await pc.setRemoteDescription(shareDescription(data.sdp, hostTransport, isLocal));
+      if (peers.get(from) !== pc || sock !== socket || !sharing) return;
+      for (const candidate of peerCandidates.get(pc).splice(0)) await pc.addIceCandidate(candidate);
       await pc.setLocalDescription(await pc.createAnswer());
       if (peers.get(from) !== pc || sock !== socket || socket.readyState !== 1) return;
-      if (!pairing.send({ to: from, data: { sdp: pc.localDescription, local: isLocal } })) return;
+      if (!pairing.send({ to: from, data: { sdp: shareDescription(pc.localDescription, hostTransport, isLocal), local: isLocal } })) return;
       trace.count('answerSent'); trace.mark('answer-sent');
     } else if (data.candidate) {
       trace.count('candidatesReceived');
+      if (!pc.remoteDescription) {
+        const waiting = peerCandidates.get(pc);
+        if (waiting.length < 64) waiting.push(data.candidate);
+        return;
+      }
       try {
         await pc.addIceCandidate(data.candidate);
         trace.candidate('remote', data.candidate, 'accepted'); trace.count('candidatesAccepted');
@@ -751,6 +822,8 @@ $('save').addEventListener('click', () => {
 $('publish').addEventListener('click', publish);
 
 function stopSharing() {
+  hostCredentials?.close();
+  hostCredentials = null;
   sharing = false;
   clearTimeout(hostRetry);
   hostPairing?.clear('foreground');
@@ -839,26 +912,32 @@ let resumeViewer = () => {};
 function view(code, recovered = null) {
   $('share').hidden = true;
   $('view').hidden = false;
-  const localMode = recovered?.localMode ?? isLocalLink(location.href);
+  const choice = document.querySelector('[data-pairing-transport]');
+  if (choice && choice.parentElement !== $('view').parentElement) $('view').before(choice);
+  const mode = recovered?.transport ?? readTransport(location.href);
+  if (!mode) { fail(phrase('transport.invalid')); return; }
+  transportControl.set(mode);
+  transportControl.lock(true);
+  transportControl.route(null);
+  const localMode = mode === 'direct' && (recovered?.localMode ?? isLocalLink(location.href));
   $('local-note').hidden = !localMode;
   let retryLocal = localMode;
 
   // A language switch made while connected sets this flag on the way out.
   // It stands in for the consent the same reader gave moments ago on the
-  // same share, so the gate is not shown twice for one session. The relay
-  // button sets it too, along with its own flag: the reader has consented,
-  // watched the direct attempt fail, and asked for the relay by name.
+  // same share, so the gate is not shown twice for one session. A relay
+  // invitation needs its own recorded route consent before a language switch
+  // can carry that consent forward.
   let carried = false;
-  let wantRelay = false;
+  let wantRelay = mode === 'relay';
   if (!recovered) try {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
-    wantRelay = !localMode && carried && sessionStorage.getItem(RELAY_FLAG(code)) === '1';
-    sessionStorage.removeItem(RELAY_FLAG(code));
+    if (wantRelay && sessionStorage.getItem(`share-text-transport:${code}`) !== mode) carried = false;
   } catch {}
 
-  const session = recovered ?? { consent: carried, relay: wantRelay, localMode,
+  const session = recovered ?? { consent: carried, relay: wantRelay, transport: mode, localMode,
     token: null, asMd: false, mdTouched: false, generation: 0 };
   if (recovered) { carried = session.consent; wantRelay = session.relay; }
   const events = new AbortController();
@@ -876,8 +955,10 @@ function view(code, recovered = null) {
   if (carried && !recovered) session.retry.start();
 
   const trace = diagnostics.begin('viewer', localMode ? 'local' : wantRelay ? 'relay' : 'internet');
+  session.credentials?.close();
+  session.pairing?.close();
   let ws;
-  try { ws = new WebSocket(wsUrl(code, 'viewer')); }
+  try { ws = new WebSocket(wsUrl(code, 'viewer', false, mode)); }
   catch (error) {
     trace.error('websocket', error); trace.finish('socket-error');
     fail(phrase(recovered ? 'view.reconnecting' : 'view.error')); revealDiagnostics();
@@ -887,18 +968,36 @@ function view(code, recovered = null) {
   }
   let pc = null;
   let dcRef = null;
-  let relay = null;      // the TURN entry the rendezvous minted, once asked for
-  let relayReply = null; // resolves the ask, with the entry or null
+  let relay = null;
+  let preparing = false;
   let got = false;
   let connected = false;
   let done = false;
   let introduced = false;
+  let signals = Promise.resolve();
+  const candidates = [];
+  let makingOffer = false;
+  let restartRequested = false;
   const pairing = new PairingSocket(ws, {
     current: () => !done && session.generation === generation,
     onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
   });
-  session.pairing?.close();
   session.pairing = pairing;
+  const credentials = new RelayCredentials({
+    send: frame => pairing.send(frame),
+    current: () => !done && session.generation === generation,
+    onRenew: servers => {
+      if (!pc || done) return;
+      relay = servers;
+      pc.setConfiguration(shareConfiguration(mode, localMode, servers));
+      // The viewer remains the offerer during renewal, preserving the
+      // admitted data channels rather than creating another sharing session.
+      restartRequested = true;
+      void renegotiate();
+    },
+    onError: error => stopAttempt(transportError(error), false, 'relay-expired'),
+  });
+  session.credentials = credentials;
   let lastBody = '';
   let asMd = session.asMd;
   let mdTouched = session.mdTouched;
@@ -908,9 +1007,11 @@ function view(code, recovered = null) {
   let connectionTimer = 0;
   let deliveryTimer = 0;
   let foregroundProbe = 0;
+  let relayRecoveryTimer = 0;
   const clearDeadlines = () => {
     clearTimeout(connectionTimer);
     clearTimeout(deliveryTimer);
+    clearTimeout(relayRecoveryTimer);
   };
   const stopAttempt = (key, offerRelay = false, reason = 'signaling-error') => {
     if (done) return;
@@ -927,11 +1028,14 @@ function view(code, recovered = null) {
     clearDeadlines();
     clearTimeout(foregroundProbe);
     pc?.close();
+    credentials.close();
+    transportControl.route(null);
     pairing.close();
     $('knockrow').hidden = true;
     $('view-status').hidden = false;
     fail(phrase(key));
-    $('relayrow').hidden = localMode || !offerRelay;
+    $('view-status').textContent = phrase(key);
+    $('relayrow').hidden = true;
   };
   const awaitIntroduction = () => {
     clearTimeout(deliveryTimer);
@@ -996,6 +1100,8 @@ function view(code, recovered = null) {
     $('rendered').textContent = '';
     $('panel').hidden = true;
     pc?.close();
+    credentials.close();
+    transportControl.route(null);
     pairing.close();
     for (const button of $('filelist').querySelectorAll('button')) button.disabled = true;
     $('view-status').hidden = false;
@@ -1164,6 +1270,8 @@ function view(code, recovered = null) {
       : session.retry.active ? 'view.reconnecting' : 'view.interrupted');
     $('retryrow').hidden = false;
     pc?.close();
+    credentials.close();
+    transportControl.route(null);
     pairing.close();
     if (!terminal) session.retry.pause();
   }
@@ -1201,19 +1309,23 @@ function view(code, recovered = null) {
   // chosen to connect - before this runs, the sharer has not learned that
   // this reader exists, let alone an address.
   async function dial() {
-    if (pc !== null || ws.readyState !== 1) return;
+    if (pc !== null || preparing || done || ws.readyState !== 1) return;
+    preparing = true;
     session.consent = true;
     if (!session.retry.active) session.retry.start();
     $('consent').hidden = true;
-    $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : relay ? 'view.relaying' : 'view.connecting');
-    pc = new RTCPeerConnection(rtcConfig(localMode, relay));
+    $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : wantRelay ? 'view.relaying' : 'view.connecting');
+    try { relay = wantRelay ? await credentials.prepare() : null; }
+    finally { preparing = false; }
+    if (done || session.generation !== generation) return;
+    pc = new RTCPeerConnection(shareConfiguration(mode, localMode, relay));
     trace.attach(pc);
     connectionTimer = setTimeout(() => {
       if (!connected) stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay, 'timeout');
     }, 20000);
     pc.onicecandidate = (ev) => {
       if (!ev.candidate || done) return;
-      const allowed = allowedCandidate(ev.candidate, localMode);
+      const allowed = shareCandidate(ev.candidate, mode, localMode);
       if (!allowed) {
         trace.candidate('local', ev.candidate, 'filtered'); trace.count('candidatesFiltered'); return;
       }
@@ -1236,8 +1348,7 @@ function view(code, recovered = null) {
     };
     // An attempt that never connects: ICE gives up on its own once every
     // candidate pair has been tried, and the timer below covers the case
-    // where it never says so. A direct attempt that fails offers the relay;
-    // a relayed one that fails has nothing left to offer.
+    // where it never says so. A failed attempt keeps its original transport.
     const giveUp = () => {
       if (got || connected || done) return;
       stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay, 'ice-failed');
@@ -1246,6 +1357,7 @@ function view(code, recovered = null) {
       if (pc.iceConnectionState === 'failed') giveUp();
     };
     pc.ondatachannel = event => receiveFileChannel(event.channel);
+    pc.onnegotiationneeded = () => { void renegotiate(); };
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
     dcRef = dc;
@@ -1253,6 +1365,9 @@ function view(code, recovered = null) {
     const opened = () => {
       if (connected || done || session.generation !== generation) return;
       connected = true;
+      void pc.getStats().then(stats => {
+        if (!done && session.generation === generation) transportControl.route(selectedTransport(stats));
+      }).catch(() => {});
       viewerLive = true;
       clearTimeout(connectionTimer);
       if (!introduced) {
@@ -1323,6 +1438,11 @@ function view(code, recovered = null) {
         done = true;
         viewerLive = false;
         clearDeadlines();
+        clearTimeout(foregroundProbe);
+        credentials.close();
+        transportControl.route(null);
+        pairing.close();
+        pc?.close();
         $('knockrow').hidden = true;
         $('view-status').textContent = phrase('view.denied');
         $('retryrow').hidden = false;
@@ -1356,52 +1476,38 @@ function view(code, recovered = null) {
     if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
     if (done) return;
-    if (!pairing.send({ data: { sdp: pc.localDescription, local: localMode } })) throw new Error('signaling-unavailable');
+    if (!pairing.send({ data: { sdp: shareDescription(pc.localDescription, mode, localMode), local: localMode } })) throw new Error('signaling-unavailable');
     trace.count('offerSent'); trace.mark('offer-sent');
   }
 
-  // The credential is minted by the rendezvous, one per socket, and handed
-  // back on the same socket; a rendezvous that has no relay to offer - or an
-  // older one that does not know the question - leaves the ask unanswered,
-  // and the wait below turns that silence into a sentence.
-  function askRelay() {
-    if (localMode) return Promise.resolve(null);
-    return new Promise((resolve) => {
-      relayReply = resolve;
-      setTimeout(() => resolve(null), RELAY_WAIT);
-      if (!pairing.send({ relay: true })) resolve(null);
-    });
-  }
-
-  async function relayDial() {
-    relay = await askRelay();
-    relayReply = null;
-    if (relay === null) { fail(phrase('view.relay-none')); return; }
-    await dial();
+  async function renegotiate() {
+    if (!connected || done || makingOffer || pc?.signalingState !== 'stable') return;
+    makingOffer = true;
+    const restart = restartRequested;
+    restartRequested = false;
+    try {
+      const offer = await pc.createOffer(restart ? { iceRestart: true } : undefined);
+      if (done || session.generation !== generation) return;
+      await pc.setLocalDescription(offer);
+      if (done || session.generation !== generation) return;
+      if (!pairing.send({ data: { sdp: shareDescription(pc.localDescription, mode, localMode), local: localMode } })) {
+        throw new Error('transport.unavailable');
+      }
+    } catch (error) {
+      if (!done && session.generation === generation) stopAttempt(transportError(error), false, 'signaling-error');
+    } finally { makingOffer = false; }
   }
 
   listen('connect', 'click', () => {
     dial().catch(error => {
       trace.error('offer', error);
-      stopAttempt('view.error', false, typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
+      stopAttempt(error.message?.startsWith('transport.') ? transportError(error) : 'view.error', false, typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
     });
-  });
-
-  listen('relay', 'click', () => {
-    if (localMode) return;
-    try {
-      sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
-      sessionStorage.setItem(RELAY_FLAG(code), '1');
-    } catch {
-      stopAttempt('view.error');
-      return;
-    }
-    location.reload();
   });
 
   listen('mode-retry', 'click', () => {
     session.retry.stop();
-    location.href = makeShareUrl(location.href, code, retryLocal);
+    location.href = transportUrl(makeShareUrl(location.href, code, retryLocal), mode);
   });
 
   pairing.listen({
@@ -1411,46 +1517,50 @@ function view(code, recovered = null) {
     },
     error() { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); },
 
-    async message(e) {
+    message(e) {
       if (done || session.generation !== generation) return;
       if (e.data === 'pong') return;
       let m;
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
-      try {
+      if (credentials.receive(m)) return;
+      signals = signals.then(async () => {
+        if (done || session.generation !== generation) return;
         if (m.type === 'ready') {
           trace.mark('room-ready');
-          if (wantRelay) {
-            $('consent').hidden = true;
-            $('view-status').textContent = phrase('view.relaying');
-            await relayDial();
-          } else if (carried) {
+          if (carried) {
             await dial();
           } else {
             $('view-status').textContent = phrase('view.someone');
             $('consent').hidden = false;
           }
-        } else if (m.type === 'relay' && !localMode && relayReply !== null) {
-          // Only a TURN entry with a credential is worth carrying; anything
-          // else the rendezvous might send is not a relay.
-          const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
-          relayReply(entry ?? null);
         } else if (m.type === 'signal' && pc && !done) {
-          const mode = m.data.networkMode;
-          if (mode === 'local' || mode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
-            retryLocal = mode === 'local';
+          if (!m.data || typeof m.data !== 'object') return;
+          const networkMode = m.data.networkMode;
+          if (networkMode === 'local' || networkMode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
+            retryLocal = networkMode === 'local';
             stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct', false, 'mode-mismatch');
             $('mode-retryrow').hidden = false;
             return;
           }
           if (m.data.sdp) {
-            await pc.setRemoteDescription(localMode ? localDescription(m.data.sdp) : m.data.sdp);
+            await pc.setRemoteDescription(shareDescription(m.data.sdp, mode, localMode));
+            if (done || session.generation !== generation) return;
+            for (const candidate of candidates.splice(0)) await pc.addIceCandidate(candidate);
             trace.count('answerAccepted'); trace.mark('answer-accepted');
+            if (restartRequested) void renegotiate();
+          } else if (m.data.renew === true && mode === 'relay') {
+            restartRequested = true;
+            void renegotiate();
           } else if (m.data.candidate) {
             const candidate = m.data.candidate;
             trace.count('candidatesReceived');
-            if (!allowedCandidate(candidate, localMode)) {
+            if (!shareCandidate(candidate, mode, localMode)) {
               trace.candidate('remote', candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+            }
+            if (!pc.remoteDescription) {
+              if (candidates.length < 64) candidates.push(candidate);
+              return;
             }
             try {
               await pc.addIceCandidate(candidate);
@@ -1461,23 +1571,35 @@ function view(code, recovered = null) {
             }
           }
         }
-      } catch (error) {
+      }).catch(error => {
+        if (done || session.generation !== generation) return;
         trace.error('signaling', error);
-        if (!done && !got) stopAttempt('view.error');
-      }
+        if (!got || mode === 'relay') stopAttempt(error.message?.startsWith('transport.') ? transportError(error) : 'view.error');
+      });
     },
 
     close(e) {
+      credentials.close();
       pairing.close();
       trace.socket('closed', e.code);
       // Losing introductions does not retire a working encrypted peer. An
       // explicit host-ended control is terminal; transport loss can recover.
       if (done) return;
-      if (connected && dcRef?.readyState === 'open' &&
+      if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
           !['failed', 'closed'].includes(pc?.connectionState)) {
         resumeViewer();
         return;
       }
+      if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
+        // Stop travels on the reliable peer channel while the room closes.
+        // Give that terminal frame time to arrive before replacing the peer
+        // for renewed credentials; an ordinary outage still recovers promptly.
+        clearTimeout(relayRecoveryTimer);
+        relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
+        return;
+      }
+      if (e.code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
+      if (e.code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
       if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
       if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
       else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
@@ -1562,9 +1684,12 @@ addEventListener('click', (event) => {
   // the consent they gave moments ago, and the admission token (if any)
   // lets them straight back into a private share.
   if (viewerLive) {
-    try { sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now())); } catch {}
+    try {
+      sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
+      sessionStorage.setItem(`share-text-transport:${code}`, readTransport(location.href));
+    } catch {}
   }
-  anchor.href = makeShareUrl(anchor.href, code, isLocalLink(location.href));
+  anchor.href = transportUrl(makeShareUrl(anchor.href, code, isLocalLink(location.href)), readTransport(location.href) ?? 'direct');
 }, true);
 
 // Reached only if every step above ran without throwing.

@@ -182,6 +182,69 @@ const offer = (host, sender, connection = CONNECTION) => ({
   type: 'offer', generation: state(host).generation, connection, to: state(sender).id, sdp: SDP,
 });
 
+test('relay pager keeps password admission, individual moderation and a pinned route after host loss', async () => {
+  const s = await system(), host = await s.open();
+  const hostAuth = { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, transport: 'relay' };
+  await s.send(host, hostAuth);
+  assert.equal(last(host).transport, 'relay');
+  const connect = async (passwordProof, transport = 'relay') => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'sender', key: key(0), passwordProof, transport });
+    return ws;
+  };
+  assert.equal(last(await connect(WRONG)).error, 'password');
+  assert.equal(last(await connect(PASSWORD, 'direct')).error, 'transport-mismatch');
+  const sender = await connect(PASSWORD);
+  assert.equal(last(sender).transport, 'relay');
+  const relay = { ...CANDIDATE, candidate: 'candidate:1 1 udp 1 198.51.100.5 12345 typ relay' };
+  const signal = { type: 'candidate', generation: state(host).generation, connection: CONNECTION, to: state(sender).id, candidate: relay };
+  await s.send(host, signal);
+  assert.deepEqual(last(sender).candidate, relay);
+  await s.send(host, { ...signal, candidate: CANDIDATE });
+  assert.equal(last(host).error, 'invalid');
+  await s.moderate(host, sender, true);
+  assert.equal(last(sender).muted, true);
+  s.room().instance.webSocketClose(host); host.close(1000, 'gone');
+  const wrongMode = await s.host(PASSWORD);
+  assert.equal(last(wrongMode).error, 'transport-mismatch');
+  const resumedHost = await s.open();
+  await s.send(resumedHost, hostAuth);
+  assert.equal(last(sender).muted, true);
+  await s.kick(resumedHost, sender);
+  assert.equal(last(sender).type, 'kicked');
+  assert.equal(last(await connect(PASSWORD)).type, 'kicked');
+});
+
+test('relay pager issuance requires a live verified relay participant and respects the service switch', async t => {
+  const s = await system();
+  s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+  let mints = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    mints++;
+    return new NativeResponse(JSON.stringify({ iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }] }));
+  });
+  const parked = await s.open();
+  await s.send(parked, { type: 'auth', role: 'sender', key: key(0), passwordProof: PASSWORD, transport: 'relay' });
+  await s.send(parked, { type: 'relay-request', id: 'parked' });
+  assert.equal(last(parked).error, 'forbidden');
+  assert.equal(mints, 0);
+  s.env.RELAY_TOOLS = 'walkie-talkie';
+  const disabled = await s.open();
+  const auth = { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, transport: 'relay' };
+  await s.send(disabled, auth);
+  assert.equal(last(disabled).error, 'relay-unavailable');
+  s.env.RELAY_TOOLS = 'voice-oncall';
+  const host = await s.open(); await s.send(host, auth);
+  await s.send(parked, { type: 'relay-request', id: 'admitted' });
+  assert.equal(last(parked).type, 'relay-credentials');
+  assert.equal(last(parked).iceServers[0].username, 'temporary');
+  assert.equal(mints, 1);
+  await s.send(host, { type: 'end', generation: state(host).generation });
+  await s.send(parked, { type: 'relay-request', id: 'ended' });
+  assert.equal(last(parked).error, 'forbidden');
+  assert.equal(mints, 1);
+});
+
 test('inbox uses separate routing, trusted scope, existing origin gates and no capability URL', async () => {
   const s = await system();
   assert.equal((await worker.fetch(new Request(`https://rendezvous.abox.tools/inbox/${s.code}`), s.env)).status, 426);

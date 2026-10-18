@@ -13,6 +13,7 @@
     <p class="wt-note" id="wt-selected-channel" aria-live="polite">No channel selected.</p>
     <div class="paired-actions"><button type="button" id="wt-join" disabled>Join channel</button></div>
   </section>
+  {% include "partials/paired-transport.html" %}
   <div class="wt-channel-heading">
     <h2 id="wt-channel-title">One voice, nearby listeners</h2>
     <span class="wt-role" id="wt-role">Host</span>
@@ -59,7 +60,7 @@
     <section class="wt-invite" id="wt-invite" hidden aria-labelledby="wt-invite-title">
       <div class="wt-invite-fields">
         <h3 id="wt-invite-title">Invite listeners</h3>
-        <p class="wt-note">Share this link or scan the QR code from a device on the same network. Anyone with the link can listen while this channel is open.</p>
+        <p class="wt-note">Share this link or scan the QR code. It includes the chosen connection route. Anyone with the link can listen while this channel is open.</p>
         <label for="wt-link">Listener link</label>
         <div class="wt-link-row">
           <input id="wt-link" type="text" readonly spellcheck="false" autocomplete="off">
@@ -76,6 +77,7 @@
   </div>
 
   <div id="wt-listener" hidden>
+    <button type="button" id="wt-connect-listener" hidden>Join channel</button>
     <div class="wt-listening" id="wt-listening" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
     </div>
@@ -84,15 +86,15 @@
       <button type="button" id="wt-mute" aria-pressed="false">Mute</button>
       <button type="button" class="wt-secondary" id="wt-leave">Leave</button>
     </div>
-    <p class="wt-note" id="wt-listener-help">Listening starts automatically. Your microphone is never requested. Keep this page open to hear the host.</p>
+    <p class="wt-note" id="wt-listener-help">Direct invitations connect automatically. For Cloud relay, review the route and choose Join channel. Your microphone is never requested. Keep this page open to hear the host.</p>
     <audio id="wt-audio" aria-label="Live host audio" autoplay playsinline></audio>
   </div>
 
   <details class="wt-details">
     <summary>How devices connect</summary>
     <p>Opening this page asks the pairing service for live channels grouped by public IPv4 address or IPv6 subnet and website origin. Shared gateways can include strangers, and VPNs can hide devices that are physically nearby. Starting with Show this channel nearby selected shares its name and listener invitation with that group. The listing stays while the host connection is alive; ending or losing that connection removes it.</p>
-    <p>An internet pairing service introduces the browsers using connection metadata. Live voice is encrypted and travels directly between them. There is no audio relay or recording.</p>
-    <p>Use a trusted local network where devices can reach one another. Guest Wi-Fi, device isolation, and some VPNs or firewalls may prevent a connection. This tool uses no public STUN or TURN servers.</p>
+    <p>An internet service introduces the browsers using connection metadata. Direct sends encrypted voice between them without a relay. If both devices choose Cloud relay, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt the audio. There is no recording feature.</p>
+    <p>Direct needs a network where the devices can reach one another. Guest Wi-Fi, device isolation and some VPNs or firewalls can block it. Cloud relay is an explicit alternative that needs internet throughout; a failed connection never switches routes automatically.</p>
     <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
     <p>Receivers wait for a missing host and check once a second while their pairing connection is open. Background tabs, sleeping devices, and an interrupted internet connection may reconnect more slowly.</p>
   </details>
@@ -101,6 +103,7 @@
 <div id="phrases" hidden>
   <span data-phrase="host-role">Host</span>
   <span data-phrase="listener-role">Receiver</span>
+  <span data-phrase="listener-confirm">This channel uses Cloud relay. Review the connection choice, then choose Join channel to listen.</span>
   <span data-phrase="host-idle">Choose a nearby channel, or start your own.</span>
   <span data-phrase="choose-channel">Choose</span>
   <span data-phrase="choose-channel-name">Choose {name}</span>
@@ -150,7 +153,7 @@
   <span data-phrase="listener-unmute">Unmute</span>
   <span data-phrase="copy-success">Listener link copied.</span>
   <span data-phrase="copy-error">Select and copy the listener link above.</span>
-  <span data-phrase="net.clean">Internet pairing introduces nearby browsers. Voice travels directly between them.</span>
+  <span data-phrase="net.clean">Internet pairing introduces browsers. Voice follows your chosen Direct or Cloud relay route.</span>
   <span data-phrase="net.dirty">Internet pairing is needed to join or reconnect. A working direct voice connection may continue.</span>
 </div>
 </main>

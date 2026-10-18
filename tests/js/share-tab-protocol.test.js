@@ -12,7 +12,9 @@ test('tab invitations keep their tool namespace and unpredictable code', () => {
   assert.equal(parseCode('tab-abc234/other'), null);
   assert.equal(parseCode('x'.repeat(2049)), null);
   assert.equal(parseCode(null), null);
-  assert.equal(viewerLink('https://abox.tools/share-tab/?old=1#old', 'tab-abcdefghijklmnop'), 'https://abox.tools/share-tab/#tab-abcdefghijklmnop');
+  assert.equal(viewerLink('https://abox.tools/share-tab/?old=1#old', 'tab-abcdefghijklmnop'), 'https://abox.tools/share-tab/?transport=direct#tab-abcdefghijklmnop');
+  assert.equal(viewerLink('https://abox.tools/share-tab/?old=1#old', 'tab-abcdefghijklmnop', 'relay'), 'https://abox.tools/share-tab/?transport=relay#tab-abcdefghijklmnop');
+  assert.throws(() => viewerLink('https://abox.tools/share-tab/', 'tab-abcdefghijklmnop', 'automatic'), /transport.invalid/);
   assert.throws(() => viewerLink('https://abox.tools/share-tab/', undefined), /code.invalid/);
 });
 

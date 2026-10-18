@@ -1,7 +1,9 @@
 # The rendezvous
 
 The one server component anything on this site has. `/share-text/`, `/share-tab/`,
-`/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect browsers directly over WebRTC.
+`/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect browsers over WebRTC.
+Direct is the default. An explicit Cloud relay option routes encrypted peer
+traffic through Cloudflare TURN, using short-lived credentials from this Worker.
 Text and files, tab video, camera frames, and voice stay on the peer connection. A direct
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
@@ -65,8 +67,9 @@ been page-side. The protocol carries introductions, the relay credential
 below and the local discovery directory.
 
 Both voice tools use the same origin check and address connection limit, with
-nearby discovery under separate namespaces and no relay credentials. The voice signaling services never carry audio,
-and the page does not configure STUN or TURN. Host-only ICE candidates can
+nearby discovery under separate namespaces. The voice signaling services never carry audio.
+Direct configures no STUN or TURN; Cloud relay forces TURN candidates and does
+not silently fall back to Direct. Host-only ICE candidates can
 include globally routable interface addresses, especially IPv6: a candidate
 type describes how an address was obtained, not a physical LAN boundary.
 
@@ -117,9 +120,8 @@ domain changes also need the affected zone's Workers Routes write authority.
 Keep account credentials outside this repository.
 
 Worker secrets are environment-specific and are not copied from production.
-The development instance can pair without TURN secrets. Share a Browser Tab,
-Remote Camera and the voice tools do not use an internet relay. Testing Share
-Text's optional relay would require separately configured development secrets,
+The development instance can pair directly without TURN secrets. Testing any
+tool's explicit Cloud relay option requires separately configured development secrets,
 using `wrangler secret put <name> --env dev`; never export production secrets
 into a checked-in file to populate the environment.
 
@@ -138,11 +140,9 @@ worker refuses the unknown namespace; the page must not retry in a text room.
 
 Deploy this allowlist update manually from this directory before publishing
 the static page. It adds no class, binding, migration, storage or secret.
-The page uses no discovery listing. Both its online and offline methods use
-host-only ICE, without public STUN or TURN; this tool never requests the
-existing relay credentials. Online pairing uses this namespace, while offline
-offer/reply exchange opens no worker socket. That page-side transport choice
-needs no new worker protocol or deployment. Approval and acknowledgement stay
+The page uses the same verified nearby listing and online signaling as Camera.
+Direct uses host-only ICE without public STUN or TURN; Cloud relay requests
+credentials through the shared protocol below. Approval and acknowledgement stay
 on the encrypted control channel; the worker carries neither them nor video.
 
 ### The discovery migration
@@ -217,7 +217,8 @@ link-only sharing. Names are visible to the group, so Private stays on by
 default. Choosing a name opens consent; it does not initiate a peer
 connection or override admission.
 
-Text/camera directory entries contain only codes and `local: true`, never text,
+Text/camera directory entries contain codes, `local: true`, and an optional
+server-verified `transport: "relay"` marker, never text,
 file names, file sizes or file bytes. Voice Oncall entries additionally contain
 a bounded room name and password-required flag, verified against the live host's
 lease. Walkie-Talkie entries contain a bounded room name and listener capability,
@@ -227,11 +228,13 @@ listen without receiving a separate invitation. Directory state is held in WebSo
 the sockets are open, with no directory records written to Durable Object
 storage. Cloudflare's seven-day connection logging is unchanged; leases are
 message payloads and never put in URLs or logged by the worker.
+Voice listings may carry the same verified transport marker. An absent marker
+means Direct. A publisher cannot override the mode obtained from its live host.
 
 ### The relay's two secrets
 
-A reader whose direct attempt failed may ask for a relay, and answering
-takes a TURN key: in the Cloudflare dashboard, **Realtime → TURN**, create a
+Each explicitly selected Cloud relay session needs a TURN key: in the
+Cloudflare dashboard, **Realtime → TURN**, create a
 key, and hand its id and its token to the worker as secrets -
 
 ```
@@ -241,10 +244,28 @@ npx wrangler secret put TURN_KEY_TOKEN
 
 Secrets rather than `[vars]` because the token is a bearer token, and a
 deploy from this file must never carry it. Without them the worker answers
-the ask with `iceServers: null`, and the page says no relay is available -
-so the deploy and the key can land in either order. The first 1,000 GB a
-month of relayed traffic are free, and relayed traffic is only ever the
-pairs that could not connect directly.
+`error: "unavailable"`, and the page explains that Cloud relay is unavailable.
+The browser never receives the long-lived API token. TURN credentials stay in
+memory and renew before expiry; they are not put in links, discovery or logs.
+
+`RELAY_TOOLS` is a comma-separated allowlist of the five tool slugs; an empty
+value disables new relay sessions. Both deployment environments explicitly set
+it. `RELAY_MAX_PEERS` caps simultaneous peers (default 10, maximum 16; voice
+also retains its ten-peer cap). `RELAY_MAX_SESSION_SECONDS` bounds a socket's
+credential session (default eight hours, allowed five minutes to one day).
+`RELAY_MAX_CREDENTIALS` bounds issuance attempts per socket (default 12, maximum
+48). Requests are limited to one per minute. Limits survive hibernation in
+socket attachments; closing and opening a new socket starts another credential
+session. Invalid limits fail closed. Credentials normally last one hour and
+are shortened near the session deadline. End/Stop prevents pending credentials
+from being delivered but does not revoke credentials already issued by TURN.
+
+These controls bound admission and issuance, not total traffic or account
+spending. Cloudflare currently lists TURN at $0.05 per outbound GB; consult its
+[current TURN pricing](https://developers.cloudflare.com/realtime/turn/) and
+account usage before enabling it. This implementation does not enforce a byte
+quota or a global spending cap. Renewing credentials never changes the chosen
+transport, host approval, password or microphone consent.
 
 ## The protocol, in full
 
@@ -258,26 +279,30 @@ pairs that could not connect directly.
   location; the thirty-first is refused with 429. The start page opens a
   discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
-- A host connects to `/ws/<code>?role=host`; a second host on a live code is
+- A host connects to `/ws/<code>?role=host&transport=direct` or `transport=relay`;
+  its mode is pinned for that generation. A second host on a live code is
   refused with close code 4409.
-- A viewer connects with `?role=viewer`; with no host present it is refused
+- A viewer connects with `?role=viewer` and the matching `transport`; with no host present it is refused
   4404, past the room cap 4429. Otherwise the host learns `{join, id}` and
   the viewer gets `{ready}`. The id is opaque to the page and begins `v:`,
   so that it can never spell a role.
+  Mismatched transport closes with 4412; a disabled relay service closes with
+  4413. Duplicate or unknown transport query values are refused. Omitted mode
+  means Direct for old clients; new clients always send an explicit mode.
 - Everything a viewer sends is wrapped as `{signal, from, data}` and handed
   to the host; everything the host sends with a `to` naming a viewer's id
   goes to that viewer, and a `to` in any other shape goes nowhere. The
   payloads are WebRTC offers, answers and ICE candidates; the switchboard
   does not read them.
-- A viewer may send `{relay: true}` once, after its direct attempt has
-  failed. The room mints an eight-hour credential for Cloudflare's TURN
-  service and answers `{relay, iceServers}` on the same socket - the TURN
-  entry alone, or `null` when no key is configured or Cloudflare declined,
-  which the worker notes with one line carrying the status and nothing
-  else. A second ask on the same socket is ignored; the flag rides the
-  socket's attachment, so hibernation does not forget it. The relay forwards
-  the DTLS-encrypted channel between the two browsers and holds no key to
-  it, so the list of what can be seen above does not grow.
+- A live matching Cloud relay host or viewer sends
+  `{type: "relay-request", id}`. The Worker answers
+  `{type: "relay-credentials", id, iceServers, expiresAt}` or an `error` of
+  `forbidden`, `limited`, or `unavailable`. This request is consumed rather than
+  forwarded. Authorization is checked again after the credential service
+  returns, so a stopped or replaced session cannot receive late credentials.
+  New Direct rooms cannot obtain them. Cached non-local Share Text pages retain
+  the old viewer-only `{relay: true}` request once per socket only when their
+  host did not pin a transport. Other tools and local text shares refuse it.
 - When the host's socket drops, every viewer is closed with 4410
   "host-gone" - the instant, authoritative end-of-share signal, long before
   WebRTC's own ~30s consent expiry would notice.
@@ -297,7 +322,8 @@ pairs that could not connect directly.
 - An observer publishes `{publish: {code, lease}}`. Discovery calls the
   room through its private binding at `POST /_discovery/check` with
   `{code, lease, scope}`. A 204 confirms that the matching local,
-  discoverable host is still connected; anything else refuses publication.
+  discoverable Direct host is still connected; a relay host returns 200 with
+  the single field `{transport: "relay"}`. Other responses refuse publication.
   The lease is not accepted as authority without that live room check.
 - `{publish: null}` withdraws the observer's listing. Closing the observer
   also removes it. When the actual room host disconnects, the room calls
@@ -330,6 +356,11 @@ the listener capability in the page URL fragment. Request URLs carry only
   of `key` to equal the path's code. Socket attachments retain hashes, roles,
   random listener ids, generations, connection ids, and bounded bookkeeping;
   they retain no raw capabilities, SDP, candidates, or audio.
+  New frames also carry `transport: "direct"` or `"relay"`. Host policy and
+  verified waiting peers pin that choice; mismatched peers are refused after
+  capability validation. Ready frames repeat the authoritative mode. The
+  shared credential request above is authorized only for the live current
+  relay generation and is never forwarded as voice signaling.
 - A host explicitly offering nearby listening instead sends the exact frame
   `{type: "auth", role: "host", key, listenKey, roomName, discover: true}`.
   Its capabilities must differ; its trimmed room name must contain 1–80
@@ -368,10 +399,10 @@ the listener capability in the page URL fragment. Request URLs carry only
   sender or address another listener. Only an offer selects the connection
   UUID against which its listener's replies are checked; early or late host
   candidates cannot overwrite that selection.
-- SDP is bounded ASCII with one encrypted audio media section. ICE accepts
-  syntactically valid IPv4, IPv6, or mDNS interface addresses with `typ host`
-  only. `srflx`, `prflx`, `relay`, data-channel offers, arbitrary envelopes,
-  binary messages, and relay-credential requests are not forwarded. A room
+- SDP is bounded ASCII with one encrypted audio media section. Direct ICE accepts
+  syntactically valid IPv4, IPv6, or mDNS interface addresses with `typ host`;
+  Cloud relay accepts only `typ relay`. `srflx`, `prflx`, data-channel offers,
+  arbitrary envelopes and binary messages are not forwarded. A room
   does not relay or record media.
 - An authenticated host can publish `{type: "status", generation, talking}`
   with a boolean `talking`. Listeners receive the same bounded status frame.
@@ -400,7 +431,7 @@ the listener capability in the page URL fragment. Request URLs carry only
 Internet access is needed for introductions and signaling recovery. Already
 working direct media does not pass through this service, and a signaling
 outage need not tear it down. Wi-Fi isolation, firewalls, VPNs, and browser
-policies can still prevent a direct connection. The absence of STUN/TURN and
+policies can still prevent a direct connection. In Direct, the absence of STUN/TURN and
 the use of host-only candidates do not prove that two devices share a physical
 LAN, and neither the worker nor the page claims that proof.
 
@@ -410,7 +441,9 @@ The Inbox transport reverses the voice media directions. The host creates
 receive-only offers, and each participant answers send-only audio. Participants
 never receive other participants' audio. Setup uses flat audio SDP and host ICE
 frames with authoritative participant, generation and connection identifiers,
-as in Broadcast, without a STUN or TURN fallback.
+as in Broadcast. Direct never switches to Cloud relay automatically; both
+parties must select the host's mode, with credentials subject to the same
+live-admission checks and bounded issuance as Broadcast.
 
 - `/inbox/<64hex>` addresses only `INBOXES`. The code is SHA-256 of a random
   43-character host capability, whose digest must match before host admission.

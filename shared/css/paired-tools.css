@@ -37,6 +37,11 @@
 .paired-nearby [role=status] { overflow-wrap: anywhere; }
 .paired-nearby button, .paired-nearby a { white-space: normal; overflow-wrap: anywhere; }
 .paired-page [data-pairing-setup] { min-width: 0; }
+.paired-transport { margin-block: 1rem; }
+.paired-transport label { display: block; font-weight: 600; margin-bottom: .4rem; }
+.paired-transport select { width: min(100%, 22rem); }
+.paired-transport .field-note { margin-bottom: 0; }
+.paired-transport [role=status] { font-weight: 600; }
 @media (max-width: 600px) {
   .paired-page .paired-nearby { padding: 1rem; }
   .paired-nearby-head { align-items: flex-start; }

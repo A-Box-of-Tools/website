@@ -1,7 +1,8 @@
-// A voice room has no relay or stored payloads. Its authority and
+// A voice room stores no payloads. Its authority and selected transport
 // current generation live in socket attachments, so hibernation cannot forget
 // them and the last socket leaving removes the room's complete state.
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope } from "./discovery.js";
+import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
@@ -16,6 +17,9 @@ const object = (value) => value !== null && typeof value === "object" && !Array.
 const fields = (value, names) => object(value) && Object.keys(value).length === names.length
   && names.every((name) => Object.hasOwn(value, name));
 const uuid = (value) => typeof value === "string" && UUID.test(value);
+const mode = (value) => value === undefined || value === "direct" ? "direct" : value === "relay" ? "relay" : null;
+const transportFields = (value) => Object.hasOwn(value, "transport") ? ["transport"] : [];
+const transportFrame = (transport) => transport === "relay" ? { transport } : {};
 
 function roomName(value) {
   if (typeof value !== "string" || value.length > 80 || !value.isWellFormed()
@@ -41,7 +45,7 @@ function hostAddress(value) {
   } catch { return false; }
 }
 
-function candidateLine(value) {
+function candidateLine(value, transport = "direct") {
   if (typeof value !== "string" || value.length > 4096 || /[\r\n\x00]/.test(value)) return false;
   if (value === "") return true;
   const parts = value.trim().split(/ +/);
@@ -50,7 +54,7 @@ function candidateLine(value) {
       || !/^\d{1,10}$/.test(parts[3]) || Number(parts[3]) > 0xffffffff
       || !hostAddress(parts[4]) || !/^\d{1,5}$/.test(parts[5])
       || Number(parts[5]) < 1 || Number(parts[5]) > 65535
-      || parts[6] !== "typ" || parts[7] !== "host" || (parts.length - 8) % 2 !== 0) return false;
+      || parts[6] !== "typ" || parts[7] !== (transport === "relay" ? "relay" : "host") || (parts.length - 8) % 2 !== 0) return false;
   const extensions = new Set(["raddr", "rport", "tcptype", "generation", "ufrag", "network-id", "network-cost"]);
   for (let i = 8; i < parts.length; i += 2) {
     if (!extensions.has(parts[i]) || !/^[a-z0-9+/_-]{1,256}$/i.test(parts[i + 1])
@@ -60,11 +64,11 @@ function candidateLine(value) {
   return true;
 }
 
-function candidate(value) {
+function candidate(value, transport) {
   if (value === null) return true;
   if (!object(value) || !Object.hasOwn(value, "candidate")
       || Object.keys(value).some((name) => !["candidate", "sdpMid", "sdpMLineIndex", "usernameFragment"].includes(name))
-      || !candidateLine(value.candidate)) return false;
+      || !candidateLine(value.candidate, transport)) return false;
   for (const name of ["sdpMid", "usernameFragment"]) {
     if (value[name] != null && (typeof value[name] !== "string" || value[name].length > 256)) return false;
   }
@@ -72,7 +76,7 @@ function candidate(value) {
     && value.sdpMLineIndex >= 0 && value.sdpMLineIndex <= 255;
 }
 
-function description(value) {
+function description(value, transport) {
   if (typeof value !== "string" || value.length > 32 * 1024) return false;
   const lines = value.split(/\r?\n/).filter(Boolean);
   if (lines.length > 512 || lines[0] !== "v=0"
@@ -80,7 +84,7 @@ function description(value) {
   const media = lines.filter((line) => line.startsWith("m="));
   if (media.length !== 1 || !/^m=audio \d{1,5} (?:UDP|TCP)\/TLS\/RTP\/SAVPF [0-9 ]+$/.test(media[0])) return false;
   for (const line of lines) {
-    if (line.startsWith("a=candidate:") && !candidateLine(line.slice(2))) return false;
+    if (line.startsWith("a=candidate:") && !candidateLine(line.slice(2), transport)) return false;
     if (line.startsWith("c=")) {
       const address = line.match(/^c=IN IP[46] (\S+)$/)?.[1];
       if (address !== "0.0.0.0" && address !== "::" && !hostAddress(address)) return false;
@@ -96,15 +100,15 @@ function description(value) {
 
 // Rebuilding the envelope discards client claims about sender identity. Only
 // browser connection metadata is admitted, including host-only ICE addresses.
-export function validBroadcastSignal(value, role) {
-  if (!object(value) || !uuid(value.generation) || !uuid(value.connection)) return null;
+export function validBroadcastSignal(value, role, transport = "direct") {
+  if (mode(transport) === null || !object(value) || !uuid(value.generation) || !uuid(value.connection)) return null;
   const names = ["type", "generation", "connection", ...(role === "host" ? ["to"] : [])];
   if (role === "host" && !uuid(value.to)) return null;
   if (value.type === (role === "host" ? "offer" : "answer")) {
-    if (!fields(value, [...names, "sdp"]) || !description(value.sdp)) return null;
+    if (!fields(value, [...names, "sdp"]) || !description(value.sdp, transport)) return null;
     return { type: value.type, generation: value.generation, connection: value.connection, sdp: value.sdp };
   }
-  if (value.type === "candidate" && fields(value, [...names, "candidate"]) && candidate(value.candidate)) {
+  if (value.type === "candidate" && fields(value, [...names, "candidate"]) && candidate(value.candidate, transport)) {
     return { type: "candidate", generation: value.generation, connection: value.connection, candidate: value.candidate };
   }
   return null;
@@ -155,7 +159,7 @@ export class Broadcast {
           || owner.scope !== claim.scope || owner.listenHash !== listenHash) {
         return new Response(null, { status: 403 });
       }
-      return new Response(JSON.stringify({ name: owner.name, listenKey: claim.listenKey }), {
+      return new Response(JSON.stringify({ name: owner.name, listenKey: claim.listenKey, ...transportFrame(mode(owner.transport)) }), {
         headers: { "content-type": "application/json" },
       });
     }
@@ -190,11 +194,12 @@ export class Broadcast {
 
   async authenticate(ws, value, who) {
     const isHost = value.role === "host";
-    const offered = isHost && fields(value, ["type", "role", "key", "listenKey", "roomName", "discover"])
+    const transport = mode(value.transport), extra = transportFields(value);
+    const offered = isHost && fields(value, ["type", "role", "key", "listenKey", "roomName", "discover", ...extra])
       && value.discover === true;
     const name = offered ? roomName(value.roomName) : null;
-    if (!(isHost ? offered || fields(value, ["type", "role", "key", "listenKey"])
-        : fields(value, ["type", "role", "key"]))
+    if (transport === null || !(isHost ? offered || fields(value, ["type", "role", "key", "listenKey", ...extra])
+        : fields(value, ["type", "role", "key", ...extra]))
         || value.type !== "auth" || !["host", "listener"].includes(value.role)
         || typeof value.key !== "string" || !KEY.test(value.key)
         || isHost && (typeof value.listenKey !== "string" || !KEY.test(value.listenKey))
@@ -212,11 +217,15 @@ export class Broadcast {
     if (current.deadline <= Date.now()) { this.refuse(ws, 4408, "timeout"); return; }
     if (isHost) {
       if (keyHash !== who.code) { this.refuse(ws, 4403, "unauthorized"); return; }
+      if (transport === "relay" && !relayEnabled(this.env, "walkie-talkie")) { this.refuse(ws, 4403, "relay-unavailable"); return; }
+      const retained = this.host()?.deserializeAttachment() ?? this.sockets("listener")
+        .map(peer => peer.deserializeAttachment()).find(peer => peer.verified);
+      if (retained && mode(retained.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
       const previous = this.sockets("host");
       const generation = crypto.randomUUID();
       const scope = offered && validScope(who.scope) ? who.scope : null;
       const lease = scope === null ? null : crypto.randomUUID();
-      ws.serializeAttachment({ role: "host", code: who.code, listenHash, generation,
+      ws.serializeAttachment({ role: "host", code: who.code, listenHash, generation, transport,
         ...(offered ? { name, scope, lease } : {}),
         talking: false, ended: false, window: Date.now(), updates: 0 });
       for (const old of previous) {
@@ -228,7 +237,7 @@ export class Broadcast {
         this.send(old, { type: "replaced" });
         try { old.close(4409, "replaced"); } catch {}
       }
-      if (!this.send(ws, { type: "host-ready", generation,
+      if (!this.send(ws, { type: "host-ready", generation, ...transportFrame(transport),
         ...(offered ? { discovery: lease === null ? null : { code: who.code, lease, tool: "walkie-talkie" } } : {}) })) return;
       for (const listener of this.sockets("listener")) {
         if (listener.deserializeAttachment().listenHash !== listenHash) this.refuse(listener, 4403, "unauthorized");
@@ -236,13 +245,15 @@ export class Broadcast {
       }
       return;
     }
-    if (this.sockets("listener").length >= MAX_LISTENERS) { this.refuse(ws, 4429, "full"); return; }
+    const limit = transport === "relay" ? Math.min(MAX_LISTENERS, relayPolicy(this.env)?.maxPeers ?? 0) : MAX_LISTENERS;
+    if (this.sockets("listener").length >= limit) { this.refuse(ws, 4429, "full"); return; }
     const host = this.host()?.deserializeAttachment();
     const anchors = this.sockets("listener").map((peer) => peer.deserializeAttachment()).filter((peer) => peer.verified);
     const trusted = host ?? anchors[0];
     if (trusted && trusted.listenHash !== keyHash) { this.refuse(ws, 4403, "unauthorized"); return; }
+    if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
     ws.serializeAttachment({ role: "listener", code: who.code, id: crypto.randomUUID(),
-      listenHash: keyHash, verified: trusted !== undefined && trusted !== null,
+      listenHash: keyHash, transport, verified: trusted !== undefined && trusted !== null,
       generation: host ? null : trusted?.generation ?? null, connection: null,
       ended: trusted?.ended === true, window: Date.now(), updates: 0 });
     this.ready(ws);
@@ -254,12 +265,13 @@ export class Broadcast {
     const host = this.host(), owner = host?.deserializeAttachment();
     if (!owner) { this.send(ws, { type: who.ended ? "ended" : "waiting" }); return; }
     if (who.listenHash !== owner.listenHash) { this.refuse(ws, 4403, "unauthorized"); return; }
+    if (mode(who.transport) !== mode(owner.transport)) { this.refuse(ws, 4403, "transport-mismatch"); return; }
     const joining = !who.verified || who.generation !== owner.generation;
     const updated = { ...who, verified: true, generation: owner.generation,
       ended: owner.ended, ...(joining ? { connection: null } : {}) };
     ws.serializeAttachment(updated);
     if (owner.ended) { this.send(ws, { type: "ended" }); return; }
-    if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation, talking: owner.talking }) && joining) {
+    if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation, talking: owner.talking, ...transportFrame(mode(owner.transport)) }) && joining) {
       this.send(host, { type: "join", id: who.id, generation: owner.generation });
     }
   }
@@ -279,6 +291,17 @@ export class Broadcast {
     if (who.role === "pending") {
       if (who.authenticating) { this.refuse(ws, 4400, "invalid"); return; }
       return this.authenticate(ws, value, who);
+    }
+    if (value.type === "relay-request") {
+      const generation = who.generation;
+      const authorized = () => {
+        const current = ws.deserializeAttachment(), owner = this.host()?.deserializeAttachment();
+        return ws.readyState === 1 && current?.generation === generation && owner?.generation === generation
+          && !owner.ended && owner.transport === "relay" && current.transport === "relay"
+          && (current.role === "host" || current.role === "listener" && current.verified);
+      };
+      return answerRelayRequest(ws, value, { env: this.env, tool: "walkie-talkie", authorized,
+        current: () => ws.readyState === 1 && ws.deserializeAttachment()?.generation === generation });
     }
     if (who.role === "listener" && fields(value, ["type"]) && value.type === "leave") {
       this.drop(ws); try { ws.close(1000, "left"); } catch {} return;
@@ -307,7 +330,7 @@ export class Broadcast {
       this.send(ws, { type: "ended" });
       return;
     }
-    const signal = validBroadcastSignal(value, who.role);
+    const signal = validBroadcastSignal(value, who.role, mode(owner.transport));
     if (signal === null) { this.send(ws, { type: "error", error: "invalid" }); return; }
     if (who.role === "host") {
       const listener = this.sockets("listener").find((peer) => peer.deserializeAttachment().id === value.to);

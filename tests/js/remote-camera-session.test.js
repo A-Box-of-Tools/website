@@ -56,7 +56,8 @@ function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
     transceivers = []; ice = []; closed = false;
     constructor(config) { super(); this.config = config; peers.push(this); }
     createDataChannel(label) { this.channel = new Channel(); this.channel.label = label; return this.channel; }
-    async createOffer() { return { type: 'offer', sdp: SDP }; }
+    async createOffer(options) { (this.offerOptions ??= []).push(options); return { type: 'offer', sdp: SDP }; }
+    setConfiguration(config) { this.config = config; }
     async createAnswer() { return { type: 'answer', sdp: SDP }; }
     async setLocalDescription(value) { this.localDescription = value; }
     async setRemoteDescription(value) { this.remoteDescription = value; }
@@ -88,6 +89,8 @@ test('camera discovery accepts only its own live room and namespace acknowledgem
   assert.equal(url.pathname, '/ws/kitchen');
   assert.equal(url.searchParams.get('tool'), 'remote-camera');
   assert.equal(url.searchParams.get('discover'), '1');
+  assert.equal(url.searchParams.get('transport'), 'direct');
+  assert.equal(f.sockets[0].sent.some((frame) => frame.type === 'relay-request'), false);
   const discovery = { code: 'kitchen', lease: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' };
   for (const claim of [discovery, { ...discovery, tool: 'share-text' }, { ...discovery, tool: 'remote-camera', code: 'other' }]) {
     f.sockets[0].receive({ type: 'host-ready', discovery: claim });
@@ -99,6 +102,80 @@ test('camera discovery accepts only its own live room and namespace acknowledgem
   f.session.stop();
   f.sockets[0].receive({ type: 'host-ready', discovery: valid });
   assert.equal(f.publications.length, 1);
+});
+
+const RELAY_SERVERS = [{ urls: ['turns:relay.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
+function relayReply(socket, values = {}) {
+  const request = socket.sent.findLast((frame) => frame.type === 'relay-request');
+  assert.ok(request, 'relay credentials requested through the live room');
+  socket.receive({ type: 'relay-credentials', id: request.id, iceServers: RELAY_SERVERS, expiresAt: Date.now() + 3600000, ...values });
+}
+
+test('camera relay waits for credentials, admits only relay candidates and preserves approval', async (t) => {
+  const f = fixture(t), stream = sourceStream();
+  const opening = f.session.startHost(stream, CODE, { transport: 'relay' });
+  await settle();
+  assert.equal(new URL(f.sockets[0].url).searchParams.get('transport'), 'relay');
+  signal(f.sockets[0], 'v:1', { dial: true });
+  assert.equal(f.peers.length, 0);
+  relayReply(f.sockets[0]); await opening; await settle();
+  const peer = f.peers[0];
+  assert.equal(peer.config.iceTransportPolicy, 'relay');
+  assert.deepEqual(peer.config.iceServers, RELAY_SERVERS);
+  assert.equal(peer.transceivers.length, 0);
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  signal(f.sockets[0], 'v:1', { candidate: { candidate: 'candidate:lan 1 udp 2122260223 device.local 5000 typ host' } });
+  const relay = { candidate: 'candidate:relay 1 udp 1686052607 198.51.100.2 5002 typ relay' };
+  signal(f.sockets[0], 'v:1', { candidate: relay }); await settle();
+  assert.deepEqual(peer.ice, [relay]);
+  peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note: 'Viewer' });
+  assert.equal(f.session.approve('v:1'), true); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+  const offers = peer.offerOptions.length;
+  f.session.renewRelay(RELAY_SERVERS); await settle();
+  assert.equal(peer.offerOptions.length, offers, 'renewal waits for the outstanding media answer');
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  assert.deepEqual(peer.offerOptions.at(-1), { iceRestart: true });
+  signal(f.sockets[0], 'v:1', { description: { type: 'answer', sdp: SDP } }); await settle();
+  peer.connectionState = 'connected';
+  f.sockets[0].drop(); await settle();
+  assert.equal(peer.closed, true, 'relay peers cannot survive without credential renewal');
+  assert.equal(f.session.reconnecting, true);
+  assert.equal(stream.video.readyState, 'live', 'host recovery retains healthy capture');
+  f.session.stop();
+  assert.equal(stream.video.readyState, 'ended');
+  assert.equal(f.session.relay, null);
+});
+
+test('camera unavailable relay and Stop release capture without a direct retry', async (t) => {
+  for (const outcome of ['unavailable', 'stopped']) {
+    const f = fixture(t), stream = sourceStream();
+    const opening = f.session.startHost(stream, CODE, { transport: 'relay' });
+    const rejected = assert.rejects(opening, new RegExp(outcome === 'stopped' ? 'connection.stopped' : 'transport.unavailable'));
+    await settle();
+    if (outcome === 'stopped') f.session.stop();
+    relayReply(f.sockets[0], outcome === 'unavailable' ? { error: 'unavailable' } : {});
+    await rejected; await settle();
+    assert.equal(f.peers.length, 0);
+    assert.equal(f.sockets.length, 1);
+    assert.equal(stream.video.readyState, 'ended');
+    assert.equal(f.session.role, null);
+  }
+});
+
+test('camera relay viewer waits for credentials and mismatched host route fails closed', async (t) => {
+  const f = fixture(t);
+  const opening = f.session.connect(CODE, 'Viewer', { transport: 'relay' });
+  const rejected = assert.rejects(opening, /transport.mismatch/);
+  await settle();
+  f.sockets[0].receive({ type: 'ready' });
+  assert.equal(f.peers.length, 0);
+  f.sockets[0].drop(4412);
+  await rejected;
+  assert.equal(f.session.role, null);
+  assert.equal(f.peers.length, 0);
 });
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
 async function requestViewer(f, id, note = 'My viewer', hello = {}) {
