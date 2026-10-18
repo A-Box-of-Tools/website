@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Chinese paragraphs and phrases stay on one line each: a wrap inside
@@ -15,7 +16,6 @@
       <p class="discovery-note">这个列表显示与你使用同一公网 IPv4 地址或 IPv6 子网的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv4 与 IPv6 混用或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
     </section>
 
-    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 写下来，或附上文件</h2>
       <div class="panel" id="editor">
@@ -80,7 +80,10 @@
       <h2><span class="step">3</span> 分享出去</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">开始分享</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="分享链接">
@@ -105,10 +108,13 @@
       <p id="view-status" role="status" aria-live="polite">正在寻找分享的人&hellip;</p>
 
       <div id="consent" hidden>
-        <p>直连会交换到达设备所需的网络地址。云中转使用中转候选地址，Cloudflare 能看到双方设备的网络地址及流量元数据。这不是匿名保证。请先检查上方的连接选项，再明确选择连接。</p>
+        <p>直连会交换到达设备所需的网络地址。云中转使用中转候选地址，Cloudflare 能看到双方设备的网络地址及流量元数据。这不是匿名保证。请先检查连接选项，再明确选择连接。</p>
         <p id="local-note" hidden>这个链接使用局域网模式。两台设备需要连接同一 Wi-Fi 或以太网，引介仍需要互联网。不使用公共地址发现服务器或互联网中转。VPN 和浏览器设置可能影响网络路径。</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">连接并接收分享</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">连接并接收分享</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         </div>
       </div>
 

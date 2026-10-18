@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
   <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
     <div class="paired-nearby-head"><h2 id="discovery-heading">Nearby shared tabs</h2></div>
     {% include "partials/paired-network.html" %}
@@ -16,7 +17,6 @@
       <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
     </section>
   </section>
-  {% include "partials/paired-transport.html" %}
   <div class="tab-share-grid" id="tab-share-grid" data-pairing-setup>
     <section id="host-panel" class="tab-share-card" aria-labelledby="host-heading">
       <span class="tab-share-badge">No extension needed</span>
@@ -28,7 +28,10 @@
         <p id="host-discovery-help" class="field-note">Choose this before sharing to list your invitation code for nearby viewers. Your tab&rsquo;s title, address and picture are not listed. You still approve each viewer.</p>
       </div>
       <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="host-start" class="big">Choose a tab to share</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         <button type="button" id="host-stop" class="big danger" hidden>Stop sharing</button>
       </div>
       <p id="host-status" class="tab-share-status" role="status" aria-live="polite">Nothing is being captured or shared.</p>
@@ -75,7 +78,10 @@
       </div>
       <p class="tab-share-help">Pairing contacts our introduction service and exchanges network addresses with the other browser. This device does not need screen, camera or microphone permission.</p>
       <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="join">
         <span id="online-viewer-controls"><button type="button" id="viewer-connect" class="big">Request to watch</button></span>
+        {% include "partials/paired-transport.html" %}
+      </div>
         <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       </div>
       <p id="viewer-status" class="tab-share-status" role="status" aria-live="polite">Enter a viewer link or tab code to begin.</p>

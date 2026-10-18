@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 <section class="wt-local" aria-labelledby="wt-channel-title">
   <section id="wt-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="wt-nearby-title">
     <div class="paired-nearby-head">
@@ -11,9 +12,11 @@
     <p class="wt-note" id="wt-empty">No channels are listed yet. Ask the host for a listener link, or start a channel below.</p>
     <p class="wt-note" id="wt-selection-help">Choose a channel, then Join channel to listen. Choosing alone does not connect, and listening never requests your microphone.</p>
     <p class="wt-note" id="wt-selected-channel" aria-live="polite">No channel selected.</p>
-    <div class="paired-actions"><button type="button" id="wt-join" disabled>Join channel</button></div>
+    <div class="paired-actions"><div class="paired-start-row" data-pairing-actions="nearby">
+        <button type="button" id="wt-join" disabled>Join channel</button>
+        {% include "partials/paired-transport.html" %}
+      </div></div>
   </section>
-  {% include "partials/paired-transport.html" %}
   <div class="wt-channel-heading">
     <h2 id="wt-channel-title">One voice, several listeners</h2>
     <span class="wt-role" id="wt-role">Host</span>
@@ -36,7 +39,10 @@
     </div>
     <div class="wt-host-summary">
       <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
-      <button type="button" id="wt-start">Start channel</button>
+      <div class="paired-start-row" data-pairing-actions="host">
+        <button type="button" id="wt-start">Start channel</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
     </div>
     <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
     <div id="wt-transmit" hidden>
@@ -77,7 +83,10 @@
   </div>
 
   <div id="wt-listener" hidden>
-    <button type="button" id="wt-connect-listener" hidden>Join channel</button>
+    <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="wt-connect-listener" hidden>Join channel</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
     <div class="wt-listening" id="wt-listening" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
     </div>

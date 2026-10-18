@@ -1,9 +1,12 @@
-{% if tool.supports_relay %}<div class="card paired-transport" data-pairing-transport>
-  <label for="pairing-transport">{{ ui.tool.transport_label }}</label>
-  <select id="pairing-transport" aria-describedby="pairing-transport-note">
-    <option value="direct" selected>{{ ui.tool.transport_direct }}</option>
-    <option value="relay">{{ ui.tool.transport_relay }}</option>
-  </select>
-  <p id="pairing-transport-note" class="field-note">{{ ui.tool.transport_note_direct }}</p>
-  <p id="pairing-route" role="status" aria-live="polite" hidden></p>
+{% if tool.supports_relay %}<div class="paired-transport" data-pairing-transport>
+  <label class="paired-transport-toggle">
+    <input type="checkbox" role="switch" aria-label="{{ ui.tool.transport_relay | e }}" data-transport-toggle data-no-remember disabled>
+    <span class="paired-transport-direct" aria-hidden="true">{{ ui.tool.transport_direct }}</span>
+    <span class="paired-transport-track" aria-hidden="true"></span>
+    <span class="paired-transport-relay" aria-hidden="true">{{ ui.tool.transport_relay }}</span>
+  </label>
+  <details class="paired-transport-help info-fold">
+    <summary><span class="visually-hidden">{{ ui.tool.transport_label }}</span></summary>
+    <p class="paired-transport-note" data-transport-note>{{ ui.tool.transport_note_direct }}</p>
+  </details>
 </div>{% endif %}

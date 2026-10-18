@@ -3,30 +3,47 @@ import { transportMode } from './peer-transport.js';
 
 /** A selected route is consent for the next session, never a live switch. */
 export function bindTransportControl({ onChange = () => {} } = {}) {
-  const select = document.getElementById('pairing-transport');
-  const note = document.getElementById('pairing-transport-note');
+  const controls = [...document.querySelectorAll('[data-pairing-transport]')].map((element, index) => {
+    const input = element.querySelector('[data-transport-toggle]');
+    const note = element.querySelector('[data-transport-note]');
+    input.id = index ? `pairing-transport-${index}` : 'pairing-transport';
+    note.id = `${input.id}-note`;
+    input.setAttribute('aria-describedby', note.id);
+    return { input, note };
+  });
   const output = document.getElementById('pairing-route');
-  const value = () => transportMode(select?.value);
+  let mode = 'direct';
+  let locked = false;
+  const value = () => mode;
   const refresh = () => {
-    if (note) note.textContent = phrase(`transport.note.${value() === 'relay' ? 'relay' : 'direct'}`);
+    for (const { input, note } of controls) {
+      input.checked = mode === 'relay';
+      input.disabled = locked;
+      note.textContent = phrase(`transport.note.${mode}`);
+    }
   };
-  const changed = () => { refresh(); onChange(value()); };
-  select?.addEventListener('change', changed);
+  const changed = event => {
+    if (locked) { refresh(); return; }
+    mode = event.currentTarget.checked ? 'relay' : 'direct';
+    refresh();
+    onChange(mode);
+  };
+  for (const { input } of controls) input.addEventListener('change', changed);
   refresh();
   return {
     value,
-    set(mode) {
-      if (!select || transportMode(mode) === null) return false;
-      select.value = transportMode(mode);
+    set(next) {
+      if (!controls.length || transportMode(next) === null) return false;
+      mode = transportMode(next);
       refresh();
       return true;
     },
-    lock(locked) { if (select) select.disabled = Boolean(locked); },
+    lock(next) { locked = Boolean(next); refresh(); },
     route(mode) {
       if (!output) return;
       output.hidden = mode == null;
       output.textContent = mode == null ? '' : phrase(`transport.route.${['direct', 'relay'].includes(mode) ? mode : 'unknown'}`);
     },
-    destroy() { select?.removeEventListener('change', changed); },
+    destroy() { for (const { input } of controls) input.removeEventListener('change', changed); },
   };
 }

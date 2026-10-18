@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
   <section id="camera-discovery" class="card camera-discovery paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
     <div class="paired-nearby-head">
       <h2 id="discovery-heading">Nearby cameras</h2>
@@ -14,7 +15,6 @@
     </details>
   </section>
 
-  {% include "partials/paired-transport.html" %}
   <p class="camera-requirements">Both devices need this page open and internet for pairing. Direct uses a local network that lets the devices reach each other. Cloud relay carries encrypted video and optional audio through the relay service when both people choose it. Nothing is recorded by this tool.</p>
 
   <div id="camera-workspace" class="camera-workspace" data-pairing-setup>
@@ -69,7 +69,10 @@
       <p id="camera-bandwidth-status" class="field-note" role="status" aria-live="polite"></p>
     </div>
     <div class="run-row">
-      <button type="button" id="camera-start" class="big">Start camera</button>
+      <div class="paired-start-row" data-pairing-actions="host">
+        <button type="button" id="camera-start" class="big">Start camera</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       <button type="button" id="camera-stop" class="big danger" hidden>Stop camera and end the link</button>
     </div>
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
@@ -128,7 +131,10 @@
       </div>
     </div>
     <div class="run-row">
-      <button type="button" id="viewer-connect" class="big">Connect to camera</button>
+      <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="viewer-connect" class="big">Connect to camera</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       <div class="camera-help-row">
         <details id="viewer-connection-help" class="camera-help info-fold">

@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Japanese paragraphs and phrases stay on one line each: a wrap inside
@@ -15,7 +16,6 @@
       <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
     </section>
 
-    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 書くか、添付する</h2>
       <div class="panel" id="editor">
@@ -80,7 +80,10 @@
       <h2><span class="step">3</span> 共有する</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">共有を始める</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="共有リンク">
@@ -105,10 +108,13 @@
       <p id="view-status" role="status" aria-live="polite">共有している人を探しています&hellip;</p>
 
       <div id="consent" hidden>
-        <p>直接接続では端末に到達するために必要なネットワークアドレスを交換します。クラウド中継は中継アドレスを使い、Cloudflareには両端末のアドレスと通信メタデータが見えます。匿名性を保証する機能ではありません。上の接続方式を確認してから、接続を選んでください。</p>
+        <p>直接接続では端末に到達するために必要なネットワークアドレスを交換します。クラウド中継は中継アドレスを使い、Cloudflareには両端末のアドレスと通信メタデータが見えます。匿名性を保証する機能ではありません。接続方式を確認してから、接続を選んでください。</p>
         <p id="local-note" hidden>このリンクはローカルネットワークモードです。両方の端末を同じWi-Fiまたはイーサネットにつなぐ必要があり、紹介には引き続きインターネットが必要です。アドレスを調べる公開サーバーやインターネット中継は使いません。VPNやブラウザの設定により通信経路が変わることがあります。</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         </div>
       </div>
 

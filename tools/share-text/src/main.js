@@ -912,8 +912,6 @@ let resumeViewer = () => {};
 function view(code, recovered = null) {
   $('share').hidden = true;
   $('view').hidden = false;
-  const choice = document.querySelector('[data-pairing-transport]');
-  if (choice && choice.parentElement !== $('view').parentElement) $('view').before(choice);
   const mode = recovered?.transport ?? readTransport(location.href);
   if (!mode) { fail(phrase('transport.invalid')); return; }
   transportControl.set(mode);
