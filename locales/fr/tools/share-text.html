@@ -13,6 +13,7 @@
       <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
     </section>
 
+    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
       <div class="panel" id="editor">
@@ -32,10 +33,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Fichiers à joindre">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Les fichiers voyagent par la même connexion directe que le texte, jusqu'à
-        200&nbsp;Mo pièce. Les lecteurs voient la liste et ne récupèrent
-        chaque fichier que s'ils le demandent. Un partage peut contenir jusqu’à 256 fichiers.</p>
+      <p class="field-note">Les fichiers utilisent le même canal chiffré que le texte, jusqu’à 200&nbsp;Mo par fichier et 256 fichiers par partage. Les lecteurs voient la liste et ne récupèrent un fichier que sur demande.</p>
     </section>
 
     <section class="card">
@@ -57,7 +55,7 @@
           <input type="checkbox" id="local">
           Réseau local — sans relais internet
         </label>
-        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage. Réseau local est désactivé par défaut ; choisissez-le pour afficher votre partage dans la recherche locale.</p>
+        <p class="field-note">En connexion directe, choisissez Réseau local pour utiliser une connexion Wi-Fi ou Ethernet accessible entre les appareils, avec internet pour la mise en relation. Ce mode n’utilise ni découverte publique d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le chemin. Le lien conserve le choix. Les partages directs locaux et ceux par relais cloud peuvent apparaître à proximité si Découvrable est activé.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
@@ -97,8 +95,8 @@
     </section>
 
     <section class="card note-card">
-      <h2>Rien n'est stocké nulle part</h2>
-      <p>Le texte et les fichiers voyagent chiffrés, directement de cet onglet vers celui de chaque lecteur. L’entremetteur présente les navigateurs et liste les noms de lien visibles ; il ne voit jamais le texte ou les fichiers. Fermer cet onglet arrête le partage et vide les pages ouvertes des lecteurs — ce que quelqu’un a déjà copié ou téléchargé reste toutefois à lui.</p>
+      <h2>Aucun contenu stocké sur un serveur</h2>
+      <p>Le texte et les fichiers sont chiffrés entre votre navigateur et chaque lecteur. La connexion directe est choisie par défaut. Si vous choisissez le relais cloud, les paquets chiffrés passent par Cloudflare, qui ne peut pas lire leur contenu. Le service de mise en relation transporte la préparation et les noms de liens visibles, jamais les textes ou fichiers. Nous ne stockons aucun contenu partagé sur un serveur. Fermer l’onglet termine la source ; les lecteurs effacent leur vue après l’avis de fin ou la détection d’une panne. Les copies déjà enregistrées leur restent.</p>
     </section>
   </section>
 
@@ -109,7 +107,7 @@
       <p id="view-status" role="status" aria-live="polite">Recherche de la personne qui partage&hellip;</p>
 
       <div id="consent" hidden>
-        <p>La connexion permet à la personne qui partage d’envoyer le texte et les fichiers directement à votre navigateur par un canal chiffré. Comme toute connexion directe, elle révèle à chacun l’adresse réseau (IP) de l’autre. La personne qui partage apprend que vous avez ouvert ce lien seulement lorsque vous choisissez de vous connecter.</p>
+        <p>La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le choix de connexion ci-dessus avant de choisir explicitement Se connecter.</p>
         <p id="local-note" hidden>Ce lien utilise le mode Réseau local. Les deux appareils doivent être sur le même réseau Wi-Fi ou Ethernet, et internet reste nécessaire pour les mettre en relation. Aucun serveur public de découverte d’adresses ni relais internet n’est utilisé. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
@@ -129,20 +127,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          L'alternative est un relais chiffré. Votre navigateur enverrait
-          et recevrait par un serveur relais de Cloudflare, qui fait suivre
-          les octets chiffrés sans pouvoir les lire ; il apprend votre
-          adresse réseau et celle de la personne qui partage, comme
-          l'aurait fait la connexion directe. Rien n'y est stocké non plus,
-          et la page de la personne qui partage n'envoie toujours qu'à
-          vous.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Réessayer par le relais</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Réessayer avec le mode de connexion de la personne qui partage</button>
@@ -267,7 +252,7 @@
     <span data-phrase="share.local-waiting">Partage en mode Réseau local. En attente de l’ouverture du lien — gardez cet onglet ouvert.</span>
     <span data-phrase="view.local-connecting">Connexion par le réseau local…</span>
     <span data-phrase="view.mode-local">La personne qui partage utilise le mode Réseau local. Réessayez avec son mode pour vous connecter sans relais internet.</span>
-    <span data-phrase="view.mode-direct">La personne qui partage utilise le mode de connexion habituel. Réessayez avec son mode&nbsp;; un relais est proposé après l’échec d’une connexion directe et utilisé seulement si vous le choisissez.</span>
+    <span data-phrase="view.mode-direct">L’hôte utilise le mode direct ordinaire. Réessayez avec son mode ; la connexion directe ne passe pas par un relais. L’hôte doit démarrer une nouvelle session par relais cloud pour changer de chemin.</span>
     <span data-phrase="view.local-no-connect">Impossible de joindre la personne qui partage en mode Réseau local. Vérifiez que les deux appareils utilisent le même réseau Wi-Fi ou Ethernet&nbsp;; l’isolation du réseau invité, un VPN, un pare-feu ou les réglages du navigateur peuvent bloquer la connexion. Aucun relais internet n’est proposé dans ce mode.</span>
     <span data-phrase="view.file-failed">Le téléchargement du fichier a échoué. Réessayez ce fichier tant que le partage reste ouvert.</span>
 

@@ -23,6 +23,7 @@
       </p>
     </section>
 
+    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Escríbelo, o adjúntalo</h2>
       <div class="panel" id="editor">
@@ -42,10 +43,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Archivos que adjuntar">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Los archivos viajan por la misma conexión directa que el texto, hasta
-        200&nbsp;MB cada uno. Los lectores ven la lista y descargan cada
-        archivo solo si lo piden. Una sesión puede incluir hasta 256 archivos.</p>
+      <p class="field-note">Los archivos usan el mismo canal cifrado que el texto, hasta 200&nbsp;MB por archivo y 256 archivos por envío. Los lectores ven la lista y descargan cada archivo solo si lo piden.</p>
     </section>
 
     <section class="card">
@@ -72,7 +70,7 @@
           <input type="checkbox" id="local">
           Red local — sin retransmisor de internet
         </label>
-        <p class="field-note">Para dispositivos en la misma red Wi-Fi o Ethernet. El modo Red local está desactivado por defecto; actívalo para mostrar el nombre de tu enlace en la lista de descubrimiento local. La presentación de los navegadores aún necesita internet; este modo no usa servidores públicos para descubrir direcciones ni retransmisores. Las VPN y los ajustes del navegador pueden afectar la ruta. El enlace copiado incluye esta opción.</p>
+        <p class="field-note">En conexión directa puedes elegir Red local: los dispositivos necesitan Wi-Fi o Ethernet accesible e internet para presentarse. Este modo no usa descubrimiento público de direcciones ni retransmisión. Las VPN y los ajustes del navegador pueden cambiar la ruta. El enlace incluye la opción. Los envíos directos locales y los de retransmisión en la nube pueden aparecer cerca si Descubrible está seleccionado.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
@@ -120,15 +118,8 @@
     </section>
 
     <section class="card note-card">
-      <h2>Nada se guarda en ninguna parte</h2>
-      <p>
-        El texto y los archivos viajan cifrados, directos de esta pestaña a
-        la de cada lector. El intermediario presenta a los navegadores y
-        enumera los nombres de enlace visibles en la lista; nunca ve el
-        texto ni los archivos. Cerrar esta pestaña
-        termina la compartición y vacía también las páginas abiertas de los
-        lectores &mdash; aunque lo que alguien ya copió o descargó es suyo.
-      </p>
+      <h2>Sin guardar contenido en servidores</h2>
+      <p>El texto y los archivos se cifran entre tu navegador y cada lector. La conexión directa es la predeterminada. Si eliges retransmisión en la nube, los paquetes cifrados pasan por Cloudflare, que no puede leer su contenido. El servicio de presentación transmite la preparación y los nombres de enlaces visibles, nunca texto ni archivos. No guardamos contenido compartido en servidores. Cerrar la pestaña termina la fuente; los lectores borran la vista al recibir el aviso o detectar el fallo. Conservan las copias que ya guardaron.</p>
     </section>
   </section>
 
@@ -139,7 +130,7 @@
       <p id="view-status" role="status" aria-live="polite">Buscando a quien comparte&hellip;</p>
 
       <div id="consent" hidden>
-        <p>Al conectarte, quien comparte puede enviar el texto y los archivos directamente a tu navegador por un canal cifrado. Como en cualquier conexión directa, ambos lados pueden ver la dirección de red (IP) del otro. Quien comparte no sabe que abriste este enlace hasta que eliges conectarte.</p>
+        <p>La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión de arriba antes de elegir Conectar.</p>
         <p id="local-note" hidden>Este enlace usa el modo Red local. Ambos dispositivos deben estar en la misma red Wi-Fi o Ethernet y la presentación aún necesita internet. No se usan servidores públicos para descubrir direcciones ni retransmisores de internet. Las VPN y los ajustes del navegador pueden afectar la ruta.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Conectar y recibir lo compartido</button>
@@ -159,19 +150,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          La alternativa es un relevo cifrado. Tu navegador enviaría y
-          recibiría a través de un servidor de relevo de Cloudflare, que
-          reenvía los bytes cifrados y no puede leerlos; conoce tu
-          dirección de red y la de quien comparte, como la habría conocido
-          la conexión directa. Ahí tampoco se guarda nada, y la página de
-          quien comparte sigue enviando solo a ti.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Volver a intentarlo por el relevo</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Reintentar con el modo de conexión de quien comparte</button>
@@ -296,7 +275,7 @@
     <span data-phrase="share.local-waiting">Compartiendo en modo Red local. Esperando a que alguien abra el enlace — mantén esta pestaña abierta.</span>
     <span data-phrase="view.local-connecting">Conectando por la red local…</span>
     <span data-phrase="view.mode-local">Quien comparte usa el modo Red local. Reintenta con su modo para conectarte sin un retransmisor de internet.</span>
-    <span data-phrase="view.mode-direct">Quien comparte usa el modo de conexión normal. Reintenta con su modo; solo se ofrece un retransmisor después de que falle la conexión directa y se usa si tú lo eliges.</span>
+    <span data-phrase="view.mode-direct">El anfitrión usa el modo directo normal. Reintenta con su modo; la conexión directa no cambia a una retransmisión. El anfitrión debe iniciar una nueva sesión de retransmisión en la nube para cambiar la ruta.</span>
     <span data-phrase="view.local-no-connect">No se pudo contactar con quien comparte en modo Red local. Comprueba que ambos dispositivos usan la misma red Wi-Fi o Ethernet; el aislamiento de la red de invitados, una VPN, un cortafuegos o los ajustes del navegador pueden bloquear la conexión. Este modo no ofrece retransmisores de internet.</span>
     <span data-phrase="view.file-failed">No se pudo completar la descarga. Vuelve a descargar este archivo mientras siga compartido.</span>
 
