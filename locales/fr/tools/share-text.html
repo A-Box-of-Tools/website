@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
@@ -13,7 +14,6 @@
       <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
     </section>
 
-    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
       <div class="panel" id="editor">
@@ -82,7 +82,10 @@
       <h2><span class="step">3</span> Partagez-le</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Commencer le partage</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="Le lien de partage">
@@ -107,10 +110,13 @@
       <p id="view-status" role="status" aria-live="polite">Recherche de la personne qui partage&hellip;</p>
 
       <div id="consent" hidden>
-        <p>La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le choix de connexion ci-dessus avant de choisir explicitement Se connecter.</p>
+        <p>La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le choix de connexion avant de choisir explicitement Se connecter.</p>
         <p id="local-note" hidden>Ce lien utilise le mode Réseau local. Les deux appareils doivent être sur le même réseau Wi-Fi ou Ethernet, et internet reste nécessaire pour les mettre en relation. Aucun serveur public de découverte d’adresses ni relais internet n’est utilisé. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau.</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         </div>
       </div>
 

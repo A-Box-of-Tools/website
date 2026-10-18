@@ -1,5 +1,7 @@
 # Remote Camera
 
+The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 Nearby cameras appear at the top of the idle page, above sharing and manual
 connection, with the shared Wi-Fi and hotspot guidance. Choosing a listed camera
 fills the code and focuses Connect to camera; only Connect starts pairing. Start

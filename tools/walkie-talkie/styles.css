@@ -127,6 +127,7 @@
 }
 
 .wt-host-summary {
+  flex-wrap: wrap;
   margin-block: 1rem;
 }
 

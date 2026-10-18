@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 <div class="vi-tool">
   <section id="vi-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="vi-nearby-title">
     <div class="paired-nearby-head">
@@ -11,7 +12,6 @@
     <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
     <p class="vi-note" id="vi-selection-help">Choose a pager, then Connect below. Choosing alone does not connect or request your microphone.</p>
   </section>
-  {% include "partials/paired-transport.html" %}
   <p class="vi-intro">People connect and speak to one listening host without entering a name. Use Direct on your local network, or choose Cloud relay to connect through the internet. The host listens without using a microphone.</p>
   <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall" data-pairing-setup>
     <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
@@ -27,7 +27,10 @@
       <label for="vi-sender-password">Pager password, if required</label>
       <input id="vi-sender-password" type="password" autocomplete="current-password">
       <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
-      <button type="submit" id="vi-join">Connect</button>
+      <div class="paired-start-row" data-pairing-actions="join">
+        <button type="submit" id="vi-join">Connect</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
     </form>
     <div id="vi-sender" hidden>
       <h2 id="vi-sender-room"></h2>
@@ -55,7 +58,10 @@
         <p class="vi-note" id="vi-saved-password" hidden>A password is saved for this pager. Leave this field blank to keep it, or enter a new password.</p>
       </div>
       <p class="vi-note">Up to 10 people can connect without approval. You can mute or remove each person. Your microphone is never requested.</p>
-      <button type="submit" id="vi-start">Start pager</button>
+      <div class="paired-start-row" data-pairing-actions="host">
+        <button type="submit" id="vi-start">Start pager</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
     </form>
     <div id="vi-host-live" hidden>
       <div class="vi-live-heading">

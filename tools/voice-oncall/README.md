@@ -1,5 +1,7 @@
 # Voice Oncall
 
+The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 A separate tool for the reverse of Local Walkie-Talkie: up to ten participants
 send live voice to one listening host. Each has an independent encrypted WebRTC
 audio connection terminating at that host, so participants never receive one

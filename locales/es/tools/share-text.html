@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
@@ -23,7 +24,6 @@
       </p>
     </section>
 
-    {% include "partials/paired-transport.html" %}
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Escríbelo, o adjúntalo</h2>
       <div class="panel" id="editor">
@@ -105,7 +105,10 @@
       <h2><span class="step">3</span> Compártelo</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Empezar a compartir</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="El enlace para compartir">
@@ -130,10 +133,13 @@
       <p id="view-status" role="status" aria-live="polite">Buscando a quien comparte&hellip;</p>
 
       <div id="consent" hidden>
-        <p>La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión de arriba antes de elegir Conectar.</p>
+        <p>La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión antes de elegir Conectar.</p>
         <p id="local-note" hidden>Este enlace usa el modo Red local. Ambos dispositivos deben estar en la misma red Wi-Fi o Ethernet y la presentación aún necesita internet. No se usan servidores públicos para descubrir direcciones ni retransmisores de internet. Las VPN y los ajustes del navegador pueden afectar la ruta.</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Conectar y recibir lo compartido</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Conectar y recibir lo compartido</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         </div>
       </div>
 

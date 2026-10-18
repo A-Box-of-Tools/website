@@ -1,5 +1,7 @@
 # Local Walkie-Talkie
 
+The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 The website hosts one microphone and up to ten receive-only browsers. Nothing
 needs downloading or installing. Opening the page lists nearby channels over
 a discovery WebSocket; joining never requests microphone access. Starting the

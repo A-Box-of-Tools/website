@@ -112,7 +112,7 @@
   gap: 1rem;
 }
 
-.vi-tool label:not(.vi-room) {
+.vi-tool label:not(.vi-room):not(.paired-transport-toggle) {
   display: block;
   margin-block: 1rem .4rem;
   font-size: .9rem;

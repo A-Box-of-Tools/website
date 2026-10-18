@@ -37,11 +37,91 @@
 .paired-nearby [role=status] { overflow-wrap: anywhere; }
 .paired-nearby button, .paired-nearby a { white-space: normal; overflow-wrap: anywhere; }
 .paired-page [data-pairing-setup] { min-width: 0; }
-.paired-transport { margin-block: 1rem; }
-.paired-transport label { display: block; font-weight: 600; margin-bottom: .4rem; }
-.paired-transport select { width: min(100%, 22rem); }
-.paired-transport .field-note { margin-bottom: 0; }
-.paired-transport [role=status] { font-weight: 600; }
+/* Keep the route choice beside the action that uses it, including when a
+   translated label wraps or a phone has room for only one control per line. */
+.paired-start-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1rem;
+  min-width: 0;
+}
+.paired-start-row > * { min-width: 0; max-width: 100%; }
+.paired-transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .5rem;
+  max-width: 100%;
+}
+.paired-page .paired-transport-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+  margin: 0;
+  padding: .25rem 0;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.paired-page .paired-transport-toggle input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.paired-transport-track {
+  flex: none;
+  width: 2.25rem;
+  height: 1.25rem;
+  padding: 2px;
+  border: 1px solid var(--text-dim);
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.paired-transport-track::before {
+  content: "";
+  display: block;
+  width: .875rem;
+  height: .875rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+.paired-transport-toggle input:checked ~ .paired-transport-track {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.paired-transport-toggle input:checked ~ .paired-transport-track::before {
+  margin-inline-start: auto;
+  background: var(--accent-text);
+}
+.paired-transport-toggle input:not(:checked) ~ .paired-transport-direct,
+.paired-transport-toggle input:checked ~ .paired-transport-relay { color: var(--text); font-weight: 700; }
+.paired-transport-toggle input:focus-visible ~ .paired-transport-track {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.paired-transport-toggle:has(input:disabled) { opacity: .65; cursor: not-allowed; }
+.paired-transport-help { margin: 0; }
+.paired-transport-help > summary { min-width: 44px; min-height: 44px; justify-content: center; }
+.paired-transport-help[open] { flex-basis: 100%; }
+/* This live description stays in its own fold, outside the build's field-note gathering. */
+.paired-transport-note { max-width: 62ch; margin: 0 0 .5rem; font-size: .85rem; color: var(--text-dim); line-height: 1.6; }
+.paired-route { margin-block: .75rem; font-size: .9rem; font-weight: 600; }
+@media (forced-colors: active) {
+  .paired-transport-track { border-color: ButtonText; }
+  .paired-transport-track::before { background: ButtonText; }
+  .paired-transport-toggle input:checked ~ .paired-transport-track { background: Highlight; border-color: Highlight; }
+  .paired-transport-toggle input:checked ~ .paired-transport-track::before { background: HighlightText; }
+}
 @media (max-width: 600px) {
   .paired-page .paired-nearby { padding: 1rem; }
   .paired-nearby-head { align-items: flex-start; }

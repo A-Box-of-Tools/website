@@ -1,5 +1,7 @@
 # Share a Browser Tab
 
+The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 A desktop browser captures one tab and streams its picture to one approved
 viewer. The viewer opens the tool in a browser, watches live video and has no
 input path back to the host website. No extension is needed. There is no audio,

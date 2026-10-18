@@ -1,4 +1,5 @@
 <main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
   <section id="share">
@@ -20,7 +21,6 @@
       </p>
     </section>
 
-    {% include "partials/paired-transport.html" %}
     <!-- Step 1 &mdash; the content -->
     <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Write it, or attach it</h2>
@@ -112,7 +112,10 @@
       <h2><span class="step">3</span> Share it</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Start sharing</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="The share link">
@@ -150,7 +153,7 @@
           over an encrypted channel. Direct exchanges network addresses
           between devices. Cloud relay forwards encrypted packets through
           Cloudflare, which sees connection addresses and traffic metadata.
-          Check the connection choice above before continuing.
+          Check the connection choice before continuing.
         </p>
         <p id="local-note" hidden>
           This link uses Local network mode. Both devices need to be on the
@@ -159,7 +162,10 @@
           is used. VPNs and browser settings can affect the network path.
         </p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Connect and fetch the share</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Connect and fetch the share</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
         </div>
       </div>
 

@@ -1,5 +1,7 @@
 # Share Text & Files
 
+The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 The share lives in the sharer's open tab. Readers who follow the link — or
 type its name — receive the text and files over a WebRTC data channel,
 from the sharer's browser, encrypted end to end, either directly or through
