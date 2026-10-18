@@ -445,6 +445,13 @@ as in Broadcast. Direct never switches to Cloud relay automatically; both
 parties must select the host's mode, with credentials subject to the same
 live-admission checks and bounded issuance as Broadcast.
 
+Audio direction follows [SDP's session and media scopes](https://www.rfc-editor.org/rfc/rfc8866.html#section-6.7):
+an audio-section direction overrides the session default. This permits a browser
+to include a session-level `sendrecv` default alongside its audio `recvonly`
+offer or `sendonly` answer. The effective direction must still match the role,
+and duplicate direction attributes within either scope are rejected. The worker
+forwards the accepted SDP unchanged and still allows only one audio section.
+
 - `/inbox/<64hex>` addresses only `INBOXES`. The code is SHA-256 of a random
   43-character host capability, whose digest must match before host admission.
 - The first frame is host `auth` with `key`, `roomName` and optional

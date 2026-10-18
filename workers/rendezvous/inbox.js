@@ -50,8 +50,19 @@ export function validInboxSignal(value, role, transport = "direct") {
   const signal = validBroadcastSignal(role === "host" ? { ...value, to: SIGNAL_TARGET } : value,
     role === "host" ? "host" : "listener", transport);
   if (signal?.sdp !== undefined) {
-    const directions = signal.sdp.split(/\r?\n/).filter((line) => /^a=(sendonly|recvonly|sendrecv|inactive)$/.test(line));
-    if (directions.length !== 1 || directions[0] !== (role === "host" ? "a=recvonly" : "a=sendonly")) return null;
+    // Browsers may serialize a session default alongside the audio override.
+    // The single audio section was validated above; RFC 8866 makes its direction
+    // authoritative, while duplicate directions within either scope are invalid.
+    const directions = [null, null];
+    let scope = 0;
+    for (const line of signal.sdp.split(/\r?\n/)) {
+      if (line.startsWith("m=")) scope = 1;
+      if (!/^a=(sendonly|recvonly|sendrecv|inactive)$/.test(line)) continue;
+      if (directions[scope] !== null) return null;
+      directions[scope] = line;
+    }
+    const effective = directions[1] ?? directions[0] ?? "a=sendrecv";
+    if (effective !== (role === "host" ? "a=recvonly" : "a=sendonly")) return null;
   }
   return signal;
 }
