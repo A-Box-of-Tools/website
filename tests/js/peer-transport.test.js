@@ -31,6 +31,53 @@ test('Direct ignores credentials and Cloud relay requires TURN with relay-only I
   }
 });
 
+test('TURN query rejection retains only issued TLS endpoints without changing relay policy', () => {
+  const probes = [];
+  class RejectQuery {
+    constructor(configuration) {
+      probes.push(configuration);
+      throw new DOMException('Invalid TURN URL query string', 'SyntaxError');
+    }
+  }
+  const servers = [{ ...TURN[0], urls: [...TURN[0].urls,
+    'turn:turn.cloudflare.com:80?transport=tcp',
+    'turns:turn.cloudflare.com:5349?transport=tcp', 'turns:turn.cloudflare.com:443',
+    'turns:turn.cloudflare.com:5349?transport=udp'] }];
+  const before = structuredClone(servers);
+  const config = peerConfiguration('relay', servers, RejectQuery);
+  assert.deepEqual(config, { iceTransportPolicy: 'relay', iceServers: [{ ...TURN[0],
+    urls: ['turns:turn.cloudflare.com:443', 'turns:turn.cloudflare.com:5349'] }] });
+  assert.deepEqual(servers, before);
+  assert.equal(probes.length, 1);
+  assert.equal(probes[0].iceTransportPolicy, 'relay');
+  assert.equal(probes[0].iceCandidatePoolSize, 0);
+  assert.equal(probes[0].iceServers[0].urls, 'turns:example.invalid:443?transport=tcp');
+  assert.notEqual(probes[0].iceServers[0].credential, TURN[0].credential);
+  const renewed = peerConfiguration('relay', [{ ...servers[0], credential: 'renewed' }], RejectQuery);
+  assert.equal(renewed.iceServers[0].credential, 'renewed');
+  assert.deepEqual(renewed.iceServers[0].urls, config.iceServers[0].urls);
+  assert.equal(probes.length, 1);
+  assert.throws(() => peerConfiguration('relay', [{ ...TURN[0],
+    urls: ['turn:turn.cloudflare.com:80?transport=tcp'] }], RejectQuery), /transport.unavailable/);
+});
+
+test('working TURN parsers close one credential-free probe and keep all issued endpoints', () => {
+  let created = 0, closed = 0;
+  class AcceptQuery {
+    constructor() { created++; }
+    close() { closed++; }
+  }
+  assert.deepEqual(peerConfiguration('direct', TURN, AcceptQuery), { iceServers: [] });
+  assert.equal(created, 0);
+  for (let i = 0; i < 2; i++) assert.deepEqual(peerConfiguration('relay', TURN, AcceptQuery),
+    { iceServers: TURN, iceTransportPolicy: 'relay' });
+  assert.equal(created, 1); assert.equal(closed, 1);
+  class OtherFailure {
+    constructor() { throw new DOMException('Another configuration failure', 'SyntaxError'); }
+  }
+  assert.deepEqual(peerConfiguration('relay', TURN, OtherFailure), { iceServers: TURN, iceTransportPolicy: 'relay' });
+});
+
 test('candidate and SDP policy cannot be widened by an object type or related address', () => {
   for (const type of ['host', 'srflx', 'prflx', 'relay']) {
     assert.equal(transportCandidate({ candidate: candidate(type), type: 'relay' }, 'direct'), type === 'host');

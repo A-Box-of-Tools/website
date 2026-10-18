@@ -36,11 +36,42 @@ export function relayIceServers(value) {
   return result;
 }
 
-export function peerConfiguration(mode, iceServers = null) {
+const turnQuerySupport = new WeakMap();
+
+function acceptsTurnQuery(Peer) {
+  if (typeof Peer !== 'function') return true;
+  if (turnQuerySupport.has(Peer)) return turnQuerySupport.get(Peer);
+  let probe, supported = true;
+  try {
+    // WebKit 319365 fixes rejection of valid TURN transport queries. Test the
+    // parser without a real credential, offer, or candidate-pool allocation.
+    probe = new Peer({ iceTransportPolicy: 'relay', iceCandidatePoolSize: 0,
+      iceServers: [{ urls: 'turns:example.invalid:443?transport=tcp',
+        username: 'probe', credential: 'probe' }] });
+  } catch (error) {
+    supported = !(error?.name === 'SyntaxError' && error?.message === 'Invalid TURN URL query string');
+  } finally {
+    try { probe?.close(); } catch {}
+  }
+  turnQuerySupport.set(Peer, supported);
+  return supported;
+}
+
+export function peerConfiguration(mode, iceServers = null, Peer = globalThis.RTCPeerConnection) {
   if (transportMode(mode) === 'direct') return { iceServers: [] };
   if (mode !== 'relay') throw new Error('transport.invalid');
-  const valid = relayIceServers(iceServers);
+  let valid = relayIceServers(iceServers);
   if (!valid) throw new Error('transport.unavailable');
+  if (!acceptsTurnQuery(Peer)) {
+    // TURNS without a transport query still means TLS. Removing a query from
+    // a plain TURN TCP endpoint could select UDP instead, so omit those URLs.
+    valid = valid.flatMap(server => {
+      const urls = [...new Set(server.urls.filter(url => /^turns:[^?]+(?:\?transport=tcp)?$/i.test(url))
+        .map(url => url.replace(/\?transport=tcp$/i, '')))];
+      return urls.length ? [{ ...server, urls }] : [];
+    });
+    if (!valid.length) throw new Error('transport.unavailable');
+  }
   return { iceServers: valid, iceTransportPolicy: 'relay' };
 }
 

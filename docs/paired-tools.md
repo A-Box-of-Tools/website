@@ -67,6 +67,13 @@ reusing capture and retaining mute and transmission choices. Stop retires pendin
 Relay peers cannot be retained indefinitely after their room identity is lost:
 recovery creates fresh peers and preserves each tool's admission rules.
 
+Some WebKit releases reject valid TURN transport queries ([upstream fix](https://commits.webkit.org/319365@main)).
+The shared configuration probes that parser once, without real credentials,
+an offer or a candidate pool. Only that specific rejection selects issued
+TLS endpoints with the redundant TCP query removed. It never changes a plain
+TURN TCP endpoint into UDP, invents an endpoint, or enables Direct fallback;
+renewal applies the same capability result to the fresh credentials.
+
 Route labels come from the selected candidate pair, never merely from the
 selected option. An unavailable route remains unverified. The relay forwards
 encrypted content but sees connection addresses, timing and traffic volume;
