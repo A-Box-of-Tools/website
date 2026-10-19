@@ -18,8 +18,28 @@ export function createDiscoveryGroupControl({ root = document, onChange = () => 
   let busy = false;
   let generation = 0;
   let destroyed = false;
+  const hostActions = [...root.querySelectorAll('[data-pairing-actions="host"]')];
+  const heldActions = new Map();
+
+  function holdHostActions(hold) {
+    for (const row of hostActions) {
+      if (hold && !heldActions.has(row)) {
+        heldActions.set(row, row.inert);
+        row.inert = true;
+        row.dataset.groupBusy = '';
+      } else if (!hold && heldActions.has(row)) {
+        row.inert = heldActions.get(row);
+        heldActions.delete(row);
+        delete row.dataset.groupBusy;
+      }
+    }
+  }
 
   function render() {
+    // Starting during the hash would publish to the previous discovery scope.
+    // Inert leaves each tool's own disabled state and entered values intact.
+    holdHostActions(busy);
+    panel.setAttribute('aria-busy', String(busy));
     for (const control of [join, create, leave]) control.disabled = locked || busy;
     // A locked code still needs selection when clipboard access is denied.
     // Read-only prevents edits while preserving that manual-copy fallback.
@@ -59,10 +79,23 @@ export function createDiscoveryGroupControl({ root = document, onChange = () => 
     }
   }
   const events = [];
-  const listen = (element, event, handler) => {
-    element.addEventListener(event, handler);
-    events.push(() => element.removeEventListener(event, handler));
+  const listen = (element, event, handler, options) => {
+    element.addEventListener(event, handler, options);
+    events.push(() => element.removeEventListener(event, handler, options));
   };
+  const guardHostStart = event => {
+    if (!busy) return;
+    const target = event.target;
+    const startsHost = event.type === 'submit'
+      ? hostActions.some(row => row.closest('form') === target)
+      : hostActions.some(row => row.contains(target));
+    if (!startsHost) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  };
+  // A form can submit from a name field outside the inert action row.
+  listen(root, 'submit', guardHostStart, true);
+  listen(root, 'click', guardHostStart, true);
   listen(field, 'input', () => field.setCustomValidity(''));
   listen(field, 'keydown', event => {
     if (event.key === 'Enter') { event.preventDefault(); void apply(field.value); }
@@ -108,6 +141,7 @@ export function createDiscoveryGroupControl({ root = document, onChange = () => 
       ++generation;
       code = identifier = null;
       field.value = '';
+      holdHostActions(false);
       events.forEach(remove => remove());
     },
   };
@@ -139,14 +173,25 @@ function wireConnectionTooltip(icon) {
     observer?.disconnect();
     observer = null;
     document.removeEventListener('keydown', escape);
-    document.removeEventListener('scroll', close, true);
-    window.removeEventListener('resize', close);
+    document.removeEventListener('scroll', position, true);
+    window.removeEventListener('resize', position);
     if (activeTooltip === close) activeTooltip = null;
   };
   const escape = event => {
     if (event.key !== 'Escape') return;
     dismissed = true;
     close();
+  };
+  const position = () => {
+    if (!icon.isConnected) { close(); return; }
+    const bounds = icon.getBoundingClientRect(), size = tip.getBoundingClientRect();
+    const width = document.documentElement.clientWidth, height = window.innerHeight;
+    const left = Math.max(8, Math.min(bounds.left, width - size.width - 8));
+    const above = bounds.top - size.height - 4;
+    const preferredTop = above >= 8 ? above : bounds.bottom + 4;
+    const top = Math.max(8, Math.min(preferredTop, height - size.height - 8));
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
   };
   const show = () => {
     clearTimeout(closing);
@@ -155,16 +200,12 @@ function wireConnectionTooltip(icon) {
     activeTooltip?.();
     activeTooltip = close;
     icon.dataset.tooltipOpen = '';
-    const bounds = icon.getBoundingClientRect(), size = tip.getBoundingClientRect();
-    const width = document.documentElement.clientWidth, height = window.innerHeight;
-    const left = Math.max(8, Math.min(bounds.left, width - size.width - 8));
-    const above = bounds.top - size.height - 4;
-    const top = above >= 8 ? above : Math.max(8, Math.min(bounds.bottom + 4, height - size.height - 8));
-    tip.style.left = `${left}px`;
-    tip.style.top = `${top}px`;
+    position();
     document.addEventListener('keydown', escape);
-    document.addEventListener('scroll', close, true);
-    window.addEventListener('resize', close);
+    // Focusing an icon can scroll it into view after focus fires. Keep the
+    // focused explanation visible and move it with the icon instead of closing.
+    document.addEventListener('scroll', position, true);
+    window.addEventListener('resize', position);
     // Listings are replaced as devices arrive. Retire open tooltip listeners
     // when their icon leaves the page, even if no blur event is dispatched.
     observer = new MutationObserver(() => { if (!icon.isConnected) close(); });

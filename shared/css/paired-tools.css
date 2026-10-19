@@ -47,6 +47,7 @@
   min-width: 0;
 }
 .paired-start-row > * { min-width: 0; max-width: 100%; }
+.paired-start-row[data-group-busy] { opacity: .55; }
 .paired-transport {
   display: flex;
   flex-wrap: wrap;
