@@ -547,6 +547,7 @@ function activateOncall() {
       renderRooms();
     },
     status(key) {
+      ui['discovery-status'].classList.toggle('visually-hidden', key === 'ready');
       ui['discovery-status'].textContent = phrase(`discovery-${key}`);
     },
     publication(key) {

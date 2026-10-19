@@ -6,7 +6,10 @@
     {% include "partials/paired-network.html" %}
     <div id="discovery-controls" class="tab-share-discovery-controls">
       <button type="button" id="discovery-start" aria-describedby="discovery-help">Find connections</button>
-      <p id="discovery-help" class="field-note">Find shared tabs in the selected network or private group. Direct and Cloud relay sessions appear together; their icons show the connection type and access requirements. Check the invitation code with the host.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p id="discovery-help" class="field-note">Find shared tabs in the selected network or private group. Direct and Cloud relay sessions appear together; their icons show the connection type and access requirements. Check the invitation code with the host.</p>
+      </details>
     </div>
     <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
       <p id="discovery-status" role="status" aria-live="polite"></p>
