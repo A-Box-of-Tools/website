@@ -2,6 +2,7 @@ import { transportMode, peerConfiguration, transportCandidate, transportDescript
   selectedTransport, RelayCredentials } from './peer-transport.js';
 import { PairingSocket } from './peer-pairing.js';
 import { rendezvousEndpoint } from './peer-endpoint.js';
+import { groupUrl } from './discovery-group.js';
 
 const INTERVAL = 1000;
 const DEADLINE = 10000;
@@ -21,7 +22,7 @@ const uuid = () => {
 };
 
 class VoiceSession {
-  constructor({ role, code, key, listenKey, mode = 'broadcast', transport = 'direct', roomName = '', discover = false, passwordProof = null, name = '',
+  constructor({ role, code, key, listenKey, mode = 'broadcast', transport = 'direct', roomName = '', discover = false, discoveryGroup = null, passwordProof = null, name = '',
     onState = () => {}, onStream = () => {}, onParticipants = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
     mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
@@ -64,7 +65,7 @@ class VoiceSession {
     const url = new URL(endpoint || origin);
     url.pathname = `/${this._inbox ? 'inbox' : 'broadcast'}/${code}`;
     url.search = url.hash = '';
-    this._endpoint = url.href;
+    this._endpoint = groupUrl(url.href, role === 'host' ? discoveryGroup : null);
     this._active = false;
     this._epoch = 0;
     this._socket = null;

@@ -7,8 +7,10 @@
 
 import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
-import worker, { Discovery, Room } from '../../workers/rendezvous/worker.js';
+import worker, { Broadcast, Discovery, Inbox, Room } from '../../workers/rendezvous/worker.js';
 import { DISCOVERY_SCOPE_HEADER } from '../../workers/rendezvous/discovery.js';
+import { broadcastCode } from '../../workers/rendezvous/broadcast.js';
+import { groupIdentifier } from '../../shared/js/discovery-group.js';
 
 const NativeResponse = globalThis.Response;
 const nativePair = globalThis.WebSocketPair;
@@ -73,6 +75,7 @@ after(() => {
 
 function system() {
   const rooms = new Map();
+  const voiceRooms = new Map();
   const discoveries = new Map();
   const calls = [];
   const env = {
@@ -94,6 +97,21 @@ function system() {
       } }),
     },
   };
+  for (const [binding, Type] of [['BROADCASTS', Broadcast], ['INBOXES', Inbox]]) {
+    env[binding] = {
+      idFromName: (code) => code,
+      get: (code) => ({ fetch: async (input, init) => {
+        const request = input instanceof Request ? input : new Request(input, init);
+        calls.push({ target: binding, code, request: request.clone() });
+        return voice(binding, code, Type).instance.fetch(request);
+      } }),
+    };
+  }
+  function voice(binding, code, Type = binding === 'BROADCASTS' ? Broadcast : Inbox) {
+    const id = binding + ':' + code;
+    if (!voiceRooms.has(id)) { const ctx = new Context(); voiceRooms.set(id, { ctx, instance: new Type(ctx, env) }); }
+    return voiceRooms.get(id);
+  }
   function room(code) {
     if (!rooms.has(code)) { const ctx = new Context(); rooms.set(code, { ctx, instance: new Room(ctx, env) }); }
     return rooms.get(code);
@@ -102,7 +120,7 @@ function system() {
     if (!discoveries.has(scope)) { const ctx = new Context(); discoveries.set(scope, { ctx, instance: new Discovery(ctx, env) }); }
     return discoveries.get(scope);
   }
-  return { env, room, discovery, calls };
+  return { env, room, voice, discovery, calls };
 }
 
 async function host(s, code = 'brave-otter-42', scope = SCOPE, flags = '&local=1&discover=1') {
@@ -750,4 +768,255 @@ test('public requests cannot forge a Room lease or reach binding-only control pa
     }), s.env)).status, 404);
   }
   assert.deepEqual(s.calls, []);
+});
+
+const GROUP_CODE = 'A'.repeat(26);
+const OTHER_GROUP_CODE = 'B'.repeat(26);
+const PRIVATE_TOOLS = ['share-text', 'share-tab', 'remote-camera', 'walkie-talkie', 'voice-oncall'];
+
+async function privateObserver(s, group, { tool = 'share-text', address = '8.8.8.8', extra, authenticate = true } = {}) {
+  const id = await groupIdentifier(group);
+  const ws = await edgeSocket(s, `/discover?tool=${tool}&group=${id}`, address, extra);
+  const scope = ws.deserializeAttachment().scope;
+  assert.deepEqual(ws.messages, []);
+  if (authenticate) await s.discovery(scope).instance.webSocketMessage(ws, JSON.stringify({ group }));
+  return { ws, scope, id };
+}
+
+async function privateHost(s, tool, id, { transport = 'direct', suffix = 'a' } = {}) {
+  if (!['walkie-talkie', 'voice-oncall'].includes(tool)) {
+    const code = `private-${tool}-${suffix}`;
+    const ws = await edgeSocket(s,
+      `/ws/${code}?role=host&local=1&discover=1&tool=${tool}&transport=${transport}&group=${id}`, '1.2.3.4');
+    return { ws, claim: publication(ws), state: s.room(tool === 'share-text' ? code : tool + ':' + code) };
+  }
+  const key = suffix.toUpperCase().repeat(43), listenKey = 'L'.repeat(43), code = await broadcastCode(key);
+  const binding = tool === 'walkie-talkie' ? 'BROADCASTS' : 'INBOXES';
+  const path = tool === 'walkie-talkie' ? 'broadcast' : 'inbox';
+  const ws = await edgeSocket(s, `/${path}/${code}?group=${id}`, '1.2.3.4');
+  const state = s.voice(binding, code);
+  await state.instance.webSocketMessage(ws, JSON.stringify({ type: 'auth', role: 'host', key, transport,
+    roomName: 'Private room', ...(tool === 'walkie-talkie' ? { listenKey, discover: true } : { passwordProof: 'P'.repeat(43) }) }));
+  const lease = publication(ws);
+  return { ws, state, claim: { code, lease: lease.lease, ...(tool === 'walkie-talkie' ? { listenKey } : {}) } };
+}
+
+test('all five tools discover private live hosts across addresses without publishing to the network directory', async () => {
+  const id = await groupIdentifier(GROUP_CODE);
+  for (const tool of PRIVATE_TOOLS) {
+    const s = system();
+    const host = await privateHost(s, tool, id);
+    const publisher = await privateObserver(s, GROUP_CODE, { tool, address: '1.2.3.4' });
+    const watching = await privateObserver(s, GROUP_CODE, { tool, address: '2606:4700::1234' });
+    const network = await edgeSocket(s, `/discover?tool=${tool}`, '1.2.3.4');
+    assert.equal(publisher.scope, watching.scope, tool);
+    assert.equal(host.ws.deserializeAttachment().scope, publisher.scope, tool);
+    await publish(s, publisher.ws, host.claim, publisher.scope);
+    assert.equal(shares(watching.ws).group, id);
+    assert.equal(shares(watching.ws).list.length, 1, tool);
+    assert.equal(shares(watching.ws).list[0].code, host.claim.code);
+    if (tool === 'voice-oncall') assert.equal(shares(watching.ws).list[0].locked, true);
+    assert.deepEqual(shares(network).list, []);
+    const networkScope = network.deserializeAttachment().scope;
+    await publish(s, network, host.claim, networkScope);
+    assert.deepEqual(shares(network).list, []);
+    const serialized = JSON.stringify([publisher.ws.deserializeAttachment(), host.ws.deserializeAttachment(), shares(watching.ws)]);
+    assert.equal(serialized.includes(GROUP_CODE), false, tool);
+    assert.equal(s.calls.some(call => call.request.url.includes(GROUP_CODE)), false);
+    host.ws.close(1000, 'done');
+    host.state.instance.webSocketClose(host.ws);
+    await host.state.ctx.flush();
+    assert.deepEqual(shares(watching.ws).list, [], tool);
+  }
+});
+
+test('private groups list Direct and Cloud relay together with trusted access metadata', async () => {
+  const id = await groupIdentifier(GROUP_CODE);
+  for (const tool of PRIVATE_TOOLS) {
+    const s = system();
+    s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+    const direct = await privateHost(s, tool, id);
+    const relay = await privateHost(s, tool, id, { transport: 'relay', suffix: 'b' });
+    const first = await privateObserver(s, GROUP_CODE, { tool });
+    const second = await privateObserver(s, GROUP_CODE, { tool, address: '9.9.9.9' });
+    await publish(s, first.ws, direct.claim, first.scope);
+    await publish(s, second.ws, relay.claim, second.scope);
+    const entries = shares(first.ws).list;
+    assert.equal(entries.length, 2, tool);
+    assert.equal(entries.find(entry => entry.code === direct.claim.code).transport, undefined);
+    assert.equal(entries.find(entry => entry.code === relay.claim.code).transport, 'relay');
+    if (tool === 'voice-oncall') assert.ok(entries.every(entry => entry.locked === true));
+  }
+});
+
+test('private Share Text may advertise ordinary Direct without broadening its network discovery policy', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await edgeSocket(s, `/ws/ordinary-private?role=host&discover=1&transport=direct&group=${id}`, '1.2.3.4');
+  assert.equal(host.deserializeAttachment().local, false);
+  const owner = await privateObserver(s, GROUP_CODE);
+  await publish(s, owner.ws, publication(host), owner.scope);
+  assert.deepEqual(shares(owner.ws).list, [{ code: 'ordinary-private', local: false }]);
+  await s.discovery(owner.scope).instance.webSocketMessage(owner.ws, JSON.stringify({ refresh: true }));
+  assert.deepEqual(shares(owner.ws).list, [{ code: 'ordinary-private', local: false }]);
+  const network = await edgeSocket(s, '/discover', '1.2.3.4');
+  await publish(s, network, publication(host), network.deserializeAttachment().scope);
+  assert.deepEqual(shares(network).list, []);
+  const networkHost = await edgeSocket(s, '/ws/ordinary-network?role=host&discover=1&transport=direct', '1.2.3.4');
+  assert.deepEqual(networkHost.messages, []);
+  for (const tool of ['share-tab', 'remote-camera']) {
+    const unoffered = await edgeSocket(s, `/ws/unoffered?role=host&discover=1&tool=${tool}&group=${id}`, '1.2.3.4');
+    assert.deepEqual(unoffered.messages, []);
+  }
+  host.close(1000, 'done');
+  s.room('ordinary-private').instance.webSocketClose(host);
+  await s.room('ordinary-private').ctx.flush();
+  assert.deepEqual(shares(owner.ws).list, []);
+});
+
+test('a private directory never sends entries to an unauthenticated observer or accepts its publish and refresh', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await privateHost(s, 'share-text', id);
+  const publisher = await privateObserver(s, GROUP_CODE);
+  const silent = await privateObserver(s, GROUP_CODE, { authenticate: false });
+  await publish(s, publisher.ws, host.claim, publisher.scope);
+  assert.deepEqual(silent.ws.messages, []);
+  const before = s.calls.length;
+  for (const frame of [{ publish: host.claim }, { refresh: true }]) {
+    const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
+    const prior = s.calls.length;
+    await s.discovery(pending.scope).instance.webSocketMessage(pending.ws, JSON.stringify(frame));
+    assert.equal(pending.ws.closed.code, 4403);
+    assert.equal(pending.ws.deserializeAttachment(), null);
+    assert.deepEqual(pending.ws.messages, []);
+    assert.equal(s.calls.length, prior);
+  }
+  assert.ok(s.calls.length > before); // Only the two public observer handshakes were forwarded.
+  assert.equal(shares(publisher.ws).list.length, 1);
+});
+
+test('wrong, malformed, duplicate, and expired private group proofs fail closed', async t => {
+  const s = system();
+  for (const frame of ['{', 'null', '[]', new ArrayBuffer(1), 'x'.repeat(513),
+    JSON.stringify({ group: OTHER_GROUP_CODE }), JSON.stringify({ group: GROUP_CODE.toLowerCase() }),
+    JSON.stringify({ group: GROUP_CODE, refresh: true }), JSON.stringify({ group: 'short' })]) {
+    const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
+    await s.discovery(pending.scope).instance.webSocketMessage(pending.ws, frame);
+    assert.equal(pending.ws.closed.code, 4403);
+    assert.equal(pending.ws.deserializeAttachment(), null);
+    assert.deepEqual(pending.ws.messages, []);
+  }
+  const accepted = await privateObserver(s, GROUP_CODE);
+  await s.discovery(accepted.scope).instance.webSocketMessage(accepted.ws, JSON.stringify({ group: GROUP_CODE }));
+  assert.equal(accepted.ws.closed.code, 4403);
+  const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
+  const deadline = pending.ws.deserializeAttachment().deadline;
+  t.mock.method(Date, 'now', () => deadline + 1);
+  await s.discovery(pending.scope).instance.webSocketMessage(pending.ws, JSON.stringify({ group: GROUP_CODE }));
+  assert.equal(pending.ws.closed.code, 4408);
+  assert.deepEqual(pending.ws.messages, []);
+});
+
+test('private scope separates codes, origins and tools even when the caller knows a valid live lease', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await privateHost(s, 'share-text', id);
+  const owner = await privateObserver(s, GROUP_CODE);
+  await publish(s, owner.ws, host.claim, owner.scope);
+  for (const [code, options] of [[OTHER_GROUP_CODE, {}],
+    [GROUP_CODE, { extra: { Origin: 'https://pr-1.abox-preview.pages.dev' } }],
+    [GROUP_CODE, { tool: 'remote-camera' }]]) {
+    const stranger = await privateObserver(s, code, options);
+    assert.notEqual(stranger.scope, owner.scope);
+    await publish(s, stranger.ws, host.claim, stranger.scope);
+    assert.deepEqual(shares(stranger.ws).list, []);
+  }
+  const spoof = await privateObserver(s, OTHER_GROUP_CODE, { extra: { [DISCOVERY_SCOPE_HEADER]: owner.scope } });
+  assert.notEqual(spoof.scope, owner.scope);
+  assert.deepEqual(shares(spoof.ws).list, []);
+  assert.equal(shares(owner.ws).list.length, 1);
+});
+
+test('private discovery needs an allowed origin and group proof but does not require a public address match', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const first = await privateObserver(s, GROUP_CODE);
+  const withoutAddress = await privateObserver(s, GROUP_CODE, { address: null });
+  const proxyAddress = await privateObserver(s, GROUP_CODE, { address: '10.0.0.1' });
+  assert.equal(withoutAddress.scope, first.scope);
+  assert.equal(proxyAddress.scope, first.scope);
+  assert.equal((await worker.fetch(edgeRequest('/discover', null), s.env)).status, 403);
+  for (const extra of [{ Origin: 'https://example.com' }, { 'CF-Worker': 'example.com' }]) {
+    assert.equal((await worker.fetch(edgeRequest('/discover?group=' + id, '1.2.3.4', extra), s.env)).status, 403);
+  }
+});
+
+test('malformed and duplicate group URL parameters are rejected on every public pairing route', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  for (const path of ['/discover', '/ws/test?role=host&local=1&discover=1',
+    '/broadcast/' + 'a'.repeat(64), '/inbox/' + 'b'.repeat(64)]) {
+    for (const query of ['group=', 'group=short', 'group=' + GROUP_CODE, `group=${id}&group=${id}`]) {
+      const result = await worker.fetch(edgeRequest(path + (path.includes('?') ? '&' : '?') + query, '1.2.3.4'), s.env);
+      assert.equal(result.status, 400, path + ':' + query);
+    }
+  }
+  assert.deepEqual(s.calls, []);
+});
+
+test('private group authorization survives hibernation without persisting the code or accepting late publications', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await privateHost(s, 'share-text', id);
+  const owner = await privateObserver(s, GROUP_CODE);
+  const state = s.discovery(owner.scope);
+  state.instance = new Discovery(state.ctx, s.env);
+  const watching = await privateObserver(s, GROUP_CODE, { address: '9.9.9.9' });
+  const held = holdRoomCheck(s);
+  const pending = publish(s, owner.ws, host.claim, owner.scope);
+  await held.checked;
+  host.ws.close(1000, 'gone');
+  host.state.instance.webSocketClose(host.ws);
+  await host.state.ctx.flush();
+  held.release(); await pending;
+  assert.deepEqual(shares(watching.ws).list, []);
+  assert.equal(owner.ws.deserializeAttachment().authenticated, true);
+  assert.equal(owner.ws.deserializeAttachment().publication, null);
+  assert.equal(JSON.stringify(owner.ws.deserializeAttachment()).includes(GROUP_CODE), false);
+});
+
+test('private directories bound pending proofs and expire them before admitting more observers', async t => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  let deadline;
+  for (let i = 0; i < 8; i++) {
+    const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
+    deadline = pending.ws.deserializeAttachment().deadline;
+  }
+  const full = await edgeSocket(s, '/discover?group=' + id, '8.8.8.8');
+  assert.equal(full.closed.code, 4429);
+  t.mock.method(Date, 'now', () => deadline + 1);
+  const fresh = await privateObserver(s, GROUP_CODE);
+  assert.equal(fresh.ws.deserializeAttachment().authenticated, true);
+  assert.deepEqual(shares(fresh.ws).list, []);
+});
+
+test('closing a private observer or repeating its proof cancels an in-flight authentication', async t => {
+  const s = system();
+  const first = await privateObserver(s, GROUP_CODE, { authenticate: false });
+  const second = await privateObserver(s, GROUP_CODE, { authenticate: false });
+  const original = crypto.subtle.digest.bind(crypto.subtle), releases = [];
+  t.mock.method(crypto.subtle, 'digest', async (...args) => {
+    const result = await original(...args);
+    await new Promise(resolve => releases.push(resolve));
+    return result;
+  });
+  const one = s.discovery(first.scope).instance.webSocketMessage(first.ws, JSON.stringify({ group: GROUP_CODE }));
+  const two = s.discovery(second.scope).instance.webSocketMessage(second.ws, JSON.stringify({ group: GROUP_CODE }));
+  first.ws.close(1000, 'left');
+  s.discovery(first.scope).instance.webSocketClose(first.ws);
+  await s.discovery(second.scope).instance.webSocketMessage(second.ws, JSON.stringify({ group: GROUP_CODE }));
+  assert.equal(second.ws.closed.code, 4403);
+  // Both digest results remain pending while the socket attachments retire.
+  while (releases.length < 2) await new Promise(resolve => setImmediate(resolve));
+  for (const release of releases) release();
+  await Promise.all([one, two]);
+  assert.equal(first.ws.deserializeAttachment(), null);
+  assert.equal(second.ws.deserializeAttachment(), null);
+  assert.deepEqual(first.ws.messages, []);
+  assert.deepEqual(second.ws.messages, []);
 });

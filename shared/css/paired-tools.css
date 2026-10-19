@@ -47,6 +47,7 @@
   min-width: 0;
 }
 .paired-start-row > * { min-width: 0; max-width: 100%; }
+.paired-start-row[data-group-busy] { opacity: .55; }
 .paired-transport {
   display: flex;
   flex-wrap: wrap;
@@ -116,6 +117,85 @@
 /* This live description stays in its own fold, outside the build's field-note gathering. */
 .paired-transport-note { max-width: 62ch; margin: 0 0 .5rem; font-size: .85rem; color: var(--text-dim); line-height: 1.6; }
 .paired-route { margin-block: .75rem; font-size: .9rem; font-weight: 600; }
+.paired-discovery-group { margin-block: 1rem; }
+.paired-group-current, .paired-group-entry, .paired-connection-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  min-width: 0;
+}
+.paired-group-current { justify-content: space-between; margin-bottom: .5rem; }
+.paired-group-details > summary, .paired-icon-legend > summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  align-content: center;
+}
+.paired-page .paired-group-label { display: block; margin: .75rem 0 .35rem; font-weight: 600; }
+.paired-group-entry input { flex: 1 1 20rem; width: 100%; min-width: 0; font-family: monospace; }
+.paired-group-entry button { min-height: 44px; }
+.paired-page .paired-discovery-group button.ghost {
+  min-height: 44px;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .875rem;
+  line-height: 1.4;
+  box-shadow: none;
+}
+.paired-page .paired-discovery-group button.ghost:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.paired-group-note { font-size: .875rem; color: var(--text-dim); line-height: 1.6; margin: .5rem 0; }
+.paired-group-note:empty { display: none; }
+.paired-icon-legend { margin-block: .75rem; font-size: .875rem; color: var(--text-dim); }
+.paired-icon-legend ul { margin: .5rem 0; padding: 0; list-style: none; }
+.paired-icon-legend li { display: flex; align-items: center; gap: .5rem; margin-block: .4rem; }
+.paired-icon-legend [data-connection-legend] { flex: none; }
+.paired-connection-icons { display: inline-flex; gap: .15rem; align-items: center; flex-wrap: wrap; }
+.paired-connection-icon {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-dim);
+}
+.paired-connection-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.paired-connection-icon:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.paired-icon-tip {
+  display: none;
+  position: fixed;
+  z-index: 50;
+  width: max-content;
+  max-width: min(17rem, 70vw);
+  padding: .5rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.paired-connection-icon[data-tooltip-open] .paired-icon-tip { display: block; }
 @media (forced-colors: active) {
   .paired-transport-track { border-color: ButtonText; }
   .paired-transport-track::before { background: ButtonText; }

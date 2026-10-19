@@ -2,6 +2,7 @@ import { BroadcastSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
@@ -25,7 +26,7 @@ function activateChannel() {
     'microphone', 'microphone-note', 'resume-microphone', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
-    'discovery-status', 'selected-channel', 'join', 'connect-listener', 'publication', 'setup', 'room-name', 'discover',
+    'discovery-status', 'selected-channel', 'join', 'connect-listener', 'connection-icons', 'publication', 'setup', 'room-name', 'discover',
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
@@ -77,7 +78,10 @@ function activateChannel() {
     }
   }
   const cachedHost = readStored(hostStorage);
-  let credentials = validIdentity(cachedHost) && validKey(cachedHost.listenKey) ? cachedHost : null;
+  // A private group's code lives only in this page. Reload must not move its
+  // retained host identity into the public directory when that code is gone.
+  let credentials = validIdentity(cachedHost) && validKey(cachedHost.listenKey) && !cachedHost.discoveryGroup ? cachedHost : null;
+  if (cachedHost?.discoveryGroup) removeStored(hostStorage);
   const errors = new Set(['error-access', 'error-full', 'error-microphone', 'error-connection', 'error-secure-context', 'error-browser',
     'transport.invalid', 'transport.unavailable', 'transport.limited', 'transport.forbidden', 'transport.timeout', 'transport.mismatch']);
   let session = null;
@@ -116,6 +120,16 @@ function activateChannel() {
     updateListenerControls();
   } });
   transportControl.set(transportMode(role === 'listener' ? listenerIdentity?.transport : credentials?.transport) || 'direct');
+  const groupControl = createDiscoveryGroupControl({ root: document, onChange: () => {
+    discovery.close();
+    channels = [];
+    selectedChannel = null;
+    lastPublication = null;
+    transportControl.set('direct');
+    transportControl.route(null);
+    renderChannels();
+    discovery = openDiscovery();
+  } });
   let discovery = openDiscovery();
   if (credentials) {
     if (typeof credentials.roomName === 'string') ui['room-name'].value = credentials.roomName;
@@ -128,7 +142,7 @@ function activateChannel() {
     ui.host.hidden = role !== 'host';
     ui.listener.hidden = role !== 'listener';
     ui['host-intro'].hidden = role !== 'host';
-    ui.nearby.hidden = role !== 'host' || hostActive || starting || preparingCredentials;
+    ui.nearby.hidden = role !== 'host';
     const unavailable = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.join.disabled = unavailable || !selectedChannel;
     for (const button of ui.channels.querySelectorAll('button')) button.disabled = unavailable;
@@ -147,6 +161,10 @@ function activateChannel() {
       item.className = 'paired-nearby-row';
       const name = document.createElement('span');
       name.textContent = channel.name;
+      const info = document.createElement('span');
+      info.className = 'paired-connection-info';
+      info.append(name);
+      appendConnectionIcons(info, { transport: channel.transport, locked: false, approval: false });
       const join = document.createElement('button');
       join.type = 'button';
       join.textContent = phrase('choose-channel');
@@ -160,7 +178,7 @@ function activateChannel() {
         renderChannels();
         ui.join.focus();
       });
-      item.append(name, join);
+      item.append(info, join);
       ui.channels.append(item);
     }
   }
@@ -169,7 +187,7 @@ function activateChannel() {
     const channel = selectedChannel;
     if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended
         || !channel || !channels.some(row => row.code === channel.code && row.listenKey === channel.listenKey)) return;
-    if (transportControl.value() !== transportMode(channel.transport)) { renderState('transport.mismatch'); return; }
+    transportControl.set(transportMode(channel.transport));
     hostWanted = false;
     resumeHostOnReturn = false;
     hostNeedsResume = false;
@@ -204,7 +222,7 @@ function activateChannel() {
         ui.publication.hidden = status === null;
         ui.publication.textContent = status === null ? '' : phrase(`publication-${status}`);
       },
-    });
+    }, { group: groupControl.code() });
   }
 
   function unpublish() {
@@ -228,6 +246,7 @@ function activateChannel() {
 
   function updateHostControls() {
     transportControl.lock(hostActive || starting || preparingCredentials || Boolean(session));
+    groupControl.lock(hostActive || starting || preparingCredentials || hostWanted || resumeHostOnReturn || Boolean(session));
     const talking = hostActive && canTransmit && !microphoneMuted && (held() || latched);
     const handsFree = talking && latched;
     ui['hands-free'].dataset.active = String(handsFree);
@@ -257,6 +276,10 @@ function activateChannel() {
   }
 
   function updateListenerControls() {
+    ui['connection-icons'].hidden = role !== 'listener' || !validIdentity(listenerIdentity);
+    if (role === 'listener' && validIdentity(listenerIdentity)) {
+      appendConnectionIcons(ui['connection-icons'], { transport: listenerIdentity.transport, locked: false, approval: false });
+    }
     const needsConfirmation = role === 'listener' && transportMode(listenerIdentity?.transport) === 'relay'
       && !listenerIdentity?.confirmed && !listenerLeft && !listenerEnded;
     ui['connect-listener'].hidden = !needsConfirmation;
@@ -417,6 +440,7 @@ function activateChannel() {
       listenKey: role === 'host' ? identity.listenKey : undefined,
       roomName: role === 'host' ? identity.roomName : undefined,
       discover: role === 'host' && identity.discover === true,
+      discoveryGroup: role === 'host' ? identity.discoveryGroup : null,
       onState: (key, detail) => {
         if (generation !== sessionGeneration) return;
         if (key.startsWith('transport.')) {
@@ -434,6 +458,7 @@ function activateChannel() {
         if (role === 'host' && key === 'error-microphone') {
           // A phone can interrupt capture before it reports that the page is hidden.
           hostWanted = hostActive;
+          session = null;
           sourceEpoch++;
           starting = false;
         }
@@ -487,12 +512,14 @@ function activateChannel() {
 
   async function prepareCredentials() {
     let identity = credentials;
-    if (!identity || transportMode(identity.transport) !== transportControl.value() || await channelCode(identity.key) !== identity.code) {
+    if (!identity || transportMode(identity.transport) !== transportControl.value()
+        || (identity.discoveryGroup || null) !== groupControl.id() || await channelCode(identity.key) !== identity.code) {
       const key = randomKey();
       identity = { code: await channelCode(key), key, listenKey: randomKey() };
     }
     if (!hostWanted && !resumeHostOnReturn) return null;
-    credentials = { ...identity, roomName: ui['room-name'].value.trim(), discover: ui.discover.checked, transport: transportControl.value() };
+    credentials = { ...identity, roomName: ui['room-name'].value.trim(), discover: ui.discover.checked,
+      transport: transportControl.value(), discoveryGroup: groupControl.id() };
     writeStored(hostStorage, credentials);
     return credentials;
   }

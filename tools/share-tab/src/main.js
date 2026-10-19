@@ -7,13 +7,20 @@ import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
-const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; } });
+const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; renderInvitationType(); } });
 function selectTransport(value) {
   invalidInvitationTransport = !transportControl.set(value);
+  renderInvitationType();
   if (invalidInvitationTransport) status('viewer-status', 'transport.invalid', true);
+}
+function renderInvitationType() {
+  const indicator = $('viewer-connection-type');
+  indicator.replaceChildren();
+  if (!invalidInvitationTransport) appendConnectionIcons(indicator, { transport: transportControl.value(), locked: false, approval: true });
 }
 let routeTimer = null;
 let revision = 0;
@@ -27,6 +34,15 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
+const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
+  closeDiscovery();
+  $('viewer-code').value = '';
+  selectTransport('direct');
+  status('viewer-status', 'viewer.ready');
+  browsingNearby = true;
+  startDiscovery();
+  updateControls();
+} });
 const terminal = new Set([
   'connection.server-failed', 'connection.not-found', 'connection.taken', 'connection.busy',
   'connection.ended', 'connection.invalid', 'connection.direct-failed',
@@ -139,7 +155,9 @@ function renderDiscovery() {
       status('viewer-status', 'discovery.selected');
       $('viewer-connect').focus();
     });
-    item.append(label, button);
+    item.append(label);
+    appendConnectionIcons(item, { transport: share.transport ?? 'direct', locked: false, approval: true });
+    item.append(button);
     list.append(item);
   }
   const key = discoveryState === 'ready' ? (list.children.length ? 'discovery.found' : 'discovery.empty') : `discovery.${discoveryState}`;
@@ -155,7 +173,7 @@ function startDiscovery() {
     publication(state) {
       status('host-publication-status', state ? `discovery.${state}` : '', state === 'not-published');
     },
-  });
+  }, { group: groupControl.code() });
 }
 
 function closeDiscovery() {
@@ -182,9 +200,10 @@ function updateControls() {
   const viewing = role === 'viewer';
   const busy = hosting || viewing;
   transportControl.lock(busy);
+  groupControl.lock(busy);
   $('host-discoverable').disabled = busy || !canCapture;
   $('host-publication-status').hidden = !hosting || !$('host-discoverable').checked;
-  $('nearby-section').hidden = busy;
+  $('nearby-section').hidden = viewing;
   $('discovery-controls').hidden = busy;
   $('discovery-start').hidden = browsingNearby;
   $('discovery-start').disabled = !canConnect;
@@ -288,7 +307,7 @@ async function startHost() {
     $('local-video').play().catch(() => {});
     const code = makeCode();
     if ($('host-discoverable').checked) status('host-publication-status', 'discovery.not-published');
-    await session.startHost(stream, code, { discoverable: $('host-discoverable').checked, transport });
+    await session.startHost(stream, code, { discoverable: $('host-discoverable').checked, transport, discoveryGroup: groupControl.id() });
     if (owner !== revision || role !== 'host') return;
     invitation = viewerLink(location.href, code, transport);
     $('share-link').value = invitation;
@@ -462,4 +481,5 @@ addEventListener('click', (event) => {
 
 showInvitation();
 updateControls();
+renderInvitationType();
 document.getElementById('boot-warning')?.remove();

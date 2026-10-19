@@ -105,6 +105,28 @@ test('camera discovery accepts only its own live room and namespace acknowledgem
 });
 
 const RELAY_SERVERS = [{ urls: ['turns:relay.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
+
+test('private camera recovery retains its directory while Stop prevents it leaking into another role', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), group = 'a'.repeat(64);
+  await f.session.startHost(sourceStream(), CODE, { discoverable: true, discoveryGroup: group });
+  const first = f.sockets[0];
+  assert.equal(new URL(first.url).searchParams.get('group'), group);
+  assert.equal(new URL(first.url).searchParams.get('transport'), 'direct');
+  first.drop(); await settle();
+  t.mock.timers.tick(2000); await settle();
+  assert.equal(f.sockets[1].url, first.url, 'recovery must never move a private camera to the network directory');
+  f.sockets[1].pong(); await settle();
+  f.session.stop();
+  assert.equal(f.session.discoveryGroup, null);
+  await f.session.connect(CODE, 'Viewer');
+  assert.equal(new URL(f.sockets[2].url).searchParams.has('group'), false);
+  await f.session.startHost(sourceStream(), CODE, { discoverable: false, discoveryGroup: group });
+  assert.equal(new URL(f.sockets[3].url).searchParams.has('group'), false);
+  await f.session.startHost(sourceStream(), CODE, { discoverable: true });
+  assert.equal(new URL(f.sockets[4].url).searchParams.has('group'), false);
+});
+
 function relayReply(socket, values = {}) {
   const request = socket.sent.findLast((frame) => frame.type === 'relay-request');
   assert.ok(request, 'relay credentials requested through the live room');

@@ -1,6 +1,10 @@
 # Share a Browser Tab
 
-The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+The shared Direct / Cloud relay switch sits beside the host's Start control,
+with Direct initially selected. Viewers use the route in the invitation or
+listing and see read-only route and access icons beside Request to watch.
+Choosing a route alone never connects or captures. Actual route status remains
+visible outside setup panels that disappear after connecting.
 
 A desktop browser captures one tab and streams its picture to one approved
 viewer. The viewer opens the tool in a browser, watches live video and has no
@@ -29,24 +33,24 @@ again requires another click, picker selection and fresh invitation.
 
 ## The invitation and approval boundary
 
-The nearby card comes before the host/viewer controls,
+The Available connections card comes before the host/viewer controls,
 using the common `paired-tools` layout and translated Wi-Fi/hotspot help.
 Starting a session hides that browsing card. Selecting a
 listing still only fills the invitation and focuses Request; the layout does
 not grant consent, change discovery timing or create a hotspot.
 
 A session generates a fresh random `tab-` room code. Invitations are
-link-only by default. Before starting, the host can opt into Show in nearby
-shared tabs; that choice stays fixed until the session ends. A viewer link or
-selected nearby listing fills the invitation but does not authorize a
+link-only by default. Before starting, the host can opt into Show in Available
+connections; that choice stays fixed until the session ends. A viewer link or
+selected listing fills the invitation but does not authorize a
 connection. The viewer sees the address exchange notice, optionally adds an
 introduction and chooses Request to watch.
-The shared Direct / Cloud relay control sits between Nearby and setup and is
+The shared Direct / Cloud relay control sits beside the host's Start action and is
 locked while capture or pairing is active. The host's mode is carried in the
 viewer link query and discovery listing. Opening or selecting an invitation
 only selects that mode; the viewer explicitly requests to watch after seeing
 its disclosure. Pasted links also carry the choice. A plain code uses the
-visible selected mode. The worker rejects mismatched modes instead of changing
+currently indicated mode. The worker rejects mismatched modes instead of changing
 one participant's selection.
 The bounded note travels over the encrypted control channel and is not
 verified identity.
@@ -116,12 +120,12 @@ read page addresses and same-page state, so a fragment code is not treated
 as a secret from those scripts.
 Mandatory approval remains the media admission step.
 
-## Optional nearby discovery
+## Optional connection discovery
 
 `peer-discovery.js` supplies the same discovery protocol as the other paired
 tools, scoped to `tool=share-tab` and the selected rendezvous endpoint. Loading
 the page opens no discovery socket. A host that opted in publishes
-the random room code and connection mode; a viewer explicitly chooses Find nearby tabs to
+the random room code and connection mode; a viewer explicitly chooses Find connections to
 open the list. The captured tab's title, URL and pixels, and the viewer's note,
 are never included in discovery messages. Selecting a result only fills the
 invitation: Request to watch, host approval and the viewer's acknowledgement
@@ -133,6 +137,22 @@ or proof of physical proximity. A shared carrier gateway or VPN can include
 strangers, and differing routes can hide a nearby device. The copied invitation
 still works when discovery cannot find a host. Listings are temporary state on
 open connections; stopping the host withdraws its listing.
+
+The shared `peer-discovery-ui` control can instead create or apply a private
+group code. `discovery-group` derives the directory identifier, while
+`peer-discovery` authenticates the directory socket with the code. The host's
+room URL carries only the derived identifier; viewer invitations carry neither
+the group code nor its identifier. The group is locked throughout capture and
+pairing. Changing it closes the old directory, clears the selected invitation,
+and opens an empty listing for the new group. Nothing persists the group or
+automatically resumes a host after reload.
+
+Private directories are separate from the public-network directory and can
+list compatible sessions across different networks. Direct and Cloud relay
+entries appear together with the shared route, password and approval icons;
+this tool always requires approval and has no password. Discovery grants no
+media access. A Direct entry still needs a reachable route, even if it was
+found through a private group; Cloud relay is the choice for separate networks.
 
 Discovery and new connections require internet access on both devices. A
 cached copy of the HTTPS page does not replace that introduction. The user
@@ -160,7 +180,7 @@ only one approved viewer, refusal and disconnect, browser Stop, late capture
 after Stop, hidden control-page continuity and a fresh start after capture
 ends. Exercise pairing on the actual local network with internet access.
 Verify discovery is off initially, an opted-in host appears only in
-its network/origin/tool group, and selecting a listing sends no connection
+its selected network or private group, and selecting a listing sends no connection
 request until Request to watch. Stopping removes the listing. An automated synthetic stream cannot
 establish real browser-picker support.
 

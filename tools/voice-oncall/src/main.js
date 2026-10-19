@@ -2,6 +2,7 @@ import { InboxSession } from './session.js';
 import { phrase } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
@@ -23,7 +24,7 @@ function activateOncall() {
   const ui = Object.fromEntries([
     'tab-join', 'tab-host', 'join-panel', 'host-panel', 'status-text', 'status-dot',
     'join-form', 'nearby', 'refresh', 'discovery-status', 'rooms', 'empty',
-    'sender-password', 'join', 'sender', 'sender-room', 'sender-note', 'resume',
+    'sender-password', 'join', 'connection-icons', 'sender', 'sender-room', 'sender-note', 'resume',
     'hold', 'toggle', 'leave', 'host-form', 'room-name', 'password-required',
     'host-password-field', 'host-password', 'saved-password', 'start', 'host-live',
     'live-name', 'end', 'participant-count', 'host-empty', 'participants',
@@ -37,6 +38,7 @@ function activateOncall() {
   const invitationCode = new URLSearchParams(location.hash.slice(1)).get('code');
   let selectedCode = validCode(invitationCode) ? invitationCode.toLowerCase() : null;
   let selectedTransport = readTransport(location.href);
+  let selectedFromDiscovery = false;
   let rooms = [];
   let roomsSignature = null;
   let view = 'join';
@@ -113,7 +115,10 @@ function activateOncall() {
   }
   if (removedStoredNames) writeStored(senderStorage, senderRecords);
   const savedHost = readStored(hostStorage);
-  let hostIdentity = savedHost && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
+  // Reload loses the private group code. Its old identity must never be
+  // restarted under the default public discovery scope.
+  let hostIdentity = savedHost && !savedHost.discoveryGroup && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
+  if (savedHost?.discoveryGroup) removeStored(hostStorage);
   const transportControl = bindTransportControl({ onChange: () => {
     transportControl.route(null);
     updateHostPassword();
@@ -123,6 +128,23 @@ function activateOncall() {
     ui['room-name'].value = hostIdentity.roomName;
     ui['password-required'].checked = Boolean(hostIdentity.passwordProof);
   }
+  const groupControl = createDiscoveryGroupControl({ root: document, onChange: () => {
+    discovery.close();
+    rooms = [];
+    roomsSignature = null;
+    selectedCode = null;
+    selectedTransport = 'direct';
+    selectedFromDiscovery = false;
+    ui['sender-password'].value = '';
+    ui['sender-password'].setCustomValidity('');
+    lastPublication = null;
+    stripInvitation();
+    transportControl.set('direct');
+    transportControl.route(null);
+    updateHostPassword();
+    renderRooms();
+    discovery = openDiscovery();
+  } });
 
   function stripInvitation() {
     try {
@@ -137,7 +159,7 @@ function activateOncall() {
     ui['host-password-field'].hidden = !locked;
     ui['host-password'].disabled = !locked;
     const canKeepPassword = Boolean(hostIdentity?.passwordProof && transportMode(hostIdentity.transport) === transportControl.value()
-      && hostIdentity.roomName === ui['room-name'].value.trim());
+      && (hostIdentity.discoveryGroup || null) === groupControl.id() && hostIdentity.roomName === ui['room-name'].value.trim());
     ui['host-password'].required = locked && !canKeepPassword;
     ui['saved-password'].hidden = !locked || !canKeepPassword;
   }
@@ -162,9 +184,13 @@ function activateOncall() {
   }
 
   function updateControls() {
+    const room = currentRoom();
+    ui['connection-icons'].hidden = !room;
+    if (room) appendConnectionIcons(ui['connection-icons'], { transport: room.transport, locked: room.locked, approval: false });
     const occupied = hostActive || senderActive || senderPaused || starting;
     transportControl.lock(occupied);
-    ui.nearby.hidden = occupied || senderTerminal;
+    groupControl.lock(occupied || resumeRoleOnReturn !== null);
+    ui.nearby.hidden = senderActive || senderPaused || senderTerminal || (starting && activeRole === 'sender');
     for (const radio of ui.rooms.querySelectorAll('input')) radio.disabled = occupied || senderTerminal;
     ui['tab-join'].disabled = occupied && view !== 'join';
     ui['tab-host'].disabled = occupied && view !== 'host';
@@ -478,16 +504,16 @@ function activateOncall() {
       const name = document.createElement('span');
       name.className = 'vi-room-name';
       name.textContent = room.name;
-      const kind = document.createElement('span');
-      kind.className = 'vi-room-kind';
-      kind.textContent = room.locked === null ? '' : phrase(room.locked ? 'room-locked' : 'room-open');
-      content.append(name, kind);
+      content.className = 'paired-connection-info';
+      content.append(name);
+      appendConnectionIcons(content, { transport: room.transport, locked: room.locked, approval: false });
       label.append(radio, content);
       const chooseRoom = (event) => {
         if (hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended) return;
         if (selectedCode !== room.code) ui['sender-password'].value = '';
         selectedCode = room.code;
         selectedTransport = transportMode(room.transport);
+        selectedFromDiscovery = rooms.some(listed => listed.code === room.code);
         setView('join');
         if (event.type === 'click' && event.detail > 0) (room.locked ? ui['sender-password'] : ui.join).focus();
       };
@@ -496,6 +522,9 @@ function activateOncall() {
       ui.rooms.append(label);
     }
     ui.empty.hidden = listed.length > 0;
+    const room = currentRoom();
+    ui['connection-icons'].hidden = !room;
+    if (room) appendConnectionIcons(ui['connection-icons'], { transport: room.transport, locked: room.locked, approval: false });
   }
 
   let discovery;
@@ -507,6 +536,14 @@ function activateOncall() {
       if (signature === roomsSignature) return;
       roomsSignature = signature;
       rooms = next;
+      if (selectedFromDiscovery && !hostActive && !senderActive && !senderPaused && !starting
+          && !rooms.some(room => room.code === selectedCode)) {
+        selectedCode = null;
+        selectedFromDiscovery = false;
+        selectedTransport = 'direct';
+        ui['sender-password'].value = '';
+        ui['sender-password'].setCustomValidity('');
+      }
       renderRooms();
     },
     status(key) {
@@ -515,7 +552,7 @@ function activateOncall() {
     publication(key) {
       ui['publication-status'].textContent = key ? phrase(`publication-${key}`) : '';
     },
-    });
+    }, { group: groupControl.code() });
   }
   discovery = openDiscovery();
 
@@ -703,6 +740,7 @@ function activateOncall() {
       code: identity.code,
       key: identity.key,
       transport: transportMode(identity.transport),
+      discoveryGroup: role === 'host' ? identity.discoveryGroup : null,
       roomName: role === 'host' ? identity.roomName : undefined,
       passwordProof: identity.passwordProof,
       onState: (key, detail) => {
@@ -794,7 +832,9 @@ function activateOncall() {
       const roomName = ui['room-name'].value.trim();
       const locked = ui['password-required'].checked;
       const password = ui['host-password'].value;
-      const reusable = hostIdentity && transportMode(hostIdentity.transport) === transportControl.value() && hostIdentity.roomName === roomName && Boolean(hostIdentity.passwordProof) === locked && !password && await codeForKey(hostIdentity.key) === hostIdentity.code;
+      const reusable = hostIdentity && transportMode(hostIdentity.transport) === transportControl.value()
+        && (hostIdentity.discoveryGroup || null) === groupControl.id() && hostIdentity.roomName === roomName
+        && Boolean(hostIdentity.passwordProof) === locked && !password && await codeForKey(hostIdentity.key) === hostIdentity.code;
       if (locked && !password && !reusable) {
         hostActive = false;
         clearAudio();
@@ -808,6 +848,7 @@ function activateOncall() {
         const identity = await makeInboxIdentity();
         identity.roomName = roomName;
         identity.transport = transportControl.value();
+        identity.discoveryGroup = groupControl.id();
         identity.passwordProof = locked ? await derivePasswordProof(identity.code, password) : null;
         nextIdentity = identity;
       }

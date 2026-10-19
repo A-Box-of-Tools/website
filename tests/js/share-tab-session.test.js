@@ -272,6 +272,22 @@ test('only an opted-in online host accepts its current namespaced discovery leas
   assert.equal(peer.transceivers.length, 1);
 });
 
+test('private tab groups bind only discoverable hosts and cannot leak into a later viewer or public host', async (t) => {
+  const f = fixture(t), group = 'a'.repeat(64);
+  await f.session.startHost(source(), CODE, { discoverable: true, discoveryGroup: group });
+  assert.equal(new URL(f.sockets[0].url).searchParams.get('group'), group);
+  assert.equal(new URL(f.sockets[0].url).searchParams.get('transport'), 'direct');
+  f.session.stop();
+  assert.equal(f.session.discoveryGroup, null);
+  await f.session.connect(CODE, 'Viewer');
+  assert.equal(new URL(f.sockets[1].url).searchParams.has('group'), false);
+  await f.session.startHost(source(), CODE, { discoverable: true });
+  assert.equal(new URL(f.sockets[2].url).searchParams.has('group'), false);
+  await f.session.startHost(source(), CODE, { discoverable: false, discoveryGroup: group });
+  assert.equal(new URL(f.sockets[3].url).searchParams.has('group'), false);
+  assert.equal(new URL(f.sockets[3].url).searchParams.has('discover'), false);
+});
+
 test('private hosts and viewers cannot publish even when a service sends a discovery lease', async (t) => {
   for (const options of [undefined, { discoverable: false }, { discoverable: 'true' }]) {
     const f = fixture(t); await f.session.startHost(source(), CODE, options);

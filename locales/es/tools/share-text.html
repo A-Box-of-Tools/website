@@ -5,23 +5,14 @@
   <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
-        <h2>Archivos y textos compartidos cerca</h2>
-        <button type="button" id="discovery-refresh" class="ghost">Actualizar comparticiones locales</button>
+        <h2>Conexiones disponibles</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Actualizar</button>
       </div>
       {% include "partials/paired-network.html" %}
-      <p id="discovery-status" role="status" aria-live="polite">Buscando comparticiones locales&hellip;</p>
+      {% include "partials/paired-discovery-group.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Buscando conexiones disponibles…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">
-        Esta lista muestra los nombres de enlace de navegadores que usan
-        la misma dirección IPv4 pública o la misma subred IPv6 que el tuyo.
-        Normalmente significa el mismo router; una VPN compartida o un
-        proveedor que comparte una dirección pueden incluir otras redes.
-        Si unos dispositivos usan IPv4 y otros IPv6, o siguen rutas
-        distintas, pueden no aparecer aunque estén en la misma red local.
-        Se necesita internet. Al abrir una
-        compartición aún se pide tu consentimiento antes de conectar, y las
-        privadas siguen necesitando la aprobación de quien comparte.
-      </p>
+      <p class="discovery-note">Esta lista muestra los recursos compartidos por conexión directa y Cloud relay en la red local o el grupo privado seleccionado. La búsqueda local usa la dirección IPv4 pública o la subred IPv6; las puertas de enlace compartidas pueden incluir desconocidos y las rutas diferentes pueden ocultar dispositivos cercanos. Un grupo privado usa su código. Abrir un recurso sigue solicitando confirmación antes de conectar, y los recursos privados siguen necesitando la aprobación de quien comparte.</p>
     </section>
 
     <section class="card" data-pairing-setup>
@@ -54,12 +45,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Sugerir otro nombre">&#8635;</button>
         </div>
-        <p class="field-note">
-          El nombre es la dirección, lo bastante corto para decirlo de un
-          lado a otro de una sala. Las comparticiones locales visibles en
-          la lista lo muestran a otros en esta conexión. Mantén Privado
-          activado para cualquier contenido delicado.
-        </p>
+        <p class="field-note">El nombre es la dirección, lo bastante corto para decirlo de viva voz. Los recursos detectables lo muestran en la red local o el grupo privado seleccionado. Mantén Privado activado para contenido sensible.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -70,23 +56,15 @@
           <input type="checkbox" id="local">
           Red local — sin retransmisor de internet
         </label>
-        <p class="field-note">En conexión directa puedes elegir Red local: los dispositivos necesitan Wi-Fi o Ethernet accesible e internet para presentarse. Este modo no usa descubrimiento público de direcciones ni retransmisión. Las VPN y los ajustes del navegador pueden cambiar la ruta. El enlace incluye la opción. Los envíos directos locales y los de retransmisión en la nube pueden aparecer cerca si Descubrible está seleccionado.</p>
+        <p class="field-note">Para dispositivos en la misma red Wi-Fi o Ethernet. Sigue siendo necesario internet para presentar los navegadores; este modo no usa servidores públicos para descubrir direcciones ni retransmisores. Las VPN y los ajustes del navegador pueden afectar a la ruta. El enlace copiado conserva este ajuste. En modo directo, elige Red local o únete a un grupo privado para que el recurso sea detectable. Cloud relay también puede aparecer si Detectable está seleccionado.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Visible en la lista &mdash; mostrar este nombre de enlace en esta conexión a internet
+            Detectable — mostrar este enlace en la red o el grupo seleccionado
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Sobre las comparticiones visibles en la lista</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">
-          Una compartición visible en la lista muestra su nombre a otros
-          que usan la misma dirección IPv4 pública o la misma subred IPv6.
-          Mantén Privado activado,
-          sobre todo en redes compartidas. Con Privado desactivado,
-          cualquiera que vea el nombre puede conectarse y leer sin tu
-          aprobación. Desmarca Visible en la lista para compartir solo por
-          enlace.
-        </p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Un recurso detectable muestra su nombre en la red local o el grupo privado seleccionado arriba. Mantén Privado activado, especialmente en redes compartidas. Con Privado desactivado, cualquiera que vea el nombre puede conectarse y leer sin tu aprobación. Desmarca Detectable para compartir solo mediante un enlace.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -138,7 +116,7 @@
         <div class="result-actions">
           <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="connect" class="primary">Conectar y recibir lo compartido</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
       </div>
         </div>
       </div>
@@ -218,14 +196,14 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Buscando comparticiones locales&hellip;</span>
-    <span data-phrase="discovery.empty">Todavía no hay comparticiones locales visibles en la lista. Mantén abierta la pestaña de quien comparte o usa su enlace.</span>
-    <span data-phrase="discovery.ready">Elige una compartición para abrir su página de conexión.</span>
-    <span data-phrase="discovery.unavailable">La búsqueda de comparticiones locales no está disponible. Puedes seguir usando un enlace para compartir.</span>
+    <span data-phrase="discovery.connecting">Buscando conexiones disponibles…</span>
+    <span data-phrase="discovery.empty">Todavía no hay recursos compartidos en esta red o grupo. Mantén abierta la pestaña de quien comparte o usa su enlace.</span>
+    <span data-phrase="discovery.ready">Elige un recurso compartido para abrir su página de conexión.</span>
+    <span data-phrase="discovery.unavailable">La búsqueda no está disponible. Puedes seguir usando un enlace.</span>
     <span data-phrase="discovery.open">Abrir compartición</span>
-    <span data-phrase="discovery.publishing">Haciendo visible esta compartición local en la lista&hellip;</span>
-    <span data-phrase="discovery.published">Tu compartición local es visible en la lista de esta conexión.</span>
-    <span data-phrase="discovery.not-published">Esta compartición está disponible por enlace; la búsqueda local no pudo incluirla en la lista.</span>
+    <span data-phrase="discovery.publishing">Haciendo detectable este recurso…</span>
+    <span data-phrase="discovery.published">Tu recurso aparece en la red o el grupo privado seleccionado.</span>
+    <span data-phrase="discovery.not-published">Este recurso está disponible mediante un enlace; no se pudo publicar en la búsqueda.</span>
 
     <span data-phrase="share.active">Compartiendo</span>
     <span data-phrase="share.waiting">Compartiendo. Esperando a que alguien abra el enlace &mdash; deja esta pestaña abierta.</span>

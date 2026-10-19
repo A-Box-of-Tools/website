@@ -7,28 +7,28 @@ complete folder with versioned imports and its own service-worker cache.
 
 ## A common starting point
 
-Each tool names the `paired-tools` CSS part and starts with a
+Each tool names the `paired-tools` CSS part and starts with an Available connections
 `data-pairing-nearby` card, before its `data-pairing-setup` controls. The shared
 `partials/paired-network.html` help is translated through `ui.tool` and explains
 Wi-Fi, phone hotspots, the internet requirement for discovery and
 pairing, and device isolation. This is setup guidance, not a claim that a web
 page can enable a hotspot or that every hotspot permits direct connections.
 
-Choosing a nearby entry never starts pairing or requests media. Camera and
+Choosing an available entry never starts pairing or requests media. Camera and
 Walkie-Talkie fill their invitation, Voice Oncall selects the pager, and Share
 Tab fills its code; a separate Connect, Join or Request action follows. Keyboard
 selection keeps focus in Voice Oncall's native radio group.
 Share Text opens its existing consent page in another tab so an unsent draft
 is retained. Its Connect action still precedes the introduction to the host.
-An active session cannot be replaced by choosing another nearby entry.
+An active session cannot be replaced by choosing another entry.
 
 The visual order does not alter when discovery is permitted: Share Tab still
-requires Find nearby tabs; the other
+requires Find connections or an explicit private-group selection; the other
 four tools retain their automatic directory browsing. Host discoverability
 defaults and approval rules remain tool-specific and are stated on each page.
 All five tools use internet introductions for pairing. Direct is the default;
 Cloud relay is an explicit alternative chosen before hosting and carried by
-the invitation. The joining browser displays a relay choice before its explicit
+the invitation. The joining browser displays the host's route before its explicit
 Connect, Join or Request action. Direct Walkie-Talkie invitations retain their
 existing automatic receive-only join. Changing a live route requires ending that
 session and creating a new invitation. A saved
@@ -40,9 +40,11 @@ password and media boundaries remain separate requirements.
 ## Connection choices
 
 Tools declare `supports_relay = true`, include `partials/paired-transport.html`
-and ship `peer-transport` and `peer-transport-ui`. The shared control must remain
-visible on an invitation page, be locked while a session or recoverable identity
-is active, and must not trigger pairing or capture from a change event.
+beside their host Start action and ship `peer-transport` and `peer-transport-ui`.
+The host control locks while a session or recoverable identity is active and
+must not trigger pairing or capture from a change event. Joining controls show
+accessible route and access icons from the selected entry or invitation; there
+is no route filter or viewer override in the discovery list.
 `bindTransportControl()` exposes `value`, `set`, `lock`, `route` and `destroy`.
 Invalid invitation modes fail closed; missing modes select Direct for legacy
 links. New links and room URLs pin `transport=direct|relay`. Discovery metadata
@@ -80,6 +82,45 @@ encrypted content but sees connection addresses, timing and traffic volume;
 it requires internet throughout. A managed device or firewall can still block
 it. Neither a relay choice nor foreground recovery grants capture, approval,
 password admission or microphone transmission.
+
+## Private groups and discovery icons
+
+All five tools use `partials/paired-discovery-group.html` with
+`peer-discovery-ui.js`, `peer-discovery.js` and the pure
+`discovery-group.js` protocol. The shared UI offers a generated group code,
+entry of an existing code, copying and return to local-network discovery.
+Its strings and icon legend live in `ui.tool`; its SVG route and access
+icons have accessible names and tooltips rather than relying on colour.
+The list includes both Direct and Cloud relay entries. Password, no-password
+and host-approval icons describe each tool's real access rules. Only Voice
+Oncall supplies an authoritative password-required flag; a tool with optional
+private approval must say that approval may be required.
+
+The code contains 130 random bits. Its domain-separated SHA-256 digest can
+enter room and discovery URLs; the code itself enters only the first encrypted
+discovery frame. A private directory sends no list until it verifies that
+proof. The client requires the same public identifier and tool in the first
+snapshot before accepting entries or publishing. Local-network discovery keeps
+its previous protocol, including origin and tool separation. A private
+directory uses the code instead of the public network address and never also
+publishes into the network list.
+
+Changing scope clears stale entries, retires the previous observer and resets
+selection. Scope is locked while hosting or a recoverable identity remains
+active, because a live host lease belongs to exactly one directory. Only a
+current, verified lease can be published; Stop, a lost host and late callbacks
+retain the shared withdrawal rules. Group codes stay in the current document
+only, with remembered controls disabled. They do not enter invitation links,
+reports, browser storage or Worker message logs. The service still sees the
+code transiently during verification, and ordinary scripts in the page can
+read its fields.
+
+A group changes who can discover a session, not its transport or access
+policy. Direct remains the default. Cloud relay is the practical host choice
+across networks; neither a group nor a discovery result proves that a Direct
+route will work. Existing approvals, passwords and explicit media actions
+remain separate requirements. Deploy the Worker update before using this
+protocol; an old Worker must cause a visible group-discovery failure.
 
 ## Shared pairing primitives
 

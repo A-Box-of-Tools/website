@@ -105,6 +105,8 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
 | `shared/js/connection-diagnostics.js` | `js_parts = ["connection-diagnostics"]` | bounded, redacted connection reports shared by text sharing and Remote Camera; captures states and counters without addresses, credentials or content |
 | `shared/js/peer-pairing.js` | `js_parts = ["peer-pairing"]` | owned signaling sockets, guarded sends, deadlines, heartbeats and probes; [paired tool adapters](paired-tools.md) keep their own protocol and permissions |
+| `shared/js/discovery-group.js` | `js_parts = ["discovery-group"]` | random private-group codes, normalization and public identifiers shared by pages and the rendezvous |
+| `shared/js/peer-discovery-ui.js` | `js_parts = ["peer-discovery-ui", "discovery-group"]` | private-group controls and accessible route/access icons; use with `paired-discovery-group.html`, `paired-tools` CSS and the authenticated `peer-discovery` observer |
 | `shared/js/foreground-recovery.js` | `js_parts = ["foreground-recovery"]` | coalesced page lifecycle callbacks and an opt-in bounded retry controller; neither grants consent nor starts media |
 | `shared/js/ordered-loads.js` | `js_parts = ["ordered-loads"]` | sequential batches for an append workflow; Reset retires pending reads and starts a fresh queue; optional `discard` releases resource-owning values that never reach `complete` |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |

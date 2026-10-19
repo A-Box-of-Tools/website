@@ -5,23 +5,14 @@
   <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
-        <h2>Compartilhamentos próximos</h2>
-        <button type="button" id="discovery-refresh" class="ghost">Atualizar compartilhamentos locais</button>
+        <h2>Conexões disponíveis</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Atualizar</button>
       </div>
       {% include "partials/paired-network.html" %}
-      <p id="discovery-status" role="status" aria-live="polite">Procurando compartilhamentos locais&hellip;</p>
+      {% include "partials/paired-discovery-group.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Buscando conexões disponíveis…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">
-        Esta lista mostra os nomes de link de navegadores que compartilham
-        seu endereço IPv4 público ou sua sub-rede IPv6. Normalmente isso
-        significa o mesmo
-        roteador; uma VPN compartilhada ou um provedor que compartilha um
-        endereço pode incluir outras redes. Se alguns dispositivos usam
-        IPv4 e outros IPv6, ou seguem caminhos diferentes, podem não aparecer
-        mesmo estando na mesma rede local. É preciso ter internet. Abrir
-        um compartilhamento ainda pede consentimento antes de conectar, e
-        os privados ainda precisam da aprovação de quem compartilha.
-      </p>
+      <p class="discovery-note">Esta lista mostra compartilhamentos diretos e por Cloud relay oferecidos à rede local ou ao grupo privado selecionado. A busca local usa o endereço IPv4 público ou a sub-rede IPv6; gateways compartilhados podem incluir desconhecidos, e rotas diferentes podem ocultar dispositivos próximos. Um grupo privado usa seu código. Abrir um compartilhamento ainda pede confirmação antes de conectar, e compartilhamentos privados continuam exigindo aprovação de quem compartilha.</p>
     </section>
 
     <section class="card" data-pairing-setup>
@@ -54,12 +45,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Sugerir outro nome">&#8635;</button>
         </div>
-        <p class="field-note">
-          O nome é o endereço, curto o bastante para falar de um lado a outro
-          da sala. Compartilhamentos locais visíveis na lista mostram o nome
-          a outras pessoas nesta conexão. Mantenha Privado ativado para
-          qualquer conteúdo sensível.
-        </p>
+        <p class="field-note">O nome é o endereço, curto o bastante para dizer em voz alta. Compartilhamentos visíveis o mostram na rede local ou no grupo privado selecionado. Mantenha Privado ativado para conteúdos sensíveis.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -70,23 +56,15 @@
           <input type="checkbox" id="local">
           Rede local — sem retransmissor de internet
         </label>
-        <p class="field-note">Na conexão direta, escolha Rede local para usar Wi-Fi ou Ethernet acessível entre os dispositivos, com internet para a apresentação. Este modo não usa descoberta pública de endereços nem retransmissão. VPNs e ajustes do navegador podem afetar o caminho. O link inclui a opção. Compartilhamentos diretos locais e por retransmissão na nuvem podem aparecer por perto quando Descobrível estiver selecionado.</p>
+        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A internet ainda é necessária para apresentar os navegadores; este modo não usa servidor público para descobrir endereços nem retransmissor. VPNs e configurações do navegador podem afetar o caminho. O link copiado mantém essa escolha. No modo direto, escolha Rede local ou entre em um grupo privado para tornar o compartilhamento visível. Cloud relay também pode aparecer quando Visível estiver selecionado.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Visível na lista &mdash; mostrar este nome de link nesta conexão à internet
+            Visível — mostrar este link na rede ou no grupo selecionado
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Sobre os compartilhamentos visíveis na lista</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">
-          Um compartilhamento visível na lista mostra seu nome a outras
-          pessoas que usam o mesmo endereço IPv4 público ou a mesma sub-rede
-          IPv6. Mantenha Privado
-          ativado, principalmente em redes compartilhadas. Com Privado
-          desativado, qualquer pessoa que veja o nome pode conectar e ler
-          sem sua aprovação. Desmarque Visível na lista para compartilhar
-          só por link.
-        </p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Um compartilhamento visível mostra seu nome na rede local ou no grupo privado selecionado acima. Mantenha Privado ativado, especialmente em redes compartilhadas. Com Privado desativado, qualquer pessoa que veja o nome pode conectar e ler sem sua aprovação. Desmarque Visível para compartilhar apenas por link.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -138,7 +116,7 @@
         <div class="result-actions">
           <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="connect" class="primary">Conectar e receber o compartilhamento</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
       </div>
         </div>
       </div>
@@ -218,14 +196,14 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Procurando compartilhamentos locais&hellip;</span>
-    <span data-phrase="discovery.empty">Ainda não há compartilhamentos locais visíveis na lista. Mantenha aberta a aba de quem compartilha ou use o link dele.</span>
+    <span data-phrase="discovery.connecting">Buscando conexões disponíveis…</span>
+    <span data-phrase="discovery.empty">Ainda não há compartilhamentos nesta rede ou grupo. Mantenha aberta a aba de quem compartilha ou use o link.</span>
     <span data-phrase="discovery.ready">Escolha um compartilhamento para abrir sua página de conexão.</span>
-    <span data-phrase="discovery.unavailable">A descoberta de compartilhamentos locais está indisponível. Você ainda pode usar um link de compartilhamento.</span>
+    <span data-phrase="discovery.unavailable">A busca não está disponível. Você ainda pode usar um link de compartilhamento.</span>
     <span data-phrase="discovery.open">Abrir compartilhamento</span>
-    <span data-phrase="discovery.publishing">Tornando este compartilhamento local visível na lista&hellip;</span>
-    <span data-phrase="discovery.published">Seu compartilhamento local está visível na lista desta conexão.</span>
-    <span data-phrase="discovery.not-published">Este compartilhamento está disponível por link; a descoberta local não conseguiu incluí-lo na lista.</span>
+    <span data-phrase="discovery.publishing">Tornando este compartilhamento visível…</span>
+    <span data-phrase="discovery.published">Seu compartilhamento aparece na rede ou no grupo privado selecionado.</span>
+    <span data-phrase="discovery.not-published">Este compartilhamento está disponível por link; não foi possível publicá-lo na busca.</span>
 
     <span data-phrase="share.active">Compartilhando</span>
     <span data-phrase="share.waiting">Compartilhando. Esperando alguém abrir o link &mdash; deixe esta aba aberta.</span>

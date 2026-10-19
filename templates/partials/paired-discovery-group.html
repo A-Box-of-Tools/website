@@ -1,0 +1,42 @@
+<div class="paired-discovery-group" data-discovery-group>
+  <div class="paired-group-current">
+    <span>{{ ui.tool.group_scope }} <strong data-group-current>{{ ui.tool.group_network }}</strong></span>
+    <button type="button" class="ghost" data-group-leave hidden>{{ ui.tool.group_leave }}</button>
+  </div>
+  <details class="paired-group-details">
+    <summary>{{ ui.tool.group_heading }}</summary>
+    <p class="paired-group-note">{{ ui.tool.group_help }}</p>
+    <label class="paired-group-label" for="pairing-group-code">{{ ui.tool.group_code }}</label>
+    <div class="paired-group-entry">
+      <input id="pairing-group-code" data-group-code data-no-remember type="text" maxlength="48" autocomplete="off" autocapitalize="characters" spellcheck="false" dir="ltr" aria-describedby="pairing-group-privacy">
+      <button type="button" data-group-join>{{ ui.tool.group_join }}</button>
+      <button type="button" class="ghost" data-group-create>{{ ui.tool.group_create }}</button>
+      <button type="button" class="ghost" data-group-copy disabled>{{ ui.tool.group_copy }}</button>
+    </div>
+    <p class="paired-group-note" id="pairing-group-privacy">{{ ui.tool.group_privacy }}</p>
+  </details>
+  <p class="paired-group-note" data-group-status role="status" aria-live="polite"></p>
+  <div hidden>
+    <span data-group-text="network">{{ ui.tool.group_network }}</span>
+    <span data-group-text="private">{{ ui.tool.group_private }}</span>
+    <span data-group-text="invalid">{{ ui.tool.group_invalid }}</span>
+    <span data-group-text="working">{{ ui.tool.group_working }}</span>
+    <span data-group-text="joined">{{ ui.tool.group_joined }}</span>
+    <span data-group-text="left">{{ ui.tool.group_left }}</span>
+    <span data-group-text="failed">{{ ui.tool.group_failed }}</span>
+    <span data-group-text="copied">{{ ui.tool.group_copied }}</span>
+    <span data-group-text="select">{{ ui.tool.group_select }}</span>
+  </div>
+</div>
+<details class="paired-icon-legend">
+  <summary>{{ ui.tool.connection_icons }}</summary>
+  <ul>
+    <li><span data-connection-legend="direct"></span><span>{{ ui.tool.connection_direct }}</span></li>
+    <li><span data-connection-legend="relay"></span><span>{{ ui.tool.connection_relay }}</span></li>
+    <li><span data-connection-legend="password"></span><span>{{ ui.tool.connection_password }}</span></li>
+    <li><span data-connection-legend="open"></span><span>{{ ui.tool.connection_open }}</span></li>
+    <li><span data-connection-legend="approval"></span><span>{{ ui.tool.connection_approval }}</span></li>
+    <li><span data-connection-legend="optional"></span><span>{{ ui.tool.connection_optional }}</span></li>
+  </ul>
+</details>
+{% include "partials/paired-connection-icons.html" %}

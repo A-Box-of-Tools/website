@@ -1,6 +1,6 @@
 # Share Text & Files
 
-The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+The shared Direct / Cloud relay switch sits beside Start sharing and locks during a session. A reader sees route and access icons beside Connect; the host's invitation fixes the route. Changing the host switch alone never connects. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
 
 The share lives in the sharer's open tab. Readers who follow the link — or
 type its name — receive the text and files over a WebRTC data channel,
@@ -26,8 +26,9 @@ of the **rendezvous**, a Cloudflare Worker whose whole source is in
 [`workers/rendezvous/`](../../workers/rendezvous/). A direct connection
 needs an introduction: something must match the reader who typed
 `brave-otter-42` with the sharer under that name and pass a few KB of WebRTC
-negotiation between them. The rendezvous also lists opted-in local link
-names for browsers using the same public IPv4 address or IPv6 /64 subnet. It writes no storage
+negotiation between them. The rendezvous also lists opted-in link names
+either for a public IPv4 address or IPv6 /64 subnet, or for an authenticated
+private group that can span networks. It writes no storage
 — rooms and discovery entries live on their open sockets — and the
 content never passes through it. What it can see: that a name is in use,
 when peers come and go, their IPs, and the negotiation blobs. What it
@@ -79,7 +80,7 @@ unchanged.
 
 ## Finding a share on the start page
 
-The nearby card is the first step, using the same `paired-tools` layout and
+The Available connections card is the first step, using the same `paired-tools` layout and
 translated Wi-Fi/hotspot help as the other Connect Devices tools. Its Open
 action keeps the existing consent page in another tab so it cannot discard
 an unsent draft. Browsing or opening that page never starts a peer connection;
@@ -97,12 +98,14 @@ This helps identify an older open or cached page; it does not gate connections
 or claim that different versions cannot work together.
 
 Opening the tool without a share name opens one WebSocket to `/discover`.
-The list contains only advertised codes and the local-mode flag; opening an
+The list contains advertised codes and authoritative connection policy; opening an
 entry shows the usual consent page in another tab. It never opens WebRTC on
 its own and never bypasses Private approval. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
-Local network mode itself is off by default, so ordinary shares are never
-listed. Starting a share hides this tab's discovery panel until sharing
+Local network mode itself is off by default, so ordinary Direct shares are
+not listed in network discovery. They can be listed in a private group
+without changing that transport policy. Cloud relay can also be listed.
+Starting a share hides this tab's discovery panel until sharing
 stops or a name collision returns the page to editing. The discovery socket
 stays open, so the advertised name remains visible to other browsers while
 the panel is hidden. The rendered list excludes this tab's own share, and
@@ -116,11 +119,11 @@ The information icon beside Discoverable opens that explanation on hover,
 keyboard focus or tap. Its tooltip behavior is shared with the receipt tool
 through `shared/js/help-tooltip.js`; Escape or clicking elsewhere dismisses it.
 
-The group is derived by the worker from the canonical Cloudflare public
+The network directory is derived by the worker from the canonical Cloudflare public
 IPv4 address or IPv6 /64 subnet, together with the allowed page origin,
 hashed with SHA-256. IPv6 devices in one /64 share the group even when their
 individual addresses differ.
-The page cannot pick a scope. One router usually gives the expected group,
+The page cannot pick a network scope. One router usually gives the expected group,
 but a shared VPN or carrier-grade NAT can include other networks. Mixed IPv4
 and IPv6 connections or different routes can exclude two devices on the
 same LAN.
@@ -130,8 +133,30 @@ discovery scope is unsupported; it receives no publication lease. This is
 a finding aid, not a LAN boundary;
 internet is still required and the copied link remains the fallback.
 
-The host starts its usual room socket with `local=1&discover=1` only when
-advertising. The live room issues a random lease in
+The shared private-group control lets the user generate or enter a strong
+group code before hosting. Both Direct and Cloud relay entries appear together,
+with accessible icons for route and access requirements. Share Text's approval
+choice is private peer-channel state, so its list accurately says the host may
+require approval rather than inventing a password or approval status.
+Group membership is kept only in page memory, excluded from remembered controls,
+invitations and diagnostics, and locked while sharing. Reloading forgets it.
+Changing groups retires the old directory and its callbacks before browsing the
+new one; it cannot publish the current host into a second scope.
+
+The browser sends only a domain-separated digest in a request URL. The private
+directory requires the canonical code in its first encrypted message and sends
+no entries before verification. The page checks the returned group identifier
+and tool namespace before publishing or refreshing, so an older Worker cannot
+silently fall back to the network directory. Group membership permits discovery,
+not reader admission; Private approval and explicit Connect remain required.
+The Worker receives the code transiently for verification but never retains it
+in socket attachments or logs. Its request metadata can contain the public digest.
+
+The host starts its usual room socket with `discover=1` only when advertising.
+Network publication also requires `local=1`; a private group permits ordinary
+Direct Share Text with its actual `local: false` policy. The host and discovery
+sockets carry the same public group identifier when a group is selected.
+The live room issues a random lease in
 `{type: 'host-ready', discovery: {code, lease}}`; the page publishes it on
 its discovery socket as `{publish: {code, lease}}`. The directory verifies
 the lease against the room through its private binding before listing a
@@ -238,7 +263,7 @@ from both physical devices are needed to investigate those boundaries.
   flag as the default.
 - **Names.** `src/names.js`: adjective-noun-number suggestions, free-typed
   names folded to `[a-z0-9-]{1,64}`. A link-only share can keep the name
-  unguessable; a discoverable local share publishes it to its address group.
+  unguessable; a discoverable share publishes it to its selected directory.
   Private admission is the access control in either case.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
   all with one-off checked. Temporary reader consent and admission tokens may
@@ -256,7 +281,7 @@ The host may choose Cloud relay before publishing. The invitation carries
 must match the host's pinned mode. Each participant requests short-lived TURN
 credentials through `RelayCredentials` before creating a peer, and configures
 `iceTransportPolicy: 'relay'`. Credential failure does not fall back to Direct.
-Host availability is checked before the share link and nearby listing appear.
+Host availability is checked before the share link and directory listing appear.
 
 Cloudflare forwards encrypted text, files and control traffic without their
 decryption keys, but sees addresses, timing and traffic volume. Internet is

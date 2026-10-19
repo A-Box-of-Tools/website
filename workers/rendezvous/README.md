@@ -8,11 +8,12 @@ Text and files, tab video, camera frames, and voice stay on the peer connection.
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
 them and match "the person who typed `brave-otter-42`" with the other person
-who typed it. This Worker carries that introduction and lists opted-in local
-link names, never the shared text or files.
+who typed it. This Worker carries that introduction and lists opted-in
+connections in either the network directory or a private code group, never
+the shared text or files.
 
 One Room Durable Object per text/camera tool and code word, a Discovery Durable
-Object per tool, public-address-and-origin group, and separate Broadcast and
+Object per tool, origin and network or private group, and separate Broadcast and
 Inbox Durable Objects per voice invitation. No application storage is ever written;
 room authority and directory entries live in socket attachments. Text/camera
 rooms end when their sharer disconnects. Voice listeners can remain parked
@@ -155,6 +156,56 @@ and binding: existing share names must keep addressing the same rooms.
 The normal `npx wrangler deploy` from this directory applies the new class
 and binding. An older worker leaves discovery unavailable on the page while
 the ordinary share link and its consent workflow continue to work.
+
+### Private discovery groups
+
+Private groups use the existing Discovery binding and require no new
+migration, secret, storage or TURN application. Deploy the Worker update
+before the corresponding pages, first to development. An older Worker does
+not provide an authenticated private directory; updated pages must refuse
+its legacy network snapshot rather than publish to that directory.
+
+The shared `shared/js/discovery-group.js` protocol generates 26 independently
+random base32 symbols (130 bits), displayed with hyphens. The canonical code
+is uppercase with display separators removed. A SHA-256 digest of
+`abox.tools/private-discovery/v1\n` followed by that code is its public
+identifier. Only this 64-character lowercase hexadecimal identifier enters
+the `group` query parameter on room, voice and discovery requests. The
+private code never enters a URL, invitation, report or application log.
+
+The public identifier is not permission to read the group. A private
+discovery socket starts silent and accepts exactly one initial JSON frame,
+`{group: canonicalCode}`. It checks the derived identifier against the URL
+before sending any list or accepting a publication or refresh. Its first
+accepted `shares` snapshot carries `group: publicIdentifier`; the page
+checks that identifier and tool before publishing. Socket attachments keep
+only the identifier, scope and authentication result, never the code. The
+Worker necessarily receives the code transiently inside encrypted WSS to
+check membership; invocation metadata logging records no message payloads.
+
+A group scope hashes the page origin, tool namespace and public identifier,
+with a separate domain from the unchanged network scope. Different public
+addresses therefore share one private directory, while other groups,
+origins, tools and network directories stay separate. The Worker strips
+caller-supplied internal scope headers. A live host binds its lease to
+exactly one derived scope, so knowing a lease cannot republish that host in
+another group or the network list. Group discovery does not alter the host's
+Direct or Cloud relay policy, password checks, approval or media path.
+Share Text's ordinary Direct mode can advertise in a private group without
+enabling its separate local-only checkbox. That exception still requires an
+authenticated private directory and live matching host lease; its listing
+carries the host's actual `local: false` policy. Network discovery keeps its
+existing local-only requirement, and the other tools retain their local flag.
+
+Malformed and duplicate group parameters fail before a room is forwarded.
+Malformed, wrong or repeated proof frames close the discovery socket rather
+than fall back to network discovery. Pending proofs expire after eight
+seconds, checked on the next request or message without a periodic alarm;
+there are at most eight pending proofs and 64 observers per directory. A
+pending socket never receives directory broadcasts. The existing 32-entry
+cap, update limits, live-lease verification, refresh checks and authoritative
+host withdrawals also apply to private groups, including stale asynchronous
+checks after Stop or disconnect.
 
 ### The voice migration
 
@@ -346,7 +397,8 @@ SHA-256 digest of the host capability's UTF-8 text. That derivation lets a host
 authenticate a resumed room even after every socket has disappeared; no saved
 room record or server signing key is needed. The listener invitation carries
 the listener capability in the page URL fragment. Request URLs carry only
-`/broadcast/<64 lowercase hex characters>`, with no query parameters.
+`/broadcast/<64 lowercase hex characters>`, with no query parameters for
+network discovery or only `group=<public identifier>` for a private group.
 
 - The new route uses the existing allowed origins and thirty-connections-per-
   address-per-minute limit. It addresses only `BROADCASTS`, never `ROOMS` or
@@ -365,9 +417,10 @@ the listener capability in the page URL fragment. Request URLs carry only
   `{type: "auth", role: "host", key, listenKey, roomName, discover: true}`.
   Its capabilities must differ; its trimmed room name must contain 1–80
   characters, with control characters and malformed Unicode rejected. Only
-  this frame opts into discovery. The Worker derives the network scope and
+  this frame opts into discovery. The Worker derives the selected scope and
   strips any caller-supplied scope header before forwarding the connection.
-  Unsupported discovery scopes still permit ordinary invitation-based use.
+  Unsupported network scopes still permit ordinary invitation-based use;
+  a malformed private-group parameter is refused without a network fallback.
   A discoverable host's attachment additionally retains its trusted name,
   scope and random lease, never the raw listener capability.
 - A listener arriving before the first host can wait, but its capability is

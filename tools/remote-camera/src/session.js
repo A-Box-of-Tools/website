@@ -1,6 +1,7 @@
 import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { groupUrl } from './shared/discovery-group.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
@@ -37,6 +38,7 @@ export class CameraSession {
     this.socket = null;
     this.pairing = null;
     this.transport = 'direct';
+    this.discoveryGroup = null;
     this.iceServers = [];
     this.relay = null;
     this.stream = null;
@@ -99,13 +101,14 @@ export class CameraSession {
     if (this.role === 'camera') this.state(this.hostState());
   }
 
-  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, transport = 'direct' } = {}) {
+  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, transport = 'direct', discoveryGroup = null } = {}) {
     this.stop();
     this.role = 'camera';
     this.requireApproval = Boolean(requireApproval);
     this.setVideoBudget(videoBudget);
     this.stream = stream;
     this.transport = transportMode(transport);
+    this.discoveryGroup = discoveryGroup;
     if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
@@ -138,7 +141,7 @@ export class CameraSession {
       const waiting = [];
       let socket;
       try {
-        socket = this.socket = new this.Socket(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`, this.transport));
+        socket = this.socket = new this.Socket(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`, this.transport), this.role === 'camera' && discoverable ? this.discoveryGroup : null));
       } catch (error) {
         this.openingTrace?.error('websocket', error);
         this.openingTrace?.socket('closed');
@@ -912,6 +915,7 @@ export class CameraSession {
     this.socket = null;
     this.pairing = null;
     this.role = null;
+    this.discoveryGroup = null;
     for (const id of [...this.peers.keys()]) this.removePeer(id);
     this.stream = null;
     pairing?.close();

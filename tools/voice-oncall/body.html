@@ -3,11 +3,12 @@
 <div class="vi-tool">
   <section id="vi-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="vi-nearby-title">
     <div class="paired-nearby-head">
-      <h2 id="vi-nearby-title">Nearby pagers</h2>
+      <h2 id="vi-nearby-title">Available connections</h2>
       <div class="paired-actions"><button type="button" class="vi-secondary" id="vi-refresh">Refresh</button></div>
     </div>
+    {% include "partials/paired-discovery-group.html" %}
     {% include "partials/paired-network.html" %}
-    <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for nearby pagers…</p>
+    <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for available connections…</p>
     <div class="vi-rooms paired-nearby-list" id="vi-rooms"></div>
     <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
     <p class="vi-note" id="vi-selection-help">Choose a pager, then Connect below. Choosing alone does not connect or request your microphone.</p>
@@ -19,7 +20,7 @@
   </div>
   <div class="vi-status" aria-live="polite" aria-atomic="true">
     <span class="vi-status-dot" id="vi-status-dot" aria-hidden="true"></span>
-    <p id="vi-status-text">Choose a nearby pager or open a link from its host.</p>
+    <p id="vi-status-text">Choose an available pager or open a link from its host.</p>
   </div>
 
   <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
@@ -29,7 +30,7 @@
       <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
       <div class="paired-start-row" data-pairing-actions="join">
         <button type="submit" id="vi-join">Connect</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="vi-connection-icons" hidden></span>
       </div>
     </form>
     <div id="vi-sender" hidden>
@@ -73,7 +74,7 @@
         <button type="button" class="vi-secondary" id="vi-restore-sound">Restore sound</button>
       </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
-      <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let nearby people find it.</p>
+      <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let people find it in your selected discovery scope.</p>
       <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
       <section class="vi-invite" aria-labelledby="vi-invite-title">
@@ -98,16 +99,16 @@
   </section>
 
   <details class="vi-details">
-    <summary>How nearby voices connect</summary>
-    <p>An internet service lists pagers in your internet-address group and introduces their browsers. This is not a scan of your Wi-Fi, and a listed pager is not guaranteed to be on your physical network.</p>
-    <p>Direct sends encrypted voice between the browsers without a relay. If both devices choose Cloud relay, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
+    <summary>How voice connections work</summary>
+    <p>Available connections lists both Direct and Cloud relay pagers, with icons for the route and password requirement. Local network discovery groups devices by their public internet address and website origin; it does not scan Wi-Fi or prove physical network membership. Choose Private group and enter the same group code on each device to discover pagers across networks. Private pagers appear only in that group, not in the local-network directory. The group code allows discovery; the pager password still controls admission.</p>
+    <p>Direct sends encrypted voice between the browsers without a relay. When the host chooses Cloud relay and a participant confirms Connect, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
     <p>Anyone who can find your pager can try to connect. A password limits access, and the host can mute or remove participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
     <p>Remove ends one participant session. A new tab or cleared browser storage can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
   </details>
 </div>
 <div id="phrases" hidden>
-  <span data-phrase="join-idle">Choose a nearby pager or open a link from its host.</span>
-  <span data-phrase="host-idle">Name your pager, then open it for nearby people.</span>
+  <span data-phrase="join-idle">Choose an available pager or open a link from its host.</span>
+  <span data-phrase="host-idle">Name your pager, then open it in your selected discovery scope.</span>
   <span data-phrase="host-starting">Opening your Voice Oncall pager…</span>
   <span data-phrase="host-ready">Your pager is open.</span>
   <span data-phrase="host-reconnecting">Reconnecting your pager…</span>
@@ -144,11 +145,11 @@
   <span data-phrase="invited-room">Invited pager</span>
   <span data-phrase="room-locked">Password required</span>
   <span data-phrase="room-open">Open pager</span>
-  <span data-phrase="discovery-connecting">Looking for nearby pagers…</span>
-  <span data-phrase="discovery-ready">Nearby pagers are updated automatically.</span>
-  <span data-phrase="discovery-unavailable">Nearby pagers cannot be listed right now. You can still use a pager link.</span>
+  <span data-phrase="discovery-connecting">Looking for available connections…</span>
+  <span data-phrase="discovery-ready">Available connections update automatically.</span>
+  <span data-phrase="discovery-unavailable">Available connections cannot be listed right now. You can still use a pager link.</span>
   <span data-phrase="publication-publishing">Making your pager discoverable…</span>
-  <span data-phrase="publication-published">Your pager is listed for your internet-address group.</span>
+  <span data-phrase="publication-published">Your pager is listed in your selected discovery scope.</span>
   <span data-phrase="publication-not-published">Your pager is not listed yet. Share the pager link instead.</span>
   <span data-phrase="participant-ready">Listening connection ready</span>
   <span data-phrase="participant-speaking">Speaking</span>

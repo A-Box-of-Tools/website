@@ -11,13 +11,20 @@ import { alertCapabilities, ViewerAlerts } from './alerts.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
-const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; } });
+const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; renderInvitationType(); } });
 function selectTransport(value) {
   invalidInvitationTransport = !transportControl.set(value);
+  renderInvitationType();
   if (invalidInvitationTransport) showStatus('transport.invalid', 'viewer');
+}
+function renderInvitationType() {
+  const indicator = $('viewer-connection-type');
+  indicator.replaceChildren();
+  if (!invalidInvitationTransport) appendConnectionIcons(indicator, { transport: transportControl.value(), locked: false, approval: 'optional' });
 }
 const diagnostics = createDiagnostics({
   version: new URL(import.meta.url).searchParams.get('v'),
@@ -51,6 +58,17 @@ let cameraResuming = false;
 let cameraStarting = false;
 let resumeOnVisible = false;
 let pageSuspended = false;
+const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
+  discovery?.close();
+  discovery = null;
+  foundCameras = [];
+  discoveryState = 'connecting';
+  $('viewer-code').value = '';
+  selectTransport('direct');
+  showStatus('viewer.ready', 'viewer');
+  renderDiscovery();
+  startDiscovery();
+} });
 let pendingApprovalRequests = new Map();
 let approvalDialogPeer = null;
 let approvalDialogRevision = 0;
@@ -300,19 +318,22 @@ function renderDiscovery() {
       showStatus('viewer.selected', 'viewer');
       $('viewer-connect').focus();
     });
-    row.append(name, choose);
+    row.append(name);
+    appendConnectionIcons(row, { transport: transport ?? 'direct', locked: false, approval: 'optional' });
+    row.append(choose);
     $('discovery-list').append(row);
   }
 }
 
 function startDiscovery() {
+  if (discovery || pageSuspended) return;
   discovery = watchDiscovery(`${rendezvousEndpoint()}/discover?tool=${TOOL}`, {
     list(list) { foundCameras = list; renderDiscovery(); },
     status(state) { discoveryState = state; renderDiscovery(); },
     publication(state) {
       $('camera-publication-status').textContent = state ? phrase(`discovery.${state}`) : '';
     },
-  });
+  }, { group: groupControl.code() });
 }
 
 function stop(key = 'connection.stopped') {
@@ -402,9 +423,13 @@ function requestCameraStop() {
 function showActiveRole(role) {
   activeRole = role;
   transportControl.lock(role !== null);
+  groupControl.lock(role !== null);
   $('camera-panel').hidden = role === 'viewer';
   $('viewer-panel').hidden = role === 'camera';
-  $('camera-discovery').hidden = role !== null;
+  $('camera-discovery').hidden = role === 'viewer';
+  $('discovery-list').hidden = role !== null;
+  $('discovery-refresh').hidden = role !== null;
+  $('discovery-status').hidden = role !== null;
   if (role) $('camera-workspace').dataset.active = role;
   else delete $('camera-workspace').dataset.active;
 }
@@ -899,6 +924,7 @@ async function startCamera() {
   stop();
   mode = 'camera';
   cameraIntent = { code, discoverable: $('camera-discoverable').checked,
+    discoveryGroup: groupControl.id(),
     transport: transportControl.value(),
     requireApproval: $('camera-require-approval').checked, deviceId: null,
     audio: $('camera-audio').checked, videoBudget: Number($('camera-bandwidth').value) };
@@ -1145,6 +1171,7 @@ showActiveRole(null);
 if (code) { fillViewerCode(code); selectTransport(readTransport(location.href)); }
 startDiscovery();
 showApprovalPolicy();
+renderInvitationType();
 
 // The frame keeps its warning until every control has been initialised.
 $('boot-warning')?.remove();
