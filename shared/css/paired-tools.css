@@ -1,13 +1,28 @@
 /* Discovery is the same first step across paired tools; each adapter keeps
    its own permissions and session controls below it. */
 .paired-page .paired-nearby {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: .25rem 1rem;
   min-width: 0;
-  padding: 1.25rem;
-  margin: 0 0 1.5rem;
+  padding: 1rem;
+  margin: 0 0 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
 }
+.paired-nearby > * { flex-basis: 100%; min-width: 0; }
+.paired-nearby > p { margin-block: .35rem; }
+.paired-nearby > .paired-network,
+.paired-nearby > .paired-icon-legend,
+.paired-nearby > .paired-discovery-details { flex-basis: auto; margin: 0; }
+.paired-nearby > details[open] { flex-basis: 100%; }
+.paired-nearby .paired-nearby-list:empty { margin: 0; }
+/* Empty directories need one useful next step, not instructions for controls
+   which cannot select anything yet. Errors and in-progress status stay visible. */
+.paired-nearby:has(.paired-nearby-list:empty) .paired-selection-help { display: none; }
+.paired-nearby [aria-live]:empty { margin: 0; }
 .paired-nearby-head, .paired-actions {
   display: flex;
   flex-wrap: wrap;
@@ -17,9 +32,17 @@
 .paired-nearby-head { justify-content: space-between; }
 .paired-nearby-head h2 { margin: 0; }
 .paired-nearby h2 { margin-top: 0; }
-.paired-network { margin: .75rem 0 1rem; color: var(--text-dim); font-size: .9rem; line-height: 1.6; }
-.paired-network > p { margin: 0 0 .5rem; }
-.paired-network summary { cursor: pointer; font-weight: 600; color: var(--text); }
+.paired-network { color: var(--text-dim); font-size: .875rem; line-height: 1.6; }
+.paired-network > p { margin: .5rem 0; }
+.paired-network > summary, .paired-discovery-details > summary {
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 600;
+  min-height: 44px;
+  align-content: center;
+}
+.paired-network > h3 { margin: .75rem 0 .25rem; font-size: 1rem; }
+.paired-discovery-details > p { font-size: .875rem; color: var(--text-dim); line-height: 1.6; }
 .paired-network ol { padding-inline-start: 1.5rem; }
 .paired-network li + li { margin-top: .4rem; }
 .paired-network-links { display: flex; flex-wrap: wrap; gap: 1rem; }
@@ -117,7 +140,14 @@
 /* This live description stays in its own fold, outside the build's field-note gathering. */
 .paired-transport-note { max-width: 62ch; margin: 0 0 .5rem; font-size: .85rem; color: var(--text-dim); line-height: 1.6; }
 .paired-route { margin-block: .75rem; font-size: .9rem; font-weight: 600; }
-.paired-discovery-group { margin-block: 1rem; }
+.paired-discovery-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem 1rem;
+  margin-block: .25rem;
+  font-size: .9rem;
+}
 .paired-group-current, .paired-group-entry, .paired-connection-info {
   display: flex;
   align-items: center;
@@ -125,7 +155,8 @@
   gap: .5rem .75rem;
   min-width: 0;
 }
-.paired-group-current { justify-content: space-between; margin-bottom: .5rem; }
+.paired-group-current { justify-content: space-between; flex: 1 1 auto; }
+.paired-group-details[open], .paired-discovery-group > .paired-group-note { flex-basis: 100%; }
 .paired-group-details > summary, .paired-icon-legend > summary {
   cursor: pointer;
   font-weight: 600;
@@ -151,7 +182,7 @@
 }
 .paired-group-note { font-size: .875rem; color: var(--text-dim); line-height: 1.6; margin: .5rem 0; }
 .paired-group-note:empty { display: none; }
-.paired-icon-legend { margin-block: .75rem; font-size: .875rem; color: var(--text-dim); }
+.paired-icon-legend { font-size: .875rem; color: var(--text-dim); }
 .paired-icon-legend ul { margin: .5rem 0; padding: 0; list-style: none; }
 .paired-icon-legend li { display: flex; align-items: center; gap: .5rem; margin-block: .4rem; }
 .paired-icon-legend [data-connection-legend] { flex: none; }

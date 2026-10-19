@@ -8,11 +8,14 @@
         <h2>Conexiones disponibles</h2>
         <button type="button" id="discovery-refresh" class="ghost">Actualizar</button>
       </div>
-      {% include "partials/paired-network.html" %}
       {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">Buscando conexiones disponibles…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">Esta lista muestra los recursos compartidos por conexión directa y Cloud relay en la red local o el grupo privado seleccionado. La búsqueda local usa la dirección IPv4 pública o la subred IPv6; las puertas de enlace compartidas pueden incluir desconocidos y las rutas diferentes pueden ocultar dispositivos cercanos. Un grupo privado usa su código. Abrir un recurso sigue solicitando confirmación antes de conectar, y los recursos privados siguen necesitando la aprobación de quien comparte.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">Esta lista muestra los recursos compartidos por conexión directa y Cloud relay en la red local o el grupo privado seleccionado. La búsqueda local usa la dirección IPv4 pública o la subred IPv6; las puertas de enlace compartidas pueden incluir desconocidos y las rutas diferentes pueden ocultar dispositivos cercanos. Un grupo privado usa su código. Abrir un recurso sigue solicitando confirmación antes de conectar, y los recursos privados siguen necesitando la aprobación de quien comparte.</p>
+      </details>
     </section>
 
     <section class="card" data-pairing-setup>

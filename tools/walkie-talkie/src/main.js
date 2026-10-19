@@ -153,6 +153,7 @@ function activateChannel() {
     ui.channels.replaceChildren();
     const available = channels.filter(channel => channel.code !== credentials?.code);
     if (!available.some(channel => channel.code === selectedChannel?.code && channel.listenKey === selectedChannel?.listenKey)) selectedChannel = null;
+    ui['selected-channel'].classList.toggle('visually-hidden', !selectedChannel);
     ui['selected-channel'].textContent = phrase(selectedChannel ? 'channel-selected' : 'channel-unselected', { name: selectedChannel?.name });
     ui.join.disabled = !selectedChannel || role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.empty.hidden = available.length > 0;
@@ -217,7 +218,10 @@ function activateChannel() {
   function openDiscovery() {
     return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=walkie-talkie`, {
       list: rows => { channels = rows; renderChannels(); },
-      status: status => { ui['discovery-status'].textContent = phrase(`discovery-${status}`); },
+      status: status => {
+        ui['discovery-status'].classList.toggle('visually-hidden', status === 'ready');
+        ui['discovery-status'].textContent = phrase(`discovery-${status}`);
+      },
       publication: status => {
         ui.publication.hidden = status === null;
         ui.publication.textContent = status === null ? '' : phrase(`publication-${status}`);

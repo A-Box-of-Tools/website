@@ -10,11 +10,14 @@
         <h2>可用连接</h2>
         <button type="button" id="discovery-refresh" class="ghost">刷新</button>
       </div>
-      {% include "partials/paired-network.html" %}
       {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">正在查找可用连接…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。打开分享仍会在连接前征求同意，私密分享仍需分享者批准。</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。打开分享仍会在连接前征求同意，私密分享仍需分享者批准。</p>
+      </details>
     </section>
 
     <section class="card" data-pairing-setup>
