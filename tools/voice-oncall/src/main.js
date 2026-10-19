@@ -190,7 +190,7 @@ function activateOncall() {
     const occupied = hostActive || senderActive || senderPaused || starting;
     transportControl.lock(occupied);
     groupControl.lock(occupied || resumeRoleOnReturn !== null);
-    ui.nearby.hidden = occupied || senderTerminal;
+    ui.nearby.hidden = senderActive || senderPaused || senderTerminal || (starting && activeRole === 'sender');
     for (const radio of ui.rooms.querySelectorAll('input')) radio.disabled = occupied || senderTerminal;
     ui['tab-join'].disabled = occupied && view !== 'join';
     ui['tab-host'].disabled = occupied && view !== 'host';

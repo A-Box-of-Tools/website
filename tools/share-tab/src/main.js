@@ -203,7 +203,7 @@ function updateControls() {
   groupControl.lock(busy);
   $('host-discoverable').disabled = busy || !canCapture;
   $('host-publication-status').hidden = !hosting || !$('host-discoverable').checked;
-  $('nearby-section').hidden = busy;
+  $('nearby-section').hidden = viewing;
   $('discovery-controls').hidden = busy;
   $('discovery-start').hidden = browsingNearby;
   $('discovery-start').disabled = !canConnect;

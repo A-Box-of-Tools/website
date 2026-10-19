@@ -355,10 +355,13 @@ function renderAttachlist() {
 
 function renderDiscovery() {
   const hosting = $('publish').hidden;
-  $('discovery').hidden = hosting;
+  $('discovery').hidden = false;
+  $('discovery-refresh').hidden = hosting;
+  $('discovery-status').hidden = hosting;
   const ownCode = hosting ? normalize($('code').value) : '';
   const shares = foundShares.filter((share) => share.code !== ownCode && !withdrawing.has(share.code));
   const list = $('discovery-list');
+  list.hidden = hosting;
   list.textContent = '';
   for (const [index, share] of shares.entries()) {
     const row = document.createElement('div');

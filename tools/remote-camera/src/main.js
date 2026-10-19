@@ -426,7 +426,10 @@ function showActiveRole(role) {
   groupControl.lock(role !== null);
   $('camera-panel').hidden = role === 'viewer';
   $('viewer-panel').hidden = role === 'camera';
-  $('camera-discovery').hidden = role !== null;
+  $('camera-discovery').hidden = role === 'viewer';
+  $('discovery-list').hidden = role !== null;
+  $('discovery-refresh').hidden = role !== null;
+  $('discovery-status').hidden = role !== null;
   if (role) $('camera-workspace').dataset.active = role;
   else delete $('camera-workspace').dataset.active;
 }
