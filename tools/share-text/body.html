@@ -72,17 +72,19 @@
           <input type="checkbox" id="private" checked>
           Private &mdash; each reader must ask, and you let them in
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Local network &mdash; no internet relay
-        </label>
-        <p class="field-note">
-          For devices on the same Wi-Fi or Ethernet. Internet is still
-          needed to introduce the browsers; this mode uses no public
-          address-discovery server or relay. VPNs and browser settings can
-          affect the network path. The copied link carries this setting.
-          In Direct mode, choose Local network or join a private group to make your share discoverable. Cloud relay can also be listed when Discoverable is selected.
-        </p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Local network &mdash; no internet relay
+          </label>
+          <p class="field-note">
+            For devices on the same Wi-Fi or Ethernet. Internet is still
+            needed to introduce the browsers; this mode uses no public
+            address-discovery server or relay. VPNs and browser settings can
+            affect the network path. The copied link carries this setting.
+            In Direct mode, choose Local network or join a private group to make your share discoverable. Cloud relay can also be listed when Discoverable is selected.
+          </p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>

@@ -11,11 +11,7 @@
     <p class="wt-note" id="wt-discovery-status" aria-live="polite">Looking for available connections…</p>
     <ul id="wt-channels" class="wt-channels paired-nearby-list"></ul>
     <p class="wt-note" id="wt-empty">No channels are listed yet. Ask the host for a listener link, or start a channel below.</p>
-    <p class="wt-note paired-selection-help" id="wt-selection-help">Choose a channel, then Join channel to listen. Choosing alone does not connect, and listening never requests your microphone.</p>
-    <p class="wt-note visually-hidden" id="wt-selected-channel" aria-live="polite">No channel selected.</p>
-    <div class="paired-actions"><div class="paired-start-row" data-pairing-actions="nearby">
-        <button type="button" id="wt-join" disabled>Join channel</button>
-      </div></div>
+    <p class="wt-note paired-selection-help" id="wt-selection-help">Join to listen using the channel’s connection type. Your microphone stays off.</p>
   </section>
   <div class="wt-channel-heading">
     <h2 id="wt-channel-title">One voice, several listeners</h2>
@@ -24,7 +20,7 @@
   <p class="wt-intro" id="wt-host-intro">One host speaks; everyone else listens. Use Direct on your local network, or choose Cloud relay to connect through the internet. Find a channel in Available connections or use its listener link.</p>
   <div class="wt-status" aria-live="polite" aria-atomic="true">
     <span class="wt-status-dot" id="wt-status-dot" aria-hidden="true"></span>
-    <p id="wt-status-text">Choose an available channel, or start your own.</p>
+    <p id="wt-status-text">Join an available channel, or start your own.</p>
   </div>
   <div class="wt-error" id="wt-error" hidden role="alert">
     <p id="wt-error-text"></p>
@@ -84,7 +80,7 @@
 
   <div id="wt-listener" hidden>
     <div class="paired-start-row" data-pairing-actions="join">
-        <button type="button" id="wt-connect-listener" hidden>Join channel</button>
+        <button type="button" id="wt-connect-listener" hidden>Join</button>
         <span id="wt-connection-icons"></span>
       </div>
     <div class="wt-listening" id="wt-listening" aria-hidden="true">
@@ -95,7 +91,7 @@
       <button type="button" id="wt-mute" aria-pressed="false">Mute</button>
       <button type="button" class="wt-secondary" id="wt-leave">Leave</button>
     </div>
-    <p class="wt-note" id="wt-listener-help">Direct invitations connect automatically. For Cloud relay, review the route and choose Join channel. Your microphone is never requested. Keep this page open to hear the host.</p>
+    <p class="wt-note" id="wt-listener-help">Direct invitations connect automatically. For Cloud relay, review the route and choose Join. Your microphone is never requested. Keep this page open to hear the host.</p>
     <audio id="wt-audio" aria-label="Live host audio" autoplay playsinline></audio>
   </div>
 
@@ -112,12 +108,11 @@
 <div id="phrases" hidden>
   <span data-phrase="host-role">Host</span>
   <span data-phrase="listener-role">Receiver</span>
-  <span data-phrase="listener-confirm">This channel uses Cloud relay. Choose Join channel to listen through the encrypted relay.</span>
-  <span data-phrase="host-idle">Choose an available channel, or start your own.</span>
-  <span data-phrase="choose-channel">Choose</span>
-  <span data-phrase="choose-channel-name">Choose {name}</span>
-  <span data-phrase="channel-selected">{name} selected. Choose Join channel to listen.</span>
-  <span data-phrase="channel-unselected">No channel selected.</span>
+  <span data-phrase="listener-confirm">This channel uses Cloud relay. Choose Join to listen through the encrypted relay.</span>
+  <span data-phrase="host-idle">Join an available channel, or start your own.</span>
+  <span data-phrase="join-channel">Join</span>
+  <span data-phrase="join-channel-name">Join {name} via Direct</span>
+  <span data-phrase="join-relay-channel-name">Join {name} via Cloud relay</span>
   <span data-phrase="name-invalid">Enter a channel name of up to 80 characters without control characters.</span>
   <span data-phrase="discovery-connecting">Looking for available connections…</span>
   <span data-phrase="discovery-ready">Available connections update automatically.</span>

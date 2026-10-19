@@ -53,6 +53,9 @@ the public rendezvous for signalling.
 ## Local network mode
 
 The sharer can select **Local network — no internet relay** before starting.
+This Direct-only option is hidden while Cloud relay is selected, so a retained
+checkbox cannot contradict the current route. Its checked preference is kept
+when returning to Direct rather than silently widening a local-only choice.
 The copied URL carries `?local=1&transport=direct#name`, so the reader knows the intended mode
 before consenting; `#name` by itself keeps the ordinary mode. A reader and a
 sharer with different modes do not connect until the reader explicitly

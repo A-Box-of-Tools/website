@@ -55,11 +55,13 @@
           <input type="checkbox" id="private" checked>
           Privat &mdash; jeder Leser muss anfragen, und Sie lassen ihn ein
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Lokales Netzwerk — kein Internet-Relais
-        </label>
-        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Internet wird weiterhin zur Vermittlung benötigt; dieser Modus nutzt weder öffentliche Adressermittlung noch ein Relay. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Wählen Sie im Direktmodus Lokales Netzwerk oder treten Sie einer privaten Gruppe bei, damit Ihre Freigabe auffindbar wird. Cloud-relay-Freigaben können ebenfalls erscheinen, wenn Auffindbar gewählt ist.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Lokales Netzwerk — kein Internet-Relais
+          </label>
+          <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Internet wird weiterhin zur Vermittlung benötigt; dieser Modus nutzt weder öffentliche Adressermittlung noch ein Relay. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Wählen Sie im Direktmodus Lokales Netzwerk oder treten Sie einer privaten Gruppe bei, damit Ihre Freigabe auffindbar wird. Cloud-relay-Freigaben können ebenfalls erscheinen, wenn Auffindbar gewählt ist.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>

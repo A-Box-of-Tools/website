@@ -43,6 +43,7 @@ const MAX_FILES = 256;
 
 const $ = (id) => document.getElementById(id);
 const transportControl = bindTransportControl({ onChange(mode) {
+  $('local-option').hidden = mode === 'relay';
   $('local').disabled = mode === 'relay';
   $('discoverable').disabled = mode === 'direct' && !$('local').checked && !groupControl.id();
 } });

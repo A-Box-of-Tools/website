@@ -1,19 +1,19 @@
 # Local Walkie-Talkie
 
-The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Choosing a listing never opens a media connection or asks for microphone access; the separate Join or Connect action confirms admission.
+The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Once started, a read-only badge shows that choice. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Browsing opens no media connection; Join on a channel row confirms its receive-only connection without requesting microphone access.
 
 The website hosts one microphone and up to ten receive-only browsers. Nothing
 needs downloading or installing. Opening the page lists available channels over
 a discovery WebSocket; joining never requests microphone access. Starting the
-host or confirming Join channel opens its own rendezvous connection; microphone audio
+host or confirming Join opens its own rendezvous connection; microphone audio
 travels over a separate encrypted WebRTC connection to each listener. Direct is
 the default; Cloud relay is an explicit alternative shared by the host and listener.
 
-Available connections appears first, before hosting controls. Choose selects a channel
-without opening its voice connection or saving listener credentials; Join channel
-confirms the receive-only connection. A withdrawn listing clears the selection.
+Available connections appears first, before hosting controls. Each row's Join
+button connects in one step, with the route included in its accessible name.
+A withdrawn listing cannot be joined through a stale row.
 Opening a Direct listener invitation still joins automatically. A Cloud relay
-invitation shows the chosen route and requires Join channel before connecting.
+invitation shows the chosen route and requires Join before connecting.
 Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
 that discovery and pairing still need internet and a hotspot is not a guarantee.
@@ -121,7 +121,7 @@ those permissions or undo an explicit Stop.
 
 Private group controls and connection icons come from `peer-discovery-ui.js`;
 `discovery-group.js` owns code normalization, creation and group identifiers.
-Changing scope closes the old directory, clears its selection and opens the
+Changing scope closes the old directory, clears its listings and opens the
 new one. A running or recovering session locks the scope until stopped. Group
 codes stay in memory; saved host identities retain only the group identifier.
 Reload discards a saved private host rather than republishing it to the public
