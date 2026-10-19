@@ -175,7 +175,7 @@ function wireConnectionTooltip(icon) {
     document.removeEventListener('keydown', escape);
     document.removeEventListener('scroll', position, true);
     window.removeEventListener('resize', position);
-    if (activeTooltip === close) activeTooltip = null;
+    if (activeTooltip?.close === close) activeTooltip = null;
   };
   const escape = event => {
     if (event.key !== 'Escape') return;
@@ -196,9 +196,12 @@ function wireConnectionTooltip(icon) {
   const show = () => {
     clearTimeout(closing);
     if (dismissed || !icon.isConnected) return;
-    if (activeTooltip === close) return;
-    activeTooltip?.();
-    activeTooltip = close;
+    if (activeTooltip?.close === close) return;
+    // Scrolling can move another icon under the pointer. Hover must not
+    // replace the explanation a keyboard user is still focused on.
+    if (!focused && activeTooltip?.focused()) return;
+    activeTooltip?.close();
+    activeTooltip = { close, focused: () => focused };
     icon.dataset.tooltipOpen = '';
     position();
     document.addEventListener('keydown', escape);
