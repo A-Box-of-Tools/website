@@ -142,7 +142,7 @@ function activateChannel() {
     ui.host.hidden = role !== 'host';
     ui.listener.hidden = role !== 'listener';
     ui['host-intro'].hidden = role !== 'host';
-    ui.nearby.hidden = role !== 'host' || hostActive || starting || preparingCredentials;
+    ui.nearby.hidden = role !== 'host';
     const unavailable = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.join.disabled = unavailable || !selectedChannel;
     for (const button of ui.channels.querySelectorAll('button')) button.disabled = unavailable;
