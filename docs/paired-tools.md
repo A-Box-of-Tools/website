@@ -14,9 +14,10 @@ Wi-Fi, phone hotspots, the internet requirement for discovery and
 pairing, and device isolation. This is setup guidance, not a claim that a web
 page can enable a hotspot or that every hotspot permits direct connections.
 
-Choosing an available entry never starts pairing or requests media. Camera and
-Walkie-Talkie fill their invitation, Voice Oncall selects the pager, and Share
-Tab fills its code; a separate Connect, Join or Request action follows. Keyboard
+Browsing available entries never starts pairing or requests media. Walkie-Talkie
+provides Join on each row; that single action confirms its receive-only connection.
+Camera fills its invitation, Voice Oncall selects the pager, and Share Tab fills
+its code; a separate Connect, Join or Request action follows. Keyboard
 selection keeps focus in Voice Oncall's native radio group.
 Share Text opens its existing consent page in another tab so an unsent draft
 is retained. Its Connect action still precedes the introduction to the host.
@@ -42,7 +43,10 @@ password and media boundaries remain separate requirements.
 Tools declare `supports_relay = true`, include `partials/paired-transport.html`
 beside their host Start action and ship `peer-transport` and `peer-transport-ui`.
 The host control locks while a session or recoverable identity is active and
-must not trigger pairing or capture from a change event. Joining controls show
+shows the chosen type as a read-only badge in place of its toggle. Ending the
+session restores the toggle. The badge describes the choice, while the separate
+route output reports the observed connection. Changing a choice must not trigger
+pairing or capture. Joining controls show
 accessible route and access icons from the selected entry or invitation; there
 is no route filter or viewer override in the discovery list.
 `bindTransportControl()` exposes `value`, `set`, `lock`, `route` and `destroy`.

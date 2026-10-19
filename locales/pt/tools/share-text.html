@@ -55,11 +55,13 @@
           <input type="checkbox" id="private" checked>
           Privado &mdash; cada leitor precisa pedir, e você deixa entrar
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Rede local — sem retransmissor de internet
-        </label>
-        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A internet ainda é necessária para apresentar os navegadores; este modo não usa servidor público para descobrir endereços nem retransmissor. VPNs e configurações do navegador podem afetar o caminho. O link copiado mantém essa escolha. No modo direto, escolha Rede local ou entre em um grupo privado para tornar o compartilhamento visível. Cloud relay também pode aparecer quando Visível estiver selecionado.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Rede local — sem retransmissor de internet
+          </label>
+          <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A internet ainda é necessária para apresentar os navegadores; este modo não usa servidor público para descobrir endereços nem retransmissor. VPNs e configurações do navegador podem afetar o caminho. O link copiado mantém essa escolha. No modo direto, escolha Rede local ou entre em um grupo privado para tornar o compartilhamento visível. Cloud relay também pode aparecer quando Visível estiver selecionado.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>

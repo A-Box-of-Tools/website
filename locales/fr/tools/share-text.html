@@ -55,11 +55,13 @@
           <input type="checkbox" id="private" checked>
           Privé &mdash; chaque lecteur doit demander, et vous l'admettez
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Réseau local — sans relais internet
-        </label>
-        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour la mise en relation ; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le chemin. Le lien copié conserve ce choix. En connexion directe, choisissez Réseau local ou rejoignez un groupe privé pour rendre le partage visible. Les partages par relais cloud peuvent aussi apparaître si Visible est activé.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Réseau local — sans relais internet
+          </label>
+          <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour la mise en relation ; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le chemin. Le lien copié conserve ce choix. En connexion directe, choisissez Réseau local ou rejoignez un groupe privé pour rendre le partage visible. Les partages par relais cloud peuvent aussi apparaître si Visible est activé.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>

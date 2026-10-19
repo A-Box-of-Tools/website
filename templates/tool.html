@@ -223,8 +223,8 @@
   to do: markup is meant to describe what a visitor can see.
 
   `tool.name` is escaped rather than inserted raw because it is a plain string -
-  "EXIF Viewer & Remover" carries a bare ampersand - unlike `tool.heading`,
-  which is written as markup in tool.toml.
+  "EXIF Viewer & Remover" carries a bare ampersand. Cards, breadcrumbs and the
+  page heading use this same name so opening a tool never appears to rename it.
 -->
 <nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
   <a href="../">{{ ui.all_tools }}</a>
@@ -237,7 +237,7 @@
     <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"
          focusable="false">{{ tool.glyph_svg }}</svg>
     <div>
-      <h1>{{ tool.heading }}</h1>
+      <h1>{{ tool.name | e }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
 {% if tool.requires_pairing %}      <div class="pairing-version" data-pairing-version="{{ js_v }}">
         <span>{{ ui.tool.pairing_version }}</span> <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code id="tool-version" dir="ltr">{{ js_v }}</code></span>

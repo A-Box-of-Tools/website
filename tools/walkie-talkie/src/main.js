@@ -26,7 +26,7 @@ function activateChannel() {
     'microphone', 'microphone-note', 'resume-microphone', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
-    'discovery-status', 'selected-channel', 'join', 'connect-listener', 'connection-icons', 'publication', 'setup', 'room-name', 'discover',
+    'discovery-status', 'connect-listener', 'connection-icons', 'publication', 'setup', 'room-name', 'discover',
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
@@ -112,7 +112,6 @@ function activateChannel() {
   let stateTalking = false;
   let pageSuspended = false;
   let channels = [];
-  let selectedChannel = null;
   let lastPublication = null;
   const transportControl = bindTransportControl({ onChange: () => {
     transportControl.route(null);
@@ -123,7 +122,6 @@ function activateChannel() {
   const groupControl = createDiscoveryGroupControl({ root: document, onChange: () => {
     discovery.close();
     channels = [];
-    selectedChannel = null;
     lastPublication = null;
     transportControl.set('direct');
     transportControl.route(null);
@@ -144,7 +142,6 @@ function activateChannel() {
     ui['host-intro'].hidden = role !== 'host';
     ui.nearby.hidden = role !== 'host';
     const unavailable = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
-    ui.join.disabled = unavailable || !selectedChannel;
     for (const button of ui.channels.querySelectorAll('button')) button.disabled = unavailable;
   }
   renderRole();
@@ -152,10 +149,6 @@ function activateChannel() {
   function renderChannels() {
     ui.channels.replaceChildren();
     const available = channels.filter(channel => channel.code !== credentials?.code);
-    if (!available.some(channel => channel.code === selectedChannel?.code && channel.listenKey === selectedChannel?.listenKey)) selectedChannel = null;
-    ui['selected-channel'].classList.toggle('visually-hidden', !selectedChannel);
-    ui['selected-channel'].textContent = phrase(selectedChannel ? 'channel-selected' : 'channel-unselected', { name: selectedChannel?.name });
-    ui.join.disabled = !selectedChannel || role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
     ui.empty.hidden = available.length > 0;
     for (const channel of available) {
       const item = document.createElement('li');
@@ -168,24 +161,16 @@ function activateChannel() {
       appendConnectionIcons(info, { transport: channel.transport, locked: false, approval: false });
       const join = document.createElement('button');
       join.type = 'button';
-      join.textContent = phrase('choose-channel');
-      join.setAttribute('aria-label', phrase('choose-channel-name', { name: channel.name }));
-      join.setAttribute('aria-pressed', String(channel.code === selectedChannel?.code));
+      join.textContent = phrase('join-channel');
+      join.setAttribute('aria-label', phrase(channel.transport === 'relay' ? 'join-relay-channel-name' : 'join-channel-name', { name: channel.name }));
       join.disabled = role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended;
-      join.addEventListener('click', () => {
-        if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended) return;
-        selectedChannel = channel;
-        transportControl.set(transportMode(channel.transport) || 'direct');
-        renderChannels();
-        ui.join.focus();
-      });
+      join.addEventListener('click', () => joinChannel(channel));
       item.append(info, join);
       ui.channels.append(item);
     }
   }
 
-  function joinSelectedChannel() {
-    const channel = selectedChannel;
+  function joinChannel(channel) {
     if (role !== 'host' || hostActive || starting || preparingCredentials || pageSuspended
         || !channel || !channels.some(row => row.code === channel.code && row.listenKey === channel.listenKey)) return;
     transportControl.set(transportMode(channel.transport));
@@ -209,10 +194,10 @@ function activateChannel() {
     listenerEnded = false;
     listenerMuted = false;
     playbackBlocked = false;
-    selectedChannel = null;
     role = 'listener';
     renderRole();
     void startListener();
+    ui.leave.focus();
   }
 
   function openDiscovery() {
@@ -665,7 +650,6 @@ function activateChannel() {
   ui['resume-microphone'].addEventListener('click', () => void resumeHostMicrophone());
   ui['room-name'].addEventListener('input', () => ui['room-name'].setCustomValidity(''));
   ui.refresh.addEventListener('click', () => discovery.refresh());
-  ui.join.addEventListener('click', joinSelectedChannel);
   ui['connect-listener'].addEventListener('click', () => {
     if (role !== 'listener' || session || !validIdentity(listenerIdentity)) return;
     if (transportControl.value() !== transportMode(listenerIdentity.transport)) { renderState('transport.mismatch'); return; }

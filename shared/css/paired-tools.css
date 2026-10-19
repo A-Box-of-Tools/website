@@ -134,6 +134,18 @@
   outline-offset: 3px;
 }
 .paired-transport-toggle:has(input:disabled) { opacity: .65; cursor: not-allowed; }
+.paired-transport-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: .35rem .6rem;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.paired-page .paired-transport-toggle[hidden], .paired-transport-badge[hidden] { display: none; }
 .paired-transport-help { margin: 0; }
 .paired-transport-help > summary { min-width: 44px; min-height: 44px; justify-content: center; }
 .paired-transport-help[open] { flex-basis: 100%; }
@@ -194,11 +206,11 @@
   align-items: center;
   min-width: 44px;
   min-height: 44px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg);
+  border: 0;
+  background: transparent;
   color: var(--text-dim);
 }
+.paired-connection-icon[tabindex] { cursor: help; }
 .paired-connection-icon svg {
   width: 1.25rem;
   height: 1.25rem;

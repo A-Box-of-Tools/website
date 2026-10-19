@@ -4,22 +4,33 @@ import { transportMode } from './peer-transport.js';
 /** A selected route is consent for the next session, never a live switch. */
 export function bindTransportControl({ onChange = () => {} } = {}) {
   const controls = [...document.querySelectorAll('[data-pairing-transport]')].map((element, index) => {
+    const toggle = element.querySelector('.paired-transport-toggle');
     const input = element.querySelector('[data-transport-toggle]');
     const note = element.querySelector('[data-transport-note]');
     input.id = index ? `pairing-transport-${index}` : 'pairing-transport';
     note.id = `${input.id}-note`;
     input.setAttribute('aria-describedby', note.id);
-    return { input, note };
+    return { toggle, input, note };
   });
+  const badges = [...document.querySelectorAll('[data-transport-badge]')];
   const output = document.getElementById('pairing-route');
   let mode = 'direct';
   let locked = false;
   const value = () => mode;
   const refresh = () => {
-    for (const { input, note } of controls) {
+    for (const { toggle, input, note } of controls) {
       input.checked = mode === 'relay';
       input.disabled = locked;
+      toggle.hidden = locked;
       note.textContent = phrase(`transport.note.${mode}`);
+    }
+    // A locked choice describes this session's selected mode. The separate
+    // route output still reports whether a peer connection actually succeeded.
+    for (const badge of badges) {
+      badge.hidden = !locked;
+      for (const label of badge.querySelectorAll('[data-transport-mode]')) {
+        label.hidden = label.dataset.transportMode !== mode;
+      }
     }
   };
   const changed = event => {

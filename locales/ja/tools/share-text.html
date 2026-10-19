@@ -57,11 +57,13 @@
           <input type="checkbox" id="private" checked>
           非公開——読む側はそれぞれ求め、あなたが入れる
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          ローカルネットワーク——インターネット中継なし
-        </label>
-        <p class="field-note">同じWi-FiまたはEthernet上の端末向けです。ブラウザの紹介には引き続きインターネットが必要です。このモードは公開アドレス検出サーバーや中継を使いません。VPNやブラウザ設定で経路が変わる場合があります。コピーしたリンクにはこの設定が含まれます。直接接続ではローカルネットワークを選ぶか非公開グループに参加すると共有を検索できます。検索可能を選ぶとCloud relayの共有も一覧に表示できます。</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            ローカルネットワーク——インターネット中継なし
+          </label>
+          <p class="field-note">同じWi-FiまたはEthernet上の端末向けです。ブラウザの紹介には引き続きインターネットが必要です。このモードは公開アドレス検出サーバーや中継を使いません。VPNやブラウザ設定で経路が変わる場合があります。コピーしたリンクにはこの設定が含まれます。直接接続ではローカルネットワークを選ぶか非公開グループに参加すると共有を検索できます。検索可能を選ぶとCloud relayの共有も一覧に表示できます。</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>

@@ -57,11 +57,13 @@
           <input type="checkbox" id="private" checked>
           私密——每位读者先申请，由你放行
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          局域网——不使用互联网中转
-        </label>
-        <p class="field-note">适用于同一 Wi-Fi 或以太网中的设备。仍需互联网来引见浏览器；此模式不使用公共地址发现服务器或中继。VPN 和浏览器设置可能影响网络路径。复制的链接会携带此设置。在直连方式下，选择本地网络或加入私密群组即可让分享被发现。启用“可发现”后，云中继分享也可以列出。</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            局域网——不使用互联网中转
+          </label>
+          <p class="field-note">适用于同一 Wi-Fi 或以太网中的设备。仍需互联网来引见浏览器；此模式不使用公共地址发现服务器或中继。VPN 和浏览器设置可能影响网络路径。复制的链接会携带此设置。在直连方式下，选择本地网络或加入私密群组即可让分享被发现。启用“可发现”后，云中继分享也可以列出。</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
