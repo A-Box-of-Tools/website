@@ -2,7 +2,7 @@
 // Socket attachments retain only admission and moderation metadata, including
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
-import { DISCOVERY_SCOPE_HEADER, validPublication, validScope } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
@@ -115,7 +115,7 @@ export class Inbox {
       });
     }
     const code = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/)?.[1];
-    if (!code || url.search || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
+    if (!code || !validVoiceQuery(url) || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
     if (this.sockets("pending").length >= MAX_PENDING) {

@@ -2,6 +2,7 @@
 // IPv4 address or IPv6 /64 is only a best-effort network match: shared carrier
 // gateways can include strangers, and nearby devices can use different routes.
 // Nothing here decides whether their eventual WebRTC connection is local.
+import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
 export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
@@ -11,6 +12,8 @@ const MAX_OBSERVERS = 64;
 const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
+const MAX_PENDING = 8;
+const AUTH_TIMEOUT = 8000;
 
 const DEFAULT_TOOL = "share-text";
 const TOOLS = new Set([DEFAULT_TOOL, "remote-camera", "share-tab", "voice-oncall", "walkie-talkie"]);
@@ -18,6 +21,18 @@ const LISTEN_KEY_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
 export function rendezvousTool(value) {
   return value == null ? DEFAULT_TOOL : TOOLS.has(value) ? value : null;
+}
+
+// Missing keeps the original network protocol. Invalid must never silently
+// choose that protocol: it could publish a private host to its neighbours.
+export function requestedGroup(url) {
+  const values = url.searchParams.getAll("group");
+  if (values.length === 0) return undefined;
+  return values.length === 1 && SCOPE_PATTERN.test(values[0]) ? values[0] : null;
+}
+
+export function validVoiceQuery(url) {
+  return [...url.searchParams.keys()].every((name) => name === "group") && requestedGroup(url) !== null;
 }
 
 // Existing text rooms keep their identifiers, including sockets that are
@@ -97,10 +112,14 @@ function networkAddress(request) {
 export async function discoveryScope(request, requestedTool = DEFAULT_TOOL) {
   const tool = rendezvousTool(requestedTool);
   if (tool === null || request.headers.has("CF-Worker")) return null;
-  const address = networkAddress(request);
   const origin = pageOrigin(request.headers.get("Origin"));
-  if (address === null || origin === null) return null;
-  const source = tool === DEFAULT_TOOL ? `${origin}\n${address}` : `${origin}\n${address}\n${tool}`;
+  const group = requestedGroup(new URL(request.url));
+  if (origin === null || group === null) return null;
+  const address = group === undefined ? networkAddress(request) : null;
+  if (group === undefined && address === null) return null;
+  const source = group === undefined
+    ? tool === DEFAULT_TOOL ? `${origin}\n${address}` : `${origin}\n${address}\n${tool}`
+    : `abox.tools/private-discovery-scope/v1\n${origin}\n${tool}\n${group}`;
   const bytes = new TextEncoder().encode(source);
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
   return [...digest].map((n) => n.toString(16).padStart(2, "0")).join("");
@@ -156,16 +175,20 @@ export class Discovery {
     }
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
     const tool = rendezvousTool(url.searchParams.get("tool"));
-    if (!validScope(scope) || tool === null) return new Response(null, { status: 403 });
+    const group = requestedGroup(url);
+    if (!validScope(scope) || tool === null || group === null) return new Response(null, { status: 403 });
+    this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
-    if (this.observers().length >= MAX_OBSERVERS) {
+    if (this.observers().length >= MAX_OBSERVERS || group !== undefined
+        && this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false).length >= MAX_PENDING) {
       server.accept();
       server.close(4429, "full");
       return new Response(null, { status: 101, webSocket: client });
     }
     this.ctx.acceptWebSocket(server, ["observer"]);
-    server.serializeAttachment({ scope, tool, generation: 0, updates: 0, publication: null });
-    server.send(this.snapshot());
+    server.serializeAttachment({ scope, tool, generation: 0, updates: 0, publication: null,
+      ...(group === undefined ? {} : { group, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
+    if (group === undefined) server.send(this.snapshot());
     return new Response(null, { status: 101, webSocket: client });
   }
 
@@ -173,27 +196,42 @@ export class Discovery {
     return this.ctx.getWebSockets("observer").filter((ws) => ws.readyState === 1 && ws.deserializeAttachment() !== null);
   }
 
+  cleanup() {
+    for (const ws of this.observers()) {
+      const who = ws.deserializeAttachment();
+      if (who.authenticated === false && who.deadline <= Date.now()) {
+        ws.serializeAttachment(null);
+        try { ws.close(4408, "timeout"); } catch {}
+      }
+    }
+  }
+
+  authorized(who) { return who && (who.group === undefined || who.authenticated === true); }
+
   snapshot() {
     const observers = this.observers();
     const tool = observers[0]?.deserializeAttachment().tool ?? DEFAULT_TOOL;
+    const group = observers[0]?.deserializeAttachment().group;
     const codes = new Map();
     for (const ws of observers) {
       const who = ws.deserializeAttachment();
-      if ((who.tool ?? DEFAULT_TOOL) !== tool) continue;
+      if (!this.authorized(who) || (who.tool ?? DEFAULT_TOOL) !== tool) continue;
       const publication = who.publication;
       if (publication?.verified) codes.set(publication.code, publication);
     }
-    const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: true,
+    const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: codes.get(code).local !== false,
       ...(codes.get(code).transport === 'relay' ? { transport: 'relay' } : {}),
       ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}),
       ...(tool === "walkie-talkie" ? { name: codes.get(code).name, listenKey: codes.get(code).listenKey } : {}) }));
-    return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL ? {} : { tool }), list });
+    return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL && group === undefined ? {} : { tool }),
+      ...(group === undefined ? {} : { group }), list });
   }
 
   broadcast() {
     const message = this.snapshot();
     let lostShare = false;
     for (const ws of this.observers()) {
+      if (!this.authorized(ws.deserializeAttachment())) continue;
       try { ws.send(message); }
       catch {
         lostShare ||= ws.deserializeAttachment()?.publication?.verified === true;
@@ -204,7 +242,7 @@ export class Discovery {
     if (lostShare) this.broadcast();
   }
 
-  async verify(publication, scope, tool = DEFAULT_TOOL) {
+  async verify(publication, scope, tool = DEFAULT_TOOL, privateGroup = false) {
     try {
       const binding = tool === "voice-oncall" ? this.env.INBOXES
         : tool === "walkie-talkie" ? this.env.BROADCASTS : this.env.ROOMS;
@@ -223,7 +261,12 @@ export class Discovery {
       if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)
           || (metadata.transport !== undefined && !['direct', 'relay'].includes(metadata.transport))) return false;
       const transport = metadata.transport === 'relay' ? { transport: 'relay' } : {};
-      if (!metadataTool(tool)) return Object.keys(metadata).length === 1 && metadata.transport === 'relay' ? transport : false;
+      if (!metadataTool(tool)) {
+        const ordinary = privateGroup && tool === DEFAULT_TOOL && metadata.local === false;
+        if (Object.keys(metadata).some((name) => name !== 'transport' && !(ordinary && name === 'local'))
+            || metadata.transport !== 'relay' && !ordinary) return false;
+        return { ...transport, ...(ordinary ? { local: false } : {}) };
+      }
       if (Object.keys(metadata).length !== (metadata.transport === undefined ? 2 : 3)
           || typeof metadata.name !== "string" || metadata.name.length === 0 || metadata.name.length > 80
           || !metadata.name.isWellFormed() || metadata.name.trim().length === 0
@@ -247,7 +290,7 @@ export class Discovery {
     for (const { who } of entries) {
       const tool = who.tool ?? DEFAULT_TOOL;
       const key = verificationKey(who);
-      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool));
+      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool, who.group !== undefined));
     }
     // Rechecking a manual refresh repairs a missed withdrawal without a
     // polling loop. Deduplicating leases bounds the binding calls to the list.
@@ -267,14 +310,46 @@ export class Discovery {
   }
 
   async webSocketMessage(ws, message) {
-    if (typeof message !== "string" || message.length > MAX_MESSAGE) return;
-    let parsed;
-    try { parsed = JSON.parse(message); } catch { return; }
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return;
-    const publishing = Object.hasOwn(parsed, "publish");
-    if (!publishing && parsed.refresh !== true) return;
+    this.cleanup();
     const who = ws.deserializeAttachment();
     if (who === null || ws.readyState !== 1) return;
+    const refuse = () => { this.drop(ws); try { ws.close(4403, "unauthorized"); } catch {} };
+    if (typeof message !== "string" || message.length > MAX_MESSAGE) {
+      if (!this.authorized(who)) refuse();
+      return;
+    }
+    let parsed;
+    try { parsed = JSON.parse(message); } catch { if (!this.authorized(who)) refuse(); return; }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      if (!this.authorized(who)) refuse();
+      return;
+    }
+    if (who.group !== undefined && who.authenticated !== true) {
+      if (who.authenticating || Object.keys(parsed).length !== 1 || !Object.hasOwn(parsed, "group")
+          || normalizeGroupCode(parsed.group) === null || normalizeGroupCode(parsed.group) !== parsed.group) return refuse();
+      const generation = who.generation + 1;
+      ws.serializeAttachment({ ...who, authenticating: true, generation });
+      let identifier = null;
+      try { identifier = await groupIdentifier(parsed.group); } catch {}
+      const current = ws.deserializeAttachment();
+      if (ws.readyState !== 1 || current === null || current.generation !== generation) return;
+      if (current.deadline <= Date.now()) {
+        this.drop(ws);
+        try { ws.close(4408, "timeout"); } catch {}
+        return;
+      }
+      if (identifier !== current.group) return refuse();
+      // Attachments survive hibernation. Only the public identifier and proof
+      // result belong there; the entered code is never retained or echoed.
+      const { deadline, authenticating, ...accepted } = current;
+      ws.serializeAttachment({ ...accepted, authenticated: true });
+      try { ws.send(this.snapshot()); }
+      catch { this.drop(ws); try { ws.close(1011, "send-failed"); } catch {} }
+      return;
+    }
+    if (Object.hasOwn(parsed, "group")) return refuse();
+    const publishing = Object.hasOwn(parsed, "publish");
+    if (!publishing && parsed.refresh !== true) return;
     if (publishing && parsed.publish !== null && !validPublication(parsed.publish)) return;
     if (publishing && parsed.publish !== null && metadataTool(who.tool)
         && !validVoicePublication(parsed.publish, who.tool)) return;
@@ -293,7 +368,7 @@ export class Discovery {
     ws.serializeAttachment({ ...who, generation, updates: who.updates + 1, publication });
     if (who.publication?.verified || publication === null) this.broadcast();
     if (publication === null) return;
-    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL);
+    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL, who.group !== undefined);
     const current = ws.deserializeAttachment();
     if (ws.readyState !== 1 || current === null || current.generation !== generation
         || current.publication?.code !== publication.code || current.publication.lease !== publication.lease) return;

@@ -3,28 +3,28 @@
 <section class="wt-local" aria-labelledby="wt-channel-title">
   <section id="wt-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="wt-nearby-title">
     <div class="paired-nearby-head">
-      <h2 id="wt-nearby-title">Nearby channels</h2>
+      <h2 id="wt-nearby-title">Available connections</h2>
       <div class="paired-actions"><button type="button" class="wt-secondary" id="wt-refresh">Refresh</button></div>
     </div>
+    {% include "partials/paired-discovery-group.html" %}
     {% include "partials/paired-network.html" %}
-    <p class="wt-note" id="wt-discovery-status" aria-live="polite">Looking for nearby channels…</p>
+    <p class="wt-note" id="wt-discovery-status" aria-live="polite">Looking for available connections…</p>
     <ul id="wt-channels" class="wt-channels paired-nearby-list"></ul>
     <p class="wt-note" id="wt-empty">No channels are listed yet. Ask the host for a listener link, or start a channel below.</p>
     <p class="wt-note" id="wt-selection-help">Choose a channel, then Join channel to listen. Choosing alone does not connect, and listening never requests your microphone.</p>
     <p class="wt-note" id="wt-selected-channel" aria-live="polite">No channel selected.</p>
     <div class="paired-actions"><div class="paired-start-row" data-pairing-actions="nearby">
         <button type="button" id="wt-join" disabled>Join channel</button>
-        {% include "partials/paired-transport.html" %}
       </div></div>
   </section>
   <div class="wt-channel-heading">
     <h2 id="wt-channel-title">One voice, several listeners</h2>
     <span class="wt-role" id="wt-role">Host</span>
   </div>
-  <p class="wt-intro" id="wt-host-intro">One host speaks; everyone else listens. Use Direct on your local network, or choose Cloud relay to connect through the internet. Find a nearby channel or use its listener link.</p>
+  <p class="wt-intro" id="wt-host-intro">One host speaks; everyone else listens. Use Direct on your local network, or choose Cloud relay to connect through the internet. Find a channel in Available connections or use its listener link.</p>
   <div class="wt-status" aria-live="polite" aria-atomic="true">
     <span class="wt-status-dot" id="wt-status-dot" aria-hidden="true"></span>
-    <p id="wt-status-text">Choose a nearby channel, or start your own.</p>
+    <p id="wt-status-text">Choose an available channel, or start your own.</p>
   </div>
   <div class="wt-error" id="wt-error" hidden role="alert">
     <p id="wt-error-text"></p>
@@ -34,8 +34,8 @@
     <div id="wt-setup" class="wt-setup">
       <label for="wt-room-name">Channel name</label>
       <input id="wt-room-name" type="text" maxlength="80" value="Voice channel" autocomplete="off" required>
-      <label class="wt-discover"><input id="wt-discover" type="checkbox" checked> Show this channel nearby</label>
-      <p class="wt-note">When selected, starting lists the channel for nearby listeners. Anyone who finds it can join and listen. Turn this off to invite listeners only by link or QR code.</p>
+      <label class="wt-discover"><input id="wt-discover" type="checkbox" checked> Make this channel discoverable</label>
+      <p class="wt-note">When selected, starting lists the channel in your selected discovery scope. Anyone who finds it can join and listen. Turn this off to invite listeners only by link or QR code.</p>
     </div>
     <div class="wt-host-summary">
       <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
@@ -85,7 +85,7 @@
   <div id="wt-listener" hidden>
     <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="wt-connect-listener" hidden>Join channel</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="wt-connection-icons"></span>
       </div>
     <div class="wt-listening" id="wt-listening" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
@@ -101,7 +101,7 @@
 
   <details class="wt-details">
     <summary>How devices connect</summary>
-    <p>Opening this page asks the pairing service for live channels grouped by public IPv4 address or IPv6 subnet and website origin. Shared gateways can include strangers, and VPNs can hide devices that are physically nearby. Starting with Show this channel nearby selected shares its name and listener invitation with that group. The listing stays while the host connection is alive; ending or losing that connection removes it.</p>
+    <p>Available connections lists both Direct and Cloud relay channels. Local network discovery groups devices by public IPv4 address or IPv6 subnet and website origin; shared gateways can include strangers and VPNs can hide physically nearby devices. Choose Private group and enter the same group code on each device to discover channels across networks. A private group lists channels only for people with that code, not in the local-network directory. Starting with Make this channel discoverable selected shares its name and listener invitation in your selected scope. Ending or losing the host connection removes the listing.</p>
     <p>An internet service introduces the browsers using connection metadata. Direct sends encrypted voice between them without a relay. If both devices choose Cloud relay, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt the audio. There is no recording feature.</p>
     <p>Direct needs a network where the devices can reach one another. Guest Wi-Fi, device isolation and some VPNs or firewalls can block it. Cloud relay is an explicit alternative that needs internet throughout; a failed connection never switches routes automatically.</p>
     <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
@@ -112,19 +112,19 @@
 <div id="phrases" hidden>
   <span data-phrase="host-role">Host</span>
   <span data-phrase="listener-role">Receiver</span>
-  <span data-phrase="listener-confirm">This channel uses Cloud relay. Review the connection choice, then choose Join channel to listen.</span>
-  <span data-phrase="host-idle">Choose a nearby channel, or start your own.</span>
+  <span data-phrase="listener-confirm">This channel uses Cloud relay. Choose Join channel to listen through the encrypted relay.</span>
+  <span data-phrase="host-idle">Choose an available channel, or start your own.</span>
   <span data-phrase="choose-channel">Choose</span>
   <span data-phrase="choose-channel-name">Choose {name}</span>
   <span data-phrase="channel-selected">{name} selected. Choose Join channel to listen.</span>
   <span data-phrase="channel-unselected">No channel selected.</span>
   <span data-phrase="name-invalid">Enter a channel name of up to 80 characters without control characters.</span>
-  <span data-phrase="discovery-connecting">Looking for nearby channels…</span>
-  <span data-phrase="discovery-ready">Nearby channels update automatically.</span>
-  <span data-phrase="discovery-unavailable">Nearby channels cannot be listed right now. You can still use a listener link.</span>
-  <span data-phrase="publication-publishing">Listing your channel nearby…</span>
-  <span data-phrase="publication-published">Your channel is listed nearby.</span>
-  <span data-phrase="publication-not-published">Your channel is not listed nearby right now. Share its listener link instead.</span>
+  <span data-phrase="discovery-connecting">Looking for available connections…</span>
+  <span data-phrase="discovery-ready">Available connections update automatically.</span>
+  <span data-phrase="discovery-unavailable">Available connections cannot be listed right now. You can still use a listener link.</span>
+  <span data-phrase="publication-publishing">Listing your channel…</span>
+  <span data-phrase="publication-published">Your channel is listed in your selected discovery scope.</span>
+  <span data-phrase="publication-not-published">Your channel is not listed right now. Share its listener link instead.</span>
   <span data-phrase="host-starting">Starting the channel and checking your microphone…</span>
   <span data-phrase="host-ready">Channel open. Hold to talk when you are ready.</span>
   <span data-phrase="host-talking">You are broadcasting.</span>

@@ -1,6 +1,7 @@
 import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { groupUrl } from './shared/discovery-group.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
 
 const RENDEZVOUS = rendezvousEndpoint();
@@ -17,6 +18,7 @@ export class TabSession {
     this.role = null;
     this.code = null;
     this.discoverable = false;
+    this.discoveryGroup = null;
     this.stream = null;
     this.socket = null;
     this.pairing = null;
@@ -55,11 +57,12 @@ export class TabSession {
     }, { once: true });
   }
 
-  async startHost(stream, code, { discoverable = false, transport = 'direct' } = {}) {
+  async startHost(stream, code, { discoverable = false, transport = 'direct', discoveryGroup = null } = {}) {
     this.prepareHost(stream);
     this.transport = transportMode(transport);
     if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     this.discoverable = discoverable === true;
+    this.discoveryGroup = discoveryGroup;
     return this.open(code);
   }
 
@@ -82,7 +85,7 @@ export class TabSession {
       let settled = false, ready = false, confirmed = false, configured = this.transport === 'direct', socket;
       const waiting = [];
       const offered = this.role === 'host' && this.discoverable;
-      try { socket = this.socket = new this.Socket(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`, this.transport)); }
+      try { socket = this.socket = new this.Socket(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`, this.transport), offered ? this.discoveryGroup : null)); }
       catch { this.stop('connection.server-failed'); reject(new Error('connection.server-failed')); return; }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
@@ -475,6 +478,7 @@ export class TabSession {
     this.code = null;
     this.discoverable = false;
     this.cancelOpen?.(); this.cancelOpen = null;
+    this.discoveryGroup = null;
     this.openingTrace?.finish('stopped'); this.openingTrace = null;
     const pairing = this.pairing;
     this.pairing = null; this.socket = null;

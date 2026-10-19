@@ -2,16 +2,17 @@
   {% include "partials/paired-route.html" %}
   <section id="camera-discovery" class="card camera-discovery paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
     <div class="paired-nearby-head">
-      <h2 id="discovery-heading">Nearby cameras</h2>
-      <div class="paired-actions"><button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button></div>
+      <h2 id="discovery-heading">Available connections</h2>
+      <div class="paired-actions"><button type="button" id="discovery-refresh" class="ghost">Refresh connections</button></div>
     </div>
+    {% include "partials/paired-discovery-group.html" %}
     {% include "partials/paired-network.html" %}
     <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
     <ul id="discovery-list" class="camera-discovery-list paired-nearby-list"></ul>
     <p class="camera-consent">Choose a camera to fill its code, then select Connect to camera when you are ready. Connecting shares network addresses. Its owner may require approval or accept viewers automatically.</p>
     <details class="camera-discovery-details">
       <summary>How cameras are listed</summary>
-      <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise.</p>
+      <p class="camera-discovery-note">The network list matches the internet address seen by our introduction service. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Private groups instead match a shared code and can list cameras on different networks. Both Direct and Cloud relay sessions appear; icons show their route and access requirements. Choose a camera you recognise.</p>
     </details>
   </section>
 
@@ -34,8 +35,8 @@
         <button type="button" id="camera-suggest" class="ghost">New random name</button>
       </div>
     </div>
-    <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> Show this camera nearby</label>
-    <p class="field-note">The link name is visible to browsers in the discovery group described under Nearby cameras. Turn this off to invite viewers by link only.</p>
+    <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> Show in Available connections</label>
+    <p class="field-note">The link name is visible in the network or private group selected above. Private group sessions are not also listed in the network list. Turn this off to invite viewers by link only.</p>
     <div class="camera-help-row">
       <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
       <details id="camera-approval-help" class="camera-help info-fold">
@@ -111,7 +112,7 @@
 
   <section id="viewer-panel" data-role="viewer" class="card">
     <h2>Watch a camera</h2>
-    <p class="card-lede">Choose a nearby camera above, or enter a code or viewer link below. Then select Connect to camera. This device does not need camera or microphone access.</p>
+    <p class="card-lede">Choose an available camera above, or enter a code or viewer link below. Then select Connect to camera. The invitation chooses the connection type. This device does not need camera or microphone access.</p>
     <div class="settings viewer-fields">
       <div class="field">
         <div class="camera-help-row">
@@ -133,7 +134,7 @@
     <div class="run-row">
       <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="viewer-connect" class="big">Connect to camera</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-type" class="paired-connection-icons" aria-live="polite"></span>
       </div>
       <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       <div class="camera-help-row">
@@ -312,8 +313,8 @@
     <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>
     <span data-phrase="details.frames">Video frames decoded on this device: {count}.</span>
     <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
-    <span data-phrase="discovery.connecting">Looking for nearby cameras&hellip;</span>
-    <span data-phrase="discovery.empty">No nearby cameras are listed in this group. You can still use a viewer link or code.</span>
+    <span data-phrase="discovery.connecting">Looking for available cameras&hellip;</span>
+    <span data-phrase="discovery.empty">No cameras are listed in this network or group. You can still use a viewer link or code.</span>
     <span data-phrase="discovery.ready">Choose a camera, then use Connect to camera below.</span>
     <span data-phrase="discovery.choose">Choose {code}</span>
     <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>

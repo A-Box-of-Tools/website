@@ -15,6 +15,8 @@ import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { readTransport, transportUrl, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { groupUrl } from './shared/discovery-group.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
 // The environment's address, named in this page's
@@ -29,7 +31,9 @@ const RENDEZVOUS = rendezvousEndpoint();
 // A host chooses the route before publishing. Both browsers use that route
 // for the lifetime of the share; failure never widens a Direct session.
 
-const wsUrl = (code, role, advertise = false, mode = 'direct') => transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? '&local=1&discover=1' : ''}`, mode);
+const wsUrl = (code, role, advertise = false, mode = 'direct') => groupUrl(
+  transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? `&discover=1${isLocal || mode === 'relay' ? '&local=1' : ''}` : ''}`, mode),
+  role === 'host' ? hostGroup : null);
 const shareUrl = (code) => transportUrl(makeShareUrl(location.href, code, isLocal), hostTransport);
 const transportError = error => /^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
   ? error.message : 'transport.failed';
@@ -40,7 +44,7 @@ const MAX_FILES = 256;
 const $ = (id) => document.getElementById(id);
 const transportControl = bindTransportControl({ onChange(mode) {
   $('local').disabled = mode === 'relay';
-  $('discoverable').disabled = mode === 'direct' && !$('local').checked;
+  $('discoverable').disabled = mode === 'direct' && !$('local').checked && !groupControl.id();
 } });
 
 const diagnostics = createDiagnostics({
@@ -106,6 +110,7 @@ let sock = null;
 let hostPairing = null;
 let hostCredentials = null;
 let hostTransport = 'direct';
+let hostGroup = null;
 let sharing = false;
 let activeCode = '';
 let hostHadRoom = false;
@@ -118,6 +123,15 @@ let isDiscoverable = false;
 let discovery = null;
 let discoveryState = 'connecting';
 let foundShares = [];
+const groupControl = createDiscoveryGroupControl({ onChange() {
+  discovery?.close();
+  discovery = null;
+  foundShares = [];
+  withdrawing.clear();
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
+  renderDiscovery();
+  startDiscovery();
+} });
 const withdrawing = new Set();
 let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
@@ -171,6 +185,7 @@ function suggest() {
 
 function unlock() {
   transportControl.lock(false);
+  groupControl.lock(false);
   transportControl.route(null);
   sharing = false;
   clearTimeout(hostRetry);
@@ -184,7 +199,7 @@ function unlock() {
   $('suggest').disabled = false;
   $('private').disabled = false;
   $('local').disabled = transportControl.value() === 'relay';
-  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked;
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
   $('discovery-share-status').textContent = '';
   $('stop').hidden = true;
   $('linkrow').hidden = true;
@@ -352,9 +367,10 @@ function renderDiscovery() {
     name.className = 'discovery-code';
     name.id = `discovery-code-${index}`;
     name.textContent = share.code;
+    appendConnectionIcons(name, { transport: share.transport, locked: false, approval: 'optional' });
     const open = document.createElement('a');
     open.className = 'discovery-open';
-    open.href = transportUrl(makeShareUrl(location.href, share.code, share.transport !== 'relay'), share.transport ?? 'direct');
+    open.href = transportUrl(makeShareUrl(location.href, share.code, share.local && share.transport !== 'relay'), share.transport ?? 'direct');
     // Opening a listed share must not end this tab's own share or draft.
     open.target = '_blank';
     open.rel = 'noopener';
@@ -384,12 +400,12 @@ function startDiscovery() {
       $('discovery-share-status').textContent = state && isDiscoverable && $('publish').hidden
         ? phrase(`discovery.${state}`) : '';
     },
-  });
+  }, { group: groupControl.code() });
 }
 $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 
 $('local').addEventListener('change', () => {
-  $('discoverable').disabled = !$('local').checked;
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
 });
 wireHelpTooltip($('discoverable-help'));
 wireHelpTooltip($('tool-version-help'));
@@ -584,6 +600,8 @@ function publish() {
   }
   $('code').value = code;
   transportControl.lock(true);
+  groupControl.lock(true);
+  hostGroup = groupControl.id();
   sharing = true;
   activeCode = code;
   hostHadRoom = false;
@@ -594,7 +612,7 @@ function publish() {
   $('private').disabled = true;
   isLocal = hostTransport === 'direct' && $('local').checked;
   $('local').disabled = true;
-  isDiscoverable = (isLocal || hostTransport === 'relay') && $('discoverable').checked;
+  isDiscoverable = (hostGroup || isLocal || hostTransport === 'relay') && $('discoverable').checked;
   $('discoverable').disabled = true;
   $('publish').hidden = true;
   setShareState('share.setting-up');
@@ -1642,6 +1660,7 @@ window.addEventListener('unhandledrejection', (event) => bootError(event.reason?
 /* --------------------------------------------------------------- routing */
 
 const code = location.hash.replace(/^#/, '').toLowerCase();
+appendConnectionIcons($('viewer-connection-icons'), { transport: readTransport(location.href), locked: false, approval: 'optional' });
 $('local').checked = isLocal;
 if (CODE_PATTERN.test(code)) view(code);
 else {

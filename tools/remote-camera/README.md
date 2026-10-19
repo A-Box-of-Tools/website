@@ -1,8 +1,12 @@
 # Remote Camera
 
-The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+The shared Direct / Cloud relay switch sits beside the host's Start control,
+with Direct initially selected. Viewers use the route in the invitation or
+listing and see read-only route and access icons beside Connect. Choosing a
+route alone never connects or captures. Actual route status remains visible
+outside setup panels that disappear after connecting.
 
-Nearby cameras appear at the top of the idle page, above sharing and manual
+Cameras appear in Available connections at the top of the idle page, above sharing and manual
 connection, with the shared Wi-Fi and hotspot guidance. Choosing a listed camera
 fills the code and focuses Connect to camera; only Connect starts pairing. Start
 or Connect focuses its active section until Stop or a failure returns
@@ -37,6 +41,19 @@ discovery socket using the shared `peer-discovery` part. Hosts are listed by
 default, with a link-only switch; publication requires the room's live lease
 and an explicit `remote-camera` namespace acknowledgement. Discovery groups
 public IPv4 addresses or IPv6 /64 networks and page origins, as Share Text does.
+The shared `peer-discovery-ui` control can instead create or apply a private
+group code. `discovery-group` derives the directory identifier and
+`peer-discovery` authenticates the directory socket with the code. A private
+listing is separate from the network list and can be found across networks.
+Both Direct and Cloud relay entries appear with shared route and access icons.
+Camera has no password, and its approval icon explains that the host can require
+approval or accept automatically; discovery does not claim a verified policy.
+The host room URL carries only the derived group identifier. Viewer links
+carry neither identifier nor group code. The group stays locked throughout
+capture, pairing and recovery. Changing it closes the previous directory,
+clears the selected camera and opens the new list. The in-memory camera intent
+retains its group through foreground recovery; a reload restores neither a
+group nor a camera host, so a private session cannot become publicly listed.
 Choosing a listed name selects its code without requesting capture or a room
 connection. Connect then starts the viewing request, including network-address
 exchange and the source's approval policy. Opening a viewer link also waits
@@ -58,12 +75,12 @@ public interface or OS route can still influence host routing; this policy
 does not prove that every byte stays inside a physical Wi-Fi network.
 
 Cloud relay is an explicit alternative, fixed for the session. The shared
-control appears after Nearby and before setup, and is locked while starting,
+control appears beside Start, and is locked while starting,
 connected or holding a recoverable camera identity. Links and QR codes carry
 `transport=direct|relay`; discovery carries the host's authoritative choice.
 Selecting a listing or opening/pasting a link selects the mode but never
 opens a room or requests capture. The viewer explicitly chooses Connect after
-seeing the relay disclosure. A plain code uses the visible selected mode.
+seeing the route icons. A plain code uses the currently indicated mode.
 The worker rejects a mismatched mode with 4412; no client silently changes it.
 
 After its room socket opens, each relay participant requests short-lived TURN

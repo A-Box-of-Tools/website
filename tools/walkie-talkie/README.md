@@ -1,15 +1,15 @@
 # Local Walkie-Talkie
 
-The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Choosing a listing never opens a media connection or asks for microphone access; the separate Join or Connect action confirms admission.
 
 The website hosts one microphone and up to ten receive-only browsers. Nothing
-needs downloading or installing. Opening the page lists nearby channels over
+needs downloading or installing. Opening the page lists available channels over
 a discovery WebSocket; joining never requests microphone access. Starting the
 host or confirming Join channel opens its own rendezvous connection; microphone audio
 travels over a separate encrypted WebRTC connection to each listener. Direct is
 the default; Cloud relay is an explicit alternative shared by the host and listener.
 
-The nearby list appears first, before hosting controls. Choose selects a channel
+Available connections appears first, before hosting controls. Choose selects a channel
 without opening its voice connection or saving listener credentials; Join channel
 confirms the receive-only connection. A withdrawn listing clears the selection.
 Opening a Direct listener invitation still joins automatically. A Cloud relay
@@ -36,7 +36,7 @@ volume, but cannot decrypt the WebRTC audio. There is no automatic fallback.
 
 The host's mode is pinned in invitations, authentication and retained room
 attachments. A mismatch is refused, including after host reconnection. Changing
-the host mode creates a fresh identity. Nearby discovery includes the verified
+the host mode creates a fresh identity. Discovery includes the verified
 mode, never TURN credentials. The shared selector is locked during connection
 and an active session. Actual-route status comes from selected candidate-pair
 statistics, with unknown shown until those statistics establish a route.
@@ -49,11 +49,14 @@ Credential failure stops the session and capture instead of trying Direct.
 The worker's per-service switch, participant cap and credential limits apply;
 End and Leave invalidate pending mints and stop all renewal timers.
 
-Starting with Show this channel nearby selected publishes a bounded channel
-name and its listener capability to the trusted address-and-origin group.
-Discovery verifies the live host lease and listener-key hash through the
-Broadcast binding. The host authority key is never listed. Public IPv4 or
-IPv6 /64 grouping is a hint rather than proof of physical Wi-Fi membership.
+Starting with Make this channel discoverable selected publishes a bounded
+channel name and its listener capability to the selected discovery scope.
+Local network uses an address-and-origin group; Private group uses the shared
+group code and works across network addresses. The group code only grants
+discovery, and is never placed in a listener invitation. Discovery verifies
+the live host lease, its scope and listener-key hash through the Broadcast
+binding. The host authority key is never listed. Public IPv4 or IPv6 /64
+grouping is a hint rather than proof of physical Wi-Fi membership.
 New channels offer discovery by default with an explicit checkbox; retained
 legacy channels remain link-only. Uncheck before starting for link-only use.
 End, pagehide, disconnect and replacement withdraw the old listing; a restarted
@@ -115,3 +118,13 @@ come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
 and how another tool can use them. This tool still owns its protocol, consent,
 credentials, approval and media policy; a foreground event cannot grant any of
 those permissions or undo an explicit Stop.
+
+Private group controls and connection icons come from `peer-discovery-ui.js`;
+`discovery-group.js` owns code normalization, creation and group identifiers.
+Changing scope closes the old directory, clears its selection and opens the
+new one. A running or recovering session locks the scope until stopped. Group
+codes stay in memory; saved host identities retain only the group identifier.
+Reload discards a saved private host rather than republishing it to the public
+scope. A same-page foreground recovery retains its original scope. Direct
+sessions can be discovered across networks but still need a reachable direct
+path; group discovery does not enable a relay automatically.

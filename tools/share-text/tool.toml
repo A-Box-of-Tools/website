@@ -38,7 +38,7 @@ roadmap_group = "beyond"
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks", "paired-tools"]
 supports_relay = true
-js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
+js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names"]
 lastmod = "2026-10-17"
 
 # --- what search engines and chat apps are told ------------------------------

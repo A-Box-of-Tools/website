@@ -7,13 +7,14 @@
   <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
-        <h2>近くの共有</h2>
-        <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
+        <h2>利用できる接続</h2>
+        <button type="button" id="discovery-refresh" class="ghost">更新</button>
       </div>
       {% include "partials/paired-network.html" %}
-      <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
+      {% include "partials/paired-discovery-group.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">利用できる接続を検索中…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
+      <p class="discovery-note">選択したローカルネットワークまたは非公開グループで公開された直接接続とCloud relayの共有を表示します。ローカル検索では公開IPv4アドレスまたはIPv6サブネットを使います。共有ゲートウェイは知らない人を含めたり、異なる経路は近くの端末を見えなくしたりする場合があります。非公開グループは代わりにコードを使います。共有を開いても接続前の確認は必要で、非公開共有には共有者の承認も引き続き必要です。</p>
     </section>
 
     <section class="card" data-pairing-setup>
@@ -46,7 +47,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="別の名前を提案">&#8635;</button>
         </div>
-        <p class="field-note">名前がアドレスで、部屋の向こうへ声で伝えられる短さです。発見可能なローカル共有は、この接続上の相手に名前を表示します。機密性のある内容では非公開を有効にしてください。</p>
+        <p class="field-note">名前はアドレスで、口頭で伝えられる長さです。検索可能な共有は、選択したローカルネットワークまたは非公開グループに名前を表示します。機密情報には非公開を有効にしてください。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -57,15 +58,15 @@
           <input type="checkbox" id="local">
           ローカルネットワーク——インターネット中継なし
         </label>
-        <p class="field-note">直接接続ではローカルネットワークを選べます。端末間で通信できるWi-FiまたはEthernetと、仲介用のインターネットが必要です。このモードは公開アドレス探索や中継を使いません。VPNやブラウザー設定が経路に影響することがあります。リンクにも選択が含まれます。検出可能を選ぶと、ローカル直接共有やクラウド中継共有を近くの一覧に表示できます。</p>
+        <p class="field-note">同じWi-FiまたはEthernet上の端末向けです。ブラウザの紹介には引き続きインターネットが必要です。このモードは公開アドレス検出サーバーや中継を使いません。VPNやブラウザ設定で経路が変わる場合があります。コピーしたリンクにはこの設定が含まれます。直接接続ではローカルネットワークを選ぶか非公開グループに参加すると共有を検索できます。検索可能を選ぶとCloud relayの共有も一覧に表示できます。</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            発見可能——このインターネット接続上にリンク名を表示する
+            検索可能——選択したネットワークまたはグループにこのリンクを表示
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">発見可能な共有について</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">発見可能な共有は、同じ公開IPv4アドレスまたは同じIPv6サブネットを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">検索可能な共有は、上で選択したローカルネットワークまたは非公開グループに名前を表示します。特に共有ネットワークでは非公開を有効にしてください。非公開を無効にすると、名前を見た人が承認なしで接続して読めます。リンクだけで共有するには検索可能を外してください。</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -113,7 +114,7 @@
         <div class="result-actions">
           <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
       </div>
         </div>
       </div>
@@ -190,14 +191,14 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">ローカル共有を検索中…</span>
-    <span data-phrase="discovery.empty">発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
-    <span data-phrase="discovery.ready">共有を選ぶと、その接続ページを開きます。</span>
-    <span data-phrase="discovery.unavailable">ローカル検索を利用できません。共有リンクは引き続き使えます。</span>
+    <span data-phrase="discovery.connecting">利用できる接続を検索中…</span>
+    <span data-phrase="discovery.empty">このネットワークまたはグループにはまだ共有がありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
+    <span data-phrase="discovery.ready">共有を選ぶと接続ページが開きます。</span>
+    <span data-phrase="discovery.unavailable">検索を利用できません。共有リンクは引き続き使えます。</span>
     <span data-phrase="discovery.open">共有を開く</span>
-    <span data-phrase="discovery.publishing">このローカル共有を発見可能にしています…</span>
-    <span data-phrase="discovery.published">この接続上であなたのローカル共有を発見できます。</span>
-    <span data-phrase="discovery.not-published">この共有はリンクで利用できますが、ローカル検索には公開できませんでした。</span>
+    <span data-phrase="discovery.publishing">共有を検索可能にしています…</span>
+    <span data-phrase="discovery.published">選択したネットワークまたは非公開グループに共有を表示しています。</span>
+    <span data-phrase="discovery.not-published">この共有にはリンクで接続できます。検索一覧には公開できませんでした。</span>
 
     <span data-phrase="share.active">共有中</span>
     <span data-phrase="share.waiting">共有中です。誰かがリンクを開くのを待っています。このタブを開けたままにしてください。</span>

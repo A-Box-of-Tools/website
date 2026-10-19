@@ -2,24 +2,24 @@
 # The host must choose one browser tab after a click, and must approve the
 # viewer over an encrypted control channel before a video track is attached.
 # A window or whole-screen capture is refused, even when a browser offers it.
-# Pairing uses the rendezvous for setup metadata and opt-in code-only nearby
+# Pairing uses the rendezvous for setup metadata and opt-in code-only
 # discovery. Direct is the default; Cloud relay is an explicit session choice.
 slug = "share-tab"
 name = "Share a Browser Tab"
 heading = "Share a browser tab <span class=\"h1-kw\">&mdash; a live view, with you in control</span>"
-tagline = "Choose a tab on your computer and let one approved viewer watch it using Direct or Cloud relay. Invite them by link or nearby discovery. No extension, sound or remote control."
+tagline = "Choose a tab on your computer and let one approved viewer watch it using Direct or Cloud relay. Invite by link, network discovery or a private group. No extension, sound or remote control."
 icon = "&#128421;"
 favicon = "&#128421;"
 glyph = "app-window"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-transport", "peer-transport-ui", "peer-discovery", "room-names", "clipboard-feedback"]
+js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-transport", "peer-transport-ui", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "clipboard-feedback"]
 supports_relay = true
 lastmod = "2026-10-17"
 
 title = "Share a Browser Tab Live &mdash; Read-Only Viewing, No Extension"
-description = "Share a browser tab with one approved viewer using Direct or optional Cloud relay. Invite by link or nearby discovery. No extension, audio or remote control."
+description = "Share a browser tab with one approved viewer using Direct or optional Cloud relay. Invite by link, network discovery or a private group. No extension, audio or remote control."
 og_title = "Show a browser tab, keep control of it"
 og_description = "Share one tab with an approved viewer. Direct is the default; optional Cloud relay forwards encrypted live video. Internet introduces the browsers."
 og_image_alt = "Share a Browser Tab - a live view for one approved viewer"
@@ -31,7 +31,9 @@ csp_note = """
   share-tab room namespace. It carries WebRTC descriptions, candidates and short-lived
   relay credentials, never video or viewer notes. Opt-in discovery uses a
   separate socket and lists only the random room code, without the captured
-  tab's title, URL or pixels. A viewer explicitly opens the nearby list;
+  tab's title, URL or pixels. A viewer explicitly opens Available connections;
+  private groups exchange their code over that socket and scope host publication
+  by a derived identifier, with no group information in viewer links.
   selecting a result only fills the invitation. Direct configures no STUN or TURN
   and accepts only host candidates. Explicit Cloud relay forces relay-only ICE with
   short-lived TURN credentials and accepts only relay candidates. There is no automatic
@@ -45,7 +47,7 @@ pledge = """
     picture of that tab over Direct on a reachable local network or an explicitly selected Cloud relay,
     without control of your browser. Pairing uses an internet introduction
     service that sees setup metadata, never video or the viewer note. You can
-    opt into listing the random invitation code for nearby discovery before
+    opt into listing the random invitation code for network or private-group discovery before
     starting; its connection mode is listed too, but the tab's title, address and picture are not.
     The relay forwards encrypted traffic and sees connection addresses, timing and volume,
     not decrypted video. Direct never falls back to the relay. No recording is
@@ -56,7 +58,7 @@ pledge_line = "Tab video is <strong>encrypted for one viewer you approve</strong
 md_note = "Encrypted live tab video with mandatory approval, Direct by default or explicit Cloud relay. Internet introductions carry setup metadata, never video. The relay forwards encrypted traffic and sees connection metadata. No audio, extension, recording feature or remote control."
 live_hint = """
       DevTools shows a rendezvous WebSocket for introduction
-      messages. Opting into a nearby listing or choosing Find nearby tabs
+      messages. Opting into a listing or choosing Find connections
       opens a separate discovery WebSocket. Video
       travels over encrypted WebRTC, directly by default or through the explicitly chosen
       TURN relay. The Network panel and CSP alone do not inspect
@@ -68,7 +70,7 @@ read_first = """
       control messages. The introduction service is published beside the
       tool under <code>workers/rendezvous/</code>"""
 howto_heading = "How to share a browser tab live"
-card = "Encrypted live tab video for one approved viewer, using Direct or Cloud relay. Invite by link or nearby discovery. No extension, sound or remote control."
+card = "Encrypted live tab video for one approved viewer, using Direct or Cloud relay. Invite by link, network discovery or a private group. No extension, sound or remote control."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
@@ -131,11 +133,11 @@ body = """
       code, address and time, never video. Internet access is required for
       discovery and connection setup."""
 [[privacy]]
-title = "Nearby discovery is optional and lists the code and connection mode."
+title = "Discovery is optional and lists the code and connection mode."
 body = """
-      Show in nearby shared tabs is off by default. Check it
+      Show in Available connections is off by default. Check it
       before starting to publish the random room code and chosen connection mode; the setting stays
-      fixed until you stop. A viewer chooses Find nearby tabs to open a
+      fixed until you stop. A viewer chooses Find connections to open a
       discovery connection. The listing includes no captured tab title,
       address, picture or viewer note. Selecting a result only fills the
       invitation: Request to watch, host approval and the viewer's
@@ -143,7 +145,12 @@ body = """
       pages by public IPv4 address or IPv6 /64 subnet and website origin.
       Shared carrier gateways or VPNs can include strangers, while different
       routes can hide nearby devices. This is a network hint, not a Wi-Fi scan
-      or proof of proximity. Listings live on open connections without stored
+      or proof of proximity. A private group instead uses the same random group
+      code on each device, including devices on different networks. The service
+      receives the code to authenticate that directory; the code is not saved by
+      this tool or included in viewer links. Private group listings do not also
+      appear in the network list. Anyone with the group code can discover its
+      listed sessions, but viewer approval still applies. Listings live on open connections without stored
       history; stopping the host withdraws its listing."""
 [[privacy]]
 title = "Direct is the default; Cloud relay needs both people's consent."
@@ -190,13 +197,13 @@ title = "Open the website and this sharing tool on your computer."
 body = "Keep the website in its own tab. Use a desktop browser that supports browser-tab capture, such as Chrome or Edge, and open this tool at its HTTPS address. The viewer needs only a browser with WebRTC video playback."
 [[howto]]
 title = "Choose Direct or Cloud relay."
-body = "Direct uses a reachable local network such as home Wi-Fi or Ethernet. A phone hotspot can work if it permits device communication. Cloud relay sends encrypted traffic through the relay service and needs internet throughout. Both devices need internet for discovery and pairing. Optionally check Show in nearby shared tabs before starting."
+body = "Direct uses a reachable local network such as home Wi-Fi or Ethernet. Cloud relay sends encrypted traffic through the relay service and needs internet throughout. Both devices need internet for discovery and pairing. Optionally check Show in Available connections before starting. To discover across networks, create or enter the same private group code on each device and choose Cloud relay for reachability. A private group does not make a Direct session reachable across networks."
 [[howto]]
 title = "Choose one browser tab."
 body = "Click Choose a tab to share, then select the website tab in the browser's picker. A window or whole screen is refused. No audio is requested. Check the local preview before inviting anyone."
 [[howto]]
 title = "Exchange the invitation, then approve the viewer."
-body = "Copy the viewer link, or have the viewer choose Find nearby tabs and select your code if you opted into discovery. They optionally add a note and choose Request to watch. Approve the request you recognise before any video is sent."
+body = "Copy the viewer link, or have the viewer choose Find connections and select your code if you opted into discovery. Direct and Cloud relay entries appear together with route and access icons. Selecting an invitation chooses its route; the viewer optionally adds a note and chooses Request to watch. Approve the request you recognise before any video is sent."
 [[howto]]
 title = "Browse in the selected tab, then end the session."
 body = "The viewer watches your scrolling and navigation as live video, without controlling the page or selecting its text. Keep both host tabs open and the device awake. Stop sharing here or in the browser when finished. If capture ends, starting again requires a new picker choice and a fresh invitation."
@@ -215,10 +222,10 @@ q = "Does the viewer need an account on the website I show?"
 a = "No. They see the pixels your browser can show, including content in your logged-in account, without receiving your cookies or login session. That also means private information visible in the chosen tab becomes visible to the approved viewer. Some protected content may appear black or be unavailable for capture."
 [[faq]]
 q = "Can anyone with the link watch?"
-a = "A viewer link permits a connection request and network-address exchange. You must approve the viewer before video is sent, and their browser must acknowledge the approval. Their introduction is not verified identity. Invitations are fresh for each session. Nearby listing is off by default; opting in publishes the random invitation code, without the tab's title, address or picture."
+a = "A viewer link permits a connection request and network-address exchange. You must approve the viewer before video is sent, and their browser must acknowledge the approval. Their introduction is not verified identity. Invitations are fresh for each session. Discovery is off by default; opting in publishes the random invitation code in the selected network or private group, without the tab's title, address or picture. Knowing a group code allows discovery but does not bypass approval."
 [[faq]]
 q = "Can the other device find my tab without a link?"
-a = "Yes. Check Show in nearby shared tabs before choosing the tab. The viewer chooses Find nearby tabs, selects your random code, then chooses Request to watch. Selection alone does not request a connection or grant video. Nearby discovery groups this tool's pages by public IPv4 address or IPv6 /64 subnet and website origin, not physical location. VPNs and shared carrier gateways can include strangers or hide nearby devices. Use the copied link if the listing is missing."
+a = "Yes. Check Show in Available connections before choosing the tab. The viewer chooses Find connections, selects your random code, then chooses Request to watch. Selection alone does not connect or grant video. Network discovery groups this tool's pages by public IPv4 address or IPv6 /64 subnet and website origin. Private groups instead use the same group code on each device and can discover across networks; choose Cloud relay for a connection across networks. Private sessions are not also published in the network list. Use the copied link if discovery is unavailable."
 [[faq]]
 q = "Can several viewers watch together?"
 a = "One approved viewer can watch at a time, with up to four waiting requests. A waiting or refused viewer receives no video."
@@ -227,7 +234,7 @@ q = "Is the video uploaded or recorded on a server?"
 a = "The tool makes no recording. Direct sends encrypted video between the browsers without a relay. Optional Cloud relay forwards encrypted traffic through the relay service, which sees addresses, timing and traffic volume rather than decrypted video. The introduction service carries setup metadata, never video. A viewer can independently record what reaches their device."
 [[faq]]
 q = "What does the connection service learn?"
-a = "The rendezvous sees the code, IP addresses, connection times, chosen connection mode, WebRTC descriptions and candidates. If the host opts into discovery, its network group can see the random room code and connection mode, never the captured tab's title, address or picture. Cloudflare retains introduction request metadata for seven days. Direct uses no public STUN or TURN service. Cloud relay also exposes connection addresses, timing and traffic volume to the relay service. Viewer notes and approval controls use the encrypted peer channel. The tool page explains its usual third-party scripts separately."
+a = "The rendezvous sees the invitation code, IP addresses, connection times, chosen connection mode, WebRTC descriptions and candidates. If the host opts into discovery, its selected network or private group can see the random room code and connection mode, never the captured tab's title, address or picture. Private group codes are sent to the service to authenticate their directory; viewer links omit them. Cloudflare retains introduction request metadata for seven days. Direct uses no public STUN or TURN service. Cloud relay also exposes connection addresses, timing and traffic volume to the relay service. Viewer notes and approval controls use the encrypted peer channel. The tool page explains its usual third-party scripts separately."
 [[faq]]
 q = "Can I share without an internet connection?"
 a = "Internet access is required on both devices to discover and introduce the browsers. An established Direct view may continue through a brief internet interruption while that connection survives, but this is not guaranteed. Cloud relay requires internet throughout, including renewal of its short-lived credentials. New viewers and reconnection need the introduction service. The page's saved browser cache does not provide an alternative pairing method."

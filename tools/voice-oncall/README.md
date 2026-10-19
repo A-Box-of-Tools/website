@@ -1,6 +1,6 @@
 # Voice Oncall
 
-The shared Direct / Cloud relay switch sits beside Start or Connect. All role-specific copies mirror one choice and lock together during a session; changing the switch alone never connects or captures. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Choosing a listing never opens a media connection or asks for microphone access; the separate Join or Connect action confirms admission.
 
 A separate tool for the reverse of Local Walkie-Talkie: up to ten participants
 send live voice to one listening host. Each has an independent encrypted WebRTC
@@ -8,7 +8,7 @@ audio connection terminating at that host, so participants never receive one
 another's audio and the host can silence or remove one without affecting the rest.
 
 The host opens a named pager, optionally protects it with a password, and listens
-without microphone permission. Participants find it in nearby discovery or open
+without microphone permission. Participants find it in Available connections or open
 its invitation, enter the password when required, and Connect without supplying a
 name. Their microphone starts disabled until they hold Talk or enable the talking
 toggle. A physical hold releases on blur or hiding; explicit hands-free speech
@@ -16,7 +16,7 @@ and healthy connections can continue in the background while the browser allows.
 No account, installation, Python helper or recording is involved. Direct is
 the default; Cloud relay is an explicit alternative selected before connecting.
 
-The nearby list appears first, before the role tabs. Selecting a pager switches
+Available connections appears first, before the role tabs. Selecting a pager switches
 to the Connect panel without opening a voice connection or asking for microphone
 permission. A pointer selection focuses the password field or Connect button;
 keyboard selection keeps focus in the radio group for arrow navigation. The list is
@@ -49,12 +49,15 @@ participant or forwarding peer setup. A derived credential is still a bearer
 credential; strong passwords and trusted page scripts remain important.
 
 Discovery shares the existing rendezvous transport under the `voice-oncall`
-namespace. The edge derives the discovery group from the page origin and public
-IPv4 address or IPv6 /64, rather than trusting a caller-supplied group. A host's
-socket owns a lease; the directory verifies it through the Inbox binding before
-listing trusted room name and password-required metadata. Closing the host
-withdraws the lease. Shared gateways can include strangers and route differences
-can hide physically nearby devices, so the page does not call this a LAN scan.
+namespace. Local network derives its scope from the page origin and public
+IPv4 address or IPv6 /64. Private group requires the same random group code
+on each device and works across network addresses. Its entries are excluded
+from the local-network directory. A host's socket owns a lease; the directory
+verifies the scope through the Inbox binding before listing trusted room name,
+route and password-required metadata. The group code permits discovery, not
+password bypass, and never enters a pager invitation. Closing the host withdraws
+the lease. Shared gateways can include strangers and route differences can hide
+physically nearby devices, so the page does not call this a LAN scan.
 
 ## Transport and moderation
 
@@ -69,8 +72,8 @@ signaling outage, and foreground waiting participants probe at a one-second targ
 
 The host's route is pinned in the invitation, authenticated admission and the
 room's retained moderation anchor. Password validation still precedes admission
-and TURN credential issuance. Both devices must choose the same mode; a mismatch
-is refused, and changing the host mode creates a new pager identity. Nearby
+and TURN credential issuance. Joining adopts the host's mode; a mismatch
+is refused, and changing the host mode creates a new pager identity. Discovery
 selection exposes the verified mode without connecting or requesting capture.
 The selector locks while starting, active or paused. Actual-route status comes
 from the selected candidate pair, not from the user's choice alone.
@@ -144,3 +147,13 @@ come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
 and how another tool can use them. This tool still owns its protocol, consent,
 credentials, approval and media policy; a foreground event cannot grant any of
 those permissions or undo an explicit Stop.
+
+Private group controls and connection icons come from `peer-discovery-ui.js`;
+`discovery-group.js` owns code normalization, creation and group identifiers.
+Changing scope closes the old directory, clears its selection and opens the
+new one. A running or recovering session locks the scope until stopped. Group
+codes stay in memory; saved host identities retain only the group identifier.
+Reload discards a saved private host rather than republishing it to the public
+scope. A same-page foreground recovery retains its original scope. Direct
+sessions can be discovered across networks but still need a reachable direct
+path; group discovery does not enable a relay automatically.

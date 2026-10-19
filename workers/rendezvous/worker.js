@@ -35,7 +35,7 @@
 // somebody else's site. A script can send any Origin it likes; the rate limit
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
-import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, roomName, validPublication, validScope } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, requestedGroup, roomName, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { Broadcast } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
 import { answerRelayRequest, relayEnabled, relayPolicy, relayServers } from "./relay.js";
@@ -70,7 +70,7 @@ export default {
     if (broadcast) {
       // A separate binding leaves text/camera rooms and their relay protocol
       // unchanged. Voice capabilities enter the first WSS frame, never a URL.
-      if (url.search) return new Response("unexpected parameters", { status: 400 });
+      if (!validVoiceQuery(url)) return new Response("unexpected parameters", { status: 400 });
       if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
       if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
       const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
@@ -83,7 +83,7 @@ export default {
     }
     const inbox = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/);
     if (inbox) {
-      if (url.search) return new Response("unexpected parameters", { status: 400 });
+      if (!validVoiceQuery(url)) return new Response("unexpected parameters", { status: 400 });
       if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
       if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
       const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
@@ -98,6 +98,7 @@ export default {
     if (room || url.pathname === "/discover") {
       const tool = rendezvousTool(url.searchParams.get("tool"));
       if (tool === null) return new Response("unknown tool", { status: 400 });
+      if (requestedGroup(url) === null) return new Response("invalid discovery group", { status: 400 });
       if (room && roomTransport(url) === null) return new Response("invalid transport", { status: 400 });
       if (room && ["voice-oncall", "walkie-talkie"].includes(tool)) return new Response("not found", { status: 404 });
       if (request.headers.get("Upgrade") !== "websocket") {
@@ -108,7 +109,8 @@ export default {
       }
       const discover = url.pathname === "/discover";
       const offered = room && url.searchParams.get("role") === "host"
-        && url.searchParams.get("local") === "1" && url.searchParams.get("discover") === "1";
+        && url.searchParams.get("discover") === "1"
+        && (url.searchParams.get("local") === "1" || tool === "share-text" && requestedGroup(url) !== undefined);
       let scope = null;
       if (discover || offered) {
         scope = await discoveryScope(request, tool);
@@ -121,8 +123,9 @@ export default {
       if (!knock.success) {
         return new Response("too many connections from this address", { status: 429 });
       }
-      // The page cannot choose its group, including through a header copied
-      // into this binding-only request. Ordinary room clients need no group.
+      // The binding-only scope is always derived here. A private directory
+      // additionally requires proof inside its socket before it reveals or
+      // accepts a listing; knowing its public URL identifier is insufficient.
       const headers = new Headers(request.headers);
       headers.delete(DISCOVERY_SCOPE_HEADER);
       if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
@@ -165,12 +168,14 @@ export class Room {
       if (!validPublication(claim) || !validScope(claim.scope) || tool === null) return new Response(null, { status: 400 });
       const live = this.ctx.getWebSockets("host").find((host) => {
         const who = host.deserializeAttachment();
-        return host.readyState === 1 && who?.role === "host" && who.local === true && who.discover === true
+        return host.readyState === 1 && who?.role === "host" && who.discover === true
           && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope
           && (who.tool ?? "share-text") === tool;
       });
-      if (live?.deserializeAttachment()?.transport === 'relay') {
-        return Response.json({ transport: 'relay' });
+      const owner = live?.deserializeAttachment();
+      if (owner && (owner.transport === 'relay' || owner.local === false)) {
+        return Response.json({ ...(owner.transport === 'relay' ? { transport: 'relay' } : {}),
+          ...(owner.local === false ? { local: false } : {}) });
       }
       return new Response(null, { status: live ? 204 : 403 });
     }
@@ -179,6 +184,8 @@ export class Room {
     const role = url.searchParams.get("role");
     const tool = rendezvousTool(url.searchParams.get("tool"));
     if (tool === null) return new Response(null, { status: 400 });
+    const group = requestedGroup(url);
+    if (group === null) return new Response(null, { status: 400 });
     const transport = roomTransport(url);
     if (transport === null) return new Response(null, { status: 400 });
     const transportPinned = url.searchParams.has('transport');
@@ -186,7 +193,8 @@ export class Room {
     // Discovery can be unavailable behind a proxy or an address transform.
     // The local share still works through its copied link; it simply has no
     // lease to advertise unless the edge supplied a trustworthy scope.
-    const offered = role === "host" && url.searchParams.get("local") === "1"
+    const local = url.searchParams.get("local") === "1";
+    const offered = role === "host" && (local || tool === "share-text" && group !== undefined)
       && url.searchParams.get("discover") === "1" && validScope(scope);
     const { 0: client, 1: server } = new WebSocketPair();
 
@@ -212,7 +220,7 @@ export class Room {
       const policy = { transport, transportPinned, generation: crypto.randomUUID() };
       if (offered) {
         const lease = crypto.randomUUID();
-        server.serializeAttachment({ role: "host", code, scope, tool, local: true, discover: true, lease, ...policy });
+        server.serializeAttachment({ role: "host", code, scope, tool, local, discover: true, lease, ...policy });
         server.send(JSON.stringify({ type: "host-ready", ...(transport === 'relay' ? { transport } : {}), discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }), ...(transport === 'relay' ? { transport } : {}) } }));
       } else {
         server.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }), local: url.searchParams.get('local') === '1', ...policy });
@@ -296,7 +304,7 @@ export class Room {
     // the second pass finds nothing to do.
     ws.serializeAttachment(null);
     if (who.role === "host") {
-      if (who.discover === true && who.local === true && validScope(who.scope) && validPublication(who)) {
+      if (who.discover === true && validScope(who.scope) && validPublication(who)) {
         // A closing browser may never deliver its fast unpublish hint. Room
         // owns the live-host lease and authoritatively removes both verified
         // advertisements and checks still waiting on its reply.

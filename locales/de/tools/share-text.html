@@ -5,13 +5,14 @@
   <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
-        <h2>Freigaben in der Nähe</h2>
-        <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
+        <h2>Verfügbare Verbindungen</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Aktualisieren</button>
       </div>
       {% include "partials/paired-network.html" %}
-      <p id="discovery-status" role="status" aria-live="polite">Suche lokale Freigaben…</p>
+      {% include "partials/paired-discovery-group.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Verfügbare Verbindungen werden gesucht…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
+      <p class="discovery-note">Diese Liste zeigt Direkt- und Cloud-relay-Freigaben im ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Die Netzwerksuche nutzt die öffentliche IPv4-Adresse oder das IPv6-Subnetz; gemeinsame Gateways können Fremde einschließen und unterschiedliche Routen nahe Geräte verbergen. Eine private Gruppe nutzt stattdessen ihren Code. Vor dem Verbinden wird weiterhin gefragt, und private Freigaben benötigen weiterhin die Zustimmung der teilenden Person.</p>
     </section>
 
     <section class="card" data-pairing-setup>
@@ -44,7 +45,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Anderen Namen vorschlagen">&#8635;</button>
         </div>
-        <p class="field-note">Der Name ist die Adresse, kurz genug, um ihn durch einen Raum zu rufen. Auffindbare lokale Freigaben zeigen ihn anderen an diesem Anschluss. Lassen Sie Privat für alles Sensible an.</p>
+        <p class="field-note">Der Name ist die Adresse und kurz genug, um ihn durch einen Raum zu sagen. Auffindbare Freigaben zeigen ihn im ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat für sensible Inhalte eingeschaltet.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -55,15 +56,15 @@
           <input type="checkbox" id="local">
           Lokales Netzwerk — kein Internet-Relais
         </label>
-        <p class="field-note">Für Direkt können Sie Lokales Netzwerk wählen: Die Geräte brauchen eine erreichbare Wi-Fi- oder Ethernet-Verbindung und Internet zur Vermittlung. Dieser Modus nutzt keine öffentliche Adressermittlung und kein Relais. VPNs und Browsereinstellungen können den Weg beeinflussen. Der Link übernimmt die Auswahl. Lokale Direktfreigaben und Cloud-Relais-Freigaben erscheinen in der Nähe, wenn Auffindbar aktiviert ist.</p>
+        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Internet wird weiterhin zur Vermittlung benötigt; dieser Modus nutzt weder öffentliche Adressermittlung noch ein Relay. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Wählen Sie im Direktmodus Lokales Netzwerk oder treten Sie einer privaten Gruppe bei, damit Ihre Freigabe auffindbar wird. Cloud-relay-Freigaben können ebenfalls erscheinen, wenn Auffindbar gewählt ist.</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
+            Auffindbar — diesen Link im ausgewählten Netzwerk oder in der Gruppe anzeigen
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Über auffindbare Freigaben</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen im oben ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat eingeschaltet, besonders in gemeinsam genutzten Netzwerken. Ist Privat aus, kann jeder, der den Namen sieht, ohne Ihre Zustimmung verbinden und lesen. Deaktivieren Sie Auffindbar, um nur per Link zu teilen.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -115,7 +116,7 @@
         <div class="result-actions">
           <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
       </div>
         </div>
       </div>
@@ -195,14 +196,14 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Suche lokale Freigaben…</span>
-    <span data-phrase="discovery.empty">Hier gibt es noch keine auffindbaren lokalen Freigaben. Lassen Sie den Tab des Teilenden offen, oder nutzen Sie seinen Link.</span>
+    <span data-phrase="discovery.connecting">Verfügbare Verbindungen werden gesucht…</span>
+    <span data-phrase="discovery.empty">In diesem Netzwerk oder dieser Gruppe sind noch keine Freigaben gelistet. Lassen Sie den Tab der teilenden Person geöffnet oder verwenden Sie ihren Link.</span>
     <span data-phrase="discovery.ready">Wählen Sie eine Freigabe, um ihre Verbindungsseite zu öffnen.</span>
-    <span data-phrase="discovery.unavailable">Die lokale Suche ist nicht verfügbar. Sie können weiterhin einen Freigabe-Link nutzen.</span>
+    <span data-phrase="discovery.unavailable">Die Suche ist nicht verfügbar. Sie können weiterhin einen Freigabelink verwenden.</span>
     <span data-phrase="discovery.open">Freigabe öffnen</span>
-    <span data-phrase="discovery.publishing">Diese lokale Freigabe wird auffindbar gemacht…</span>
-    <span data-phrase="discovery.published">Ihre lokale Freigabe ist an diesem Anschluss auffindbar.</span>
-    <span data-phrase="discovery.not-published">Diese Freigabe ist per Link verfügbar; die lokale Suche konnte sie nicht veröffentlichen.</span>
+    <span data-phrase="discovery.publishing">Die Freigabe wird auffindbar gemacht…</span>
+    <span data-phrase="discovery.published">Ihre Freigabe ist im ausgewählten Netzwerk oder in der privaten Gruppe gelistet.</span>
+    <span data-phrase="discovery.not-published">Diese Freigabe ist per Link erreichbar; die Suche konnte sie nicht veröffentlichen.</span>
 
     <span data-phrase="share.active">Freigabe läuft</span>
     <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>

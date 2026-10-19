@@ -1,7 +1,7 @@
 // A voice room stores no payloads. Its authority and selected transport
 // current generation live in socket attachments, so hibernation cannot forget
 // them and the last socket leaving removes the room's complete state.
-import { DISCOVERY_SCOPE_HEADER, validPublication, validScope } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
@@ -164,7 +164,7 @@ export class Broadcast {
       });
     }
     const code = url.pathname.match(/^\/broadcast\/([a-f0-9]{64})$/)?.[1];
-    if (!code || url.search || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
+    if (!code || !validVoiceQuery(url) || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
     if (this.sockets("pending").length >= MAX_PENDING) {

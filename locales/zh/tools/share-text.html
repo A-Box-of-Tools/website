@@ -7,13 +7,14 @@
   <section id="share">
     <section id="discovery" class="card paired-nearby" data-pairing-nearby>
       <div class="paired-nearby-head">
-        <h2>附近的分享</h2>
-        <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
+        <h2>可用连接</h2>
+        <button type="button" id="discovery-refresh" class="ghost">刷新</button>
       </div>
       {% include "partials/paired-network.html" %}
-      <p id="discovery-status" role="status" aria-live="polite">正在寻找本地分享…</p>
+      {% include "partials/paired-discovery-group.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">正在查找可用连接…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
-      <p class="discovery-note">这个列表显示与你使用同一公网 IPv4 地址或 IPv6 子网的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv4 与 IPv6 混用或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
+      <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。打开分享仍会在连接前征求同意，私密分享仍需分享者批准。</p>
     </section>
 
     <section class="card" data-pairing-setup>
@@ -46,7 +47,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="换个建议名">&#8635;</button>
         </div>
-        <p class="field-note">名称就是地址，短到可以隔着房间喊出来。可被发现的本地分享会向此连接上的其他人显示名称。敏感内容请保持私密开启。</p>
+        <p class="field-note">名称就是地址，长度适合口头传达。可发现的分享会在所选本地网络或私密群组中显示名称。敏感内容请保持“私密”开启。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -57,15 +58,15 @@
           <input type="checkbox" id="local">
           局域网——不使用互联网中转
         </label>
-        <p class="field-note">直连时可以选择局域网模式：设备需要可互通的 Wi-Fi 或以太网，并通过互联网引介。此模式不使用公共地址发现或中转。VPN 和浏览器设置可能影响路径，复制的链接会带上选项。选中可被发现后，局域网直连分享和云中转分享都可以出现在附近列表。</p>
+        <p class="field-note">适用于同一 Wi-Fi 或以太网中的设备。仍需互联网来引见浏览器；此模式不使用公共地址发现服务器或中继。VPN 和浏览器设置可能影响网络路径。复制的链接会携带此设置。在直连方式下，选择本地网络或加入私密群组即可让分享被发现。启用“可发现”后，云中继分享也可以列出。</p>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            可被发现——在这条互联网连接上显示链接名
+            可发现——在所选网络或群组中显示此链接
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">关于可被发现的分享</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">可被发现的分享会向使用同一公网 IPv4 地址或 IPv6 子网的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">可发现的分享会在上方所选本地网络或私密群组中显示名称。请保持“私密”开启，尤其是在共享网络上。关闭“私密”后，任何看到名称的人都能连接和阅读，无需你的批准。取消“可发现”即可仅通过链接分享。</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -113,7 +114,7 @@
         <div class="result-actions">
           <div class="paired-start-row" data-pairing-actions="join">
         <button type="button" id="connect" class="primary">连接并接收分享</button>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
       </div>
         </div>
       </div>
@@ -190,14 +191,14 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">正在寻找本地分享…</span>
-    <span data-phrase="discovery.empty">这里暂时没有可被发现的本地分享。请让分享方保持标签页开启，或使用对方的链接。</span>
-    <span data-phrase="discovery.ready">选择一个分享，打开其连接页面。</span>
-    <span data-phrase="discovery.unavailable">本地发现暂不可用。你仍可使用分享链接。</span>
+    <span data-phrase="discovery.connecting">正在查找可用连接…</span>
+    <span data-phrase="discovery.empty">此网络或群组中还没有分享。请让分享者保持标签页打开，或使用其链接。</span>
+    <span data-phrase="discovery.ready">选择分享以打开其连接页面。</span>
+    <span data-phrase="discovery.unavailable">发现功能暂不可用，仍可使用分享链接。</span>
     <span data-phrase="discovery.open">打开分享</span>
-    <span data-phrase="discovery.publishing">正在让这个本地分享可被发现…</span>
-    <span data-phrase="discovery.published">你的本地分享在此连接上可被发现。</span>
-    <span data-phrase="discovery.not-published">此分享可通过链接打开；本地发现未能发布它。</span>
+    <span data-phrase="discovery.publishing">正在让此分享可被发现…</span>
+    <span data-phrase="discovery.published">你的分享已列在所选网络或私密群组中。</span>
+    <span data-phrase="discovery.not-published">此分享可通过链接访问，但无法发布到发现列表。</span>
 
     <span data-phrase="share.active">分享中</span>
     <span data-phrase="share.waiting">分享中。等着有人打开链接——别关这个标签页。</span>

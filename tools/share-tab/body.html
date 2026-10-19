@@ -1,17 +1,18 @@
 <main id="main" class="paired-page">
   {% include "partials/paired-route.html" %}
   <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
-    <div class="paired-nearby-head"><h2 id="discovery-heading">Nearby shared tabs</h2></div>
+    <div class="paired-nearby-head"><h2 id="discovery-heading">Available connections</h2></div>
+    {% include "partials/paired-discovery-group.html" %}
     {% include "partials/paired-network.html" %}
     <div id="discovery-controls" class="tab-share-discovery-controls">
-      <button type="button" id="discovery-start" aria-describedby="discovery-help">Find nearby tabs</button>
-      <p id="discovery-help" class="field-note">Nearby discovery uses internet to match the network address seen by our introduction service. It can miss devices on your Wi-Fi or include strangers sharing a gateway or VPN. Check the code with the host.</p>
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">Find connections</button>
+      <p id="discovery-help" class="field-note">Find shared tabs in the selected network or private group. Direct and Cloud relay sessions appear together; their icons show the connection type and access requirements. Check the invitation code with the host.</p>
     </div>
     <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
       <p id="discovery-status" role="status" aria-live="polite"></p>
       <ul id="discovery-list" class="paired-nearby-list"></ul>
       <div class="paired-actions">
-        <button type="button" id="discovery-refresh">Refresh nearby tabs</button>
+        <button type="button" id="discovery-refresh">Refresh connections</button>
         <button type="button" id="discovery-close">Stop looking</button>
       </div>
       <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
@@ -24,8 +25,8 @@
       <p class="card-lede">Choose a tab, invite a viewer, and approve their request. They can watch while you browse.</p>
       <p id="capture-support" class="tab-share-help">Start on a desktop browser that supports tab sharing. Choose a browser tab in the sharing dialog.</p>
       <div id="host-discovery-option" class="tab-share-discovery-option">
-        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> Show in nearby shared tabs</label>
-        <p id="host-discovery-help" class="field-note">Choose this before sharing to list your invitation code for nearby viewers. Your tab&rsquo;s title, address and picture are not listed. You still approve each viewer.</p>
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> Show in Available connections</label>
+        <p id="host-discovery-help" class="field-note">Choose this before sharing to list your invitation in the network or private group selected above. Your tab&rsquo;s title, address and picture are not listed. You still approve each viewer.</p>
       </div>
       <div class="run-row">
         <div class="paired-start-row" data-pairing-actions="host">
@@ -80,7 +81,7 @@
       <div class="run-row">
         <div class="paired-start-row" data-pairing-actions="join">
         <span id="online-viewer-controls"><button type="button" id="viewer-connect" class="big">Request to watch</button></span>
-        {% include "partials/paired-transport.html" %}
+        <span id="viewer-connection-type" class="paired-connection-icons" aria-live="polite"></span>
       </div>
         <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       </div>
@@ -104,7 +105,7 @@
     <p>The browser captures the selected tab&rsquo;s picture, including visible signed-in content. Close private panels before sharing. Tab audio, your microphone and your camera are not requested. Selecting another browser tab does not automatically share it.</p>
     <p>A control connection carries the viewer&rsquo;s request. Video is attached only after host approval and the viewer&rsquo;s acknowledgement. Viewer actions have no remote-control path to the host.</p>
     <p>Direct is the default and uses no public STUN server or internet relay. Optional Cloud relay forwards encrypted traffic through the relay service and needs internet throughout. The connection mode never changes automatically. Pairing uses rendezvous.abox.tools for setup messages, never video or viewer notes.</p>
-    <p>Nearby discovery is optional. A host can list their invitation code, and a viewer can ask the introduction service for matching listings. Matching uses the public IPv4 address or IPv6 network prefix, page address and tool, not a scan of your Wi-Fi. A match does not prove that a device is trusted or reachable.</p>
+    <p>Discovery is optional. A host can list their invitation code for the selected network or private group. Network matching uses the public IPv4 address or IPv6 network prefix, page address and tool, not a scan of your Wi-Fi. Private groups use a shared random code and can list devices on different networks; they do not also appear in the network list. A match does not prove that a device is trusted or reachable, and a group code does not replace viewer approval.</p>
     <p>Use the same reachable Wi-Fi, Ethernet or hotspot. This page does not create a hotspot, Wi-Fi Direct or Bluetooth connection. Network isolation, firewalls, VPN routes and browser local-network permissions can block a connection. Local address settings do not prove that traffic stays inside a building.</p>
     <p>Stop sharing, use the browser&rsquo;s Stop sharing control, or close this page to end capture. Hiding this control tab while browsing the selected tab keeps sharing where the browser permits. When capture ends, choosing a tab again always needs a new click and browser permission.</p>
   </details>
@@ -129,16 +130,16 @@
     <span data-phrase="capture.tab-only">Choose a browser tab, rather than a window or screen. This browser must identify the source as a tab before sharing can begin.</span>
     <span data-phrase="capture.cancelled">The sharing attempt was stopped.</span>
     <span data-phrase="viewer.ready">Enter a viewer link or tab code to begin.</span>
-    <span data-phrase="discovery.idle">Choose Find nearby tabs to look for invitations.</span>
-    <span data-phrase="discovery.connecting">Looking for nearby shared tabs&hellip;</span>
+    <span data-phrase="discovery.idle">Choose Find connections to look for invitations.</span>
+    <span data-phrase="discovery.connecting">Looking for available shared tabs&hellip;</span>
     <span data-phrase="discovery.found">Check the invitation code with the host, then choose their tab.</span>
-    <span data-phrase="discovery.empty">No shared tabs found. Ask the host to enable nearby sharing before choosing a tab, or use their viewer link.</span>
-    <span data-phrase="discovery.unavailable">Nearby discovery is unavailable. You can still try the host&rsquo;s viewer link.</span>
+    <span data-phrase="discovery.empty">No shared tabs found in this network or group. Ask the host to enable discovery before choosing a tab, or use their viewer link.</span>
+    <span data-phrase="discovery.unavailable">Connection discovery is unavailable. You can still try the host&rsquo;s viewer link.</span>
     <span data-phrase="discovery.choose">Choose {code}</span>
     <span data-phrase="discovery.selected">Invitation selected. Choose Request to watch to ask the host for access.</span>
-    <span data-phrase="discovery.publishing">Making your invitation code visible nearby&hellip;</span>
-    <span data-phrase="discovery.published">Your invitation code is listed in nearby shared tabs. Video still needs your approval.</span>
-    <span data-phrase="discovery.not-published">Your invitation is not listed nearby yet. You can still share the viewer link.</span>
+    <span data-phrase="discovery.publishing">Listing your invitation in Available connections&hellip;</span>
+    <span data-phrase="discovery.published">Your invitation is listed in the selected network or private group. Video still needs your approval.</span>
+    <span data-phrase="discovery.not-published">Your invitation is not listed yet. You can still share the viewer link.</span>
     <span data-phrase="viewer.waiting">Your request reached the host. Waiting for approval; no video is being sent yet.</span>
     <span data-phrase="viewer.approved">The host approved you. Waiting for live tab video.</span>
     <span data-phrase="viewer.streaming">Watching live video of the host&rsquo;s tab. This view cannot control the host.</span>
