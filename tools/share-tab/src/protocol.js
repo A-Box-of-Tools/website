@@ -1,5 +1,6 @@
 import { CODE_PATTERN as ROOM_CODE_PATTERN } from './shared/room-names.js';
 import { transportUrl } from './shared/peer-transport.js';
+import { validAdmissionToken } from './shared/peer-admission.js';
 
 // A tab invitation must never join another tool's identically named room.
 export const TOOL = 'share-tab';
@@ -38,6 +39,7 @@ export function controlMessage(text) {
     if (!value || value.protocol !== PROTOCOL || Array.isArray(value)) return null;
     if (!['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) return null;
     if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
+    if (value.token !== undefined && (!['request', 'approved'].includes(value.type) || !validAdmissionToken(value.token))) return null;
     return value;
   } catch { return null; }
 }

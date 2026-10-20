@@ -148,13 +148,13 @@ test('voice discovery publishes approval only from the authoritative live host',
   assert.equal(last(observer).list[0].locked, false);
 });
 
-test('approval turnover remains bounded with long Unicode names and preserves live callers', async () => {
+test('approval capacity retains callers after Leave and a kick revokes its grant atomically', async () => {
   const s = await system(), host = await s.open();
   await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: '界'.repeat(80), passwordProof: PASSWORD, approval: true });
   const approve = caller => s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
   const keeper = await s.sender(40, PASSWORD, '界'.repeat(64));
   await approve(keeper);
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 9; i++) {
     const caller = await s.sender(i, PASSWORD, '界'.repeat(64));
     assert.equal(last(caller).type, 'approval-pending');
     await approve(caller);
@@ -164,7 +164,51 @@ test('approval turnover remains bounded with long Unicode names and preserves li
   assert.equal(state(host).approved.length, 10);
   assert.equal(state(keeper).anchor.approved.length, 10);
   assert.equal(last(await s.sender(40, PASSWORD)).type, 'ready');
-  assert.equal(last(await s.sender(0, PASSWORD)).type, 'approval-pending');
+  const newcomer = await s.sender(9, PASSWORD, '界'.repeat(64));
+  await approve(newcomer);
+  assert.equal(last(host).type, 'request-error');
+  assert.equal(last(host).error, 'full');
+  assert.equal(state(newcomer).admitted, false);
+  const requests = host.messages.filter(frame => frame.type === 'request').length;
+  const returning = await s.sender(0, PASSWORD);
+  assert.equal(last(returning).type, 'ready');
+  assert.equal(host.messages.filter(frame => frame.type === 'request').length, requests);
+  const revoked = state(returning).id.slice(0, 32);
+  await s.kick(host, returning);
+  assert.equal(last(returning).type, 'kicked');
+  assert.equal(state(host).approved.length, 9);
+  assert.equal(state(host).approved.includes(revoked), false);
+  for (const caller of s.room().instance.sockets('sender')) {
+    assert.equal(state(caller).anchor.approved.includes(revoked), false);
+  }
+  assert.equal(last(await s.sender(0, PASSWORD)).type, 'kicked');
+  await approve(newcomer);
+  assert.equal(last(newcomer).type, 'ready');
+  assert.equal(state(host).approved.length, 10);
+});
+
+test('inbox End clears personal approval from every anchor before the same pager starts again', async () => {
+  const s = await system();
+  const authHost = async () => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null, approval: true });
+    return ws;
+  };
+  const host = await authHost(), caller = await s.sender(0);
+  await s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
+  await s.send(caller, { type: 'leave' });
+  s.room().instance = new Inbox(s.room().ctx, s.env);
+  const returning = await s.sender(0);
+  assert.equal(last(returning).type, 'ready');
+  await s.send(host, { type: 'end', generation: state(host).generation });
+  assert.deepEqual(state(host).approved, []);
+  assert.deepEqual(state(returning).anchor.approved, []);
+  for (const socket of [host, returning]) {
+    s.room().instance.webSocketClose(socket); socket.close(1000, 'ended');
+  }
+  const nextHost = await authHost(), next = await s.sender(0);
+  assert.equal(last(next).type, 'approval-pending');
+  assert.equal(last(nextHost).type, 'request');
 });
 
 class Socket {
@@ -611,15 +655,22 @@ test('moderation history and worst-case Unicode attachments stay bounded and unm
 });
 
 test('full kick history refuses removal without changing authoritative membership', async () => {
-  const s = await system(), host = await s.host(PASSWORD), keeper = await s.sender(40, PASSWORD);
+  const s = await system(), host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, approval: true });
+  const approve = caller => s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
+  const keeper = await s.sender(40, PASSWORD);
+  await approve(keeper);
   for (let i = 0; i < 24; i += 1) {
     const participant = await s.sender(i, PASSWORD);
+    await approve(participant);
     await s.kick(host, participant);
     assert.equal(last(participant).type, 'kicked');
     assert.equal(participant.closed.code, 4403);
   }
   assert.equal(state(host).moderation.length, 24);
   const next = await s.sender(25, PASSWORD), participantId = state(next).id;
+  await approve(next);
+  const approvals = state(host).approved;
   const messages = next.messages.length;
   await s.kick(host, next);
   assert.deepEqual(last(host), { type: 'error', error: 'moderation-full' });
@@ -628,6 +679,8 @@ test('full kick history refuses removal without changing authoritative membershi
   assert.equal(state(next).verified, true);
   assert.equal(state(next).muted, false);
   assert.equal(state(host).moderation.length, 24);
+  assert.deepEqual(state(host).approved, approvals);
+  assert.deepEqual(state(next).anchor.approved, approvals);
   assert.deepEqual(s.room().instance.sockets('sender').map((ws) => state(ws).id).sort(),
     [state(keeper).id, participantId].sort());
   // A UI's immediate local silence is separate from server admission. No
@@ -641,6 +694,8 @@ test('full kick history refuses removal without changing authoritative membershi
   assert.deepEqual(last(host), { type: 'error', error: 'stale' });
   assert.equal(state(host).moderation.length, 24);
   assert.equal((await s.sender(0, PASSWORD)).messages.at(-1).type, 'kicked');
+  await s.send(next, { type: 'leave' });
+  assert.equal(last(await s.sender(25, PASSWORD)).type, 'ready', 'a refused kick cannot revoke a remembered approval');
 });
 
 test('voice discovery publishes only verified host metadata and refresh removes stale advertisements', async () => {

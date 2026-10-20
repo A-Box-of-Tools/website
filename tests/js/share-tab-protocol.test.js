@@ -25,6 +25,11 @@ test('tab control accepts only bounded admission and ending messages', () => {
   for (const type of ['click', 'keypress', 'navigate', 'execute', 'relay', 'signal']) assert.equal(controlMessage(frame(type)), null);
   assert.equal(controlMessage(frame('request', { note: 'x'.repeat(81) })), null);
   assert.equal(controlMessage(frame('request')), null);
+  for (const token of [null, 12, 'same device', 'a'.repeat(65)]) {
+    assert.equal(controlMessage(frame('request', { note: '', token })), null);
+    assert.equal(controlMessage(frame('approved', { token })), null);
+  }
+  assert.equal(controlMessage(frame('request', { note: '', token: 'a'.repeat(64) })).token, 'a'.repeat(64));
   assert.equal(controlMessage(JSON.stringify({ protocol: 'share-text', type: 'approved' })), null);
   assert.equal(controlMessage('x'.repeat(1025)), null);
 });

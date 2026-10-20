@@ -8,6 +8,7 @@ import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createApprovalList } from './shared/peer-approval-ui.js';
+import { createVoiceIdentityCache } from './shared/voice-identity.js';
 
 activateChannel();
 const privacyToggle = document.getElementById('privacy-toggle');
@@ -31,6 +32,7 @@ function activateChannel() {
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
+  const listenerIdentities = createVoiceIdentityCache();
   const pageUrl = new URL(location.href);
   pageUrl.hash = '';
   const fragment = new URLSearchParams(location.hash.slice(1));
@@ -70,7 +72,10 @@ function activateChannel() {
   let role = hasInvitation || listenerIdentity ? 'listener' : 'host';
   if (validIdentity(listenerIdentity)) {
     listenerIdentity.code = listenerIdentity.code.toLowerCase();
-    if (!validKey(listenerIdentity.clientKey)) listenerIdentity.clientKey = randomKey();
+    const previous = validCode(cachedListener?.code) && cachedListener.code.toLowerCase() === listenerIdentity.code
+      && transportMode(cachedListener.transport) === transportMode(listenerIdentity.transport) ? cachedListener.clientKey : null;
+    listenerIdentity.clientKey = listenerIdentities.get('walkie-talkie', listenerIdentity.code,
+      transportMode(listenerIdentity.transport), listenerIdentity.clientKey || previous, randomKey);
     writeStored(listenerStorage, listenerIdentity);
     if (hasInvitation && writeStored(listenerStorage, listenerIdentity)) {
       try {
@@ -195,7 +200,9 @@ function activateChannel() {
     session?.stop({ notify: false, state: null });
     session = null;
     listenerIdentity = { code: channel.code, key: channel.listenKey, muted: false, ended: false,
-      transport: transportControl.value(), confirmed: true, clientKey: randomKey(), approval: channel.approval };
+      transport: transportControl.value(), confirmed: true,
+      clientKey: listenerIdentities.get('walkie-talkie', channel.code, transportControl.value(), null, randomKey),
+      approval: channel.approval };
     if (!writeStored(listenerStorage, listenerIdentity)) {
       const invitation = new URL(transportUrl(pageUrl.href, listenerIdentity.transport));
       invitation.hash = new URLSearchParams({ code: channel.code, listen: channel.listenKey }).toString();

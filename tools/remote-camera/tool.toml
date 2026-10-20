@@ -13,7 +13,7 @@ glyph = "camera"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "help-tooltip"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-admission", "room-names", "help-tooltip"]
 supports_relay = true
 lastmod = "2026-10-17"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
@@ -102,7 +102,7 @@ body = """
       an already connected viewer. Video uses the browser's encrypted media transport
       between browsers, directly or through the selected cloud relay. It never passes through the rendezvous.
       A viewer can still capture their own screen; ending the link stops future
-      video and cannot remove anything they already kept."""
+      video and cannot remove anything they already kept. An explicitly approved viewer's browser stores a random receipt locally and presents it only over the encrypted peer channel. That browser can disconnect and rejoin the same host session without another approval. Host removal revokes it; End and a new session reset approval. Automatic acceptance while approval is off does not create a remembered approval. Clearing or blocking site storage can require approval again, and normal scripts on this website can read stored receipts."""
 [[privacy]]
 title = "The introduction requires internet and exposes connection metadata."
 body = """
@@ -231,7 +231,7 @@ q = "Can the tool measure my Wi-Fi bandwidth?"
 a = "The browser does not expose the total capacity shared by your Wi-Fi devices. Choose a shared video ceiling that leaves room for other traffic. The tool divides that ceiling among viewers and WebRTC adapts each stream to its connection. If the browser cannot apply sender bitrate limits, the page reports that and its normal connection adaptation continues; the selected shared ceiling cannot be guaranteed there."
 [[faq]]
 q = "Can the camera keep working when my phone is locked?"
-a = "It keeps the live connection and camera where your browser allows background use. Phone browsers can pause or end camera capture when locked; this page cannot override that. Return to the source to recover the same viewer link, or choose Resume camera if permission is needed again. A healthy approved video connection can survive loss of the introduction service. Returning to the source tries to restore pairing without replacing that video connection; Restore pairing offers a manual retry. If the direct connection itself ends, the viewer must reconnect and receive fresh approval when required. Stop and Disconnect remain final for that session."
+a = "It keeps the live connection and camera where your browser allows background use. Phone browsers can pause or end camera capture when locked; this page cannot override that. Return to the source to recover the same viewer link, or choose Resume camera if permission is needed again. A healthy approved video connection can survive loss of the introduction service. Returning to the source tries to restore pairing without replacing that video connection; Restore pairing offers a manual retry. If the direct connection itself ends, the viewer must reconnect. A remembered approval remains valid for the same host session unless the host removed that viewer. Stop and Disconnect remain final for that session."
 [[faq]]
 q = "Can I change cameras while sharing?"
 a = "After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again."

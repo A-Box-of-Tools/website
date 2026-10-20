@@ -19,7 +19,7 @@ analytics_extra = ", et rien de ce que cet outil partage - ni le texte, ni les f
 
 [[facts]]
 mark = "&#10007;"
-text = "Rien de stocké"
+text = "Aucun contenu stocké sur un serveur"
 
 [[facts]]
 mark = "&#10007;"
@@ -46,8 +46,8 @@ title = "Ce qu'est l'entremetteur, et tout ce qu'il voit."
 body = "Une connexion directe a besoin d’une présentation. Cette page d’accueil ouvre automatiquement un WebSocket vers l’entremetteur pour les noms de lien locaux visibles ; commencer un partage en ouvre un autre pour le partage lui-même. Un lecteur utilise une seule connexion de présentation. Le serveur rapproche le lecteur et la personne qui partage sous ce nom et transmet quelques kilooctets de négociation. Il n’écrit aucun stockage ; les salles et les entrées de l’annuaire s’arrêtent avec leurs connexions ouvertes. Il voit les noms, les heures de connexion, les adresses IP et la négociation, mais pas le texte, les fichiers, les décisions d’admission ou les présentations privées. L’annuaire affiche les noms des personnes connectées utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6. Un VPN ou une adresse partagée par le fournisseur peut inclure d’autres réseaux ; des appareils voisins utilisant IPv4 et IPv6 ou des routes différentes peuvent manquer. Tout le code est dans le dépôt. Cloudflare garde les journaux de connexion sept jours : adresse, nom de lien et heure, jamais de contenu."
 
 [[privacy]]
-title = "Rien n'est stocké : fermer l'onglet, c'est l'effacement."
-body = "Le partage n'existe que tant que votre onglet est ouvert. Fermez-le : les nouveaux lecteurs ne trouvent plus rien, et ceux qui lisaient voient leur copie disparaître &mdash; ce que quelqu'un avait copié ou téléchargé avant reste à lui, comme tout ce que vous lui auriez remis en main propre. Le brouillon que vous tapez reste dans le stockage de votre propre navigateur, pour être encore là la prochaine fois, et seulement là ; marqué éphémère, il n'est nulle part."
+title = "Le contenu partagé n’est pas stocké sur un serveur."
+body = "Le partage n'existe que tant que votre onglet est ouvert. Fermez-le : les nouveaux lecteurs ne trouvent plus rien, et ceux qui lisaient voient leur copie disparaître &mdash; ce que quelqu'un avait copié ou téléchargé avant reste à lui, comme tout ce que vous lui auriez remis en main propre. Le brouillon que vous tapez reste dans le stockage de votre propre navigateur, pour être encore là la prochaine fois, et seulement là ; marqué éphémère, il n'est nulle part. Séparément, le navigateur du lecteur conserve une preuve d’approbation aléatoire pour se déconnecter puis rejoindre cette session sans nouvelle approbation. Arrêter l’hôte réinitialise l’approbation. Le mode éphémère désactive le stockage du brouillon, pas de cette preuve. Effacer ou bloquer les données du site peut imposer une nouvelle approbation ; les scripts ordinaires de ce site peuvent lire la preuve."
 
 [[privacy]]
 title = "Le nom de lien est une adresse, et Privé est le verrou."

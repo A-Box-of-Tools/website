@@ -4,6 +4,7 @@ import { setImmediate as nextTurn } from 'node:timers/promises';
 import { CameraSession } from '../../tools/remote-camera/src/session.js';
 import { PROTOCOL } from '../../tools/remote-camera/src/protocol.js';
 import { createDiagnostics } from '../../shared/js/connection-diagnostics.js';
+import { AdmissionGrants, createAdmissionCache } from '../../shared/js/peer-admission.js';
 
 const CODE = 'cam-abcdefghijkl';
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\na=mid:0\r\n';
@@ -40,7 +41,7 @@ function sourceStream(audio = false) {
   return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
-function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
+function fixture(t, { diagnostics = null, socketOpen = true, admissions } = {}) {
   const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [], viewers = [], bandwidth = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
@@ -77,7 +78,7 @@ function fixture(t, { diagnostics = null, socketOpen = true } = {}) {
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, admissions, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
   t.after(() => session.stop());
   return { session, sockets, peers, requests, streams, publications, states, viewers, bandwidth };
 }
@@ -218,20 +219,109 @@ test('camera relay viewer renewal requests a fresh host offer and disabled relay
   assert.equal(host.session.reconnecting, false);
 });
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
-async function requestViewer(f, id, note = 'My viewer', hello = {}) {
-  signal(f.sockets[0], id, { dial: true }); await settle();
+async function requestViewer(f, id, note = 'My viewer', hello = {}, token = null) {
+  const socket = f.sockets.at(-1);
+  signal(socket, id, { dial: true }); await settle();
   const peer = f.peers.at(-1);
-  signal(f.sockets[0], id, { description: { type: 'answer', sdp: SDP } }); await settle();
-  peer.channel.open(); peer.channel.receive('hello', hello); peer.channel.receive('request', { note }); await settle();
+  signal(socket, id, { description: { type: 'answer', sdp: SDP } }); await settle();
+  peer.channel.open(); peer.channel.receive('hello', hello); peer.channel.receive('request', { note, ...(token ? { token } : {}) }); await settle();
   return peer;
 }
 async function readyViewer(f) {
   await f.session.connect(CODE, 'Viewer');
-  f.sockets[0].receive({ type: 'ready' }); await settle();
-  const peer = f.peers[0], channel = new Channel(); channel.label = 'camera-control';
+  f.sockets.at(-1).receive({ type: 'ready' }); await settle();
+  const peer = f.peers.at(-1), channel = new Channel(); channel.label = 'camera-control';
   peer.emit('datachannel', { channel }); channel.open(); channel.receive('hello'); await settle();
   return { peer, channel };
 }
+
+test('camera remembers a returning browser and host removal revokes all peers using its grant', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE);
+  const first = await requestViewer(f, 'v:1');
+  f.session.approve('v:1');
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  assert.match(token, /^[a-f0-9]{64}$/);
+  assert.equal(JSON.stringify(f.sockets[0].sent).includes(token), false);
+  f.sockets[0].receive({ type: 'leave', id: 'v:1' });
+  const returned = await requestViewer(f, 'v:2', 'A changed name', {}, token);
+  assert.deepEqual(f.requests.at(-1), []);
+  assert.equal(returned.transceivers.length, 0);
+  assert.equal(returned.channel.sent.find(message => message.type === 'approved').token, token);
+  returned.channel.receive('approval-ack'); await settle();
+  assert.equal(returned.transceivers.length, 1);
+  const anotherTab = await requestViewer(f, 'v:3', 'Another tab', {}, token);
+  assert.equal(f.session.viewerCount, 2);
+  assert.equal(f.session.disconnectViewer('v:2'), true);
+  assert.equal(returned.closed, true);
+  assert.equal(anotherTab.closed, true);
+  const revoked = await requestViewer(f, 'v:4', 'A changed name', {}, token);
+  assert.equal(revoked.channel.sent.some(message => message.type === 'approved'), false);
+  assert.equal(revoked.transceivers.length, 0);
+  assert.equal(f.requests.at(-1).length, 1);
+  f.session.approve('v:4');
+  const renewed = revoked.channel.sent.find(message => message.type === 'approved').token;
+  f.session.stop();
+  await f.session.startHost(sourceStream(), CODE);
+  const restarted = await requestViewer(f, 'v:5', 'A changed name', {}, renewed);
+  assert.equal(restarted.channel.sent.some(message => message.type === 'approved'), false);
+  assert.equal(restarted.transceivers.length, 0);
+});
+
+test('camera receipt survives viewer Disconnect but is never sent to the introduction server', async t => {
+  const cache = createAdmissionCache({ storage: () => null }), f = fixture(t, { admissions: cache });
+  const token = new AdmissionGrants().issue();
+  let connected = await readyViewer(f);
+  connected.channel.receive('approved', { token });
+  f.session.stop();
+  connected = await readyViewer(f);
+  assert.equal(connected.channel.sent.find(message => message.type === 'request').token, token);
+  assert.equal(JSON.stringify(f.sockets.map(socket => [socket.url, socket.sent])).includes(token), false);
+  assert.equal(connected.peer.transceivers.length, 0);
+});
+
+test('camera policy-off access does not become a remembered human approval', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE, { requireApproval: false });
+  const first = await requestViewer(f, 'v:1', 'Same name');
+  assert.equal(first.channel.sent.find(message => message.type === 'approved').token, undefined);
+  assert.equal(f.session.grants.tokens.size, 0);
+  f.session.removePeer('v:1');
+  f.session.setApprovalRequired(true);
+  const returned = await requestViewer(f, 'v:2', 'Same name');
+  assert.equal(returned.channel.sent.some(message => message.type === 'approved'), false);
+  assert.equal(f.requests.at(-1).length, 1);
+});
+
+test('camera capture recovery retains the current host intent grants while a new intent cannot use them', async t => {
+  const f = fixture(t), approvalGrants = new AdmissionGrants();
+  await f.session.startHost(sourceStream(), CODE, { approvalGrants });
+  const first = await requestViewer(f, 'v:1'); f.session.approve('v:1');
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  f.session.stop('camera.paused');
+  assert.equal(approvalGrants.has(token), true);
+  await f.session.startHost(sourceStream(), CODE, { approvalGrants });
+  const returned = await requestViewer(f, 'v:2', 'My viewer', {}, token);
+  assert.equal(returned.channel.sent.some(message => message.type === 'approved'), true);
+  assert.equal(returned.transceivers.length, 0);
+  approvalGrants.clear();
+  f.session.stop();
+  await f.session.startHost(sourceStream(), CODE, { approvalGrants: new AdmissionGrants() });
+  const newSession = await requestViewer(f, 'v:3', 'My viewer', {}, token);
+  assert.equal(newSession.channel.sent.some(message => message.type === 'approved'), false);
+});
+
+test('camera grant capacity rejects another approval without evicting earlier grants', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE);
+  f.session.grants = new AdmissionGrants({ limit: 1 });
+  const first = await requestViewer(f, 'v:1'); f.session.approve('v:1');
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  f.session.removePeer('v:1');
+  const second = await requestViewer(f, 'v:2');
+  assert.equal(f.session.approve('v:2'), false);
+  assert.equal(f.states.at(-1), 'approval.limit');
+  assert.equal(f.session.peers.get('v:2').pending, true);
+  assert.equal(second.transceivers.length, 0);
+  assert.equal(f.session.grants.has(token), true);
+});
 
 test('a remote hello delivered before the local open callback still sends our hello before requesting approval', async t => {
   const f = fixture(t); await f.session.connect(CODE, 'Phone layout check');

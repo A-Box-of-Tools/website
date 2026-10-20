@@ -212,6 +212,62 @@ test('leaving approval removes the request and stale decisions cannot admit its 
   assert.equal(second.deserializeAttachment().admitted, false);
 });
 
+test('broadcast leave keeps the personal approval but End resets it for the next host session', async () => {
+  const s = await system();
+  const authHost = async () => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval: true });
+    return ws;
+  };
+  const connect = async (clientKey = WRONG_KEY) => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'listener', key: LISTEN_KEY, clientKey });
+    return ws;
+  };
+  const host = await authHost(), listener = await connect();
+  await s.send(host, { type: 'approve', generation: generation(host), to: id(listener) });
+  const requests = host.messages.filter(frame => frame.type === 'request').length;
+  await s.send(listener, { type: 'leave' });
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  const returning = await connect();
+  assert.equal(last(returning).type, 'ready');
+  assert.equal(host.messages.filter(frame => frame.type === 'request').length, requests);
+  const stranger = await connect('D'.repeat(43));
+  assert.equal(last(stranger).type, 'approval-pending', 'the same invitation is not the same personal identity');
+
+  await s.send(host, { type: 'end', generation: generation(host) });
+  for (const socket of [host, returning, stranger]) assert.deepEqual(socket.deserializeAttachment().approved, []);
+  for (const socket of [host, returning, stranger]) {
+    s.room().instance.webSocketClose(socket); socket.close(1000, 'ended');
+  }
+  const nextHost = await authHost(), next = await connect();
+  assert.equal(last(next).type, 'approval-pending');
+  assert.equal(last(nextHost).type, 'request');
+});
+
+test('broadcast approval capacity does not evict a listener who explicitly left', async () => {
+  const s = await system(), host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval: true });
+  const connect = async letter => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'listener', key: LISTEN_KEY, clientKey: letter.repeat(43) });
+    return ws;
+  };
+  for (const letter of 'CDEFGHIJKL') {
+    const listener = await connect(letter);
+    await s.send(host, { type: 'approve', generation: generation(host), to: id(listener) });
+    assert.equal(last(listener).type, 'ready');
+    await s.send(listener, { type: 'leave' });
+  }
+  const newcomer = await connect('M');
+  await s.send(host, { type: 'approve', generation: generation(host), to: id(newcomer) });
+  assert.equal(last(host).type, 'request-error');
+  assert.equal(last(host).error, 'full');
+  assert.equal(newcomer.deserializeAttachment().admitted, false);
+  assert.equal(last(await connect('C')).type, 'ready');
+  assert.equal(host.deserializeAttachment().approved.length, 10);
+});
+
 test('broadcast relay mode is authenticated, pinned across host loss and enforced on candidates', async t => {
   const s = await system();
   s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';

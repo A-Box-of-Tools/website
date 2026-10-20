@@ -66,9 +66,10 @@ host publishes its new lease. Browsing creates no peer or microphone stream.
 The host key stays in per-tab session storage. Listener invitations carry a
 different key in the URL fragment; the page saves it per tab and removes the
 fragment where storage is available, retaining the fragment when it is not.
-A separate random listener identity is retained in the tab, distinct from the
+A separate random listener identity is retained in the browser, distinct from the
 shared invitation capability. Reload can then rejoin the same channel. End retires the host identity and the
-next Start creates a fresh invitation; Leave retires a listener identity.
+next Start creates a fresh invitation; Leave retires the active connection,
+while keeping the personal key for a later explicit Join.
 The site's regular scripts run on this page and can read its URL and storage.
 The page states this boundary rather than claiming that fragment credentials
 are inaccessible to other scripts.
@@ -129,9 +130,20 @@ Escape keeps the request, while Approve and Deny check the current identity
 and active host. Ending invalidates late decisions.
 
 A bounded roster on live socket attachments allows the same approved identity
-to recover within the current room. A new identity needs approval. This is
+to recover within the current room. The shared `voice-identity.js` cache keeps
+the listener's personal key by room and route for a later explicit Join, including
+from another tab in the same browser. Leave stops automatic recovery without
+forgetting that key. The browser cache retains 64 recently used tool/room/route
+keys across both voice tools; cache eviction or clearing site data can require
+approval again. The roster holds ten approvals for the host session and
+does not evict departed listeners; a full roster requires a new host session
+before another listener can be approved. End clears the grants. If every socket
+disappears, the ephemeral room is gone and a new room needs fresh approval.
+A new identity needs approval. This is
 session continuity, not verification of a person's identity or a permanent ban.
-No room history is written to storage. Pending requests count toward capacity.
+The Worker writes no room history to storage. Pending requests count toward capacity.
+The pending list is beside the host controls and uses the shared inline panel,
+so Review later leaves an actionable request before the talking controls and invite.
 
 ## The shared pairing library
 

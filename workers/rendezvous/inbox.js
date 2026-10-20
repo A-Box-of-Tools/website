@@ -4,7 +4,7 @@
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
-import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval } from "./voice-approval.js";
+import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, forgetApproval, clearApprovals } from "./voice-approval.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const ID = /^[a-f0-9]{64}$/;
@@ -273,7 +273,7 @@ export class Inbox {
     }
     if (value.type === "deny") { this.terminal(sender, "denied"); return; }
     const peers = this.sockets("sender");
-    const updated = rememberApproval(owner, who, peers.map(peer => peer.deserializeAttachment()));
+    const updated = rememberApproval(owner, who);
     const projections = updated && peers.filter(peer => peer.deserializeAttachment().verified)
       .map(peer => ({ peer, value: { ...peer.deserializeAttachment(), anchor: anchor(updated) } }));
     if (!updated || !fits(updated) || projections.some(({ value: projected }) => !fits(projected))) {
@@ -288,7 +288,7 @@ export class Inbox {
   remember(host, who, id, state) {
     const retained = who.moderation.filter((entry) => !entry.startsWith(token(id)));
     if (state !== null) retained.push(token(id) + state);
-    const owner = { ...who, moderation: retained };
+    const owner = { ...(state === "k" ? forgetApproval(who, { id }) : who), moderation: retained };
     const projections = this.sockets("sender").filter((ws) => ws.deserializeAttachment().verified)
       .map((ws) => ({ ws, value: { ...ws.deserializeAttachment(), anchor: anchor(owner),
         ...(ws.deserializeAttachment().id === id ? { muted: state !== null, talking: false } : {}) } }));
@@ -349,7 +349,7 @@ export class Inbox {
       return;
     }
     if (who.role === "host" && value.type === "end" && fields(value, ["type", "generation"])) {
-      const ended = { ...who, ended: true };
+      const ended = { ...clearApprovals(who), ended: true };
       this.attach(ws, ended);
       this.withdraw(ended);
       for (const sender of this.sockets("sender")) {

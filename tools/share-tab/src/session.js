@@ -2,6 +2,7 @@ import { transportMode, transportUrl, peerConfiguration, transportCandidate, tra
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
+import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
 
 const RENDEZVOUS = rendezvousEndpoint();
@@ -12,8 +13,11 @@ export class TabSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, onDiscovery = () => {}, diagnostics = null,
+    admissions = createAdmissionCache(),
   } = {}) {
     Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, onDiscovery, diagnostics });
+    this.admissions = admissions;
+    this.grants = new AdmissionGrants();
     this.revision = 0;
     this.role = null;
     this.code = null;
@@ -358,16 +362,27 @@ export class TabSession {
           if (entry.hello) return;
           entry.hello = true;
           this.clear(entry, 'connect');
-          if (this.role === 'viewer') { this.control(entry, 'request', { note: this.note }); this.state('viewer.waiting'); }
+          if (this.role === 'viewer') {
+            const token = this.admissions.read(TOOL, this.code, this.transport);
+            this.control(entry, 'request', { note: this.note, ...(token ? { token } : {}) }); this.state('viewer.waiting');
+          }
           else this.deadline(entry, 'request', TIMEOUT, () => this.peerFailed(entry));
         } else if (!entry.hello) this.peerFailed(entry, 'connection.invalid');
         else if (message.type === 'request' && this.role === 'host' && !entry.approved) {
           if (!entry.pending && !entry.refused) {
-            this.clear(entry, 'request'); entry.note = message.note; entry.pending = true; this.requests();
+            this.clear(entry, 'request'); entry.note = message.note; entry.pending = true;
+            entry.admissionToken = message.token;
+            if (this.grants.has(message.token)) {
+              if (!this.approve(entry.id) && this.current(entry)) {
+                this.control(entry, 'busy');
+                this.removePeer(entry.id);
+              }
+            } else this.requests();
           }
         } else if (message.type === 'approved' && this.role === 'viewer') {
           if (entry.approved) return;
           entry.approved = true;
+          this.admissions.save(TOOL, this.code, this.transport, message.token);
           this.state('viewer.approved');
           this.control(entry, 'approval-ack');
           this.deadline(entry, 'media', TIMEOUT, async () => {
@@ -394,9 +409,12 @@ export class TabSession {
     const entry = this.peers.get(id);
     if (this.role !== 'host' || !entry?.pending || entry.approved || entry.refused || this.viewerCount) return false;
     if (!this.stream?.getVideoTracks().some((track) => track.readyState === 'live')) { this.stop('host.ended'); return false; }
+    const token = this.grants.issue(entry.admissionToken);
+    if (!token) { this.state('approval.limit'); return false; }
     entry.pending = false;
     entry.approved = true;
-    try { this.control(entry, 'approved'); } catch { this.peerFailed(entry); return false; }
+    entry.admissionToken = token;
+    try { this.control(entry, 'approved', { token }); } catch { this.peerFailed(entry); return false; }
     this.deadline(entry, 'approval', TIMEOUT, () => this.peerFailed(entry));
     this.requests(); this.viewers(); this.state(this.hostState());
     return true;
@@ -418,6 +436,7 @@ export class TabSession {
   deny(id) {
     const entry = this.peers.get(id);
     if (this.role !== 'host' || !entry || entry.approved) return false;
+    this.grants.revoke(entry.admissionToken);
     try { this.control(entry, 'denied'); } catch {}
     entry.refused = true;
     entry.pending = false;
@@ -429,6 +448,7 @@ export class TabSession {
   disconnectViewer(id) {
     const entry = this.peers.get(id);
     if (this.role !== 'host' || !entry?.approved) return false;
+    this.grants.revoke(entry.admissionToken);
     try { this.control(entry, 'ended'); } catch {}
     this.removePeer(id);
     return true;
@@ -468,6 +488,7 @@ export class TabSession {
 
   stop(key = 'connection.stopped') {
     const role = this.role;
+    this.grants.clear();
     // Retire asynchronous offers before closing anything that can emit events.
     this.revision += 1;
     this.relay?.close();

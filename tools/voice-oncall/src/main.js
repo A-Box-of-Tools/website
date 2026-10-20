@@ -8,6 +8,7 @@ import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createApprovalList } from './shared/peer-approval-ui.js';
+import { createVoiceIdentityCache } from './shared/voice-identity.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
@@ -34,6 +35,7 @@ function activateOncall() {
   ].map(id => [id, element(id)]));
   const hostStorage = 'voice-oncall.host';
   const senderStorage = 'voice-oncall.senders';
+  const senderIdentities = createVoiceIdentityCache();
   const pageUrl = new URL(location.href);
   pageUrl.hash = '';
   const invitationCode = new URLSearchParams(location.hash.slice(1)).get('code');
@@ -990,7 +992,7 @@ function activateOncall() {
       const identity = resume && senderIdentity ? senderIdentity : {
         code: selectedCode,
         transport: transportControl.value(),
-        key: validKey(record?.key) ? record.key : makeSenderKey(),
+        key: senderIdentities.get('voice-oncall', selectedCode, transportControl.value(), record?.key, makeSenderKey),
         passwordProof: password ? await derivePasswordProof(selectedCode, password) : validKey(record?.passwordProof) ? record.passwordProof : null,
       };
       if (epoch !== operationEpoch || pageSuspended || document.hidden) return;

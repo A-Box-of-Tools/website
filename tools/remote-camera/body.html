@@ -78,6 +78,11 @@
     </div>
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
     <p id="camera-publication-status" class="field-note" role="status" aria-live="polite"></p>
+    <div role="region" id="camera-approval" class="paired-requests paired-host-requests" aria-labelledby="approval-heading" hidden data-pairing-requests>
+      <h3 id="approval-heading">{{ ui.tool.approval_pending }}</h3>
+      <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+      <div id="camera-requests" aria-live="polite"></div>
+    </div>
     <div id="camera-preview-panel" class="camera-video-panel" hidden>
       <div id="camera-device-field" class="field camera-device-field" hidden>
         <label for="camera-device">Camera</label>
@@ -98,11 +103,6 @@
       </div>
       <canvas id="camera-qr" width="180" height="180" role="img" aria-label="Scan this QR code on the viewing device to open the camera link"></canvas>
     </div>
-    <section id="camera-approval" aria-labelledby="approval-heading" hidden>
-      <h3 id="approval-heading">Viewer requests</h3>
-      <p class="field-note">Recognise each person or device before approving. Every viewer needs their own acceptance before receiving video.</p>
-      <div id="camera-requests" aria-live="polite"></div>
-    </section>
     <section id="camera-viewers" aria-labelledby="camera-viewers-heading" hidden>
       <h3 id="camera-viewers-heading">Connected viewers</h3>
       <p id="camera-viewer-count" class="field-note" role="status" aria-live="polite"></p>

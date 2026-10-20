@@ -285,6 +285,30 @@
 .paired-requests { margin-block: 1rem; }
 .paired-requests > h3 { margin-bottom: .5rem; }
 .paired-requests ul { list-style: none; padding: 0; margin: 0; }
+/* Pending decisions belong beside the work, before invitations and previews.
+   Keep this inline so a tall queue cannot cover the host's Stop controls. */
+.paired-host-requests {
+  padding: .85rem 1rem;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  min-width: 0;
+}
+.paired-host-requests:has(> #requests:empty) { display: none; }
+.paired-host-requests > h3 { margin: 0 0 .35rem; font-size: 1rem; }
+.paired-host-requests .paired-approval-note {
+  margin: 0 0 .5rem;
+  color: var(--text-dim);
+  font-size: .875rem;
+  line-height: 1.5;
+}
+.paired-host-requests button { min-height: 44px; }
+.paired-host-requests button[data-action$="approve"],
+.paired-host-requests .request button:not(.ghost) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+}
 @media (forced-colors: active) {
   .paired-transport-track { border-color: ButtonText; }
   .paired-transport-track::before { background: ButtonText; }

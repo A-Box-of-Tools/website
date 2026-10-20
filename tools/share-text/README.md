@@ -108,8 +108,9 @@ fresh child tab severs its opener, clears only its inherited session storage,
 and receives a one-use handoff bound to the exact URL, code and route for
 thirty seconds. The parent draft and host identity stay untouched. Expired,
 altered, copied or ordinary links never grant consent; blocked popups or storage
-keep the normal invitation page. A joined Private reader sends a blank knock,
-not an admission token, and waits for the sharer's decision. Starting a local share leaves
+keep the normal invitation page. A first-time Private reader sends a blank knock
+and waits for the sharer's decision. A returning approved browser may include
+its host-issued receipt; the live host must still recognise it. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
 Local network mode itself is off by default, so ordinary Direct shares are
 not listed in network discovery. They can be listed in a private group
@@ -236,8 +237,17 @@ from both physical devices are needed to investigate those boundaries.
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
   All of it on the peer channel — the worker needed nothing for this.
   Fresh requests use the shared approval popup. Review later or Escape leaves
-  the request in the list; hiding or stopping the page closes the popup without
+  the request in the list directly above the editor; hiding or stopping the page closes the popup without
   granting access. Its actions use the same current-channel guards as the list.
+  `peer-admission.js` remembers an approved browser's receipt by room and route.
+  A later explicit connection can reuse it in the same host session, including
+  in a new reader tab. Stop sharing clears every host grant, so starting again
+  with the same link name requires approval. Receipts travel only through the
+  encrypted peer channel and cannot be obtained from the invitation.
+  A host remembers up to 256 grants without evicting departed readers. At that
+  limit, another approval is refused until a grant is revoked or a new share
+  starts. The browser cache holds 64 recent tool/room/route receipts across
+  Text, Tab and Camera; an evicted receipt requires approval again.
 - **First delivery.** The reader announces that its message handler is ready
   on the peer channel; the host repeats the introduction if it already sent
   one. Both sides handle a channel delivered already open. Establishing the
@@ -278,8 +288,10 @@ from both physical devices are needed to investigate those boundaries.
   unguessable; a discoverable share publishes it to its selected directory.
   Private admission is the access control in either case.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
-  all with one-off checked. Temporary reader consent and admission tokens may
-  also use session storage for a language switch; they are separate from the draft.
+  all with one-off checked. Reader approval receipts use a separate bounded
+  browser cache, with open-page memory when storage is unavailable. They do not
+  contain shared text or files, and do not preserve connection consent. Temporary
+  consent and admission tokens also use session storage for a language switch.
 
 ## Direct and Cloud relay
 

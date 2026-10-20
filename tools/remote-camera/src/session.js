@@ -2,6 +2,7 @@ import { transportMode, transportUrl, peerConfiguration, transportCandidate, tra
 import { PairingSocket } from './shared/peer-pairing.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
+import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
@@ -16,7 +17,7 @@ export class CameraSession {
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
     onViewers = () => {}, onBandwidth = () => {},
     onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
-    diagnostics = null,
+    diagnostics = null, admissions = createAdmissionCache(),
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
@@ -30,6 +31,9 @@ export class CameraSession {
     this.onSignaling = onSignaling;
     this.visible = visible;
     this.diagnostics = diagnostics;
+    this.admissions = admissions;
+    this.grants = new AdmissionGrants();
+    this.ownsGrants = true;
     this.openingTrace = null;
     this.signalingLost = false;
     this.signalingRetry = null;
@@ -101,8 +105,10 @@ export class CameraSession {
     if (this.role === 'camera') this.state(this.hostState());
   }
 
-  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, transport = 'direct', discoveryGroup = null } = {}) {
+  async startHost(stream, code, { discoverable = false, requireApproval = true, videoBudget = DEFAULT_VIDEO_BUDGET / 1000000, transport = 'direct', discoveryGroup = null, approvalGrants = null } = {}) {
     this.stop();
+    this.grants = approvalGrants ?? new AdmissionGrants();
+    this.ownsGrants = approvalGrants === null;
     this.role = 'camera';
     this.requireApproval = Boolean(requireApproval);
     this.setVideoBudget(videoBudget);
@@ -647,7 +653,8 @@ export class CameraSession {
         for (const timer of entry.timers) clearTimeout(timer);
         entry.timers.clear();
         if (this.role === 'viewer') {
-          this.control(entry, 'request', { note: this.note });
+          const token = this.admissions.read(TOOL, this.code, this.transport);
+          this.control(entry, 'request', { note: this.note, ...(token ? { token } : {}) });
           entry.trace?.mark('waiting-approval');
           this.state('viewer.waiting');
         }
@@ -658,12 +665,15 @@ export class CameraSession {
         entry.pending = true;
         entry.trace?.mark('approval-requested');
         entry.note = message.note;
-        entry.autoAccept = !this.requireApproval;
+        entry.admissionToken = message.token;
+        entry.openAccess = !this.requireApproval;
+        entry.autoAccept = entry.openAccess || this.grants.has(message.token);
         if (entry.autoAccept && !this.cameraChange) {
           if (!this.approve(entry.id)) this.deny(entry.id, 'busy');
         } else this.requests();
       } else if (message.type === 'approved' && this.role === 'viewer' && !entry.approved) {
         entry.approved = true;
+        this.admissions.save(TOOL, this.code, this.transport, message.token);
         entry.trace?.mark('approved');
         this.state('viewer.approved');
         this.control(entry, 'approval-ack');
@@ -701,14 +711,18 @@ export class CameraSession {
   }
 
   approve(id) {
+    this.approvalError = null;
     const entry = this.peers.get(id);
     if (!entry?.pending || entry.refused || this.viewerCount >= this.maxViewers || this.role !== 'camera' || this.cameraChange) return false;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.state('camera.paused'); return false; }
+    const token = entry.openAccess && !this.grants.has(entry.admissionToken) ? null : this.grants.issue(entry.admissionToken);
+    if (!entry.openAccess && !token) { this.approvalError = 'approval.limit'; this.state(this.approvalError); return false; }
     entry.pending = false;
     entry.approved = true;
+    entry.admissionToken = token;
     try {
-      this.control(entry, 'approved');
+      this.control(entry, 'approved', entry.admissionToken ? { token: entry.admissionToken } : {});
     } catch {
       this.peerFailed(entry, 'connection.ended', 'channel-error');
       return false;
@@ -778,7 +792,7 @@ export class CameraSession {
       for (const entry of this.peers.values()) {
         if (entry.approved && entry.acknowledged) this.beginVideo(entry);
       }
-      // Only requests made while approval was off may be accepted here.
+      // Only requests already authorized on arrival may be accepted here.
       // An existing manual request does not inherit a later policy change.
       for (const entry of [...this.peers.values()]) {
         if (entry.pending && entry.autoAccept && !entry.refused) {
@@ -830,6 +844,7 @@ export class CameraSession {
   deny(id, reason = 'denied') {
     const entry = this.peers.get(id);
     if (!entry || entry.approved) return false;
+    if (reason === 'denied') this.grants.revoke(entry.admissionToken);
     try { this.control(entry, reason); } catch {}
     entry.trace?.finish('denied');
     entry.refused = true;
@@ -842,8 +857,13 @@ export class CameraSession {
   disconnectViewer(id) {
     const entry = this.peers.get(id);
     if (this.role !== 'camera' || !entry?.approved) return false;
-    try { this.control(entry, 'ended'); } catch {}
-    this.removePeer(id, 'ended');
+    this.grants.revoke(entry.admissionToken);
+    for (const peer of [...this.peers.values()]) {
+      if (peer === entry || (entry.admissionToken && peer.admissionToken === entry.admissionToken)) {
+        try { this.control(peer, 'ended'); } catch {}
+        this.removePeer(peer.id, 'ended');
+      }
+    }
     return true;
   }
 
@@ -878,6 +898,9 @@ export class CameraSession {
 
   stop(key = 'connection.stopped') {
     const role = this.role;
+    if (this.ownsGrants) this.grants.clear();
+    this.grants = new AdmissionGrants();
+    this.ownsGrants = true;
     const reason = key === 'connection.stopped' ? 'stopped'
       : key === 'viewer.denied' ? 'denied'
         : ['connection.ended', 'camera.ended', 'camera.switch-ended', 'camera.paused'].includes(key) ? 'ended' : 'signaling-error';
