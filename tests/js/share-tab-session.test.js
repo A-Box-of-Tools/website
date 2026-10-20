@@ -240,9 +240,15 @@ test('tab grant capacity keeps a new request pending and preserves earlier appro
 test('an approved tab viewer receives busy without another approval prompt while the viewer slot is occupied', async t => {
   const f = fixture(t); await f.session.startHost(source(), CODE);
   const first = await request(f);
+  // A returning browser can finish its encrypted request after another
+  // pending viewer has taken the only slot. A later dial is refused earlier.
+  signal(f.sockets[0], 'v:2', { dial: true }); await settle();
+  const second = f.peers.at(-1);
+  signal(f.sockets[0], 'v:2', { description: { type: 'answer', sdp: SDP } }); await settle();
+  second.channel.open(); second.channel.receive('hello');
   f.session.approve('v:1');
   const token = first.channel.sent.find(message => message.type === 'approved').token;
-  const second = await request(f, 'v:2', token);
+  second.channel.receive('request', { note: 'v:2', token }); await settle();
   assert.equal(second.channel.sent.some(message => message.type === 'busy'), true);
   assert.equal(second.closed, true);
   assert.equal(f.requests.some(rows => rows.some(row => row.id === 'v:2')), false);
