@@ -12,8 +12,9 @@ the default; Cloud relay is an explicit alternative shared by the host and liste
 Available connections appears first, before hosting controls. Each row's Join
 button requests entry in one step, with the route included in its accessible name.
 A withdrawn listing cannot be joined through a stale row.
-Opening a Direct listener invitation still joins automatically. A Cloud relay
-invitation shows the chosen route and requires Join before connecting.
+Opening a Direct listener invitation starts its admission request automatically;
+required host approval still applies. A Cloud relay invitation shows the chosen
+route and requires Join before requesting admission.
 Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
 that discovery and pairing still need internet and a hotspot is not a guarantee.
