@@ -10,10 +10,11 @@ travels over a separate encrypted WebRTC connection to each listener. Direct is
 the default; Cloud relay is an explicit alternative shared by the host and listener.
 
 Available connections appears first, before hosting controls. Each row's Join
-button connects in one step, with the route included in its accessible name.
+button requests entry in one step, with the route included in its accessible name.
 A withdrawn listing cannot be joined through a stale row.
-Opening a Direct listener invitation still joins automatically. A Cloud relay
-invitation shows the chosen route and requires Join before connecting.
+Opening a Direct listener invitation starts its admission request automatically;
+required host approval still applies. A Cloud relay invitation shows the chosen
+route and requires Join before requesting admission.
 Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic, while making clear
 that discovery and pairing still need internet and a hotspot is not a guarantee.
@@ -65,7 +66,8 @@ host publishes its new lease. Browsing creates no peer or microphone stream.
 The host key stays in per-tab session storage. Listener invitations carry a
 different key in the URL fragment; the page saves it per tab and removes the
 fragment where storage is available, retaining the fragment when it is not.
-Reload can then rejoin the same channel. End retires the host identity and the
+A separate random listener identity is retained in the tab, distinct from the
+shared invitation capability. Reload can then rejoin the same channel. End retires the host identity and the
 next Start creates a fresh invitation; Leave retires a listener identity.
 The site's regular scripts run on this page and can read its URL and storage.
 The page states this boundary rather than claiming that fragment credentials
@@ -109,6 +111,27 @@ prove locked-screen continuity; physical-device acceptance remains necessary
 for background audio, phone autoplay, permissions, Wi-Fi isolation and capacity.
 
 The guide is /guides/broadcast-voice-on-a-local-network/.
+
+## Host approval
+
+New hosts enable Require approval by default. Turning it off before starting
+allows admission after the existing invitation/password checks. The policy is
+pinned to the room and echoed by the Worker; an explicit policy without a
+matching acknowledgement fails closed. Saved legacy hosts retain their previous
+policy. Changing policy requires a new session identity.
+
+The shared voice session reports pending identities through onRequests. The
+Worker withholds peer joins, SDP, ICE, status forwarding and participant TURN
+credentials until approval. Voice Oncall also defers microphone capture until
+authoritative admission, even when approval is off. Password checks precede
+approval. The popup and pending list use peer-approval-ui.js: Review later or
+Escape keeps the request, while Approve and Deny check the current identity
+and active host. Ending invalidates late decisions.
+
+A bounded roster on live socket attachments allows the same approved identity
+to recover within the current room. A new identity needs approval. This is
+session continuity, not verification of a person's identity or a permanent ban.
+No room history is written to storage. Pending requests count toward capacity.
 
 ## The shared pairing library
 

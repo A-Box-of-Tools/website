@@ -35,21 +35,22 @@ again requires another click, picker selection and fresh invitation.
 
 The Available connections card comes before the host/viewer controls,
 using the common `paired-tools` layout and translated Wi-Fi/hotspot help.
-Starting a session hides that browsing card. Selecting a
-listing still only fills the invitation and focuses Request; the layout does
-not grant consent, change discovery timing or create a hotspot.
+Starting a session hides that browsing card. Join on a listing starts the
+viewing request using its displayed route. Browsing the list alone never
+opens a peer connection, and host approval still gates every video stream.
 
 A session generates a fresh random `tab-` room code. Invitations are
 link-only by default. Before starting, the host can opt into Show in Available
-connections; that choice stays fixed until the session ends. A viewer link or
-selected listing fills the invitation but does not authorize a
-connection. The viewer sees the address exchange notice, optionally adds an
-introduction and chooses Request to watch.
+connections; that choice stays fixed until the session ends. A viewer link
+fills the invitation but does not authorize a connection. The viewer sees the
+address exchange notice, optionally adds an introduction and chooses Request
+to watch. Join on a discovery row supplies that explicit request instead.
 The shared Direct / Cloud relay control sits beside the host's Start action and is
 locked while capture or pairing is active. The host's mode is carried in the
-viewer link query and discovery listing. Opening or selecting an invitation
-only selects that mode; the viewer explicitly requests to watch after seeing
-its disclosure. Pasted links also carry the choice. A plain code uses the
+viewer link query and discovery listing. Opening an invitation only selects
+that mode; the viewer explicitly requests to watch after seeing its disclosure.
+A discovery row shows the route before Join and uses any optional note already
+entered in the viewer form. Pasted links also carry the choice. A plain code uses the
 currently indicated mode. The worker rejects mismatched modes instead of changing
 one participant's selection.
 The bounded note travels over the encrypted control channel and is not
@@ -127,9 +128,15 @@ tools, scoped to `tool=share-tab` and the selected rendezvous endpoint. Loading
 the page opens no discovery socket. A host that opted in publishes
 the random room code and connection mode; a viewer explicitly chooses Find connections to
 open the list. The captured tab's title, URL and pixels, and the viewer's note,
-are never included in discovery messages. Selecting a result only fills the
-invitation: Request to watch, host approval and the viewer's acknowledgement
-remain separate steps.
+are never included in discovery messages. Join beside a result starts the
+request using the displayed route. Browsing alone never connects; host
+approval and the viewer's acknowledgement remain required before video.
+
+Fresh requests open the shared approval popup while the host page is visible.
+Review later or Escape leaves the request in the list. Approve remains disabled
+while the single viewer slot is occupied; Deny remains available. Hiding the
+page, stopping capture or withdrawing a request closes its popup without
+granting access. Popup and list actions use the same session approval API.
 
 The rendezvous groups pages by public IPv4 address or IPv6 /64, page origin
 and tool. It is a best-effort network hint, not a Wi-Fi scan, verified identity

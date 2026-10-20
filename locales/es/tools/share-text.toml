@@ -259,7 +259,7 @@ a = """
 
 [[faq]]
 q = "¿Por qué verá el lector mi dirección IP?"
-a = "La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión de arriba antes de elegir Conectar."
+a = "La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa el tipo de conexión indicado. Elige Unirse junto a un recurso de la lista o Conectar después de abrir una invitación normal."
 
 [[faq]]
 q = "¿Cómo de grandes pueden ser los archivos, y qué velocidad tiene?"
@@ -317,7 +317,7 @@ Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta
 
 [[faq]]
 q = "¿Cómo encuentra la lista las comparticiones locales?"
-a = "La lista agrupa envíos por dirección IPv4 pública o subred IPv6 y origen de la página, no por proximidad física. Las pasarelas compartidas y las VPN pueden incluir desconocidos u ocultar dispositivos. Se necesita internet. Solo aparecen envíos locales directos o de retransmisión en la nube que activaron la visibilidad. Descubrible está seleccionado por defecto cuando está disponible; desmárcalo para usar solo enlaces y mantén Privado en redes compartidas. Elegir un nombre abre la página de consentimiento; no conecta automáticamente ni evita la aprobación."
+a = "La lista agrupa envíos por dirección IPv4 pública o subred IPv6 y origen de la página, no por proximidad física. Las pasarelas compartidas y las VPN pueden incluir desconocidos u ocultar dispositivos. Se necesita internet. Solo aparecen envíos locales directos o de retransmisión en la nube que activaron la visibilidad. Descubrible está seleccionado por defecto cuando está disponible; desmárcalo para usar solo enlaces y mantén Privado en redes compartidas. Unirse inicia la solicitud con el tipo de conexión indicado en una pestaña de lectura nueva. Consultar la lista no conecta. Los recursos privados esperan aprobación; la solicitud aparece en un diálogo y permanece en la lista al elegir Revisar después."
 
 [schema]
 description = "Comparte texto y archivos cifrados desde tu navegador abierto. La conexión directa es la predeterminada; la retransmisión en la nube es opcional. Tú apruebas a cada lector."

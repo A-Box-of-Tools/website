@@ -4,6 +4,7 @@
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
+import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval } from "./voice-approval.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const ID = /^[a-f0-9]{64}$/;
@@ -38,7 +39,7 @@ function cleanName(value, limit) {
 }
 
 const anchor = (owner) => ({ name: owner.name, passwordHash: owner.passwordHash,
-  moderation: owner.moderation, ended: owner.ended, ...transportFrame(mode(owner.transport)) });
+  moderation: owner.moderation, ended: owner.ended, ...transportFrame(mode(owner.transport)), ...approvalState(owner) });
 // A 128-bit digest prefix bounds remembered identities within the platform's
 // 2 KB attachment limit, without putting a reusable participant key there.
 const token = (id) => id.slice(0, 32);
@@ -110,7 +111,8 @@ export class Inbox {
       if (!owner || owner.ended || owner.code !== claim.code || owner.scope !== claim.scope || owner.lease !== claim.lease) {
         return new Response(null, { status: 403 });
       }
-      return new Response(JSON.stringify({ name: owner.name, locked: owner.passwordHash !== null, ...transportFrame(mode(owner.transport)) }), {
+      return new Response(JSON.stringify({ name: owner.name, locked: owner.passwordHash !== null,
+        ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) }), {
         headers: { "content-type": "application/json" },
       });
     }
@@ -166,8 +168,10 @@ export class Inbox {
     const anonymous = value.role === "sender" && !Object.hasOwn(value, "name");
     const name = anonymous ? "" : cleanName(isHost ? value.roomName : value.name, isHost ? 80 : 64);
     if (transport === null || !fields(value, ["type", "role", "key", ...(anonymous ? [] : [isHost ? "roomName" : "name"]), "passwordProof",
-      ...(Object.hasOwn(value, "transport") ? ["transport"] : [])])
+      ...(Object.hasOwn(value, "transport") ? ["transport"] : []),
+      ...(isHost && Object.hasOwn(value, "approval") ? ["approval"] : [])])
         || value.type !== "auth" || !["host", "sender"].includes(value.role)
+        || Object.hasOwn(value, "approval") && (!isHost || typeof value.approval !== "boolean")
         || !validKey(value.key) || !proof(value.passwordProof) || name === null) {
       this.refuse(ws, 4400, "invalid"); return;
     }
@@ -184,8 +188,10 @@ export class Inbox {
       if (transport === "relay" && !relayEnabled(this.env, "voice-oncall")) { this.refuse(ws, 4403, "relay-unavailable"); return; }
       if (trusted?.ended) { this.terminal(ws, "ended", 1000); return; }
       if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
+      if (!approvalMatches(trusted, value.approval)) { this.refuse(ws, 4403, "approval-mismatch"); return; }
       const previous = this.sockets("host"), generation = crypto.randomUUID(), lease = crypto.randomUUID();
       const owner = { role: "host", code: who.code, scope: who.scope, lease, generation, ...transportFrame(transport),
+        ...approvalState({ ...trusted, ...approvalFrame(value) }),
         name: trusted?.name ?? name, passwordHash: trusted ? trusted.passwordHash : passwordHash,
         moderation: trusted?.moderation ?? [], ended: false, window: Date.now(), updates: 0 };
       if (!this.attach(ws, owner)) { this.refuse(ws, 4429, "full"); return; }
@@ -198,7 +204,7 @@ export class Inbox {
       }
       const discovery = validScope(owner.scope) ? { code: owner.code, lease, name: owner.name,
         locked: owner.passwordHash !== null, tool: "voice-oncall" } : null;
-      if (!this.send(ws, { type: "host-ready", generation, discovery, ...transportFrame(transport) })) return;
+      if (!this.send(ws, { type: "host-ready", generation, discovery, ...transportFrame(transport), ...approvalFrame(owner) })) return;
       for (const sender of this.sockets("sender")) this.ready(sender);
       return;
     }
@@ -215,7 +221,7 @@ export class Inbox {
     if (peers.filter((peer) => peer.deserializeAttachment().verified === verified).length >= (verified ? limit : Math.min(limit, MAX_PROBES))) {
       this.refuse(ws, 4429, "full"); return;
     }
-    const sender = { role: "sender", id: keyHash, name, passwordHash, verified, ...transportFrame(transport),
+    const sender = { role: "sender", id: keyHash, name, passwordHash, verified, admitted: false, ...transportFrame(transport),
       generation: null, connection: null, muted: trusted ? moderation(trusted, keyHash) === "m" : false,
       talking: false, anchor: trusted ? anchor(trusted) : null, window: Date.now(), updates: 0 };
     if (!this.attach(ws, sender)) { this.refuse(ws, 4429, "full"); return; }
@@ -240,15 +246,43 @@ export class Inbox {
     if (!who.verified && this.sockets("sender").filter((peer) => peer.deserializeAttachment().verified).length >= limit) {
       this.refuse(ws, 4429, "full"); return;
     }
-    const joining = !who.verified || who.generation !== owner.generation;
-    const updated = { ...who, verified: true, generation: owner.generation, anchor: anchor(owner),
+    const joining = !admitted(who) || who.generation !== owner.generation;
+    const allowed = approved(owner, who);
+    const updated = { ...who, verified: true, admitted: allowed, generation: owner.generation, anchor: anchor(owner),
       muted: moderation(owner, who.id) === "m", ...(joining ? { connection: null, talking: false } : {}) };
     if (!this.attach(ws, updated)) { this.refuse(ws, 4429, "full"); return; }
+    if (!allowed) {
+      if (who.generation !== owner.generation || !who.verified) this.send(host, {
+        type: "request", id: who.id, name: who.name, generation: owner.generation });
+      this.send(ws, { type: "approval-pending", id: who.id, generation: owner.generation,
+        ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) });
+      return;
+    }
     if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation,
-      muted: updated.muted, talking: updated.talking, ...transportFrame(mode(owner.transport)) }) && joining) {
+      muted: updated.muted, talking: updated.talking, ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) }) && joining) {
       this.send(host, { type: "join", id: who.id, generation: owner.generation,
         name: updated.name, muted: updated.muted, talking: updated.talking });
     }
+  }
+
+  decide(host, owner, value) {
+    const sender = this.sockets("sender").find(peer => peer.deserializeAttachment().id === value.to);
+    const who = sender?.deserializeAttachment();
+    if (!who || !who.verified || admitted(who) || who.generation !== owner.generation) {
+      this.send(host, { type: "request-resolved", id: value.to, generation: owner.generation }); return;
+    }
+    if (value.type === "deny") { this.terminal(sender, "denied"); return; }
+    const peers = this.sockets("sender");
+    const updated = rememberApproval(owner, who, peers.map(peer => peer.deserializeAttachment()));
+    const projections = updated && peers.filter(peer => peer.deserializeAttachment().verified)
+      .map(peer => ({ peer, value: { ...peer.deserializeAttachment(), anchor: anchor(updated) } }));
+    if (!updated || !fits(updated) || projections.some(({ value: projected }) => !fits(projected))) {
+      this.send(host, { type: "request-error", id: who.id, generation: owner.generation, error: "full" }); return;
+    }
+    this.attach(host, updated);
+    for (const { peer, value: projected } of projections) this.attach(peer, projected);
+    this.send(host, { type: "request-resolved", id: who.id, generation: owner.generation });
+    this.ready(sender);
   }
 
   remember(host, who, id, state) {
@@ -288,7 +322,7 @@ export class Inbox {
         const current = ws.deserializeAttachment(), owner = this.host()?.deserializeAttachment();
         return ws.readyState === 1 && current?.generation === generation && owner?.generation === generation
           && !owner.ended && owner.transport === "relay" && current.transport === "relay"
-          && (current.role === "host" || current.role === "sender" && current.verified);
+          && (current.role === "host" || current.role === "sender" && admitted(current));
       };
       return answerRelayRequest(ws, value, { env: this.env, tool: "voice-oncall", authorized,
         current: () => ws.readyState === 1 && ws.deserializeAttachment()?.generation === generation });
@@ -303,8 +337,12 @@ export class Inbox {
     if (value.generation !== owner.generation || who.generation !== owner.generation) {
       this.send(ws, { type: "error", error: "stale" }); return;
     }
+    if (who.role === "host" && ["approve", "deny"].includes(value.type)
+        && fields(value, ["type", "generation", "to"]) && identity(value.to)) {
+      this.decide(ws, owner, value); return;
+    }
     if (who.role === "sender" && value.type === "status" && fields(value, ["type", "generation", "talking"])
-        && typeof value.talking === "boolean" && who.verified) {
+        && typeof value.talking === "boolean" && admitted(who)) {
       const talking = value.talking && !who.muted;
       this.attach(ws, { ...who, talking });
       this.send(host, { type: "status", id: who.id, generation: owner.generation, talking });
@@ -326,7 +364,7 @@ export class Inbox {
         : fields(value, ["type", "to", "generation", "muted"]) && typeof value.muted === "boolean");
       if (!valid) { this.send(ws, { type: "error", error: "invalid" }); return; }
       const sender = this.sockets("sender").find((peer) => peer.deserializeAttachment().id === value.to
-        && peer.deserializeAttachment().verified && peer.deserializeAttachment().generation === owner.generation);
+        && admitted(peer.deserializeAttachment()) && peer.deserializeAttachment().generation === owner.generation);
       if (!sender) { this.send(ws, { type: "error", error: "stale" }); return; }
       if (!this.remember(ws, who, value.to, value.type === "kick" ? "k" : value.muted ? "m" : null)) return;
       if (value.type === "kick") { this.terminal(sender, "kicked"); return; }
@@ -339,11 +377,11 @@ export class Inbox {
     if (who.role === "host") {
       const sender = this.sockets("sender").find((peer) => peer.deserializeAttachment().id === value.to);
       const target = sender?.deserializeAttachment();
-      if (!target?.verified || target.generation !== owner.generation) { this.send(ws, { type: "error", error: "stale" }); return; }
+      if (!admitted(target) || target.generation !== owner.generation) { this.send(ws, { type: "error", error: "stale" }); return; }
       if (signal.type === "offer") this.attach(sender, { ...target, connection: signal.connection });
       this.send(sender, { ...signal, from: "host", to: target.id });
     } else {
-      if (!who.verified || who.connection !== signal.connection) { this.send(ws, { type: "error", error: "stale" }); return; }
+      if (!admitted(who) || who.connection !== signal.connection) { this.send(ws, { type: "error", error: "stale" }); return; }
       this.send(host, { ...signal, from: who.id, to: "host" });
     }
   }
@@ -375,7 +413,7 @@ export class Inbox {
     } else if (who.role === "sender" && who.verified) {
       const host = this.host();
       if (host?.deserializeAttachment().generation === who.generation) {
-        this.send(host, { type: "leave", id: who.id, generation: who.generation });
+        this.send(host, { type: admitted(who) ? "leave" : "request-resolved", id: who.id, generation: who.generation });
       }
     }
   }

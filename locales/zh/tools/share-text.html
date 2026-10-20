@@ -14,9 +14,10 @@
       {% include "partials/paired-network.html" %}
       <p id="discovery-status" role="status" aria-live="polite">正在查找可用连接…</p>
       <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">加入会使用所示连接类型打开阅读标签页。私密分享会等待批准。</p>
       <details class="paired-discovery-details">
         <summary>{{ ui.tool.pairing_discovery_help }}</summary>
-        <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。打开分享仍会在连接前征求同意，私密分享仍需分享者批准。</p>
+        <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。加入会在新标签页中发起连接请求；仅浏览列表不会连接，私密分享仍需分享者批准。</p>
       </details>
     </section>
 
@@ -198,9 +199,11 @@
 
     <span data-phrase="discovery.connecting">正在查找可用连接…</span>
     <span data-phrase="discovery.empty">此网络或群组中还没有分享。请让分享者保持标签页打开，或使用其链接。</span>
-    <span data-phrase="discovery.ready">选择分享以打开其连接页面。</span>
+    <span data-phrase="discovery.ready">检查连接类型后，选择加入分享。</span>
     <span data-phrase="discovery.unavailable">发现功能暂不可用，仍可使用分享链接。</span>
-    <span data-phrase="discovery.open">打开分享</span>
+    <span data-phrase="discovery.join">加入</span>
+    <span data-phrase="discovery.join-direct">通过直连加入 {code}</span>
+    <span data-phrase="discovery.join-relay">通过云中继加入 {code}</span>
     <span data-phrase="discovery.publishing">正在让此分享可被发现…</span>
     <span data-phrase="discovery.published">你的分享已列在所选网络或私密群组中。</span>
     <span data-phrase="discovery.not-published">此分享可通过链接访问，但无法发布到发现列表。</span>
@@ -268,4 +271,5 @@
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
     <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

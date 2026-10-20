@@ -310,13 +310,14 @@ function renderDiscovery() {
     const choose = document.createElement('button');
     choose.type = 'button';
     choose.className = 'ghost';
-    choose.textContent = phrase('discovery.choose', { code: ltr(code) });
+    choose.textContent = phrase('discovery.join');
+    choose.setAttribute('aria-label', phrase(transport === 'relay' ? 'discovery.join-relay' : 'discovery.join-direct', { code: ltr(code) }));
+    choose.disabled = Boolean(activeRole) || pageSuspended;
     choose.addEventListener('click', () => {
-      if (activeRole) return;
+      if (activeRole || pageSuspended || !foundCameras.some(camera => camera.code === code && camera.transport === transport)) return;
       selectTransport(transport ?? 'direct');
       fillViewerCode(code);
-      showStatus('viewer.selected', 'viewer');
-      $('viewer-connect').focus();
+      void connectViewer();
     });
     row.append(name);
     appendConnectionIcons(row, { transport: transport ?? 'direct', locked: false, approval: 'optional' });

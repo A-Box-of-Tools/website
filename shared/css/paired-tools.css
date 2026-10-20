@@ -239,6 +239,52 @@
   overflow-wrap: anywhere;
 }
 .paired-connection-icon[data-tooltip-open] .paired-icon-tip { display: block; }
+.paired-dialog {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.paired-dialog::backdrop { background: rgb(0 0 0 / .45); }
+.paired-dialog h2 { margin-top: 0; }
+.paired-dialog p { overflow-wrap: anywhere; }
+.paired-dialog .paired-actions { margin-top: 1rem; }
+.paired-dialog button {
+  min-height: 44px;
+  padding: .7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.paired-dialog button.ghost, .paired-requests button.ghost {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text);
+}
+.paired-dialog button:disabled { opacity: .5; cursor: not-allowed; }
+.paired-dialog :is(button, input):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.paired-dialog label { display: block; margin-block: .75rem .35rem; font-weight: 600; }
+.paired-dialog input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.paired-requests { margin-block: 1rem; }
+.paired-requests > h3 { margin-bottom: .5rem; }
+.paired-requests ul { list-style: none; padding: 0; margin: 0; }
 @media (forced-colors: active) {
   .paired-transport-track { border-color: ButtonText; }
   .paired-transport-track::before { background: ButtonText; }

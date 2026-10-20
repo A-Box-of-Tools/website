@@ -84,10 +84,11 @@ unchanged.
 ## Finding a share on the start page
 
 The Available connections card is the first step, using the same `paired-tools` layout and
-translated Wi-Fi/hotspot help as the other Connect Devices tools. Its Open
-action keeps the existing consent page in another tab so it cannot discard
-an unsent draft. Browsing or opening that page never starts a peer connection;
-the reader still chooses Connect and, for Private shares, asks for approval.
+translated Wi-Fi/hotspot help as the other Connect Devices tools. Join opens
+a new reader tab and requests access using the displayed connection type,
+preserving the source tab's unsent draft and attached files. Browsing alone
+never starts a peer connection, and Private shares still require approval.
+An ordinary invitation link keeps the explicit Connect and request controls.
 Hotspot guidance is conditional on devices being able to reach each other and
 does not change the selected Local/ordinary connection policy.
 
@@ -101,9 +102,14 @@ This helps identify an older open or cached page; it does not gate connections
 or claim that different versions cannot work together.
 
 Opening the tool without a share name opens one WebSocket to `/discover`.
-The list contains advertised codes and authoritative connection policy; opening an
-entry shows the usual consent page in another tab. It never opens WebRTC on
-its own and never bypasses Private approval. Starting a local share leaves
+The list contains advertised codes and authoritative connection policy. Its
+deliberate Join action carries consent through `shared/js/peer-join.js`: a
+fresh child tab severs its opener, clears only its inherited session storage,
+and receives a one-use handoff bound to the exact URL, code and route for
+thirty seconds. The parent draft and host identity stay untouched. Expired,
+altered, copied or ordinary links never grant consent; blocked popups or storage
+keep the normal invitation page. A joined Private reader sends a blank knock,
+not an admission token, and waits for the sharer's decision. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
 Local network mode itself is off by default, so ordinary Direct shares are
 not listed in network discovery. They can be listed in a private group
@@ -151,7 +157,7 @@ directory requires the canonical code in its first encrypted message and sends
 no entries before verification. The page checks the returned group identifier
 and tool namespace before publishing or refreshing, so an older Worker cannot
 silently fall back to the network directory. Group membership permits discovery,
-not reader admission; Private approval and explicit Connect remain required.
+not reader admission; Private approval and an explicit Join or Connect remain required.
 The Worker receives the code transiently for verification but never retains it
 in socket attachments or logs. Its request metadata can contain the public digest.
 
@@ -229,6 +235,9 @@ from both physical devices are needed to investigate those boundaries.
   `{private}` instead of the content; the reader's introduction returns as
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
   All of it on the peer channel — the worker needed nothing for this.
+  Fresh requests use the shared approval popup. Review later or Escape leaves
+  the request in the list; hiding or stopping the page closes the popup without
+  granting access. Its actions use the same current-channel guards as the list.
 - **First delivery.** The reader announces that its message handler is ready
   on the peer channel; the host repeats the introduction if it already sent
   one. Both sides handle a channel delivered already open. Establishing the

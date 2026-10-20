@@ -31,7 +31,8 @@
       <label for="wt-room-name">Channel name</label>
       <input id="wt-room-name" type="text" maxlength="80" value="Voice channel" autocomplete="off" required>
       <label class="wt-discover"><input id="wt-discover" type="checkbox" checked> Make this channel discoverable</label>
-      <p class="wt-note">When selected, starting lists the channel in your selected discovery scope. Anyone who finds it can join and listen. Turn this off to invite listeners only by link or QR code.</p>
+      <p class="wt-note">List this channel in your discovery scope, or turn this off to invite only by link.</p>
+      <label class="wt-discover"><input id="wt-require-approval" type="checkbox" checked> {{ ui.tool.approval_required }}</label>
     </div>
     <div class="wt-host-summary">
       <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
@@ -40,6 +41,10 @@
         {% include "partials/paired-transport.html" %}
       </div>
     </div>
+    <section id="wt-requests-panel" class="paired-requests" hidden aria-labelledby="wt-requests-title">
+      <h3 id="wt-requests-title">{{ ui.tool.approval_pending }}</h3>
+      <ul id="wt-requests"></ul>
+    </section>
     <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
     <div id="wt-transmit" hidden>
       <button class="wt-talk" type="button" id="wt-hold" aria-pressed="false" aria-describedby="wt-talk-help">Hold to talk</button>
@@ -62,7 +67,7 @@
     <section class="wt-invite" id="wt-invite" hidden aria-labelledby="wt-invite-title">
       <div class="wt-invite-fields">
         <h3 id="wt-invite-title">Invite listeners</h3>
-        <p class="wt-note">Share this link or scan the QR code. It includes the chosen connection route. Anyone with the link can listen while this channel is open.</p>
+        <p class="wt-note">Share this link or scan the QR code. It includes the chosen connection route. Listeners wait for your approval unless you turn it off before starting.</p>
         <label for="wt-link">Listener link</label>
         <div class="wt-link-row">
           <input id="wt-link" type="text" readonly spellcheck="false" autocomplete="off">
@@ -105,7 +110,10 @@
   </details>
 </section>
 
+{% include "partials/paired-approval-prompt.html" %}
 <div id="phrases" hidden>
+  <span data-phrase="error-approval">The service could not confirm host approval. Try again or ask the host to restart.</span>
+  <span data-phrase="error-approval-full">The approval list is full. End this session and start a new one.</span>
   <span data-phrase="host-role">Host</span>
   <span data-phrase="listener-role">Receiver</span>
   <span data-phrase="listener-confirm">This channel uses Cloud relay. Choose Join to listen through the encrypted relay.</span>
@@ -134,6 +142,9 @@
   <span data-phrase="host-microphone-paused">Your microphone was interrupted. The channel remains open. Choose Resume microphone if it does not recover; talking stays off until you start again.</span>
   <span data-phrase="config-connecting">Connecting to the pairing service…</span>
   <span data-phrase="listener-connecting">Joining the channel…</span>
+  <span data-phrase="listener-approval">Waiting for the host to approve your request.</span>
+  <span data-phrase="listener-denied">The host declined your request. Leave to return to available connections.</span>
+  <span data-phrase="listener-anonymous-name">Listener {id}</span>
   <span data-phrase="listener-listening">Connected. Waiting for the host to speak.</span>
   <span data-phrase="listener-talking">The host is speaking.</span>
   <span data-phrase="listener-reconnecting">Waiting for the host connection. Reconnecting automatically…</span>

@@ -7,6 +7,7 @@ import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { createApprovalList } from './shared/peer-approval-ui.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
 activateOncall();
@@ -22,7 +23,7 @@ document.getElementById('boot-warning')?.remove();
 function activateOncall() {
   const element = id => document.getElementById(`vi-${id}`);
   const ui = Object.fromEntries([
-    'tab-join', 'tab-host', 'join-panel', 'host-panel', 'status-text', 'status-dot',
+    'require-approval', 'requests', 'requests-panel', 'password-dialog', 'password-form', 'password-room', 'password-icons', 'join-password', 'password-cancel', 'tab-join', 'tab-host', 'join-panel', 'host-panel', 'status-text', 'status-dot',
     'join-form', 'nearby', 'refresh', 'discovery-status', 'rooms', 'empty',
     'sender-password', 'join', 'connection-icons', 'sender', 'sender-room', 'sender-note', 'resume',
     'hold', 'toggle', 'leave', 'host-form', 'room-name', 'password-required',
@@ -119,6 +120,17 @@ function activateOncall() {
   // restarted under the default public discovery scope.
   let hostIdentity = savedHost && !savedHost.discoveryGroup && validCode(savedHost.code) && validKey(savedHost.key) && typeof savedHost.roomName === 'string' && (savedHost.passwordProof === null || validKey(savedHost.passwordProof)) ? savedHost : null;
   if (savedHost?.discoveryGroup) removeStored(hostStorage);
+  let passwordRoom = null;
+  let passwordFocus = null;
+  const approvalRequests = createApprovalList({
+    list: ui.requests, section: ui['requests-panel'],
+    template: document.getElementById('pairing-request-row'),
+    dialog: document.getElementById('pairing-request-dialog'),
+    isActive: () => activeRole === 'host' && hostActive && !pageSuspended,
+    isBlocked: () => starting || !session,
+    onApprove: id => session?.approve(id), onDeny: id => session?.deny(id),
+    focusFallback: () => ui.end,
+  });
   const transportControl = bindTransportControl({ onChange: () => {
     transportControl.route(null);
     updateHostPassword();
@@ -127,6 +139,7 @@ function activateOncall() {
   if (hostIdentity) {
     ui['room-name'].value = hostIdentity.roomName;
     ui['password-required'].checked = Boolean(hostIdentity.passwordProof);
+    ui['require-approval'].checked = hostIdentity.requireApproval === true;
   }
   const groupControl = createDiscoveryGroupControl({ root: document, onChange: () => {
     discovery.close();
@@ -186,19 +199,21 @@ function activateOncall() {
   function updateControls() {
     const room = currentRoom();
     ui['connection-icons'].hidden = !room;
-    if (room) appendConnectionIcons(ui['connection-icons'], { transport: room.transport, locked: room.locked, approval: false });
+    if (room) appendConnectionIcons(ui['connection-icons'], { transport: room.transport, locked: room.locked, approval: room.approval });
     const occupied = hostActive || senderActive || senderPaused || starting;
     transportControl.lock(occupied);
     groupControl.lock(occupied || resumeRoleOnReturn !== null);
     ui.nearby.hidden = senderActive || senderPaused || senderTerminal || (starting && activeRole === 'sender');
-    for (const radio of ui.rooms.querySelectorAll('input')) radio.disabled = occupied || senderTerminal;
+    for (const button of ui.rooms.querySelectorAll('button')) button.disabled = occupied || senderTerminal;
     ui['tab-join'].disabled = occupied && view !== 'join';
     ui['tab-host'].disabled = occupied && view !== 'host';
     ui.start.disabled = starting;
+    ui['require-approval'].disabled = hostActive || starting || resumeRoleOnReturn === 'host';
+    approvalRequests.refresh();
     ui.join.disabled = starting;
     ui['host-form'].hidden = hostActive;
     ui['host-live'].hidden = !hostActive;
-    ui['join-form'].hidden = senderActive || senderPaused || senderTerminal;
+    ui['join-form'].hidden = !selectedCode || senderActive || senderPaused || senderTerminal;
     ui.sender.hidden = !senderActive && !senderPaused && !senderTerminal;
     const capturePaused = senderActive && captureState !== 'ready';
     ui.resume.hidden = (!senderPaused && !capturePaused) || senderTerminal;
@@ -377,7 +392,7 @@ function activateOncall() {
 
   function clearSenderRecord() {
     const code = senderIdentity?.code || selectedCode;
-    if (code && !senderRecords[code]?.blocked) {
+    if (code && (!senderRecords[code]?.blocked || senderRecords[code]?.reason === 'sender-denied')) {
       delete senderRecords[code];
       writeStored(senderStorage, senderRecords);
     }
@@ -394,6 +409,16 @@ function activateOncall() {
   }
 
   function renderState(key, detail = {}) {
+    if (key === 'error-approval' && !detail.signaling) {
+      resumeRoleOnReturn = null;
+      senderActive = senderPaused = hostActive = false;
+      canTransmit = false;
+      clearTransmitFlags();
+      approvalRequests.clear();
+      discovery?.unpublish();
+      lastPublication = null;
+      clearAudio();
+    }
     const connecting = ['host-starting', 'host-reconnecting', 'sender-connecting', 'sender-reconnecting'].includes(key);
     transportControl.route(detail.directReady ? detail.route || 'unknown' : connecting ? 'unknown' : null);
     if (key.startsWith('transport.')) {
@@ -432,11 +457,11 @@ function activateOncall() {
         discovery.publish(publication.code, publication.lease);
       }
     }
-    if (activeRole === 'sender' && ['sender-ready', 'sender-talking', 'sender-muted', 'sender-reconnecting', 'error-full', 'error-connection'].includes(key)) {
+    if (activeRole === 'sender' && ['sender-approval', 'sender-ready', 'sender-talking', 'sender-muted', 'sender-reconnecting', 'error-full', 'error-connection'].includes(key)) {
       senderActive = true;
       senderPaused = false;
       senderMuted = key === 'sender-muted' || Boolean(detail.muted);
-      canTransmit = captureState === 'ready' && !senderMuted && Boolean(detail.directReady || (detail.signaling && !detail.waiting));
+      canTransmit = key !== 'sender-approval' && captureState === 'ready' && !senderMuted && Boolean(detail.directReady || (detail.signaling && !detail.waiting));
       if (!canTransmit || senderMuted) clearTransmitFlags();
     }
     if (activeRole === 'sender' && key === 'error-microphone') {
@@ -470,7 +495,7 @@ function activateOncall() {
       updateHostPassword();
       clearAudio();
     }
-    if (activeRole === 'sender' && ['inbox-ended', 'kicked'].includes(key)) {
+    if (activeRole === 'sender' && ['inbox-ended', 'kicked', 'sender-denied'].includes(key)) {
       resumeRoleOnReturn = null;
       senderActive = false;
       senderPaused = false;
@@ -487,57 +512,88 @@ function activateOncall() {
     updateControls();
   }
 
+  function closePassword(restoreFocus = true) {
+    passwordRoom = null;
+    ui['join-password'].value = '';
+    if (ui['password-dialog'].open) ui['password-dialog'].close();
+    if (restoreFocus && passwordFocus?.isConnected) passwordFocus.focus();
+    passwordFocus = null;
+  }
+
+  function joinRoom(room, button) {
+    if (hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended) return;
+    const current = rooms.find(row => row.code === room.code && row.transport === room.transport);
+    if (!current) return;
+    if (selectedCode !== current.code) ui['sender-password'].value = '';
+    selectedCode = current.code;
+    selectedTransport = transportMode(current.transport);
+    selectedFromDiscovery = true;
+    setView('join');
+    if (current.locked && !validKey(senderRecords[current.code]?.passwordProof)) {
+      passwordRoom = current;
+      passwordFocus = button;
+      ui['join-password'].value = '';
+      ui['password-room'].textContent = current.name;
+      appendConnectionIcons(ui['password-icons'], current);
+      ui['password-dialog'].showModal();
+      ui['join-password'].focus();
+      return;
+    }
+    void startSender();
+  }
+
   function renderRooms() {
-    const listed = rooms.slice();
-    if (selectedCode && !listed.some(room => room.code === selectedCode)) listed.unshift({ code: selectedCode, name: phrase('invited-room'), locked: null, transport: selectedTransport });
     ui.rooms.replaceChildren();
-    for (const room of listed) {
-      const label = document.createElement('label');
-      label.className = 'vi-room paired-nearby-row';
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = 'voice-oncall-room';
-      radio.value = room.code;
-      radio.checked = room.code === selectedCode;
-      radio.disabled = hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended;
+    for (const room of rooms) {
+      if (hostActive && room.code === hostIdentity?.code) continue;
+      const row = document.createElement('div');
+      row.className = 'paired-nearby-row';
       const content = document.createElement('span');
       const name = document.createElement('span');
       name.className = 'vi-room-name';
       name.textContent = room.name;
       content.className = 'paired-connection-info';
       content.append(name);
-      appendConnectionIcons(content, { transport: room.transport, locked: room.locked, approval: false });
-      label.append(radio, content);
-      const chooseRoom = (event) => {
-        if (hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended) return;
-        if (selectedCode !== room.code) ui['sender-password'].value = '';
-        selectedCode = room.code;
-        selectedTransport = transportMode(room.transport);
-        selectedFromDiscovery = rooms.some(listed => listed.code === room.code);
-        setView('join');
-        if (event.type === 'click' && event.detail > 0) (room.locked ? ui['sender-password'] : ui.join).focus();
-      };
-      radio.addEventListener('change', chooseRoom);
-      radio.addEventListener('click', chooseRoom);
-      ui.rooms.append(label);
+      appendConnectionIcons(content, room);
+      const join = document.createElement('button');
+      join.type = 'button';
+      join.textContent = phrase('join-room');
+      join.setAttribute('aria-label', phrase(room.transport === 'relay' ? 'join-relay-room-name' : 'join-room-name', { name: room.name }));
+      join.disabled = hostActive || senderActive || senderPaused || senderTerminal || starting || pageSuspended;
+      join.addEventListener('click', () => joinRoom(room, join));
+      row.append(content, join);
+      ui.rooms.append(row);
     }
-    ui.empty.hidden = listed.length > 0;
-    const room = currentRoom();
-    ui['connection-icons'].hidden = !room;
-    if (room) appendConnectionIcons(ui['connection-icons'], { transport: room.transport, locked: room.locked, approval: false });
+    ui.empty.hidden = ui.rooms.children.length > 0;
+    updateControls();
   }
+
+  ui['password-form'].addEventListener('submit', event => {
+    event.preventDefault();
+    const room = passwordRoom;
+    if (!room || !rooms.some(row => row.code === room.code && row.transport === room.transport)) {
+      closePassword();
+      return;
+    }
+    ui['sender-password'].value = ui['join-password'].value;
+    closePassword(false);
+    void startSender();
+  });
+  ui['password-cancel'].addEventListener('click', () => closePassword());
+  ui['password-dialog'].addEventListener('cancel', event => { event.preventDefault(); closePassword(); });
 
   let discovery;
   function openDiscovery() {
     return watchDiscovery(`${rendezvousEndpoint()}/discover?tool=voice-oncall`, {
     list(shares) {
-      const next = (Array.isArray(shares) ? shares : []).filter(room => validCode(room.code) && typeof room.name === 'string').map(room => ({ code: room.code.toLowerCase(), name: room.name, locked: Boolean(room.locked), transport: transportMode(room.transport) })).sort((a, b) => a.name.localeCompare(b.name));
+      const next = (Array.isArray(shares) ? shares : []).filter(room => validCode(room.code) && typeof room.name === 'string').map(room => ({ code: room.code.toLowerCase(), name: room.name, locked: Boolean(room.locked), approval: room.approval, transport: transportMode(room.transport) })).sort((a, b) => a.name.localeCompare(b.name));
       const signature = JSON.stringify(next);
       if (signature === roomsSignature) return;
       roomsSignature = signature;
       rooms = next;
       if (selectedFromDiscovery && !hostActive && !senderActive && !senderPaused && !starting
           && !rooms.some(room => room.code === selectedCode)) {
+        closePassword(false);
         selectedCode = null;
         selectedFromDiscovery = false;
         selectedTransport = 'direct';
@@ -744,6 +800,10 @@ function activateOncall() {
       discoveryGroup: role === 'host' ? identity.discoveryGroup : null,
       roomName: role === 'host' ? identity.roomName : undefined,
       passwordProof: identity.passwordProof,
+      requireApproval: role === 'host' ? identity.requireApproval === true : undefined,
+      onRequests: rows => {
+        if (generation === sessionGeneration && role === 'host') approvalRequests.update(rows.map(row => ({ ...row, name: row.name || phrase('participant-anonymous-name', { id: row.id.slice(0, 8) }) })));
+      },
       onState: (key, detail) => {
         if (generation === sessionGeneration) renderState(key, detail);
       },
@@ -759,6 +819,7 @@ function activateOncall() {
 
   function stopSession(notify) {
     sessionGeneration++;
+    approvalRequests.clear();
     session?.stop({ notify, state: null });
     session = null;
   }
@@ -835,6 +896,7 @@ function activateOncall() {
       const password = ui['host-password'].value;
       const reusable = hostIdentity && transportMode(hostIdentity.transport) === transportControl.value()
         && (hostIdentity.discoveryGroup || null) === groupControl.id() && hostIdentity.roomName === roomName
+        && (hostIdentity.requireApproval === true) === ui['require-approval'].checked
         && Boolean(hostIdentity.passwordProof) === locked && !password && await codeForKey(hostIdentity.key) === hostIdentity.code;
       if (locked && !password && !reusable) {
         hostActive = false;
@@ -848,6 +910,7 @@ function activateOncall() {
       if (!reusable) {
         const identity = await makeInboxIdentity();
         identity.roomName = roomName;
+        identity.requireApproval = ui['require-approval'].checked;
         identity.transport = transportControl.value();
         identity.discoveryGroup = groupControl.id();
         identity.passwordProof = locked ? await derivePasswordProof(identity.code, password) : null;
@@ -903,7 +966,7 @@ function activateOncall() {
       activeRole = 'sender';
       senderTerminal = true;
       ui['sender-room'].textContent = record.roomName || room?.name || phrase('invited-room');
-      renderState(record.reason === 'kicked' ? 'kicked' : 'inbox-ended');
+      renderState(record.reason === 'kicked' ? 'kicked' : record.reason === 'sender-denied' ? 'sender-denied' : 'inbox-ended');
       return;
     }
     const password = ui['sender-password'].value;
@@ -1109,6 +1172,8 @@ function activateOncall() {
     blur() { if (activeRole === 'sender') releaseHold(); },
     foreground: returnToPage,
     hidden() {
+      approvalRequests.close(false);
+      closePassword(false);
       if (activeRole === 'sender') {
         releaseHold();
         if (starting) {
@@ -1118,6 +1183,8 @@ function activateOncall() {
       }
     },
     suspend() {
+      approvalRequests.clear();
+      closePassword(false);
       if (hostActive || senderActive || starting) resumeRoleOnReturn = activeRole;
       pageSuspended = true;
       discovery.close();
@@ -1146,7 +1213,7 @@ function activateOncall() {
     activeRole = 'sender';
     senderTerminal = true;
     ui['sender-room'].textContent = selectedRecord.roomName || phrase('invited-room');
-    renderState(selectedRecord.reason === 'kicked' ? 'kicked' : 'inbox-ended');
+    renderState(selectedRecord.reason === 'kicked' ? 'kicked' : selectedRecord.reason === 'sender-denied' ? 'sender-denied' : 'inbox-ended');
   }
   else renderState('join-idle');
 }

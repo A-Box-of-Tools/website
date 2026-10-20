@@ -7,6 +7,7 @@ import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { createApprovalList } from './shared/peer-approval-ui.js';
 
 activateChannel();
 const privacyToggle = document.getElementById('privacy-toggle');
@@ -26,7 +27,7 @@ function activateChannel() {
     'microphone', 'microphone-note', 'resume-microphone', 'end', 'invite', 'link', 'copy',
     'invite-feedback', 'qr', 'qr-error', 'listener', 'listening', 'playback-note',
     'mute', 'leave', 'audio', 'nearby', 'channels', 'empty', 'refresh',
-    'discovery-status', 'connect-listener', 'connection-icons', 'publication', 'setup', 'room-name', 'discover',
+    'require-approval', 'requests', 'requests-panel', 'discovery-status', 'connect-listener', 'connection-icons', 'publication', 'setup', 'room-name', 'discover',
   ].map(id => [id, element(id)]));
   const hostStorage = 'walkie-talkie.host';
   const listenerStorage = 'walkie-talkie.listener';
@@ -69,6 +70,8 @@ function activateChannel() {
   let role = hasInvitation || listenerIdentity ? 'listener' : 'host';
   if (validIdentity(listenerIdentity)) {
     listenerIdentity.code = listenerIdentity.code.toLowerCase();
+    if (!validKey(listenerIdentity.clientKey)) listenerIdentity.clientKey = randomKey();
+    writeStored(listenerStorage, listenerIdentity);
     if (hasInvitation && writeStored(listenerStorage, listenerIdentity)) {
       try {
         history.replaceState(history.state, '', pageUrl.href);
@@ -82,7 +85,7 @@ function activateChannel() {
   // retained host identity into the public directory when that code is gone.
   let credentials = validIdentity(cachedHost) && validKey(cachedHost.listenKey) && !cachedHost.discoveryGroup ? cachedHost : null;
   if (cachedHost?.discoveryGroup) removeStored(hostStorage);
-  const errors = new Set(['error-access', 'error-full', 'error-microphone', 'error-connection', 'error-secure-context', 'error-browser',
+  const errors = new Set(['error-access', 'error-full', 'error-approval', 'error-approval-full', 'error-microphone', 'error-connection', 'error-secure-context', 'error-browser',
     'transport.invalid', 'transport.unavailable', 'transport.limited', 'transport.forbidden', 'transport.timeout', 'transport.mismatch']);
   let session = null;
   let sessionGeneration = 0;
@@ -113,6 +116,15 @@ function activateChannel() {
   let pageSuspended = false;
   let channels = [];
   let lastPublication = null;
+  const approvalRequests = createApprovalList({
+    list: ui.requests, section: ui['requests-panel'],
+    template: document.getElementById('pairing-request-row'),
+    dialog: document.getElementById('pairing-request-dialog'),
+    isActive: () => role === 'host' && hostActive && !pageSuspended,
+    isBlocked: () => starting || !session,
+    onApprove: id => session?.approve(id), onDeny: id => session?.deny(id),
+    focusFallback: () => ui.end,
+  });
   const transportControl = bindTransportControl({ onChange: () => {
     transportControl.route(null);
     updateHostControls();
@@ -133,6 +145,7 @@ function activateChannel() {
     if (typeof credentials.roomName === 'string') ui['room-name'].value = credentials.roomName;
     // A channel created before discovery was offered keeps its private link.
     ui.discover.checked = credentials.discover === true;
+    ui['require-approval'].checked = credentials.requireApproval === true;
   }
 
   function renderRole() {
@@ -158,7 +171,7 @@ function activateChannel() {
       const info = document.createElement('span');
       info.className = 'paired-connection-info';
       info.append(name);
-      appendConnectionIcons(info, { transport: channel.transport, locked: false, approval: false });
+      appendConnectionIcons(info, { transport: channel.transport, locked: false, approval: channel.approval });
       const join = document.createElement('button');
       join.type = 'button';
       join.textContent = phrase('join-channel');
@@ -182,7 +195,7 @@ function activateChannel() {
     session?.stop({ notify: false, state: null });
     session = null;
     listenerIdentity = { code: channel.code, key: channel.listenKey, muted: false, ended: false,
-      transport: transportControl.value(), confirmed: true };
+      transport: transportControl.value(), confirmed: true, clientKey: randomKey(), approval: channel.approval };
     if (!writeStored(listenerStorage, listenerIdentity)) {
       const invitation = new URL(transportUrl(pageUrl.href, listenerIdentity.transport));
       invitation.hash = new URLSearchParams({ code: channel.code, listen: channel.listenKey }).toString();
@@ -246,6 +259,8 @@ function activateChannel() {
     ui.setup.hidden = hostActive;
     ui['room-name'].disabled = starting || preparingCredentials;
     ui.discover.disabled = starting || preparingCredentials;
+    ui['require-approval'].disabled = hostActive || starting || preparingCredentials || Boolean(session) || hostNeedsResume;
+    approvalRequests.refresh();
     renderRole();
     ui.transmit.hidden = !hostActive;
     ui.invite.hidden = !hostActive || !ui.link.value;
@@ -267,7 +282,7 @@ function activateChannel() {
   function updateListenerControls() {
     ui['connection-icons'].hidden = role !== 'listener' || !validIdentity(listenerIdentity);
     if (role === 'listener' && validIdentity(listenerIdentity)) {
-      appendConnectionIcons(ui['connection-icons'], { transport: listenerIdentity.transport, locked: false, approval: false });
+      appendConnectionIcons(ui['connection-icons'], { transport: listenerIdentity.transport, locked: false, approval: listenerIdentity.approval });
     }
     const needsConfirmation = role === 'listener' && transportMode(listenerIdentity?.transport) === 'relay'
       && !listenerIdentity?.confirmed && !listenerLeft && !listenerEnded;
@@ -284,9 +299,11 @@ function activateChannel() {
   }
 
   function renderState(key, detail = {}) {
+    if (role === 'listener' && typeof detail.approval === 'boolean' && listenerIdentity) listenerIdentity.approval = detail.approval;
     const connecting = ['host-starting', 'host-reconnecting', 'listener-connecting', 'listener-reconnecting'].includes(key);
     transportControl.route(detail.directReady ? detail.route || 'unknown' : connecting ? 'unknown' : null);
-    const activeHostError = role === 'host' && key === 'error-full' && Boolean(detail.directReady);
+    const activeHostError = role === 'host' && (key === 'error-full' && Boolean(detail.directReady)
+      || ['error-approval', 'error-approval-full'].includes(key) && Boolean(detail.signaling));
     if (detail.directReady) globalThis.aboxToolComplete?.();
     if (role === 'host' && detail.captureState) {
       captureState = detail.captureState;
@@ -322,7 +339,7 @@ function activateChannel() {
       heldKey = null;
       latched = false;
     }
-    if (key === 'broadcast-ended' && role === 'listener') {
+    if (['broadcast-ended', 'listener-denied'].includes(key) && role === 'listener') {
       listenerEnded = true;
       if (validIdentity(listenerIdentity)) {
         listenerIdentity.ended = true;
@@ -427,13 +444,21 @@ function activateChannel() {
       key: identity.key,
       transport: transportMode(identity.transport),
       listenKey: role === 'host' ? identity.listenKey : undefined,
+      requireApproval: role === 'host' ? identity.requireApproval === true : undefined,
+      clientKey: role === 'listener' ? identity.clientKey : undefined,
+      onRequests: rows => {
+        if (generation === sessionGeneration && role === 'host') approvalRequests.update(rows.map(row => ({ ...row, name: row.name || phrase('listener-anonymous-name', { id: row.id.slice(0, 8) }) })));
+      },
       roomName: role === 'host' ? identity.roomName : undefined,
       discover: role === 'host' && identity.discover === true,
       discoveryGroup: role === 'host' ? identity.discoveryGroup : null,
       onState: (key, detail) => {
         if (generation !== sessionGeneration) return;
-        if (key.startsWith('transport.')) {
+        if (key.startsWith('transport.') || key === 'error-approval' && !detail.signaling) {
           hostWanted = resumeHostOnReturn = false;
+          hostNeedsResume = false;
+          clearHostResumeTimer();
+          approvalRequests.clear();
           session = null;
           if (listenerIdentity?.transport === 'relay') {
             listenerIdentity.confirmed = false;
@@ -501,13 +526,13 @@ function activateChannel() {
 
   async function prepareCredentials() {
     let identity = credentials;
-    if (!identity || transportMode(identity.transport) !== transportControl.value()
+    if (!identity || (identity.requireApproval === true) !== ui['require-approval'].checked || transportMode(identity.transport) !== transportControl.value()
         || (identity.discoveryGroup || null) !== groupControl.id() || await channelCode(identity.key) !== identity.code) {
       const key = randomKey();
       identity = { code: await channelCode(key), key, listenKey: randomKey() };
     }
     if (!hostWanted && !resumeHostOnReturn) return null;
-    credentials = { ...identity, roomName: ui['room-name'].value.trim(), discover: ui.discover.checked,
+    credentials = { ...identity, requireApproval: ui['require-approval'].checked, roomName: ui['room-name'].value.trim(), discover: ui.discover.checked,
       transport: transportControl.value(), discoveryGroup: groupControl.id() };
     writeStored(hostStorage, credentials);
     return credentials;
@@ -525,6 +550,7 @@ function activateChannel() {
     hostNeedsResume = true;
     sourceEpoch++;
     sessionGeneration++;
+    approvalRequests.clear();
     releaseTransmission();
     session?.stop({ notify: false, state: null });
     session = null;
@@ -616,6 +642,7 @@ function activateChannel() {
     clearHostResumeTimer();
     sourceEpoch++;
     sessionGeneration++;
+    approvalRequests.clear();
     releaseTransmission();
     session?.stop({ notify: false, state: null });
     session = null;
@@ -718,6 +745,7 @@ function activateChannel() {
     clearHostResumeTimer();
     sourceEpoch++;
     sessionGeneration++;
+    approvalRequests.clear();
     releaseTransmission();
     session?.stop({ notify: true, state: null });
     session = null;
@@ -778,6 +806,7 @@ function activateChannel() {
   observeForeground({
     blur() { if (role === 'host') releaseHold(); },
     hidden() {
+      approvalRequests.close(false);
       if (role === 'host') {
         releaseHold();
         if (starting && !hostActive) stopHiddenSource();
@@ -795,6 +824,7 @@ function activateChannel() {
       }
     },
     suspend() {
+      approvalRequests.clear();
       pageSuspended = true;
       if (role === 'host') stopHiddenSource();
       else {

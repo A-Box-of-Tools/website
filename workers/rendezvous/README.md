@@ -274,8 +274,10 @@ file names, file sizes or file bytes. Voice Oncall entries additionally contain
 a bounded room name and password-required flag, verified against the live host's
 lease. Walkie-Talkie entries contain a bounded room name and listener capability,
 verified against the live host's listener hash and current discovery lease.
-Publishing that capability deliberately allows browsers in the nearby group to
-listen without receiving a separate invitation. Directory state is held in WebSocket attachments while
+Publishing that capability lets browsers in the group request admission without
+a separate invitation. Voice listings also carry the live host's optional
+`approval` boolean; knowing the invitation does not bypass required approval.
+Directory state is held in WebSocket attachments while
 the sockets are open, with no directory records written to Durable Object
 storage. Cloudflare's seven-day connection logging is unchanged; leases are
 message payloads and never put in URLs or logged by the worker.
@@ -498,6 +500,35 @@ as in Broadcast. Direct never switches to Cloud relay automatically; both
 parties must select the host's mode, with credentials subject to the same
 live-admission checks and bounded issuance as Broadcast.
 
+Both voice protocols share `voice-approval.js`. New host authentication includes
+an explicit `approval` boolean, repeated by `host-ready` and verified discovery
+metadata. The page refuses a missing or different acknowledgement, so an older
+Worker cannot silently ignore this policy. Deploy the Worker before the pages;
+this change needs no migration or secret. A live room and its reconnect anchors
+pin the policy alongside its transport. Legacy hosts omitting the field retain
+their approval-free behavior only in rooms with that same policy.
+
+Credential validation precedes approval. A valid new visitor receives
+`approval-pending` with its id, generation, transport and approval policy; the
+host receives `request` with id, generation and an optional visitor name. The
+host sends `approve` or `deny` with `to` and the current generation. Approval
+resolves the request and releases the ordinary `ready`/`join` exchange. Denial
+sends terminal `denied`; leaving or losing the requesting socket resolves its
+request. A pending visitor cannot mint relay credentials, send status, or
+exchange offers, answers or candidates, including through a forged envelope.
+Voice Oncall also waits for `ready` before requesting its caller's microphone.
+
+Approvals remember at most ten 128-bit identity digest prefixes in socket
+attachments. Voice Oncall uses the caller's existing separate key. Walkie-Talkie
+adds a per-listener `clientKey` to authentication; it is generated and retained
+by that browser, never copied from the shared invitation capability. Approved
+identities can reconnect while remembered. When the roster fills, only an older
+disconnected identity can be evicted; it must ask again on returning. Live
+admissions are never evicted. Size or capacity failure returns `request-error`
+without admitting the requester. A denied or new identity needs approval, and
+End remains terminal while any room anchor remains. Nothing persists after the
+last socket leaves.
+
 Audio direction follows [SDP's session and media scopes](https://www.rfc-editor.org/rfc/rfc8866.html#section-6.7):
 an audio-section direction overrides the session default. This permits a browser
 to include a session-level `sendrecv` default alongside its audio `recvonly`
@@ -507,9 +538,9 @@ forwards the accepted SDP unchanged and still allows only one audio section.
 
 - `/inbox/<64hex>` addresses only `INBOXES`. The code is SHA-256 of a random
   43-character host capability, whose digest must match before host admission.
-- The first frame is host `auth` with `key`, `roomName` and optional
-  `passwordProof`, or sender `auth` with its separate stable random `key`,
-  self-chosen `name` and `passwordProof`. The browser derives the proof with
+- The first frame is host `auth` with `key`, `roomName`, `passwordProof` (null
+  when unset), or sender `auth` with its separate stable random `key`, optional
+  `name` and `passwordProof`. The browser derives the proof with
   PBKDF2 SHA-256, 120,000 iterations, 32 output bytes and the room-specific
   salt `voice-inbox:<code>`. It is an access credential sent inside WSS, not
   plain password text or an invitation query parameter. The Inbox stores its

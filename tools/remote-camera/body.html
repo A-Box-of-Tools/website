@@ -11,7 +11,7 @@
     <ul id="discovery-list" class="camera-discovery-list paired-nearby-list"></ul>
     <details class="camera-discovery-details paired-discovery-details">
       <summary>How cameras are listed</summary>
-      <p class="camera-consent">Choose a camera to fill its code, then select Connect to camera when you are ready. Connecting shares network addresses. Its owner may require approval or accept viewers automatically.</p>
+      <p class="camera-consent">Check the connection type, then Join to request a view. Connecting shares network addresses. Its owner may require approval or accept viewers automatically.</p>
       <p class="camera-discovery-note">The network list matches the internet address seen by our introduction service. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Private groups instead match a shared code and can list cameras on different networks. Both Direct and Cloud relay sessions appear; icons show their route and access requirements. Choose a camera you recognise.</p>
     </details>
   </section>
@@ -112,7 +112,7 @@
 
   <section id="viewer-panel" data-role="viewer" class="card">
     <h2>Watch a camera</h2>
-    <p class="card-lede">Choose an available camera above, or enter a code or viewer link below. Then select Connect to camera. The invitation chooses the connection type. This device does not need camera or microphone access.</p>
+    <p class="card-lede">Join an available camera above, or enter a code or viewer link below and select Connect to camera. The invitation chooses the connection type. This device does not need camera or microphone access.</p>
     <div class="settings viewer-fields">
       <div class="field">
         <div class="camera-help-row">
@@ -315,8 +315,10 @@
     <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
     <span data-phrase="discovery.connecting">Looking for available cameras&hellip;</span>
     <span data-phrase="discovery.empty">No cameras are listed in this network or group. You can still use a viewer link or code.</span>
-    <span data-phrase="discovery.ready">Choose a camera, then use Connect to camera below.</span>
-    <span data-phrase="discovery.choose">Choose {code}</span>
+    <span data-phrase="discovery.ready">Check the connection type, then Join a camera.</span>
+    <span data-phrase="discovery.join">Join</span>
+    <span data-phrase="discovery.join-direct">Join {code} via Direct</span>
+    <span data-phrase="discovery.join-relay">Join {code} via Cloud relay</span>
     <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>
     <span data-phrase="discovery.publishing">Listing your camera&hellip;</span>
     <span data-phrase="discovery.published">Your camera name is listed. Your viewer approval setting still applies.</span>

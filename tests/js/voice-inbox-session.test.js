@@ -148,14 +148,14 @@ test('Stop during relay mint prevents late credentials from creating a peer or r
   assert.equal(h.clock.tasks.size, 0);
 });
 
-test('a relay session refuses a Direct ready frame and stops its microphone', async t => {
+test('a relay session refuses a Direct ready frame before requesting its microphone', async t => {
   const h = harness(t, { role: 'sender', transport: 'relay' });
   const pending = h.session.start(); await flush();
   const ws = h.sockets[0]; ws.open(); ws.message(ready());
   await flush();
   assert.equal(await pending, false);
   assert.equal(h.states.at(-1).key, 'transport.mismatch');
-  assert.equal(h.mic.track.stops, 1);
+  assert.equal(h.captures(), 0);
   assert.equal(ws.sent.some(frame => frame.type === 'relay-request'), false);
 });
 
@@ -220,13 +220,14 @@ function microphone() {
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession, name = 'Alice', transport = 'direct' } = {}) {
+function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteGate, audioSession, name = 'Alice', transport = 'direct', requireApproval } = {}) {
   const clock = new Clock();
   const sockets = [];
   const peers = [];
   const states = [];
   const streams = [];
   const rows = [];
+  const requests = [];
   const mic = microphone();
   let captures = 0;
   const captureConstraints = [];
@@ -292,7 +293,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     async getStats() { return this.stats || new Map(); }
   }
   const session = new InboxSession({
-    role, transport, code: CODE, key: role === 'host' ? KEY : SENDER_KEY,
+    role, transport, requireApproval, code: CODE, key: role === 'host' ? KEY : SENDER_KEY,
     roomName: 'Support desk', passwordProof, ...(name === null ? {} : { name }),
     endpoint: 'ws://127.0.0.1:8794', Socket, Peer, clock, audioSession,
     mediaDevices: mediaDevices || { async getUserMedia(options) {
@@ -303,6 +304,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     onState: (key, detail) => states.push({ key, detail }),
     onStream: (stream, id) => streams.push({ stream, id }),
     onParticipants: participants => rows.push(participants),
+    onRequests: pending => requests.push(pending),
   });
   t.after(async () => {
     session.stop({ notify: false, state: null });
@@ -331,7 +333,7 @@ function harness(t, { role = 'host', mediaDevices, passwordProof = null, remoteG
     peer.connect();
     return { peer, stream };
   };
-  return { session, clock, sockets, peers, states, streams, rows, mic,
+  return { session, clock, sockets, peers, states, streams, rows, requests, mic,
     captures: () => captures, captureConstraints, begin, connected,
     participants: () => rows.at(-1) || [], controls: ws => ws.sent.filter(frame =>
       ['moderate', 'kick'].includes(frame.type)) };
@@ -412,11 +414,16 @@ test('late permission and Stop during authenticated readiness cannot resurrect s
   const audioSession = new NativeAudioSession();
   const h = harness(t, { role: 'sender', audioSession, mediaDevices: { getUserMedia: () => permission.promise } });
   const starting = h.session.start();
+  await flush();
+  h.sockets[0].open(); h.sockets[0].message(ready());
+  await flush();
   h.session.stop({ notify: false, state: null });
   permission.resolve(mic.stream);
+  await flush();
   assert.equal(await starting, false);
   assert.equal(mic.track.stops, 1);
-  assert.equal(h.sockets.length, 0);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.sockets[0].closed, true);
   assert.equal(audioSession.additions, 0);
   const other = harness(t, { role: 'sender' });
   const report = other.session.onState;
@@ -539,7 +546,7 @@ test('sender reconnect keeps its key and capture muted while buffering only matc
   assert.equal(h.session._id, ID_A);
 });
 
-test('wrong password disposes sender capture and stops all reconnect attempts', async t => {
+test('wrong password prevents sender capture and stops all reconnect attempts', async t => {
   const h = harness(t, { role: 'sender', passwordProof: PROOF });
   const starting = h.session.start();
   await flush();
@@ -548,8 +555,7 @@ test('wrong password disposes sender capture and stops all reconnect attempts', 
   ws.message({ type: 'error', error: 'password' });
   await flush();
   assert.equal(await starting, false);
-  assert.equal(h.mic.track.stops, 1);
-  assert.equal(h.mic.track.enabled, false);
+  assert.equal(h.captures(), 0);
   assert.equal(ws.closed, true);
   assert.equal(h.states.at(-1).key, 'error-password');
   assert.equal(h.clock.tasks.size, 0);
@@ -908,13 +914,15 @@ test('sender track mute preserves its peer and unmute requires a fresh talking a
   assert.equal(h.sockets.length, 1);
 });
 
-test('a microphone grant arriving during a native interruption is refused before signaling starts', async t => {
+test('an admitted caller microphone grant arriving during a native interruption is refused before media starts', async t => {
   const permission = deferred();
   const mic = microphone();
   const audioSession = new NativeAudioSession();
   const h = harness(t, { role: 'sender', audioSession,
     mediaDevices: { getUserMedia: () => permission.promise } });
   const starting = h.session.start();
+  await flush();
+  h.sockets[0].open(); h.sockets[0].message(ready());
   await flush();
   assert.equal(audioSession.listeners.size, 0);
   audioSession.transition('interrupted');
@@ -926,7 +934,8 @@ test('a microphone grant arriving during a native interruption is refused before
   assert.equal(audioSession.additions, 1);
   assert.equal(audioSession.listeners.size, 0);
   assert.equal(h.states.at(-1).key, 'error-microphone');
-  assert.equal(h.sockets.length, 0);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.sockets[0].closed, true);
   assert.equal(h.clock.tasks.size, 0);
 });
 
@@ -1068,6 +1077,8 @@ test('already-muted and ended microphone grants are refused and later hardware r
       mediaDevices: { getUserMedia: () => permission.promise } });
     const starting = h.session.start();
     await flush();
+    h.sockets[0].open(); h.sockets[0].message(ready());
+    await flush();
     permission.resolve(mic.stream);
     assert.equal(await starting, false);
     assert.equal(mic.track.stops, 1);
@@ -1075,7 +1086,8 @@ test('already-muted and ended microphone grants are refused and later hardware r
     assert.equal(mic.track.onmute, null);
     assert.equal(mic.track.onended, null);
     assert.equal(audioSession.additions, 0);
-    assert.equal(h.sockets.length, 0);
+    assert.equal(h.sockets.length, 1);
+    assert.equal(h.sockets[0].closed, true);
     assert.equal(h.clock.tasks.size, 0);
     assert.equal(h.states.at(-1).key, 'error-microphone');
     mic.track.muted = false;
@@ -1085,6 +1097,94 @@ test('already-muted and ended microphone grants are refused and later hardware r
     await h.clock.advance(1000);
     assert.equal(mic.track.enabled, false);
     assert.equal(mic.track.stops, 1);
-    assert.equal(h.sockets.length, 0);
+    assert.equal(h.sockets.length, 1);
   }
+});
+
+test('approval wait does not capture, create peers or mint relay credentials until admission', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' });
+  const ws = await h.begin({ type: 'approval-pending', id: ID_A, generation: GEN_A, approval: true, transport: 'relay' });
+  assert.equal(h.states.at(-1).key, 'sender-approval');
+  assert.equal(h.states.at(-1).detail.approval, true);
+  assert.equal(h.captures(), 0);
+  ws.message(offer());
+  await flush();
+  await h.clock.advance(12000);
+  assert.equal(h.peers.length, 0);
+  assert.equal(h.captures(), 0);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(ws.sent.some(frame => frame.type === 'relay-request'), false);
+  ws.message({ ...ready(), approval: true, transport: 'relay' });
+  ws.message(offer());
+  await flush();
+  assert.equal(h.captures(), 1);
+  assert.equal(h.mic.track.enabled, false);
+  relayReply(ws);
+  await flush();
+  assert.equal(h.peers.length, 1);
+});
+
+test('denial and Leave are terminal during approval and ignore late admission', async t => {
+  for (const denied of [false, true]) {
+    const h = harness(t, { role: 'sender' });
+    const ws = await h.begin({ type: 'approval-pending', id: ID_A, generation: GEN_A, approval: true });
+    const late = ws.onmessage;
+    if (denied) ws.message({ type: 'denied' });
+    else h.session.stop();
+    await flush();
+    late({ data: JSON.stringify({ ...ready(), approval: true }) });
+    await flush();
+    await h.clock.advance(30000);
+    assert.equal(h.captures(), 0);
+    assert.equal(h.peers.length, 0);
+    assert.equal(h.sockets.length, 1);
+    assert.equal(h.states.at(-1).key, denied ? 'sender-denied' : 'sender-left');
+  }
+});
+
+test('hosts fail closed when approval policy is missing or different in the worker acknowledgement', async t => {
+  for (const approval of [undefined, false]) {
+    const h = harness(t, { requireApproval: true });
+    const starting = h.session.start(); await flush();
+    const ws = h.sockets[0]; ws.open();
+    assert.equal(ws.sent[0].approval, true);
+    ws.message({ ...hostReady(), ...(approval === undefined ? {} : { approval }) });
+    await flush();
+    assert.equal(await starting, false);
+    assert.equal(h.states.at(-1).key, 'error-approval');
+    assert.equal(h.states.at(-1).detail.signaling, false);
+    assert.equal(ws.closed, true);
+    assert.equal(h.peers.length, 0);
+  }
+});
+
+test('host request actions wait for acknowledgement and never begin a peer before admitted join', async t => {
+  const h = harness(t, { requireApproval: true, transport: 'relay' });
+  const ws = await h.begin({ ...hostReady(), approval: true, transport: 'relay' });
+  ws.message({ type: 'request', id: ID_A, name: '', generation: GEN_A });
+  await flush();
+  assert.deepEqual(h.requests.at(-1), [{ id: ID_A, name: '' }]);
+  assert.equal(h.peers.length, 0);
+  assert.equal(h.session.approve(ID_A), true);
+  assert.deepEqual(ws.sent.at(-1), { type: 'approve', to: ID_A, generation: GEN_A });
+  assert.equal(h.requests.at(-1).length, 1);
+  assert.equal(ws.sent.some(frame => frame.type === 'relay-request'), false);
+  ws.message({ type: 'request-error', id: ID_A, error: 'full', generation: GEN_A });
+  await flush();
+  assert.equal(h.states.at(-1).key, 'error-approval-full');
+  assert.equal(h.requests.at(-1).length, 1);
+  assert.equal(h.session.deny(ID_A), true);
+  ws.message({ type: 'request-resolved', id: ID_A, generation: GEN_A });
+  await flush();
+  assert.deepEqual(h.requests.at(-1), []);
+  assert.equal(h.session.approve(ID_A), false);
+  ws.message({ type: 'request', id: ID_B, name: '', generation: GEN_A });
+  ws.message(join(ID_B));
+  await flush();
+  assert.deepEqual(h.requests.at(-1), []);
+  relayReply(ws);
+  await flush();
+  assert.equal(h.peers.length, 1);
+  ws.serverClose();
+  assert.equal(h.session.deny(ID_B), false);
 });

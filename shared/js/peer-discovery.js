@@ -14,11 +14,13 @@ export function cleanShares(list, tool = 'share-text', privateGroup = false) {
     const transport = entry.transport === 'relay' ? { transport: 'relay' } : {};
     if (tool === 'voice-oncall' || tool === 'walkie-talkie') {
       if (!/^[a-f0-9]{64}$/.test(entry.code) || typeof entry.name !== 'string'
+          || entry.approval !== undefined && typeof entry.approval !== 'boolean'
           || !entry.name.trim() || entry.name.length > 80 || /[\u0000-\u001f\u007f-\u009f]/.test(entry.name)
           || (tool === 'voice-oncall' ? typeof entry.locked !== 'boolean'
             : typeof entry.listenKey !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(entry.listenKey))) continue;
       seen.add(entry.code);
       result.push({ code: entry.code, local: true, ...transport,
+        ...(typeof entry.approval === 'boolean' ? { approval: entry.approval } : {}),
         name: entry.name.trim(), ...(tool === 'voice-oncall' ? { locked: entry.locked } : { listenKey: entry.listenKey }) });
     } else {
       seen.add(entry.code);

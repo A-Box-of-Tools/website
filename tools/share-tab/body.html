@@ -18,7 +18,7 @@
         <button type="button" id="discovery-refresh">Refresh connections</button>
         <button type="button" id="discovery-close">Stop looking</button>
       </div>
-      <p id="discovery-selection-help" class="field-note">Choose a code to fill the invitation below, then request to watch. Finding a tab does not grant access.</p>
+      <p id="discovery-selection-help" class="field-note">Check the connection type, then Join to request a view. The host must approve you before video starts.</p>
     </section>
   </section>
   <div class="tab-share-grid" id="tab-share-grid" data-pairing-setup>
@@ -138,8 +138,9 @@
     <span data-phrase="discovery.found">Check the invitation code with the host, then choose their tab.</span>
     <span data-phrase="discovery.empty">No shared tabs found in this network or group. Ask the host to enable discovery before choosing a tab, or use their viewer link.</span>
     <span data-phrase="discovery.unavailable">Connection discovery is unavailable. You can still try the host&rsquo;s viewer link.</span>
-    <span data-phrase="discovery.choose">Choose {code}</span>
-    <span data-phrase="discovery.selected">Invitation selected. Choose Request to watch to ask the host for access.</span>
+    <span data-phrase="discovery.join">Join</span>
+    <span data-phrase="discovery.join-direct">Join {code} via Direct</span>
+    <span data-phrase="discovery.join-relay">Join {code} via Cloud relay</span>
     <span data-phrase="discovery.publishing">Listing your invitation in Available connections&hellip;</span>
     <span data-phrase="discovery.published">Your invitation is listed in the selected network or private group. Video still needs your approval.</span>
     <span data-phrase="discovery.not-published">Your invitation is not listed yet. You can still share the viewer link.</span>
@@ -166,4 +167,5 @@
     <span data-phrase="net.clean">{total} page resources checked. {platform} Connection setup and live WebRTC video are disclosed above; this resource list does not inspect WebRTC traffic.</span>
     <span data-phrase="net.dirty">Unexpected resource hosts: {hosts}. {platform} WebRTC traffic is separate from this resource check.</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

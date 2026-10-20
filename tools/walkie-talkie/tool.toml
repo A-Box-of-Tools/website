@@ -10,7 +10,7 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "voice-session", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "peer-approval-ui", "voice-session", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 supports_relay = true
 lastmod = "2026-10-17"
@@ -23,12 +23,12 @@ og_image_alt = "Local Walkie-Talkie - an encrypted group voice channel"
 og_card = "Hold to talk with everyone in your channel."
 csp_note = "Opening this page connects to wss://rendezvous.abox.tools for connection discovery. Local builds and HTTPS abox-preview.pages.dev previews use the separate wss://rendezvous-dev.abox.tools service. Starting or joining opens a secure WebSocket for authentication, setup and status. Direct is the default and uses host candidates only, without STUN or TURN. Choosing Cloud relay uses temporary TURN credentials and sends encrypted voice through Cloudflare. The introduction service does not carry audio."
 pledge_line = "<strong>Direct voice by default.</strong> Choose Cloud relay when needed. No recording."
-pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect. Each listener has a separate encrypted WebRTC connection to the host. Direct uses no relay; Cloud relay sends encrypted audio through Cloudflare when both devices choose that route. Anyone with the listener invitation can listen while the channel is open. Share it carefully."
+pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect. Each listener has a separate encrypted WebRTC connection to the host. Direct uses no relay; Cloud relay sends encrypted audio through Cloudflare when both devices choose that route. New channels require host approval before listeners can hear audio. You can turn approval off before starting. Share invitations carefully."
 live_hint = "The introduction service sees channel names, listed listener invitations, room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Optional Cloud relay also forwards encrypted audio and sees connection addresses, timing and traffic volume; it cannot decrypt the WebRTC audio. The tool never switches routes automatically."
 read_first = ", <code>src/session.js</code> for microphone cleanup and reconnects, and <code>workers/rendezvous/broadcast.js</code> for the authenticated setup protocol"
 howto_heading = "How to open a local voice channel"
 card = "One browser host and up to ten receive-only listeners, with push to talk and automatic reconnection."
-md_note = "Keep Direct for reachable devices, or choose Cloud relay before starting. Choose Start channel, allow microphone access and share the listener link or QR code. Relay invitations ask listeners to confirm Join. Internet is required for pairing and for relayed audio."
+md_note = "Keep Direct for reachable devices, or choose Cloud relay before starting. Choose Start channel, allow microphone access and share the listener link or QR code. Relay invitations ask listeners to confirm Join. Approve requests in the popup or pending list; Review later keeps them pending. Internet is required for pairing and for relayed audio."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]

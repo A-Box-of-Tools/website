@@ -254,7 +254,7 @@ a = """
 
 [[faq]]
 q = "Por que o leitor vai ver o meu endereço IP?"
-a = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira a opção de conexão acima antes de escolher Conectar."
+a = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira o tipo de conexão indicado. Escolha Entrar em um item da lista ou Conectar após abrir um convite comum."
 
 [[faq]]
 q = "Qual o tamanho máximo dos arquivos, e qual a velocidade?"
@@ -312,7 +312,7 @@ Sim. Antes de começar, escolha Rede local — sem retransmissor de internet, co
 
 [[faq]]
 q = "Como a lista encontra compartilhamentos locais?"
-a = "A lista agrupa compartilhamentos pelo endereço IPv4 público ou sub-rede IPv6 e pela origem da página, não pela proximidade física. Gateways compartilhados e VPNs podem incluir desconhecidos ou ocultar dispositivos. É preciso internet. Só aparecem compartilhamentos diretos locais ou por retransmissão na nuvem com visibilidade ativada. Descobrível é selecionado por padrão quando disponível; desmarque para usar apenas links e mantenha Privado em redes compartilhadas. Escolher um nome abre a página de consentimento, sem conexão automática nem dispensa da aprovação."
+a = "A lista agrupa compartilhamentos pelo endereço IPv4 público ou sub-rede IPv6 e pela origem da página, não pela proximidade física. Gateways compartilhados e VPNs podem incluir desconhecidos ou ocultar dispositivos. É preciso internet. Só aparecem compartilhamentos diretos locais ou por retransmissão na nuvem com visibilidade ativada. Descobrível é selecionado por padrão quando disponível; desmarque para usar apenas links e mantenha Privado em redes compartilhadas. Entrar inicia a solicitação com o tipo de conexão indicado em uma nova aba de leitura. Consultar a lista não conecta. Compartilhamentos privados aguardam aprovação; a solicitação aparece em uma caixa de diálogo e fica na lista após Revisar depois."
 
 [schema]
 description = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
