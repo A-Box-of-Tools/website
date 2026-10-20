@@ -77,10 +77,11 @@
       </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
       <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let people find it in your selected discovery scope.</p>
-      <section id="vi-requests-panel" class="paired-requests" hidden aria-labelledby="vi-requests-title">
+      <div role="region" id="vi-requests-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="vi-requests-title" data-pairing-requests>
         <h3 id="vi-requests-title">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
         <ul id="vi-requests"></ul>
-      </section>
+      </div>
       <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
       <section class="vi-invite" aria-labelledby="vi-invite-title">
@@ -109,7 +110,7 @@
     <p>Available connections lists both Direct and Cloud relay pagers, with icons for the route and password requirement. Local network discovery groups devices by their public internet address and website origin; it does not scan Wi-Fi or prove physical network membership. Choose Private group and enter the same group code on each device to discover pagers across networks. Private pagers appear only in that group, not in the local-network directory. The group code allows discovery; passwords and host approval still control admission.</p>
     <p>Direct sends encrypted voice between the browsers without a relay. When the host chooses Cloud relay and a participant chooses Join, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
     <p>Anyone who can find your pager can try to connect. Require approval is on for new pagers. You can also set a password, and mute or remove admitted participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
-    <p>Remove ends one participant session. A new tab or cleared browser storage can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
+    <p>Remove ends one participant session. Another browser or profile, or clearing site data, can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
   </details>
 </div>
 <dialog id="vi-password-dialog" class="paired-dialog" aria-labelledby="vi-password-title">

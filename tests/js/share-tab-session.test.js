@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { setImmediate as nextTurn } from 'node:timers/promises';
 import { TabSession } from '../../tools/share-tab/src/session.js';
 import { CHANNEL, PROTOCOL } from '../../tools/share-tab/src/protocol.js';
+import { AdmissionGrants, createAdmissionCache } from '../../shared/js/peer-admission.js';
 
 const CODE = 'tab-abcdefghijklmnop';
 const PUBLICATION = { code: CODE, lease: '01234567-89ab-4cde-8f01-23456789abcd', tool: 'share-tab' };
@@ -165,19 +166,98 @@ test('tab unavailable relay and Stop release capture without a direct retry', as
     assert.equal(f.session.role, null);
   }
 });
-async function request(f, id = 'v:1') {
-  signal(f.sockets[0], id, { dial: true }); await settle();
+async function request(f, id = 'v:1', token = null) {
+  const socket = f.sockets.at(-1);
+  signal(socket, id, { dial: true }); await settle();
   const peer = f.peers.at(-1);
-  signal(f.sockets[0], id, { description: { type: 'answer', sdp: SDP } }); await settle();
-  peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note: id }); await settle();
+  signal(socket, id, { description: { type: 'answer', sdp: SDP } }); await settle();
+  peer.channel.open(); peer.channel.receive('hello'); peer.channel.receive('request', { note: id, ...(token ? { token } : {}) }); await settle();
   return peer;
 }
 async function viewer(f) {
   await f.session.connect(CODE, 'Viewer');
-  const peer = f.peers[0], channel = new Channel();
+  const peer = f.peers.at(-1), channel = new Channel();
   peer.emit('datachannel', { channel }); channel.open(); channel.receive('hello'); await settle();
   return { peer, channel };
 }
+
+test('tab approval follows a returning browser but never replaces the media acknowledgement', async t => {
+  const f = fixture(t); await f.session.startHost(source(), CODE);
+  const first = await request(f);
+  assert.equal(f.session.approve('v:1'), true);
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  assert.match(token, /^[a-f0-9]{64}$/);
+  assert.equal(JSON.stringify(f.sockets[0].sent).includes(token), false);
+  f.sockets[0].receive({ type: 'leave', id: 'v:1' });
+  const returned = await request(f, 'v:2', token);
+  assert.deepEqual(f.requests.at(-1), []);
+  assert.equal(f.session.viewerCount, 1);
+  assert.equal(returned.transceivers.length, 0);
+  assert.equal(returned.channel.sent.find(message => message.type === 'approved').token, token);
+  returned.channel.receive('approval-ack'); await settle();
+  assert.equal(returned.transceivers.length, 1);
+  f.session.disconnectViewer('v:2');
+  const revoked = await request(f, 'v:3', token);
+  assert.equal(f.session.viewerCount, 0);
+  assert.equal(revoked.channel.sent.some(message => message.type === 'approved'), false);
+  assert.equal(f.requests.at(-1).length, 1);
+  f.session.approve('v:3');
+  const renewed = revoked.channel.sent.find(message => message.type === 'approved').token;
+  f.session.stop();
+  await f.session.startHost(source(), CODE);
+  const restarted = await request(f, 'v:4', renewed);
+  assert.equal(restarted.channel.sent.some(message => message.type === 'approved'), false);
+  assert.equal(restarted.transceivers.length, 0);
+});
+
+test('tab viewer remembers admission across explicit Disconnect and sends it only on the encrypted request', async t => {
+  const cache = createAdmissionCache({ storage: () => null }), f = fixture(t, { admissions: cache });
+  const token = new AdmissionGrants().issue();
+  let connected = await viewer(f);
+  connected.channel.receive('approved', { token });
+  f.session.stop();
+  connected = await viewer(f);
+  assert.equal(connected.channel.sent.find(message => message.type === 'request').token, token);
+  assert.equal(JSON.stringify(f.sockets.map(socket => [socket.url, socket.sent])).includes(token), false);
+  assert.equal(connected.peer.transceivers.length, 0);
+});
+
+test('tab grant capacity keeps a new request pending and preserves earlier approvals', async t => {
+  const f = fixture(t); await f.session.startHost(source(), CODE);
+  f.session.grants = new AdmissionGrants({ limit: 1 });
+  const first = await request(f);
+  f.session.approve('v:1');
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  f.session.removePeer('v:1');
+  const second = await request(f, 'v:2');
+  assert.equal(f.session.approve('v:2'), false);
+  assert.equal(f.states.at(-1).key, 'approval.limit');
+  assert.equal(second.transceivers.length, 0);
+  assert.equal(f.session.peers.get('v:2').pending, true);
+  assert.equal(f.session.grants.has(token), true);
+});
+
+test('an approved tab viewer receives busy without another approval prompt while the viewer slot is occupied', async t => {
+  const f = fixture(t); await f.session.startHost(source(), CODE);
+  const first = await request(f);
+  // A returning browser can finish its encrypted request after another
+  // pending viewer has taken the only slot. A later dial is refused earlier.
+  signal(f.sockets[0], 'v:2', { dial: true }); await settle();
+  const second = f.peers.at(-1);
+  signal(f.sockets[0], 'v:2', { description: { type: 'answer', sdp: SDP } }); await settle();
+  second.channel.open(); second.channel.receive('hello');
+  f.session.approve('v:1');
+  const token = first.channel.sent.find(message => message.type === 'approved').token;
+  second.channel.receive('request', { note: 'v:2', token }); await settle();
+  assert.equal(second.channel.sent.some(message => message.type === 'busy'), true);
+  assert.equal(second.closed, true);
+  assert.equal(f.requests.some(rows => rows.some(row => row.id === 'v:2')), false);
+  assert.equal(f.session.grants.has(token), true);
+  f.session.removePeer('v:1');
+  const returned = await request(f, 'v:3', token);
+  assert.equal(returned.channel.sent.some(message => message.type === 'approved'), true);
+  assert.equal(returned.transceivers.length, 0);
+});
 
 test('a remote hello before the local open callback still receives hello before the request', async (t) => {
   const f = fixture(t); await f.session.connect(CODE, 'Viewer');

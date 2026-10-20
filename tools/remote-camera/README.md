@@ -34,6 +34,21 @@ and camera-change/recovery guards as the list. Request withdrawal closes its
 dialog; hiding the page, pagehide, Stop and Stop confirmation also dismiss it
 without granting approval. The two dialogs never overlap.
 
+The inline request panel sits beside Start/Stop and the live status, before
+the camera preview and invitation. An approved viewer receives a private
+session receipt from `peer-admission.js`. The same browser can explicitly
+reconnect without another decision while this camera session is active.
+The receipt is scoped to the room and route and travels only through the
+encrypted control channel. A returning viewer still acknowledges acceptance
+before tracks are attached. Remove revokes its receipt, and Stop clears all
+grants even when the host starts again with the same link name. Foreground
+recovery retains the current session's grants; a reload creates no new host.
+The host keeps up to 256 grants without evicting departed viewers. When full,
+it refuses another approval until removal or a new camera session frees
+capacity. The browser cache holds 64 recent tool/room/route receipts across
+Text, Tab and Camera; an evicted receipt requires approval again. Live viewer
+limits still apply independently of remembered approvals.
+
 The tool uses the existing rendezvous at `wss://rendezvous.abox.tools`.
 `src/session.js` names that origin. Start and Connect each open one socket;
 opening a viewer fragment only selects the form. The page also opens a

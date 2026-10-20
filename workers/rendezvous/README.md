@@ -518,16 +518,24 @@ request. A pending visitor cannot mint relay credentials, send status, or
 exchange offers, answers or candidates, including through a forged envelope.
 Voice Oncall also waits for `ready` before requesting its caller's microphone.
 
-Approvals remember at most ten 128-bit identity digest prefixes in socket
-attachments. Voice Oncall uses the caller's existing separate key. Walkie-Talkie
-adds a per-listener `clientKey` to authentication; it is generated and retained
-by that browser, never copied from the shared invitation capability. Approved
-identities can reconnect while remembered. When the roster fills, only an older
-disconnected identity can be evicted; it must ask again on returning. Live
-admissions are never evicted. Size or capacity failure returns `request-error`
-without admitting the requester. A denied or new identity needs approval, and
-End remains terminal while any room anchor remains. Nothing persists after the
-last socket leaves.
+Approvals remember at most ten 128-bit identity digest prefixes for the host
+session in socket attachments. Voice Oncall uses the caller's existing separate
+key. Walkie-Talkie adds a per-listener `clientKey` to authentication; it is
+generated and retained by that browser, never copied from the shared invitation
+capability. A browser keeps this personal key when explicitly leaving, so it
+can rejoin the same host session without another approval. Neither a name,
+invitation nor network address identifies an approved participant.
+
+Leaving or losing a socket does not revoke approval, and a full roster never
+evicts an earlier grant. The limit is ten approved identities per host session,
+including those currently disconnected. Size or capacity failure returns
+`request-error` without admitting the requester. A successful Voice Oncall
+kick revokes that identity's grant and frees its approval slot while retaining
+the separate session block; an unsuccessful moderation change changes neither.
+A denied or new identity needs approval. End clears grants from the host and
+every reconnect anchor, and remains terminal while any room anchor remains.
+Nothing persists after the last socket leaves. Starting the same pager again
+after End requires fresh approval.
 
 Audio direction follows [SDP's session and media scopes](https://www.rfc-editor.org/rfc/rfc8866.html#section-6.7):
 an audio-section direction overrides the session default. This permits a browser

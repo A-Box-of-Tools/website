@@ -40,6 +40,11 @@
       </div>
       <p id="host-status" class="tab-share-status" role="status" aria-live="polite">Nothing is being captured or shared.</p>
       <p id="host-publication-status" class="tab-share-status" role="status" aria-live="polite" hidden></p>
+      <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
+        <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="viewer-requests" class="tab-share-requests" aria-live="polite"></ul>
+      </div>
       <div id="host-invitation" class="tab-share-invite" hidden>
         <div class="field">
           <label for="share-link">Viewer link</label>
@@ -54,11 +59,6 @@
       <div id="host-preview-panel" class="tab-share-video" hidden>
         <video id="local-video" autoplay muted playsinline aria-label="Preview of the tab you are sharing"></video>
       </div>
-      <section id="request-panel" hidden aria-labelledby="request-heading">
-        <h3 id="request-heading">Viewer requests</h3>
-        <p class="tab-share-help">Approve only the person you expect. Their note is not verified identity.</p>
-        <ul id="viewer-requests" class="tab-share-requests" aria-live="polite"></ul>
-      </section>
       <section id="accepted-panel" hidden aria-labelledby="accepted-heading">
         <h3 id="accepted-heading">Current viewer</h3>
         <ul id="accepted-viewers" class="tab-share-requests"></ul>

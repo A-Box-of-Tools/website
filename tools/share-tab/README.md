@@ -61,7 +61,22 @@ approve a request, the viewer must acknowledge acceptance, and only then may
 the host attach its video track and renegotiate. One approved viewer can
 watch, with up to four pending requests. Refusal, disconnect, Stop, stale
 callbacks and permission promises from a retired attempt cannot grant media
-to another attempt. A new viewer connection requires fresh approval.
+to another attempt. `peer-admission.js` gives an approved browser a private
+receipt for this host session. Disconnecting retains it; a later explicit
+request, including in another tab of the same browser, can reuse it without
+another host decision. The acknowledgement and one-viewer limit still apply.
+Remove revokes that receipt, and Stop clears every grant. A new capture session
+requires approval again. Receipts are sent only over the encrypted control
+channel and never appear in the viewer link.
+The host retains up to 256 grants without evicting earlier viewers; a full set
+refuses a new approval until removal or a new host session frees capacity.
+The browser cache holds 64 recent tool/room/route receipts across Text, Tab and
+Camera. An evicted receipt requires approval again. These limits are separate
+from the one-viewer limit for live video.
+
+Pending requests appear immediately below the host controls, before the link
+and preview, as well as in the dismissible popup. The shared inline panel stays
+in normal page flow so it cannot cover Stop sharing.
 
 The viewer receives video only. The application protocol contains no remote
 mouse, keyboard, navigation or website-mutation command. This is a property

@@ -38,7 +38,7 @@ roadmap_group = "beyond"
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks", "paired-tools"]
 supports_relay = true
-js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "room-names"]
+js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "peer-admission", "room-names"]
 lastmod = "2026-10-17"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -114,7 +114,7 @@ analytics_extra = """, and nothing
 
 [[facts]]
 mark = "&#10007;"
-text = "Nothing stored"
+text = "No server content storage"
 
 [[facts]]
 mark = "&#10007;"
@@ -161,7 +161,7 @@ body = """
       payload."""
 
 [[privacy]]
-title = "Nothing is stored, so closing the tab is the deletion."
+title = "Shared content is not stored on a server."
 body = """
  The share exists only while
       your tab is open. Close it and new readers find nothing, and readers
@@ -169,7 +169,7 @@ body = """
       copied out or downloaded before that moment is theirs, as it would be
       with anything you had handed them. The draft you type is kept in your
       own browser's storage so it is still here next time, and only there;
-      mark it one-off and it is kept nowhere at all."""
+      mark it one-off and it is kept nowhere at all. Separately, the reader's browser keeps a random approval receipt locally so an approved browser can disconnect and rejoin this host session without another approval. Stopping the host resets approval. One-off disables draft storage, not this receipt. Clearing or blocking site storage can require approval again; normal scripts on this website can read the stored receipt."""
 
 [[privacy]]
 title = "The link name is an address, and Private is the lock."

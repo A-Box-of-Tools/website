@@ -14,7 +14,7 @@ glyph = "app-window"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-transport", "peer-transport-ui", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-approval-ui", "room-names", "clipboard-feedback"]
+js_parts = ["peer-pairing", "peer-endpoint", "peer-network", "peer-transport", "peer-transport-ui", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-approval-ui", "peer-admission", "room-names", "clipboard-feedback"]
 supports_relay = true
 lastmod = "2026-10-17"
 
@@ -107,7 +107,7 @@ body = """
       acknowledges that approval before a video track is added. Only one
       approved viewer can watch at a time, with up to four waiting requests.
       A note is self-chosen text, not verified identity; recognise the expected
-      person and request before approving."""
+      person and request before approving. The viewer's browser stores a random approval receipt locally and presents it only over the encrypted peer channel. That browser can disconnect and rejoin this host session without another approval. Host removal revokes the receipt; stopping or starting a new session resets approval. Clearing or blocking site storage can require approval again. Normal scripts on this website can read stored receipts."""
 [[privacy]]
 title = "The viewer gets video, including anything visible in that tab."
 body = """

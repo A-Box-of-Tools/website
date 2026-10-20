@@ -43,4 +43,9 @@ test('control messages require the protocol, a known type and bounded note', () 
   const note = 'x'.repeat(80);
   assert.deepEqual(controlMessage(message('request', { note })), { protocol: PROTOCOL, type: 'request', note });
   for (const fields of [{}, { note: 42 }, { note: null }, { note: 'x'.repeat(81) }]) assert.equal(controlMessage(message('request', fields)), null);
+  for (const token of [null, 12, 'same device', 'a'.repeat(65)]) {
+    assert.equal(controlMessage(message('request', { note: '', token })), null);
+    assert.equal(controlMessage(message('approved', { token })), null);
+  }
+  assert.equal(controlMessage(message('request', { note: '', token: 'a'.repeat(64) })).token, 'a'.repeat(64));
 });

@@ -33,7 +33,7 @@ remain compatible.
 `workers/rendezvous/inbox.js` uses a separate `INBOXES` Durable Object namespace.
 The public room code is SHA-256 of a random host capability. Host authorization
 proves ownership of that code without putting its secret in a request URL. A
-participant has a separate random capability retained in per-tab session storage;
+participant has a separate random capability retained in a bounded local browser cache;
 its hashed identity stays stable across reconnection and is not a verified person.
 The host labels an unnamed participant with a localized Caller label and a short
 prefix of that identity, extending the prefix when needed to distinguish callers.
@@ -156,9 +156,21 @@ Escape keeps the request, while Approve and Deny check the current identity
 and active host. Ending invalidates late decisions.
 
 A bounded roster on live socket attachments allows the same approved identity
-to recover within the current room. A new identity needs approval. This is
+to recover within the current room. The shared `voice-identity.js` cache keeps
+the caller's personal key by room and route for a later explicit Join, including
+from another tab in the same browser. Disconnect stops automatic recovery
+without forgetting that key. The browser cache retains 64 recently used
+tool/room/route keys across both voice tools; cache eviction or clearing site
+data can require approval again. Password checks still apply. The ten-approval
+roster does not evict departed callers; Remove revokes their grant and frees a
+slot, while End clears all grants. A full roster asks the host to start another
+session instead of silently forgetting earlier approvals. If every socket
+disappears, the ephemeral room is gone and a new room needs fresh approval.
+A new identity needs approval. This is
 session continuity, not verification of a person's identity or a permanent ban.
-No room history is written to storage. Pending requests count toward capacity.
+The Worker writes no room history to storage. Pending requests count toward capacity.
+The shared inline request panel sits beside End pager and the participant list,
+before the invitation, so a dismissed popup remains easy to act on.
 
 ## The shared pairing library
 

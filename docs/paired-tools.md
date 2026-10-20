@@ -14,14 +14,13 @@ Wi-Fi, phone hotspots, the internet requirement for discovery and
 pairing, and device isolation. This is setup guidance, not a claim that a web
 page can enable a hotspot or that every hotspot permits direct connections.
 
-Browsing available entries never starts pairing or requests media. Walkie-Talkie
-provides Join on each row; that single action confirms its receive-only connection.
-Camera fills its invitation, Voice Oncall selects the pager, and Share Tab fills
-its code; a separate Connect, Join or Request action follows. Keyboard
-selection keeps focus in Voice Oncall's native radio group.
-Share Text opens its existing consent page in another tab so an unsent draft
-is retained. Its Connect action still precedes the introduction to the host.
-An active session cannot be replaced by choosing another entry.
+Browsing available entries never starts pairing or requests media. Each row
+provides Join, which starts that tool's connection request using the displayed
+route. Share Text opens a reader in another tab with a one-use consent record,
+so an unsent draft is retained without requiring another Connect action.
+Ordinary copied invitations keep their existing consent flow. Joining does not
+bypass host approval, passwords or explicit microphone transmission. An active
+session cannot be replaced by joining another entry.
 
 The visual order does not alter when discovery is permitted: Share Tab still
 requires Find connections or an explicit private-group selection; the other
@@ -217,10 +216,40 @@ peer-approval-ui.js supplies a shared request popup and optional pending list.
 Review later and Escape dismiss the popup without deciding. Callbacks recheck
 current requests and active host state; Stop, departure and suspension invalidate
 stale decisions. Camera retains its existing equivalent approval controller.
+The inline list uses `data-pairing-requests` and the shared
+`paired-host-requests` treatment. It sits next to the host's operating controls,
+before invitations and video previews. Share Text puts it above the editor so
+the host can keep writing while reviewing requests. Empty lists take no space;
+long lists stay in normal page flow rather than covering Stop controls.
+
+Approval belongs to a host session, not one transport connection. For Text,
+Tab and Camera, `peer-admission.js` issues unguessable receipts from the live
+host and remembers them in the joining browser, scoped to tool, room and route.
+Receipts travel only through the encrypted peer control channel; they never
+enter invitations, discovery, signaling or reports. A returning browser still
+chooses Join or Connect, but a valid receipt skips a second host decision.
+Camera and Tab still wait for the viewer's acknowledgement before attaching
+media. Removal revokes the receipt; ending the host session clears every grant,
+including when a new host reuses the same link name. Each host remembers up to
+256 grants without evicting earlier approvals; a full grant set refuses another
+approval until a grant is revoked or the host starts a new session. The browser
+cache retains the 64 most recently saved tool/room/route receipts across these
+three tools, with open-page memory when storage is unavailable. Cache eviction,
+clearing site data or using a different browser can require approval again.
+
 Both voice tools default to approval for new hosts. The Worker pins that policy,
 blocks pending peers from signaling and TURN credentials, and remembers a bounded
-approved roster on open socket attachments for same-identity recovery. A caller
-microphone is acquired only after authoritative admission. End/Leave stays final.
+approved roster on open socket attachments for same-identity recovery.
+`voice-identity.js` keeps up to 64 recently used tool/room/route personal keys
+across both voice tools for a later explicit rejoin. Cache eviction or clearing
+site data can require approval again; the invitation key alone never proves a
+prior approval. The ten-grant
+roster does not evict departed participants. When full, another approval requires
+a removal or a new host session. Oncall removal revokes the grant; End clears
+all approval anchors. If all sockets disappear, the ephemeral Worker state is
+gone and a newly created room requires approval again. A caller microphone is
+acquired only after authoritative admission. End/Leave stays final for automatic
+recovery; remembering an identity does not reconnect by itself.
 
 ## What each adapter retains
 

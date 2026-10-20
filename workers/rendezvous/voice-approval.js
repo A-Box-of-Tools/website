@@ -13,16 +13,17 @@ export const approvalIdentity = who => who.clientHash || who.id;
 export const approved = (owner, who) => owner.approval !== true
   || (owner.approved || []).includes(token(approvalIdentity(who)));
 
-export function rememberApproval(owner, who, active) {
+export function rememberApproval(owner, who) {
   const id = token(approvalIdentity(who));
   const retained = (owner.approved || []).filter(entry => entry !== id);
-  const live = new Set(active.filter(admitted).map(peer => token(approvalIdentity(peer))));
-  // Never evict a live admission. Older disconnected identities may ask again
-  // after turnover, rather than growing a permanent visitor registry.
-  if (retained.length >= MAX_APPROVED) {
-    const index = retained.findIndex(entry => !live.has(entry));
-    if (index < 0) return null;
-    retained.splice(index, 1);
-  }
+  // Leaving is not revocation. Refuse a new grant at capacity instead of
+  // surprising a returning participant with another approval request.
+  if (retained.length >= MAX_APPROVED) return null;
   return { ...owner, approved: [...retained, id] };
 }
+
+export const forgetApproval = (owner, who) => owner.approval === true
+  ? { ...owner, approved: (owner.approved || []).filter(entry => entry !== token(approvalIdentity(who))) }
+  : owner;
+
+export const clearApprovals = owner => owner.approval === true ? { ...owner, approved: [] } : owner;

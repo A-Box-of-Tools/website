@@ -50,7 +50,7 @@ analytics_extra = """, y nada de lo
 
 [[facts]]
 mark = "&#10007;"
-text = "Nada guardado"
+text = "Sin contenido guardado en servidores"
 
 [[facts]]
 mark = "&#10007;"
@@ -100,7 +100,7 @@ body = """
       nunca el contenido."""
 
 [[privacy]]
-title = "Nada se guarda: cerrar la pestaña es el borrado."
+title = "El contenido compartido no se guarda en un servidor."
 body = """
  Lo compartido existe solo
       mientras tu pestaña está abierta. Ciérrala y los lectores nuevos no
@@ -109,7 +109,7 @@ body = """
       cualquier cosa que le hubieras dado en mano. El borrador que escribes
       queda en el almacenamiento de tu propio navegador, para que siga ahí
       la próxima vez, y solo ahí; marcado como de un solo uso, no queda en
-      ninguna parte."""
+      ninguna parte. Por separado, el navegador del lector guarda un comprobante aleatorio de aprobación para poder desconectarse y volver a esta sesión sin otra aprobación. Detener al anfitrión restablece la aprobación. Un solo uso desactiva el guardado del borrador, no este comprobante. Borrar o bloquear los datos del sitio puede exigir otra aprobación; los scripts normales de este sitio pueden leer el comprobante."""
 
 [[privacy]]
 title = "El nombre del enlace es una dirección, y Privado, el cerrojo."

@@ -3,7 +3,7 @@
 // them and the last socket leaving removes the room's complete state.
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
-import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval } from "./voice-approval.js";
+import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, clearApprovals } from "./voice-approval.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
@@ -311,7 +311,7 @@ export class Broadcast {
       this.send(listener, { type: "denied" }); this.drop(listener);
       try { listener.close(4403, "denied"); } catch {} return;
     }
-    const updated = rememberApproval(owner, who, this.sockets("listener").map(peer => peer.deserializeAttachment()));
+    const updated = rememberApproval(owner, who);
     if (!updated) { this.send(host, { type: "request-error", id: who.id, generation: owner.generation, error: "full" }); return; }
     host.serializeAttachment(updated);
     for (const peer of this.sockets("listener")) {
@@ -371,10 +371,11 @@ export class Broadcast {
       return;
     }
     if (who.role === "host" && value.type === "end" && fields(value, ["type", "generation"])) {
-      ws.serializeAttachment({ ...who, ended: true, talking: false });
+      const ended = { ...clearApprovals(who), ended: true, talking: false };
+      ws.serializeAttachment(ended);
       this.withdraw(who);
       for (const listener of this.sockets("listener")) {
-        listener.serializeAttachment({ ...listener.deserializeAttachment(), ended: true, connection: null });
+        listener.serializeAttachment({ ...listener.deserializeAttachment(), ...approvalState(ended), ended: true, connection: null });
         this.send(listener, { type: "ended" });
       }
       this.send(ws, { type: "ended" });

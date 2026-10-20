@@ -46,7 +46,7 @@ choose = "um nome de link"
 
 [[facts]]
 mark = "&#10007;"
-text = "Nada armazenado"
+text = "Sem conteúdo armazenado em servidores"
 
 [[facts]]
 mark = "&#10007;"
@@ -96,7 +96,7 @@ body = """
       endereço e a hora, nunca o conteúdo."""
 
 [[privacy]]
-title = "Nada é armazenado: fechar a aba é a exclusão."
+title = "O conteúdo compartilhado não fica em um servidor."
 body = """
  O compartilhamento existe só
       enquanto a sua aba está aberta. Feche-a e leitores novos não encontram
@@ -105,7 +105,7 @@ body = """
       coisa que você tivesse entregado em mãos. O rascunho que você digita
       fica no armazenamento do seu próprio navegador, para estar aqui da
       próxima vez, e só nele; marcado como descartável, não fica em lugar
-      nenhum."""
+      nenhum. Separadamente, o navegador do leitor guarda um comprovante aleatório de aprovação para desconectar e voltar a esta sessão sem nova aprovação. Parar o anfitrião redefine a aprovação. Descartável desativa o armazenamento do rascunho, não deste comprovante. Limpar ou bloquear os dados do site pode exigir nova aprovação; os scripts normais deste site podem ler o comprovante."""
 
 [[privacy]]
 title = "O nome do link é um endereço, e Privado é a tranca."

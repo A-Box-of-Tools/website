@@ -12,6 +12,7 @@ import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js'
 import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { AdmissionGrants } from './shared/peer-admission.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
@@ -197,7 +198,7 @@ const session = new CameraSession({
           showCameraIdentity(cameraIntent.code);
           renderCameraRecovery();
           showStatus('camera.resume-needed', 'camera');
-        } else { cameraIntent = null; idleCamera(); }
+        } else { cameraIntent?.approvalGrants.clear(); cameraIntent = null; idleCamera(); }
       }
       else idleViewer();
       showActiveRole(retain ? 'camera' : null);
@@ -339,6 +340,7 @@ function startDiscovery() {
 
 function stop(key = 'connection.stopped') {
   // Explicit Stop and navigation retire recovery before asynchronous cleanup.
+  cameraIntent?.approvalGrants.clear();
   cameraIntent = null;
   resumeOnVisible = false;
   closeStopDialog();
@@ -405,7 +407,7 @@ function showApprovalRequest(request) {
 function decideViewerRequest(action, id) {
   if (approvalBlocked() || !pendingApprovalRequests.has(id)) return;
   if (approvalDialogPeer === id) closeApprovalDialog({ restoreFocus: true });
-  if (action === 'approve' && !session.approve(id)) showStatus('connection.busy', 'camera');
+  if (action === 'approve' && !session.approve(id)) showStatus(session.approvalError || 'connection.busy', 'camera');
   else if (action === 'deny') session.deny(id);
 }
 
@@ -925,6 +927,7 @@ async function startCamera() {
   stop();
   mode = 'camera';
   cameraIntent = { code, discoverable: $('camera-discoverable').checked,
+    approvalGrants: new AdmissionGrants(),
     discoveryGroup: groupControl.id(),
     transport: transportControl.value(),
     requireApproval: $('camera-require-approval').checked, deviceId: null,

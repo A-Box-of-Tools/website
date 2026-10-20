@@ -43,7 +43,7 @@ analytics_extra = """, und nichts von dem,
 
 [[facts]]
 mark = "&#10007;"
-text = "Nichts gespeichert"
+text = "Keine Inhalte auf Servern gespeichert"
 
 [[facts]]
 mark = "&#10007;"
@@ -70,7 +70,7 @@ title = "Was der Vermittler ist, und alles, was er sieht."
 body = "Eine Direktverbindung braucht eine Vorstellung. Diese Startseite öffnet automatisch einen WebSocket zum Vermittler für auffindbare lokale Link-Namen; das Starten einer Freigabe öffnet einen weiteren für die Freigabe selbst. Ein Leser nutzt einen Vermittlungssocket. Der Server bringt den Leser mit dem Teilenden unter dem Link-Namen zusammen und reicht einige Kilobyte Verbindungsaushandlung weiter. Er schreibt keinen Speicher; Räume und Sucheinträge enden mit ihren offenen Verbindungen. Er sieht Namen, Verbindungszeiten, IP-Adressen und Verbindungsaufbau, aber keinen Text, keine Dateien, keine Zulassungsentscheidung und keine private Vorstellung. Die Suche zeigt nur Namen verbundener Teilender mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Gemeinsame VPNs oder vom Anbieter geteilte Adressen können andere Netze einschließen; Geräte in der Nähe mit IPv4- und IPv6-Verbindungen oder anderen Routen fehlen möglicherweise. Der vollständige Quelltext liegt im Repository. Cloudflare hält Verbindungsprotokolle sieben Tage vor: Adresse, Link-Name und Zeit, niemals eine Nutzlast."
 
 [[privacy]]
-title = "Nichts ist gespeichert - das Schließen des Tabs ist die Löschung."
+title = "Geteilte Inhalte werden nicht auf einem Server gespeichert."
 body = """
  Die Freigabe existiert nur,
       solange Ihr Tab offen ist. Schließen Sie ihn, finden neue Leser nichts
@@ -79,7 +79,7 @@ body = """
       gehört, wie bei allem, das Sie jemandem in die Hand gegeben haben. Der
       Entwurf, den Sie tippen, liegt im Speicher Ihres eigenen Browsers,
       damit er beim nächsten Mal noch da ist, und nur dort; als einmalig
-      markiert liegt er nirgendwo."""
+      markiert liegt er nirgendwo. Unabhängig davon speichert der Browser des Lesers einen zufälligen Freigabenachweis lokal, damit ein zugelassener Browser sich in dieser Hostsitzung ohne erneute Freigabe wieder verbinden kann. Stoppen des Hosts setzt die Freigabe zurück. Einmalig verhindert nur das Speichern des Entwurfs, nicht dieses Nachweises. Gelöschter oder blockierter Websitespeicher kann eine neue Freigabe nötig machen; normale Skripte dieser Website können den Nachweis lesen."""
 
 [[privacy]]
 title = "Der Link-Name ist eine Adresse, und Privat ist das Schloss."

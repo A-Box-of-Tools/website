@@ -19,6 +19,7 @@ import { groupUrl } from './shared/discovery-group.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
 import { createApprovalPrompt } from './shared/peer-approval-ui.js';
+import { AdmissionGrants, createAdmissionCache, validAdmissionToken } from './shared/peer-admission.js';
 import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
 // The environment's address, named in this page's
@@ -241,28 +242,28 @@ function refreshCount() {
   setStatus(`${parts.join(', ')}. ${phrase('share.closing-note')}`);
 }
 
-// Admission survives a reader's language switch: each admitted channel gets
-// a token, and a knock that carries a valid one is let straight back in -
-// so switching languages does not knock on the sharer's door twice. The
-// tokens live only in this tab's memory and die with the share.
-const admitTokens = new Set();
+// The host remembers its own grants only until Stop. A reader may present
+// one again after choosing to reconnect, including from another browser tab.
+const admitTokens = new AdmissionGrants();
+const admissions = createAdmissionCache();
 
-function admitViewer(id, dc) {
-  if (!sharing || controlChannels.get(id) !== dc || dc.readyState !== 'open') return;
+function admitViewer(id, dc, previousToken = null) {
+  if (!sharing || controlChannels.get(id) !== dc || dc.readyState !== 'open') return false;
+  const token = isPrivate ? admitTokens.issue(previousToken) : null;
+  if (isPrivate && !token) { setStatus(phrase('approval.limit'), true); return false; }
   peerDiagnostics.get(id)?.mark('approved');
   channels.set(id, dc);
-  const token = crypto.randomUUID();
-  admitTokens.add(token);
   try {
-    dc.send(JSON.stringify({ type: 'token', token }));
+    if (token) dc.send(JSON.stringify({ type: 'token', token }));
     dc.send(payload());
     if ($('text').value !== '') globalThis.aboxToolComplete?.();
     dc.send(filesMsg());
   } catch {}
   refreshCount();
+  return true;
 }
 
-function addRequest(id, dc, note) {
+function addRequest(id, dc, note, token = null) {
   peerDiagnostics.get(id)?.mark('approval-requested');
   const row = document.createElement('div');
   row.className = 'request';
@@ -278,7 +279,7 @@ function addRequest(id, dc, note) {
   deny.textContent = phrase('share.deny');
   deny.onclick = () => decideRequest(id, false);
   row.append(text, admit, deny);
-  pending.set(id, { dc, row, note });
+  pending.set(id, { dc, row, note, token });
   // A carried admission token can belong to a previous share with this name.
   // Acknowledging the pending knock distinguishes a person's decision from
   // a peer channel that has stopped delivering its first response.
@@ -296,8 +297,12 @@ function decideRequest(id, approve) {
   const entry = pending.get(id);
   if (!sharing || !entry || controlChannels.get(id) !== entry.dc || entry.dc.readyState !== 'open') return;
   approvalPrompt.close(false);
+  if (approve) {
+    if (admitViewer(id, entry.dc, entry.token)) { removeRequest(id); refreshCount(); }
+    return;
+  }
+  admitTokens.revoke(entry.token);
   removeRequest(id);
-  if (approve) { admitViewer(id, entry.dc); return; }
   peerDiagnostics.get(id)?.finish('denied');
   try { entry.dc.send(JSON.stringify({ type: 'denied' })); } catch {}
   // Let the refusal arrive before the channel under it is torn down.
@@ -762,13 +767,12 @@ async function hostSignal(from, data, servers) {
         if (m.type === 'get') { sender.request(m); return; }
         if (m.type === 'cancel-file') { sender.cancel(m.request); return; }
         if (m.type === 'knock' && isPrivate && !channels.has(from) && !pending.has(from)) {
-          // A knock carrying a token this share issued is a reader who was
-          // already let in and merely switched language - no second knock.
+          // A host-issued grant survives a reader leaving, but never a new share.
           if (typeof m.token === 'string' && admitTokens.has(m.token)) {
-            admitViewer(from, dc);
+            admitViewer(from, dc, m.token);
             return;
           }
-          addRequest(from, dc, String(m.note ?? '').slice(0, 200));
+          addRequest(from, dc, String(m.note ?? '').slice(0, 200), validAdmissionToken(m.token) ? m.token : null);
         }
       };
       dc.onerror = () => { trace.finish('channel-error'); revealDiagnostics(); };
@@ -986,7 +990,7 @@ function view(code, recovered = null) {
 
   const discoveryJoin = !recovered && consumeJoinedPage();
   const session = recovered ?? { consent: carried || discoveryJoin, discoveryJoin, relay: wantRelay, transport: mode, localMode,
-    token: null, asMd: false, mdTouched: false, generation: 0 };
+    token: admissions.read('share-text', code, mode), asMd: false, mdTouched: false, generation: 0 };
   if (recovered) { carried = session.consent; wantRelay = session.relay; }
   const events = new AbortController();
   const listen = (id, event, handler) => $(id).addEventListener(event, handler, { signal: events.signal });
@@ -1447,8 +1451,10 @@ function view(code, recovered = null) {
         return;
       }
       if (msg.type === 'token') {
-        session.token = String(msg.token);
-        try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
+        if (!validAdmissionToken(msg.token)) return;
+        session.token = msg.token;
+        admissions.save('share-text', code, mode, msg.token);
+        try { sessionStorage.setItem(`share-text-token:${code}`, msg.token); } catch {}
         return;
       }
       if (msg.type === 'private') {
@@ -1457,9 +1463,8 @@ function view(code, recovered = null) {
         if (got) return;
         introduced = true;
         clearDeadlines();
-        // A reader who was admitted and switched language knocks again with
-        // the token the sharer issued, silently; anyone else knocks aloud.
-        let token = carried ? session.token : null;
+        // Join/Connect remains deliberate; only the host decision is remembered.
+        let token = session.token ?? admissions.read('share-text', code, mode);
         try { token ??= carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
         if (token !== null) {
           awaitIntroduction();
