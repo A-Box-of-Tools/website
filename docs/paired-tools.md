@@ -14,14 +14,13 @@ Wi-Fi, phone hotspots, the internet requirement for discovery and
 pairing, and device isolation. This is setup guidance, not a claim that a web
 page can enable a hotspot or that every hotspot permits direct connections.
 
-Browsing available entries never starts pairing or requests media. Walkie-Talkie
-provides Join on each row; that single action confirms its receive-only connection.
-Camera fills its invitation, Voice Oncall selects the pager, and Share Tab fills
-its code; a separate Connect, Join or Request action follows. Keyboard
-selection keeps focus in Voice Oncall's native radio group.
-Share Text opens its existing consent page in another tab so an unsent draft
-is retained. Its Connect action still precedes the introduction to the host.
-An active session cannot be replaced by choosing another entry.
+Browsing available entries never starts pairing or requests media. Each row
+provides Join, which starts that tool's connection request using the displayed
+route. Share Text opens a reader in another tab with a one-use consent record,
+so an unsent draft is retained without requiring another Connect action.
+Ordinary copied invitations keep their existing consent flow. Joining does not
+bypass host approval, passwords or explicit microphone transmission. An active
+session cannot be replaced by joining another entry.
 
 The visual order does not alter when discovery is permitted: Share Tab still
 requires Find connections or an explicit private-group selection; the other
