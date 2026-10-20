@@ -192,7 +192,7 @@ a = """
 
 [[faq]]
 q = "Warum sieht der Leser meine IP-Adresse?"
-a = "Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie die Verbindungsart oben, bevor Sie ausdrücklich Verbinden wählen."
+a = "Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie den angezeigten Verbindungstyp. Wählen Sie Beitreten bei einem Listeneintrag oder Verbinden nach dem Öffnen einer gewöhnlichen Einladung."
 
 [[faq]]
 q = "Wie groß dürfen die Dateien sein, und wie schnell ist es?"

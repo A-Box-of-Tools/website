@@ -111,7 +111,7 @@ a = "Le réglage par défaut. Chaque lecteur qui arrive apprend que le partage e
 
 [[faq]]
 q = "Pourquoi le lecteur verra-t-il mon adresse IP ?"
-a = "La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le choix de connexion ci-dessus avant de choisir explicitement Se connecter."
+a = "La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le type de connexion indiqué. Choisissez Rejoindre dans la liste ou Se connecter après avoir ouvert une invitation ordinaire."
 
 [[faq]]
 q = "Quelle taille pour les fichiers, et quelle vitesse ?"

@@ -339,7 +339,7 @@ a = """
 [[faq]]
 q = "Why will the reader see my IP address?"
 a = """
-Direct connections exchange the network addresses needed to reach each other. Readers choose Connect after reviewing this. Cloud relay uses relay candidates instead and Cloudflare sees both devices' network addresses and traffic metadata. It is a connection option, not an anonymity guarantee."""
+Direct connections exchange the network addresses needed to reach each other. Readers choose Join on a discovery entry or Connect after opening an ordinary invitation, using the displayed connection type. Cloud relay uses relay candidates instead and Cloudflare sees both devices' network addresses and traffic metadata. It is a connection option, not an anonymity guarantee."""
 
 [[faq]]
 q = "How big can the files be, and how fast is it?"

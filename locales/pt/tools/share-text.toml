@@ -254,7 +254,7 @@ a = """
 
 [[faq]]
 q = "Por que o leitor vai ver o meu endereço IP?"
-a = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira a opção de conexão acima antes de escolher Conectar."
+a = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira o tipo de conexão indicado. Escolha Entrar em um item da lista ou Conectar após abrir um convite comum."
 
 [[faq]]
 q = "Qual o tamanho máximo dos arquivos, e qual a velocidade?"

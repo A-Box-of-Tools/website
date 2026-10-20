@@ -259,7 +259,7 @@ a = """
 
 [[faq]]
 q = "¿Por qué verá el lector mi dirección IP?"
-a = "La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión de arriba antes de elegir Conectar."
+a = "La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa el tipo de conexión indicado. Elige Unirse junto a un recurso de la lista o Conectar después de abrir una invitación normal."
 
 [[faq]]
 q = "¿Cómo de grandes pueden ser los archivos, y qué velocidad tiene?"
