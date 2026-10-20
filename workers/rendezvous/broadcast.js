@@ -3,6 +3,7 @@
 // them and the last socket leaving removes the room's complete state.
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
+import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval } from "./voice-approval.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
@@ -159,7 +160,7 @@ export class Broadcast {
           || owner.scope !== claim.scope || owner.listenHash !== listenHash) {
         return new Response(null, { status: 403 });
       }
-      return new Response(JSON.stringify({ name: owner.name, listenKey: claim.listenKey, ...transportFrame(mode(owner.transport)) }), {
+      return new Response(JSON.stringify({ name: owner.name, listenKey: claim.listenKey, ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) }), {
         headers: { "content-type": "application/json" },
       });
     }
@@ -194,7 +195,9 @@ export class Broadcast {
 
   async authenticate(ws, value, who) {
     const isHost = value.role === "host";
-    const transport = mode(value.transport), extra = transportFields(value);
+    const transport = mode(value.transport), extra = [...transportFields(value),
+      ...(isHost && Object.hasOwn(value, "approval") ? ["approval"] : []),
+      ...(!isHost && Object.hasOwn(value, "clientKey") ? ["clientKey"] : [])];
     const offered = isHost && fields(value, ["type", "role", "key", "listenKey", "roomName", "discover", ...extra])
       && value.discover === true;
     const name = offered ? roomName(value.roomName) : null;
@@ -203,14 +206,17 @@ export class Broadcast {
         || value.type !== "auth" || !["host", "listener"].includes(value.role)
         || typeof value.key !== "string" || !KEY.test(value.key)
         || isHost && (typeof value.listenKey !== "string" || !KEY.test(value.listenKey))
+        || Object.hasOwn(value, "approval") && (!isHost || typeof value.approval !== "boolean")
+        || Object.hasOwn(value, "clientKey") && (isHost || typeof value.clientKey !== "string" || !KEY.test(value.clientKey))
         || offered && (name === null || value.key === value.listenKey)) {
       this.refuse(ws, 4400, "invalid"); return;
     }
     // Claim the pending socket before digesting: a second auth frame and a
     // concurrent timeout must not install authority after this one is retired.
     ws.serializeAttachment({ ...who, authenticating: true });
-    const [keyHash, listenHash] = await Promise.all([
+    const [keyHash, listenHash, clientHash] = await Promise.all([
       broadcastCode(value.key), isHost ? broadcastCode(value.listenKey) : Promise.resolve(null),
+      !isHost && value.clientKey ? broadcastCode(value.clientKey) : Promise.resolve(null),
     ]);
     const current = ws.deserializeAttachment();
     if (ws.readyState !== 1 || current?.role !== "pending" || !current.authenticating) return;
@@ -221,11 +227,14 @@ export class Broadcast {
       const retained = this.host()?.deserializeAttachment() ?? this.sockets("listener")
         .map(peer => peer.deserializeAttachment()).find(peer => peer.verified);
       if (retained && mode(retained.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
+      if (!approvalMatches(retained, value.approval)) { this.refuse(ws, 4403, "approval-mismatch"); return; }
+      if (retained?.ended) { this.send(ws, { type: "ended" }); this.drop(ws); try { ws.close(1000, "ended"); } catch {} return; }
       const previous = this.sockets("host");
       const generation = crypto.randomUUID();
       const scope = offered && validScope(who.scope) ? who.scope : null;
       const lease = scope === null ? null : crypto.randomUUID();
       ws.serializeAttachment({ role: "host", code: who.code, listenHash, generation, transport,
+        ...approvalState({ ...retained, ...approvalFrame(value) }),
         ...(offered ? { name, scope, lease } : {}),
         talking: false, ended: false, window: Date.now(), updates: 0 });
       for (const old of previous) {
@@ -237,7 +246,7 @@ export class Broadcast {
         this.send(old, { type: "replaced" });
         try { old.close(4409, "replaced"); } catch {}
       }
-      if (!this.send(ws, { type: "host-ready", generation, ...transportFrame(transport),
+      if (!this.send(ws, { type: "host-ready", generation, ...transportFrame(transport), ...approvalFrame(ws.deserializeAttachment()),
         ...(offered ? { discovery: lease === null ? null : { code: who.code, lease, tool: "walkie-talkie" } } : {}) })) return;
       for (const listener of this.sockets("listener")) {
         if (listener.deserializeAttachment().listenHash !== listenHash) this.refuse(listener, 4403, "unauthorized");
@@ -246,16 +255,23 @@ export class Broadcast {
       return;
     }
     const limit = transport === "relay" ? Math.min(MAX_LISTENERS, relayPolicy(this.env)?.maxPeers ?? 0) : MAX_LISTENERS;
-    if (this.sockets("listener").length >= limit) { this.refuse(ws, 4429, "full"); return; }
+    const previous = clientHash ? this.sockets("listener").filter(peer => peer.deserializeAttachment().clientHash === clientHash) : [];
+    if (this.sockets("listener").filter(peer => !previous.includes(peer)).length >= limit) { this.refuse(ws, 4429, "full"); return; }
     const host = this.host()?.deserializeAttachment();
     const anchors = this.sockets("listener").map((peer) => peer.deserializeAttachment()).filter((peer) => peer.verified);
     const trusted = host ?? anchors[0];
     if (trusted && trusted.listenHash !== keyHash) { this.refuse(ws, 4403, "unauthorized"); return; }
     if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
     ws.serializeAttachment({ role: "listener", code: who.code, id: crypto.randomUUID(),
+      ...(clientHash ? { clientHash } : {}), admitted: false, ...approvalState(trusted),
       listenHash: keyHash, transport, verified: trusted !== undefined && trusted !== null,
       generation: host ? null : trusted?.generation ?? null, connection: null,
       ended: trusted?.ended === true, window: Date.now(), updates: 0 });
+    for (const old of previous) {
+      this.drop(old);
+      this.send(old, { type: "replaced" });
+      try { old.close(4409, "replaced"); } catch {}
+    }
     this.ready(ws);
   }
 
@@ -266,14 +282,44 @@ export class Broadcast {
     if (!owner) { this.send(ws, { type: who.ended ? "ended" : "waiting" }); return; }
     if (who.listenHash !== owner.listenHash) { this.refuse(ws, 4403, "unauthorized"); return; }
     if (mode(who.transport) !== mode(owner.transport)) { this.refuse(ws, 4403, "transport-mismatch"); return; }
-    const joining = !who.verified || who.generation !== owner.generation;
-    const updated = { ...who, verified: true, generation: owner.generation,
+    const joining = !admitted(who) || who.generation !== owner.generation;
+    const allowed = approved(owner, who);
+    const updated = { ...who, verified: true, admitted: allowed, ...approvalState(owner), generation: owner.generation,
       ended: owner.ended, ...(joining ? { connection: null } : {}) };
     ws.serializeAttachment(updated);
     if (owner.ended) { this.send(ws, { type: "ended" }); return; }
-    if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation, talking: owner.talking, ...transportFrame(mode(owner.transport)) }) && joining) {
+    if (!allowed) {
+      if (who.generation !== owner.generation || !who.verified) this.send(host, {
+        type: "request", id: who.id, name: "", generation: owner.generation });
+      this.send(ws, { type: "approval-pending", id: who.id, generation: owner.generation,
+        ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) });
+      return;
+    }
+    if (this.send(ws, { type: "ready", id: who.id, generation: owner.generation, talking: owner.talking,
+      ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) }) && joining) {
       this.send(host, { type: "join", id: who.id, generation: owner.generation });
     }
+  }
+
+  decide(host, owner, value) {
+    const listener = this.sockets("listener").find(peer => peer.deserializeAttachment().id === value.to);
+    const who = listener?.deserializeAttachment();
+    if (!who || !who.verified || admitted(who) || who.generation !== owner.generation) {
+      this.send(host, { type: "request-resolved", id: value.to, generation: owner.generation }); return;
+    }
+    if (value.type === "deny") {
+      this.send(listener, { type: "denied" }); this.drop(listener);
+      try { listener.close(4403, "denied"); } catch {} return;
+    }
+    const updated = rememberApproval(owner, who, this.sockets("listener").map(peer => peer.deserializeAttachment()));
+    if (!updated) { this.send(host, { type: "request-error", id: who.id, generation: owner.generation, error: "full" }); return; }
+    host.serializeAttachment(updated);
+    for (const peer of this.sockets("listener")) {
+      const state = peer.deserializeAttachment();
+      if (state.verified) peer.serializeAttachment({ ...state, ...approvalState(updated) });
+    }
+    this.send(host, { type: "request-resolved", id: who.id, generation: owner.generation });
+    this.ready(listener);
   }
 
   async webSocketMessage(ws, message) {
@@ -298,7 +344,7 @@ export class Broadcast {
         const current = ws.deserializeAttachment(), owner = this.host()?.deserializeAttachment();
         return ws.readyState === 1 && current?.generation === generation && owner?.generation === generation
           && !owner.ended && owner.transport === "relay" && current.transport === "relay"
-          && (current.role === "host" || current.role === "listener" && current.verified);
+          && (current.role === "host" || current.role === "listener" && admitted(current));
       };
       return answerRelayRequest(ws, value, { env: this.env, tool: "walkie-talkie", authorized,
         current: () => ws.readyState === 1 && ws.deserializeAttachment()?.generation === generation });
@@ -313,10 +359,14 @@ export class Broadcast {
     if (value.generation !== owner.generation || who.generation !== owner.generation) {
       this.send(ws, { type: "error", error: "stale" }); return;
     }
+    if (who.role === "host" && ["approve", "deny"].includes(value.type)
+        && fields(value, ["type", "generation", "to"]) && uuid(value.to)) {
+      this.decide(ws, owner, value); return;
+    }
     if (who.role === "host" && value.type === "status" && fields(value, ["type", "generation", "talking"])
         && typeof value.talking === "boolean") {
       ws.serializeAttachment({ ...who, talking: value.talking });
-      for (const listener of this.sockets("listener")) this.send(listener, {
+      for (const listener of this.sockets("listener").filter(peer => admitted(peer.deserializeAttachment()))) this.send(listener, {
         type: "status", generation: owner.generation, talking: value.talking });
       return;
     }
@@ -335,13 +385,13 @@ export class Broadcast {
     if (who.role === "host") {
       const listener = this.sockets("listener").find((peer) => peer.deserializeAttachment().id === value.to);
       const target = listener?.deserializeAttachment();
-      if (!target?.verified || target.generation !== owner.generation) { this.send(ws, { type: "error", error: "stale" }); return; }
+      if (!admitted(target) || target.generation !== owner.generation) { this.send(ws, { type: "error", error: "stale" }); return; }
       // Candidates can precede an offer, and late candidates can follow a
       // replacement offer. Only the offer establishes the answer's authority.
       if (signal.type === "offer") listener.serializeAttachment({ ...target, connection: signal.connection });
       this.send(listener, { ...signal, from: "host", to: target.id });
     } else {
-      if (!who.verified || who.connection !== signal.connection) { this.send(ws, { type: "error", error: "stale" }); return; }
+      if (!admitted(who) || who.connection !== signal.connection) { this.send(ws, { type: "error", error: "stale" }); return; }
       this.send(host, { ...signal, from: who.id, to: "host" });
     }
   }
@@ -371,7 +421,7 @@ export class Broadcast {
     } else if (who.role === "listener" && who.verified) {
       const host = this.host();
       if (host?.deserializeAttachment().generation === who.generation) {
-        this.send(host, { type: "leave", id: who.id, generation: who.generation });
+        this.send(host, { type: admitted(who) ? "leave" : "request-resolved", id: who.id, generation: who.generation });
       }
     }
   }

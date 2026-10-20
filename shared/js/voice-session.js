@@ -22,8 +22,8 @@ const uuid = () => {
 };
 
 class VoiceSession {
-  constructor({ role, code, key, listenKey, mode = 'broadcast', transport = 'direct', roomName = '', discover = false, discoveryGroup = null, passwordProof = null, name = '',
-    onState = () => {}, onStream = () => {}, onParticipants = () => {},
+  constructor({ role, code, key, listenKey, clientKey, requireApproval, mode = 'broadcast', transport = 'direct', roomName = '', discover = false, discoveryGroup = null, passwordProof = null, name = '',
+    onState = () => {}, onStream = () => {}, onParticipants = () => {}, onRequests = () => {},
     Socket = globalThis.WebSocket, Peer = globalThis.RTCPeerConnection,
     mediaDevices = globalThis.navigator?.mediaDevices, audioSession = globalThis.navigator?.audioSession, clock = realClock,
     origin = rendezvousEndpoint(), endpoint }) {
@@ -31,6 +31,12 @@ class VoiceSession {
     this.code = code;
     this.key = key;
     this.listenKey = listenKey;
+    this.clientKey = clientKey;
+    this.requireApproval = requireApproval;
+    this.onRequests = onRequests;
+    this._requests = new Map();
+    this._approval = null;
+    this._awaitingApproval = false;
     this.roomName = roomName;
     this.discover = discover === true;
     this.passwordProof = passwordProof;
@@ -60,6 +66,7 @@ class VoiceSession {
     this._captureAudioLease = null;
     this._captureState = this._source ? 'ready' : null;
     this._captureRecovery = null;
+    this._captureOpening = null;
     this._captureBroken = false;
     this._clock = clock;
     const url = new URL(endpoint || origin);
@@ -93,6 +100,8 @@ class VoiceSession {
     if (!this.transport || !/^[0-9a-f]{64}$/.test(this.code || '') || !/^[A-Za-z0-9_-]{43}$/.test(this.key || '') ||
         !(this._inbox ? ['host', 'sender'] : ['host', 'listener']).includes(this.role) ||
         (!this._inbox && this.role === 'host' && !/^[A-Za-z0-9_-]{43}$/.test(this.listenKey || '')) ||
+        (this.requireApproval !== undefined && (this.role !== 'host' || typeof this.requireApproval !== 'boolean')) ||
+        (this.clientKey !== undefined && (this._inbox || !this._client || !/^[A-Za-z0-9_-]{43}$/.test(this.clientKey))) ||
         (this._inbox && this.passwordProof !== null && !/^[A-Za-z0-9_-]{43}$/.test(this.passwordProof || '')) ||
         (this._inbox && this.role === 'host' && (typeof this.roomName !== 'string' || !this.roomName.trim() || this.roomName.length > 80)) ||
         (this._inbox && this._client && (typeof this.name !== 'string' || this.name.length > 64)) ||
@@ -102,40 +111,54 @@ class VoiceSession {
       this._finish('error-access');
       return false;
     }
-    if (this._source) {
-      this._claimCaptureAudioSession();
-      let stream;
-      try { stream = await this._mediaDevices.getUserMedia({ audio: true, video: false }); }
-      catch {
-        if (this._live(epoch)) this._finish('error-microphone');
-        return false;
-      }
-      // An old permission prompt must not resurrect a stopped or replaced session.
-      if (!this._live(epoch)) {
-        this._stopCaptureStream(stream);
-        return false;
-      }
-      for (const track of stream.getTracks()) track.enabled = false;
-      if (!this._usableCapture(stream)) {
-        this._stopCaptureStream(stream);
-        this._finish('error-microphone');
-        return false;
-      }
-      this._installCapture(stream, epoch);
-      const native = this._audioSession;
-      if (typeof native?.addEventListener === 'function' && typeof native?.removeEventListener === 'function') {
-        this._captureInterruption = () => { if (this._live(epoch)) this._syncCaptureState(); };
-        native.addEventListener('statechange', this._captureInterruption);
-      }
-      // A permission grant can arrive while the operating system still owns the microphone.
-      if (native?.state === 'interrupted') this._finish('error-microphone');
-    }
+    // A caller may wait for approval for some time. Do not open their microphone
+    // until the room has admitted them, even when the invitation is valid.
+    if (this._source && !this._client && !await this._acquireCapture(epoch)) return false;
     if (!this._live(epoch)) return false;
     const started = new Promise(resolve => { this._resolveStart = resolve; });
     this._connect(epoch);
     this._scheduleTick(epoch);
     const result = await started;
     return result && this._live(epoch);
+  }
+
+  _acquireCapture(epoch) {
+    if (this._stream) return Promise.resolve(true);
+    if (this._captureOpening) return this._captureOpening;
+    const opening = this._openCapture(epoch);
+    this._captureOpening = opening;
+    void opening.finally(() => { if (this._captureOpening === opening) this._captureOpening = null; });
+    return opening;
+  }
+
+  async _openCapture(epoch) {
+    this._claimCaptureAudioSession();
+    let stream;
+    try { stream = await this._mediaDevices.getUserMedia({ audio: true, video: false }); }
+    catch {
+      if (this._live(epoch)) this._finish('error-microphone');
+      return false;
+    }
+    // An old permission prompt must not resurrect a stopped or replaced session.
+    if (!this._live(epoch)) {
+      this._stopCaptureStream(stream);
+      return false;
+    }
+    for (const track of stream.getTracks()) track.enabled = false;
+    if (!this._usableCapture(stream)) {
+      this._stopCaptureStream(stream);
+      this._finish('error-microphone');
+      return false;
+    }
+    this._installCapture(stream, epoch);
+    const native = this._audioSession;
+    if (typeof native?.addEventListener === 'function' && typeof native?.removeEventListener === 'function') {
+      this._captureInterruption = () => { if (this._live(epoch)) this._syncCaptureState(); };
+      native.addEventListener('statechange', this._captureInterruption);
+    }
+    // A permission grant can arrive while the operating system still owns the microphone.
+    if (native?.state === 'interrupted') this._finish('error-microphone');
+    return this._live(epoch);
   }
 
   setTalking(talking) {
@@ -319,6 +342,7 @@ class VoiceSession {
       this._captureRecovery.stream = null;
     }
     this._captureRecovery = null;
+    this._captureOpening = null;
     this._closeSocket(this._socket);
     this._socket = null;
     for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
@@ -328,6 +352,10 @@ class VoiceSession {
     this._resetControlFlight();
     this._controls.clear();
     this._participants.clear();
+    this._requests.clear();
+    this._emitRequests();
+    this._approval = null;
+    this._awaitingApproval = false;
     this._discovery = null;
     this._emitParticipants();
     if (this._stream) {
@@ -358,7 +386,7 @@ class VoiceSession {
   _state(key, extra = {}) {
     if (this._inbox) key = key.replace(/^listener-/, 'sender-').replace('broadcast-ended', 'inbox-ended');
     this.onState(key, { talking: this._source ? this._talking : this._remoteTalking,
-      captureState: this._captureState, transport: this.transport,
+      captureState: this._captureState, transport: this.transport, approval: this._approval,
       route: this._connected().length && this._connected().every(peer => peer.route === this.transport) ? this.transport : 'unknown',
       muted: this._muted, participants: this._participants.size, discovery: this._discovery,
       listeners: this.role === 'host' ? this._connected().filter(p => !p.departed).length : 0,
@@ -367,7 +395,7 @@ class VoiceSession {
   _voiceState() {
     if (!this._active) return;
     if (this._client && this._waiting) {
-      this._state('listener-reconnecting');
+      this._state(this._awaitingApproval ? 'listener-approval' : 'listener-reconnecting');
       return;
     }
     const usable = this.role === 'host' ? this._canSignal() || this._connected().length : this._connected().length;
@@ -422,8 +450,8 @@ class VoiceSession {
       // A queued offer may be awaiting these credentials. Deliver the response
       // outside that queue so a successful mint cannot deadlock its own offer.
       if (ctx.relay?.receive(frame)) return;
-      if (['ended', 'replaced', 'kicked'].includes(frame?.type) ||
-          (frame?.type === 'error' && ['password', 'unauthorized', 'transport-mismatch', 'relay-unavailable'].includes(frame.error))) {
+      if (['ended', 'replaced', 'kicked', 'denied'].includes(frame?.type) ||
+          (frame?.type === 'error' && ['password', 'unauthorized', 'transport-mismatch', 'relay-unavailable', 'approval-mismatch'].includes(frame.error))) {
         // Terminal control must release capture even if an earlier SDP operation has stalled.
         void this._message(frame, ctx).catch(() => {
           if (this._currentSocket(ctx)) this._lost(ctx, 1006);
@@ -457,6 +485,9 @@ class VoiceSession {
     }
     if (this._source && !this._connected().length) this.setTalking(false);
     this._waiting = true;
+    this._awaitingApproval = false;
+    this._requests.clear();
+    this._emitRequests();
     this._voiceState();
     if (code === 4429) this._state('error-full');
     this._retry(ctx.epoch, code);
@@ -483,12 +514,14 @@ class VoiceSession {
   async _message(frame, ctx) {
     if (!frame || typeof frame !== 'object') return;
     if (frame.type === 'ended') { this._finish('broadcast-ended'); return; }
+    if (this._client && frame.type === 'denied') { this._finish('listener-denied'); return; }
     if (this._inbox && frame.type === 'kicked') { this._finish('kicked'); return; }
     if (frame.type === 'replaced') { this._finish('error-access'); return; }
     if (frame.type === 'error') {
       if (this._inbox && frame.error === 'password') this._finish('error-password');
       else if (frame.error === 'transport-mismatch') this._finish('transport.mismatch');
       else if (frame.error === 'relay-unavailable') this._finish('transport.unavailable');
+      else if (frame.error === 'approval-mismatch') this._finish('error-approval');
       else if (this._inbox && frame.error === 'moderation-full') this._refusedControl();
       else if (['full', 'busy'].includes(frame.error)) this._lost(ctx, 4429);
       else if (frame.error === 'timeout') this._lost(ctx, 1006);
@@ -500,7 +533,9 @@ class VoiceSession {
     }
     if (frame.type === 'host-ready' && this.role === 'host' && UUID.test(frame.generation || '')) {
       if (transportMode(frame.transport) !== this.transport) { this._finish('transport.mismatch'); return; }
+      if (this.requireApproval !== undefined && frame.approval !== this.requireApproval) { this._finish('error-approval'); return; }
       if (frame.generation !== this._generation) this._generationChange(frame.generation);
+      this._approval = typeof frame.approval === 'boolean' ? frame.approval : null;
       this._authenticated(ctx);
       this._waiting = false;
       if (this._source) this._send({ type: 'status', generation: this._generation, talking: this._talking });
@@ -513,7 +548,22 @@ class VoiceSession {
     if (this._client && frame.type === 'waiting') {
       this._authenticated(ctx);
       this._waiting = true;
+      this._awaitingApproval = false;
       if (this._inbox) this._settleStart(true);
+      this._voiceState();
+      return;
+    }
+    if (this._client && frame.type === 'approval-pending' && frame.approval === true
+        && this._validId(frame.id) && UUID.test(frame.generation || '')) {
+      if (transportMode(frame.transport) !== this.transport) { this._finish('transport.mismatch'); return; }
+      if (frame.generation !== this._generation) this._generationChange(frame.generation);
+      for (const id of new Set([...this._peers.keys(), ...this._retiring.keys()])) this._drop(id);
+      this._authenticated(ctx);
+      this._id = frame.id;
+      this._approval = true;
+      this._waiting = this._awaitingApproval = true;
+      this.setTalking(false);
+      this._settleStart(true);
       this._voiceState();
       return;
     }
@@ -532,10 +582,15 @@ class VoiceSession {
         this._offerAt = this._clock.now();
       }
       this._id = frame.id;
+      this._approval = typeof frame.approval === 'boolean' ? frame.approval : null;
       this._remoteTalking = Boolean(frame.talking);
       if (this._inbox) this._applyMuted(Boolean(frame.muted));
       this._authenticated(ctx);
+      this._awaitingApproval = false;
+      if (this._source && !await this._acquireCapture(ctx.epoch)) return;
+      if (!this._currentSocket(ctx)) return;
       this._waiting = false;
+      this._offerAt = this._clock.now();
       if (this._inbox) {
         this._send({ type: 'status', generation: this._generation, talking: this._talking });
         this._settleStart(true);
@@ -553,7 +608,21 @@ class VoiceSession {
       return;
     }
     if (this.role === 'host') {
+      if (frame.type === 'request' && this._approval === true && this._validId(frame.id)) {
+        if (!this._requests.has(frame.id) && this._requests.size >= 10) return;
+        this._requests.set(frame.id, { id: frame.id,
+          name: typeof frame.name === 'string' && frame.name.length <= 64 ? frame.name : '' });
+        this._emitRequests();
+        return;
+      }
+      if (['request-resolved', 'request-error'].includes(frame.type) && this._validId(frame.id)) {
+        if (frame.type === 'request-resolved') { this._requests.delete(frame.id); this._emitRequests(); }
+        else this._state(frame.error === 'full' ? 'error-approval-full' : 'error-approval');
+        return;
+      }
       if (frame.type === 'join' && this._validId(frame.id)) {
+        this._requests.delete(frame.id);
+        this._emitRequests();
         if (!this._hostIds.has(frame.id) && this._hostIds.size >= 10) return;
         if (this._inbox) {
           this._joinParticipant(frame);
@@ -570,10 +639,10 @@ class VoiceSession {
       } else if (['answer', 'candidate'].includes(frame.type)) {
         try { await this._receiveHost(frame); } catch { this._failPeer(this._peers.get(frame.from)); }
       }
-    } else if (frame.type === 'status') {
+    } else if (!this._waiting && frame.type === 'status') {
       this._remoteTalking = Boolean(frame.talking);
       this._voiceState();
-    } else if (frame.from === 'host' && frame.to === this._id && ['offer', 'candidate'].includes(frame.type)) {
+    } else if (!this._waiting && frame.from === 'host' && frame.to === this._id && ['offer', 'candidate'].includes(frame.type)) {
       try { await this._receiveListener(frame, ctx.epoch); }
       catch { this._failPeer(this._peers.get(this._id)); }
     }
@@ -585,11 +654,24 @@ class VoiceSession {
     this._preparingPeers.clear();
     this._orphanIce = [];
     this._participants.clear();
+    this._requests.clear();
+    this._emitRequests();
     this._emitParticipants();
     this._resetControlFlight();
     // A new generation replays local protection only when its stable participant rejoins.
     this._controls.clear();
     this._generation = generation;
+  }
+
+  _emitRequests() {
+    if (this.role === 'host') this.onRequests([...this._requests.values()].map(row => ({ ...row })));
+  }
+
+  approve(id) { return this._decideRequest('approve', id); }
+  deny(id) { return this._decideRequest('deny', id); }
+  _decideRequest(type, id) {
+    return this.role === 'host' && this._approval === true && this._canSignal() && this._requests.has(id)
+      && this._send({ type, to: id, generation: this._generation });
   }
   _scheduleTick(epoch) {
     if (!this._live(epoch)) return;
@@ -866,11 +948,13 @@ class VoiceSession {
 
   _authFrame() {
     const transport = this.transport === 'relay' ? { transport: this.transport } : {};
+    const approval = typeof this.requireApproval === 'boolean' && this.role === 'host' ? { approval: this.requireApproval } : {};
     if (!this._inbox) return { type: 'auth', role: this.role, key: this.key, ...transport,
-      ...(this.role === 'host' ? { listenKey: this.listenKey,
-        ...(this.discover ? { roomName: this.roomName, discover: true } : {}) } : {}) };
+      ...(this.role === 'host' ? { listenKey: this.listenKey, ...approval,
+        ...(this.discover ? { roomName: this.roomName, discover: true } : {}) }
+        : this.clientKey ? { clientKey: this.clientKey } : {}) };
     return { type: 'auth', role: this.role, key: this.key, passwordProof: this.passwordProof, ...transport,
-      ...(this.role === 'host' ? { roomName: this.roomName } : this.name ? { name: this.name } : {}) };
+      ...(this.role === 'host' ? { roomName: this.roomName, ...approval } : this.name ? { name: this.name } : {}) };
   }
   _applyMuted(muted) {
     this._muted = muted;

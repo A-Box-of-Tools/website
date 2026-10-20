@@ -38,7 +38,7 @@ roadmap_group = "beyond"
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks", "paired-tools"]
 supports_relay = true
-js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names"]
+js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "room-names"]
 lastmod = "2026-10-17"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -264,7 +264,9 @@ body = """
  A reader opening the link is
       told someone is sharing, warned that a direct connection shows each
       side the other's network address, and connects only by choosing to.
-      On a private share they introduce themselves and wait for you. What
+      Join beside a discovered share starts the request in a new reader tab
+      using the displayed connection type. Private shares wait for you;
+      Review later closes the approval popup but keeps the request in the list. What
       they receive updates live while you edit, and clears when you close
       the tab."""
 
@@ -414,8 +416,9 @@ a = """
         choose this mode before starting, since it is off by default.
         Discoverability is selected by default when available;
         uncheck Discoverable for a link-only share, and keep Private on on
-        shared networks. Choosing a name opens the share's consent page;
-        it never connects automatically or bypasses private approval.
+        shared networks. Join starts a request in a new reader tab using the
+        displayed connection type. Browsing alone never connects, and private
+        approval remains required. Review later keeps a request in the list.
         The directory holds only link names while the sharer is connected,
         never text, file names or file bytes. If discovery is unavailable,
         sharing by link still works."""

@@ -7,8 +7,8 @@ route alone never connects or captures. Actual route status remains visible
 outside setup panels that disappear after connecting.
 
 Cameras appear in Available connections at the top of the idle page, above sharing and manual
-connection, with the shared Wi-Fi and hotspot guidance. Choosing a listed camera
-fills the code and focuses Connect to camera; only Connect starts pairing. Start
+connection, with the shared Wi-Fi and hotspot guidance. Join on a listed camera
+starts pairing using the route shown on that row and any optional viewer note. Start
 or Connect focuses its active section until Stop or a failure returns
 to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
@@ -54,10 +54,10 @@ capture, pairing and recovery. Changing it closes the previous directory,
 clears the selected camera and opens the new list. The in-memory camera intent
 retains its group through foreground recovery; a reload restores neither a
 group nor a camera host, so a private session cannot become publicly listed.
-Choosing a listed name selects its code without requesting capture or a room
-connection. Connect then starts the viewing request, including network-address
-exchange and the source's approval policy. Opening a viewer link also waits
-for Connect. Discovery choices are ignored while a session is active. The room
+Browsing listed names never opens a peer connection. Join starts a viewing
+request, including network-address exchange and the source's approval policy;
+it never requests capture on the viewing device. Opening a viewer link still
+waits for Connect. Discovery choices are ignored while a session is active. The room
 socket remains open during the session. A lost room socket no longer closes an already
 approved, connected peer with live video and an open encrypted control channel.
 The source retries its invitation with the same code after 2, 4, 8, 15 and 30
@@ -78,9 +78,9 @@ Cloud relay is an explicit alternative, fixed for the session. The shared
 control appears beside Start, and is locked while starting,
 connected or holding a recoverable camera identity. Links and QR codes carry
 `transport=direct|relay`; discovery carries the host's authoritative choice.
-Selecting a listing or opening/pasting a link selects the mode but never
-opens a room or requests capture. The viewer explicitly chooses Connect after
-seeing the route icons. A plain code uses the currently indicated mode.
+Opening or pasting a link selects the mode but never opens a room or requests
+capture. The viewer explicitly chooses Connect, or Join on a discovery row,
+after seeing the route icons. A plain code uses the currently indicated mode.
 The worker rejects a mismatched mode with 4412; no client silently changes it.
 
 After its room socket opens, each relay participant requests short-lived TURN

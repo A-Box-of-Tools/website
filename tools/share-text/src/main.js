@@ -17,6 +17,8 @@ import { readTransport, transportUrl, selectedTransport, RelayCredentials } from
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
+import { createApprovalPrompt } from './shared/peer-approval-ui.js';
 import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
 // The environment's address, named in this page's
@@ -139,9 +141,16 @@ const peers = new Map();     // viewer id -> RTCPeerConnection
 const peerCandidates = new WeakMap();
 const controlChannels = new Map(); // includes readers still waiting to knock
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
-const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
+const pending = new Map();   // viewer id -> {dc, row, note} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
 const sendQueue = new Map(); // viewer id -> its bounded file sender
+const approvalPrompt = createApprovalPrompt({
+  dialog: $('pairing-request-dialog'),
+  isActive: () => sharing && isPrivate,
+  onApprove: id => decideRequest(id, true),
+  onDeny: id => decideRequest(id, false),
+  focusFallback: id => pending.get(id)?.row.querySelector('button') ?? $('stop'),
+});
 
 const payload = () => JSON.stringify({ type: 'text', body: $('text').value, md: $('markdown').checked });
 
@@ -185,6 +194,7 @@ function suggest() {
 }
 
 function unlock() {
+  approvalPrompt.clear();
   transportControl.lock(false);
   groupControl.lock(false);
   transportControl.route(null);
@@ -261,37 +271,44 @@ function addRequest(id, dc, note) {
   const admit = document.createElement('button');
   admit.type = 'button';
   admit.textContent = phrase('share.admit');
-  admit.onclick = () => {
-    pending.delete(id);
-    row.remove();
-    admitViewer(id, dc);
-  };
+  admit.onclick = () => decideRequest(id, true);
   const deny = document.createElement('button');
   deny.type = 'button';
   deny.className = 'ghost';
   deny.textContent = phrase('share.deny');
-  deny.onclick = () => {
-    peerDiagnostics.get(id)?.finish('denied');
-    pending.delete(id);
-    row.remove();
-    try { dc.send(JSON.stringify({ type: 'denied' })); } catch {}
-    // Let the refusal arrive before the channel under it is torn down.
-    setTimeout(() => { peers.get(id)?.close(); peers.delete(id); }, 250);
-    refreshCount();
-  };
+  deny.onclick = () => decideRequest(id, false);
   row.append(text, admit, deny);
-  pending.set(id, { dc, row });
+  pending.set(id, { dc, row, note });
   // A carried admission token can belong to a previous share with this name.
   // Acknowledging the pending knock distinguishes a person's decision from
   // a peer channel that has stopped delivering its first response.
   try { dc.send(JSON.stringify({ type: 'asked' })); } catch {}
   $('requests').append(row);
   refreshCount();
+  syncRequests();
+}
+
+function syncRequests() {
+  approvalPrompt.update([...pending].map(([id, entry]) => ({ id, name: entry.note || phrase('share.no-message') })));
+}
+
+function decideRequest(id, approve) {
+  const entry = pending.get(id);
+  if (!sharing || !entry || controlChannels.get(id) !== entry.dc || entry.dc.readyState !== 'open') return;
+  approvalPrompt.close(false);
+  removeRequest(id);
+  if (approve) { admitViewer(id, entry.dc); return; }
+  peerDiagnostics.get(id)?.finish('denied');
+  try { entry.dc.send(JSON.stringify({ type: 'denied' })); } catch {}
+  // Let the refusal arrive before the channel under it is torn down.
+  const pc = peers.get(id);
+  setTimeout(() => { if (peers.get(id) === pc) dropViewer(id, 'denied'); }, 250);
+  refreshCount();
 }
 
 function removeRequest(id) {
   const entry = pending.get(id);
-  if (entry) { entry.row.remove(); pending.delete(id); }
+  if (entry) { entry.row.remove(); pending.delete(id); syncRequests(); }
 }
 
 function dropViewer(id, reason = 'peer-left') {
@@ -379,7 +396,17 @@ function renderDiscovery() {
     open.target = '_blank';
     open.rel = 'noopener';
     open.setAttribute('aria-describedby', name.id);
-    open.textContent = phrase('discovery.open');
+    open.setAttribute('aria-label', phrase(share.transport === 'relay' ? 'discovery.join-relay' : 'discovery.join-direct', { code: share.code }));
+    open.textContent = phrase('discovery.join');
+    open.addEventListener('click', event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (sharing || document.hidden || withdrawing.has(share.code) || !foundShares.some(item => item.code === share.code && item.transport === share.transport)) {
+        event.preventDefault(); return;
+      }
+      // Only this deliberate row action carries consent into the fresh tab.
+      // A blocked popup or storage failure keeps the ordinary invitation gate.
+      if (openJoinedPage(open.href)) event.preventDefault();
+    });
     row.append(name, open);
     list.append(row);
   }
@@ -957,7 +984,8 @@ function view(code, recovered = null) {
     if (wantRelay && sessionStorage.getItem(`share-text-transport:${code}`) !== mode) carried = false;
   } catch {}
 
-  const session = recovered ?? { consent: carried, relay: wantRelay, transport: mode, localMode,
+  const discoveryJoin = !recovered && consumeJoinedPage();
+  const session = recovered ?? { consent: carried || discoveryJoin, discoveryJoin, relay: wantRelay, transport: mode, localMode,
     token: null, asMd: false, mdTouched: false, generation: 0 };
   if (recovered) { carried = session.consent; wantRelay = session.relay; }
   const events = new AbortController();
@@ -972,7 +1000,7 @@ function view(code, recovered = null) {
       $('retryrow').hidden = false;
     },
   });
-  if (carried && !recovered) session.retry.start();
+  if (session.consent && !recovered) session.retry.start();
 
   const trace = diagnostics.begin('viewer', localMode ? 'local' : wantRelay ? 'relay' : 'internet');
   session.credentials?.close();
@@ -1313,14 +1341,14 @@ function view(code, recovered = null) {
     }, 8000);
   };
 
-  listen('send-knock', 'click', () => {
-    const note = $('knock').value.trim().slice(0, 200);
+  function sendKnock(note) {
     try { dcRef.send(JSON.stringify({ type: 'knock', note })); } catch { return; }
     trace.mark('approval-requested');
     $('knock').disabled = true;
     $('send-knock').disabled = true;
     $('view-status').textContent = phrase('view.asked');
-  });
+  }
+  listen('send-knock', 'click', () => sendKnock($('knock').value.trim().slice(0, 200)));
   listen('knock', 'keydown', (e) => {
     if (e.key === 'Enter') $('send-knock').click();
   });
@@ -1438,6 +1466,10 @@ function view(code, recovered = null) {
           dc.send(JSON.stringify({ type: 'knock', note: '', token }));
           return;
         }
+        if (session.discoveryJoin) {
+          sendKnock('');
+          return;
+        }
         $('view-status').textContent = phrase('view.private');
         $('knock').disabled = false;
         $('send-knock').disabled = false;
@@ -1548,7 +1580,7 @@ function view(code, recovered = null) {
         if (done || session.generation !== generation) return;
         if (m.type === 'ready') {
           trace.mark('room-ready');
-          if (carried) {
+          if (session.consent) {
             await dial();
           } else {
             $('view-status').textContent = phrase('view.someone');
@@ -1636,8 +1668,8 @@ function resumePairedPage() {
 }
 observeForeground({
   foreground: resumePairedPage,
-  hidden: resumePairedPage,
-  suspend() { hostPairing?.clear('foreground'); },
+  hidden() { approvalPrompt.close(false); resumePairedPage(); },
+  suspend() { approvalPrompt.close(false); hostPairing?.clear('foreground'); },
 });
 
 /* ----------------------------------------------------- the frame's panels */

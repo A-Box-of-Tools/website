@@ -11,7 +11,7 @@
     <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for available connections…</p>
     <div class="vi-rooms paired-nearby-list" id="vi-rooms"></div>
     <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
-    <p class="vi-note paired-selection-help" id="vi-selection-help">Choose a pager, then Connect below. Choosing alone does not connect or request your microphone.</p>
+    <p class="vi-note paired-selection-help" id="vi-selection-help">Join a pager directly. Enter its password or wait for approval if required.</p>
   </section>
   <p class="vi-intro">People connect and speak to one listening host without entering a name. Use Direct on your local network, or choose Cloud relay to connect through the internet. The host listens without using a microphone.</p>
   <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall" data-pairing-setup>
@@ -20,16 +20,16 @@
   </div>
   <div class="vi-status" aria-live="polite" aria-atomic="true">
     <span class="vi-status-dot" id="vi-status-dot" aria-hidden="true"></span>
-    <p id="vi-status-text">Choose an available pager or open a link from its host.</p>
+    <p id="vi-status-text">Join an available pager or open a link from its host.</p>
   </div>
 
   <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
     <form id="vi-join-form">
       <label for="vi-sender-password">Pager password, if required</label>
       <input id="vi-sender-password" type="password" autocomplete="current-password">
-      <p class="vi-note">Connecting asks for microphone permission. Your microphone starts muted; hold to talk when you are ready.</p>
+      <p class="vi-note">Your microphone is requested after host approval, when required. Hold to talk when you are ready.</p>
       <div class="paired-start-row" data-pairing-actions="join">
-        <button type="submit" id="vi-join">Connect</button>
+        <button type="submit" id="vi-join">Join</button>
         <span id="vi-connection-icons" hidden></span>
       </div>
     </form>
@@ -58,7 +58,8 @@
         <input id="vi-host-password" type="password" autocomplete="new-password">
         <p class="vi-note" id="vi-saved-password" hidden>A password is saved for this pager. Leave this field blank to keep it, or enter a new password.</p>
       </div>
-      <p class="vi-note">Up to 10 people can connect without approval. You can mute or remove each person. Your microphone is never requested.</p>
+      <label class="vi-check"><input id="vi-require-approval" type="checkbox" checked>{{ ui.tool.approval_required }}</label>
+      <p class="vi-note">Up to 10 people. You can approve, mute or remove callers. Your microphone is never requested.</p>
       <div class="paired-start-row" data-pairing-actions="host">
         <button type="submit" id="vi-start">Start pager</button>
         {% include "partials/paired-transport.html" %}
@@ -76,6 +77,10 @@
       </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
       <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let people find it in your selected discovery scope.</p>
+      <section id="vi-requests-panel" class="paired-requests" hidden aria-labelledby="vi-requests-title">
+        <h3 id="vi-requests-title">{{ ui.tool.approval_pending }}</h3>
+        <ul id="vi-requests"></ul>
+      </section>
       <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
       <section class="vi-invite" aria-labelledby="vi-invite-title">
@@ -101,20 +106,41 @@
 
   <details class="vi-details">
     <summary>How voice connections work</summary>
-    <p>Available connections lists both Direct and Cloud relay pagers, with icons for the route and password requirement. Local network discovery groups devices by their public internet address and website origin; it does not scan Wi-Fi or prove physical network membership. Choose Private group and enter the same group code on each device to discover pagers across networks. Private pagers appear only in that group, not in the local-network directory. The group code allows discovery; the pager password still controls admission.</p>
-    <p>Direct sends encrypted voice between the browsers without a relay. When the host chooses Cloud relay and a participant confirms Connect, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
-    <p>Anyone who can find your pager can try to connect. A password limits access, and the host can mute or remove participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
+    <p>Available connections lists both Direct and Cloud relay pagers, with icons for the route and password requirement. Local network discovery groups devices by their public internet address and website origin; it does not scan Wi-Fi or prove physical network membership. Choose Private group and enter the same group code on each device to discover pagers across networks. Private pagers appear only in that group, not in the local-network directory. The group code allows discovery; passwords and host approval still control admission.</p>
+    <p>Direct sends encrypted voice between the browsers without a relay. When the host chooses Cloud relay and a participant chooses Join, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
+    <p>Anyone who can find your pager can try to connect. Require approval is on for new pagers. You can also set a password, and mute or remove admitted participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
     <p>Remove ends one participant session. A new tab or cleared browser storage can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
   </details>
 </div>
+<dialog id="vi-password-dialog" class="paired-dialog" aria-labelledby="vi-password-title">
+  <form id="vi-password-form">
+    <h2 id="vi-password-title">Pager password</h2>
+    <p id="vi-password-room"></p>
+    <span id="vi-password-icons"></span>
+    <label for="vi-join-password">Password</label>
+    <input id="vi-join-password" type="password" autocomplete="current-password" required>
+    <div class="paired-actions">
+      <button id="vi-password-join" type="submit">Join</button>
+      <button id="vi-password-cancel" type="button" class="ghost">Cancel</button>
+    </div>
+  </form>
+</dialog>
+{% include "partials/paired-approval-prompt.html" %}
 <div id="phrases" hidden>
-  <span data-phrase="join-idle">Choose an available pager or open a link from its host.</span>
+  <span data-phrase="error-approval">The service could not confirm host approval. Try again or ask the host to restart.</span>
+  <span data-phrase="error-approval-full">The approval list is full. End this session and start a new one.</span>
+  <span data-phrase="join-idle">Join an available pager or open a link from its host.</span>
   <span data-phrase="host-idle">Name your pager, then open it in your selected discovery scope.</span>
   <span data-phrase="host-starting">Opening your Voice Oncall pager…</span>
   <span data-phrase="host-ready">Your pager is open.</span>
   <span data-phrase="host-reconnecting">Reconnecting your pager…</span>
   <span data-phrase="host-paused">The pager paused when this page closed. Start it again to resume.</span>
-  <span data-phrase="sender-connecting">Connecting to the pager and checking your microphone…</span>
+  <span data-phrase="sender-connecting">Connecting to the pager…</span>
+  <span data-phrase="sender-approval">Waiting for the host to approve your request. Your microphone is off.</span>
+  <span data-phrase="sender-denied">The host declined your request. Disconnect to return to available connections.</span>
+  <span data-phrase="join-room">Join</span>
+  <span data-phrase="join-room-name">Join {name} via Direct</span>
+  <span data-phrase="join-relay-room-name">Join {name} via Cloud relay</span>
   <span data-phrase="sender-ready">Connected. Hold to talk when you are ready.</span>
   <span data-phrase="sender-talking">You are speaking to the host.</span>
   <span data-phrase="sender-muted">The host muted you. Wait for the host to unmute you.</span>

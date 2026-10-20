@@ -1,0 +1,18 @@
+<dialog id="pairing-request-dialog" class="paired-dialog" aria-labelledby="pairing-request-title" aria-describedby="pairing-request-name">
+  <h2 id="pairing-request-title">{{ ui.tool.approval_title }}</h2>
+  <p id="pairing-request-name" data-approval-name></p>
+  <div class="paired-actions">
+    <button type="button" data-approval-approve>{{ ui.tool.approval_approve }}</button>
+    <button type="button" class="ghost" data-approval-deny>{{ ui.tool.approval_deny }}</button>
+    <button type="button" class="ghost" data-approval-later autofocus>{{ ui.tool.approval_later }}</button>
+  </div>
+</dialog>
+<template id="pairing-request-row">
+  <li class="paired-nearby-row">
+    <span data-approval-row-name></span>
+    <div class="paired-actions">
+      <button type="button" data-action="approve">{{ ui.tool.approval_approve }}</button>
+      <button type="button" class="ghost" data-action="deny">{{ ui.tool.approval_deny }}</button>
+    </div>
+  </li>
+</template>

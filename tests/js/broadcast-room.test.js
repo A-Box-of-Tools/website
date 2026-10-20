@@ -29,7 +29,10 @@ class Socket {
     if (this.readyState !== 1 || this.failSend) throw new Error('closed');
     this.messages.push(JSON.parse(value));
   }
-  serializeAttachment(value) { this.attachment = structuredClone(value); }
+  serializeAttachment(value) {
+    assert.ok(new TextEncoder().encode(JSON.stringify(value)).length <= 2048, 'platform attachment limit');
+    this.attachment = structuredClone(value);
+  }
   deserializeAttachment() { return structuredClone(this.attachment); }
 }
 
@@ -119,6 +122,94 @@ const generation = (host) => host.deserializeAttachment().generation;
 const id = (listener) => listener.deserializeAttachment().id;
 const offer = (host, listener, connection = CONNECTION) => ({
   type: 'offer', generation: generation(host), connection, to: id(listener), sdp: SDP,
+});
+
+test('broadcast approval gates every relay and signaling path before the host admits a listener', async t => {
+  const s = await system();
+  s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+  let mints = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    mints++;
+    return new NativeResponse(JSON.stringify({ iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }] }));
+  });
+  const host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, transport: 'relay', approval: true });
+  assert.equal(last(host).approval, true);
+  const listener = await s.open();
+  await s.send(listener, { type: 'auth', role: 'listener', key: LISTEN_KEY, clientKey: WRONG_KEY, transport: 'relay' });
+  assert.equal(last(listener).type, 'approval-pending');
+  assert.equal(last(host).type, 'request');
+  assert.equal(host.messages.some(frame => frame.type === 'join'), false);
+  const pendingCount = listener.messages.length;
+  await s.send(host, offer(host, listener));
+  await s.send(host, { type: 'candidate', generation: generation(host), connection: CONNECTION, to: id(listener),
+    candidate: { candidate: 'candidate:1 1 udp 1 198.51.100.5 12345 typ relay' } });
+  assert.equal(listener.messages.length, pendingCount);
+  await s.send(listener, { type: 'answer', generation: generation(host), connection: CONNECTION, sdp: SDP });
+  assert.equal(host.messages.some(frame => frame.type === 'answer'), false);
+  await s.send(listener, { type: 'relay-request', id: 'pending-1' });
+  assert.equal(mints, 0);
+  assert.equal(last(listener).error, 'forbidden');
+  await s.send(host, { type: 'approve', generation: generation(host), to: id(listener) });
+  assert.equal(last(listener).type, 'ready');
+  assert.equal(last(host).type, 'join');
+  await s.send(listener, { type: 'relay-request', id: 'admitted-1' });
+  assert.equal(mints, 1);
+  await s.send(host, offer(host, listener));
+  assert.equal(last(listener).type, 'offer');
+});
+
+test('broadcast approval survives host and listener reconnect without admitting another identity', async () => {
+  const s = await system();
+  const authHost = async approval => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval });
+    return ws;
+  };
+  const authListener = async clientKey => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'listener', key: LISTEN_KEY, clientKey });
+    return ws;
+  };
+  const host = await authHost(true), listener = await authListener(WRONG_KEY);
+  await s.send(host, { type: 'approve', generation: generation(host), to: id(listener) });
+  s.room().instance.webSocketClose(host); host.close(1000, 'gone');
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  for (const approval of [false, undefined]) {
+    const downgrade = await authHost(approval);
+    assert.equal(last(downgrade).error, 'approval-mismatch');
+  }
+  const resumed = await authHost(true);
+  assert.equal(last(listener).type, 'ready');
+  assert.equal(resumed.messages.some(frame => frame.type === 'request'), false);
+  const reconnect = await authListener(WRONG_KEY);
+  assert.equal(listener.closed.code, 4409);
+  assert.equal(last(reconnect).type, 'ready');
+  const fresh = await authListener('D'.repeat(43));
+  assert.equal(last(fresh).type, 'approval-pending');
+  const freshId = id(fresh);
+  await s.send(resumed, { type: 'deny', generation: generation(resumed), to: freshId });
+  assert.equal(last(fresh).type, 'denied');
+  assert.equal(fresh.deserializeAttachment(), null);
+  assert.equal(last(resumed).type, 'request-resolved');
+  const retry = await authListener('D'.repeat(43));
+  assert.equal(last(retry).type, 'approval-pending');
+  await s.send(resumed, { type: 'end', generation: generation(resumed) });
+  assert.equal(last(retry).type, 'ended');
+  const afterEnd = await authHost(true);
+  assert.equal(last(afterEnd).type, 'ended');
+});
+
+test('leaving approval removes the request and stale decisions cannot admit its replacement', async () => {
+  const s = await system(), host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval: true });
+  const first = await s.listener(), staleId = id(first);
+  await s.send(first, { type: 'leave' });
+  assert.deepEqual(last(host), { type: 'request-resolved', id: staleId, generation: generation(host) });
+  const second = await s.listener();
+  await s.send(host, { type: 'approve', generation: generation(host), to: staleId });
+  assert.equal(last(second).type, 'approval-pending');
+  assert.equal(second.deserializeAttachment().admitted, false);
 });
 
 test('broadcast relay mode is authenticated, pinned across host loss and enforced on candidates', async t => {

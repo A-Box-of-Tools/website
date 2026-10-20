@@ -4,6 +4,18 @@ import { cleanShares } from '../../shared/js/peer-discovery.js';
 
 const code = 'a'.repeat(64);
 
+test('voice discovery preserves explicit approval policy and rejects malformed claims', () => {
+  for (const tool of ['voice-oncall', 'walkie-talkie']) {
+    const base = { code, local: true, name: 'Desk',
+      ...(tool === 'voice-oncall' ? { locked: false } : { listenKey: 'B'.repeat(43) }) };
+    for (const approval of [true, false]) {
+      assert.deepEqual(cleanShares([{ ...base, approval }], tool), [{ ...base, approval }]);
+    }
+    for (const approval of ['true', null, 1]) assert.deepEqual(cleanShares([{ ...base, approval }], tool), []);
+    assert.deepEqual(cleanShares([base], tool), [base]);
+  }
+});
+
 test('walkie discovery keeps only a bounded channel name and listener capability', () => {
   const valid = { code, local: true, name: 'Classroom', listenKey: 'B'.repeat(43) };
   assert.deepEqual(cleanShares([

@@ -1,6 +1,6 @@
 # Voice Oncall
 
-The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Choosing a listing never opens a media connection or asks for microphone access; the separate Join or Connect action confirms admission.
+The shared Direct / Cloud relay switch sits beside the host's Start action, with Direct as the default. Joining adopts the host's verified route rather than offering a separate route switch. Available connections lists both routes together, with shared accessible icons for the route and access requirement. Each row offers Join; browsing alone never connects. A required password opens a compact prompt, and host approval precedes microphone access.
 
 A separate tool for the reverse of Local Walkie-Talkie: up to ten participants
 send live voice to one listening host. Each has an independent encrypted WebRTC
@@ -9,17 +9,17 @@ another's audio and the host can silence or remove one without affecting the res
 
 The host opens a named pager, optionally protects it with a password, and listens
 without microphone permission. Participants find it in Available connections or open
-its invitation, enter the password when required, and Connect without supplying a
-name. Their microphone starts disabled until they hold Talk or enable the talking
+its invitation, enter the password when required, and Join without supplying a
+name. Require approval is on for new hosts; callers wait before microphone access. Their microphone starts disabled until they hold Talk or enable the talking
 toggle. A physical hold releases on blur or hiding; explicit hands-free speech
 and healthy connections can continue in the background while the browser allows.
 No account, installation, Python helper or recording is involved. Direct is
 the default; Cloud relay is an explicit alternative selected before connecting.
 
-Available connections appears first, before the role tabs. Selecting a pager switches
-to the Connect panel without opening a voice connection or asking for microphone
-permission. A pointer selection focuses the password field or Connect button;
-keyboard selection keeps focus in the radio group for arrow navigation. The list is
+Available connections appears first, before the role tabs. Join adopts the row's
+verified route and starts its admission flow. A password prompt can be cancelled
+without connecting or acquiring a microphone. Ordinary invitation links retain
+an explicit Join action. The list is
 hidden while a session is starting, active or paused. Shared network guidance
 covers Wi-Fi and phone hotspots that permit direct traffic; neither bypasses
 the internet requirement for discovery and pairing or guarantees reachability.
@@ -54,7 +54,7 @@ IPv4 address or IPv6 /64. Private group requires the same random group code
 on each device and works across network addresses. Its entries are excluded
 from the local-network directory. A host's socket owns a lease; the directory
 verifies the scope through the Inbox binding before listing trusted room name,
-route and password-required metadata. The group code permits discovery, not
+route, password-required and approval-required metadata. The group code permits discovery, not
 password bypass, and never enters a pager invitation. Closing the host withdraws
 the lease. Shared gateways can include strangers and route differences can hide
 physically nearby devices, so the page does not call this a LAN scan.
@@ -74,7 +74,7 @@ The host's route is pinned in the invitation, authenticated admission and the
 room's retained moderation anchor. Password validation still precedes admission
 and TURN credential issuance. Joining adopts the host's mode; a mismatch
 is refused, and changing the host mode creates a new pager identity. Discovery
-selection exposes the verified mode without connecting or requesting capture.
+rows expose the verified mode; Join starts admission without a separate selection.
 The selector locks while starting, active or paused. Actual-route status comes
 from the selected candidate pair, not from the user's choice alone.
 
@@ -138,6 +138,27 @@ removal, reconnect moderation, hidden hands-free continuity, hold release,
 microphone interruptions, silent capture replacement, End/Disconnect and late
 microphone cleanup. Simulated lifecycle events do not prove locked-screen
 continuity; physical phones and Wi-Fi routes need separate acceptance.
+
+## Host approval
+
+New hosts enable Require approval by default. Turning it off before starting
+allows admission after the existing invitation/password checks. The policy is
+pinned to the room and echoed by the Worker; an explicit policy without a
+matching acknowledgement fails closed. Saved legacy hosts retain their previous
+policy. Changing policy requires a new session identity.
+
+The shared voice session reports pending identities through onRequests. The
+Worker withholds peer joins, SDP, ICE, status forwarding and participant TURN
+credentials until approval. Voice Oncall also defers microphone capture until
+authoritative admission, even when approval is off. Password checks precede
+approval. The popup and pending list use peer-approval-ui.js: Review later or
+Escape keeps the request, while Approve and Deny check the current identity
+and active host. Ending invalidates late decisions.
+
+A bounded roster on live socket attachments allows the same approved identity
+to recover within the current room. A new identity needs approval. This is
+session continuity, not verification of a person's identity or a permanent ban.
+No room history is written to storage. Pending requests count toward capacity.
 
 ## The shared pairing library
 

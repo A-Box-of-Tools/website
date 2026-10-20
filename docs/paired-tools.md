@@ -206,15 +206,31 @@ callback. `start` requires existing consent, `ready` requires the tool's actual
 introduction, and `stop` invalidates queued retries. This controller is optional:
 camera and voice keep their established retry schedules and readiness rules.
 
+## Joining and approval
+
+Every available connection has a Join action which adopts the advertised route.
+Browsing remains passive. Share Text opens a fresh reader tab so current drafts
+and files are not lost; peer-join.js carries a one-use, short-lived consent record
+bound to that exact invitation and route. Ordinary links never gain this consent.
+
+peer-approval-ui.js supplies a shared request popup and optional pending list.
+Review later and Escape dismiss the popup without deciding. Callbacks recheck
+current requests and active host state; Stop, departure and suspension invalidate
+stale decisions. Camera retains its existing equivalent approval controller.
+Both voice tools default to approval for new hosts. The Worker pins that policy,
+blocks pending peers from signaling and TURN credentials, and remembers a bounded
+approved roster on open socket attachments for same-identity recovery. A caller
+microphone is acquired only after authoritative admission. End/Leave stays final.
+
 ## What each adapter retains
 
 | Tool | Pairing and recovery decisions |
 |---|---|
-| Share Text & Files | Explicit Connect, pinned Direct/Cloud relay with Local network within Direct, private admission tokens, reader mode and partial-file retirement. Reader recovery is ready after the private/text introduction; socket open alone does not reset its retry budget. |
-| Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, pinned Direct/Cloud relay and explicit Talk. |
-| Voice Oncall | Host/caller credentials, password checks, generations, moderation, a receive-only host and explicit Talk. |
+| Share Text & Files | Row Join opens a separate reader with one-use code/route-bound consent; ordinary links retain explicit Connect, pinned Direct/Cloud relay with Local network within Direct, private admission tokens, reader mode and partial-file retirement. Reader recovery is ready after the private/text introduction; socket open alone does not reset its retry budget. |
+| Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, pinned Direct/Cloud relay, default-on host approval and explicit Talk. |
+| Voice Oncall | Host/caller credentials, password checks, default-on host approval before capture, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
-| Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code/mode discovery, Direct or explicit Cloud relay, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; selecting a result only fills the invitation. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
+| Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code/mode discovery, Direct or explicit Cloud relay, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; Join on a result starts the viewer request without an extra selection. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
 approval requirement or restore a session the user ended. The socket and

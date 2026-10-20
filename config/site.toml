@@ -768,6 +768,12 @@ guides_all_note = """
 #
 
 [ui.tool]
+approval_title = "Request to join"
+approval_approve = "Approve"
+approval_deny = "Deny"
+approval_later = "Review later"
+approval_pending = "Join requests"
+approval_required = "Require approval"
 transport_label = "Connection"
 transport_direct = "Direct"
 transport_relay = "Cloud relay"
@@ -815,7 +821,7 @@ pairing_cached = "Page saved. Internet is still needed to pair or reconnect devi
 pairing_hotspot_heading = "Use Wi-Fi or a phone hotspot"
 pairing_hotspot_enable = "Turn on Personal Hotspot on an iPhone, or Wi-Fi hotspot on an Android phone, in the phone’s settings."
 pairing_hotspot_join = "Connect the other device to that hotspot from its Wi-Fi settings. Keep internet access available on both devices for nearby discovery and pairing."
-pairing_hotspot_connect = "Open this tool on both devices. Choose the expected nearby entry, then use the separate Connect, Join or Request action. If it is missing, use the host’s link or code."
+pairing_hotspot_connect = "Open this tool on both devices and choose Join beside the expected connection. Enter a password or wait for host approval if required. If it is missing, use the host’s link or code."
 pairing_hotspot_limits = "The network must allow devices to reach each other. Some hotspots, guest networks, VPNs and managed devices block direct connections. Finding a nearby entry does not prove it is reachable or trusted. This page cannot turn on a hotspot."
 pairing_version_help = "About the tool version"
 pairing_version_hint = "Compare this value on both devices. If it differs, reload both pages before starting a new share."

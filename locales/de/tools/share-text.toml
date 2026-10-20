@@ -245,7 +245,7 @@ a = "Ja. Wählen Sie vor dem Start Lokales Netzwerk — kein Internet-Relais, ve
 
 [[faq]]
 q = "Wie findet die Liste lokale Freigaben?"
-a = "Die Liste gruppiert Freigaben nach öffentlicher IPv4-Adresse oder IPv6-Subnetz und Seitenursprung, nicht nach physischer Nähe. Geteilte Gateways oder VPNs können Fremde einschließen oder Geräte verbergen. Internet ist nötig. Nur aktivierte lokale Direktfreigaben oder Cloud-Relais-Freigaben werden aufgeführt. Auffindbar ist standardmäßig ausgewählt, sofern verfügbar; deaktivieren Sie es für Freigaben nur per Link und lassen Sie Privat auf gemeinsamen Netzwerken an. Die Auswahl öffnet nur die Zustimmungsseite; sie verbindet nicht automatisch und umgeht keine Freigabe."
+a = "Die Liste gruppiert Freigaben nach öffentlicher IPv4-Adresse oder IPv6-Subnetz und Seitenursprung, nicht nach physischer Nähe. Geteilte Gateways oder VPNs können Fremde einschließen oder Geräte verbergen. Internet ist nötig. Nur aktivierte lokale Direktfreigaben oder Cloud-Relais-Freigaben werden aufgeführt. Auffindbar ist standardmäßig ausgewählt, sofern verfügbar; deaktivieren Sie es für Freigaben nur per Link und lassen Sie Privat auf gemeinsamen Netzwerken an. Beitreten startet die Anfrage über den angezeigten Verbindungstyp in einem neuen Leser-Tab. Bloßes Durchsehen verbindet nicht. Private Freigaben warten auf Zustimmung; die Anfrage erscheint als Dialog und bleibt nach Später prüfen in der Liste."
 
 [schema]
 description = "Teilen Sie Text und Dateien verschlüsselt aus Ihrem offenen Browser. Direkt ist der Standard; ein Cloud-Relais ist optional. Sie entscheiden, welche Leser Zugang erhalten."

@@ -221,6 +221,7 @@ export class Discovery {
     }
     const list = [...codes.keys()].sort().slice(0, MAX_SHARES).map((code) => ({ code, local: codes.get(code).local !== false,
       ...(codes.get(code).transport === 'relay' ? { transport: 'relay' } : {}),
+      ...(metadataTool(tool) && typeof codes.get(code).approval === 'boolean' ? { approval: codes.get(code).approval } : {}),
       ...(tool === "voice-oncall" ? { name: codes.get(code).name, locked: codes.get(code).locked } : {}),
       ...(tool === "walkie-talkie" ? { name: codes.get(code).name, listenKey: codes.get(code).listenKey } : {}) }));
     return JSON.stringify({ type: "shares", ...(tool === DEFAULT_TOOL && group === undefined ? {} : { tool }),
@@ -267,17 +268,19 @@ export class Discovery {
             || metadata.transport !== 'relay' && !ordinary) return false;
         return { ...transport, ...(ordinary ? { local: false } : {}) };
       }
-      if (Object.keys(metadata).length !== (metadata.transport === undefined ? 2 : 3)
+      const approval = typeof metadata.approval === 'boolean' ? { approval: metadata.approval } : {};
+      if (metadata.approval !== undefined && typeof metadata.approval !== 'boolean'
+          || Object.keys(metadata).length !== 2 + (metadata.transport === undefined ? 0 : 1) + Object.keys(approval).length
           || typeof metadata.name !== "string" || metadata.name.length === 0 || metadata.name.length > 80
           || !metadata.name.isWellFormed() || metadata.name.trim().length === 0
           || /[\x00-\x1f\x7f-\x9f]/.test(metadata.name)) return false;
       if (tool === "walkie-talkie") {
         if (typeof metadata.listenKey !== "string" || !LISTEN_KEY_PATTERN.test(metadata.listenKey)
             || metadata.listenKey !== publication.listenKey) return false;
-        return { name: metadata.name, listenKey: metadata.listenKey, ...transport };
+        return { name: metadata.name, listenKey: metadata.listenKey, ...transport, ...approval };
       }
       if (typeof metadata.locked !== "boolean") return false;
-      return { name: metadata.name, locked: metadata.locked, ...transport };
+      return { name: metadata.name, locked: metadata.locked, ...transport, ...approval };
     } catch {
       return false;
     }

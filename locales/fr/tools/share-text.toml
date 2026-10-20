@@ -143,7 +143,7 @@ a = "Oui. Avant de commencer, choisissez Réseau local — sans relais internet,
 
 [[faq]]
 q = "Comment la liste trouve-t-elle les partages locaux ?"
-a = "La liste regroupe les partages par adresse IPv4 publique ou sous-réseau IPv6 et origine du site, pas par proximité physique. Les passerelles partagées ou VPN peuvent inclure des inconnus ou masquer des appareils. Internet est nécessaire. Seuls les partages directs locaux ou par relais cloud ayant activé leur visibilité apparaissent. Découvrable est coché par défaut lorsqu’il est disponible ; décochez-le pour partager uniquement par lien et gardez Privé sur les réseaux partagés. Choisir un nom ouvre la page de consentement, sans connexion automatique ni contournement de l’approbation."
+a = "La liste regroupe les partages par adresse IPv4 publique ou sous-réseau IPv6 et origine du site, pas par proximité physique. Les passerelles partagées ou VPN peuvent inclure des inconnus ou masquer des appareils. Internet est nécessaire. Seuls les partages directs locaux ou par relais cloud ayant activé leur visibilité apparaissent. Découvrable est coché par défaut lorsqu’il est disponible ; décochez-le pour partager uniquement par lien et gardez Privé sur les réseaux partagés. Rejoindre envoie la demande avec le type de connexion indiqué dans un nouvel onglet de lecture. Consulter la liste ne connecte pas. Les partages privés attendent une approbation ; la demande apparaît dans une boîte de dialogue et reste dans la liste après Examiner plus tard."
 
 [schema]
 description = "Partagez du texte et des fichiers chiffrés depuis votre navigateur ouvert. La connexion directe est choisie par défaut, le relais cloud est facultatif. Vous approuvez chaque lecteur."

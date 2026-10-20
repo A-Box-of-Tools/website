@@ -8,6 +8,7 @@ import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { createApprovalPrompt } from './shared/peer-approval-ui.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
@@ -34,6 +35,14 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
+const approvalPrompt = createApprovalPrompt({
+  dialog: $('pairing-request-dialog'),
+  isActive: () => role === 'host' && !pageSuspended,
+  canApprove: () => session.viewerCount === 0,
+  onApprove: id => session.approve(id),
+  onDeny: id => session.deny(id),
+  focusFallback: id => [...$('viewer-requests').querySelectorAll('button')].find(button => button.dataset.peer === id && !button.disabled) ?? $('host-stop'),
+});
 const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
   closeDiscovery();
   $('viewer-code').value = '';
@@ -91,13 +100,14 @@ function renderRequests(requests) {
       button.disabled = key === 'host.approve' && session.viewerCount > 0;
       button.dataset.peer = request.id;
       button.dataset.action = key;
-      button.addEventListener('click', action);
+      button.addEventListener('click', () => { approvalPrompt.close(false); action(); });
       actions.append(button);
     }
     item.append(note, actions);
     $('viewer-requests').append(item);
   }
   restoreListFocus(list, focused);
+  approvalPrompt.update(requests.map(request => ({ id: request.id, name: request.note || phrase('host.unnamed') })));
 }
 
 function renderViewers(viewers) {
@@ -146,14 +156,15 @@ function renderDiscovery() {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.code = code;
-    button.textContent = phrase('discovery.choose', { code });
-    button.disabled = Boolean(role);
+    button.textContent = phrase('discovery.join');
+    button.setAttribute('aria-label', phrase(share.transport === 'relay' ? 'discovery.join-relay' : 'discovery.join-direct', { code }));
+    button.disabled = Boolean(role) || pageSuspended;
     button.addEventListener('click', () => {
-      if (role || !browsingNearby || !nearbyShares.some((entry) => entry.code === code)) return;
+      if (role || pageSuspended || !browsingNearby || !nearbyShares.some((entry) => entry.code === code && entry.transport === share.transport)) return;
       selectTransport(share.transport ?? 'direct');
       $('viewer-code').value = code;
-      status('viewer-status', 'discovery.selected');
-      $('viewer-connect').focus();
+      void connectViewer();
+      if (role === 'viewer') $('viewer-stop').focus();
     });
     item.append(label);
     appendConnectionIcons(item, { transport: share.transport ?? 'direct', locked: false, approval: true });
@@ -268,6 +279,7 @@ const linkCopy = clipboardFeedback({
 });
 
 function stopAll(key = 'connection.stopped', previousRole = role) {
+  approvalPrompt.clear();
   revision += 1;
   clearInterval(routeTimer);
   routeTimer = null;
@@ -459,6 +471,7 @@ window.addEventListener('hashchange', (event) => {
 });
 window.addEventListener('pagehide', () => { pageSuspended = true; stopAll(); });
 window.addEventListener('pageshow', () => { pageSuspended = false; updateControls(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) approvalPrompt.close(false); });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
   const open = panel.hidden;

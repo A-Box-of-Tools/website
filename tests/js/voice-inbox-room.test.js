@@ -66,6 +66,107 @@ const key = (i) => 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWX
 const last = (ws) => ws.messages.at(-1);
 const state = (ws) => ws.deserializeAttachment();
 
+test('inbox approval protects relay credentials and both signaling directions before admission', async t => {
+  const s = await system();
+  s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
+  let mints = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    mints++;
+    return new NativeResponse(JSON.stringify({ iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'test' }] }));
+  });
+  const host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD,
+    transport: 'relay', approval: true });
+  const sender = await s.open();
+  await s.send(sender, { type: 'auth', role: 'sender', key: key(0), passwordProof: PASSWORD, transport: 'relay' });
+  const generation = state(host).generation, id = state(sender).id;
+  assert.equal(last(sender).type, 'approval-pending');
+  assert.deepEqual(last(host), { type: 'request', id, name: '', generation });
+  const before = sender.messages.length;
+  await s.send(host, { type: 'offer', generation, connection: CONNECTION, to: id, sdp: SDP });
+  await s.send(host, { type: 'candidate', generation, connection: CONNECTION, to: id,
+    candidate: { candidate: 'candidate:1 1 udp 1 198.51.100.5 12345 typ relay' } });
+  assert.equal(sender.messages.length, before);
+  await s.send(sender, { type: 'answer', generation, connection: CONNECTION, sdp: SDP.replace('recvonly', 'sendonly') });
+  await s.send(sender, { type: 'status', generation, talking: true });
+  assert.equal(host.messages.some(frame => ['answer', 'status', 'join'].includes(frame.type)), false);
+  await s.send(sender, { type: 'relay-request', id: 'pending-1' });
+  assert.equal(mints, 0);
+  assert.equal(last(sender).error, 'forbidden');
+  await s.send(host, { type: 'approve', generation, to: id });
+  assert.equal(last(sender).type, 'ready');
+  assert.equal(last(sender).approval, true);
+  assert.equal(last(host).type, 'join');
+  await s.send(sender, { type: 'relay-request', id: 'admitted-1' });
+  assert.equal(mints, 1);
+});
+
+test('inbox admission survives hibernation and cannot be downgraded by a returning host', async () => {
+  const s = await system();
+  const authHost = async approval => {
+    const ws = await s.open();
+    await s.send(ws, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null, approval });
+    return ws;
+  };
+  const host = await authHost(true), caller = await s.sender(0);
+  await s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
+  host.close(1000, 'gone'); s.room().instance.webSocketClose(host);
+  s.room().instance = new Inbox(s.room().ctx, s.env);
+  for (const approval of [false, undefined]) {
+    const downgrade = await authHost(approval);
+    assert.equal(last(downgrade).error, 'approval-mismatch');
+  }
+  const resumed = await authHost(true);
+  assert.equal(last(caller).type, 'ready');
+  assert.equal(resumed.messages.some(frame => frame.type === 'request'), false);
+  const reconnect = await s.sender(0);
+  assert.equal(last(reconnect).type, 'ready');
+  const fresh = await s.sender(1), id = state(fresh).id, generation = state(resumed).generation;
+  assert.equal(last(fresh).type, 'approval-pending');
+  await s.send(resumed, { type: 'deny', generation, to: id });
+  assert.equal(last(fresh).type, 'denied');
+  assert.equal(state(fresh), null);
+  assert.equal(last(resumed).type, 'request-resolved');
+  const retry = await s.sender(1);
+  assert.equal(last(retry).type, 'approval-pending');
+  await s.send(retry, { type: 'leave' });
+  assert.equal(last(resumed).type, 'request-resolved');
+  await s.send(resumed, { type: 'approve', generation, to: id });
+  const retryAgain = await s.sender(1);
+  assert.equal(last(retryAgain).type, 'approval-pending');
+  await s.send(resumed, { type: 'end', generation });
+  assert.equal(last(retryAgain).type, 'ended');
+  assert.equal(last(await authHost(true)).type, 'ended');
+});
+
+test('voice discovery publishes approval only from the authoritative live host', async () => {
+  const s = await system(), host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null, approval: true });
+  const observer = await s.discover(), publication = host.messages[0].discovery;
+  await s.publish(observer, { ...publication, approval: false });
+  assert.equal(last(observer).list[0].approval, true);
+  assert.equal(last(observer).list[0].locked, false);
+});
+
+test('approval turnover remains bounded with long Unicode names and preserves live callers', async () => {
+  const s = await system(), host = await s.open();
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: '界'.repeat(80), passwordProof: PASSWORD, approval: true });
+  const approve = caller => s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
+  const keeper = await s.sender(40, PASSWORD, '界'.repeat(64));
+  await approve(keeper);
+  for (let i = 0; i < 12; i++) {
+    const caller = await s.sender(i, PASSWORD, '界'.repeat(64));
+    assert.equal(last(caller).type, 'approval-pending');
+    await approve(caller);
+    assert.equal(last(caller).type, 'ready');
+    await s.send(caller, { type: 'leave' });
+  }
+  assert.equal(state(host).approved.length, 10);
+  assert.equal(state(keeper).anchor.approved.length, 10);
+  assert.equal(last(await s.sender(40, PASSWORD)).type, 'ready');
+  assert.equal(last(await s.sender(0, PASSWORD)).type, 'approval-pending');
+});
+
 class Socket {
   constructor() { this.readyState = 0; this.messages = []; this.attachment = null; this.tags = []; }
   accept() { this.readyState = 1; }

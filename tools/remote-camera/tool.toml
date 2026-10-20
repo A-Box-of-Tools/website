@@ -120,15 +120,15 @@ body = """
       include it in viewer links. Private sessions do not also appear in the
       network list. Anyone with the group code can discover its listed cameras;
       the camera's approval policy still controls access to media.
-      Turn off listing before starting for a link-only camera. Choosing a
-      listed name fills its code and waits for Connect. The source
+      Turn off listing before starting for a link-only camera. Join beside a
+      listed name starts a viewing request using its displayed route. The source
       chooses whether its owner must approve the request.
       Rooms and listings exist only on open connections. Cloudflare keeps connection logs
       for seven days: the code, address and time, never a payload."""
 [[privacy]]
 title = "A direct connection shares addresses before video is approved."
 body = """
-      Opening a viewer link or choosing an available camera fills the viewing form and waits. Connect asks
+      Opening a viewer link fills the viewing form and waits. Connect, or Join on a listed camera, asks
       the rendezvous to introduce the devices, and each browser then learns
       addresses offered by the other. Approval controls video and enabled audio, not that address
       exchange. The name you enter is a note for the source, not verified identity.
@@ -203,7 +203,7 @@ title = "Invite the viewing device."
 body = "Choose Direct or Cloud relay beside Start camera. Open the viewer link or scan its QR code on the other device; the link carries that choice. You can also select a camera in Available connections. To discover across networks, create or enter the same private group code before starting and choose Cloud relay for reachability. Both devices need internet for pairing. Direct needs a route between devices; finding a session in a private group does not create that route. Cloud relay needs internet throughout."
 [[howto]]
 title = "Connect the viewer."
-body = "Choosing an available camera fills its code and connection type. The icons show Direct or Cloud relay and explain access requirements. Choose Connect to camera when you are ready. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
+body = "Check the icons showing Direct or Cloud relay and access requirements, then Join beside an available camera to request a view. A copied invitation or manually entered code still waits for Connect to camera. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
 title = "Resume if the browser pauses video, then stop."
 body = "The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. If the microphone was interrupted, choose Resume microphone when ready. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel."
