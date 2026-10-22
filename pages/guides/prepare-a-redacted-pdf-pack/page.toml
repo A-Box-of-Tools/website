@@ -1,0 +1,17 @@
+# This workflow joins tools that already have their own reference guides.
+# Omitting tool keeps their existing guide links intact.
+
+slug = "guides/prepare-a-redacted-pdf-pack"
+kind = "guide"
+nav = "Prepare a redacted PDF pack for a recipient"
+group = "workflows"
+title = "Prepare a redacted PDF pack for a recipient"
+description = "Choose the necessary pages, remove private text, add an optional recipient watermark, and check the final PDF before sharing it."
+heading = "Prepare a redacted PDF pack for a recipient"
+lede = "A useful review pack contains the pages someone needs, without the private details they do not. Follow a fictional workshop packet from page selection to a checked final attachment."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Prepare a redacted PDF pack for a recipient"
+og_description = "Choose the necessary pages, remove private text, add an optional recipient watermark, and check the final PDF before sharing it."
+og_image_alt = "abox.tools - browser tools for local file processing"
