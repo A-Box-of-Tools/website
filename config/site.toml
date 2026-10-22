@@ -609,6 +609,7 @@ order = [
   "get-photos-ready-for-the-web",
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
+  "prepare-a-reimbursement-pdf-and-csv",
   "compare-two-json-files",
 ]
 
