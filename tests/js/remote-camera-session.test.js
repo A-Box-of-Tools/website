@@ -331,12 +331,137 @@ test('a remote hello delivered before the local open callback still sends our he
   channel.readyState = 'open'; channel.receive('hello');
   assert.deepEqual(channel.sent, [
     { protocol: PROTOCOL, type: 'hello', receiveAudio: true },
+    { protocol: PROTOCOL, type: 'hello', receiveAudio: true },
     { protocol: PROTOCOL, type: 'request', note: 'Phone layout check' },
   ]);
   assert.equal(f.states.at(-1), 'viewer.waiting'); assert.equal(peer.closed, false);
   channel.open(); channel.receive('hello');
-  assert.deepEqual(channel.sent.map(message => message.type), ['hello', 'request']);
+  assert.deepEqual(channel.sent.map(message => message.type), ['hello', 'hello', 'request']);
   assert.equal(peer.closed, false);
+});
+
+test('a lost first hello is repaired on either side without bypassing approval or repeating the exchange', async t => {
+  for (const lost of ['camera', 'viewer']) await t.test(lost, async t => {
+    const host = fixture(t), viewer = fixture(t), stream = sourceStream(true);
+    await host.session.startHost(stream, CODE);
+    signal(host.sockets[0], 'v:paired', { dial: true }); await settle();
+    signal(host.sockets[0], 'v:paired', { description: { type: 'answer', sdp: SDP } }); await settle();
+    await viewer.session.connect(CODE, 'Returning phone');
+    viewer.sockets[0].receive({ type: 'ready' }); await settle();
+    const cameraPeer = host.peers[0], viewerPeer = viewer.peers[0];
+    const camera = cameraPeer.channel, watching = new Channel(); watching.label = 'camera-control';
+    const dropped = [];
+    const link = (sender, receiver, role) => {
+      const send = sender.send.bind(sender);
+      sender.send = text => {
+        send(text);
+        // The receiver may still be connecting when the first native frame
+        // arrives. Ordered delivery cannot recover a frame discarded then.
+        queueMicrotask(() => {
+          if (receiver.readyState === 'open') receiver.emit('message', { data: text });
+          else dropped.push({ role, type: JSON.parse(text).type });
+        });
+      };
+    };
+    link(camera, watching, 'camera'); link(watching, camera, 'viewer');
+    const openViewer = () => {
+      watching.readyState = 'open';
+      viewerPeer.emit('datachannel', { channel: watching });
+      watching.emit('open');
+    };
+    if (lost === 'camera') { camera.open(); await settle(); openViewer(); }
+    else { openViewer(); await settle(); camera.open(); }
+    await settle();
+    assert.deepEqual(dropped, [{ role: lost, type: 'hello' }]);
+    assert.equal(cameraPeer.closed, false); assert.equal(viewerPeer.closed, false);
+    assert.deepEqual(host.requests.at(-1), [{ id: 'v:paired', note: 'Returning phone', autoAccept: false }]);
+    assert.equal(viewer.states.at(-1), 'viewer.waiting');
+    assert.deepEqual(watching.sent.map(message => message.type), ['hello', 'hello', 'request']);
+    assert.ok(watching.sent.filter(message => message.type === 'hello').every(message => message.receiveAudio === true));
+    assert.deepEqual(camera.sent.map(message => message.type), ['hello', 'hello']);
+    assert.equal(cameraPeer.transceivers.length, 0); assert.equal(host.session.grants.tokens.size, 0);
+    assert.equal(viewer.streams.some(Boolean), false);
+    const requestUpdates = host.requests.length;
+    camera.receive('hello', { receiveAudio: true }); watching.receive('hello'); await settle();
+    assert.equal(host.requests.length, requestUpdates);
+    assert.deepEqual(watching.sent.map(message => message.type), ['hello', 'hello', 'request']);
+    assert.deepEqual(camera.sent.map(message => message.type), ['hello', 'hello']);
+    assert.equal(host.session.approve('v:paired'), true);
+    assert.equal(cameraPeer.transceivers.length, 0, 'approval alone still waits for the viewer acknowledgement');
+    await settle();
+    assert.deepEqual(cameraPeer.getSenders().map(sender => sender.track.kind), ['video', 'audio']);
+    host.session.stop(); viewer.session.stop(); await settle();
+    const counts = [camera.sent.length, watching.sent.length, host.requests.length, viewer.states.length];
+    camera.receive('hello'); camera.receive('request', { note: 'Late frame' });
+    watching.receive('hello'); watching.receive('approved'); await settle();
+    assert.deepEqual([camera.sent.length, watching.sent.length, host.requests.length, viewer.states.length], counts);
+    assert.equal(host.session.role, null); assert.equal(viewer.session.role, null);
+    assert.equal(stream.video.readyState, 'ended'); assert.equal(stream.other.readyState, 'ended');
+  });
+});
+
+test('a failed hello echo closes the peer before a request or approval can proceed', async t => {
+  for (const role of ['camera', 'viewer']) await t.test(role, async t => {
+    const f = fixture(t), stream = sourceStream();
+    let peer, channel;
+    if (role === 'camera') {
+      await f.session.startHost(stream, CODE, { requireApproval: false });
+      signal(f.sockets[0], 'v:echo', { dial: true }); await settle();
+      peer = f.peers[0]; channel = peer.channel;
+    } else {
+      await f.session.connect(CODE, 'Viewer');
+      f.sockets[0].receive({ type: 'ready' }); await settle();
+      peer = f.peers[0]; channel = new Channel(); channel.label = 'camera-control';
+      peer.emit('datachannel', { channel });
+    }
+    channel.open();
+    const attempted = [];
+    channel.send = text => { attempted.push(JSON.parse(text).type); throw new DOMException('Unavailable', 'OperationError'); };
+    channel.receive('hello', { receiveAudio: true });
+    assert.deepEqual(attempted, ['hello']);
+    assert.deepEqual(channel.sent.map(message => message.type), ['hello']);
+    assert.equal(peer.closed, true); assert.equal(f.states.at(-1), 'connection.direct-failed');
+    assert.equal(peer.transceivers.length, 0); assert.equal(f.session.grants.tokens.size, 0);
+    channel.receive('hello'); channel.receive('request', { note: 'Late request' });
+    channel.receive('approved'); channel.receive('approval-ack'); await settle();
+    assert.deepEqual(attempted, ['hello']);
+    assert.equal(f.requests.some(requests => requests.length), false);
+    assert.equal(f.session.approve('v:echo'), false);
+    assert.equal(f.states.includes('viewer.waiting'), false);
+    if (role === 'camera') {
+      assert.equal(f.session.role, 'camera'); assert.equal(stream.video.readyState, 'live');
+    } else assert.equal(f.session.role, null);
+  });
+});
+
+test('hello repair does not accept malformed or premature camera requests', async t => {
+  for (const frame of [
+    { protocol: 'unrelated', type: 'hello' },
+    { protocol: PROTOCOL, type: 'request', note: 'x'.repeat(81) },
+    { protocol: PROTOCOL, type: 'request', note: 'Valid but before hello' },
+  ]) await t.test(frame.type + ':' + (frame.note?.length ?? 0), async t => {
+    const f = fixture(t); await f.session.startHost(sourceStream(), CODE, { requireApproval: false });
+    signal(f.sockets[0], 'v:invalid', { dial: true }); await settle();
+    const peer = f.peers[0]; peer.channel.open();
+    peer.channel.emit('message', { data: JSON.stringify(frame) });
+    assert.equal(peer.closed, true); assert.equal(f.states.at(-1), 'connection.invalid');
+    assert.deepEqual(peer.channel.sent.map(message => message.type), ['hello']);
+    assert.equal(f.requests.some(requests => requests.length), false);
+    assert.equal(peer.transceivers.length, 0); assert.equal(f.session.grants.tokens.size, 0);
+  });
+});
+
+test('an open control channel without a remote hello still reaches the original deadline', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  signal(f.sockets[0], 'v:silent', { dial: true }); await settle();
+  const peer = f.peers[0]; peer.channel.open();
+  t.mock.timers.tick(20000); await settle();
+  assert.equal(peer.closed, true); assert.equal(f.states.at(-1), 'connection.direct-failed');
+  assert.deepEqual(peer.channel.sent.map(message => message.type), ['hello']);
+  assert.equal(f.requests.some(requests => requests.length), false);
+  assert.equal(peer.transceivers.length, 0); assert.equal(f.session.grants.tokens.size, 0);
+  assert.equal(stream.video.readyState, 'live');
 });
 
 test('a failed local hello while handling a remote hello cannot send an approval request', async t => {
