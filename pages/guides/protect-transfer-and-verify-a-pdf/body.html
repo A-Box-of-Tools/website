@@ -1,0 +1,172 @@
+  <section>
+    <h2>Finish the document before protecting it</h2>
+    <p>
+      You need to send a fictional <code>committee-papers.pdf</code> to one
+      other person. You want a password to be required before it opens, and
+      a check that the downloaded copy matches the final file you sent.
+      These are separate jobs: protection controls opening; a checksum
+      compares bytes; transfer moves those bytes to the recipient.
+    </p>
+    <ol>
+      <li>Finish and inspect the document.</li>
+      <li>Generate a unique password and protect a copy of the PDF.</li>
+      <li>Calculate SHA-256 for that exact protected copy.</li>
+      <li>Transfer it and have the recipient compare the checksum.</li>
+    </ol>
+    <p>
+      Complete editing, page selection, redaction and compression first.
+      Password protection does not remove a detail you forgot to delete;
+      a checksum cannot tell you whether the right pages are in the pack.
+      Keep the original safely. Any later change to the protected file
+      requires a fresh checksum.
+    </p>
+  </section>
+
+  <section>
+    <h2>Require a password to open the PDF</h2>
+    <p>
+      Use the <a href="../../password-generator/">Password &amp;
+      Passphrase Generator</a> to make a long, unique random password.
+      Store it somewhere you can retrieve safely, such as your password
+      manager. Do not reuse an account password or a password printed in a
+      guide. The <a href="../is-it-safe-to-use-an-online-password-generator/">
+      generator guide</a> explains local generation.
+    </p>
+    <p>
+      Load the finished document into the <a href="../../protect-pdf/">PDF
+      Protector</a> and set the opening password. Restrictions on printing
+      or copying are a different feature: a document that opens without a
+      password does not meet this workflow's goal. Keep the default AES-256
+      setting unless a reviewed compatibility requirement calls for another
+      approach. See the <a href="../protect-a-pdf/">protection guide</a>
+      for the settings and their limitations.
+    </p>
+    <p>
+      Download <code>committee-papers-protected.pdf</code>. Give it a
+      filename that does not itself disclose private information: encrypting
+      a document does not conceal the name of the attachment.
+    </p>
+  </section>
+
+  <section>
+    <h2>Test the protected download</h2>
+    <p>
+      Open the downloaded file in a PDF reader and check that it requires
+      the opening password. Use the stored password, then read the pages.
+      If the reader remembers passwords, use a fresh reader session; an
+      already unlocked preview does not demonstrate what a first-time
+      recipient will see.
+    </p>
+    <p>
+      Confirm that the recipient can use password-protected PDFs and that
+      the file meets the transfer tool's limit. Share Text &amp; Files
+      currently caps an individual file at 200 MB. If the document needs
+      shrinking, return to the original, compress and inspect it, then
+      protect the resulting version. Do that before calculating its digest.
+    </p>
+    <p>
+      Keep the original and password safe. Losing the password can leave
+      the protected copy unreadable. The encrypted copy is the attachment
+      for the remaining steps; do not accidentally select the original.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hash the final encrypted bytes</h2>
+    <p>
+      Select <code>committee-papers-protected.pdf</code> in
+      <a href="../../hash-checksum/">Hash &amp; Checksum</a> and use its
+      SHA-256 result. Copy the full digest: SHA-256 has 64 hexadecimal
+      characters. Comparing only the beginning or end is a weaker check.
+      The <a href="../verify-a-file-checksum/">checksum guide</a>
+      explains how to compare an expected digest.
+    </p>
+    <p>
+      Two PDFs can look identical and still have different hashes. Even
+      separately encrypting the same original can produce different bytes.
+      Hash the actual protected download, not an earlier version or an
+      unencrypted copy saved by a reader.
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Working item</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>Original PDF</td><td>Retain safely for future edits</td></tr>
+        <tr><td>Protected PDF</td><td>Hash, transfer and verify this exact file</td></tr>
+        <tr><td>Opening password</td><td>Give only to the intended recipient</td></tr>
+        <tr><td>Expected SHA-256</td><td>Communicate through a trusted channel for comparison</td></tr>
+      </tbody>
+    </table></div></figure>
+  </section>
+
+  <section>
+    <h2>Transfer the protected copy</h2>
+    <p>
+      Open <a href="../../share-text/">Share Text &amp; Files</a>, select
+      the protected download, and invite the recipient. Keep Private access
+      and approve the intended receiving device. Leave the sending tab open
+      until the recipient finishes downloading. Follow the
+      <a href="../share-text-between-devices/">sharing guide</a> for
+      connection choices and troubleshooting.
+    </p>
+    <p>
+      This step deliberately uses a network. In the usual between-device
+      flow, a public rendezvous introduces the browsers; even Local network
+      mode needs that introduction. Direct sends the file between peers.
+      Choosing Cloud relay sends encrypted WebRTC traffic through the relay
+      instead. The introduction service does not carry the file's contents.
+      Password protection also remains on the downloaded PDF.
+    </p>
+    <p>
+      Give the password through a separate trusted channel. Give the expected
+      digest through an authenticated channel too, such as your established
+      conversation with the recipient. Sending a replacement file and a
+      replacement digest together could make them agree, so a hash supplied
+      only beside an untrusted download does not establish its origin.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compare the received file before changing it</h2>
+    <p>
+      On the receiving device, download the file and open
+      <a href="../../hash-checksum/">Hash &amp; Checksum</a>. Select that
+      received PDF, use SHA-256, and compare the entire digest with the
+      trusted expected value. The tool's comparison field avoids trying to
+      spot one wrong character by eye.
+    </p>
+    <p>
+      A matching SHA-256 provides strong evidence that the received bytes
+      match the sender's hashed copy. It does not by itself identify the
+      author, establish that the contents are correct, or make the file safe
+      to open. This workflow assumes a document expected from a known sender.
+    </p>
+    <p>
+      If the digests differ, first confirm that both people chose the same
+      algorithm and the protected copy. A similarly named original, a new
+      encrypted export or a later saved version can explain the difference.
+      Resolve it before calling the received copy verified. Do not decrypt
+      and resave the file before comparing: that would change its bytes.
+    </p>
+    <p>
+      Once the comparison succeeds, open that same file with the password
+      and confirm the intended pages are readable. Hashing and reading
+      answer different questions; this last check still matters.
+    </p>
+  </section>
+
+  <section>
+    <h2>End the transfer after confirming receipt</h2>
+    <p>
+      Close the sending tab after the recipient has downloaded, verified and
+      opened the document. This stops live hosting. It does not erase a copy
+      someone already downloaded, and the PDF password does not provide
+      expiry or remote revocation. Someone with both file and password can
+      keep access.
+    </p>
+    <p>
+      The completed handover is specific: the PDF asks for an opening
+      password, the received encrypted file matches the expected SHA-256,
+      and the intended recipient can read the intended pages. Keep the
+      transfer invitation and password sharing limited to that recipient.
+    </p>
+  </section>

@@ -1,0 +1,17 @@
+# This workflow joins tools that already have their own reference guides.
+# Omitting tool keeps their existing guide links intact.
+
+slug = "guides/protect-transfer-and-verify-a-pdf"
+kind = "guide"
+nav = "Protect, transfer and verify a PDF"
+group = "workflows"
+title = "Protect, transfer and verify a PDF"
+description = "Add an opening password to a PDF, transfer the encrypted file between browsers, and compare SHA-256 checksums to check the received copy."
+heading = "Protect, transfer and verify a PDF"
+lede = "Prepare the document first, protect its final contents, then check the exact file that arrives. A password controls opening the PDF; a checksum checks whether the received bytes match the copy you sent."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Protect, transfer and verify a PDF"
+og_description = "Add an opening password to a PDF, transfer the encrypted file between browsers, and compare SHA-256 checksums to check the received copy."
+og_image_alt = "abox.tools - browser tools for local file processing"

@@ -610,6 +610,7 @@ order = [
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
   "compare-two-json-files",
+  "protect-transfer-and-verify-a-pdf",
 ]
 
 [[guides.groups]]
