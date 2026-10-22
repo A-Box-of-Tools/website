@@ -1,5 +1,6 @@
 import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
+import { createChannelGreeting } from './shared/peer-greeting.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
@@ -623,15 +624,12 @@ export class CameraSession {
   channel(entry, channel) {
     entry.dc = channel;
     entry.trace?.channel(channel);
-    const opened = () => {
-      if (!this.current(entry) || entry.opened) return;
-      entry.opened = true;
-      try {
-        // Both sides identify the tool over the encrypted channel; approval
-        // and the viewer's note never become signalling messages.
-        this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {});
-      } catch { this.peerFailed(entry, 'connection.direct-failed', 'channel-error'); }
-    };
+    const greeting = createChannelGreeting({
+      current: () => this.current(entry),
+      send: () => this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {}),
+      failed: () => this.peerFailed(entry, 'connection.direct-failed', 'channel-error'),
+    });
+    const opened = () => greeting.open();
     channel.addEventListener('open', opened);
     if (channel.readyState === 'open') opened();
     channel.addEventListener('close', () => {
@@ -641,22 +639,14 @@ export class CameraSession {
       if (!this.current(entry)) return;
       // A received frame can be delivered while the local open event is
       // still queued. Our hello must precede every response on this channel.
-      opened();
-      if (!this.current(entry)) return;
+      if (!greeting.open()) return;
       const message = controlMessage(event.data);
       if (!message) return this.peerFailed(entry, 'connection.invalid');
       if (message.type === 'hello') {
-        if (entry.hello) return;
+        if (!greeting.receive()) return;
         entry.hello = true;
         entry.trace?.mark('hello-received');
         entry.receiveAudio = message.receiveAudio === true;
-        // A browser can discard the first frame while its channel is still
-        // connecting. Echo once after the peer speaks, before any request, so
-        // both sides see a hello even when one initial greeting was lost.
-        try {
-          this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {});
-        } catch { return this.peerFailed(entry, 'connection.direct-failed', 'channel-error'); }
-        if (!this.current(entry)) return;
         for (const timer of entry.timers) clearTimeout(timer);
         entry.timers.clear();
         if (this.role === 'viewer') {
