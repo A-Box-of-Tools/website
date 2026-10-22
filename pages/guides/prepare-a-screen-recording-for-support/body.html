@@ -1,0 +1,165 @@
+  <section>
+    <h2>Start with one controlled reproduction</h2>
+    <p>
+      Imagine a fictional stock page where changing a quantity from 3 to 4
+      and saving makes it return to 3. Another person needs to see the starting
+      value, the change, the save action and the unexpected result. A close-up
+      of the final value alone cannot explain the failure.
+    </p>
+    <p>
+      Record a test item, close unrelated windows and silence notifications.
+      Capture only sound the report needs. If a customer name, password or
+      private conversation appears, make a fresh recording with safe example
+      data wherever possible. Preparing the scene is easier than discovering
+      sensitive material after editing.
+    </p>
+    <p>
+      The chain is <a href="../../trim-video/">Video Cutter</a>, optional
+      <a href="../../crop-video/">Video Cropper</a>, then
+      <a href="../../compress-video/">Video Compressor</a>. Download each
+      result and load it into the next tool, using a carry-on link where one
+      is offered. Keep the original separately. File preparation happens in
+      your browser; sending the finished report is a later, deliberate step.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keep the lead-in as well as the failure</h2>
+    <p>
+      Open the recording in the <a href="../../trim-video/">cutter</a> and
+      find one complete attempt. Start before the quantity changes, with the
+      original value visible. End after the failed save has settled. Keep a
+      delay when it is part of the problem: cutting straight from Save to the
+      result could hide a spinner, message or timing issue.
+    </p>
+    <p>
+      Remove setup time and repeated attempts that add no information. A
+      shorter clip is easier to follow and usually needs less compression.
+      For this example, keep one continuous attempt rather than joining
+      unrelated moments into something that looks like a single reproduction.
+    </p>
+    <p>
+      Save <code>01-reproduction.mp4</code> and play it from beginning to end.
+      Check the actual exported start and end: a lossless cut can land at a
+      nearby keyframe instead of exactly where you marked it. The
+      <a href="../trim-a-video/">trimming guide</a> explains the choice
+      between that boundary and a re-encoded precise cut. Include any extra
+      frames in your privacy review.
+    </p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-screen-recording-for-support/marks.webp" loading="lazy" decoding="async"
+           alt="The video cutter timeline and controls for marking the parts to keep.">
+      <figcaption>
+        The cutter with sample footage. Preserve the action before the failure
+        and inspect the downloaded clip's actual boundaries.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Crop only when the surrounding area is unnecessary</h2>
+    <p>
+      If an empty desktop surrounds the application, load the trimmed file
+      into the <a href="../../crop-video/">cropper</a>. Keep the edited row,
+      Save control and feedback. Cropping to the quantity field alone would
+      remove the action that makes this example reproducible.
+    </p>
+    <p>
+      Save <code>02-framed.mp4</code> and watch the whole result. A message
+      may appear near an edge only briefly, or the pointer may leave the area
+      you first considered important. Cropping re-encodes the picture; skip
+      it when the original framing already works. The
+      <a href="../crop-a-video/">cropping guide</a> covers the controls.
+    </p>
+    <p>
+      Cropping removes frame edges. It does not mask private information in
+      the retained area, remove audio, or replace a review of every moment.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compress for legibility as well as size</h2>
+    <p>
+      Load the latest checked version into the
+      <a href="../../compress-video/">compressor</a>. Use the attachment
+      requirements of the actual support system; do not assume every inbox
+      accepts the same size or format. Leave some room below its limit.
+    </p>
+    <p>
+      Save <code>stock-save-failure.mp4</code> and inspect the downloaded
+      result at the size someone is likely to view it. Can you distinguish
+      3 from 4 and read the message after saving? A clip that fits but blurs
+      the evidence has failed its purpose.
+    </p>
+    <p>
+      If further compression destroys that detail, return to the clearer
+      intermediate and use a transfer method the recipient accepts. Remove
+      redundant time before sacrificing readable pixels. See the
+      <a href="../compress-a-video/">compression guide</a> for the tradeoffs.
+      Do not repeatedly compress an already degraded output.
+    </p>
+    <p>
+      If the source cannot be opened by the next tool, the
+      <a href="../../convert-to-mp4/">MP4 Converter</a> is a compatibility
+      step before editing. Skip it when the file already works. Check each
+      resulting file rather than assuming an MP4 extension guarantees playback.
+    </p>
+  </section>
+
+  <section>
+    <h2>Add a still when it answers a separate question</h2>
+    <p>
+      A screenshot can make a small error message easier to inspect. Open
+      the clearer original or intermediate in the
+      <a href="../../grab-frame/">Frame Grabber</a>, choose the moment and
+      save a PNG. The <a href="../grab-a-frame-from-a-video/">frame guide</a>
+      explains how to extract the decoded picture without photographing a
+      player's controls.
+    </p>
+    <p>
+      If the still contains an irrelevant identifier, use the
+      <a href="../../redact-image/">Image Redactor</a> and inspect the
+      exported image. Save it as <code>stock-save-result.png</code>.
+      <strong>Redacting the image changes only that image.</strong> The same
+      identifier remains in the video if it appears there. Follow the
+      <a href="../redact-an-image/">image redaction guide</a> for the still;
+      re-record the video safely when private material remains in it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Write what the video cannot carry alone</h2>
+    <p>
+      Include a short report the recipient can search and follow without
+      transcribing the recording:
+    </p>
+    <ul>
+      <li><strong>Steps:</strong> Open the test item's stock page, change 3 to 4, then save.</li>
+      <li><strong>Expected:</strong> The saved quantity remains 4.</li>
+      <li><strong>Actual:</strong> The quantity returns to 3 after saving.</li>
+      <li><strong>Context:</strong> Relevant browser and device, frequency, and setup needed to reproduce it.</li>
+    </ul>
+    <p>
+      Distinguish observations from guesses about the cause. Name the exact
+      clip and optional still you are attaching, so another export with a
+      similar name is not mistaken for the report's evidence.
+    </p>
+  </section>
+
+  <section>
+    <h2>Review the exact attachments before sending</h2>
+    <p>
+      Play the final downloaded video again, including its sound. Look for
+      names, notifications, tabs, account details and private material
+      between the moments you were concentrating on. Inspect the optional
+      screenshot independently. Check readability, playback and file size.
+    </p>
+    <p>
+      These tools do not provide video masking or redaction. Editing and
+      compression do not establish that a recording is safe to share. If
+      sensitive content remains in the retained picture or sound, re-record
+      the example before sending it. The finished report is a readable clip,
+      reproducible steps and only the additional image that helps explain
+      the failure.
+    </p>
+  </section>
