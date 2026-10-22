@@ -650,6 +650,13 @@ export class CameraSession {
         entry.hello = true;
         entry.trace?.mark('hello-received');
         entry.receiveAudio = message.receiveAudio === true;
+        // A browser can discard the first frame while its channel is still
+        // connecting. Echo once after the peer speaks, before any request, so
+        // both sides see a hello even when one initial greeting was lost.
+        try {
+          this.control(entry, 'hello', this.role === 'viewer' ? { receiveAudio: true } : {});
+        } catch { return this.peerFailed(entry, 'connection.direct-failed', 'channel-error'); }
+        if (!this.current(entry)) return;
         for (const timer of entry.timers) clearTimeout(timer);
         entry.timers.clear();
         if (this.role === 'viewer') {

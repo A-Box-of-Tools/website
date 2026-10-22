@@ -20,6 +20,13 @@ flow. Video and enabled audio are added only after that acknowledgement; the ini
 media. The viewer note, hello and approval travel that encrypted channel.
 This makes approval a transport boundary rather than a hidden video element.
 
+Each peer repeats its hello once after receiving the other peer's first hello,
+before the viewer requests approval. A browser can discard an early frame while
+its channel is still connecting, even on an ordered channel. This bounded echo
+repairs that startup race without a timer or a repeated approval request.
+Duplicate hellos are ignored; controls received before a valid hello remain
+invalid, and media still waits for approval and its acknowledgement.
+
 A new manual request opens a native review dialog while the camera page is
 visible. Review later receives initial focus; it and Escape close the dialog
 without approving or denying anything. The same request stays in Viewer
