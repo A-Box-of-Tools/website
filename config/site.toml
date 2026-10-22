@@ -607,6 +607,7 @@ order = [
   "edit-a-gif-frame-by-frame",
   "scan-multiple-pages-into-one-pdf",
   "get-photos-ready-for-the-web",
+  "turn-a-bitmap-logo-into-website-assets",
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
   "compare-two-json-files",
