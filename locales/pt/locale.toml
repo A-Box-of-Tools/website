@@ -232,7 +232,7 @@ body = "Seu navegador abre, lê e edita os arquivos escolhidos. Não há envio p
 
 [[hub.guarantees]]
 title = "Seus arquivos não são entregues à análise de visitas"
-body = "São contadas as visitas, o primeiro uso concluído de uma ferramenta a cada carregamento da página e as respostas fixas do feedback opcional. Nenhum arquivo, nome, conteúdo ou detalhe do resultado acompanha essas contagens. A importação opcional de imagens e a consulta de câmbio de recibos explicam, junto aos controles, as informações enviadas."
+body = "Contamos visitas, etapas fixas de uso, o primeiro resultado bem-sucedido por carregamento, alguns links de continuação e respostas opcionais fixas. Nenhum arquivo, nome, conteúdo ou detalhe de entrada ou saída acompanha essas contagens. A importação opcional de imagens e as consultas de câmbio para recibos explicam seus dados junto aos controles."
 
 [[hub.guarantees]]
 title = "O processamento local funciona offline"
