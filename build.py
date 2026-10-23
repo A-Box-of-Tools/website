@@ -98,6 +98,7 @@ from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from buildlib import agents
 from buildlib import cards
 from buildlib import catalogue
 from buildlib import cssmin
@@ -615,7 +616,9 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         # same languages.
         catalogue.build_llms(out, templates, site, locales, ordered_tools,
                              ordered_prose)
-        written.append('llms.txt')
+        written += ['llms.txt', 'llms-guides.txt']
+
+        written += agents.build_discovery(out, templates, site)
 
         # And once more as a stream, for a reader who wants to be told when a
         # tool ships rather than to come back and check. One file per published
