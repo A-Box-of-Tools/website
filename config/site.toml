@@ -764,6 +764,12 @@ hub_privacy_details = "How it stays private"
 hub_filter_label = "Find a tool"
 hub_filter_none = "No tool matches that. Try fewer words or a file format, such as PDF or PNG."
 
+# Browser agents read the same public catalogue a person sees. Keeping their
+# tool metadata here lets each hub describe that search in its own language.
+hub_agent_title = "Find a browser tool"
+hub_agent_description = "Search the tools listed on this page by task, name or file format. Returns public tool names, descriptions and links; does not open tools or process files. Matches short keywords in this page's language."
+hub_agent_query_description = "Keywords such as PNG to WebP or JSON. An empty query lists tools."
+
 hub_guides_note = """
     Not sure which setting to move, or what it costs?
     <a href="{{ base }}{{ links.guides }}/">There is a guide for every tool</a>."""

@@ -601,7 +601,23 @@ instructions therefore changes the digest without fetching anything at build
 time. The skill and catalog formats are evolving discovery conventions, not
 evidence that a client has completed a task.
 
-The files are ordinary static JSON and Markdown. Serve the JSON as
+The hub also offers `find_browser_tools` through
+[WebMCP](https://developer.chrome.com/docs/ai/webmcp) when the browser exposes
+that experimental API. It searches only the public tool cards already on the
+page and returns their names, descriptions and links. The required `query`
+accepts up to 200 characters, including an empty query to list tools; the
+optional `limit` accepts 1-20, defaulting to 10. It makes no network request,
+opens no tool, processes no file and reads no saved favourites or private
+input. The ordinary hub and its controls remain available without WebMCP.
+
+The tool title and descriptions come from the three `ui.hub_agent_*` strings
+in each maintained language. The hub renders them as escaped attributes on
+the hidden `#hub-agent-phrases` element, separately from the page's visible
+copy. Registration and an invocation against the built page are the useful
+evidence; the API's presence
+alone does not establish that a browser agent completed a task.
+
+The discovery files are ordinary static JSON and Markdown. Serve the JSON as
 `application/json` and the skill as `text/markdown` or `text/plain`, with GET
 and HEAD support. They are intentionally outside the page sitemap and page
 service workers. Existing `.md` response `noindex` rules also cover the

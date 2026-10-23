@@ -273,6 +273,9 @@ hub_show_fewer = "表示を減らす"
 hub_privacy_details = "ファイルが外に出ない仕組み"
 hub_filter_label = "ツールを探す"
 hub_filter_none = "該当するツールはありません。単語を減らすか、PDFやPNGなどのファイル形式で検索してみてください。"
+hub_agent_title = "ブラウザー用ツールを探す"
+hub_agent_description = "このページに掲載されたツールを、作業内容、名前、ファイル形式で検索します。公開されているツール名、説明、リンクを返します。ツールを開いたり、ファイルを処理したりはしません。このページの言語による短いキーワードで検索します。"
+hub_agent_query_description = "圧縮、PNG、WebPなどのキーワード。検索語が空の場合はツールを一覧表示します。"
 
 hub_guides_note = """
     どの設定を動かせばいいのか、それで何と引き換えになるのか。\
