@@ -3,6 +3,12 @@
   <section class="card">
     <h2><span class="step">1</span> Choose the frames</h2>
 
+    <p>
+      Add at least two photographs of the same scene, or try the example to
+      compare a noisy frame with its stack. Keep exposure and framing consistent
+      across your own set.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -46,13 +52,19 @@
   <section class="card">
     <h2><span class="step">2</span> How to combine them</h2>
 
+    <ul class="note">
+      <li><strong>Reduce noise:</strong> start with Average and Auto alignment for a steady burst.</li>
+      <li><strong>Remove moving people:</strong> use Median, with the background visible in more than half the frames.</li>
+      <li><strong>Make star trails:</strong> use Lighten and set alignment to No to preserve the sky's motion.</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">Stacking method</label>
         <select id="mode">
           <option value="mean" selected>Average &mdash; reduce noise</option>
           <option value="median">Median &mdash; remove people and passing cars</option>
-          <option value="sigma">Sigma clipping &mdash; both at once</option>
+          <option value="sigma">Sigma clipping &mdash; reduce noise and reject outliers</option>
           <option value="max">Lighten &mdash; star trails, fireworks, light painting</option>
           <option value="min">Darken &mdash; remove anything bright that moved</option>
           <option value="sum">Add &mdash; additive blend</option>
@@ -204,6 +216,12 @@
           <summary>Alignment details</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          Check fine edges and smooth areas at 100% before saving. If the stack
+          looks soft, check Alignment details, remove an uncertain frame and
+          stack again. The links beside the download can carry this result
+          straight to the resizer or compressor in this browser.
+        </p>
         <a id="download" class="primary as-button" download>Download picture</a>
       </div>
     </div>

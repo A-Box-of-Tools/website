@@ -79,9 +79,16 @@ let items = [];
 let durationUnit = 'frames';
 
 let exporting = false;
+let exportingUserInput = false;
 let abortController = null;
 let lastResultUrl = null;
 let previewToken = 0;
+
+// Examples use the real processing path, but do not describe a visitor's work.
+const exampleFiles = new WeakSet();
+const journey = (step) => {
+  try { globalThis.aboxToolJourney?.(step); } catch { /* Measurement is optional. */ }
+};
 
 /* ------------------------------------------------------------------ adding */
 
@@ -95,11 +102,17 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
-  example: makeExample,
+  example: async () => {
+    const files = await makeExample();
+    for (const file of files) exampleFiles.add(file);
+    return files;
+  },
 });
 
 async function addFiles(files) {
   if (!files?.length) return;
+  const userInput = files.some((file) => !exampleFiles.has(file));
+  if (userInput) journey('input');
 
   // Decoding a batch of large photos takes a few seconds, so say so rather
   // than leaving the drop zone looking inert.
@@ -114,6 +127,7 @@ async function addFiles(files) {
     items = items.concat(loaded);
 
     if (skipped.length) {
+      if (userInput) journey('problem');
       // The names are a list, and a list separator is a phrase: not every
       // language puts a comma and a space between two of them.
       const names = skipped.slice(0, 3)
@@ -125,6 +139,9 @@ async function addFiles(files) {
     } else {
       clearError();
     }
+  } catch (error) {
+    if (userInput) journey('problem');
+    throw error;
   } finally {
     picker.done();
   }
@@ -724,10 +741,14 @@ function outputFilename(extension) {
 
 async function runExport() {
   if (exporting || !items.length) return;
+  const userRun = items.some((item) => !exampleFiles.has(item.file));
+  if (userRun) journey('start');
 
   clearError();
   exporting = true;
+  exportingUserInput = userRun;
   abortController = new AbortController();
+  const signal = abortController.signal;
 
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
@@ -744,10 +765,13 @@ async function runExport() {
       items: resolvedItems(settings.fps),
       settings,
       onProgress: setProgress,
-      signal: abortController.signal,
+      signal,
     });
 
-    if (warning) showError(phrase(warning));
+    if (warning) {
+      showError(phrase(warning));
+      if (userRun) journey('problem');
+    }
 
     if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
     lastResultUrl = URL.createObjectURL(blob);
@@ -755,7 +779,7 @@ async function runExport() {
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = outputFilename(extension);
-    el.download.onclick = () => globalThis.aboxToolComplete?.();
+    el.download.onclick = () => { if (userRun) globalThis.aboxToolComplete?.(); };
     el.resultInfo.textContent = [
       extension.toUpperCase(),
       phrase('size.plain', { width: settings.width, height: settings.height }),
@@ -764,10 +788,12 @@ async function runExport() {
       codec,
     ].reduce((a, b) => phrase('join.dot', { a, b }));
     el.result.hidden = false;
+    if (userRun && !signal.aborted) journey('ready');
     el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
     el.progress.hidden = true;
+    if (userRun) journey(error?.name === 'AbortError' ? 'cancel' : 'problem');
     if (error?.name !== 'AbortError') {
       // shared/mp4-muxer.js throws phrase keys; a browser
       // that failed for its own reasons throws a sentence, and phrase() hands
@@ -778,6 +804,7 @@ async function runExport() {
     }
   } finally {
     exporting = false;
+    exportingUserInput = false;
     abortController = null;
     el.cancelBtn.hidden = true;
     el.exportBtn.disabled = items.length === 0;
@@ -785,7 +812,11 @@ async function runExport() {
 }
 
 el.exportBtn.addEventListener('click', runExport);
-el.cancelBtn.addEventListener('click', () => abortController?.abort());
+el.cancelBtn.addEventListener('click', () => {
+  if (!abortController) return;
+  if (exportingUserInput) journey('cancel');
+  abortController.abort();
+});
 
 window.addEventListener('beforeunload', (event) => {
   if (!exporting) return;

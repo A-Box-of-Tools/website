@@ -342,7 +342,7 @@ body = "Your browser opens, reads and edits the files you choose. There is no up
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
-body = "Page visits, the first successful tool use per page load and optional fixed feedback answers are counted. No files, filenames, contents or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
+body = "Page visits, fixed tool-use stages, the first successful result per page load, selected workflow links and optional fixed feedback are counted. No files, filenames, contents or input or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
 
 [[hub.guarantees]]
 title = "Local processing works offline"

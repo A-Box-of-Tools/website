@@ -40,6 +40,10 @@
 <meta name="description" content="{{ tool.description }}">
 
 <link rel="canonical" href="{{ tool.url }}">
+<meta name="abox-workflow-source" content="{{ tool.slug }}">
+{% if guide %}<meta name="abox-workflow-target" content="{{ guide.slug }}">
+{% endif %}{% for other in related %}<meta name="abox-workflow-target" content="{{ other.slug }}">
+{% endfor %}
 {% include "partials/robots.html" %}
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
@@ -419,7 +423,7 @@
   -->
 {% if guide %}  <h2 id="guide-h">{{ ui.tool.guide_heading }}</h2>
   <p class="tool-guide">
-    <a href="{{ base }}{{ guide.out_slug }}/">{{ guide.heading }}</a>
+    <a href="{{ base }}{{ guide.out_slug }}/" data-workflow-target="{{ guide.slug }}">{{ guide.heading }}</a>
     <span class="tool-guide-note">{{ guide.description }}</span>
   </p>
 {% endif %}
@@ -477,7 +481,7 @@
   <h2 id="related-h">{{ ui.tool.related_heading }}</h2>
   <ul class="tool-related">
 {% for other in related %}    <li>
-      <a href="{{ base }}{{ other.out_slug }}/">
+      <a href="{{ base }}{{ other.out_slug }}/" data-workflow-target="{{ other.slug }}">
         <span class="tool-related-head">
           <svg class="tool-related-icon" viewBox="0 0 24 24" aria-hidden="true"
                 focusable="false">{{ other.glyph_svg }}</svg>

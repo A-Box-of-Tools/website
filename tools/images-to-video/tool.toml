@@ -12,7 +12,7 @@ name = "Images to Video"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
 heading = "Images&nbsp;to&nbsp;Video <span class=\"h1-kw\">&mdash; make an MP4 slideshow</span>"
-tagline = "Turn a folder of images into a video."
+tagline = "Make an MP4 from a render sequence, timelapse photos or a slideshow."
 icon = "&#127902;&#65039;"          # the mark beside the page heading
 favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -33,12 +33,12 @@ css_parts = ["progress", "results", "form", "notes"]
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
 js_parts = ["file-picker", "codec-support", "codec-support-worker", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list", "example-photo", "image-input"]
-lastmod = "2026-10-12"
+lastmod = "2026-10-23"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Image Sequence to MP4 &mdash; Free, No Upload, Works Offline"
-description = "Turn JPG, PNG, WebP or AVIF images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline."
+description = "Convert an image sequence to MP4 in your browser. Use one frame per image for renders and timelapses, or seconds per photo for a slideshow. No upload or account."
 og_title = "Image Sequence to MP4 &mdash; free, in your browser"
 og_description = "Turn a render sequence, a timelapse or a folder of photos into an MP4. Encoding runs on your own machine; nothing is uploaded."
 og_image_alt = "Images to Video - turn a folder of images into an MP4 slideshow"
@@ -76,7 +76,7 @@ read_first = """
 
 # --- the written half of the page --------------------------------------------
 
-howto_heading = "How to turn images into a video"
+howto_heading = "How to convert an image sequence or slideshow to MP4"
 
 # --- the card on the hub page ------------------------------------------------
 
@@ -164,18 +164,21 @@ body = """
       browser; nothing is sent anywhere while you do it."""
 
 [[howto]]
-title = "Put them in order and set how long each one is held."
+title = "Choose frames for a sequence, or seconds for a slideshow."
 body = """
- Drag
-      to reorder. Hold time can be given in frames or in seconds, either for
-      every image at once or one image at a time."""
+ Use Sort by name for numbered render frames and check the first and last
+      tiles. Keep one frame per image for a render sequence or photo timelapse;
+      match the frame rate to your source. For a slideshow, switch to seconds,
+      enter a hold such as three, and press Apply to all. Drag to reorder or
+      override an individual image's hold."""
 
 [[howto]]
 title = "Pick a resolution and frame rate."
 body = """
- "Match highest
-      resolution" follows your largest image; the presets cover 4K, 1080p, 720p,
-      square and vertical, and there is a custom size if none of those fit."""
+ Choose 1080p for a first export, or use the destination's square or vertical
+      shape. Match highest resolution takes the widest width and tallest height
+      across the images. Fit inside keeps the whole picture; Fill frame crops
+      the edges. Check the duration and output-size summary before encoding."""
 
 [[howto]]
 title = "Create the video and download it."
@@ -236,8 +239,9 @@ a = """
         becomes one second of video; at 12 fps those same photos run for two
         and a half seconds.
         <br><br>
-        "Sort by date" puts a camera roll back into the order it was shot,
-        which matters when the filenames have restarted at 0001. Photos of
+        "Sort by date" uses the files' modification dates, which may change
+        when photographs are copied or edited. Check the order when filenames
+        have restarted at 0001. Photos of
         different sizes are fine &mdash; "Match highest resolution" sizes the
         video so that none of them is scaled down."""
 
@@ -280,7 +284,7 @@ description = "Turn a folder of images into an MP4 slideshow video. Every step r
 features = [
   "Converts JPG, PNG, WebP, GIF and AVIF images to video",
   "MP4 (H.264) output, with WebM as a fallback",
-  "Resolutions up to 3840x2160, frame rates from 12 to 60 fps",
+  "Resolution presets through 4K, custom dimensions subject to browser limits, and custom whole frame rates from 1 to 120 fps",
   "Per-image hold time in frames or seconds",
   "Runs offline; no upload, no account",
 ]

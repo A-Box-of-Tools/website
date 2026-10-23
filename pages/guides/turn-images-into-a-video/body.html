@@ -15,6 +15,23 @@
   </section>
 
   <section>
+    <h2>A numbered render sequence to MP4</h2>
+    <ol>
+      <li>In <a href="../../images-to-video/" data-workflow-target="images-to-video">Images to Video</a>, add the still frames exported by Blender, After Effects or another renderer. Use an image format your browser can decode, such as PNG or JPG.</li>
+      <li>Choose Sort by name. The sort understands numbers, so frame_2 comes before frame_10. Check the list for missing frames or an unwanted restart in numbering.</li>
+      <li>Leave Hold every image for at one frame and set the frame rate to the render's rate. A sequence of 240 images at 24 fps lasts ten seconds.</li>
+      <li>Choose the output dimensions and Fit inside to preserve the whole image. Transparent areas become the selected backdrop: H.264 MP4 does not retain alpha.</li>
+      <li>Create the video, watch the beginning and end, then download it and open it in the app that will receive it.</li>
+    </ol>
+    <p>
+      A folder of timelapse photographs follows the same steps. Frame rate sets
+      playback speed; Sort by date uses file modification time, so check the
+      order if the photographs have been copied or edited. For an existing
+      video clip, use <a href="../../timelapse-video/" data-workflow-target="timelapse-video">Time-Lapse Maker</a> instead.
+    </p>
+  </section>
+
+  <section>
     <h2>A slideshow, stop motion or a record of progress</h2>
     <p>
       For holiday photos, an event recap or a product catalogue, switch Hold
@@ -176,6 +193,27 @@
       the chosen dimensions must also be supported by your browser's
       encoder. A long 4K slideshow can hit those limits before the number
       of source images looks particularly large.
+    </p>
+  </section>
+
+  <section>
+    <h2>Check the result before passing it on</h2>
+    <p>
+      If a slideshow flashes by, check that the hold unit is seconds and press
+      Apply to all. If a render sequence plays too slowly, check both the frame
+      rate and the per-image frame holds. Bars keep an image intact; missing
+      edges usually mean Fill frame was selected. Re-export from the original
+      stills when changing these choices.
+    </p>
+    <p>
+      To build an animation that needs to remain a GIF, use
+      <a href="../../gif-maker/" data-workflow-target="gif-maker">GIF Maker</a>.
+      To turn an existing GIF into video, use
+      <a href="../../gif-to-mp4/" data-workflow-target="gif-to-mp4">GIF to MP4</a>
+      directly, preserving the GIF's played frame timing. Extracting PNGs first
+      makes timing a manual step; the
+      <a href="../split-a-gif-into-frames/" data-workflow-target="guides/split-a-gif-into-frames">GIF extraction guide</a>
+      explains when that extra step is useful.
     </p>
   </section>
 

@@ -12,17 +12,28 @@ const SOURCE = readFileSync(new URL('../../templates/analytics.js', import.meta.
   .replaceAll('{{ words.analytics_extra }}', '');
 
 function page({ slug = 'images-to-video', webdriver = true,
-  origin = 'https://abox.tools', search = '', referrer = '', canonical = true } = {}) {
+  origin = 'https://abox.tools', search = '', referrer = '', canonical = true,
+  workflowSource = null, workflowTargets = [], workflowLinks = [] } = {}) {
+  const sourceTag = workflowSource === null ? null : { content: workflowSource };
+  const targetTags = workflowTargets.map((content) => ({ content }));
   const context = {
     URL, URLSearchParams,
+    workflowSourceTag: sourceTag,
+    workflowTargetTags: targetTags,
     navigator: { webdriver },
     location: { origin, search },
     document: {
       title: 'Images to Video',
       referrer,
       querySelector(selector) {
+        if (selector === 'meta[name="abox-workflow-source"]') return sourceTag;
         assert.equal(selector, 'link[rel="canonical"]');
         return canonical ? { href: 'https://abox.tools/images-to-video/' } : null;
+      },
+      querySelectorAll(selector) {
+        if (selector === 'meta[name="abox-workflow-target"]') return targetTags;
+        assert.equal(selector, 'a[data-workflow-target]');
+        return workflowLinks;
       },
       getElementById(id) {
         assert.equal(id, 'feedback');
@@ -39,7 +50,26 @@ function page({ slug = 'images-to-video', webdriver = true,
 
 const commands = (p) => Array.from(p.dataLayer,
   (args) => JSON.parse(JSON.stringify([...args])));
-const completions = (p) => commands(p).filter((args) => args[1] === 'tool_complete');
+const events = (p, name) => commands(p).filter((args) => args[1] === name);
+const completions = (p) => events(p, 'tool_complete');
+
+function workflowLink(target) {
+  let listener;
+  return {
+    target,
+    get href() { throw new Error('A live URL is not measurement data'); },
+    get textContent() { throw new Error('Link text may contain a private value'); },
+    getAttribute(name) {
+      assert.equal(name, 'data-workflow-target');
+      return this.target;
+    },
+    addEventListener(type, callback) {
+      assert.equal(type, 'click');
+      listener = callback;
+    },
+    click(event = {}) { listener?.(event); },
+  };
+}
 
 test('a page view is not a successful tool use', () => {
   const p = page();
@@ -105,4 +135,95 @@ test('automation and preview visits remain disabled for Analytics', () => {
   assert.equal(page()['ga-disable-G-TEST'], true);
   assert.equal(page({ webdriver: false, origin: 'http://localhost:8197' })['ga-disable-G-TEST'], true);
   assert.equal(page({ webdriver: false })['ga-disable-G-TEST'], undefined);
+});
+
+test('tool arrivals share a denominator while lifecycle hooks stay within the pilot', () => {
+  for (const slug of ['images-to-video', 'stack-images', 'gif-analyzer', 'split-gif', 'heic-to-jpg']) {
+    const p = page({ slug });
+    assert.deepEqual(events(p, 'tool_view'), [['event', 'tool_view', {
+      send_to: 'G-TEST', tool_slug: slug,
+    }]]);
+    assert.equal(typeof p.aboxToolJourney, slug === 'heic-to-jpg' ? 'undefined' : 'function');
+  }
+  assert.equal(events(page({ slug: null }), 'tool_view').length, 0);
+});
+
+test('journey accepts only fixed stages and static tool identity once per stage', () => {
+  const p = page();
+  for (const step of ['input', 'start', 'ready', 'problem', 'cancel']) {
+    p.aboxToolJourney(step, { filename: 'private.png', count: 5 });
+    p.aboxToolJourney(step);
+    assert.deepEqual(events(p, `tool_${step}`), [['event', `tool_${step}`, {
+      send_to: 'G-TEST', tool_slug: 'images-to-video',
+    }]]);
+  }
+  const count = commands(p).length;
+  for (const invalid of ['constructor', '__proto__', 'complete', 'private.png', '', null,
+    1, ['start'], { toString() { throw new Error('Must not coerce a caller value'); } }]) {
+    assert.doesNotThrow(() => p.aboxToolJourney(invalid));
+  }
+  assert.equal(commands(p).length, count);
+  assert.equal(completions(p).length, 0);
+  p.aboxToolComplete();
+  assert.equal(completions(p).length, 1);
+  const fresh = page();
+  fresh.aboxToolJourney('ready');
+  assert.equal(events(fresh, 'tool_ready').length, 1);
+});
+
+test('broken measurement does not consume a journey stage or prevent local work', () => {
+  const p = page();
+  const push = p.dataLayer.push;
+  p.dataLayer.push = () => { throw new Error('tracking unavailable'); };
+  assert.doesNotThrow(() => p.aboxToolJourney('start'));
+  p.dataLayer.push = push;
+  p.aboxToolJourney('start');
+  p.aboxToolJourney('start');
+  assert.equal(events(p, 'tool_start').length, 1);
+});
+
+test('workflow links capture only fixed page identities and ignore live URLs and text', () => {
+  const link = workflowLink('stack-images');
+  const p = page({
+    workflowSource: 'guides/stack-photos-to-reduce-noise',
+    workflowTargets: ['stack-images'], workflowLinks: [link],
+  });
+  p.workflowSourceTag.content = 'private-source.png';
+  p.workflowTargetTags[0].content = 'private-target.png';
+  link.target = 'private-file.png?text=secret';
+  link.click();
+  link.click();
+  assert.deepEqual(events(p, 'workflow_link'), [['event', 'workflow_link', {
+    send_to: 'G-TEST',
+    source_page: 'guides/stack-photos-to-reduce-noise', target_page: 'stack-images',
+  }]]);
+});
+
+test('workflow navigation requires a known destination and an unprevented selection', () => {
+  const known = workflowLink('gif-to-mp4');
+  const unknown = workflowLink('private-output');
+  const invalid = workflowLink('../private.png');
+  const self = workflowLink('images-to-video');
+  const p = page({ workflowSource: 'images-to-video', workflowLinks: [known, unknown, invalid, self] });
+  known.click({ defaultPrevented: true });
+  unknown.click();
+  invalid.click();
+  self.click();
+  assert.equal(events(p, 'workflow_link').length, 0);
+  known.click();
+  assert.equal(events(p, 'workflow_link').length, 1);
+  const absent = workflowLink('gif-to-mp4');
+  assert.equal(events(page({ workflowLinks: [absent] }), 'workflow_link').length, 0);
+  absent.click();
+});
+
+test('workflow tracking failures never interfere with navigation or consume a selection', () => {
+  const link = workflowLink('gif-maker');
+  const p = page({ workflowSource: 'guides/turn-images-into-a-video', workflowLinks: [link] });
+  const push = p.dataLayer.push;
+  p.dataLayer.push = () => { throw new Error('tracking unavailable'); };
+  assert.doesNotThrow(() => link.click());
+  p.dataLayer.push = push;
+  link.click();
+  assert.equal(events(p, 'workflow_link').length, 1);
 });

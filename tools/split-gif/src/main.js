@@ -115,6 +115,7 @@ function syncControls() {
 function beginJob(kind, wanted, extra = {}) {
   retireRender();
   const task = { controller: new AbortController(), kind, gif, name: file.name,
+    realInput: !exampleFiles.has(file),
     rows: rows.map(({ index, frame, played, name }) => ({ index, frame, played, name })),
     picked: new Set(wanted.map(row => row.index)), options: settings(),
     storage: thumbnailStorage(), ...extra };
@@ -139,6 +140,7 @@ function finishJob(task) {
 
 // The drop zone and the picker: shared, because every tool here needs the same
 // one. src/shared/file-picker.js, copied in from shared/js/ by the build.
+const exampleFiles = new WeakSet();
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
@@ -146,15 +148,20 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
-  example: makeExample,
+  example: async () => {
+    const example = await makeExample();
+    exampleFiles.add(example);
+    return example;
+  },
 });
 
 /* ----------------------------------------------------------------- loading */
 
 async function loadFile(picked) {
   reset();
-  const task = { controller: new AbortController() };
+  const task = { controller: new AbortController(), realInput: !exampleFiles.has(picked) };
   loadOwner = task;
+  if (task.realInput) globalThis.aboxToolJourney?.('input');
   syncControls();
   clearError();
   picker.busy(phrase('read.reading'));
@@ -162,6 +169,7 @@ async function loadFile(picked) {
     if (picked.size > WORKING_LIMIT) throw new Error('gif.workinglimit');
     let bytes = new Uint8Array(await picked.arrayBuffer());
     if (!owns(task)) return;
+    if (task.realInput) globalThis.aboxToolJourney?.('start');
     requireWorking(headerWorkingPlan(bytes));
     const decoded = decodeGif(bytes, { maxPixels: PATCH_PIXEL_LIMIT, strictMaxPixels: true });
     requireWorking(gifWorkingPlan(decoded, settings()));
@@ -178,6 +186,7 @@ async function loadFile(picked) {
     await draw();
   } catch (error) {
     if (!owns(task)) return;
+    if (task.realInput) globalThis.aboxToolJourney?.('problem');
     showError(phrase('read.failed', { why: reason(error, 'read.unreadable') }));
     picker.waiting();
   } finally {
@@ -315,7 +324,8 @@ async function draw() {
   retireRender();
   // A partial new pass has replaced some pictures, so no completed plan survives it.
   previewPlan = null;
-  const task = { controller: new AbortController(), gif, rows: [...rows], options: settings() };
+  const task = { controller: new AbortController(), gif, rows: [...rows], options: settings(),
+    realInput: !exampleFiles.has(file) };
   renderOwner = task;
   const { stored, colour } = task.options;
   let canvas = null;
@@ -349,12 +359,16 @@ async function draw() {
       row.thumbRgbaBytes = rgbaBytes;
       row.image.src = thumb.url;
       row.meta.textContent = describeFrame(row, stored);
+      if (task.realInput && row === task.rows[0]) globalThis.aboxToolJourney?.('ready');
       progress(task, row.index + 1, task.rows.length, phrase('step.drawing'));
       await turn();
     }
     if (owns(task)) previewPlan = JSON.stringify({ stored, colour });
   } catch (error) {
-    if (owns(task)) showError(phrase('read.failed', { why: reason(error, 'png.nopreview') }));
+    if (owns(task)) {
+      if (task.realInput) globalThis.aboxToolJourney?.('problem');
+      showError(phrase('read.failed', { why: reason(error, 'png.nopreview') }));
+    }
   } finally {
     if (canvas) { canvas.pixels = null; canvas.saved = null; }
     if (renderOwner === task) {
@@ -452,9 +466,12 @@ async function downloadOne(row) {
     const blob = await encodePng(pixels, width, height, { signal: task.controller.signal });
     if (!owns(task)) return;
     requireWorking(withWorkingBytes(task.budget, { ...task.storage, incomingBytes: blob.size }));
-    save(blob, task.rows[row.index].name);
+    save(blob, task.rows[row.index].name, task);
   } catch (error) {
-    if (owns(task)) showError(phrase('save.frame.failed', { why: reason(error, 'save.unfinished') }));
+    if (owns(task)) {
+      if (task.realInput) globalThis.aboxToolJourney?.('problem');
+      showError(phrase('save.frame.failed', { why: reason(error, 'save.unfinished') }));
+    }
   } finally { finishJob(task); }
 }
 
@@ -465,6 +482,7 @@ async function downloadSheet() {
   if (!wanted.length) return;
   const plan = sheetPlan(wanted.length, gif.width, gif.height, 0);
   if (plan.tooBig) {
+    if (!exampleFiles.has(file)) globalThis.aboxToolJourney?.('problem');
     showError(phrase('sheet.toobig', { width: plan.width, height: plan.height }));
     return;
   }
@@ -496,9 +514,12 @@ async function downloadSheet() {
     const blob = await canvasPng(sheet, task.controller.signal);
     if (!owns(task)) return;
     requireWorking(withWorkingBytes(task.budget, { ...task.storage, incomingBytes: blob.size }));
-    save(blob, sheetName(baseName(task.name), plan));
+    save(blob, sheetName(baseName(task.name), plan), task);
   } catch (error) {
-    if (owns(task)) showError(phrase('save.sheet.failed', { why: reason(error, 'save.unfinished') }));
+    if (owns(task)) {
+      if (task.realInput) globalThis.aboxToolJourney?.('problem');
+      showError(phrase('save.sheet.failed', { why: reason(error, 'save.unfinished') }));
+    }
   } finally {
     if (sheet) sheet.width = sheet.height = 0;
     if (canvas) { canvas.pixels = null; canvas.saved = null; }
@@ -548,9 +569,12 @@ async function downloadZip(wanted) {
       files.push({ name: 'frames.txt', data });
     }
     requireWorking(withWorkingBytes(task.budget, { ...task.storage, archiveBytes }));
-    save(makeZip(files), zipName(task.name));
+    save(makeZip(files), zipName(task.name), task);
   } catch (error) {
-    if (owns(task)) showError(phrase('save.frames.failed', { why: reason(error, 'save.unfinished') }));
+    if (owns(task)) {
+      if (task.realInput) globalThis.aboxToolJourney?.('problem');
+      showError(phrase('save.frames.failed', { why: reason(error, 'save.unfinished') }));
+    }
   } finally {
     files.length = 0; written.length = 0;
     if (canvas) { canvas.pixels = null; canvas.saved = null; }
@@ -559,13 +583,13 @@ async function downloadZip(wanted) {
 }
 
 /** Hand a blob to the browser as a download, and let go of it afterwards. */
-function save(blob, name) {
+function save(blob, name, task) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.download = name;
   link.click();
-  globalThis.aboxToolComplete?.();
+  if (task.realInput) globalThis.aboxToolComplete?.();
   // Revoked on the next turn: revoking immediately races the download in
   // Firefox, which has not necessarily started reading the blob yet.
   setTimeout(() => URL.revokeObjectURL(url), 60000);
@@ -662,12 +686,19 @@ el.every.addEventListener('change', () => {
 el.timing.addEventListener('change', () => retireJob({ redraw: true }));
 el.selectAll.addEventListener('click', () => { retireJob({ redraw: true }); pick(true); });
 el.selectNone.addEventListener('click', () => { retireJob({ redraw: true }); pick(false); });
-el.clear.addEventListener('click', () => { reset(); clearError(); el.fileInput.focus(); });
+el.clear.addEventListener('click', () => {
+  const task = loadOwner ?? job ?? renderOwner;
+  if (task?.realInput && !task.controller.signal.aborted) globalThis.aboxToolJourney?.('cancel');
+  reset(); clearError(); el.fileInput.focus();
+});
 
 el.downloadAll.addEventListener('click', () => downloadZip(rows));
 el.downloadSelected.addEventListener('click', () => downloadZip(rows.filter((row) => row.checked)));
 el.downloadSheet.addEventListener('click', () => downloadSheet());
-el.cancel.addEventListener('click', () => retireJob({ redraw: true }));
+el.cancel.addEventListener('click', () => {
+  if (job?.realInput && !job.controller.signal.aborted) globalThis.aboxToolJourney?.('cancel');
+  retireJob({ redraw: true });
+});
 
 window.addEventListener('beforeunload', (event) => {
   if (!job) return;

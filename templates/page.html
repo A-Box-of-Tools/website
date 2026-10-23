@@ -33,6 +33,9 @@
 <meta name="description" content="{{ page.description }}">
 
 <link rel="canonical" href="{{ page.url }}">
+{% if tool %}<meta name="abox-workflow-source" content="{{ page.slug }}">
+<meta name="abox-workflow-target" content="{{ tool.slug }}">
+{% endif %}
 {% include "partials/robots.html" %}
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
@@ -130,7 +133,7 @@
     written at all.
   -->
 {% if tool %}  <p class="guide-cta">
-    <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/">{{ ui.guide.open_tool }}</a>
+    <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/" data-workflow-target="{{ tool.slug }}">{{ ui.guide.open_tool }}</a>
     <span class="guide-cta-note">{{ tool.tagline }}</span>
   </p>
 {% endif %}  <!--

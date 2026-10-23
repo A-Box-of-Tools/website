@@ -75,7 +75,10 @@
       We count the first successful tool use per page load, such as requesting a ready download, completing a copy, or displaying a usable analysis or view in an inspector. The only tool-specific detail added to this event is the tool's fixed identifier. It does not confirm that your operating system saved a download.
     </p>
     <p>
-      Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, errors or other input or output details to either record. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
+      We also count tool-page openings. On Images to Video, Image Stacker, GIF Analyzer and GIF Splitter, fixed events record input being supplied, processing starting, a result becoming ready, a problem or a cancellation, at most once per stage per page load. Built-in examples are excluded from those stages. Selected workflow links report only fixed identifiers for the source and destination pages, never the link address or text. These counts help locate where a visit stops; they do not identify individual jobs or confirm arrival at the next page.
+    </p>
+    <p>
+      Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, error messages or other input or output details to these records. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
     </p>
 
     <h3>Buy Me a Coffee &mdash; the donate button</h3>
