@@ -177,19 +177,22 @@
     <h2>What comes out, and what to do if it will not play</h2>
     <p>
       MP4 with H.264 is the target, and it is the most widely playable
-      combination there is. In a browser without WebCodecs the tool falls back to
-      recording WebM instead &mdash; the same footage in a container that fewer
-      editors and social platforms accept.
+      combination there is. The fallback records in real time, usually as WebM,
+      which fewer editors and social platforms accept. Keep the tab visible
+      during fallback recording: timing is approximate and images can be skipped
+      if decoding falls behind. For an exact numbered sequence, use the MP4
+      encoder when your browser supports it.
     </p>
     <p>
-      If you end up with a WebM and something refuses it, the fix is a browser
-      that supports WebCodecs rather than a conversion: current versions of
-      Chrome, Edge and Safari all do. Re-rendering is better than converting,
-      because converting means another generation of lossy encoding.
+      If you end up with a WebM and something refuses it, try re-rendering the
+      originals with MP4 selected in a browser whose WebCodecs encoder supports
+      H.264 at your chosen dimensions. Re-rendering avoids the extra generation
+      of lossy encoding that converting an already compressed video would add.
     </p>
     <p>
       There is no fixed picture-count limit. The finished video is
-      assembled in memory before you download it and cannot exceed 4 GB;
+      assembled in memory before you download it; MP4 exports must stay below
+      4 GiB (about 4.3 GB), and memory can run out well before that cap;
       the chosen dimensions must also be supported by your browser's
       encoder. A long 4K slideshow can hit those limits before the number
       of source images looks particularly large.

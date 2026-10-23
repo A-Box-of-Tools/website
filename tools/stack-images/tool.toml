@@ -339,17 +339,12 @@ a = """
         it."""
 
 [[faq]]
-q = "Why does this tool use a Worker when none of the others do?"
+q = "Why does stacking run in a Worker?"
 a = """
-        Because it is the only one whose work is measured in minutes. Every other
-        tool here does something that takes a second or two, where moving the work
-        off the main thread would be ceremony. Stacking twenty large frames is
-        solid arithmetic over hundreds of megabytes, and on the main thread that
-        means a frozen page: no progress bar moving, a Cancel button that does not
-        answer, and eventually a browser offering to kill the tab. The Worker is a
-        second thread in this same browser, running a file from this same folder,
-        under this same policy. It is not a server and it is not a network
-        feature."""
+        Combining large frames can take minutes. A Worker handles the arithmetic
+        while the page remains responsive enough to update progress and answer
+        Cancel. It is another thread in this browser, running a local file under
+        the page's policy. Your photographs stay on this device while it works."""
 
 [[faq]]
 q = "Is it free, and do I need an account?"

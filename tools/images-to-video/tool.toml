@@ -213,9 +213,11 @@ a = """
 [[faq]]
 q = "What video format does it produce?"
 a = """
-        MP4 with H.264 video, which plays on essentially anything. In a browser
-        without WebCodecs the tool falls back to recording WebM instead &mdash;
-        the same footage in a container that fewer editors accept."""
+        MP4 with H.264 video is the preferred output. The fallback records in
+        real time, usually as WebM, which fewer editors accept. Keep the tab
+        visible during fallback recording; timing is approximate and images can
+        be skipped if decoding falls behind. Use the MP4 encoder for exact
+        numbered sequences when your browser supports it."""
 
 [[faq]]
 q = "Can I use this for a Blender or After Effects render sequence?"
@@ -242,16 +244,19 @@ a = """
         "Sort by date" uses the files' modification dates, which may change
         when photographs are copied or edited. Check the order when filenames
         have restarted at 0001. Photos of
-        different sizes are fine &mdash; "Match highest resolution" sizes the
-        video so that none of them is scaled down."""
+        different sizes are fine &mdash; "Match highest resolution" starts with
+        the widest width and tallest height, then limits the longest edge to
+        7680 pixels and rounds to even dimensions. Check the output-size summary;
+        very large originals can still be scaled down."""
 
 [[faq]]
 q = "Is there a limit on how many images, or how long the video can be?"
 a = """
-        There is no limit built into the tool. The practical ceiling is your own
-        machine's memory, because the finished video is assembled there before
-        you download it. Very large 4K slideshows are the first thing to feel
-        it."""
+        There is no fixed image-count limit, but MP4 exports must stay below
+        4 GiB (about 4.3 GB). The finished video is assembled in memory before
+        download, so your device can run out of memory well before that cap.
+        The browser's encoder also limits output dimensions. If a large export
+        fails, reduce resolution, shorten the sequence or split it into parts."""
 
 [[faq]]
 q = "Is it free, and do I need an account?"
