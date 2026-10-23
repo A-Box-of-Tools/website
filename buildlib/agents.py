@@ -85,6 +85,12 @@ def build_discovery(out, templates, site):
             'url': skill_url,
             'description': description,
             'representativeQueries': list(queries),
+            # This binds the declared publisher to the identifier's HTTPS
+            # domain. It makes no signature or independent attestation claim.
+            'trustManifest': {
+                'identity': f'{domain.scheme}://{domain.netloc}/',
+                'identityType': 'https',
+            },
         }]},
         index_path: {
             '$schema': SKILL_SCHEMA,

@@ -765,6 +765,23 @@ class BuildTheSite(unittest.TestCase):
         worker = (self.out / self.a_tool() / 'sw.js').read_text(encoding='utf-8')
         self.assertIn("'index.md'", worker)
 
+    def test_direct_arrivals_can_find_a_covering_agent_index(self):
+        guides = {f'{self.site["guides"]["slug"]}/index.html'}
+        guides.update(f'{path.parent.relative_to(ROOT / "pages").as_posix()}/index.html'
+                      for path in (ROOT / 'pages' / 'guides').glob('*/page.toml'))
+        for name in self.written:
+            if not name.endswith('index.html'):
+                continue
+            page = (self.out / name).read_text(encoding='utf-8')
+            if '<meta http-equiv="refresh"' in page:
+                continue
+            target = (f'/{self.site["guides"]["slug"]}/llms.txt'
+                      if name in guides else '/llms.txt')
+            with self.subTest(page=name):
+                self.assertEqual(re.findall(r'<link rel="describedby" href="([^"]+)">',
+                                            page), [target])
+                self.assertTrue((self.out / target.lstrip('/')).is_file())
+
     def test_a_page_of_prose_carries_neither(self):
         """There is nothing to install on a privacy policy.
 

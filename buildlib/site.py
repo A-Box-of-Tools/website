@@ -108,21 +108,32 @@ def to_text(fragment):
     return ' '.join(text.split())
 
 
+def application_entity(site, tool):
+    """Identify the same application on its own page and in the catalogue.
+
+    The hub needs enough to choose an app, while its full features, offer and
+    FAQ belong on the app's own page rather than repeated across the catalogue.
+    """
+    return {
+        '@type': 'SoftwareApplication',
+        '@id': tool['url'] + '#app',
+        'name': to_text(tool['name']),
+        'url': tool['url'],
+        'applicationCategory': tool['schema']['category'],
+        'operatingSystem': 'Any (runs in a web browser)',
+        'browserRequirements': tool['schema'].get(
+            'browser_requirements', 'Requires JavaScript.'),
+        'description': to_text(tool['schema']['description']),
+        'inLanguage': site['lang'],
+    }
+
+
 def tool_jsonld(site, tool):
     """SoftwareApplication + BreadcrumbList + FAQPage for one tool page."""
     graph = [
         {
-            '@type': 'SoftwareApplication',
-            '@id': tool['url'] + '#app',
-            'name': to_text(tool['name']),
-            'url': tool['url'],
-            'applicationCategory': tool['schema']['category'],
-            'operatingSystem': 'Any (runs in a web browser)',
-            'browserRequirements': tool['schema'].get(
-                'browser_requirements', 'Requires JavaScript.'),
-            'description': to_text(tool['schema']['description']),
+            **application_entity(site, tool),
             'dateModified': tool['lastmod'],
-            'inLanguage': site['lang'],
             'isAccessibleForFree': True,
             'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
             'featureList': [to_text(feature) for feature in tool['schema']['features']],
@@ -433,6 +444,7 @@ def hub_jsonld(site, tools):
                         'position': position,
                         'url': tool['url'],
                         'name': to_text(tool['name']),
+                        'item': application_entity(site, tool),
                     }
                     for position, tool in enumerate(tools, start=1)
                 ],
