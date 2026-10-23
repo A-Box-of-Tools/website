@@ -278,6 +278,9 @@ hub_show_fewer = "收起"
 hub_privacy_details = "隐私是如何保护的"
 hub_filter_label = "查找工具"
 hub_filter_none = "没有匹配的工具。试试减少关键词，或输入 PDF、PNG 等文件格式。"
+hub_agent_title = "查找浏览器工具"
+hub_agent_description = "按任务、名称或文件格式搜索本页列出的工具。返回公开的工具名称、说明和链接，不打开工具，也不处理文件。匹配本页语言的简短关键词。"
+hub_agent_query_description = "压缩图片、PNG 或 WebP 等关键词。查询为空时列出工具。"
 
 hub_guides_note = """
     不知道该动哪个设置，也不清楚代价？\

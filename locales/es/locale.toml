@@ -432,6 +432,9 @@ hub_show_fewer = "Ver menos"
 hub_privacy_details = "Cómo se protegen tus archivos"
 hub_filter_label = "Buscar una herramienta"
 hub_filter_none = "Ninguna herramienta coincide. Prueba con menos palabras o con un formato de archivo, como PDF o PNG."
+hub_agent_title = "Buscar una herramienta para el navegador"
+hub_agent_description = "Busca las herramientas de esta página por tarea, nombre o formato de archivo. Devuelve nombres, descripciones y enlaces públicos; no abre herramientas ni procesa archivos. Admite palabras clave breves en el idioma de esta página."
+hub_agent_query_description = "Palabras clave como comprimir imagen o PNG a WebP. Una consulta vacía muestra una lista de herramientas."
 
 hub_guides_note = """
     ¿No sabes qué ajuste mover, ni qué cuesta?

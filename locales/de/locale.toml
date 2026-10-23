@@ -486,6 +486,9 @@ hub_show_fewer = "Weniger anzeigen"
 hub_privacy_details = "So bleiben Ihre Dateien privat"
 hub_filter_label = "Werkzeug suchen"
 hub_filter_none = "Kein Werkzeug passt dazu. Versuche weniger Wörter oder ein Dateiformat wie PDF oder PNG."
+hub_agent_title = "Browserwerkzeug finden"
+hub_agent_description = "Durchsucht die auf dieser Seite aufgeführten Werkzeuge nach Aufgabe, Name oder Dateiformat. Gibt öffentliche Werkzeugnamen, Beschreibungen und Links zurück; öffnet keine Werkzeuge und verarbeitet keine Dateien. Sucht nach kurzen Stichwörtern in der Sprache dieser Seite."
+hub_agent_query_description = "Stichwörter wie Bild komprimieren oder PNG zu WebP. Eine leere Suche listet Werkzeuge auf."
 
 hub_guides_note = """
     Unsicher, welche Einstellung Sie bewegen sollen oder was sie kostet?
