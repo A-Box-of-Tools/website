@@ -429,7 +429,7 @@ hub_filter_label = "Encontrar uma ferramenta"
 hub_filter_none = "Nenhuma ferramenta corresponde. Tente menos palavras ou um formato de arquivo, como PDF ou PNG."
 hub_agent_title = "Encontrar uma ferramenta para o navegador"
 hub_agent_description = "Busca as ferramentas listadas nesta página por tarefa, nome ou formato de arquivo. Retorna nomes, descrições e links públicos; não abre ferramentas nem processa arquivos. Aceita palavras-chave curtas no idioma desta página."
-hub_agent_query_description = "Palavras-chave como comprimir imagem ou PNG para WebP. Uma consulta vazia mostra uma lista de ferramentas."
+hub_agent_query_description = "Palavras-chave como PNG para WebP ou JSON. Uma consulta vazia mostra uma lista de ferramentas."
 
 hub_guides_note = """
     Não sabe em qual ajuste mexer, nem o que ele custa?
