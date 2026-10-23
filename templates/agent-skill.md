@@ -14,6 +14,13 @@ Read [the tool index]({{ site.domain }}llms.txt) for supported inputs, outputs
 and limitations. Open the relevant tool and its guide rather than assuming
 that similarly named converters support the same formats or modes.
 
+When the browser supports WebMCP, the hub registers `find_browser_tools` to
+search the public tool names, descriptions and links on that page. Supply
+`query` with short keywords in the page's language, up to 200 characters; an
+empty query lists tools. The optional `limit` is 1-20 results, with 10 by
+default. This search makes no network request, opens no tool and processes no
+file. If it is unavailable, use the ordinary tool index or the hub's controls.
+
 For a clean text description, append `index.md` to a tool or guide URL.
 For example, [Image Compressor]({{ site.domain }}compress-image/index.md)
 describes target sizes and the choices that affect quality.

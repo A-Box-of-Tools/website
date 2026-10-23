@@ -101,6 +101,8 @@
           var capability = formats[slug];
           var description = card ? card.getAttribute('data-search') || '' : '';
           var entry = { row: row, slug: slug, capability: capability,
+            card: card, description: description,
+            category: heading ? heading.textContent.trim() : '',
             text: fold(row.textContent + ' ' + description) + ' ' + groupText
               + ' ' + (capability ? capability.join(' ') : '') };
           rows.push(entry);
@@ -118,18 +120,19 @@
 
   if (!items.length) return;
 
-  function apply() {
-    var query = fold(input.value.trim());
+  /* Both readers search the same catalogue. Keeping the directional rules in
+     one predicate prevents an agent finding a conversion the visible filter
+     correctly refuses. */
+  function matching(value) {
+    var query = fold(value.trim());
     var terms = query.split(/\s+/).filter(function (term) {
       return term && !connectors.test(term);
     });
     var conversion = terms.length === 2 && fileFormat.test(terms[0])
       && fileFormat.test(terms[1]) && query.split(/\s+/).length > 2;
-    var shown = 0;
-
-    groups.forEach(function (group) {
-      var visible = 0;
-      group.rows.forEach(function (entry, index) {
+    return {
+      query: query,
+      matches: function (entry) {
         var match = !query || entry.text.indexOf(query) !== -1
           || (terms.length > 0 && terms.every(function (term) {
             return entry.text.indexOf(term) !== -1;
@@ -143,6 +146,20 @@
               || (terms[1] === 'json' && /^(xml|yaml|yml)$/.test(terms[0]));
           }
         }
+        return match;
+      }
+    };
+  }
+
+  function apply() {
+    var search = matching(input.value);
+    var query = search.query;
+    var shown = 0;
+
+    groups.forEach(function (group) {
+      var visible = 0;
+      group.rows.forEach(function (entry, index) {
+        var match = search.matches(entry);
         entry.row.hidden = !match || (!query && !group.expanded && index >= 3);
         if (match) visible++;
       });
@@ -239,4 +256,74 @@
      category fragment takes precedence so the browser has a visible target. */
   if (!expandHash(window.location.hash, true)) apply();
   box.hidden = false;
+
+  /* Discovery reads only the public category cards, never the visitor's query
+     or saved cards. Registration is optional and must not become a new boot
+     requirement for the ordinary filter. */
+  function registerDiscovery() {
+    var words = document.getElementById('hub-agent-phrases');
+    var context = document.modelContext;
+    if (!context || typeof context.registerTool !== 'function') {
+      context = window.navigator && window.navigator.modelContext;
+    }
+    if (!words || !context || typeof context.registerTool !== 'function') return;
+    var title = words.getAttribute('data-title');
+    var description = words.getAttribute('data-description');
+    var queryDescription = words.getAttribute('data-query-description');
+    if (!title || !description || !queryDescription) return;
+
+    Promise.resolve(context.registerTool({
+      name: 'find_browser_tools',
+      title: title,
+      description: description,
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', maxLength: 200, description: queryDescription },
+          limit: { type: 'integer', minimum: 1, maximum: 20, default: 10 }
+        },
+        required: ['query'],
+        additionalProperties: false
+      },
+      annotations: {
+        readOnlyHint: true,
+        consequentialHint: false,
+        untrustedContentHint: false
+      },
+      execute: function (args) {
+        var own = Object.prototype.hasOwnProperty;
+        if (!args || typeof args !== 'object' || Array.isArray(args)
+            || !own.call(args, 'query') || typeof args.query !== 'string'
+            || Array.from(args.query).length > 200
+            || Object.keys(args).some(function (key) { return key !== 'query' && key !== 'limit'; })
+            || (own.call(args, 'limit') && (!Number.isInteger(args.limit)
+              || args.limit < 1 || args.limit > 20))) {
+          return { ok: false, code: 'invalid_arguments' };
+        }
+        var limit = own.call(args, 'limit') ? args.limit : 10;
+        var search = matching(args.query);
+        var found = items.filter(function (entry) {
+          return entry.card && search.matches(entry);
+        });
+        return {
+          ok: true,
+          total: found.length,
+          hasMore: found.length > limit,
+          tools: found.slice(0, limit).map(function (entry) {
+            var name = entry.card.querySelector('.tool-name');
+            return {
+              name: (name ? name.textContent : entry.card.textContent).trim(),
+              description: entry.description.trim(),
+              url: new URL(entry.card.getAttribute('href'), window.location.href).href,
+              category: entry.category
+            };
+          })
+        };
+      }
+    })).catch(function () {});
+  }
+
+  try {
+    registerDiscovery();
+  } catch (error) {}
 })();
