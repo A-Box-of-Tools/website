@@ -616,10 +616,12 @@ section index covers its own address. The link is head metadata and makes no
 network request by itself.
 
 The hub's ordered catalogue also identifies each listed tool as a
-[`SoftwareApplication`](https://schema.org/SoftwareApplication), using the same
+[`WebApplication`](https://schema.org/WebApplication), using the same
 localized `#app` identifier and core metadata as that tool's own page. A shared
 builder supplies its name, description, category and browser requirements, so
 the catalogue and destination cannot drift into describing different apps.
+This subtype of `SoftwareApplication` defines `browserRequirements`, which is
+why both the catalogue and tool pages use it.
 
 The hub also offers `find_browser_tools` through
 [WebMCP](https://developer.chrome.com/docs/ai/webmcp) when the browser exposes

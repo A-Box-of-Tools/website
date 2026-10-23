@@ -254,7 +254,7 @@ class StructuredData(unittest.TestCase):
         }
         graph = json.loads(sitelib.tool_jsonld(SITE, tool))['@graph']
         self.assertEqual([item['@type'] for item in graph],
-                         ['SoftwareApplication', 'BreadcrumbList', 'FAQPage'])
+                         ['WebApplication', 'BreadcrumbList', 'FAQPage'])
 
     def test_faq_answers_are_derived_from_the_page_html(self):
         # Authored once as the HTML that renders, so the two cannot contradict
@@ -375,12 +375,13 @@ class StructuredData(unittest.TestCase):
         self.assertEqual([i['item']['@id'] for i in items],
                          ['https://example.test/a/#app',
                           'https://example.test/b/#app'])
+        self.assertTrue(all(i['item']['@type'] == 'WebApplication' for i in items))
         self.assertTrue(all(i['item']['browserRequirements'] == 'Requires JavaScript.'
                             for i in items))
 
     def test_the_catalogue_and_tool_page_identify_the_same_localized_application(self):
-        """A catalogue link should describe the app at its destination, using
-        that page's language and requirements without importing its whole FAQ."""
+        """Browser requirements need the WebApplication subtype on both pages,
+        while the localized #app identity still names the same application."""
         site = dict(SITE, lang='fr', home='https://example.test/fr/',
                     hub={'schema_description': 'd', 'schema_about': ['x']})
         tool = {
@@ -399,6 +400,8 @@ class StructuredData(unittest.TestCase):
         listed = graph[2]['mainEntity']['itemListElement'][0]
         app = listed['item']
         page = json.loads(sitelib.tool_jsonld(site, tool))['@graph'][0]
+        self.assertEqual(app['@type'], 'WebApplication')
+        self.assertEqual(page['@type'], 'WebApplication')
         self.assertEqual(app['@id'], 'https://example.test/fr/rogner-video/#app')
         self.assertEqual(app['url'], listed['url'])
         self.assertEqual(app['name'], 'Vidéo Rogner')

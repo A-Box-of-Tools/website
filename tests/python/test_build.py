@@ -967,7 +967,7 @@ class BuildTheSite(unittest.TestCase):
         page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
         self.assertIn('Content-Security-Policy', page)
         self.assertIn('application/ld+json', page)
-        self.assertIn('SoftwareApplication', page)
+        self.assertIn('WebApplication', page)
 
     def test_the_stylesheet_is_asked_for_by_a_versioned_url(self):
         slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
