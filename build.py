@@ -933,6 +933,14 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None, tail='')
         'base': base,
         'links': links,
         'canonical': i18n.locale_url(locale, slug, site, tail),
+        # The guide index describes English guide URLs. Other languages use
+        # the root index, which offers their own hubs rather than claiming an
+        # English section index covers translated addresses.
+        'agent_index_href': (
+            f'/{site["guides"]["slug"]}/llms.txt'
+            if locale['is_base'] and (slug == site['guides']['slug']
+                                     or slug.startswith(site['guides']['slug'] + '/'))
+            else '/llms.txt'),
         # A page in a language the site does not offer belongs to no cluster,
         # so it claims no alternates either. The set below is reciprocal by
         # construction - each page in it names the same set back - and this

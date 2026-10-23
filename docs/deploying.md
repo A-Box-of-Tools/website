@@ -602,6 +602,25 @@ instructions therefore changes the digest without fetching anything at build
 time. The skill and catalog formats are evolving discovery conventions, not
 evidence that a client has completed a task.
 
+The ARD entry's `trustManifest` identifies the same HTTPS publisher domain as
+its resource identifier. This is a declared origin identity, not a signature,
+independent attestation or compliance certification. The separate Agent Skills
+digest identifies the emitted instruction bytes; it does not authenticate the
+publisher.
+
+Pages also advertise their covering text index with `rel="describedby"`, as
+recommended by the [llms.txt proposal](https://llmstxt.org/). English guides
+point to `/guides/llms.txt`; tools, hubs and translated pages point to the root
+index, which offers the language hubs. No translated guide claims an English
+section index covers its own address. The link is head metadata and makes no
+network request by itself.
+
+The hub's ordered catalogue also identifies each listed tool as a
+[`SoftwareApplication`](https://schema.org/SoftwareApplication), using the same
+localized `#app` identifier and core metadata as that tool's own page. A shared
+builder supplies its name, description, category and browser requirements, so
+the catalogue and destination cannot drift into describing different apps.
+
 The hub also offers `find_browser_tools` through
 [WebMCP](https://developer.chrome.com/docs/ai/webmcp) when the browser exposes
 that experimental API. It searches only the public tool cards already on the
