@@ -28,9 +28,9 @@ lede = """
     the number without first uploading the thing that was too big to
     upload."""
 
-updated = "12 October 2026"
+updated = "13 October 2026"
 published = "2026-09-12"
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 
 og_title = "How to compress a video to a size that will send"
 og_description = "Where a video's megabytes go, what a size limit costs, and how to get under it in your browser without uploading the file."

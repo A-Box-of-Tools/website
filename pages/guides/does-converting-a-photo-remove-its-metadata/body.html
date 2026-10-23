@@ -18,6 +18,30 @@
   </section>
 
   <section>
+    <h2>Keep an archive copy and a sharing copy</h2>
+    <p>
+      <strong>For a photo library,</strong> keep the original and use a
+      conversion that deliberately preserves capture dates when you need them.
+      The <a href="../convert-heic-to-jpg/">HEIC converter</a> can preserve
+      supported metadata in JPEG output; inspect a sample before converting a
+      whole collection. A filesystem's modified date is a different record from
+      a photo's capture date.
+    </p>
+    <p>
+      <strong>For a marketplace listing or public portfolio,</strong> make a
+      separate sharing copy. Resize or compress it as needed, deliberately <a
+      href="../remove-exif-and-gps-data/">remove unwanted tags</a>, and inspect
+      the final downloaded file. Keep the archive original out of that upload.
+    </p>
+    <p>
+      This also catches the easily missed case where a resizer or compressor
+      decides no change is necessary and returns the original bytes. A file that
+      was already small enough may still carry its GPS, even though it passed
+      through a page used for image cleanup.
+    </p>
+  </section>
+
+  <section>
     <h2>What is riding along, and why it is separate</h2>
     <p>
       A photo file is two things in one container: the encoded image, and a
@@ -43,13 +67,14 @@
     <h2>Why re-encoding strips, and copying keeps</h2>
     <p>
       Most browser-based image work happens on a canvas: decode the file to
-      raw pixels, transform them, encode a fresh file. A canvas carries no
-      tags, so the fresh file has none &mdash; not by policy but by
-      construction. That is why the
+      raw pixels, transform them, encode a fresh file. The fresh encode does
+      not copy camera tags unless the tool explicitly restores them. When the
       <a href="../../compress-image/">Image Compressor</a> and the
-      <a href="../../resize-image/">Image Resizer</a> here produce output
-      with no EXIF, no GPS and no XMP, and their pages say so: it is
-      unavoidable, and worth knowing when you wanted the capture date kept.
+      <a href="../../resize-image/">Image Resizer</a> here actually
+      re-encode an image, their fresh outputs do not retain its EXIF, GPS or
+      XMP. Both can also return an unchanged original when no reduction is
+      needed. That passthrough preserves the original's metadata. Check the
+      downloaded file rather than inferring removal from the page's name.
     </p>
     <p>
       A converter, by contrast, may go out of its way to preserve. The

@@ -103,6 +103,12 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |
 | `shared/css/modes.css` | `css_parts = ["modes"]` | a choice between two ways of working, as radio rows with a title and an explanation |
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
+| `shared/js/connection-diagnostics.js` | `js_parts = ["connection-diagnostics"]` | bounded, redacted connection reports shared by text sharing and Remote Camera; captures states and counters without addresses, credentials or content |
+| `shared/js/peer-pairing.js` | `js_parts = ["peer-pairing"]` | owned signaling sockets, guarded sends, deadlines, heartbeats and probes; [paired tool adapters](paired-tools.md) keep their own protocol and permissions |
+| `shared/js/peer-greeting.js` | `js_parts = ["peer-greeting"]` | bounded initial and reply greetings for Camera and Tab control channels; adapters retain validation, approval and media decisions |
+| `shared/js/discovery-group.js` | `js_parts = ["discovery-group"]` | random private-group codes, normalization and public identifiers shared by pages and the rendezvous |
+| `shared/js/peer-discovery-ui.js` | `js_parts = ["peer-discovery-ui", "discovery-group"]` | private-group controls and accessible route/access icons; use with `paired-discovery-group.html`, `paired-tools` CSS and the authenticated `peer-discovery` observer |
+| `shared/js/foreground-recovery.js` | `js_parts = ["foreground-recovery"]` | coalesced page lifecycle callbacks and an opt-in bounded retry controller; neither grants consent nor starts media |
 | `shared/js/ordered-loads.js` | `js_parts = ["ordered-loads"]` | sequential batches for an append workflow; Reset retires pending reads and starts a fresh queue; optional `discard` releases resource-owning values that never reach `complete` |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `shared/js/image-batch.js` | `js_parts = ["image-batch", "image-convert"]` | sequential native image conversion with captured jobs, per-file failures and cooperative cancellation; imports `image-convert` |
@@ -147,7 +153,9 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/parse-xml.js` | `js_parts = ["parse-xml"]` | XML and HTML, one parser with two rulebooks |
 | `shared/js/qr-tables.js` | `js_parts = ["qr-tables"]` | the QR specification's tables and the arithmetic around them, for the writer and the reader alike |
 | `shared/js/pdf-page-writer.js` | `js_parts = ["pdf-page-writer"]` | a PDF writer for putting pictures on pages; not the quartet's rewriter |
-| `shared/js/video-support.js` | `js_parts = ["video-support"]` | what this browser will decode, encode and record; imports `codec-support` |
+| `shared/js/video-support.js` | `js_parts = ["video-support", "codec-support", "codec-support-worker"]` | what this browser will decode, encode and record; video encoder candidates are checked in the worker |
+| `shared/js/codec-support.js` | `js_parts = ["codec-support", "codec-support-worker"]` | `firstSupported` checks an ordered configuration list in a disposable worker with a parent deadline; `askSupported` retains the promise deadline used by decoder and audio checks |
+| `shared/js/codec-support-worker.js` | `js_parts = ["codec-support-worker"]` | the same-origin dedicated worker launched by `firstSupported`; receives a codec class name and configurations, never a file or frame |
 | `shared/js/frame-canvas.js` | `js_parts = ["frame-canvas"]` | the canvas a video's frames are drawn into at the output size, turned the way the file asks; `readBack` for a tool that reads the pixels out again |
 | `shared/js/format.js` | `js_parts = ["format"]` | sizes, durations and the m:ss.mmm clock as words, in the tiers and decimals the tool names |
 | `shared/js/svg-text.js` | `js_parts = ["svg-text"]` | BOM/declaration-aware SVG text detection; consumers that promise byte preservation keep the original bytes for output |
@@ -164,6 +172,33 @@ wants the checksum without the archive. The four `pdf-*` parts every PDF tool
 starts from travel together: the reader and the writer both import the grammar
 and the filters, and `buildlib/imports.py` refuses a tool that lists some and
 not the rest.
+
+Video encoder checks need both `codec-support` and `codec-support-worker`, even
+when encoding only an example. The worker is part of each tool's own folder,
+source fingerprint and service-worker precache. Keep its address as a literal
+`new URL('./codec-support-worker.js', import.meta.url)` so the build versions
+the request to match that cache. It needs no Blob URL or wider CSP.
+
+`firstSupported(codecName, configs, ms = 2000)` returns the first supported
+index, `-1` when the worker rejects every candidate, or `null` when the check
+cannot complete. The parent terminates the worker on every outcome. A timeout
+or worker failure must not cause a main-thread retry: that recreates the freeze
+the worker isolates. A later user attempt starts a fresh check. This protects
+against a stuck worker script; it cannot recover native work that hangs or
+crashes the shared browser process. Linux WebKit has exhibited that broader
+failure with a cold media backend (#317). When the browser reports Linux,
+Apple's vendor string and a WebKit user agent without Chromium or Firefox
+tokens, the helper initializes that backend on the page with a detached video
+element's `canPlayType` before starting the encoder worker. No media is loaded
+or played, and the playback answer is ignored: even an empty answer continues
+to the real worker query. Missing or throwing initialization APIs return
+`null`, with a fresh attempt allowed later. Its elapsed time counts against
+the same deadline, and a late return does not start a worker, although a timer
+cannot interrupt a synchronous native initialization hang. Apple Safari,
+Chromium, decoder checks and audio checks keep their existing paths. Browser
+identity strings can be overridden, so they are compatibility evidence, not
+proof of the host OS. A successful support check also does not guarantee
+encoding will succeed.
 
 The five reading parts stack on top of those and are worth taking as a set too.
 A tool wants `pdf-text` — where the words are — and gets `pdf-content`,

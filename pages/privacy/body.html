@@ -36,7 +36,7 @@
       <a href="../receipt-invoice-extractor/">Receipt &amp; Invoice Extractor</a> reads photos and recognises text locally. Its optional historical-rate button requests a currency pair and your chosen date from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. The date may be the date printed on a receipt. The provider sees your IP address and request; the request omits credentials and referrers and contains no photo, filename, merchant, amount or email address. Manual rates require no request.
     </p>
     <p>
-      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
+      Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a>, <a href="../share-tab/">Share a Browser Tab</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
     </p>
   </section>
 
@@ -64,15 +64,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; the visit counter</h3>
+    <h3>Google Analytics &mdash; visits and successful tool use</h3>
     <p>
-      We use Google Analytics 4 to count page visits, so we know which tools are
-      worth working on. It records the page you viewed, roughly when, a randomly
-      generated identifier stored in your browser, an approximate location, your
-      device and browser type, and the site that referred you.
+      We use Google Analytics 4 to count page visits and successful tool use, so we know which tools are worth working on. It records the page you viewed, roughly when, a randomly generated identifier stored in your browser, an approximate location, your device and browser type, and standard campaign attribution tags.
     </p>
     <p>
-      <code>analytics.js</code> configures page views. <code>feedback.js</code> also sends an optional <code>tool_feedback</code> event after you answer: the tool slug, a fixed up or down verdict and a fixed reason. There is no free-text field and no file, filename, size, dimension, count, format or file contents in that event. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available.
+      The page address sent to Analytics uses its canonical URL with only standard campaign tags. Other query parameters and address fragments are omitted. The page title is fixed, and the referring site is reduced to its origin, without its path or query.
+    </p>
+    <p>
+      We count the first successful tool use per page load, such as requesting a ready download, completing a copy, or displaying a usable analysis or view in an inspector. The only tool-specific detail added to this event is the tool's fixed identifier. It does not confirm that your operating system saved a download.
+    </p>
+    <p>
+      Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, errors or other input or output details to either record. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
     </p>
 
     <h3>Buy Me a Coffee &mdash; the donate button</h3>
@@ -95,14 +98,47 @@
       per-visitor logs from either of them.
     </p>
 
+    <h3>Connection choices for paired tools</h3>
+    <p>
+      All five paired tools start with Direct. Before starting, a host can instead choose Cloud relay; the invitation carries that choice and the joining person sees it before connecting. Direct never changes to a relay automatically. Cloud relay forwards encrypted text, files, video, audio and control messages through Cloudflare TURN. The relay does not hold their decryption keys, but sees connection addresses, timing and traffic volume. Both devices need internet throughout a relayed session. Temporary relay credentials stay in browser memory and are renewed through the rendezvous; they are not published in invitations or nearby lists. Nearby entries may show the host's connection choice. The tools' approval, password and microphone controls still apply.
+    </p>
+    <p>All five tools offer Available connections in either the local-network directory or a private group. A private group lets devices on different networks discover sessions using the same randomly generated code. Each tool has a separate list, and group sessions are not also published in the local-network list. The code permits discovery, not access: passwords, host approval and the selected connection route still apply. The rendezvous receives the code inside an encrypted connection to check group membership, then retains only a derived identifier and the result on open connections. Request URLs and their seven-day metadata logs contain that identifier, never the code. The page keeps the code in memory only, excludes it from invitations and connection reports, and forgets it on reload. Normal scripts on the page can read its fields; a private group does not isolate them. Anyone with the code can discover sessions offered to the group, so share it only with the intended people.</p>
+
+    <h3>Share a Browser Tab</h3>
+    <p>
+      <a href="../share-tab/">Share a Browser Tab</a> uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+    </p>
+    <p>
+      Online nearby discovery is off by default. The host may enable Show in nearby shared tabs before starting; a viewer explicitly chooses Find nearby tabs to open the list. The discovery connection lists the random invitation code and connection choice, never the captured tab’s title, address, picture or viewer note. Join beside a result sends the request using its displayed route; host approval is still required for a browser without a valid approval receipt. A copied invitation still waits for Request to watch. The service groups this tool’s pages by public IPv4 address or IPv6 /64 subnet and website origin, not physical location. Shared gateways or VPNs can include strangers or hide nearby devices. Listings live on open connections without stored history, and stopping withdraws the host’s listing.
+    </p>
+    <p>
+      Direct video uses an encrypted connection on a reachable network, without public STUN or TURN. Cloud relay uses the encrypted relay path described above. Discovery and pairing need internet access on both devices. The rendezvous sees room codes, IP addresses, times, WebRTC descriptions and candidates, but not video, viewer notes or approval decisions. Cloudflare retains connection metadata logs for seven days.
+    </p>
+    <p>
+      The page’s normal scripts can read its address and state, including an invitation code; a link alone never grants video access. The viewer cannot control the host or select webpage text. The tool has no recording feature, but visible signed-in content is part of the picture and the viewer can independently capture or record it. The tool page explains its network limits; local address settings do not prove a physical network boundary.
+    </p>
+
     <h3>Remote Camera and browser introductions</h3>
     <p>
-      <a href="../remote-camera/">Remote Camera</a> opens a discovery WebSocket when its page loads; Start camera, Connect or choosing an online camera adds a room connection to our rendezvous. Choosing a listed name requests a connection immediately and exchanges network addresses. Opening a viewer link still waits for Connect. Viewer approval is on by default and controls video, not address exchange. The rendezvous sees codes, addresses, timings and setup messages, never video or viewer notes. Video uses an encrypted direct browser connection with no configured STUN server or TURN relay, no microphone and no recording feature. Internet is still required for introductions. Routing can be affected by VPNs and operating-system policy; local mode does not prove a physical network boundary. The tool page explains these limits and how page scripts can read the viewer-link address.
+      <a href="../remote-camera/">Remote Camera</a> opens a discovery WebSocket when its page loads; Start camera or Connect adds a room connection to our rendezvous. Join beside a listed camera requests a connection and exchanges network addresses using its displayed route. Opening a viewer link still waits for Connect. Viewer approval is on by default and controls transmitted video and audio, not address exchange. The rendezvous sees codes, addresses, timings and setup messages, never video, audio or viewer notes. In Direct, video and enabled audio use an encrypted browser connection without configured STUN or TURN. Cloud relay uses the encrypted relay path described above. There is no recording feature. Audio is off by default; the host requests microphone access only after choosing to share audio. Internet is still required for introductions. Routing can be affected by VPNs and operating-system policy; local mode does not prove a physical network boundary. The tool page explains these limits and how page scripts can read the viewer-link address.
+    </p>
+    <p>
+      Optional viewer alerts analyze small video frames and received audio on the viewer device without recordings or uploads. Enabling alerts requests browser notification permission. Generic notices contain no camera image, audio, link name or viewer note; the browser and operating system display them. Disconnect stops analysis and closes this session’s notifications. The viewer page must stay open; browsers may pause analysis in the background or during sleep.
+    </p>
+
+    <h3>Local Walkie-Talkie</h3>
+    <p>
+      <a href="../walkie-talkie/">Local Walkie-Talkie</a> hosts directly in the website without Python or a download. Opening the page connects securely to our rendezvous for nearby discovery. Starting or joining adds a channel connection for authentication, setup and availability checks. Make this channel discoverable publishes its name and listener invitation to browsers grouped by public IPv4 address or IPv6 /64 subnet and page origin. Shared gateways can include strangers and VPNs can hide nearby devices; this is not a physical Wi-Fi scan. Hosts can turn the option off before starting to keep invitations link-only. Hiding or ending the host withdraws the listing. Live voice travels from the host browser to up to ten receive-only browsers using encrypted WebRTC, directly by default or through the explicitly chosen Cloud relay; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key. Active recovery state stays in per-tab session storage; the browser also retains a random personal key locally for return visits to the same session. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and a working chosen route can request to join. Host approval is required by default before listening; hosts can turn it off. Approved browsers may rejoin the same host session unless removed. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
+    </p>
+
+    <h3>Voice Oncall</h3>
+    <p>
+      <a href="../voice-oncall/">Voice Oncall</a> receives separate encrypted audio streams, directly by default or through the explicitly chosen Cloud relay, from up to ten participants in one host browser. Its nearby discovery connection lists advertised pagers sharing a public IPv4 address or IPv6 subnet and page origin; this is a hint, not a LAN scan or proof of physical Wi-Fi membership. The service sees pager names, password-derived admission credentials, moderation status and connection details, never voice. Callers need no display name; the host sees a short identifier instead. Older clients may still send a display name. An optional password and host approval control admission. Approval is on by default; an approved browser may rejoin the same host session unless removed. The password-derived access credential is computed in the browser and sent inside secure signaling rather than in a URL. The host never grants microphone access; participants deliberately enable transmission with Talk. Host mute silences each participant's playback locally, and removal blocks its retained session identity rather than a permanent person-level identity. Active recovery state stays in per-tab session storage when available; a random personal key is also kept locally for return visits to the same session. The site's normal scripts can read the page address and both kinds of storage. Socket attachments hold temporary pager state without stored pager history, while Cloudflare keeps seven-day invocation metadata logs. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet is required for discovery and pairing, and direct reachability still depends on browser and network routes.
     </p>
 
     <h3>Share Text &amp; Files and the rendezvous</h3>
     <p>
-      <a href="../share-text/">Share Text &amp; Files</a> opens a discovery connection on its start page and another connection when sharing. Names are grouped by public IPv4 address or IPv6 subnet and page origin; this is a discovery hint, not proof of the same physical network. The rendezvous sees names, IP addresses, connection times and negotiation messages, never shared text or files. Advertised names live on open connections without durable storage. Ordinary mode uses public STUN servers from Google and Cloudflare; a reader may explicitly retry through a Cloudflare TURN relay, which forwards encrypted traffic without its decryption keys. Local network mode omits STUN and TURN, but still needs the public rendezvous. Cloudflare keeps seven-day connection metadata logs for the share and camera rendezvous; these are per-visitor service logs we can read. Content copied or downloaded by a recipient remains theirs after the source tab closes.
+      <a href="../share-text/">Share Text &amp; Files</a> opens a discovery connection on its start page and another connection when sharing. Names are grouped by public IPv4 address or IPv6 subnet and page origin; this is a discovery hint, not proof of the same physical network. The rendezvous sees names, IP addresses, connection times and negotiation messages, never shared text or files. Advertised names live on open connections without durable storage. Ordinary Direct uses public STUN servers from Google and Cloudflare, which learn the address used for those requests. Local network restricts Direct to host addresses without STUN or TURN. Cloud relay is a separate choice made by the host before sharing and accepted by the reader before connecting. All choices need the public rendezvous for setup. Cloudflare keeps seven-day connection metadata logs for the share, camera and voice rendezvous; these are per-visitor service logs we can read. Content copied or downloaded by a recipient remains theirs after the source tab closes.
     </p>
   </section>
 
@@ -111,6 +147,7 @@
     <p>
       We set no login or session cookies. Google scripts may set cookies and identifiers as described above. The site also uses local browser storage for preferences and temporary work.
     </p>
+    <p><strong>Pairing approvals.</strong> The five paired tools keep random reconnect credentials in local browser storage for a limited number of recent tool, room and connection-route combinations. These contain no shared content, names or IP addresses. Share Text, Share a Browser Tab and Remote Camera present approval receipts only over the encrypted peer connection; voice tools send their personal key to the introduction service when joining. Approval lasts for the current host session: disconnecting keeps it, host removal revokes it, and ending or starting a new host session resets it. Clearing or blocking storage can require approval again. Scripts running on any page of this website origin, including third-party scripts, can access these stored credentials. They are not isolated from page scripts or placed in invitations or discovery lists.</p>
     <p>
       <strong>The language you choose.</strong> If you pick a language from the
       switcher, that choice is written to your browser's local storage, under
@@ -125,7 +162,7 @@
       <strong>Other local storage.</strong> Feedback stores an answer or dismissal timestamp to avoid asking again. Tools may keep settings or an optional sharing draft locally. A language switch or an explicit carry-on action can temporarily store files and settings in IndexedDB so another local tool page can pick them up. These records are not cookies and are not sent to us; clearing site data removes them. The relevant tool explains persistent drafts.
     </p>
     <p>
-      Google's cookies and identifiers are used to measure visits and to select and cap ads. They are distinct from the local site records described above.
+      Google's cookies and identifiers are used to measure visits and tool use and to select and cap ads. They are distinct from the local site records described above.
     </p>
     <h3>How to switch it off</h3>
     <ul>

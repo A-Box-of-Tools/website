@@ -13,7 +13,7 @@
 name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-10-12"     # the hub page's own sitemap date
+lastmod = "2026-10-15"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -338,11 +338,11 @@ support_heading = "Free, with your support."
 
 [[hub.guarantees]]
 title = "Your files are processed on your device"
-body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files and Remote Camera deliberately send content to another browser; their own pages explain the connection."
+body = "Your browser opens, reads and edits the files you choose. There is no upload for processing. Share Text &amp; Files, Share a Browser Tab, Remote Camera and the live voice tools deliberately send content to another browser; their own pages explain the connection."
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
-body = "Page visits and optional fixed feedback answers are counted. Neither is given your file, its name, its size or its contents. Optional image imports and receipt exchange-rate requests name the information they send beside their controls."
+body = "Page visits, the first successful tool use per page load and optional fixed feedback answers are counted. No files, filenames, contents or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
 
 [[hub.guarantees]]
 title = "Local processing works offline"
@@ -359,9 +359,9 @@ body = "Wait for a tool's offline indicator to say ready, then disconnect and us
 # mostly heading. A heading earns its space by letting a reader skip everything
 # under it, and a heading with one card under it never does.
 #
-# Four, then, cut where a reader would cut them: three by the kind of file they
-# arrived with - a picture, something that moves, something to read or to listen
-# to - and one for the tools that do not hand back a changed copy of anything.
+# File categories follow what a reader arrived with. Connecting browsers is a
+# different job: keep those tools together rather than scattering a live camera,
+# a voice channel and a text share among tools that edit a local file.
 [[hub.categories]]
 id = "images"
 name = "Images"
@@ -377,8 +377,8 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 id = "video-and-animation"
 name = "Video &amp; animation"
 short_name = "Video &amp; GIFs"
-note = "Edit video and animation in your browser, or watch an approved camera on another device."
-order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+note = "Trim, convert or build a clip from photos, with the footage staying on your device."
+order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -388,7 +388,7 @@ order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "i
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 short_name = "PDF &amp; audio"
-note = "Rearrange a document or trim a recording, without sending either off to be processed."
+note = "Rearrange a document or trim a recording without sending either away for processing."
 order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
@@ -403,7 +403,14 @@ id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+
+[[hub.categories]]
+id = "connect-devices"
+name = "Connect devices"
+short_name = "Connect devices"
+note = "Share text and files, talk live, or watch a camera or browser tab on another device. Each tool explains what it sends and how the browsers connect."
+order = ["share-text", "walkie-talkie", "voice-oncall", "remote-camera", "share-tab"]
 
 # Addresses that moved. Each key is a slug a tool used to answer at, each
 # value the slug of the tool that answers now; build.py writes a stub at the
@@ -460,7 +467,7 @@ title = "Roadmap &mdash; what abox.tools is building next"
 description = "Every tool planned for abox.tools, grouped and in the open, plus the ones already finished. File processing happens in your browser."
 
 heading = "What is coming next"
-lede = "Everything on both lists below processes files inside your browser, without a processing upload. A feature whose job needs networking must explain it on its own page. The counts are not written down anywhere; the build reads the lists."
+lede = "Tools for local file processing and deliberate browser-to-browser sharing, without a processing upload. A feature whose job needs networking explains it on its own page. The counts are not written down anywhere; the build reads the lists."
 
 intro_heading = "How this list was drawn up"
 intro = """
@@ -580,6 +587,9 @@ order = [
   "format-json-without-uploading-it",
   "share-text-between-devices",
   "watch-camera-from-another-device",
+  "share-a-browser-tab",
+  "broadcast-voice-on-a-local-network",
+  "receive-voice-from-nearby-devices",
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
@@ -652,6 +662,10 @@ order = [
 #
 
 [ui]
+favorites_heading = "Favorites"
+favorites_note = "Saved in this browser."
+favorite_tool = "Favorite"
+favorites_unavailable = "Favorites could not be saved in this browser."
 # The language switcher. `languages` labels it for a screen reader; the
 # languages themselves are never translated - each is written in its own
 # language, in locales/<lang>/locale.toml, because somebody looking for German
@@ -754,6 +768,63 @@ guides_all_note = """
 #
 
 [ui.tool]
+approval_title = "Request to join"
+approval_approve = "Approve"
+approval_deny = "Deny"
+approval_later = "Review later"
+approval_pending = "Join requests"
+approval_session = "Approve people you recognise. They can reconnect until you end this host session."
+approval_limit = "This session cannot remember another approval. End it and start a new session to approve another device."
+approval_required = "Require approval"
+transport_label = "Connection"
+transport_direct = "Direct"
+transport_relay = "Cloud relay"
+transport_note_direct = "Content travels directly between your devices. This choice never switches to a relay automatically."
+transport_note_relay = "Encrypted content passes through Cloudflare’s relay. Internet is required on both devices. Choose this when a direct connection cannot reach the other device."
+transport_route_direct = "Connected directly"
+transport_route_relay = "Connected through Cloud relay"
+transport_route_unknown = "Connection route is being checked."
+transport_invalid = "This connection choice is not supported. Open a new invitation from the host."
+transport_unavailable = "Cloud relay is unavailable. Try again later, or ask the host to start a new Direct session."
+transport_limited = "Cloud relay has reached its session limit. Ask the host to start a new session later."
+transport_forbidden = "Cloud relay is not allowed for this session. Open the host’s current invitation."
+transport_timeout = "Cloud relay did not respond in time. Try connecting again."
+transport_mismatch = "Your connection choice differs from the host’s. Open their current invitation and check its connection choice."
+transport_stopped = "The connection has ended."
+transport_failed = "Cloud relay could not connect these devices. Check internet access and your network’s WebRTC restrictions."
+pairing_network = "Keep internet access available on both devices for discovery and pairing. Direct local connections need a reachable shared network; Cloud relay can connect devices on different networks."
+pairing_discovery_help = "About discovery"
+group_scope = "Discovering in:"
+group_network = "Local network"
+group_private = "Private group"
+group_heading = "Use a private group"
+group_help = "Create a group code and share it with your other devices, or enter a code you received. The same code works across all five Connect Devices tools; each page lists its own kind of connection."
+group_code = "Private group code"
+group_join = "Join group"
+group_create = "Create group"
+group_copy = "Copy group code"
+group_leave = "Use local network"
+group_privacy = "Anyone with the code can find sessions offered to this group. Group sessions are not listed on the local network. Passwords and host approval still apply. Codes stay in this open page; re-enter yours after reloading. For devices on different networks, the host should choose Cloud relay."
+group_invalid = "Enter the complete group code generated by Create group."
+group_working = "Preparing the private group…"
+group_joined = "Private group ready. Share its code to invite devices."
+group_left = "Local-network discovery selected."
+group_failed = "The private group could not be prepared. Try again."
+group_copied = "Group code copied."
+group_select = "Select and copy the group code."
+connection_icons = "What the icons mean"
+connection_direct = "Direct — connects between devices."
+connection_relay = "Cloud relay — connects through an encrypted internet relay."
+connection_password = "Password required."
+connection_open = "No password required. Host approval may still apply."
+connection_approval = "Host approval required."
+connection_optional = "The host may require approval."
+pairing_cached = "Page saved. Internet is still needed to pair or reconnect devices."
+pairing_hotspot_heading = "Use Wi-Fi or a phone hotspot"
+pairing_hotspot_enable = "Turn on Personal Hotspot on an iPhone, or Wi-Fi hotspot on an Android phone, in the phone’s settings."
+pairing_hotspot_join = "Connect the other device to that hotspot from its Wi-Fi settings. Keep internet access available on both devices for nearby discovery and pairing."
+pairing_hotspot_connect = "Open this tool on both devices and choose Join beside the expected connection. Enter a password or wait for host approval if required. If it is missing, use the host’s link or code."
+pairing_hotspot_limits = "The network must allow devices to reach each other. Some hotspots, guest networks, VPNs and managed devices block direct connections. Finding a nearby entry does not prove it is reachable or trusted. This page cannot turn on a hotspot."
 pairing_version_help = "About the tool version"
 pairing_version_hint = "Compare this value on both devices. If it differs, reload both pages before starting a new share."
 pairing_version = "Version:"
@@ -1040,7 +1111,7 @@ licence = """
 summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files and Remote Camera deliberately transmit content between browsers. Their public rendezvous carries setup and discovery metadata, not shared content. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
+Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Share a Browser Tab, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. These paired tools require internet introductions: their public rendezvous carries connection setup, status and discovery metadata, not shared content. Direct is the default and never switches to a relay automatically. Share Text’s ordinary Direct mode uses public STUN; its Local network setting and the other four tools use host addresses without STUN or TURN. The host may explicitly choose Cloud relay before starting. Both peers then use Cloudflare TURN to forward encrypted content, while the relay sees addresses, timing and traffic volume and requires internet throughout. Approval, password and microphone controls still apply. The voice tools host in the browser and use encrypted WebRTC audio. Both voice tools offer nearby discovery using names chosen by hosts. Walkie-Talkie lists the listener invitations of channels offered nearby. Voice Oncall uses password-derived admission credentials and moderation status; callers need no display name, although older clients may still send one. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
 
 The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
 

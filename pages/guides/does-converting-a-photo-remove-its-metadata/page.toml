@@ -28,9 +28,9 @@ lede = """
     the picture looks identical either way. The only reliable move is to
     stop predicting and look at the file."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Does converting a photo remove its metadata?"
 og_description = "Sometimes - and both outcomes surprise people. Which operations strip EXIF, which keep it, and how to check the file instead of assuming."

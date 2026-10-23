@@ -18,6 +18,7 @@
 import { clipPainter } from './shared/example-video.js';
 import { exampleAudio } from './shared/example-audio.js';
 import { MkvWriter } from './shared/mkv-writer.js';
+import { firstSupported } from './shared/codec-support.js';
 
 /** Opus only speaks 48 kHz; the shared soundtrack is drawn at 44.1. */
 const OPUS_RATE = 48000;
@@ -61,8 +62,7 @@ async function encodeVideo({ width, height, fps, total }) {
     codec: 'vp8', width, height, bitrate: Math.round(width * height * fps * 0.1), framerate: fps,
     latencyMode: 'quality',
   };
-  const { supported } = await VideoEncoder.isConfigSupported(config);
-  if (!supported) throw new Error('example.novp8');
+  if (await firstSupported('VideoEncoder', [config]) !== 0) throw new Error('example.novp8');
 
   const canvas = document.createElement('canvas');
   canvas.width = width;

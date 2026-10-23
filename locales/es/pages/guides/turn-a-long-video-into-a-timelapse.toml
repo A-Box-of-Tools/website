@@ -14,7 +14,7 @@ lede = """
     destino, y todo corre en tu navegador, sobre un archivo que nunca sale de
     tu equipo."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Una hora de metraje en un minuto que se deja ver, sin subir nada"
 og_description = "Elige la velocidad o di directamente cuánto debe durar, mantén el archivo manejable incluso en 4K, y sabe cuándo el bucle quiere ser un GIF."

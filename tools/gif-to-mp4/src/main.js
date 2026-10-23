@@ -328,6 +328,7 @@ function showResult({ out, check, seconds, job }) {
     downloadUrl = URL.createObjectURL(out.blob);
     el.download.href = downloadUrl;
     el.download.download = outName(file.name);
+    el.download.onclick = () => { if (!el.download.hidden) globalThis.aboxToolComplete?.(); };
     el.player.src = downloadUrl;
   }
   el.download.hidden = !check.ok;

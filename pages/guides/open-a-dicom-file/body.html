@@ -14,6 +14,33 @@
   </section>
 
   <section>
+    <h2>Check a disc, or understand why another viewer refuses it</h2>
+    <p>
+      <strong>Checking what you were given.</strong> Open the scan folder,
+      inspect the listed studies and series, and compare their descriptions with
+      the examination you expected. Use the slice controls to browse what opens.
+      If files appear missing or a codec is unsupported, ask the imaging
+      provider for help; a local browser view does not establish that the study
+      is complete or interpret its findings.
+    </p>
+    <p>
+      <strong>Investigating a compatibility problem.</strong> Read the header's
+      Transfer Syntax and the reported unsupported codec before renaming files
+      or assuming they are damaged. The header can remain readable even when the
+      picture cannot be decoded. Share only the necessary technical details in a
+      support request, rather than a whole patient-bearing header.
+    </p>
+    <p>
+      Teaching is another useful viewing case, using a dataset already approved
+      and de-identified for that purpose. This viewer does not anonymise it. The
+      <a
+      href="https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_E.html"
+      target="_blank" rel="noopener noreferrer">DICOM confidentiality
+      profiles</a> explain why removing a name alone is insufficient.
+    </p>
+  </section>
+
+  <section>
     <h2>What a DCM file is, and what opens one</h2>
     <p>
       A file ending in <code>.dcm</code> is a DICOM file: the format every

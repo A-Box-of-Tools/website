@@ -16,6 +16,13 @@
   </section>
 
   <section>
+    <h2>Une capture d'assistance ou un extrait de document</h2>
+    <p><strong>Une capture pour un rapport de bug.</strong> Gardez l'erreur et les commandes explicatives&nbsp;; couvrez d'un aplat e-mails, comptes, jetons dans la barre d'adresse et notifications sans rapport. Choisissez PNG pour le texte net. Rouvrez le fichier <code>-redacted</code> téléchargé et lisez autour de chaque boîte avant de joindre, y compris les noms répétés ailleurs.</p>
+    <p><strong>Un reçu, une étiquette de colis ou un extrait d'identité.</strong> Couvrez tout le champ avec une marge autour des lettres, et aussi QR et codes-barres avec le numéro lisible. Les champs Gauche, Haut, Largeur et Hauteur aident avec un petit aperçu. Traitez une image à la fois et contrôlez le résultat à taille réelle. Retirer un champ n'enlève pas les indices ailleurs, et la boîte montre encore emplacement et taille de la zone cachée. Utilisez aussi un aplat sur les visages si l'identification compte&nbsp;; flou et pixellisation gardent des mesures du sujet.</p>
+  </section>
+
+
+  <section>
     <h2>Recouvrir et supprimer se ressemblent à l'écran</h2>
     <p>
       Tracez un rectangle noir sur un nom dans un lecteur de PDF, une
@@ -86,7 +93,7 @@
 
     <figure class="shot">
       <img src="/screens/redact-an-image/save.webp" loading="lazy" decoding="async"
-           alt="La carte d'enregistrement&nbsp;: un menu de format, un curseur de qualité, et une note disant que les pixels couverts sont retirés du fichier écrit.">
+           alt="La carte d&#x27;enregistrement : un menu de format, un curseur de qualité, et une note disant que les pixels couverts sont retirés du fichier écrit.">
       <figcaption>
         L'enregistrement est l'étape qui rend la chose réelle. Ce qui sort est un nouveau fichier sans ces pixels, pas l'original avec un rectangle dessus.
       </figcaption>
@@ -99,14 +106,7 @@
       Les trois écrasent les pixels. Un seul ne laisse rien derrière lui.
     </p>
     <h3>Aplat noir</h3>
-    <p>
-      Tous les pixels du cadre prennent la même couleur. De ce qui était là, rien
-      ne survit&nbsp;: ni un contour, ni une luminosité moyenne, ni le nombre de
-      caractères, ni la longueur du mot. C'est le seul des trois pour lequel la
-      question « &nbsp;cela pourrait-il être défait&nbsp;?&nbsp; » reçoit un non
-      franc, et c'est ce qu'il faut employer pour un nom, une adresse, un numéro
-      de compte, une plaque d'immatriculation, une signature ou un code-barres.
-    </p>
+    <p>Chaque pixel devient la même couleur, sans contour ni luminosité moyenne d'origine. Taille et contexte peuvent encore suggérer le type de champ. C'est la seule des trois méthodes où «&nbsp;peut-on annuler cela&nbsp;?&nbsp;» reçoit un non net. Utilisez-la pour nom, adresse, compte, plaque, signature ou code-barres.</p>
     <h3>Pixellisation</h3>
     <p>
       Le cadre est découpé en blocs et chaque bloc prend la couleur moyenne de ce
@@ -140,18 +140,11 @@
       traité par des logiciels standards, et il réussit le mieux justement dans le
       cas qui compte ici, celui d'un texte net flouté avec un petit rayon.
     </p>
-    <p>
-      Rien de tout cela ne rend la pixellisation et le flou inutiles. Un visage à
-      l'arrière-plan d'une photo de rue, un numéro d'immeuble en face, l'écran
-      d'un collègue derrière vous en visioconférence&nbsp;: tout cela convient
-      très bien, et l'image continue de ressembler à une image. La règle est
-      simple&nbsp;: <strong>si cela se lit comme du texte, masquez-le en
-      noir.</strong>
-    </p>
+    <p>Pixellisation et flou peuvent atténuer un fond incident, sans être fiables pour empêcher l'identification. Utilisez un aplat si révéler le sujet compte. Pour noms, numéros et autres champs lisibles, <strong>noircissez</strong>.</p>
 
     <figure class="shot">
       <img src="/screens/redact-an-image/cover.webp" loading="lazy" decoding="async"
-           alt="L'éditeur&nbsp;: une photo avec un rectangle opaque sur une partie, le choix entre noir, pixellisation et flou, un curseur d'intensité et un récapitulatif des zones marquées.">
+           alt="L&#x27;éditeur : une photo avec un rectangle opaque sur une partie, le choix entre noir, pixellisation et flou, un curseur d&#x27;intensité et un récapitulatif des zones marquées.">
       <figcaption>
         Trois façons de couvrir quelque chose, et elles ne se valent pas. Cette section porte sur celle qui résiste à quelqu'un qui essaierait de la défaire.
       </figcaption>
@@ -184,13 +177,7 @@
         l'image. Si la petite version montre encore ce que vous avez recouvert, le
         fichier a été modifié au lieu d'être reconstruit.
       </li>
-      <li>
-        <strong>Zoomez à fond sur les bords du cadre.</strong> Un caviardage
-        appliqué aux pixels présente une limite franche exactement à la frontière.
-        Un bord doux ou semi-transparent signifie que quelque chose a été dessiné
-        par-dessus avec une opacité, et une opacité inférieure à 100&nbsp;% est
-        une copie de l'original avec une teinte dessus.
-      </li>
+      <li><strong>Vérifiez les bords et l'image autour.</strong> Aucun fragment de lettre, chiffre ou code ne doit rester dehors, et le champ ne doit pas être répété ailleurs. JPEG peut adoucir le bord&nbsp;; sa netteté seule ne prouve pas si les pixels source ont été remplacés.</li>
     </ol>
   </section>
 

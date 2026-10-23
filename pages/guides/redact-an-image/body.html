@@ -15,6 +15,30 @@
   </section>
 
   <section>
+    <h2>A support screenshot or a document excerpt</h2>
+    <p>
+      <strong>A screenshot for a bug report.</strong> Keep the error and the
+      controls that explain it; use solid fill over email addresses, account
+      names, access tokens in the address bar, and unrelated notifications.
+      Choose PNG so the text you kept stays crisp. Reopen the downloaded
+      <code>-redacted</code> file and read around every box before attaching it,
+      including repeated names in another part of the screenshot.
+    </p>
+    <p>
+      <strong>A receipt, parcel label or identity-document excerpt.</strong>
+      Cover the whole unwanted field with a little room around its letters,
+      and cover QR codes and barcodes as well as the human-readable number.
+      The precise Left, Top, Width and Height fields help place a box when the
+      preview is small. Work on one image at a time and inspect the saved
+      result at full size. Removing a field cannot remove clues elsewhere in
+      the picture, and a solid box still reveals where and how large the
+      covered region was. Use solid fill for faces too when identification
+      would matter; blur and pixelation retain measurements of the subject.
+    </p>
+  </section>
+
+
+  <section>
     <h2>Covering and removing look identical on screen</h2>
     <p>
       Draw a black rectangle over a name in a PDF reader, a slide deck, a word
@@ -95,8 +119,9 @@
     <h3>Black fill</h3>
     <p>
       Every pixel in the box becomes the same colour. Nothing about what was
-      there survives: not an outline, not an average brightness, not the number
-      of characters, not the length of the word. It is the only one of the three
+      there survives: not an outline or an average brightness of the covered pixels.
+      The box's size and the surrounding context can still suggest what kind
+      of field was there. It is the only one of the three
       where the question &ldquo;could this be undone?&rdquo; has a flat no for an
       answer, and it is what to use for a name, an address, an account number, a
       licence plate, a signature or a barcode.
@@ -134,11 +159,10 @@
       text blurred by a small radius.
     </p>
     <p>
-      None of this makes pixelation and blur useless. A face in the background of
-      a street photo, a house number across the road, a colleague's screen behind
-      you on a video call &mdash; those are all fine, and they keep the picture
-      looking like a picture. The rule is simply: <strong>if it reads as text,
-      black it out.</strong>
+      Pixelation and blur can make an incidental background less distracting,
+      but they should not be relied on to prevent identification. Use solid
+      fill when revealing the subject would matter. For names, numbers and
+      other readable fields, <strong>black it out</strong>.
     </p>
 
     <figure class="shot">
@@ -176,11 +200,11 @@
         rather than rebuilt.
       </li>
       <li>
-        <strong>Zoom all the way in on the edges of the box.</strong> A
-        redaction that was applied to the pixels has a hard edge at the exact
-        boundary. A soft or semi-transparent edge means something was drawn over
-        the picture with an opacity, and an opacity below 100% is a copy of the
-        original with a tint on it.
+        <strong>Inspect the edges and the surrounding image.</strong> Check
+        that no letters, digits or barcode fragments remain outside the box,
+        and that another part of the picture does not repeat the same field.
+        JPEG compression can soften a box's edge, so edge sharpness alone is
+        not a test of whether the source pixels were overwritten.
       </li>
     </ol>
   </section>

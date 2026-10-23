@@ -24,6 +24,13 @@
   </section>
 
   <section>
+    <h2>Un logotipo para un documento o imágenes para pantalla</h2>
+    <p><strong>Diapositivas o documentos que no admiten SVG.</strong> Exporta un PNG al ancho que ocupará y con píxeles suficientes para la pantalla o impresión. Conserva la transparencia si el logo aparecerá sobre colores distintos; elige un fondo opaco si lo exige el destino. Revisa en la vista previa letras sustituidas o imágenes enlazadas ausentes antes de insertar la descarga.</p>
+    <p><strong>Iconos equivalentes para distintas densidades de pantalla.</strong> Da a la versión 1x su tamaño de visualización y pide las copias @2x y @3x en la misma operación. En SVG con dimensiones de origen uniformes, un múltiplo conserva la proporción entre ellos; limitar el lado mayor hace que dibujos de formas distintas quepan en la misma extensión máxima. Revisa si desaparecen trazos en la copia menor. Exportar más grande no hace legible un símbolo delicado en un espacio diminuto.</p>
+  </section>
+
+
+  <section>
     <h2>Por qué el tamaño lo decides tú y no el archivo</h2>
     <p>
       Un JPEG es una rejilla de píxeles medidos, así que preguntar cuánto mide
@@ -57,13 +64,7 @@
       y por eso una herramienta que los escriba te ahorra hacer la cuenta tres
       veces.
     </p>
-    <p><strong>Para el icono de una aplicación, una ficha de tienda o un
-      favicon.</strong> El número está publicado y no hay nada que calcular:
-      exactamente lo que diga la página de la tienda. Y para un favicon no
-      rasterices nada: <a href="../como-hacer-un-favicon/">haz un .ico</a>, que
-      guarda varios tamaños en un archivo, porque la pestaña de un navegador, un
-      marcador y un acceso directo de Windows piden tamaños distintos.
-    </p>
+    <p><strong>Un icono de aplicación, una ficha de tienda o un favicon.</strong> El número está publicado: usa exactamente lo que pide la tienda. Para un favicon, exporta los tamaños necesarios juntos y <a href="../como-hacer-un-favicon/">crea un .ico</a> que reúna varios en un archivo: la pestaña, el marcador y el acceso directo de Windows piden tamaños distintos.</p>
     <p><strong>Para imprenta.</strong> Multiplica el tamaño físico en pulgadas
       por la resolución de la impresora. Un logotipo de dos pulgadas de ancho en
       una tarjeta de visita, a 300&nbsp;PPP, son 600 píxeles; ese mismo logotipo a
@@ -175,12 +176,7 @@
       justo en este tipo de imagen, con un anillo de salpicaduras alrededor de cada
       borde duro. Úsalo cuando algo insista.
     </p>
-    <p>
-      <strong>WebP</strong> hace todo lo que hace el PNG en un archivo más
-      pequeño, y lo lee cualquier navegador actual. El motivo para no usarlo es lo
-      que viene después del navegador: el software antiguo, algunas imprentas y
-      bastantes formularios de subida siguen sin abrir uno.
-    </p>
+    <p><strong>WebP</strong> conserva transparencia y puede ocupar menos, pero su ajuste de calidad puede añadir artefactos. Compara letras y bordes planos antes de sustituir un PNG. El inconveniente aparece después del navegador: software antiguo, algunas imprentas y bastantes formularios aún no lo abren.</p>
     <p>
       Y elegir un color de fondo con PNG también es algo perfectamente normal de
       querer. La transparencia solo sirve cuando aquello sobre lo que va a aterrizar

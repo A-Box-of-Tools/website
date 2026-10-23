@@ -728,6 +728,7 @@ async function runExport() {
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = outputFilename(result.extension);
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = [
       result.extension.toUpperCase(),
       phrase('size.plain', { width: crop.width, height: crop.height }),

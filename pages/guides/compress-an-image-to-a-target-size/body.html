@@ -24,6 +24,33 @@
   </section>
 
   <section>
+    <h2>A form, an attachment or a readable scan</h2>
+    <p>
+      <strong>An application with both a pixel rule and a file-size limit.</strong>
+      Read its accepted formats first. Crop and resize to the required
+      dimensions in the <a href="../../resize-image/">Image Resizer</a>, then
+      enter the byte budget here and turn off
+      <strong>May make the picture smaller if it has to</strong>. Choose JPEG
+      explicitly if that is what the form accepts. Check the finished row's
+      dimensions and format as well as its size; a small file with the wrong
+      dimensions still misses the rule.
+    </p>
+    <p>
+      <strong>Several photos in one message.</strong> The target applies to
+      each image, so choose a per-image allowance that fits the total attachment
+      budget. A ZIP collects the results; it does not promise a second large
+      saving on already compressed pictures.
+    </p>
+    <p>
+      <strong>A receipt or screenshot for a support ticket.</strong> Start with
+      PNG when fine text matters and check the smallest print in the download.
+      A very tight target may shrink it until that text is unreadable. Keep a
+      larger copy or crop out irrelevant borders before spending more detail.
+    </p>
+  </section>
+
+
+  <section>
     <h2>What a file size limit is really asking for</h2>
     <p>
       A JPEG or a WebP does not store your photograph. It stores a description
@@ -34,8 +61,7 @@
     </p>
     <p>
       So a size limit is a budget for detail. The useful question is not
-      &ldquo;can I hit 500&nbsp;KB&rdquo; &mdash; you can always hit any number
-      &mdash; but &ldquo;how much of the picture do I have to give up to get
+      &ldquo;can I get below 500&nbsp;KB&rdquo; but &ldquo;how much of the picture do I have to give up to get
       there, and does it matter for what I am doing with it?&rdquo;
     </p>
     <p>
@@ -162,9 +188,10 @@
         change.
       </li>
       <li>
-        <strong>A screenshot or a diagram.</strong> Convert to WebP, which is
-        lossless as well when you ask it to be, and is generally smaller than
-        PNG for the same pixels. Going to JPEG will make text edges fuzzy.
+        <strong>A screenshot or a diagram.</strong> Try the <a href="../../png-to-webp/">PNG to WebP converter</a>
+        in Lossless mode and check the actual saving. This target-size
+        compressor's WebP search is lossy; it does not offer that lossless
+        mode. Going to JPEG can make text edges fuzzy.
       </li>
       <li>
         <strong>A logo with transparency.</strong> WebP keeps the transparency;
@@ -213,7 +240,9 @@
   <section>
     <h2>Three things worth knowing before you send the file</h2>
     <p>
-      <strong>Compressing strips the metadata.</strong> Re-encoding means
+      <strong>Re-encoding strips the metadata.</strong> A file already under
+      the target is returned unchanged, including its metadata. For a file
+      that needs processing, re-encoding means
       decoding the picture to pixels and encoding those pixels again, and a
       canvas full of pixels carries no tags &mdash; so the GPS position, the
       camera model, the timestamps and the rest are simply not written to the

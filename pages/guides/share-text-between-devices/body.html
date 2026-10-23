@@ -7,14 +7,18 @@
       <code>brave-otter-42</code>; on the other device, open the same page and
       put <code>#brave-otter-42</code> on the end of the address &mdash; or
       just follow the copied link. The other device asks before connecting,
-      you let it in, and the text or file crosses directly from one browser to
-      the other, encrypted. Close the sharing tab and the share is over,
-      everywhere.
+      you let it in, and the text or file crosses an encrypted connection.
+      Direct is the default. The host can instead choose Cloud relay before
+      starting, and the reader confirms that choice before connecting.
+      Close the sharing tab to end live sharing; copies already saved by a
+      recipient remain theirs.
     </p>
     <p>
-      No shared text or file was uploaded to a server. That is the shape
-      of the thing. The rest of this page is why that matters, and
-      what the honest limits of it are.
+      No sharing server stores a copy to collect later. With Cloud relay,
+      Cloudflare forwards the encrypted content without its decryption keys,
+      but sees addresses, timing and traffic volume. Both devices need
+      internet throughout a relayed session. Direct never switches to that
+      route automatically.
     </p>
 
     <figure class="shot">
@@ -24,6 +28,32 @@
         What is being handed over. The same box takes a shopping list or a document, and Markdown is a switch rather than a separate mode.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Move a note to a phone, or hand over a workshop file</h2>
+    <p>
+      <strong>From a laptop to a phone.</strong> Put a long address,
+      instructions or a file in the sharing page on the laptop. Keep Private on,
+      open the copied link on the phone, approve the expected reader and copy or
+      download what you need. Keep the sharing tab visible and awake until the
+      phone has it, then end the share. The phone's saved copy remains after the
+      link ends.
+    </p>
+    <p>
+      <strong>A live workshop or support call.</strong> Share the exercise file,
+      example configuration or diagnostic excerpt while both people are present.
+      Use fictional data where possible and approve readers individually. If
+      using discoverable Local network mode, remember that its listing is not
+      proof that a reader is in your room. Files must stay within the tool's 200
+      MB per-file limit.
+    </p>
+    <p>
+      Try the connection on the actual network before the appointment. Keep an
+      agreed fallback for networks that block a direct path. This is a live
+      handoff, so an unattended overnight delivery needs a service that
+      deliberately stores the content.
+    </p>
   </section>
 
   <section>
@@ -53,7 +83,7 @@
   <section>
     <h2>What &ldquo;direct&rdquo; actually means</h2>
     <p>
-      The tool uses WebRTC, the same machinery as browser video calls: two
+      In Direct, the tool uses WebRTC, the same machinery as browser video calls: two
       browsers open an encrypted channel to each other and send data through
       it without a server in the path. Two devices with a working local
       connection can transfer at the speed of that network; the route also
@@ -68,9 +98,10 @@
       source is published beside the tool's. It is the introduction, not the
       conversation. It also lists opted-in local link names, which is how
       a second browser can find a share on the tool's start page. It is
-      the one server anything on this site
-      talks to, which is why the tool's own page spells out exactly what it
-      can and cannot see.
+      the introduction service used by this tool and Remote Camera. Optional
+      image retrieval, receipt exchange-rate lookup and platform scripts have
+      their own network boundaries, listed on the <a href="../../privacy/">Privacy page</a>.
+      The sharing page spells out what its introduction service can see.
     </p>
     <p>
       Direct also means mutual: each browser learns the other's network
@@ -86,9 +117,10 @@
       <em>Local network &mdash; no internet
       relay</em>. Attach the file, leave Private on if you want to approve
       each reader, and start sharing. Discoverable is checked by default:
-      open the tool page on the second device and choose the share's name
-      from <em>Local shares on this connection</em>. It opens the consent
-      page, then asks for your approval on a private share. Uncheck
+      open the tool page on the second device, check the connection type in
+      <em>Available connections</em> and choose Join beside the share's name.
+      This opens a reader tab and starts the request. Private shares wait
+      for your approval. Uncheck
       Discoverable before starting if you want to share only by link.
       Both devices need
       to use the same Wi-Fi or Ethernet. Files still have the same
@@ -105,7 +137,7 @@
       still works.
     </p>
     <p>
-      The copied link carries the setting as <code>?local=1#brave-otter-42</code>.
+      The copied link carries the setting as <code>?local=1&amp;transport=direct#brave-otter-42</code>.
       If you say the name aloud, include the Local network setting too:
       <code>#brave-otter-42</code> alone asks for the ordinary connection
       mode. If the reader uses a different mode from the sharer, the page
@@ -139,7 +171,7 @@
       within that group. For anything sensitive, keep the default &mdash; shares are
       <em>private</em> unless you untick the box, which means every arriving
       reader has to introduce themselves and you decide, message by message,
-      who gets in. The introduction travels the encrypted direct channel, so
+      who gets in. The introduction travels the encrypted peer channel, so
       not even the rendezvous learns who asked.
     </p>
 
@@ -214,15 +246,17 @@
       The sharing tab has to stay open and awake, which in practice means a
       desktop or laptop does the sharing; phones suspend background tabs in
       seconds, though they read a share perfectly well. It cannot work
-      offline, alone on this site, because reaching another machine is a
+      offline, because reaching another machine is a
       network act &mdash; although the editor half works with no connection
       at all. And a small minority of network pairs &mdash; typically one
       end on a mobile carrier's shared-address network or a strict corporate
       one &mdash; cannot be joined directly at all; the tool says so plainly
-      after twenty seconds, and in ordinary mode offers the reader an encrypted relay that
-      forwards the bytes without being able to read them, rather than
-      switching to one quietly. Local network mode offers no relay and
-      asks you to check the shared network and its connection settings.
+      after twenty seconds. Direct never switches to a relay automatically.
+      The host can stop and start a new share with Cloud relay, then send its
+      new invitation. The reader sees that choice before connecting. Cloudflare
+      forwards encrypted text and files without their decryption keys, but sees
+      addresses, timing and traffic volume. Both devices need internet throughout.
+      Local network restricts Direct and does not use a relay.
     </p>
     <p>
       For everything else &mdash; the note, the password, the config file,

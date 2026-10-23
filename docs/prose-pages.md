@@ -71,11 +71,20 @@ not as a hand-edit.
 ## What is in them, and what is not
 
 The Privacy page describes what actually happens rather than what would be
-reassuring: files never leave the browser, with the CSP offered as proof, and
-then every third party named in turn — AdSense, Analytics, the donate button's
-CDN, Google Fonts, and the hosting — each with the way to switch it off, and the
-line that makes those safe to take: every tool still works with all of it
-blocked and the network unplugged.
+reassuring. File processing stays in the browser; deliberate sharing, browser
+introductions, optional remote-image or exchange-rate requests and external-app
+handoffs have their own disclosures. CSP bounds destinations but cannot prove
+what goes to an allowed destination or describe WebRTC traffic. The page also
+names AdSense, Analytics, the donate button's CDN, Google Fonts and hosting,
+with their controls. Blocking those services leaves local processing usable;
+network features still need their respective connections.
+
+Private discovery groups have a separate disclosure across the built languages:
+the code reaches the rendezvous transiently inside encrypted signaling, only its
+derived identifier appears in request metadata, and group membership changes
+discovery rather than granting access. The current page holds the code in memory
+only. Normal page scripts can read its fields; a private group is not a script
+isolation mechanism.
 
 Two things it does **not** claim, deliberately:
 

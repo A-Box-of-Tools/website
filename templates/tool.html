@@ -177,8 +177,24 @@
   #phrases block of its own body.html, which is looked up first.
 -->
 <div id="frame-phrases" hidden aria-hidden="true">
+{% if tool.supports_relay %}
+  <span data-phrase="approval.limit">{{ ui.tool.approval_limit }}</span>
+  <span data-phrase="transport.note.direct">{{ ui.tool.transport_note_direct }}</span>
+  <span data-phrase="transport.note.relay">{{ ui.tool.transport_note_relay }}</span>
+  <span data-phrase="transport.route.direct">{{ ui.tool.transport_route_direct }}</span>
+  <span data-phrase="transport.route.relay">{{ ui.tool.transport_route_relay }}</span>
+  <span data-phrase="transport.route.unknown">{{ ui.tool.transport_route_unknown }}</span>
+  <span data-phrase="transport.invalid">{{ ui.tool.transport_invalid }}</span>
+  <span data-phrase="transport.unavailable">{{ ui.tool.transport_unavailable }}</span>
+  <span data-phrase="transport.limited">{{ ui.tool.transport_limited }}</span>
+  <span data-phrase="transport.forbidden">{{ ui.tool.transport_forbidden }}</span>
+  <span data-phrase="transport.timeout">{{ ui.tool.transport_timeout }}</span>
+  <span data-phrase="transport.mismatch">{{ ui.tool.transport_mismatch }}</span>
+  <span data-phrase="transport.stopped">{{ ui.tool.transport_stopped }}</span>
+  <span data-phrase="transport.failed">{{ ui.tool.transport_failed }}</span>
+{% endif %}
   <span data-phrase="card.waiting">{{ ui.tool.card_waiting }}</span>
-  <span data-phrase="offline.ready">{{ ui.tool.offline_ready }}</span>
+  <span data-phrase="offline.ready">{% if tool.requires_pairing %}{{ ui.tool.pairing_cached }}{% else %}{{ ui.tool.offline_ready }}{% endif %}</span>
   <span data-phrase="offline.none">{{ ui.tool.offline_none }}</span>
   <span data-phrase="offline.insecure">{{ ui.tool.offline_insecure }}</span>
   <span data-phrase="offline.failed">{{ ui.tool.offline_failed }}</span>
@@ -208,8 +224,8 @@
   to do: markup is meant to describe what a visitor can see.
 
   `tool.name` is escaped rather than inserted raw because it is a plain string -
-  "EXIF Viewer & Remover" carries a bare ampersand - unlike `tool.heading`,
-  which is written as markup in tool.toml.
+  "EXIF Viewer & Remover" carries a bare ampersand. Cards, breadcrumbs and the
+  page heading use this same name so opening a tool never appears to rename it.
 -->
 <nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
   <a href="../">{{ ui.all_tools }}</a>
@@ -222,7 +238,7 @@
     <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"
          focusable="false">{{ tool.glyph_svg }}</svg>
     <div>
-      <h1>{{ tool.heading }}</h1>
+      <h1>{{ tool.name | e }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
 {% if tool.requires_pairing %}      <div class="pairing-version" data-pairing-version="{{ js_v }}">
         <span>{{ ui.tool.pairing_version }}</span> <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code id="tool-version" dir="ltr">{{ js_v }}</code></span>
@@ -235,6 +251,11 @@
     </div>
   </div>
   <div class="topbar-actions">
+    <button type="button" class="favorite-toggle" data-favorite="{{ tool.slug | e }}"
+            aria-label="{{ ui.favorite_tool | e }} — {{ tool.name | e }}" aria-pressed="false" hidden>
+      {% include "partials/favorite-star.html" %}
+      <span>{{ ui.favorite_tool }}</span>
+    </button>
     {% include "partials/lang-pick.html" %}
     <a class="source-link" href="{{ site.source_url }}"
        target="_blank" rel="noopener noreferrer">
@@ -256,6 +277,8 @@
     </div>
   </div>
 </header>
+
+{% include "partials/favorites-status.html" %}
 
 <!--
   The headline claim, always on screen. Every other site that offers to do this
@@ -512,6 +535,7 @@
   would leave nothing to carry. See shared/lang-keep.js.
 -->
 <script src="{{ keep_href }}" defer></script>
+<script src="{{ favorites_href }}" defer></script>
 
 {% include "partials/footer.html" %}
 

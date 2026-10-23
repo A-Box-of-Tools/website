@@ -17,6 +17,12 @@
   </section>
 
   <section>
+    <h2>Un dossier de demande ou seulement les pages demandées</h2>
+    <p>Pour lettre, formulaire et justificatifs, ajoutez les PDF dans l'ordre demandé et choisissez un document unique. Vérifiez origine et numéro de chaque page sur sa vignette&nbsp;; la petite position indique sa place finale. Les vignettes montrent forme et étiquettes, pas le contenu&nbsp;: ouvrez le PDF fini et examinez chaque page. Vérifiez les valeurs de formulaires, surtout en cas de collision de noms de champs signalée, et gardez les originaux signés séparément.</p>
+    <p>Pour n'envoyer qu'un certificat ou appendice, repérez ses positions physiques, ajoutez le PDF, saisissez par exemple <code>2-4, 9</code> et choisissez <em>Ne garder que celles-ci</em>. La plage compte les positions actuelles, pas les labels imprimés comme «&nbsp;iii&nbsp;». Exportez et vérifiez les quatre pages attendues dans l'ordre. Cela retire des pages entières&nbsp;; utilisez le <a href="../caviarder-un-pdf/">caviardage</a> pour du texte privé sur une page conservée.</p>
+  </section>
+
+  <section>
     <h2>Fusionner deux documents ou plus</h2>
     <p>
       Choisissez le premier fichier, puis le second&nbsp;: les pages de chacun se
@@ -84,7 +90,7 @@
 
     <figure class="shot">
       <img src="/screens/merge-and-split-pdf-files/output.webp" loading="lazy" decoding="async"
-           alt="La carte de sortie&nbsp;: des options pour un document ou plusieurs, une découpe par taille, à un numéro de page, ou de retour vers les fichiers d'origine.">
+           alt="La carte de sortie : des options pour un document ou plusieurs, une découpe par taille, à un numéro de page, ou de retour vers les fichiers d&#x27;origine.">
       <figcaption>
         Découper est la même opération que fusionner, faite à l'envers, et c'est pourquoi c'est un réglage ici et non un outil à part.
       </figcaption>
@@ -108,18 +114,11 @@
       courant&nbsp;: un scan recto verso où une page sur deux est à l'envers,
       c'est <code>even</code> et deux quarts de tour.
     </p>
-    <p>
-      Les numéros sur les vignettes se renumérotent au fur et à mesure, ils
-      veulent donc toujours dire « &nbsp;position dans le document fini&nbsp; » et
-      non « &nbsp;page dans le fichier d'où elle vient&nbsp; ». Rien n'est écrit
-      tant que vous n'avez pas appuyé sur le bouton, il n'y a donc rien à annuler
-      &mdash; et « &nbsp;revenir à l'état d'origine&nbsp; » rétablit l'ordre initial
-      de tout.
-    </p>
+    <p>Le grand nombre est le numéro source et reste avec la page. La petite position change et c'est elle qu'utilise la zone de plage. Rien n'est écrit avant le bouton, donc rien à annuler&nbsp;; «&nbsp;retour à l'ordre initial&nbsp;» rétablit tout.</p>
 
     <figure class="shot">
       <img src="/screens/merge-and-split-pdf-files/pages.webp" loading="lazy" decoding="async"
-           alt="La grille des pages&nbsp;: chaque page de deux documents en vignette, dans l'ordre où elles sortiront, avec des commandes pour pivoter, inverser et retirer.">
+           alt="La grille de pages de deux documents, avec étiquettes source et positions finales, et commandes de rotation, inversion et suppression.">
       <figcaption>
         Les deux documents, page par page. Réordonner, c'est déplacer&nbsp;; le champ de plage au-dessus est pour les documents où déplacer prendrait tout l'après-midi.
       </figcaption>
@@ -195,14 +194,7 @@
 
   <section>
     <h2>Les fichiers protégés par mot de passe</h2>
-    <p>
-      Un PDF chiffré est refusé, y compris ceux à mot de passe vide que
-      produisent beaucoup de photocopieurs de bureau. Retirer la protection d'un
-      document est un travail différent de celui de déplacer ses pages, et un
-      outil qui le ferait en silence ferait quelque chose que vous n'avez pas
-      demandé. Ouvrez-le dans un lecteur avec le mot de passe et enregistrez
-      d'abord une copie non protégée.
-    </p>
+    <p>Un PDF chiffré est refusé, même avec mot de passe vide comme ceux de nombreux copieurs. Retirer une protection est distinct de déplacer des pages, et le faire silencieusement dépasserait la demande. Créez d'abord une copie non protégée avec le <a href="../deverrouiller-un-pdf/">Déverrouilleur PDF</a>, en fournissant un mot de passe valide si nécessaire.</p>
   </section>
 
   <section>

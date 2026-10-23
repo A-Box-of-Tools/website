@@ -1,18 +1,17 @@
   <section>
     <h2>La respuesta corta</h2>
-    <p>
-      Abre el <a href="../../cortar-audio/">Cortador de audio</a>, suelta la
-      grabación dentro, pulsa <kbd>I</kbd> y <kbd>O</kbd> para marcar cada parte
-      que quieres &mdash; tantas como te apetezca &mdash; y exporta. Cada corte
-      cae en la muestra exacta que marcaste, las muestras que se quedan salen tal
-      y como entraron, y las uniones reciben un fundido de cinco milisegundos
-      para que no puedan chascar.
-    </p>
+    <p>Abre el <a href="../../cortar-audio/">Recortador de audio</a>, añade la grabación, marca tantas partes como quieras con <kbd>I</kbd> y <kbd>O</kbd> y exporta. Cada corte cae en la muestra indicada, copia muestras decodificadas entre cortes y aplica una transición de cinco milisegundos en las uniones para suavizar bordes. Elige Float32 si necesitas evitar el redondeo final a PCM de 16 bits.</p>
     <p>
       Ese es todo el trabajo. El resto de esta página va de por qué la exactitud
       es real y no una frase de propaganda, y de la única cosa que sí sale mal
       cuando juntas dos trozos de sonido.
     </p>
+  </section>
+
+  <section>
+    <h2>Una toma limpia, una cita o un pasaje de ensayo</h2>
+    <p>Para narración, marca la toma limpia y deja silencio alrededor de la primera respiración y última palabra. En entrevistas, conserva pregunta suficiente para entender la respuesta. Reproduce filas antes de exportar y escucha cada unión en el WAV final. Cinco milisegundos evitan un borde abrupto, pero no recuperan una sílaba cortada.</p>
+    <p>Un ensayo o práctica de idioma puede reunir varias secciones de la misma grabación en el orden deseado. Guarda las marcas para volver después. Solo carga un archivo de origen cada vez; unir grabaciones distintas necesita otro editor. Escribe WAV, no MP3 pequeño: elige 16 bits para escuchar o Float32 para editar y comprueba aplicación receptora y límite de tamaño.</p>
   </section>
 
   <section>

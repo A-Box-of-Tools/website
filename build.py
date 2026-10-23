@@ -233,7 +233,9 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # Minified first, then hashed: the version in the URL has to be a hash of
     # the bytes a browser actually receives, or turning minifying on would serve
     # new CSS under the old version and leave returning visitors on the stale one.
-    site_css = emit.css_text((SHARED / 'site.css').read_text(encoding='utf-8'))
+    site_css = emit.css_text(
+        (SHARED / 'site.css').read_text(encoding='utf-8') + '\n'
+        + (SHARED / 'css' / 'favorites.css').read_text(encoding='utf-8'))
     css_v = sitelib.text_hash(site_css)
 
     # The language script, hashed the same way and for a sharper reason than the
@@ -294,6 +296,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     filter_js = emit.js_text(
         (SHARED / 'hub-filter.js').read_text(encoding='utf-8'), 'shared/hub-filter.js')
     filter_v = sitelib.text_hash(filter_js)
+
+    favorites_js = emit.js_text(
+        (SHARED / 'favorites.js').read_text(encoding='utf-8'), 'shared/favorites.js')
+    favorites_href = f'/favorites.js?v={sitelib.text_hash(favorites_js)}'
 
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
@@ -390,6 +396,9 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # says why at length, and the short version is that a translation of English
     # into English is a copy free to drift from what it was copied out of.
     locales = i18n.load_locales(LOCALES, site)
+    # Runtime asset metadata is attached after the translation survey, so it
+    # cannot become a string every locale is asked to translate.
+    site['favorites_href'] = favorites_href
     for locale in locales:
         i18n.check_slugs(locale, [tool['slug'] for tool in tools],
                          [page['slug'] for page in prose], site)
@@ -621,6 +630,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     write(out / 'lang.js', lang_js)
     write(out / 'offline.js', offline_js)
     write(out / 'hub-filter.js', filter_js)
+    write(out / 'favorites.js', favorites_js)
     write(out / 'feedback.js', feedback_js)
     write(out / 'handoff.js', handoff_js)
     write(out / 'lang-keep.js', keep_js)
@@ -931,6 +941,7 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None, tail='')
         # that crossing from one language to another is not also a second copy
         # of this file to fetch. shared/lang.js says what it does.
         'lang_href': f'/lang.js?v={lang_v}',
+        'favorites_href': site.get('favorites_href', ''),
         # This language's feed, and empty for a language that has none. Only a
         # published locale gets one built, so offering the link from an
         # unpublished one would point at a file that is not there - the same
@@ -1423,7 +1434,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
               + [(name, (tool['dir'] / name).read_bytes()) for name in vendored])
     write_worker(dest, templates, emit, page, cached,
                  ['index.html', 'index.md', css_href, 'manifest.json']
-                 + eager_hrefs + vendored,
+                 + eager_hrefs + vendored + [site['favorites_href']],
                  f'/{locale["prefix"]}{tool["out_slug"]}/', tool['words'])
 
     # Required, not optional. templates/tool.html writes og:image and
@@ -1642,7 +1653,8 @@ def tool_css(tool):
     """The shared frame, then any optional parts this tool asked for, then the
     tool's own rules. Order matters: the tool's own rules come last so that a
     tool can override the frame, and never the other way round."""
-    parts = [(SHARED / 'css' / 'tool-frame.css').read_text(encoding='utf-8')]
+    parts = [(SHARED / 'css' / 'tool-frame.css').read_text(encoding='utf-8'),
+             (SHARED / 'css' / 'favorites.css').read_text(encoding='utf-8')]
     for name in sitelib.css_parts(tool):
         path = SHARED / 'css' / f'{name}.css'
         if not path.is_file():
@@ -1913,7 +1925,7 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     write_worker(out, templates, emit, page,
                  [('index.html', page), ('analytics.js', analytics),
                   ('manifest.json', manifest)],
-                 ['index.html', css_href, 'manifest.json'],
+                 ['index.html', css_href, 'manifest.json', site['favorites_href']],
                  f'/{locale["prefix"]}', {'plural': 'files'}, [site_css])
 
 
@@ -2205,7 +2217,7 @@ def copy_shared(out):
         # SVGs at the site root that no page links to.
         if path.name in ('css', 'js', 'icons', 'site.css', 'lang.js',
                          'feedback.js', 'handoff.js', 'lang-keep.js',
-                         'hub-filter.js'):
+                         'hub-filter.js', 'favorites.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)

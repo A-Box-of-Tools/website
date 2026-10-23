@@ -26,9 +26,9 @@ lede = """
     compressor you visit because the form said &ldquo;under 300&nbsp;KB,
     JPEG&rdquo;, and that step is the one that never needs to happen."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Is it safe to upload a photo of your ID?"
 og_description = "The risky step is not the application form. It is the resize and compress detour just before it - and that detour never needs your document to leave your machine."

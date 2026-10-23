@@ -28,9 +28,9 @@ lede = """
     this is checkable &mdash; randomness is made on your machine, sending is
     visible, and a generator can be caught keeping what it made."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Is it safe to use an online password generator?"
 og_description = "Where browser randomness comes from, what a generator page could do wrong, and how to catch one keeping what it made - before you use anything it produced."

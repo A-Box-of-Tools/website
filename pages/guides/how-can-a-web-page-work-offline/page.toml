@@ -23,9 +23,9 @@ description = "How a service worker caches browser tools, what an offline operat
 heading = "How can a web page work with the wi-fi off?"
 lede = "A service worker can keep a local copy of a tool. A completed disconnected operation is evidence of local processing; it does not guarantee every future data path. Here is how the cache works and what to check."
 
-updated = "12 October 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 
 og_title = "How can a web page work with the wi-fi off?"
 og_description = "How browser tools cache their resources, what disconnected processing demonstrates and which features still require a connection."

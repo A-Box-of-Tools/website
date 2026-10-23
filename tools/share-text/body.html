@@ -1,25 +1,39 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Local shares on this connection</h2>
-      <p id="discovery-status" role="status" aria-live="polite">Looking for local shares&hellip;</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">
-        This list shows link names from browsers using the same public IPv4
-        address or IPv6 subnet as yours. Usually that means the same router; a shared VPN
-        or an ISP sharing one address can include other networks. Mixed IPv4 and IPv6 connections or
-        different routes can hide nearby devices. Internet is required.
-        Opening a share still asks before connecting, and Private shares
-        still need the sharer&rsquo;s approval.
-      </p>
-      <button type="button" id="discovery-refresh" class="ghost">Refresh local shares</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Available connections</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Refresh</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Looking for available connections&hellip;</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">Join opens a reader tab using the shown connection type. Private shares wait for approval.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">
+          This list shows Direct and Cloud relay shares offered to your selected
+          local network or private group. Local-network matching uses a public IPv4
+          address or IPv6 subnet; shared gateways can include strangers and different
+          routes can hide nearby devices. A private group uses its code instead.
+          Join starts a connection request in a new tab; browsing alone does not
+          connect. Private shares still need the sharer&rsquo;s approval.
+        </p>
+      </details>
     </section>
 
     <!-- Step 1 &mdash; the content -->
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Write it, or attach it</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="Readers see it formatted, rendered live as you type">
@@ -38,7 +52,7 @@
       <input id="fileinput" type="file" multiple hidden aria-label="Files to attach">
       <div id="attachlist"></div>
       <p class="field-note">
-        Files ride the same direct connection as the text, up to 200&nbsp;MB
+        Files use the same encrypted connection as the text, up to 200&nbsp;MB
         apiece, with up to 256 files in one share. Readers see the list and
         fetch each file only if they ask for it.
       </p>
@@ -55,7 +69,7 @@
         </div>
         <p class="field-note">
           The name is the address, short enough to say across a room.
-          Discoverable local shares list it for others on this connection.
+          Discoverable shares list it in your selected local network or private group.
           Keep Private on for anything sensitive.
         </p>
       </div>
@@ -64,27 +78,29 @@
           <input type="checkbox" id="private" checked>
           Private &mdash; each reader must ask, and you let them in
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Local network &mdash; no internet relay
-        </label>
-        <p class="field-note">
-          For devices on the same Wi-Fi or Ethernet. Internet is still
-          needed to introduce the browsers; this mode uses no public
-          address-discovery server or relay. VPNs and browser settings can
-          affect the network path. The copied link carries this setting.
-          Local network is off by default; choose it to list your share in local discovery.
-        </p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Local network &mdash; no internet relay
+          </label>
+          <p class="field-note">
+            For devices on the same Wi-Fi or Ethernet. Internet is still
+            needed to introduce the browsers; this mode uses no public
+            address-discovery server or relay. VPNs and browser settings can
+            affect the network path. The copied link carries this setting.
+            In Direct mode, choose Local network or join a private group to make your share discoverable. Cloud relay can also be listed when Discoverable is selected.
+          </p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Discoverable &mdash; show this link name on this internet connection
+            Discoverable &mdash; show this link in the selected network or group
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">About discoverable shares</span></summary>
             <p id="discoverable-note" role="tooltip" class="discoverable-note">
-              A discoverable share lists its name for others using the same
-              public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
+              A discoverable share lists its name in the local network or private
+              group selected above. Keep Private on, especially on shared networks.
               With Private off, anyone who sees the name can connect and read
               without your approval.
               Uncheck Discoverable to share only by link.
@@ -108,7 +124,10 @@
       <h2><span class="step">3</span> Share it</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Start sharing</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="The share link">
@@ -117,14 +136,14 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>Nothing is stored anywhere</h2>
+      <h2>No server content storage</h2>
       <p>
-        The text and the files travel straight from this tab to each
-        reader&rsquo;s, encrypted. The rendezvous introduces the browsers and
+        Text and files travel encrypted from this tab to each reader.
+        Cloud relay, when selected, forwards encrypted packets through
+        Cloudflare. The rendezvous introduces the browsers and
         lists discoverable link names; it never sees the text or files.
         Closing this tab ends the
         share and clears readers&rsquo; open pages too &mdash; though what
@@ -141,11 +160,11 @@
 
       <div id="consent" hidden>
         <p>
-          Connecting lets the sharer send the text and files straight to
-          your browser over an encrypted channel. Like any direct
-          connection, it lets each side see the other&rsquo;s network (IP)
-          address. The sharer does not learn that you opened this link until
-          you choose to connect.
+          Connecting lets the sharer send text and files to your browser
+          over an encrypted channel. Direct exchanges network addresses
+          between devices. Cloud relay forwards encrypted packets through
+          Cloudflare, which sees connection addresses and traffic metadata.
+          Check the connection type shown before continuing.
         </p>
         <p id="local-note" hidden>
           This link uses Local network mode. Both devices need to be on the
@@ -154,7 +173,10 @@
           is used. VPNs and browser settings can affect the network path.
         </p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Connect and fetch the share</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Connect and fetch the share</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -171,22 +193,7 @@
         </div>
       </div>
 
-      <!-- Shown only after a direct attempt has failed. The relay is the
-           reader's choice and is described before the click, in the same
-           terms as the direct connection above. -->
-      <div id="relayrow" hidden>
-        <p>
-          The alternative is an encrypted relay. Your browser would send and
-          receive through a relay server run by Cloudflare, which forwards
-          the encrypted bytes and cannot read them; it learns your network
-          address and the sharer&rsquo;s, as the direct connection would
-          have. Nothing is stored there either, and the sharer&rsquo;s page
-          still sends to you alone.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Try again through the relay</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Retry with the sharer&rsquo;s connection mode</button>
@@ -214,21 +221,51 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Connection details</summary>
+    <p id="connection-progress" role="status" aria-live="polite">No connection attempt yet.</p>
+    <p class="field-note">If a connection fails, copy this report on both devices. It contains no shared text, file names, link names, network addresses or credentials.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copy connection report</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Connection report</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">Discovery can find a share even when the browsers cannot connect directly. This report identifies the stage reached; it does not prove the cause.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page. Hidden here so the locale
        machinery reaches them; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">No connection attempt yet.</span>
+    <span data-phrase="debug.attempt">Connection attempt {n}. {status}</span>
+    <span data-phrase="debug.introduction">Contacting the introduction server.</span>
+    <span data-phrase="debug.network">Setting up the connection between the browsers.</span>
+    <span data-phrase="debug.channel">Connection open. Waiting for the share.</span>
+    <span data-phrase="debug.approval">Connected. Waiting for approval.</span>
+    <span data-phrase="debug.connected">Connected and receiving the share.</span>
+    <span data-phrase="debug.host-connected">Connected to a reader.</span>
+    <span data-phrase="debug.transfer">Transferring a file.</span>
+    <span data-phrase="debug.transfer-complete">File transfer completed.</span>
+    <span data-phrase="debug.transfer-failed">The file transfer could not be completed.</span>
+    <span data-phrase="debug.failed">This connection attempt ended before it completed. The report preserves the last stage reached.</span>
+    <span data-phrase="debug.ended">This connection has ended.</span>
+    <span data-phrase="debug.unsupported">This browser does not support the connection features this tool needs.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Looking for local shares&hellip;</span>
-    <span data-phrase="discovery.empty">No discoverable local shares here yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
-    <span data-phrase="discovery.ready">Choose a share to open its connection page.</span>
-    <span data-phrase="discovery.unavailable">Local discovery is unavailable. You can still use a share link.</span>
-    <span data-phrase="discovery.open">Open share</span>
-    <span data-phrase="discovery.publishing">Making this local share discoverable&hellip;</span>
-    <span data-phrase="discovery.published">Your local share is discoverable on this connection.</span>
-    <span data-phrase="discovery.not-published">This share is available by link; local discovery could not publish it.</span>
+    <span data-phrase="discovery.connecting">Looking for available connections&hellip;</span>
+    <span data-phrase="discovery.empty">No shares are listed in this network or group yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
+    <span data-phrase="discovery.ready">Check the connection type, then Join a share.</span>
+    <span data-phrase="discovery.unavailable">Discovery is unavailable. You can still use a share link.</span>
+    <span data-phrase="discovery.join">Join</span>
+    <span data-phrase="discovery.join-direct">Join {code} via Direct</span>
+    <span data-phrase="discovery.join-relay">Join {code} via Cloud relay</span>
+    <span data-phrase="discovery.publishing">Making this share discoverable&hellip;</span>
+    <span data-phrase="discovery.published">Your share is listed in the selected network or private group.</span>
+    <span data-phrase="discovery.not-published">This share is available by link; discovery could not publish it.</span>
 
     <span data-phrase="share.active">Sharing</span>
     <span data-phrase="share.waiting">Sharing. Waiting for someone to open the link &mdash; keep this tab open.</span>
@@ -267,12 +304,14 @@
     <span data-phrase="view.no-content">The connection opened, but the share did not arrive. Ask the sharer to keep their tab open and awake, then check this link again.</span>
     <span data-phrase="view.local-connecting">Connecting over the local network&hellip;</span>
     <span data-phrase="view.mode-local">The sharer uses Local network mode. Retry with their mode to connect without an internet relay.</span>
-    <span data-phrase="view.mode-direct">The sharer uses the ordinary connection mode. Retry with their mode to connect; a relay is offered only if you choose it after a direct attempt fails.</span>
+    <span data-phrase="view.mode-direct">The sharer uses the ordinary connection mode. Retry with their mode to connect; Direct will not switch to a relay. The host must start a new Cloud relay session to change routes.</span>
     <span data-phrase="view.private">The sharer set this to private.</span>
     <span data-phrase="view.asked">Asked. Waiting for the sharer to let you in&hellip;</span>
     <span data-phrase="view.denied">The sharer didn&rsquo;t let you in.</span>
     <span data-phrase="view.empty">Connected. The sharer hasn&rsquo;t written anything yet &mdash; this page fills in as they type.</span>
     <span data-phrase="view.ended">The sharer has ended the share, and this copy went with it.</span>
+    <span data-phrase="view.reconnecting">The connection paused. Waiting to reconnect to the same share while this page is visible&hellip;</span>
+    <span data-phrase="view.interrupted">The connection could not be restored. Ask the sharer to keep their page open, then choose Check this link again.</span>
     <span data-phrase="view.gone-early">The sharer left before the share arrived. It is gone with them.</span>
     <span data-phrase="view.nobody">Nobody is sharing at this address. The sharer may have closed their tab &mdash; if so, the share is gone with it.</span>
     <span data-phrase="view.full">This share already has its maximum number of readers.</span>
@@ -297,4 +336,5 @@
       donate-button scripts loaded from {hosts} hosts; not one of them was given
       a character of it.</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

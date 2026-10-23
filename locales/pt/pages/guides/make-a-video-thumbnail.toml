@@ -14,8 +14,8 @@ lede = """
     bytes dela, é uma sequência de três passos que roda inteira no seu
     navegador."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "O quadro exato, no tamanho da plataforma, abaixo do limite de bytes"
-og_description = "Avance quadro a quadro até o instante certo, salve sem perda, recorte em 16:9 e comprima até o teto da plataforma, sem enviar a filmagem."
+og_description = "Escolha uma imagem clara, combine formato e limite atual do destino ou crie um pôster web e capa de apresentação sem enviar o vídeo."
 og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

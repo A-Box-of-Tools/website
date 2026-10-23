@@ -16,6 +16,13 @@
   </section>
 
   <section>
+    <h2>Ein kleines Icon oder ein Dokument in einer einzigen Datei</h2>
+    <p><strong>Ein dekoratives Zeichen an mehreren Stellen einer Website.</strong> Wählen Sie eine benutzerdefinierte CSS-Eigenschaft und verwenden Sie sie überall dort, wo das Zeichen hingehört. Prüfen Sie kodierte Zeichenzahl und Vorschau vor dem Einfügen. Vermittelt das Bild Informationen statt Dekoration, gehört es besser in ein <code>&lt;img&gt;</code> mit passendem Alternativtext als in einen CSS-Hintergrund.</p>
+    <p><strong>Ein eigenständiges HTML-Handout oder ein Offlinebericht.</strong> Wählen Sie die Ausgabe als HTML-Bildtag, ergänzen Sie den nötigen Alternativtext und betten Sie nur die kleinen erforderlichen Grafiken ein. Öffnen Sie das gespeicherte Dokument im vorgesehenen Betrachter ohne Netzwerk und prüfen Sie die Bilder. Die Werkzeugvorschau beweist, dass die URI hier dargestellt wird. Sie beweist nicht, dass E-Mail-Client, Markdown-Renderer oder Inhaltsrichtlinie am Ziel Datenbilder erlaubt. Testen Sie das Ziel, bevor Sie einen ganzen Bericht darauf aufbauen, und prüfen Sie Metadaten vor dem bytegenauen Einbetten eines Fotos.</p>
+  </section>
+
+
+  <section>
     <h2>Was eine Data-URI überhaupt ist</h2>
     <p>
       Eine Adresse, die die Sache selbst enthält, statt auf sie zu zeigen. Wo in
@@ -131,7 +138,7 @@
   </section>
 
   <section>
-    <h2>Ein SVG gehört nie in Base64</h2>
+    <h2>Für ein UTF-8-SVG Prozentkodierung bevorzugen</h2>
     <p>
       Das ist mit Abstand der häufigste Fehler bei eingebetteten Bildern, und
       Exportfunktionen und Build-Plugins machen ihn genauso oft wie Menschen.
@@ -149,14 +156,7 @@
       Lesbar bleibt sie obendrein:
     </p>
     <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      Sie sehen die <code>viewBox</code>. Sie können die Füllfarbe im Editor
-      ändern, ohne irgendetwas zu dekodieren. Base64-kodieren Sie dieselbe Datei,
-      wird daraus eine Wand aus Buchstaben, die nie wieder jemand anrührt.
-      <a href="../../bild-als-base64/">Bild als Data-URI</a> erledigt das von
-      selbst für alles, was sich als SVG entpuppt, und hält für die seltene
-      Werkzeugkette, die auf <code>;base64</code> besteht, ein Häkchen bereit.
-    </p>
+    <p>Sie können die <code>viewBox</code> sehen und die Füllfarbe im Editor ohne Dekodierung ändern. Base64 macht dieselbe Datei zu einer Buchstabenwand, die niemand mehr bearbeiten wird. <a href="../../bild-als-base64/">Bild zu Data-URI</a> übernimmt das automatisch für gültige UTF-8-SVGs. UTF-16, andere Kodierungen, widersprüchliche Kodierungsdeklarationen oder ungültiges UTF-8 nutzen stattdessen Base64 mit den Originalbytes. Das Ergebnis erklärt den Grund. So bleibt die Dateikodierung erhalten, statt unbemerkt geändert zu werden. Für Werkzeugketten, die <code>;base64</code> verlangen, gibt es auch ein Kontrollkästchen.</p>
   </section>
 
   <section>

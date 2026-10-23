@@ -1,10 +1,12 @@
 # Share Text & Files
 
+The shared Direct / Cloud relay switch sits beside Start sharing and locks during a session. A reader sees route and access icons beside Connect; the host's invitation fixes the route. Changing the host switch alone never connects. The connection explanation uses the shared information control, and actual route status remains visible outside setup panels that disappear after connecting.
+
 The share lives in the sharer's open tab. Readers who follow the link — or
 type its name — receive the text and files over a WebRTC data channel,
-directly from the sharer's browser, encrypted end to end; the share ends,
-completely and physically, when the tab closes, because the tab is the only
-place it ever existed.
+from the sharer's browser, encrypted end to end, either directly or through
+the explicitly chosen Cloud relay. Closing the tab ends live sharing;
+recipients keep content they already copied or downloaded.
 
 Two properties set this apart from every pastebin and file-drop, and every
 use case falls out of them: **the code word is speakable**, and **presence
@@ -19,27 +21,31 @@ promises to delete it — this one is structurally incapable of keeping it.
 This is the first tool on the site with a network step, so the rule from
 [docs/adding-a-tool.md](../../docs/adding-a-tool.md) applies: it says so on
 its own page, in plain language, and does not weaken the site-wide claim
-quietly. The page's `connect-src` names exactly one origin of ours — the
-**rendezvous**, a Cloudflare Worker whose whole source is in
+quietly. The page's `connect-src` names the production and development origins
+of the **rendezvous**, a Cloudflare Worker whose whole source is in
 [`workers/rendezvous/`](../../workers/rendezvous/). A direct connection
 needs an introduction: something must match the reader who typed
 `brave-otter-42` with the sharer under that name and pass a few KB of WebRTC
-negotiation between them. The rendezvous also lists opted-in local link
-names for browsers using the same public IPv4 address or IPv6 /64 subnet. It writes no storage
+negotiation between them. The rendezvous also lists opted-in link names
+either for a public IPv4 address or IPv6 /64 subnet, or for an authenticated
+private group that can span networks. It writes no storage
 — rooms and discovery entries live on their open sockets — and the
 content never passes through it. What it can see: that a name is in use,
 when peers come and go, their IPs, and the negotiation blobs. What it
 cannot see: the text, the files, who was admitted, or what a knock said —
 all of that travels the peer channel.
 
-The endpoint is a constant at the top of `src/main.js` and one line in
-`tool.toml`'s `[csp]`; those two places change together or not at all. It is
-a subdomain of the site, `rendezvous.abox.tools`, rather than the worker's
+The shared `peer-endpoint.js` selects `wss://rendezvous-dev.abox.tools` for
+localhost, 127.0.0.1 and this project's HTTPS Cloudflare previews; other page
+addresses use `wss://rendezvous.abox.tools`. Discovery and room sockets use
+the same selected service, and a failed development service never falls back
+to production. Both origins are named in `tool.toml`'s `[csp]`. They are
+subdomains of the site rather than the worker's
 own `workers.dev` name, because that whole domain is blocked inside mainland
-China and the site's is not; the worker answers at both.
-In ordinary mode, STUN (Cloudflare's and Google's public servers) helps the
-browsers discover their own addresses; ICE traffic — STUN and, when a reader
-chooses it, the TURN relay — is outside `connect-src`'s vocabulary, which is
+China and the site's is not.
+In ordinary Direct, STUN (Cloudflare's and Google's public servers) helps the
+browsers discover their own addresses. ICE traffic — STUN and the explicitly
+selected TURN relay — is outside `connect-src`'s vocabulary, which is
 why CSP alone can never fully describe a WebRTC page. Local network mode
 removes those public STUN servers and does not offer TURN, but still uses
 the public rendezvous for signalling.
@@ -47,7 +53,10 @@ the public rendezvous for signalling.
 ## Local network mode
 
 The sharer can select **Local network — no internet relay** before starting.
-The copied URL carries `?local=1#name`, so the reader knows the intended mode
+This Direct-only option is hidden while Cloud relay is selected, so a retained
+checkbox cannot contradict the current route. Its checked preference is kept
+when returning to Direct rather than silently widening a local-only choice.
+The copied URL carries `?local=1&transport=direct#name`, so the reader knows the intended mode
 before consenting; `#name` by itself keeps the ordinary mode. A reader and a
 sharer with different modes do not connect until the reader explicitly
 chooses to retry with the sharer's mode. There is no automatic downgrade.
@@ -56,9 +65,9 @@ Both peers construct their connection with no ICE servers, and allow only
 host candidates in both SDP descriptions and trickled candidate messages.
 Filtering both directions matters: removing our STUN configuration alone
 would still let a peer offer a relayed or server-reflexive address. Local
-mode also ignores any saved relay retry and never asks the worker for TURN
-credentials. The worker carries the mode in its existing opaque negotiation
-messages; it needs no new deployment.
+Direct never asks the worker for TURN credentials. The local flag remains
+part of the peer negotiation; the new Worker separately pins Direct or Cloud
+relay for both room sockets.
 The discovery directory described below does need the newer worker and its
 additional Durable Object binding; transport by link still works with an
 older worker.
@@ -74,6 +83,15 @@ unchanged.
 
 ## Finding a share on the start page
 
+The Available connections card is the first step, using the same `paired-tools` layout and
+translated Wi-Fi/hotspot help as the other Connect Devices tools. Join opens
+a new reader tab and requests access using the displayed connection type,
+preserving the source tab's unsent draft and attached files. Browsing alone
+never starts a peer connection, and Private shares still require approval.
+An ordinary invitation link keeps the explicit Connect and request controls.
+Hotspot guidance is conditional on devices being able to reach each other and
+does not change the selected Local/ordinary connection policy.
+
 The shared frame shows the tool's generated code version beside its heading,
 so both roles use the same display as Remote Camera. It is
 the same content hash used in this page's module URLs, so languages using the
@@ -84,12 +102,20 @@ This helps identify an older open or cached page; it does not gate connections
 or claim that different versions cannot work together.
 
 Opening the tool without a share name opens one WebSocket to `/discover`.
-The list contains only advertised codes and the local-mode flag; opening an
-entry shows the usual consent page in another tab. It never opens WebRTC on
-its own and never bypasses Private approval. Starting a local share leaves
+The list contains advertised codes and authoritative connection policy. Its
+deliberate Join action carries consent through `shared/js/peer-join.js`: a
+fresh child tab severs its opener, clears only its inherited session storage,
+and receives a one-use handoff bound to the exact URL, code and route for
+thirty seconds. The parent draft and host identity stay untouched. Expired,
+altered, copied or ordinary links never grant consent; blocked popups or storage
+keep the normal invitation page. A first-time Private reader sends a blank knock
+and waits for the sharer's decision. A returning approved browser may include
+its host-issued receipt; the live host must still recognise it. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
-Local network mode itself is off by default, so ordinary shares are never
-listed. Starting a share hides this tab's discovery panel until sharing
+Local network mode itself is off by default, so ordinary Direct shares are
+not listed in network discovery. They can be listed in a private group
+without changing that transport policy. Cloud relay can also be listed.
+Starting a share hides this tab's discovery panel until sharing
 stops or a name collision returns the page to editing. The discovery socket
 stays open, so the advertised name remains visible to other browsers while
 the panel is hidden. The rendered list excludes this tab's own share, and
@@ -103,11 +129,11 @@ The information icon beside Discoverable opens that explanation on hover,
 keyboard focus or tap. Its tooltip behavior is shared with the receipt tool
 through `shared/js/help-tooltip.js`; Escape or clicking elsewhere dismisses it.
 
-The group is derived by the worker from the canonical Cloudflare public
+The network directory is derived by the worker from the canonical Cloudflare public
 IPv4 address or IPv6 /64 subnet, together with the allowed page origin,
 hashed with SHA-256. IPv6 devices in one /64 share the group even when their
 individual addresses differ.
-The page cannot pick a scope. One router usually gives the expected group,
+The page cannot pick a network scope. One router usually gives the expected group,
 but a shared VPN or carrier-grade NAT can include other networks. Mixed IPv4
 and IPv6 connections or different routes can exclude two devices on the
 same LAN.
@@ -117,8 +143,30 @@ discovery scope is unsupported; it receives no publication lease. This is
 a finding aid, not a LAN boundary;
 internet is still required and the copied link remains the fallback.
 
-The host starts its usual room socket with `local=1&discover=1` only when
-advertising. The live room issues a random lease in
+The shared private-group control lets the user generate or enter a strong
+group code before hosting. Both Direct and Cloud relay entries appear together,
+with accessible icons for route and access requirements. Share Text's approval
+choice is private peer-channel state, so its list accurately says the host may
+require approval rather than inventing a password or approval status.
+Group membership is kept only in page memory, excluded from remembered controls,
+invitations and diagnostics, and locked while sharing. Reloading forgets it.
+Changing groups retires the old directory and its callbacks before browsing the
+new one; it cannot publish the current host into a second scope.
+
+The browser sends only a domain-separated digest in a request URL. The private
+directory requires the canonical code in its first encrypted message and sends
+no entries before verification. The page checks the returned group identifier
+and tool namespace before publishing or refreshing, so an older Worker cannot
+silently fall back to the network directory. Group membership permits discovery,
+not reader admission; Private approval and an explicit Join or Connect remain required.
+The Worker receives the code transiently for verification but never retains it
+in socket attachments or logs. Its request metadata can contain the public digest.
+
+The host starts its usual room socket with `discover=1` only when advertising.
+Network publication also requires `local=1`; a private group permits ordinary
+Direct Share Text with its actual `local: false` policy. The host and discovery
+sockets carry the same public group identifier when a group is selected.
+The live room issues a random lease in
 `{type: 'host-ready', discovery: {code, lease}}`; the page publishes it on
 its discovery socket as `{publish: {code, lease}}`. The directory verifies
 the lease against the room through its private binding before listing a
@@ -135,6 +183,38 @@ worker becomes a visible discovery failure, and the active share stays
 reachable by link. The new worker deployment is manual, documented in
 [`workers/rendezvous/README.md`](../../workers/rendezvous/README.md).
 
+## Connection diagnostics
+
+Both roles expose a **Connection details** panel with a readable last-stage
+summary and a copyable JSON report. A failed attempt opens it automatically.
+The report includes the generated tool-code identifier, parsed browser family
+and version, connection mode, anonymous attempt numbers, elapsed milestones,
+signaling counts, ICE/DTLS/SCTP/control-channel states, candidate classifications,
+reported candidate-pair counts, and allowlisted error codes. A sharer records
+each reader independently, including negotiation errors that previously reached
+an empty catch. The introduction socket has its own record and numeric close
+code. Seeing a discoverable name establishes directory visibility, not a working
+peer connection.
+
+`shared/js/connection-diagnostics.js` projects candidates and RTC statistics through an
+allowlist. It never retains or exports raw SDP, candidate addresses or hostnames,
+ICE credentials, share names, peer identifiers, text, file names, file sizes,
+approval notes, admission tokens, exception messages, or stacks. Reports stay in
+the tab's memory; Copy writes only to the local clipboard, with selectable text
+when clipboard access is refused. The read-only report is excluded from the
+frame's language-switch settings storage. No endpoint, relay policy, connection
+permission or application protocol is added by diagnostics.
+
+History is bounded to twelve anonymous attempts, sixty-four events and sixteen
+errors per attempt, with omission counts. Statistics are sampled once per second
+while a channel is opening and once on open; no payload listener is added.
+Finish freezes the meaningful states before teardown and detaches sampling and
+event listeners, so a late statistics promise cannot repaint a newer attempt.
+Missing browser counters remain `null`; `stats.available` distinguishes an
+unavailable report from an empty one. In particular, no reported ICE pairs does
+not by itself prove an mDNS, browser-version, firewall or router defect. Reports
+from both physical devices are needed to investigate those boundaries.
+
 ## How the pieces work
 
 - **Roles.** One page, both halves: no hash means sharer, `#name` means
@@ -145,15 +225,29 @@ reachable by link. The new worker deployment is manual, documented in
   and the switchboard forwards offers, answers and candidates. Rejections
   arrive as 4xxx close codes: 4404 nobody sharing, 4409 name taken, 4429
   full, 4410 sharer gone.
-- **End of share.** The 4410 close is the fast, authoritative signal — the
-  reader's page wipes what it was showing within a couple of seconds.
-  WebRTC's own detection (ICE consent expiry) takes ~30s and is kept only
-  as the fallback for when signalling itself is down. The wipe is courtesy,
-  not revocation: copied or downloaded content is the reader's.
+- **End of share.** Stop sharing sends an ordered `{type: 'ended'}` on each
+  current encrypted control channel before closing it. That explicit control
+  is terminal. A 4410 introduction-socket close alone can also mean temporary
+  host suspension, so a healthy direct channel is retained and checked rather
+  than declared ended. Lost peers clear their displayed content and file
+  buffers before any bounded recovery attempt. The wipe is courtesy, not
+  revocation: copied or downloaded content is the reader's.
 - **Private mode** (default). The host's first message on a new channel is
   `{private}` instead of the content; the reader's introduction returns as
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
   All of it on the peer channel — the worker needed nothing for this.
+  Fresh requests use the shared approval popup. Review later or Escape leaves
+  the request in the list directly above the editor; hiding or stopping the page closes the popup without
+  granting access. Its actions use the same current-channel guards as the list.
+  `peer-admission.js` remembers an approved browser's receipt by room and route.
+  A later explicit connection can reuse it in the same host session, including
+  in a new reader tab. Stop sharing clears every host grant, so starting again
+  with the same link name requires approval. Receipts travel only through the
+  encrypted peer channel and cannot be obtained from the invitation.
+  A host remembers up to 256 grants without evicting departed readers. At that
+  limit, another approval is refused until a grant is revoked or a new share
+  starts. The browser cache holds 64 recent tool/room/route receipts across
+  Text, Tab and Camera; an evicted receipt requires approval again.
 - **First delivery.** The reader announces that its message handler is ready
   on the peer channel; the host repeats the introduction if it already sent
   one. Both sides handle a channel delivered already open. Establishing the
@@ -191,45 +285,85 @@ reachable by link. The new worker deployment is manual, documented in
   flag as the default.
 - **Names.** `src/names.js`: adjective-noun-number suggestions, free-typed
   names folded to `[a-z0-9-]{1,64}`. A link-only share can keep the name
-  unguessable; a discoverable local share publishes it to its address group.
+  unguessable; a discoverable share publishes it to its selected directory.
   Private admission is the access control in either case.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
-  all with one-off checked. Nothing else is ever stored.
+  all with one-off checked. Reader approval receipts use a separate bounded
+  browser cache, with open-page memory when storage is unavailable. They do not
+  contain shared text or files, and do not preserve connection consent. Temporary
+  consent and admission tokens also use session storage for a language switch.
 
-## The relay, and why it is the reader's
+## Direct and Cloud relay
 
-In ordinary mode, direct first: the page dials with STUN alone, and a pair that cannot
-be joined that way — typically a phone on a carrier's address-sharing network
-against a laptop behind a strict router, which is the tool's headline use
-case at its unluckiest — fails after twenty seconds with an honest message.
-That used to be the end of it. It is now followed by an offer, on the
-reader's page only: redial through Cloudflare's TURN service. The reader
-sends `{relay: true}` on the rendezvous socket, the room mints a
-short-lived credential (`relayServers` in the worker, `TURN_KEY_ID` and
-`TURN_KEY_TOKEN` as secrets, eight-hour TTL, once per socket) and hands it
-back as `{relay, iceServers}`, and the page reloads with a flag in
-`sessionStorage` so the redial is a fresh socket and a fresh peer connection
-rather than a renegotiation of a failed one. The sharer's side does not
-change at all: its own candidates pair with the reader's relayed one, and
-ICE's peer-reflexive discovery handles the sharer being the one behind the
-strict NAT.
+The shared Connection control defaults to Direct. Ordinary Direct retains
+public STUN address discovery; Local network restricts it to host candidates.
+Both reject relay candidates, including candidates embedded in SDP. A failed
+Direct attempt never changes route automatically.
 
-Why the reader and not the sharer: the relay forwards DTLS ciphertext it holds
-no key to, so what it changes is the path, not what anyone can see — and the
-path on the reader's side is the reader's business, exactly as a VPN would be.
-The sharer's page still sends to that one reader and nowhere else. The relay
-is never chosen for anyone: the page says what it is and what it sees (both
-addresses, as the direct connection would have) and waits for a click, which
-is the same shape as the consent before the direct connection. A rendezvous
-with no key configured, or an older one that does not know the question,
-leaves the ask unanswered, and five seconds of silence becomes "no relay is
-available" — the page degrades to exactly what it was.
+The host may choose Cloud relay before publishing. The invitation carries
+`transport=relay`; the reader sees that choice before Connect. Both room sockets
+must match the host's pinned mode. Each participant requests short-lived TURN
+credentials through `RelayCredentials` before creating a peer, and configures
+`iceTransportPolicy: 'relay'`. Credential failure does not fall back to Direct.
+Host availability is checked before the share link and directory listing appear.
+
+Cloudflare forwards encrypted text, files and control traffic without their
+decryption keys, but sees addresses, timing and traffic volume. Internet is
+required throughout. The rendezvous still carries only setup and credential
+messages. Private approval and reader consent remain separate gates.
+
+Credentials normally last one hour and renew before expiry. The worker returns
+issuance and expiry times; the browser derives a bounded lifetime from them and
+anchors it at its own request time so clock skew and minting latency cannot
+extend the credential. Host renewal asks the viewer offerer to restart ICE;
+viewer renewal does the same after updating its own configuration. Queues avoid
+overlapping answers and buffer early candidates. Stops and terminal refusals
+cancel pending requests and renewal timers.
+
+The worker enforces a tool allowlist, concurrent-peer limit, per-socket issuance
+budget and credential-session duration. These are not a byte quota or global
+spending cap. TURN configuration, limits and pricing are documented in
+[`workers/rendezvous/README.md`](../../workers/rendezvous/README.md#the-relays-two-secrets).
+Cached non-local text clients retain their old reader-only relay request only
+when their host did not pin a transport; the current page never uses it.
+
+## Foreground continuity
+
+Hiding this page does not close healthy sockets, peers or file lanes. A phone
+can still freeze or discard its browser while locked; this page cannot make
+background execution reliable. Returning to the foreground, restoring a page
+or coming back online probes the existing connection first. A host with active
+sharing intent reconnects its introduction socket under the same code. A clean
+WebSocket close is not treated as a user Stop. A name now held by another host
+ends that recovery rather than silently selecting a different code.
+
+A relay peer is replaced when its signaling socket is lost, because renewed
+credentials need a current room identity. A short grace lets an explicit ended
+control arrive before recovery; Stop remains final. Direct peers can survive
+a signaling interruption while their encrypted channel remains healthy.
+
+A reader who already chose Connect can retry a lost transport in the same
+page, with at most three foreground attempts. The Local/ordinary mode and any
+explicit relay choice stay fixed; recovery never selects a relay or changes
+mode. Admission tokens remain in the reader's memory when browser storage is
+unavailable, and the same live host can recognize them after suspension. The
+reader keeps its source/formatted choice and any introduction input. A new
+connection discards partial file bytes and requires a fresh download request.
+Failed recovery leaves Check this link again for a deliberate fresh attempt.
+
+Stop sharing clears the host's admission tokens and disables host recovery.
+An explicit ended control, a refusal or an intentional legacy-file shutdown
+disables reader recovery. Closing the page does not persist recovery intent.
+If an abrupt closure or older cached host cannot deliver an ended control,
+the bounded retries distinguish it from a temporarily missing host without
+polling forever. A name remains an address, not proof of a particular person;
+Private admission still protects a new share reusing that name.
 
 ## Limits, deliberate
 
-Sixteen readers, 50k characters, 200 MB a file. The sharer's tab must stay
-open and awake: phones suspend background tabs quickly, so this is "desktop
-shares, anyone reads".
+Sixteen readers, 50k characters, 200 MB a file. Keep the sharer's tab open and
+the device awake for uninterrupted sharing. Foreground recovery helps after
+suspension; it cannot keep a phone browser executing while its screen is locked.
 
 ## Copy feedback
 
@@ -238,3 +372,12 @@ A refusal selects the raw text or share link for manual copying. Live text
 replacement, end of share, a new share and a newer copy action retire feedback
 and its timer; they cannot cancel a clipboard write already accepted by the
 browser. A stale rejection does not select or change the current content.
+
+## The shared pairing library
+
+Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events
+come from `shared/js/peer-pairing.js` and `shared/js/foreground-recovery.js`.
+[The pairing library guide](../../docs/paired-tools.md) describes their contract
+and how another tool can use them. This tool still owns its protocol, consent,
+credentials, approval and media policy; a foreground event cannot grant any of
+those permissions or undo an explicit Stop.

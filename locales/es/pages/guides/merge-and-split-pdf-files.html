@@ -16,6 +16,12 @@
   </section>
 
   <section>
+    <h2>Una solicitud completa o solo las páginas pedidas</h2>
+    <p>Para unir carta, formulario y justificantes, añade PDF en el orden de la lista y elige un documento de salida. Comprueba el origen con nombre y número de página de cada tarjeta; la etiqueta pequeña indica dónde quedará. Muestran forma y etiquetas, no contenido: abre el PDF terminado y revisa cada página. Comprueba valores de formulario, sobre todo si avisa de nombres de campos repetidos, y conserva originales firmados digitalmente aparte.</p>
+    <p>Para enviar un certificado o anexo concreto, busca sus posiciones físicas, añade el PDF, introduce un intervalo como <code>2-4, 9</code> y elige <em>Conservar solo estas</em>. Cuenta posiciones actuales, no etiquetas impresas como «iii». Exporta y comprueba las cuatro páginas en orden. Esto elimina páginas completas; usa <a href="../censurar-un-pdf/">censura</a> para texto privado en una página conservada.</p>
+  </section>
+
+  <section>
     <h2>Unir dos o más documentos</h2>
     <p>
       Elige el primer archivo y después el segundo; las páginas de cada uno se
@@ -99,23 +105,17 @@
     <p>
       Para cualquier cosa que afecte a más de un par de páginas, usa mejor la
       casilla de rangos. Acepta lo que escribirías en papel:
-      <code dir="ltr">1-3, 8, 12-</code>, y también <code>impares</code>,
-      <code>pares</code>, <code>todas</code> y <code>última</code>. Quédate con
+      <code dir="ltr">1-3, 8, 12-</code>, y también <code>odd</code>,
+      <code>even</code>, <code>all</code> y <code>last</code>. Quédate con
       esas, quita esas, o gira esas. Uno habitual: en un escaneo a doble cara
       donde todas las páginas segundas están cabeza abajo, eso es
-      <code>pares</code> y dos giros.
+      <code>even</code> y dos giros.
     </p>
-    <p>
-      Los números de las fichas se renumeran mientras trabajas, así que siempre
-      significan «posición en el documento terminado» y no «página del archivo
-      del que salió». No se escribe nada hasta que pulsas el botón, así que no
-      hay nada que deshacer &mdash; y «volver a como estaban» restaura el orden
-      original de todo.
-    </p>
+    <p>El número grande de la tarjeta es la página de origen y permanece con ella. La posición pequeña cambia al trabajar y es la que usa el intervalo. No se escribe nada hasta pulsar el botón, así que no hay nada que deshacer; «volver al orden inicial» restaura todo.</p>
 
     <figure class="shot">
       <img src="/screens/merge-and-split-pdf-files/pages.webp" loading="lazy" decoding="async"
-           alt="La rejilla de páginas: todas las páginas de dos documentos en miniatura, en el orden en que saldrán, con controles para girar, invertir y quitar.">
+           alt="La cuadrícula de páginas: tarjetas de dos documentos con la forma de cada página, sus etiquetas de origen y posiciones de salida, y controles para girar, invertir y eliminar.">
       <figcaption>
         Los dos documentos, página a página. Reordenar es arrastrar; la caja de rangos de arriba es para los documentos en los que arrastrar llevaría toda la tarde.
       </figcaption>
@@ -188,13 +188,7 @@
 
   <section>
     <h2>Archivos protegidos con contraseña</h2>
-    <p>
-      Un PDF cifrado se rechaza, incluidos los de contraseña vacía que producen
-      muchas fotocopiadoras de oficina. Quitarle la protección a un documento es
-      un trabajo distinto de mover sus páginas, y una herramienta que lo hiciera
-      en silencio estaría haciendo algo que no le pediste. Ábrelo en un lector con
-      la contraseña y guarda antes una copia sin protección.
-    </p>
+    <p>Se rechaza PDF cifrado, incluso con contraseña vacía de muchas fotocopiadoras. Quitar protección es distinto de mover páginas; hacerlo silenciosamente sería una tarea no solicitada. Usa primero el <a href="../desbloquear-un-pdf/">Desbloqueador de PDF</a> para crear una copia sin protección y aporta contraseña válida si se exige.</p>
   </section>
 
   <section>

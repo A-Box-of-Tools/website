@@ -1,0 +1,175 @@
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
+<section class="wt-local" aria-labelledby="wt-channel-title">
+  <section id="wt-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="wt-nearby-title">
+    <div class="paired-nearby-head">
+      <h2 id="wt-nearby-title">Available connections</h2>
+      <div class="paired-actions"><button type="button" class="wt-secondary" id="wt-refresh">Refresh</button></div>
+    </div>
+    {% include "partials/paired-discovery-group.html" %}
+    {% include "partials/paired-network.html" %}
+    <p class="wt-note" id="wt-discovery-status" aria-live="polite">Looking for available connections…</p>
+    <ul id="wt-channels" class="wt-channels paired-nearby-list"></ul>
+    <p class="wt-note" id="wt-empty">No channels are listed yet. Ask the host for a listener link, or start a channel below.</p>
+    <p class="wt-note paired-selection-help" id="wt-selection-help">Join to listen using the channel’s connection type. Your microphone stays off.</p>
+  </section>
+  <div class="wt-channel-heading">
+    <h2 id="wt-channel-title">One voice, several listeners</h2>
+    <span class="wt-role" id="wt-role">Host</span>
+  </div>
+  <p class="wt-intro" id="wt-host-intro">One host speaks; everyone else listens. Use Direct on your local network, or choose Cloud relay to connect through the internet. Find a channel in Available connections or use its listener link.</p>
+  <div class="wt-status" aria-live="polite" aria-atomic="true">
+    <span class="wt-status-dot" id="wt-status-dot" aria-hidden="true"></span>
+    <p id="wt-status-text">Join an available channel, or start your own.</p>
+  </div>
+  <div class="wt-error" id="wt-error" hidden role="alert">
+    <p id="wt-error-text"></p>
+  </div>
+
+  <div id="wt-host" data-pairing-setup>
+    <div id="wt-setup" class="wt-setup">
+      <label for="wt-room-name">Channel name</label>
+      <input id="wt-room-name" type="text" maxlength="80" value="Voice channel" autocomplete="off" required>
+      <label class="wt-discover"><input id="wt-discover" type="checkbox" checked> Make this channel discoverable</label>
+      <p class="wt-note">List this channel in your discovery scope, or turn this off to invite only by link.</p>
+      <label class="wt-discover"><input id="wt-require-approval" type="checkbox" checked> {{ ui.tool.approval_required }}</label>
+    </div>
+    <div class="wt-host-summary">
+      <p id="wt-listener-count" aria-live="polite">0 listeners connected</p>
+      <div class="paired-start-row" data-pairing-actions="host">
+        <button type="button" id="wt-start">Start channel</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
+    </div>
+    <div role="region" id="wt-requests-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="wt-requests-title" data-pairing-requests>
+      <h3 id="wt-requests-title">{{ ui.tool.approval_pending }}</h3>
+      <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+      <ul id="wt-requests"></ul>
+    </div>
+    <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
+    <div id="wt-transmit" hidden>
+      <button class="wt-talk" type="button" id="wt-hold" aria-pressed="false" aria-describedby="wt-talk-help">Hold to talk</button>
+      <p class="wt-note wt-talk-help" id="wt-talk-help">Hold this button or the space bar to speak. Release to stop. For hands-free control, use Start talking below.</p>
+      <div class="wt-hands-free" id="wt-hands-free">
+        <button type="button" id="wt-toggle" aria-pressed="false">Start talking</button>
+        <div class="wt-live-banner" id="wt-live-banner" hidden>
+          <strong>Microphone on</strong>
+          <p>Hands-free talking is on, including in the background when your browser allows it. Choose Stop talking when you have finished.</p>
+        </div>
+      </div>
+      <div class="wt-host-actions">
+        <button type="button" id="wt-microphone" aria-pressed="false">Mute microphone</button>
+        <button type="button" class="wt-secondary" id="wt-end">End broadcast</button>
+      </div>
+      <p class="wt-note" id="wt-microphone-note" hidden>The microphone is muted. Unmute it before talking.</p>
+      <button type="button" id="wt-resume-microphone" hidden>Resume microphone</button>
+    </div>
+
+    <section class="wt-invite" id="wt-invite" hidden aria-labelledby="wt-invite-title">
+      <div class="wt-invite-fields">
+        <h3 id="wt-invite-title">Invite listeners</h3>
+        <p class="wt-note">Share this link or scan the QR code. It includes the chosen connection route. Listeners wait for your approval unless you turn it off before starting.</p>
+        <label for="wt-link">Listener link</label>
+        <div class="wt-link-row">
+          <input id="wt-link" type="text" readonly spellcheck="false" autocomplete="off">
+          <button type="button" id="wt-copy">Copy link</button>
+        </div>
+        <p class="wt-note wt-invite-feedback" id="wt-invite-feedback" aria-live="polite"></p>
+      </div>
+      <div class="wt-qr">
+        <canvas id="wt-qr" width="220" height="220" role="img" aria-label="QR code for the listener link"></canvas>
+        <p class="wt-note" id="wt-qr-error" hidden>The QR code is unavailable. Use the listener link instead.</p>
+      </div>
+    </section>
+    <p class="wt-note">This page keeps your channel connected when hidden or locked, and hands-free talking continues while your browser allows it. Phones can still pause audio or suspend the page. After an interruption, return to the same tab; recovery keeps the invitation and leaves talking off. Use Resume microphone or Resume channel if shown. End broadcast closes this channel; the next start creates a new invitation.</p>
+  </div>
+
+  <div id="wt-listener" hidden>
+    <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="wt-connect-listener" hidden>Join</button>
+        <span id="wt-connection-icons"></span>
+      </div>
+    <div class="wt-listening" id="wt-listening" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <p class="wt-note" id="wt-playback-note" hidden>Your browser paused audio. Choose Unmute to hear the host.</p>
+    <div class="wt-listener-actions">
+      <button type="button" id="wt-mute" aria-pressed="false">Mute</button>
+      <button type="button" class="wt-secondary" id="wt-leave">Leave</button>
+    </div>
+    <p class="wt-note" id="wt-listener-help">Direct invitations connect automatically. For Cloud relay, review the route and choose Join. Your microphone is never requested. Keep this page open to hear the host.</p>
+    <audio id="wt-audio" aria-label="Live host audio" autoplay playsinline></audio>
+  </div>
+
+  <details class="wt-details">
+    <summary>How devices connect</summary>
+    <p>Available connections lists both Direct and Cloud relay channels. Local network discovery groups devices by public IPv4 address or IPv6 subnet and website origin; shared gateways can include strangers and VPNs can hide physically nearby devices. Choose Private group and enter the same group code on each device to discover channels across networks. A private group lists channels only for people with that code, not in the local-network directory. Starting with Make this channel discoverable selected shares its name and listener invitation in your selected scope. Ending or losing the host connection removes the listing.</p>
+    <p>An internet service introduces the browsers using connection metadata. Direct sends encrypted voice between them without a relay. If both devices choose Cloud relay, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt the audio. There is no recording feature.</p>
+    <p>Direct needs a network where the devices can reach one another. Guest Wi-Fi, device isolation and some VPNs or firewalls can block it. Cloud relay is an explicit alternative that needs internet throughout; a failed connection never switches routes automatically.</p>
+    <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
+    <p>Receivers wait for a missing host and check once a second while their pairing connection is open. Background tabs, sleeping devices, and an interrupted internet connection may reconnect more slowly.</p>
+  </details>
+</section>
+
+{% include "partials/paired-approval-prompt.html" %}
+<div id="phrases" hidden>
+  <span data-phrase="error-approval">The service could not confirm host approval. Try again or ask the host to restart.</span>
+  <span data-phrase="error-approval-full">The approval list is full. End this session and start a new one.</span>
+  <span data-phrase="host-role">Host</span>
+  <span data-phrase="listener-role">Receiver</span>
+  <span data-phrase="listener-confirm">This channel uses Cloud relay. Choose Join to listen through the encrypted relay.</span>
+  <span data-phrase="host-idle">Join an available channel, or start your own.</span>
+  <span data-phrase="join-channel">Join</span>
+  <span data-phrase="join-channel-name">Join {name} via Direct</span>
+  <span data-phrase="join-relay-channel-name">Join {name} via Cloud relay</span>
+  <span data-phrase="name-invalid">Enter a channel name of up to 80 characters without control characters.</span>
+  <span data-phrase="discovery-connecting">Looking for available connections…</span>
+  <span data-phrase="discovery-ready">Available connections update automatically.</span>
+  <span data-phrase="discovery-unavailable">Available connections cannot be listed right now. You can still use a listener link.</span>
+  <span data-phrase="publication-publishing">Listing your channel…</span>
+  <span data-phrase="publication-published">Your channel is listed in your selected discovery scope.</span>
+  <span data-phrase="publication-not-published">Your channel is not listed right now. Share its listener link instead.</span>
+  <span data-phrase="host-starting">Starting the channel and checking your microphone…</span>
+  <span data-phrase="host-ready">Channel open. Hold to talk when you are ready.</span>
+  <span data-phrase="host-talking">You are broadcasting.</span>
+  <span data-phrase="host-reconnecting">Pairing connection interrupted. Reconnecting…</span>
+  <span data-phrase="host-hidden">The page was suspended. Your channel will reconnect when you return, with talking off until you start again.</span>
+  <span data-phrase="host-resuming">Reconnecting your channel. Your microphone will stay off until you talk…</span>
+  <span data-phrase="host-resume-needed">Channel paused. Choose Resume channel to reconnect. Your microphone will stay off until you talk.</span>
+  <span data-phrase="start-channel">Start channel</span>
+  <span data-phrase="resume-channel">Resume channel</span>
+  <span data-phrase="resume-microphone">Resume microphone</span>
+  <span data-phrase="microphone-resuming">Restoring your microphone with talking off…</span>
+  <span data-phrase="host-microphone-paused">Your microphone was interrupted. The channel remains open. Choose Resume microphone if it does not recover; talking stays off until you start again.</span>
+  <span data-phrase="config-connecting">Connecting to the pairing service…</span>
+  <span data-phrase="listener-connecting">Joining the channel…</span>
+  <span data-phrase="listener-approval">Waiting for the host to approve your request.</span>
+  <span data-phrase="listener-denied">The host declined your request. Leave to return to available connections.</span>
+  <span data-phrase="listener-anonymous-name">Listener {id}</span>
+  <span data-phrase="listener-listening">Connected. Waiting for the host to speak.</span>
+  <span data-phrase="listener-talking">The host is speaking.</span>
+  <span data-phrase="listener-reconnecting">Waiting for the host connection. Reconnecting automatically…</span>
+  <span data-phrase="broadcast-ended">The host ended this broadcast.</span>
+  <span data-phrase="listener-left">You left the broadcast.</span>
+  <span data-phrase="error-access">This invitation is invalid or has expired. Ask the host for the current listener link.</span>
+  <span data-phrase="error-full">This channel is full. Waiting for a space to open…</span>
+  <span data-phrase="error-microphone">The microphone stopped or could not start. Check microphone permission, then start the channel again.</span>
+  <span data-phrase="error-connection">Could not connect to the pairing service. Check your internet connection and try again.</span>
+  <span data-phrase="error-secure-context">Open this page over HTTPS to use the host microphone.</span>
+  <span data-phrase="error-browser">This browser cannot start voice connections. Use a browser that supports WebRTC and secure connections.</span>
+  <span data-phrase="host-count">{count} listeners connected</span>
+  <span data-phrase="host-count-one">1 listener connected</span>
+  <span data-phrase="hold-talk">Hold to talk</span>
+  <span data-phrase="hold-talking">Release to stop</span>
+  <span data-phrase="toggle-start">Start talking</span>
+  <span data-phrase="toggle-stop">Stop talking</span>
+  <span data-phrase="microphone-mute">Mute microphone</span>
+  <span data-phrase="microphone-unmute">Unmute microphone</span>
+  <span data-phrase="listener-mute">Mute</span>
+  <span data-phrase="listener-unmute">Unmute</span>
+  <span data-phrase="copy-success">Listener link copied.</span>
+  <span data-phrase="copy-error">Select and copy the listener link above.</span>
+  <span data-phrase="net.clean">Internet pairing introduces browsers. Voice follows your chosen Direct or Cloud relay route.</span>
+  <span data-phrase="net.dirty">Internet pairing is needed to join or reconnect. A working direct voice connection may continue.</span>
+</div>
+</main>

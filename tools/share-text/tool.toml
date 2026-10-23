@@ -9,7 +9,7 @@
 # below is worded from scratch rather than copied. The product is a share
 # that lives only in the sharer's open tab: readers fetch the text and files
 # over a direct, encrypted, browser-to-browser channel, and closing the tab
-# is the whole of the deletion. A direct channel needs an introduction, so
+# is the whole of the deletion. An encrypted channel needs an introduction, so
 # this tool names a server of ours in its CSP: the
 # rendezvous, a Cloudflare Worker whose entire code is in workers/rendezvous/
 # that matches the two ends of a code word, forwards their negotiation, and
@@ -22,8 +22,8 @@
 
 slug = "share-text"
 name = "Share Text & Files"
-heading = "Share text &amp; files <span class=\"h1-kw\">&mdash; straight from your browser to theirs, nothing uploaded</span>"
-tagline = "The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server."
+heading = "Share text &amp; files <span class=\"h1-kw\">&mdash; an encrypted share that ends with your tab</span>"
+tagline = "Share text and files from your open browser, encrypted. Direct is the default; Cloud relay is an optional route when devices cannot connect directly."
 icon = "&#128279;"           # the mark beside the page heading
 favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -31,54 +31,47 @@ favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
 # rasterises for the share card and the two installed-app icons, which
 # want a filled colourful mark rather than a line drawing.
 glyph = "send"
-category = "text-codes-and-passwords"
+category = "connect-devices"
 roadmap_group = "beyond"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
-css_parts = ["checks"]
-js_parts = ["help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "room-names"]
-lastmod = "2026-10-12"
+css_parts = ["checks", "paired-tools"]
+supports_relay = true
+js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "peer-admission", "room-names"]
+lastmod = "2026-10-17"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "Share Text &amp; Files Between Devices &mdash; Direct, Encrypted, Nothing Stored"
-description = "Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up."
+title = "Share Text &amp; Files Between Devices &mdash; Encrypted, No Server Content Storage"
+description = "Send text or files between browsers with Direct or optional Cloud relay. Live updates, per-reader approval, no server content storage and no account."
 og_title = "A share that ends the moment you close the tab"
-og_description = "Text and files travel straight from your browser to the reader's, encrypted. The server only introduces the two of you and never sees the content. No storage, no history, no account - close the tab and it is gone, everywhere."
-og_image_alt = "Share Text & Files - direct from browser to browser, nothing stored"
+og_description = "Share text and files from an open browser over an encrypted connection. Choose Direct or Cloud relay, approve readers, and end the source by closing the tab."
+og_image_alt = "Share Text & Files - an encrypted share from your open browser"
 
-og_card = "Text and files, straight from your open tab to theirs - and gone the moment you close it."
+og_card = "An encrypted share from your open tab. Direct by default, with an optional Cloud relay."
 
 # Appended to the Content-Security-Policy comment in the generated page.
 csp_note = """
-  This tool has a network feature whose CSP names an origin of ours: connect-src
-  carries the rendezvous, the WebSocket that matches the two ends of a link
-  name and relays their WebRTC negotiation. It is the introduction only -
-  the text and files travel the peer-to-peer channel, which CSP does not
-  govern and no server touches, unless a reader who could not be reached
-  directly chooses Cloudflare's TURN relay, which forwards the encrypted
-  channel without a key to it. The worker's whole source is in the
-  repository at workers/rendezvous/. Local network mode uses only host ICE
-  candidates, with no public STUN server or TURN relay; its introduction
-  still uses the rendezvous. The start page automatically opens a discovery
-  WebSocket for opted-in link names on the same public IPv4 address or IPv6 subnet. Sharing
-  opens a second socket for the actual share; a reader uses its own single
-  introduction socket. The discovery directory never carries text or files."""
+  Local builds and project previews use rendezvous-dev.abox.tools; production
+  pages use rendezvous.abox.tools. These WebSockets carry introductions,
+  discovery metadata and short-lived relay credentials, never shared content.
+  Direct uses browser-to-browser WebRTC; its ordinary mode uses public STUN
+  address discovery, while Local network uses host candidates only.
+  Explicit Cloud relay uses Cloudflare TURN to forward end-to-end encrypted
+  packets. WebRTC transport is outside connect-src. Source and retention
+  details are documented in workers/rendezvous/."""
 
 # --- the pledge block --------------------------------------------------------
 
 pledge = """
-    What you share here travels from your browser to each reader's browser
-    over a WebRTC channel that is encrypted end to end, and it goes nowhere
-    else. The one server involved &mdash; named in this page's
-    <code>Content-Security-Policy</code>, source in the repository &mdash;
-    introduces the two browsers and lists discoverable local link names.
-    It keeps no shared text or files, and the content never passes through
-    it. Discovery names last only while the sharer is connected. There is
-    no content history and no account.
-    Close this tab and the share ends everywhere at once, including on
-    readers' open pages."""
+    Text and files are encrypted between your browser and each reader.
+    Direct is the default. If you choose Cloud relay before starting, encrypted
+    packets pass through Cloudflare TURN; the relay cannot read their content.
+    The introduction service carries setup and discoverable link names, not
+    text or files. We store no shared content on a server. Close this tab to
+    end the source; readers clear their view after the end notice or detected
+    failure. Copies or downloads they already saved remain theirs."""
 
 live_hint = """
       Open DevTools and watch the Network tab while you share. You will see
@@ -101,18 +94,16 @@ read_first = """
 
 # --- the written half of the page --------------------------------------------
 
-howto_heading = "How to share text and files without uploading them anywhere"
+howto_heading = "How to share text and files between browsers"
 
 # --- the card on the hub page ------------------------------------------------
 
 card = """
-            Text and files, browser to browser over an encrypted direct
-            connection. Nothing stored anywhere; the share ends when you
-            close the tab."""
+Text and files from your open browser, encrypted. Direct by default, optional Cloud relay, and per-reader approval."""
 
 # The one directive this tool widens: its own rendezvous. See csp_note.
 [csp]
-"connect-src" = ["wss://rendezvous.abox.tools"]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
 
 [words]
 plural = "shared text and files"
@@ -123,7 +114,7 @@ analytics_extra = """, and nothing
 
 [[facts]]
 mark = "&#10007;"
-text = "Nothing stored"
+text = "No server content storage"
 
 [[facts]]
 mark = "&#10007;"
@@ -142,18 +133,9 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "The content goes to your reader, and nowhere else."
+title = "You choose the encrypted connection route."
 body = """
- The text and the files travel
-      over a WebRTC data channel: a direct, DTLS-encrypted connection between
-      your browser and each reader's. There is no server in that path. Local
-      network mode uses the browsers' own network addresses without public
-      address discovery or an internet relay. A VPN or browser network policy
-      can affect which path those addresses take, so this is not a guarantee
-      about a physical building. The ordinary mode also supports a reader whose
-      network cannot be reached directly and who then chooses, on their own
-      page, an encrypted relay: it forwards the same ciphertext and cannot
-      read it."""
+Direct sends content between browsers without a relay. Ordinary Direct uses public address discovery; Local network restricts it to host candidates. Cloud relay forwards encrypted packets through Cloudflare TURN and may connect devices on different networks. The host chooses before starting, the invitation carries that choice, and readers review it before connecting. Direct never switches automatically. Network and browser restrictions can still prevent either route."""
 
 [[privacy]]
 title = "What the rendezvous is, and the whole of what it sees."
@@ -179,7 +161,7 @@ body = """
       payload."""
 
 [[privacy]]
-title = "Nothing is stored, so closing the tab is the deletion."
+title = "Shared content is not stored on a server."
 body = """
  The share exists only while
       your tab is open. Close it and new readers find nothing, and readers
@@ -187,7 +169,7 @@ body = """
       copied out or downloaded before that moment is theirs, as it would be
       with anything you had handed them. The draft you type is kept in your
       own browser's storage so it is still here next time, and only there;
-      mark it one-off and it is kept nowhere at all."""
+      mark it one-off and it is kept nowhere at all. Separately, the reader's browser keeps a random approval receipt locally so an approved browser can disconnect and rejoin this host session without another approval. Stopping the host resets approval. One-off disables draft storage, not this receipt. Clearing or blocking site storage can require approval again; normal scripts on this website can read the stored receipt."""
 
 [[privacy]]
 title = "The link name is an address, and Private is the lock."
@@ -199,7 +181,7 @@ body = """
       browsers using the same public IPv4 address or IPv6 subnet. Keep Private on for anything
       sensitive. It is on by
       default: each arriving reader must introduce themselves, over the
-      direct channel, and nothing is sent until you let them in."""
+      encrypted channel, and nothing is sent until you let them in."""
 
 [[privacy]]
 title = "A direct connection shows each side the other's address."
@@ -265,9 +247,12 @@ body = """
 [[howto]]
 title = "Start sharing, and keep the tab open."
 body = """
- The tab is the server: the
-      share is reachable while it is open and awake, and stops the moment it
-      is not. A laptop lid closing ends it too. Copy the link, or just say
+ The tab is the server: keep it open
+      and the device awake for uninterrupted sharing. Healthy connections stay
+      open when the page is hidden, but a phone or sleeping laptop can suspend
+      the browser. Returning checks the connection and tries to restore the
+      same share; Stop sharing ends it without automatic resumption.
+      Copy the link, or just say
       the name &mdash; a reader can type it into this page's address as
       <code>#name</code> on the end. For Local network mode, copy the link:
       it carries <code>?local=1</code> before the name. A reader who uses the
@@ -279,19 +264,16 @@ body = """
  A reader opening the link is
       told someone is sharing, warned that a direct connection shows each
       side the other's network address, and connects only by choosing to.
-      On a private share they introduce themselves and wait for you. What
+      Join beside a discovered share starts the request in a new reader tab
+      using the displayed connection type. Private shares wait for you;
+      Review later closes the approval popup but keeps the request in the list. What
       they receive updates live while you edit, and clears when you close
       the tab."""
 
 [[faq]]
 q = "Is anything uploaded, anywhere?"
 a = """
-        No. The text and the files go from your browser to each reader's
-        browser over an encrypted WebRTC channel, directly. The one server
-        involved carries the introduction and opted-in local link names,
-        never the content. It keeps no text or file bytes. Rooms and
-        discovery entries end with their open connections; Cloudflare's
-        seven-day connection logs contain metadata, never a payload."""
+The tool stores no shared text or files on a server. Direct sends them between browsers. When the host chooses Cloud relay, their encrypted packets pass through Cloudflare TURN, which cannot read their contents. The separate introduction service carries setup and discovery metadata. Cloudflare retains introduction connection metadata for seven days; no shared content is logged by our application."""
 
 [[faq]]
 q = "So why does this tool contact a server at all, on this site of all sites?"
@@ -325,9 +307,10 @@ a = """
 [[faq]]
 q = "What happens when I close the tab?"
 a = """
-        The share ends everywhere at once. The link stops working within a
-        second or two, and readers who still have the page open see their
-        copy clear with a note that the share has ended. That is not a
+        The share ends when its only source disappears. Readers clear their
+        displayed copy when the end or connection failure is detected.
+        Stop sharing sends an explicit end notice; a temporary network loss
+        can instead trigger bounded recovery attempts. That is not a
         deletion request to a server &mdash; there is no server copy to
         delete. The tab was the only place the share existed, and closing it
         is the whole of the cleanup."""
@@ -349,62 +332,28 @@ a = """
         asked to introduce themselves; you see the message &mdash;
         &ldquo;it&rsquo;s Alice from the standup&rdquo; &mdash; with buttons
         to let them read or turn them away, and nothing is sent until you
-        choose. The introduction travels the already-encrypted direct
+        choose. The introduction travels the already-encrypted
         channel, so the server never learns who asked or what you decided.
         Untick the box before sharing for an open share instead."""
 
 [[faq]]
 q = "Why will the reader see my IP address?"
 a = """
-        Because the connection is genuinely direct, and a direct connection
-        is between two addresses &mdash; each end necessarily learns the
-        other's, as with a phone call. The reader is warned before any
-        connection exists and connects only by choosing to; until then you
-        have not even learned they opened the link. If that trade is wrong
-        for a given share, a service that relays through a server is the
-        alternative &mdash; with the opposite trade."""
+Direct connections exchange the network addresses needed to reach each other. Readers choose Join on a discovery entry or Connect after opening an ordinary invitation, using the displayed connection type. Cloud relay uses relay candidates instead and Cloudflare sees both devices' network addresses and traffic metadata. It is a connection option, not an anonymity guarantee."""
 
 [[faq]]
 q = "How big can the files be, and how fast is it?"
 a = """
-        Up to 200&nbsp;MB per file, any type, and as fast as the slower of
-        the two connections &mdash; there is no server in the middle to slow
-        it down or meter it. Two machines with a working local connection
-        transfer at local-network speed; VPNs and browser routing settings
-        can affect the path. Readers
-        fetch each file on demand, so attaching something large costs
-        nothing until somebody actually asks for it."""
+Up to 200&nbsp;MB per file. Speed depends on both devices and their network route. Direct can use local-network speed; Cloud relay also depends on internet bandwidth and service limits. Readers fetch files on demand."""
 
 [[faq]]
 q = "Does it work offline?"
-a = """
-        Half of it, honestly: the editor does &mdash; the page loads, your
-        draft is here, markdown renders, and you can write and save with no
-        network at all. Sharing does not, and cannot: reaching another
-        person's browser is a network act, and the introduction needs the
-        rendezvous. This is a tool on this site with a job that is
-        impossible offline, and it would be dishonest to imply otherwise."""
+a = "The editor works offline once the page is saved: you can write, render Markdown and keep a draft. Sharing requires internet access on both devices so the introduction service can connect the browsers. Saving the page does not provide offline pairing. Local network mode still needs that introduction, even though content travels directly between the browsers."
 
 [[faq]]
 q = "What if we can't connect?"
 a = """
-        Most pairs of browsers can reach each other directly once
-        introduced; a minority cannot, typically when one side is on a
-        mobile carrier's shared-address network or behind a strict corporate
-        one. This page never switches to a relay quietly &mdash; that would
-        change what this tool is without saying so &mdash; so after twenty
-        seconds it says plainly that a direct connection could not be made,
-        and, in ordinary mode, offers the reader one: a relay run by
-        Cloudflare that forwards the encrypted bytes between the two
-        browsers and cannot read them,
-        since the key never leaves the two ends. The reader chooses it by
-        name, on their own page, after being told what it sees &mdash; both
-        addresses, as the direct connection would &mdash; and nothing is
-        stored there either. Your side of the share does not change: your
-        browser still sends to that one reader, as it would if they were on
-        a VPN. Local network mode never offers a relay: check that both
-        devices use the same Wi-Fi or Ethernet, and that guest-network
-        isolation, a firewall or a VPN is not blocking the connection."""
+Check internet access on both devices. For Local network, check that Wi-Fi or Ethernet allows devices to reach each other. If Direct fails, the host can stop sharing, choose Cloud relay, start again and send the new invitation. The reader reviews that choice before connecting. This never changes a running Direct share automatically. Managed devices or restrictive networks may block the relay too."""
 
 [[faq]]
 q = "Is the markdown safe to render, if anyone can share anything?"
@@ -463,21 +412,22 @@ a = """
         address can include other networks; mixed IPv4 and IPv6 connections
         or different routes can
         hide nearby devices. The list is not proof of a physical local
-        network. Internet is required. Only Local network shares appear;
+        network. Internet is required. Only opted-in Local network or Cloud relay shares appear;
         choose this mode before starting, since it is off by default.
-        Local shares advertise by default;
+        Discoverability is selected by default when available;
         uncheck Discoverable for a link-only share, and keep Private on on
-        shared networks. Choosing a name opens the share's consent page;
-        it never connects automatically or bypasses private approval.
+        shared networks. Join starts a request in a new reader tab using the
+        displayed connection type. Browsing alone never connects, and private
+        approval remains required. Review later keeps a request in the list.
         The directory holds only link names while the sharer is connected,
         never text, file names or file bytes. If discovery is unavailable,
         sharing by link still works."""
 
 [schema]
 category = "UtilitiesApplication"
-description = "Share text and files from one browser to another over a direct, end-to-end encrypted WebRTC connection. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab."
+description = "Share text and files from one browser to another over an end-to-end encrypted WebRTC connection using Direct or optional Cloud relay. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab."
 features = [
-  "Text and files travel browser to browser, end-to-end encrypted, never through a server",
+  "Text and files are end-to-end encrypted, with Direct as default and optional Cloud relay",
   "The share lives in the open tab: closing it ends the share and clears readers' pages",
   "Speakable link names - brave-otter-42 - editable, one live share per name",
   "Private by default: each reader introduces themselves and the sharer admits or refuses",
@@ -486,7 +436,7 @@ features = [
   "Markdown, toggleable on both sides, rendered by an escaping-first built-in renderer",
   "Files to 200 MB each, fetched on demand with per-file progress",
   "The draft persists only in the sharer's own browser, or nowhere if marked one-off",
-  "The whole server component is a storage-less rendezvous, published in the repository",
+  "An open-source rendezvous handles introductions; optional Cloudflare TURN forwards encrypted packets",
   "Optional local-network mode uses no public address discovery or internet relay",
   "Discoverable local link names appear for browsers sharing a public IPv4 address or IPv6 subnet, with consent and private approval preserved",
 ]

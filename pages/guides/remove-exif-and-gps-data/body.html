@@ -2,9 +2,11 @@
     <h2>The short answer</h2>
     <p>
       Open the <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a>, drop
-      the photos in, and press &ldquo;Remove all metadata&rdquo;. Every tag, the
-      XMP and IPTC blocks, the comments and the embedded thumbnail go, on every
-      JPEG, PNG or WebP photo on the list at once. Their compressed picture data
+      the photos in, and press &ldquo;Remove all metadata&rdquo;. The original EXIF,
+      XMP and IPTC blocks, comments and embedded thumbnail are removed from
+      JPEG, PNG and WebP photos across the list. The default settings can keep
+      a fresh orientation tag and the colour profile; the completed-copy
+      inspector reports what remains. Their compressed picture data
       is copied unchanged. AVIF cleaning instead creates a new PNG from the
       browser's first decoded image, without copying the original metadata.
       The original file stays unchanged; the PNG may be larger and HDR or
@@ -16,6 +18,30 @@
       this at all.
     </p>
   </section>
+
+  <section>
+    <h2>Public copies, and a camera clock that was wrong</h2>
+    <p>
+      <strong>Photos for a listing, forum or shared drive.</strong> Keep the
+      originals in your own archive, remove metadata from the copies, with
+      orientation and the colour profile enabled to preserve the display.
+      Use <strong>Inspect cleaned copy</strong> on the completed result to see
+      what that exact download still contains. Check a portrait is upright and
+      the colours look right before sharing the batch. The filename, a street
+      sign and a face in the pixels are not metadata; rename or redact those
+      separately when they identify something you meant to keep private.
+    </p>
+    <p>
+      <strong>A collection with the wrong capture date.</strong> For JPEG, PNG
+      or WebP, select a photo, edit the relevant date fields, and save that photo
+      rather than removing everything. Confirm how your photo library reads
+      the edited date. EXIF can
+      contain several dates and may have no timezone, so a changed field is not
+      a guarantee that every application will sort it as you intended.
+      Keep an untouched copy if manufacturer maker notes matter.
+    </p>
+  </section>
+
 
   <section>
     <h2>What is actually inside a photo</h2>
@@ -116,9 +142,9 @@
       a metadata tool rather than a converter.
     </p>
     <p>
-      The exception is if you were going to re-encode anyway. If you are already
-      compressing or resizing the photo, the tags go as a side effect and you do
-      not need a second step.
+      The exception is if you were going to re-encode anyway. If the photo is actually re-encoded during
+      compression or resizing, the original tags are left out. A file those
+      tools return unchanged keeps its tags, so check that result separately.
     </p>
   </section>
 

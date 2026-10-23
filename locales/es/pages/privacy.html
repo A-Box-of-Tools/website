@@ -36,7 +36,7 @@
       El <a href="../extraer-recibos-facturas/">Extractor de recibos y facturas</a> lee fotos y reconoce texto localmente. Su botón opcional de cambio histórico solicita un par de monedas y la fecha elegida a <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. Puede ser la fecha impresa en el recibo. El proveedor ve tu IP y la solicitud; no se envían credenciales ni referencia de origen, foto, nombre, comercio, importe o correo. Los cambios manuales no hacen solicitudes.
     </p>
     <p>
-      Los botones de correo y compartir preparan informes y copias JPEG localmente; después descargan un archivo de correo o los entregan a la aplicación elegida. Esta página no envía correos. La aplicación, proveedor y destinatario que elijas realizan el siguiente paso con sus políticas. <a href="../compartir-texto/">Compartir texto y archivos</a> y <a href="../remote-camera/">Cámara remota</a> envían contenido a otro navegador de forma deliberada; sus metadatos se describen abajo.
+      Los botones de correo y compartir preparan informes y copias JPEG localmente; después descargan un archivo de correo o los entregan a la aplicación elegida. Esta página no envía correos. La aplicación, proveedor y destinatario que elijas realizan el siguiente paso con sus políticas. <a href="../compartir-texto/">Compartir texto y archivos</a>, <a href="../share-tab/">Compartir una pestaña del navegador</a> y <a href="../remote-camera/">Cámara remota</a> envían contenido a otro navegador de forma deliberada; sus metadatos se describen abajo.
     </p>
   </section>
 
@@ -64,16 +64,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; el contador de visitas</h3>
+    <h3>Google Analytics &mdash; visitas y usos completados</h3>
     <p>
-      Usamos Google Analytics 4 para contar visitas a las páginas, y así saber en
-      qué herramientas merece la pena trabajar. Registra la página que viste,
-      más o menos cuándo, un identificador generado al azar y guardado en tu
-      navegador, una ubicación aproximada, tu tipo de dispositivo y navegador, y
-      el sitio que te trajo hasta aquí.
+      Usamos Google Analytics 4 para contar visitas a las páginas y usos completados, y así saber en qué herramientas merece la pena trabajar. Registra la página que viste, el momento aproximado, un identificador generado al azar y guardado en tu navegador, una ubicación aproximada, tu tipo de dispositivo y navegador y las etiquetas habituales de atribución de campañas.
     </p>
     <p>
-      <code>analytics.js</code> configura las visitas. Tras responder voluntariamente, <code>feedback.js</code> envía también un evento <code>tool_feedback</code>: identificador de herramienta, voto fijo positivo o negativo y motivo fijo. No hay texto libre ni archivo, nombre, tamaño, dimensión, cantidad, formato o contenido en el evento. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local.
+      La dirección que recibe Analytics usa la URL canónica de la página y solo las etiquetas habituales de campaña. Se omiten los demás parámetros de consulta y los fragmentos de la dirección. El título de la página es fijo y del sitio de referencia solo se envía el origen, sin ruta ni consulta.
+    </p>
+    <p>
+      Contamos el primer uso completado por cada carga de página, por ejemplo, solicitar una descarga ya preparada, completar una copia o mostrar un análisis o una vista utilizable en una herramienta de inspección. El único dato específico de la herramienta que se añade al evento es su identificador fijo. No confirma que tu sistema operativo haya guardado una descarga.
+    </p>
+    <p>
+      Los comentarios voluntarios registran el identificador fijo de la herramienta, una respuesta fija positiva o negativa y un motivo fijo después de que elijas una respuesta. No hay texto libre. Las herramientas no adjuntan archivos, nombres, contenidos, texto introducido, cantidades, tamaños, dimensiones, formatos, ajustes, errores ni otros detalles de entrada o salida a ninguno de los dos registros. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local, también sin conexión cuando la caché de la herramienta esté lista.
     </p>
 
     <h3>Buy Me a Coffee &mdash; el botón de donación</h3>
@@ -96,14 +98,35 @@
       a los registros por visitante de ninguno de los dos.
     </p>
 
+    <h3>Opciones de conexión para herramientas emparejadas</h3>
+    <p>Las cinco herramientas de emparejamiento comienzan en Direct. El anfitrión puede elegir Cloud relay antes de empezar; la invitación lleva esa opción y la otra persona la ve antes de conectar. Direct nunca pasa automáticamente al relevo. Cloudflare TURN retransmite texto, archivos, vídeo, audio y mensajes de control cifrados sin sus claves de descifrado, pero ve direcciones, horarios y volumen de tráfico. Ambos dispositivos necesitan internet durante toda la sesión. Las credenciales temporales quedan en la memoria del navegador y se renuevan mediante el servicio de encuentro, sin publicarse en enlaces ni listas. La lista puede mostrar el modo elegido. La aprobación, la contraseña y los controles del micrófono siguen aplicándose.</p>
+    <p>Las cinco herramientas ofrecen conexiones disponibles en la red local o en un grupo privado. Un mismo código de grupo generado al azar permite descubrir sesiones desde redes diferentes. Cada herramienta tiene su propia lista y las sesiones de grupo no aparecen también en la lista de la red local. El código permite descubrir, no acceder: siguen aplicándose las contraseñas, la aprobación del anfitrión y la ruta de conexión elegida. El servicio recibe el código dentro de una conexión cifrada para comprobar la pertenencia al grupo y después solo conserva un identificador derivado y el resultado en conexiones abiertas. Las direcciones de las solicitudes y sus registros de metadatos de siete días contienen ese identificador, nunca el código. La página guarda el código solo en memoria, lo excluye de invitaciones e informes de conexión y lo olvida al recargar. Los scripts normales de la página pueden leer sus campos; un grupo privado no los aísla. Cualquier persona con el código puede descubrir las sesiones ofrecidas al grupo, así que compártelo solo con las personas previstas.</p>
+
+    <h3>Compartir una pestaña del navegador</h3>
+    <p>
+      <a href="../share-tab/">Compartir una pestaña del navegador</a> usa el selector de un navegador de escritorio para capturar una pestaña y enviar vídeo en directo a un espectador aprobado. El espectador solicita acceso, el anfitrión lo aprueba y el espectador lo confirma antes de enviar vídeo. No hay captura de audio, cámara o micrófono. La información visible en la pestaña elegida se comparte; el espectador puede grabar lo que recibe.
+    </p>
+    <p>
+      El descubrimiento cercano en línea está desactivado de forma predeterminada. El anfitrión puede activar Show in nearby shared tabs antes de empezar; el espectador elige expresamente Find nearby tabs para abrir la lista. La conexión de descubrimiento muestra solo el código aleatorio de invitación, nunca el título, dirección o imagen de la pestaña capturada ni la nota del espectador. Join junto a un resultado envía la solicitud por la ruta indicada. Sin un comprobante de aprobación válido, sigue siendo necesaria la aprobación. Un enlace copiado aún espera a Request to watch. El servicio agrupa las páginas de esta herramienta por dirección IPv4 pública o subred IPv6 /64 y origen del sitio web, no por ubicación física. Las puertas de enlace compartidas o VPN pueden incluir desconocidos u ocultar dispositivos cercanos. Las entradas existen en conexiones abiertas, sin historial almacenado, y detener la sesión retira la del anfitrión.
+    </p>
+    <p>
+      En Direct, el vídeo usa una conexión directa cifrada en una red local accesible, sin STUN público ni TURN. Ambos dispositivos necesitan internet para el descubrimiento y el emparejamiento. El servidor de encuentro ve códigos de sala, direcciones IP, horarios, descripciones WebRTC y candidatos de conexión, pero no vídeo, notas del espectador ni decisiones de aprobación. Cloudflare conserva registros de metadatos de conexión durante siete días.
+    </p>
+    <p>
+      Los scripts habituales de la página pueden leer su dirección y estado, incluido un código de invitación; un enlace por sí solo nunca da acceso al vídeo. El espectador no puede controlar al anfitrión ni seleccionar texto de la página. La herramienta no tiene grabación, pero el contenido visible de una sesión iniciada forma parte de la imagen y el espectador puede capturarlo o grabarlo por su cuenta. La página explica los límites de red; usar direcciones locales no demuestra un límite físico de red.
+    </p>
+
     <h3>Cámara remota y presentación entre navegadores</h3>
     <p>
-      <a href="../remote-camera/">Cámara remota</a> abre una conexión WebSocket de descubrimiento al cargar su página. Iniciar cámara, Conectar o seleccionar una cámara en línea añade una conexión de sala a nuestro servicio de intermediación. Seleccionar un nombre de la lista solicita una conexión de inmediato e intercambia direcciones de red. Al abrir un enlace para ver la cámara, la página sigue esperando a que se pulse Conectar. La aprobación de los espectadores por parte del anfitrión está activada de forma predeterminada y controla la transmisión de vídeo, no el intercambio de direcciones de red. El servidor ve códigos, direcciones, tiempos y mensajes de configuración, nunca vídeo ni notas del espectador. El vídeo usa una conexión directa cifrada, sin STUN ni TURN configurados, micrófono ni grabación. Internet sigue siendo necesario para la presentación. VPN y políticas del sistema pueden afectar la ruta; el modo local no demuestra un límite físico de red. La página explica estas limitaciones y cómo los scripts pueden leer la dirección completa del enlace.
+      <a href="../remote-camera/">Cámara remota</a> abre una conexión WebSocket de descubrimiento al cargar su página. Iniciar cámara o Conectar añade una conexión de sala a nuestro servicio de intermediación. Join junto a una cámara solicita la conexión e intercambia direcciones de red por la ruta indicada. Al abrir un enlace para ver la cámara, la página sigue esperando a que se pulse Conectar. La aprobación de los espectadores por parte del anfitrión está activada de forma predeterminada y controla la transmisión de vídeo y audio, no el intercambio de direcciones de red. El servidor ve códigos, direcciones, tiempos y mensajes de configuración, nunca vídeo, audio ni notas del espectador. En Direct, el vídeo y el audio activado usan una conexión directa cifrada, sin STUN ni TURN configurados ni grabación. El audio está desactivado de forma predeterminada; el anfitrión solo solicita acceso al micrófono al elegir compartir audio. Internet sigue siendo necesario para la presentación. VPN y políticas del sistema pueden afectar la ruta; el modo local no demuestra un límite físico de red. La página explica estas limitaciones y cómo los scripts pueden leer la dirección completa del enlace.
+    </p>
+    <p>
+      Las alertas opcionales analizan imágenes pequeñas y audio recibido en el dispositivo del espectador, sin grabaciones ni subidas. Activarlas solicita permiso para las notificaciones del navegador. El navegador y el sistema operativo muestran avisos genéricos sin imágenes, audio, nombre del enlace ni notas del espectador. Desconectar detiene el análisis y cierra las notificaciones de esta sesión. La página debe permanecer abierta; el navegador puede pausar el análisis en segundo plano o durante la suspensión.
     </p>
 
     <h3>Compartir texto y archivos y el servidor de encuentro</h3>
     <p>
-      <a href="../compartir-texto/">Compartir texto y archivos</a> abre una conexión de descubrimiento en su inicio y otra al compartir. Agrupa nombres por IPv4 pública o subred IPv6 y origen de página; es una ayuda para encontrar, no una prueba de la misma red física. El servidor ve nombres, IP, tiempos y mensajes de negociación, nunca texto ni archivos compartidos. Los nombres anunciados viven en conexiones abiertas sin almacenamiento permanente. El modo normal usa STUN públicos de Google y Cloudflare. Un lector puede elegir reintentar mediante TURN de Cloudflare, que retransmite tráfico cifrado sin las claves. El modo local omite STUN y TURN, pero sigue necesitando el servidor público. Cloudflare conserva metadatos de conexión de compartir y cámara siete días; son registros por visitante que podemos leer. Lo copiado o descargado por un destinatario sigue siendo suyo al cerrar la pestaña de origen.
+      <a href="../compartir-texto/">Compartir texto y archivos</a> abre una conexión de descubrimiento en su inicio y otra al compartir. Agrupa nombres por IPv4 pública o subred IPv6 y origen de página; es una ayuda para encontrar, no una prueba de la misma red física. El servidor ve nombres, IP, tiempos y mensajes de negociación, nunca texto ni archivos compartidos. Los nombres anunciados viven en conexiones abiertas sin almacenamiento permanente. Direct normal usa STUN públicos de Google y Cloudflare, que ven la dirección de la solicitud. Red local limita Direct a direcciones de host sin STUN ni TURN. Cloud relay es una opción distinta que el anfitrión elige antes de compartir y el lector acepta antes de conectar. Todas las opciones necesitan el servidor público para establecer la conexión. Cloudflare conserva metadatos de conexión de compartir y cámara siete días; son registros por visitante que podemos leer. Lo copiado o descargado por un destinatario sigue siendo suyo al cerrar la pestaña de origen.
     </p>
   </section>
 
@@ -112,6 +135,7 @@
     <p>
       No ponemos cookies de acceso ni sesión. Los scripts de Google pueden usar las cookies e identificadores descritos. El sitio también usa almacenamiento local para preferencias y trabajo temporal.
     </p>
+    <p><strong>Aprobaciones de conexión.</strong> Las cinco herramientas guardan credenciales aleatorias de reconexión en el almacenamiento local para un número limitado de combinaciones recientes de herramienta, sala y ruta. No contienen contenido compartido, nombres ni direcciones IP. Compartir texto, Compartir una pestaña y Cámara remota presentan los comprobantes de aprobación solo por la conexión cifrada entre navegadores; las herramientas de voz envían su clave personal al servicio de presentación al unirse. La aprobación dura la sesión actual del anfitrión: desconectar la conserva, la expulsión la revoca y terminar o iniciar otra sesión la restablece. Borrar o bloquear el almacenamiento puede exigir otra aprobación. Los scripts de cualquier página de este origen web, incluidos los de terceros, pueden leer estas credenciales. No están aisladas de los scripts ni aparecen en invitaciones o listas de descubrimiento.</p>
     <p>
       <strong>El idioma que elijas.</strong> Si eliges un idioma en el selector,
       esa elección se guarda en el almacenamiento local de tu navegador, con el
@@ -127,7 +151,7 @@
       <strong>Otro almacenamiento local.</strong> Los comentarios guardan la fecha de respuesta o cierre para no volver a preguntar. Las herramientas pueden guardar ajustes o un borrador opcional de lo compartido. Cambiar de idioma o continuar expresamente en otra herramienta puede guardar archivos y ajustes temporalmente en IndexedDB. No son cookies ni se nos envían; borrar los datos del sitio los elimina. La herramienta correspondiente explica los borradores persistentes.
     </p>
     <p>
-      Las cookies e identificadores de Google miden visitas y seleccionan y limitan anuncios. Son distintos de los registros locales del sitio descritos arriba.
+      Las cookies e identificadores de Google miden visitas y usos de las herramientas y seleccionan y limitan anuncios. Son distintos de los registros locales del sitio descritos arriba.
     </p>
     <h3>Cómo desactivarlo</h3>
     <ul>

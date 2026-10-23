@@ -1,14 +1,6 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>
-      Öffnen Sie den
-      <a href="../../qr-code-erstellen/">QR- &amp; Barcode-Generator</a>, fügen
-      Sie Ihren Link ein, lassen Sie die Stufe auf <strong>M</strong> und den
-      Rand auf <strong>4</strong> und laden Sie das SVG herunter. Drucken Sie ihn
-      mindestens zwei Zentimeter breit, auf etwas Mattem, dunkel auf hell. Und
-      scannen Sie den Andruck dann mit einem Handy, das nicht Ihres ist, bevor
-      Sie tausend Stück bestellen.
-    </p>
+    <p>Öffnen Sie den <a href="../../qr-code-erstellen/">QR- und Barcodegenerator</a>, fügen Sie den Link ein, lassen Sie Stufe <strong>M</strong> und Rand <strong>4</strong> und laden Sie SVG herunter. Beginnen Sie für eine Handkarte mit kurzem Link bei etwa zwei bis drei Zentimetern, dunkel auf hell, und testen Sie den fertigen Druck aus der vorgesehenen Entfernung. Dichte, Oberfläche und Telefon sind wichtiger als ein allgemeines Mindestmaß.</p>
     <p>
       Damit ist fast jeder Fall abgedeckt. Der Rest dieser Seite handelt von
       allem anderen: von einem Code, der etwas aushalten muss, von einem Code mit
@@ -19,6 +11,12 @@
   </section>
 
   <section>
+    <h2>Gastnetz, Kontaktkarten und Geräteetiketten</h2>
+    <p>Wählen Sie für ein Gastnetz <em>WLAN-Netzwerk</em>, geben Sie exakten Namen, Sicherheitstyp und Passwort ein und prüfen Sie den kodierten String. Lassen Sie für eine normale Innenraumkarte M und vier Module Rand, exportieren Sie SVG und testen Sie die Verbindung zum richtigen Netz mit dem Druck. Jeder Leser kann das Passwort gewinnen. Ein geändertes Passwort braucht einen neuen Code. Für eine Visitenkarte wählen Sie <em>Kontaktkarte</em> und prüfen Name, E-Mail und Nummer beim Speichern am Telefon.</p>
+    <p>Ein nützliches Etikett am Drucker oder Gemeinschaftsgerät verlinkt Anleitung oder Einrichtung. Wählen Sie <em>Text oder Link</em>, verwenden Sie eine kurze stabile HTTPS-Adresse unter Ihrer Kontrolle und drucken Sie den Gerätenamen daneben. Bei schmutzigen Etiketten lohnt Q oder H. Behalten Sie vier Randmodule und <a href="../qr-code-erstellen-und-scan-beweisen/">testen Sie das montierte Etikett</a> samt Anleitungsöffnung am Telefon. Die Webseite benötigt weiterhin Verbindung.</p>
+  </section>
+
+  <section>
     <h2>Was in einem QR-Code tatsächlich steckt</h2>
     <p>
       Eine Zeichenkette. Mehr nicht. Beim Scannen bekommt das Handy ein Stück
@@ -26,20 +24,8 @@
       Form dieses Textes und bietet Ihnen an, eine Seite zu öffnen, einem Netz
       beizutreten oder einen Kontakt zu speichern.
     </p>
-    <p>
-      Eine eigene Sorte &bdquo;WLAN-QR-Code&ldquo; gibt es deshalb gar nicht. Es
-      gibt einen QR-Code, in dem
-      <code>WIFI:T:WPA;S:Mein Netz;P:das Passwort;;</code> steht, und den liest
-      jedes Handy der letzten zehn Jahre. Genau dafür zeigt Ihnen der Generator
-      die fertige Zeichenkette. Tut ein Code nicht das, was Sie erwartet haben,
-      lohnt es sich nur, sie anzusehen.
-    </p>
-    <p>
-      Daraus folgt auch, dass sich ein QR-Code nach dem Druck nicht mehr ändern
-      lässt, dass er nicht nach Hause funken kann und dass er auch nicht ablaufen
-      kann. Es sei denn, jemand hat einen Link auf seinen eigenen Server
-      hineingelegt, und davon handelt der letzte Abschnitt.
-    </p>
+    <p>Ein „WLAN-QR-Code“ ist also keine eigene Codeart. Es ist ein QR-Code mit <code>WIFI:T:WPA;S:My Network;P:the password;;</code>, das ein kompatibles Telefon als Netzwerkdaten erkennt. Testen Sie die verwendeten Telefone. Genau deshalb zeigt der Generator den fertigen String. Bei unerwartetem Verhalten ist dieser String das Entscheidende.</p>
+    <p>Ein gedruckter QR-Code lässt sich nicht ändern, stellt selbst keine Netzwerkanfrage und sein Text läuft nicht ab. Eine verlinkte Seite kann umziehen oder verschwinden und ein Netzpasswort sich ändern. Der Druck enthält weiterhin den alten String.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-qr-code/result.webp" loading="lazy" decoding="async"
@@ -116,35 +102,9 @@
 
   <section>
     <h2>Entscheidung drei: wie groß gedruckt wird</h2>
-    <p>
-      Die Faustregel, die den Kontakt mit der Wirklichkeit überstanden hat, heißt
-      <strong>eins zu zehn</strong>: Ein Code muss etwa ein Zehntel so breit sein
-      wie die Entfernung, aus der gescannt wird.
-    </p>
-    <ul>
-      <li>Visitenkarte oder Speisekarte, gelesen aus 30 cm: rund 2 cm breit.</li>
-      <li>Plakat, gelesen aus zwei Metern: rund 20 cm.</li>
-      <li>Buswartehäuschen oder Schaufenster, gelesen aus fünf Metern: rund 50 cm.</li>
-    </ul>
-    <p>
-      Zwei Zentimeter sind eine Untergrenze und kein Ziel. Unterhalb von etwa
-      1,5 cm kommt ein gewöhnliches Handy ins Straucheln, wie gut der Druck auch
-      sein mag. Die einzelnen Module nähern sich dann der Größe eines Pixels in
-      seiner Kamera.
-    </p>
-    <p>
-      Weniger Text heißt weniger Module heißt ein Code, der sich bei gleicher
-      Druckgröße aus größerer Entfernung lesen lässt. Ein guter Grund, einen Code
-      auf <code>example.com/x</code> zeigen zu lassen statt auf eine URL mit
-      hundert Zeichen Tracking-Parametern am Ende.
-    </p>
-    <p>
-      Und drucken Sie aus dem <strong>SVG</strong>. Ein QR-Code besteht aus
-      Kanten, und ein PNG hat eine feste Zahl Pixel, aus denen es sie bauen muss.
-      Vergrößern Sie eines, wird jede Kante weich, und genau damit tut sich ein
-      Scanner schwer. In einem SVG stehen die Quadrate als Anweisungen, es kommt
-      also auf der Visitenkarte so scharf heraus wie auf der Plakatwand.
-    </p>
+    <p>Die Größe hängt von nötiger Modulzahl, Druckschärfe sowie Leseentfernung und Kamera ab. Eine kurze URL ergibt ein einfacheres Symbol als ein langer Trackinglink. Zwei bis drei Zentimeter sind ein Starttest für Handkarten, keine Garantie oder Mindestgröße der QR-Spezifikation. Ein Poster quer durch den Raum braucht einen größeren Test aus dieser Entfernung.</p>
+    <p><a href="https://www.qrcode.com/en/howto/code.html/index.html" target="_blank" rel="noopener noreferrer">DENSOs Größenbeispiel</a> berechnet die Symbolgröße aus Version und gedruckter Modulgröße und ergänzt an jeder Seite vier freie Module. Behalten Sie diesen Rand im Layout. Bei dichtem schwer lesbarem Code kürzen Sie den Inhalt oder geben mehr Raum, statt den Rand abzuschneiden.</p>
+    <p>Drucken Sie aus <strong>SVG</strong>, dessen Kanten mit dem Layout skalieren. Nimmt das Layout nur PNG an, verwenden Sie genug Pixel für die Endgröße und vergrößern keinen kleinen Export. Scannen Sie dann den echten Probedruck. Kein Format garantiert Lesbarkeit auf bestimmten Druckern oder Telefonen.</p>
   </section>
 
   <section>
@@ -177,13 +137,7 @@
 
   <section>
     <h2>Ein Logo in der Mitte</h2>
-    <p>Ein kleines Logo kann funktionieren, aber kein Flächenanteil ist garantiert sicher. DENSO bezieht die rund 30 % Wiederherstellung bei H auf alle Codewörter, nicht auf beliebige Quadrate. Such- und Ausrichtungsmuster freihalten, H wählen und den endgültigen Druck mit mehreren Handys testen. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSOs Erklärung zur Fehlerkorrektur</a> erläutert die Bezugsgröße.</p>
-    <p>Wählen Sie H und halten Sie das Logo klein. Ein garantiert sicherer Flächenanteil existiert nicht: Platzierung, Symbolversion, Schadensverteilung und Druckqualität zählen. Such- und Ausrichtungsmuster freihalten und anhand eines Druckmusters prüfen, ob das Design zuverlässig lesbar ist.</p>
-    <p>
-      Danach probieren Sie es an echten Handys aus. Ein Logo bringt einen Code
-      von &bdquo;funktioniert immer&ldquo; auf &bdquo;funktioniert mit so viel
-      Reserve&ldquo;, und wie viel Reserve übrig ist, verrät nur der Versuch.
-    </p>
+    <p>Ein kleines Logo kann funktionieren, aber der Generator platziert keines. Fügen Sie es im Layouteditor hinzu, verwenden Sie H und halten Such- und Ausrichtungsmuster frei. Es gibt keinen garantiert sicheren Bildflächenanteil. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO definiert Wiederherstellung nach allen Codewörtern</a>, nicht beliebigen Quadraten. Lage, Dichte und Druckqualität sind entscheidend. Prüfen Sie den Druck mit mehreren Telefonen und verkleinern oder entfernen Sie ein störendes Logo.</p>
   </section>
 
   <section>

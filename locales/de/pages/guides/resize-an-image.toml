@@ -11,7 +11,7 @@ lede = """
     feststeht. Entschieden haben ihn die Zahl, die Sie eintippen, und das Format,
     das Sie verlangen. Hier steht, was jede dieser Entscheidungen mit dem Bild
     anstellt und welche davon sich zurücknehmen lässt."""
-updated = "12. Oktober 2026"
+updated = "13. Oktober 2026"
 og_title = "Ein Bild skalieren, ohne es zu ruinieren"
 og_description = "Was beim Skalieren passiert: verlorene Details beim Verkleinern, Interpolation beim Vergrößern, andere Seitenverhältnisse und der richtige Zeitpunkt zum Zuschneiden."
 og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"

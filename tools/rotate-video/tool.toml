@@ -59,7 +59,7 @@ css_parts = ["progress", "form", "chips", "checks", "notes", "results"]
 # example-photo, example-video, example-audio, example-video-sound, mp4-muxer
 # and wav are for the example alone: a clip with sound, built in the page,
 # the same set the trimmer and the compressor ask for.
-js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "copy-tracks", "reencode-video", "reencode-sound", "video-support", "codec-support", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "example-video-sound", "mp4-muxer", "wav"]
+js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "copy-tracks", "reencode-video", "reencode-sound", "video-support", "codec-support", "codec-support-worker", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "example-video-sound", "mp4-muxer", "wav"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the result once there is one. A
 # clip turned the right way up is then often cut, or made small enough to

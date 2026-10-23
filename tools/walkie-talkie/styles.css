@@ -1,0 +1,385 @@
+.wt-local {
+  margin-inline: auto;
+}
+
+.wt-local [hidden] {
+  display: none;
+}
+
+.wt-intro,
+.wt-details p {
+  line-height: 1.7;
+}
+
+.wt-note {
+  color: var(--text-dim);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.wt-details {
+  margin-block: 1.5rem;
+}
+
+.wt-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wt-channel-heading,
+.wt-host-summary,
+.wt-host-actions,
+.wt-listener-actions,
+.wt-link-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.wt-channel-heading,
+.wt-host-summary {
+  justify-content: space-between;
+}
+
+.wt-channel-heading h2 {
+  margin-block: 0 1rem;
+}
+
+.wt-role {
+  margin-bottom: 1rem;
+  padding: .25rem .65rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-dim);
+  font-size: .8rem;
+}
+
+.wt-status {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 72px;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.wt-status p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.wt-status-dot {
+  flex: 0 0 .7rem;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+  opacity: .6;
+}
+
+.wt-status-dot[data-state="ready"],
+.wt-status-dot[data-state="talking"] {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.wt-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.wt-error p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.wt-local button {
+  min-height: 44px;
+  padding: .7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent-text);
+  background: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wt-local button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.wt-local .wt-secondary {
+  border-color: var(--border);
+  color: inherit;
+  background: transparent;
+}
+
+.wt-local button:focus-visible,
+.wt-local input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.wt-host-summary {
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+
+.wt-host-summary p {
+  color: var(--text-dim);
+  font-size: .9rem;
+}
+
+.wt-local .wt-talk {
+  display: block;
+  width: 100%;
+  min-height: 164px;
+  margin-top: 1.25rem;
+  border-width: 2px;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.wt-local .wt-talk[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 4px var(--accent-text);
+}
+
+.wt-talk-help {
+  margin: .75rem auto 1.25rem;
+  text-align: center;
+}
+
+.wt-host-actions,
+.wt-listener-actions {
+  flex-wrap: wrap;
+}
+
+.wt-host-actions button {
+  flex: 1 1 auto;
+}
+
+.wt-hands-free {
+  margin-block: 1rem;
+}
+
+.wt-hands-free button {
+  width: 100%;
+  min-height: 56px;
+}
+
+.wt-hands-free[data-active="true"] {
+  padding: 1rem;
+  border: 3px solid var(--danger);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--danger) 9%, var(--surface));
+}
+
+.wt-hands-free[data-active="true"] button {
+  min-height: 80px;
+  border: 3px solid var(--danger);
+  background: var(--danger);
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+
+.wt-live-banner {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.wt-live-banner strong {
+  display: block;
+  color: var(--danger);
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+}
+
+.wt-live-banner p {
+  margin-block: .5rem 0;
+  line-height: 1.5;
+}
+
+.wt-invite {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.wt-invite-fields {
+  min-width: 0;
+}
+
+.wt-invite h3 {
+  margin-top: 0;
+}
+
+.wt-invite label,
+.wt-setup > label {
+  display: block;
+  margin-block: 1rem .4rem;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.wt-invite input,
+.wt-setup input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: .6rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: .9rem;
+}
+
+.wt-channels {
+  list-style: none;
+  padding: 0;
+}
+
+.wt-channels li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: .5rem;
+}
+
+.wt-channels li span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.wt-channels button {
+  flex-shrink: 0;
+}
+
+.wt-channels button[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+
+.wt-setup > .wt-discover {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 44px;
+}
+
+.wt-discover input {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.wt-link-row button {
+  flex: 0 0 auto;
+}
+
+.wt-invite-feedback {
+  min-height: 1.6em;
+  margin-bottom: 0;
+}
+
+.wt-qr {
+  text-align: center;
+}
+
+.wt-qr canvas {
+  display: block;
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 8px;
+  background: #fff;
+  image-rendering: pixelated;
+}
+
+.wt-listener-actions {
+  justify-content: center;
+}
+
+.wt-listener-actions button {
+  min-width: 120px;
+}
+
+#wt-listener-help,
+#wt-playback-note {
+  text-align: center;
+}
+
+.wt-listening {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .45rem;
+  height: 130px;
+}
+
+.wt-listening span {
+  width: .55rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: .35;
+  transition: height .2s, opacity .2s;
+}
+
+.wt-listening[data-talking="true"] span {
+  height: 2.5rem;
+  opacity: 1;
+}
+
+.wt-listening[data-talking="true"] span:nth-child(2n) {
+  height: 4rem;
+}
+
+.wt-listening[data-talking="true"] span:nth-child(3) {
+  height: 5rem;
+}
+
+@media (max-width: 640px) {
+  .wt-invite {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .wt-link-row {
+    flex-wrap: wrap;
+  }
+
+  .wt-link-row input {
+    flex: 1 1 100%;
+  }
+
+  .wt-link-row button {
+    width: 100%;
+  }
+
+  .wt-host-summary {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wt-listening span {
+    transition: none;
+  }
+}

@@ -26,9 +26,9 @@ lede = """
     about what a pasted config or log actually carries, and how to tell
     whether the tool in front of you has anywhere to send it."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Is it safe to paste text into an online tool?"
 og_description = "A paste can be a quiet upload. What a config, log or query actually carries, and how to tell whether the formatter you pasted it into keeps a copy."

@@ -14,18 +14,18 @@
         Haz lo mismo con el segundo archivo, en la caja derecha.
       </li>
     </ol>
-    <p>
-      Lo que se enciende ahora es real: un valor que cambió, una clave que
-      apareció, una entrada que se fue. Las diferencias de formato y las
-      claves reordenadas que habrían ahogado un diff corriente ya no están,
-      porque los dos lados estaban escritos igual antes de que la comparación
-      empezara.
-    </p>
+    <p>El resultado es mucho más legible: un valor cambiado, una clave nueva, una entrada eliminada. Desaparecen las diferencias de formato y claves reordenadas que ocultarían una comparación normal, porque ambos lados se escribieron de la misma forma antes de compararlos.</p>
     <p>
       Ninguna de las dos páginas tiene función de red alguna, y conviene
       saberlo: el JSON que la gente compara es tantas veces un archivo de
       configuración con las credenciales todavía dentro.
     </p>
+  </section>
+
+  <section>
+    <h2>Cambios de configuración y regresiones de API</h2>
+    <p>Para comparar pruebas con producción, conserva los originales y formatea una copia de cada uno con dos espacios y claves ordenadas. Pon pruebas a la izquierda y producción a la derecha, desactiva Ignorar mayúsculas y minúsculas e Ignorar espacios y revisa direcciones de servicio, indicadores de funciones y límites. Los espacios dentro de una cadena y las mayúsculas de una clave pueden importar. Confirma qué entorno está a cada lado antes de descargar el parche.</p>
+    <p>La misma receta revisa una respuesta de API antes y después de un cambio. Usa las mismas entradas de solicitud y considera aparte las fechas y los identificadores generados. Los arrays conservan su orden: una lista reordenada sigue mostrando diferencias, como corresponde a una secuencia JSON ordenada. También pueden diferir números equivalentes como <code>1</code> y <code>1.0</code> o cadenas con escapes distintos. Se compara texto formateado; no se valida un esquema ni la equivalencia de todos los valores JSON. <a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">El estándar JSON</a> distingue objetos sin orden de arrays ordenados.</p>
   </section>
 
   <section>
@@ -51,9 +51,7 @@
     <figure class="shot">
       <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
            alt="Las opciones de comparación: vista en paralelo o en línea, un interruptor para mostrar solo las líneas cambiadas e interruptores para ignorar espacios, mayúsculas y líneas en blanco.">
-      <figcaption>
-        Son los que evitan que una comparación marque todas las líneas porque un archivo se guardó con otro fin de línea.
-      </figcaption>
+      <figcaption>Usa con cuidado las opciones para ignorar: afectan a la vista, pero el parche descargado conserva todas las diferencias de entrada, incluidos los finales de línea.</figcaption>
     </figure>
   </section>
 
@@ -110,13 +108,7 @@
       suele ser lo que una revisión quiere de todos modos: el cambio, sin el
       reformateo.
     </p>
-    <p>
-      La misma receta sirve para todo lo demás que hablan las dos páginas.
-      YAML y XML se canonizan igual; y para dos archivos de la misma forma
-      venidos de fuentes distintas, los interruptores de ignorar del
-      comparador &mdash; espacios, mayúsculas, líneas vacías &mdash; son una
-      versión ligera de la misma idea.
-    </p>
+    <p>Formatear antes de comparar también facilita revisar YAML o XML, pero sus reglas de espacios y conversión difieren de JSON. Conserva el lenguaje original si solo necesitas cambiar la presentación. Las opciones de ignorar afectan a la vista; el parche compara las cadenas de entrada reales. Aquí son las copias formateadas, por lo que el parche no se aplica a los originales intactos.</p>
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"

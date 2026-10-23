@@ -81,11 +81,15 @@ class ToolClaims(unittest.TestCase):
         pledge = self.html_pledge(tool, ui)
         twin = self.twin(tool, ui)
         self.assertEqual(pledge, tool['pledge_line'])
-        self.assertIn('Internet introduces the browsers.', pledge)
+        self.assertIn('encrypted for accepted viewers', pledge)
+        self.assertIn('Direct is the default; Cloud relay is optional.', pledge)
         self.assertIn(
             '## ' + markdown.inline(tool['pledge_line'], tool['url']), twin)
         self.assertIn(markdown.inline(tool['md_note'], tool['url']), twin)
         self.assertIn('Internet rendezvous carries setup metadata', twin)
+        self.assertIn('never media', twin)
+        self.assertIn('the relay forwards encrypted traffic', twin)
+        self.assertIn('sees connection metadata', twin)
         self.assertNotIn(markdown.inline(ui['md_note'], tool['url']), twin)
         self.assertNotIn(
             '## ' + markdown.inline(ui['pledge_line'], tool['url']), twin)
@@ -103,6 +107,22 @@ class ToolClaims(unittest.TestCase):
                 expected = (tool[key] if key == 'pledge_line'
                             else ui['pledge_line'].strip())
                 self.assertEqual(self.html_pledge(tool, ui), expected)
+
+    def test_saved_pairing_pages_do_not_promise_pairing_without_internet(self):
+        source = self.templates.source('tool.html')
+        match = re.search(r'<span data-phrase="offline.ready">(.*?)</span>', source, re.S)
+        self.assertIsNotNone(match)
+        for slug in ('share-text', 'share-tab', 'walkie-talkie', 'voice-oncall', 'remote-camera'):
+            with self.subTest(tool=slug):
+                rendered = self.templates.render_source(
+                    match.group(1), 'offline readiness',
+                    {'tool': self.tool(slug), 'ui': self.site['ui']})
+                self.assertEqual(rendered, self.site['ui']['tool']['pairing_cached'])
+                self.assertNotIn('disconnect from the internet and this still works', rendered)
+        rendered = self.templates.render_source(
+            match.group(1), 'offline readiness',
+            {'tool': self.tool('compress-image'), 'ui': self.site['ui']})
+        self.assertEqual(rendered, self.site['ui']['tool']['offline_ready'])
 
 
 if __name__ == '__main__':

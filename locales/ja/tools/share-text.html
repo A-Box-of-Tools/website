@@ -1,19 +1,33 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>この接続上のローカル共有</h2>
-      <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
-      <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>利用できる接続</h2>
+        <button type="button" id="discovery-refresh" class="ghost">更新</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">利用できる接続を検索中…</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">「参加」で表示中の接続方式を使う閲覧タブが開きます。非公開共有では承認を待ちます。</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">選択したローカルネットワークまたは非公開グループで公開された直接接続とCloud relayの共有を表示します。ローカル検索では公開IPv4アドレスまたはIPv6サブネットを使います。共有ゲートウェイは知らない人を含めたり、異なる経路は近くの端末を見えなくしたりする場合があります。非公開グループは代わりにコードを使います。「参加」で新しいタブから接続をリクエストします。一覧を見るだけでは接続せず、非公開共有には共有者の承認が引き続き必要です。</p>
+      </details>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 書くか、添付する</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="読む側には整形されて見え、入力と同時にライブ表示されます">
@@ -31,7 +45,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="添付するファイル">
       <div id="attachlist"></div>
-      <p class="field-note">ファイルはテキストと同じ直接接続で送信されます。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。1回の共有には最大256ファイルを添付できます。</p>
+      <p class="field-note">ファイルはテキストと同じ暗号化チャネルを使います。1ファイル最大200&nbsp;MB、1回の共有で最大256ファイルです。読者には一覧が表示され、要求したファイルだけが転送されます。</p>
     </section>
 
     <section class="card">
@@ -42,26 +56,28 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="別の名前を提案">&#8635;</button>
         </div>
-        <p class="field-note">名前がアドレスで、部屋の向こうへ声で伝えられる短さです。発見可能なローカル共有は、この接続上の相手に名前を表示します。機密性のある内容では非公開を有効にしてください。</p>
+        <p class="field-note">名前はアドレスで、口頭で伝えられる長さです。検索可能な共有は、選択したローカルネットワークまたは非公開グループに名前を表示します。機密情報には非公開を有効にしてください。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           非公開——読む側はそれぞれ求め、あなたが入れる
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          ローカルネットワーク——インターネット中継なし
-        </label>
-        <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。 ローカルネットワークは標準で無効です。自分の共有をローカル検索の一覧に表示するには、このモードを選んでください。</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            ローカルネットワーク——インターネット中継なし
+          </label>
+          <p class="field-note">同じWi-FiまたはEthernet上の端末向けです。ブラウザの紹介には引き続きインターネットが必要です。このモードは公開アドレス検出サーバーや中継を使いません。VPNやブラウザ設定で経路が変わる場合があります。コピーしたリンクにはこの設定が含まれます。直接接続ではローカルネットワークを選ぶか非公開グループに参加すると共有を検索できます。検索可能を選ぶとCloud relayの共有も一覧に表示できます。</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            発見可能——このインターネット接続上にリンク名を表示する
+            検索可能——選択したネットワークまたはグループにこのリンクを表示
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">発見可能な共有について</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">発見可能な共有は、同じ公開IPv4アドレスまたは同じIPv6サブネットを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">検索可能な共有は、上で選択したローカルネットワークまたは非公開グループに名前を表示します。特に共有ネットワークでは非公開を有効にしてください。非公開を無効にすると、名前を見た人が承認なしで接続して読めます。リンクだけで共有するには検索可能を外してください。</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -76,7 +92,10 @@
       <h2><span class="step">3</span> 共有する</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">共有を始める</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="共有リンク">
@@ -85,12 +104,11 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>どこにも何も保存されません</h2>
-      <p>テキストとファイルは暗号化され、このタブから各読者のタブへ直接届きます。仲介役はブラウザ同士を紹介し、発見可能なリンク名を一覧にしますが、テキストやファイルは見ません。このタブを閉じると共有が終わり、読者の開いたページも消去されます。ただし、相手がすでにコピーやダウンロードしたものは相手のものです。</p>
+      <h2>サーバーにコンテンツを保存しません</h2>
+      <p>テキストとファイルはブラウザーと各読者の間で暗号化されます。標準は直接接続です。クラウド中継を選ぶと暗号化パケットがCloudflareを通りますが、中継は内容を読めません。仲介サービスは接続準備と公開されたリンク名だけを扱い、テキストやファイルを受け取りません。共有コンテンツはサーバーに保存しません。タブを閉じると送信元が終了し、読者側は終了通知や障害検出後に表示を消去します。すでに保存したコピーは読者の手元に残ります。</p>
     </section>
   </section>
 
@@ -101,10 +119,13 @@
       <p id="view-status" role="status" aria-live="polite">共有している人を探しています&hellip;</p>
 
       <div id="consent" hidden>
-        <p>接続すると、共有者が暗号化された通信路でテキストやファイルをあなたのブラウザへ直接送れるようになります。直接接続では双方に相手のネットワーク（IP）アドレスが分かります。あなたが接続を選ぶまで、共有者はこのリンクが開かれたことを知りません。</p>
+        <p>直接接続では端末に到達するために必要なネットワークアドレスを交換します。クラウド中継は中継アドレスを使い、Cloudflareには両端末のアドレスと通信メタデータが見えます。匿名性を保証する機能ではありません。接続方式を確認してから、接続を選んでください。</p>
         <p id="local-note" hidden>このリンクはローカルネットワークモードです。両方の端末を同じWi-Fiまたはイーサネットにつなぐ必要があり、紹介には引き続きインターネットが必要です。アドレスを調べる公開サーバーやインターネット中継は使いません。VPNやブラウザの設定により通信経路が変わることがあります。</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -117,14 +138,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          代わりの道は、暗号化された中継です。あなたのブラウザはCloudflareが運営する中継サーバーを通して送受信することになります。中継サーバーは暗号化されたバイトを転送するだけで、読むことはできません。直接接続がそうであったように、あなたのネットワークアドレスと共有している人のアドレスは知ることになります。そこにも何も保存されず、共有している人のページは引き続きあなただけに送ります。
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">中継を通してもう一度試す</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">共有者の接続モードで再試行</button>
@@ -152,21 +166,51 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>接続の詳細</summary>
+    <p id="connection-progress" role="status" aria-live="polite">まだ接続を試みていません。</p>
+    <p class="field-note">接続に失敗した場合は両方の端末でこのレポートをコピーしてください。共有テキスト、ファイル名、リンク名、ネットワークアドレス、認証情報は含まれません。</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>接続レポートをコピー</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">接続レポート</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">ブラウザー同士が直接接続できなくても検索で共有が見つかる場合があり、このレポートは到達した段階を示しますが、原因を証明するものではありません。</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
        One line per phrase - phrase() collapses a wrap into a space. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">まだ接続を試みていません。</span>
+    <span data-phrase="debug.attempt">接続試行{n}。{status}</span>
+    <span data-phrase="debug.introduction">仲介サーバーに接続しています。</span>
+    <span data-phrase="debug.network">ブラウザー間の接続を設定しています。</span>
+    <span data-phrase="debug.channel">接続が開き、共有を待っています。</span>
+    <span data-phrase="debug.approval">接続済みで、承認を待っています。</span>
+    <span data-phrase="debug.connected">接続済みで、共有を受信しています。</span>
+    <span data-phrase="debug.host-connected">受信側に接続しています。</span>
+    <span data-phrase="debug.transfer">ファイルを転送しています。</span>
+    <span data-phrase="debug.transfer-complete">ファイルの転送が完了しました。</span>
+    <span data-phrase="debug.transfer-failed">ファイルの転送を完了できませんでした。</span>
+    <span data-phrase="debug.failed">この接続試行は完了前に終了しましたが、レポートには最後に到達した段階が保存されています。</span>
+    <span data-phrase="debug.ended">この接続は終了しました。</span>
+    <span data-phrase="debug.unsupported">このブラウザーは、このツールに必要な接続機能に対応していません。</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">ローカル共有を検索中…</span>
-    <span data-phrase="discovery.empty">発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
-    <span data-phrase="discovery.ready">共有を選ぶと、その接続ページを開きます。</span>
-    <span data-phrase="discovery.unavailable">ローカル検索を利用できません。共有リンクは引き続き使えます。</span>
-    <span data-phrase="discovery.open">共有を開く</span>
-    <span data-phrase="discovery.publishing">このローカル共有を発見可能にしています…</span>
-    <span data-phrase="discovery.published">この接続上であなたのローカル共有を発見できます。</span>
-    <span data-phrase="discovery.not-published">この共有はリンクで利用できますが、ローカル検索には公開できませんでした。</span>
+    <span data-phrase="discovery.connecting">利用できる接続を検索中…</span>
+    <span data-phrase="discovery.empty">このネットワークまたはグループにはまだ共有がありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
+    <span data-phrase="discovery.ready">接続方式を確認して「参加」を選んでください。</span>
+    <span data-phrase="discovery.unavailable">検索を利用できません。共有リンクは引き続き使えます。</span>
+    <span data-phrase="discovery.join">参加</span>
+    <span data-phrase="discovery.join-direct">直接接続で{code}に参加</span>
+    <span data-phrase="discovery.join-relay">Cloud relayで{code}に参加</span>
+    <span data-phrase="discovery.publishing">共有を検索可能にしています…</span>
+    <span data-phrase="discovery.published">選択したネットワークまたは非公開グループに共有を表示しています。</span>
+    <span data-phrase="discovery.not-published">この共有にはリンクで接続できます。検索一覧には公開できませんでした。</span>
 
     <span data-phrase="share.active">共有中</span>
     <span data-phrase="share.waiting">共有中です。誰かがリンクを開くのを待っています。このタブを開けたままにしてください。</span>
@@ -189,6 +233,8 @@
     <span data-phrase="share.leave-warning">このページを離れると、共有は全員にとって終わります。続けますか？</span>
 
     <span data-phrase="copy.select">選択しました。手動でコピーしてください</span>
+    <span data-phrase="view.reconnecting">接続が中断されました。このページを表示している間、同じ共有への再接続を試みます…</span>
+    <span data-phrase="view.interrupted">接続を復元できませんでした。共有する人にページを開いたままにしてもらい、このリンクをもう一度確認してください。</span>
     <span data-phrase="view.file-cancel">ダウンロードをキャンセル</span>
     <span data-phrase="view.file-retry">ダウンロードを再試行</span>
     <span data-phrase="view.file-cancelled">ダウンロードをキャンセルしました。共有は続いています。</span>
@@ -220,7 +266,7 @@
     <span data-phrase="share.local-waiting">ローカルネットワークモードで共有中です。リンクが開かれるのを待っています——このタブを開いたままにしてください。</span>
     <span data-phrase="view.local-connecting">ローカルネットワークで接続中…</span>
     <span data-phrase="view.mode-local">共有者はローカルネットワークモードを使っています。インターネット中継なしで接続するには、共有者のモードで再試行してください。</span>
-    <span data-phrase="view.mode-direct">共有者は通常の接続モードを使っています。共有者のモードで再試行してください。直接接続に失敗すると中継が提示されますが、選んだ場合にのみ使用されます。</span>
+    <span data-phrase="view.mode-direct">共有者は通常の直接接続モードです。同じモードで再試行してください。直接接続が中継に変わることはありません。経路を変えるには、ホストが新しいクラウド中継セッションを開始する必要があります。</span>
     <span data-phrase="view.local-no-connect">ローカルネットワークモードで共有者に接続できませんでした。両方の端末が同じWi-Fiまたはイーサネットを使っているか確認してください。ゲストネットワークの端末分離、VPN、ファイアウォール、ブラウザ設定が接続を妨げることがあります。このモードではインターネット中継を提示しません。</span>
     <span data-phrase="view.file-failed">ファイルのダウンロードを完了できませんでした。共有が続いている間に、このファイルを再試行してください。</span>
 
@@ -229,4 +275,5 @@
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、その一文字も渡っていません。</span>
     <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、その一文字も渡っていません。</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

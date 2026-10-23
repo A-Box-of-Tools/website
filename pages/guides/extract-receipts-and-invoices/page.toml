@@ -22,9 +22,9 @@ lede = """
     the totals mean and how to carry the images and report into your own email
     app."""
 
-updated = "4 October 2026"
+updated = "13 October 2026"
 published = "2026-10-04"
-lastmod = "2026-10-05"
+lastmod = "2026-10-13"
 
 og_title = "Receipt photos to a report you can email"
 og_description = "Review receipt fields and crops, choose currencies, then take compressed JPEG attachments and a report with document counts and totals into your email app."

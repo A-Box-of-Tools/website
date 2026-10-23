@@ -1,18 +1,13 @@
 #
-# Guia: fazer foto 3x4 em casa - Portuguese.
+# Guia: preparar uma foto conforme as regras do emissor - Portuguese.
 #
 
 nav = "Fazer foto de documento"
-title = "Como fazer foto de passaporte em casa (e não ter ela recusada)"
-description = "O que realmente é medido numa foto de passaporte &mdash; altura da cabeça, linha dos olhos, fundo &mdash;, quais números cada país quer, e como bater os limites de pixels e de KB que um formulário online cobra."
-heading = "Como fazer uma foto de passaporte que não volta recusada"
-lede = """
-    Foto de passaporte não é uma imagem do seu rosto num certo tamanho. É um
-    conjunto de medidas, e as que reprovam quase nunca são as que preocupam as
-    pessoas. Aqui está o que é medido de verdade, quais números cada país quer,
-    e o que fazer com os formulários que recusam um arquivo por ele ser pequeno
-    demais."""
-updated = "26 de agosto de 2026"
-og_title = "Como fazer uma foto de passaporte que não volta recusada"
-og_description = "Altura da cabeça, linha dos olhos, fundo e tamanho do arquivo: o que um posto de passaporte mede, e como acertar com um celular e uma parede lisa."
+title = "Como preparar uma foto de passaporte ou identidade: confira as regras primeiro"
+description = "Confira as regras do documento e da solicitação antes de editar a foto, entenda as medidas do recorte e prepare cópias permitidas para impressão, envio, crachá ou assinatura."
+heading = "Como preparar uma foto de passaporte ou identidade"
+lede = "A primeira pergunta é se sua solicitação permite uma cópia preparada. Depois vêm o quadro, a cabeça dentro dele e o arquivo que a próxima etapa precisa. Este guia explica as medidas, seus limites e a diferença entre entregar uma foto de passaporte e preparar um retrato comum de identificação."
+updated = "13 de outubro de 2026"
+og_title = "Preparar uma foto de passaporte ou identidade: confira as regras primeiro"
+og_description = "Regras específicas do documento, medidas de recorte e cópias permitidas para impressão ou envio, com os limites que uma ferramenta de foto não verifica."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

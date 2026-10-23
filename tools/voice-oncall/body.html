@@ -1,0 +1,205 @@
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
+<div class="vi-tool">
+  <section id="vi-nearby" class="paired-nearby" data-pairing-nearby aria-labelledby="vi-nearby-title">
+    <div class="paired-nearby-head">
+      <h2 id="vi-nearby-title">Available connections</h2>
+      <div class="paired-actions"><button type="button" class="vi-secondary" id="vi-refresh">Refresh</button></div>
+    </div>
+    {% include "partials/paired-discovery-group.html" %}
+    {% include "partials/paired-network.html" %}
+    <p class="vi-note" id="vi-discovery-status" aria-live="polite">Looking for available connections…</p>
+    <div class="vi-rooms paired-nearby-list" id="vi-rooms"></div>
+    <p class="vi-note" id="vi-empty">No pagers are listed yet. Ask the host for their pager link, or create one with Host a pager.</p>
+    <p class="vi-note paired-selection-help" id="vi-selection-help">Join a pager directly. Enter its password or wait for approval if required.</p>
+  </section>
+  <p class="vi-intro">People connect and speak to one listening host without entering a name. Use Direct on your local network, or choose Cloud relay to connect through the internet. The host listens without using a microphone.</p>
+  <div class="vi-tabs" role="tablist" aria-label="Choose how to use Voice Oncall" data-pairing-setup>
+    <button type="button" role="tab" id="vi-tab-join" aria-controls="vi-join-panel" aria-selected="true">Connect to a pager</button>
+    <button type="button" role="tab" id="vi-tab-host" aria-controls="vi-host-panel" aria-selected="false" tabindex="-1">Host a pager</button>
+  </div>
+  <div class="vi-status" aria-live="polite" aria-atomic="true">
+    <span class="vi-status-dot" id="vi-status-dot" aria-hidden="true"></span>
+    <p id="vi-status-text">Join an available pager or open a link from its host.</p>
+  </div>
+
+  <section id="vi-join-panel" role="tabpanel" aria-labelledby="vi-tab-join">
+    <form id="vi-join-form">
+      <label for="vi-sender-password">Pager password, if required</label>
+      <input id="vi-sender-password" type="password" autocomplete="current-password">
+      <p class="vi-note">Your microphone is requested after host approval, when required. Hold to talk when you are ready.</p>
+      <div class="paired-start-row" data-pairing-actions="join">
+        <button type="submit" id="vi-join">Join</button>
+        <span id="vi-connection-icons" hidden></span>
+      </div>
+    </form>
+    <div id="vi-sender" hidden>
+      <h2 id="vi-sender-room"></h2>
+      <p class="vi-note" id="vi-sender-note" hidden></p>
+      <button type="button" id="vi-resume" hidden>Resume microphone</button>
+      <button type="button" class="vi-talk" id="vi-hold" aria-pressed="false" aria-describedby="vi-talk-help">Hold to talk</button>
+      <p class="vi-note vi-talk-help" id="vi-talk-help">Hold this button or the space bar to speak. Release to stop. You can also use Start talking for hands-free control.</p>
+      <div class="vi-sender-actions">
+        <button type="button" id="vi-toggle" aria-pressed="false">Start talking</button>
+        <button type="button" class="vi-secondary" id="vi-leave">Disconnect</button>
+      </div>
+      <p class="vi-note">Your connection stays open when this tab is hidden. Hands-free talking continues in the background while your browser allows it. Phones can still interrupt audio or suspend the page. Return to recover the same connection with talking off, using Resume microphone if needed. Disconnect stops recovery.</p>
+    </div>
+  </section>
+
+  <section id="vi-host-panel" role="tabpanel" aria-labelledby="vi-tab-host" hidden>
+    <form id="vi-host-form">
+      <h2>Open your Voice Oncall pager</h2>
+      <label for="vi-room-name">Pager name</label>
+      <input id="vi-room-name" type="text" maxlength="80" autocomplete="off" required>
+      <label class="vi-check" for="vi-password-required"><input id="vi-password-required" type="checkbox">Require a password</label>
+      <div id="vi-host-password-field" hidden>
+        <label for="vi-host-password">Pager password</label>
+        <input id="vi-host-password" type="password" autocomplete="new-password">
+        <p class="vi-note" id="vi-saved-password" hidden>A password is saved for this pager. Leave this field blank to keep it, or enter a new password.</p>
+      </div>
+      <label class="vi-check"><input id="vi-require-approval" type="checkbox" checked>{{ ui.tool.approval_required }}</label>
+      <p class="vi-note">Up to 10 people. You can approve, mute or remove callers. Your microphone is never requested.</p>
+      <div class="paired-start-row" data-pairing-actions="host">
+        <button type="submit" id="vi-start">Start pager</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
+    </form>
+    <div id="vi-host-live" hidden>
+      <div class="vi-live-heading">
+        <h2 id="vi-live-name"></h2>
+        {% include "partials/paired-transport-badge.html" %}
+        <button type="button" class="vi-secondary" id="vi-end">End pager</button>
+      </div>
+      <div id="vi-audio-recovery" hidden>
+        <p class="vi-note" id="vi-audio-note" role="status" aria-live="polite"></p>
+        <button type="button" class="vi-secondary" id="vi-restore-sound">Restore sound</button>
+      </div>
+      <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
+      <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let people find it in your selected discovery scope.</p>
+      <div role="region" id="vi-requests-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="vi-requests-title" data-pairing-requests>
+        <h3 id="vi-requests-title">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="vi-requests"></ul>
+      </div>
+      <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
+      <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>
+      <section class="vi-invite" aria-labelledby="vi-invite-title">
+        <div class="vi-invite-fields">
+          <h3 id="vi-invite-title">Invite people</h3>
+          <p class="vi-note">Share this link or let people scan the QR code. Share a password separately if your pager requires one.</p>
+          <label for="vi-link">Pager link</label>
+          <div class="vi-link-row">
+            <input id="vi-link" type="text" readonly spellcheck="false" autocomplete="off">
+            <button type="button" id="vi-copy">Copy link</button>
+          </div>
+          <p class="vi-note vi-feedback" id="vi-copy-note" aria-live="polite"></p>
+          <p class="vi-note" id="vi-publication-status" aria-live="polite"></p>
+        </div>
+        <div class="vi-qr">
+          <canvas id="vi-qr" width="220" height="220" role="img" aria-label="QR code for the pager link"></canvas>
+          <p class="vi-note" id="vi-qr-note" hidden>The QR code is unavailable. Use the pager link instead.</p>
+        </div>
+      </section>
+      <p class="vi-note">Keep this pager page open to hear people. It keeps listening in the background while your browser allows it; return and use Restore sound if the phone pauses playback. Remove ends a participant's current session; it does not permanently ban a person. End pager closes this pager for everyone.</p>
+    </div>
+  </section>
+
+  <details class="vi-details">
+    <summary>How voice connections work</summary>
+    <p>Available connections lists both Direct and Cloud relay pagers, with icons for the route and password requirement. Local network discovery groups devices by their public internet address and website origin; it does not scan Wi-Fi or prove physical network membership. Choose Private group and enter the same group code on each device to discover pagers across networks. Private pagers appear only in that group, not in the local-network directory. The group code allows discovery; passwords and host approval still control admission.</p>
+    <p>Direct sends encrypted voice between the browsers without a relay. When the host chooses Cloud relay and a participant chooses Join, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt it. There is no recording feature. The route stays fixed during a session; failed Direct connections never switch to relay automatically.</p>
+    <p>Anyone who can find your pager can try to connect. Require approval is on for new pagers. You can also set a password, and mute or remove admitted participants. Senders need microphone permission on a secure page. The host listens without microphone access.</p>
+    <p>Remove ends one participant session. Another browser or profile, or clearing site data, can create a new identity, so removal is not a permanent ban. This tab remembers a removed or ended session and will not automatically create a replacement identity.</p>
+  </details>
+</div>
+<dialog id="vi-password-dialog" class="paired-dialog" aria-labelledby="vi-password-title">
+  <form id="vi-password-form">
+    <h2 id="vi-password-title">Pager password</h2>
+    <p id="vi-password-room"></p>
+    <span id="vi-password-icons"></span>
+    <label for="vi-join-password">Password</label>
+    <input id="vi-join-password" type="password" autocomplete="current-password" required>
+    <div class="paired-actions">
+      <button id="vi-password-join" type="submit">Join</button>
+      <button id="vi-password-cancel" type="button" class="ghost">Cancel</button>
+    </div>
+  </form>
+</dialog>
+{% include "partials/paired-approval-prompt.html" %}
+<div id="phrases" hidden>
+  <span data-phrase="error-approval">The service could not confirm host approval. Try again or ask the host to restart.</span>
+  <span data-phrase="error-approval-full">The approval list is full. End this session and start a new one.</span>
+  <span data-phrase="join-idle">Join an available pager or open a link from its host.</span>
+  <span data-phrase="host-idle">Name your pager, then open it in your selected discovery scope.</span>
+  <span data-phrase="host-starting">Opening your Voice Oncall pager…</span>
+  <span data-phrase="host-ready">Your pager is open.</span>
+  <span data-phrase="host-reconnecting">Reconnecting your pager…</span>
+  <span data-phrase="host-paused">The pager paused when this page closed. Start it again to resume.</span>
+  <span data-phrase="sender-connecting">Connecting to the pager…</span>
+  <span data-phrase="sender-approval">Waiting for the host to approve your request. Your microphone is off.</span>
+  <span data-phrase="sender-denied">The host declined your request. Disconnect to return to available connections.</span>
+  <span data-phrase="join-room">Join</span>
+  <span data-phrase="join-room-name">Join {name} via Direct</span>
+  <span data-phrase="join-relay-room-name">Join {name} via Cloud relay</span>
+  <span data-phrase="sender-ready">Connected. Hold to talk when you are ready.</span>
+  <span data-phrase="sender-talking">You are speaking to the host.</span>
+  <span data-phrase="sender-muted">The host muted you. Wait for the host to unmute you.</span>
+  <span data-phrase="sender-reconnecting">Waiting for the host connection…</span>
+  <span data-phrase="sender-paused">Your microphone paused. Choose Resume microphone to continue.</span>
+  <span data-phrase="sender-microphone-paused">Your microphone was interrupted. The connection remains open. Use Resume microphone if needed, then choose when to talk again.</span>
+  <span data-phrase="resume-microphone">Resume microphone</span>
+  <span data-phrase="microphone-resuming">Restoring your microphone with talking off…</span>
+  <span data-phrase="inbox-ended">The host ended this pager.</span>
+  <span data-phrase="sender-left">You disconnected from the pager.</span>
+  <span data-phrase="kicked">The host removed you from this pager.</span>
+  <span data-phrase="error-password">That password did not match. Enter the pager password and try again.</span>
+  <span data-phrase="error-access">This pager link is invalid or the pager is no longer available.</span>
+  <span data-phrase="error-full">This pager has reached its limit of 10 people.</span>
+  <span data-phrase="error-connection">The pairing service could not be reached. Check your internet connection and try again.</span>
+  <span data-phrase="error-microphone">The microphone stopped or could not start. Check microphone permission and try again.</span>
+  <span data-phrase="error-audio">Your browser could not start pager audio. Try starting the pager again.</span>
+  <span data-phrase="host-sound-paused">Sound is paused. Choose Restore sound to hear people again.</span>
+  <span data-phrase="host-sound-interrupted">Sound was interrupted. Your pager remains open. Choose Restore sound when you are ready to listen again.</span>
+  <span data-phrase="host-sound-restoring">Restoring sound…</span>
+  <span data-phrase="error-sound-restore">Sound could not be restored. Try again, or end this pager and start a new one.</span>
+  <span data-phrase="error-browser">This browser cannot start secure voice connections.</span>
+  <span data-phrase="error-secure-context">Open this page over HTTPS to use your microphone.</span>
+  <span data-phrase="error-moderation-full">That action could not be remembered because this pager's moderation history is full. Your local audio setting still applies. End this pager and start a new one to clear that history.</span>
+  <span data-phrase="error-removal-full">The removal was refused because this pager's moderation history is full. This person remains connected and is muted for you. End this pager and start a new one to clear that history.</span>
+  <span data-phrase="name-invalid">Enter a pager name without control characters.</span>
+  <span data-phrase="room-required">Choose a pager or open a pager link first.</span>
+  <span data-phrase="password-required">Enter this pager's password.</span>
+  <span data-phrase="invited-room">Invited pager</span>
+  <span data-phrase="room-locked">Password required</span>
+  <span data-phrase="room-open">Open pager</span>
+  <span data-phrase="discovery-connecting">Looking for available connections…</span>
+  <span data-phrase="discovery-ready">Available connections update automatically.</span>
+  <span data-phrase="discovery-unavailable">Available connections cannot be listed right now. You can still use a pager link.</span>
+  <span data-phrase="publication-publishing">Making your pager discoverable…</span>
+  <span data-phrase="publication-published">Your pager is listed in your selected discovery scope.</span>
+  <span data-phrase="publication-not-published">Your pager is not listed yet. Share the pager link instead.</span>
+  <span data-phrase="participant-ready">Listening connection ready</span>
+  <span data-phrase="participant-speaking">Speaking</span>
+  <span data-phrase="participant-muted">Muted by you</span>
+  <span data-phrase="participant-waiting">Connecting</span>
+  <span data-phrase="participant-removing">Removal pending</span>
+  <span data-phrase="participant-anonymous-name">Caller {id}</span>
+  <span data-phrase="participant-mute">Mute {name}</span>
+  <span data-phrase="participant-unmute">Unmute {name}</span>
+  <span data-phrase="participant-remove">Remove {name}</span>
+  <span data-phrase="mute-label">Mute</span>
+  <span data-phrase="unmute-label">Unmute</span>
+  <span data-phrase="remove-label">Remove</span>
+  <span data-phrase="participant-count">{count} people connected</span>
+  <span data-phrase="participant-count-one">1 person connected</span>
+  <span data-phrase="hold-talk">Hold to talk</span>
+  <span data-phrase="hold-talking">Release to stop</span>
+  <span data-phrase="toggle-start">Start talking</span>
+  <span data-phrase="toggle-stop">Stop talking</span>
+  <span data-phrase="copy-success">Pager link copied.</span>
+  <span data-phrase="copy-error">Select and copy the pager link above.</span>
+  <span data-phrase="net.clean">Internet pairing introduces browsers. Voice follows your chosen Direct or Cloud relay route.</span>
+  <span data-phrase="net.dirty">Internet discovery and pairing are needed to find or reconnect a pager.</span>
+</div>
+</main>

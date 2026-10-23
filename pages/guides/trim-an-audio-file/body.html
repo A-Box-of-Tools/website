@@ -4,13 +4,35 @@
       Open the <a href="../../trim-audio/">Audio Trimmer</a>, drop the recording
       in, press <kbd>I</kbd> and <kbd>O</kbd> to mark each part you want &mdash;
       as many as you like &mdash; and export. Every cut lands on the exact
-      sample you marked, the kept samples come out as they went in, and the
-      joins get a five-millisecond fade so they cannot click.
+      sample you marked, the decoded samples are copied between the cuts,
+      and the joins get a five-millisecond fade to smooth abrupt edges.
+      Choose Float32 if you need to avoid the final rounding to 16-bit PCM.
     </p>
     <p>
       That is the whole job. The rest of this page is about why the exactness is
       real rather than a marketing claim, and about the one thing that does go
       wrong when you join two pieces of sound together.
+    </p>
+  </section>
+
+  <section>
+    <h2>A clean take, a quote or a rehearsal passage</h2>
+    <p>
+      For a voiceover, mark the clean take and leave a little silence around
+      the first breath and the final word. For an interview quote, keep enough
+      of the question to make the answer clear. Play each row before
+      exporting, then listen across every join in the finished WAV; a five-
+      millisecond ramp prevents an abrupt edge, but it cannot restore a
+      syllable you cut in half.
+    </p>
+    <p>
+      A rehearsal or language-practice passage can use several marked sections
+      from the same recording, in the order you want to hear them. Save the
+      marks if you will return to it later. This trimmer takes one source file
+      at a time, so combining separate recordings needs another editor. It
+      writes WAV rather than a smaller MP3: choose 16-bit for a listening copy
+      or Float32 for further editing, and check the receiving app and file-
+      size allowance.
     </p>
   </section>
 

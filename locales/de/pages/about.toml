@@ -18,7 +18,7 @@ lede = """
     Gerät, der Quelltext ist öffentlich, und auf dieser Seite stehen die Gründe
     für beides."""
 
-updated = "12. Oktober 2026"
+updated = "15. Oktober 2026"
 
 og_title = "Wer abox.tools baut, und warum alles im Browser läuft"
 og_description = "Ein unabhängiges, selbst finanziertes Projekt. Warum Dateien lokal verarbeitet werden, welche Funktionen das Netzwerk nutzen und wie sich das prüfen lässt."

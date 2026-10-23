@@ -7,26 +7,16 @@
 #
 
 name = "Compartilhar texto e arquivos"
-heading = "Compartilhar texto e arquivos <span class=\"h1-kw\">&mdash; direto do seu navegador para o deles, sem upload</span>"
-tagline = "O compartilhamento vive nesta aba aberta. Os leitores o recebem criptografado, direto do seu navegador, e fechar a aba o encerra - nenhum servidor guarda nada."
+heading = "Compartilhe texto e arquivos <span class=\"h1-kw\">&mdash; um compartilhamento criptografado que termina com sua aba</span>"
+tagline = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
 
-title = "Compartilhar texto e arquivos entre dispositivos &mdash; direto, criptografado, nada armazenado"
-description = "Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro."
+title = "Compartilhe texto e arquivos entre dispositivos &mdash; criptografados, sem guardar conteúdo em servidores"
+description = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
 og_title = "Um compartilhamento que acaba assim que você fecha a aba"
-og_description = "O texto e os arquivos viajam criptografados, direto do seu navegador para o do leitor. O servidor só apresenta os dois e nunca vê o conteúdo. Sem armazenamento, sem histórico, sem conta: feche a aba e some, em todo lugar."
-og_image_alt = "Compartilhar texto e arquivos - de navegador a navegador, nada armazenado"
+og_description = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
+og_image_alt = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
 
-pledge = """
-    O que você compartilha aqui viaja do seu navegador para o de cada
-    leitor por um canal WebRTC criptografado de ponta a ponta, e para nenhum
-    outro lugar. O único servidor envolvido &mdash; nomeado na
-    <code>Content-Security-Policy</code> desta página, código no
-    repositório &mdash; apresenta os dois navegadores um ao outro e lista
-    os nomes de link locais visíveis na lista. Não guarda texto ou arquivos
-    compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta
-    duram só enquanto quem compartilha continua conectado. Não há histórico
-    de conteúdo nem conta. Feche esta aba e o compartilhamento acaba em todo
-    lugar ao mesmo tempo, inclusive nas páginas abertas dos leitores."""
+pledge = "Texto e arquivos são criptografados entre seu navegador e cada leitor. A conexão direta é o padrão. Ao escolher retransmissão na nuvem, os pacotes criptografados passam pela Cloudflare, que não consegue ler o conteúdo. O serviço de apresentação transmite a preparação e os nomes de links visíveis, nunca textos ou arquivos. Não guardamos conteúdo compartilhado em servidores. Fechar a aba encerra a origem; os leitores limpam a visualização após o aviso de encerramento ou uma falha detectada. Cópias já salvas continuam com eles."
 
 live_hint = """
       Abra as ferramentas do desenvolvedor e observe a aba
@@ -46,12 +36,9 @@ read_first = """
       repositório: uma sala por nome de link, mais um diretório de descoberta
       com os nomes anunciados em conexões abertas, nunca o texto ou os arquivos."""
 
-howto_heading = "Como compartilhar texto e arquivos sem fazer upload para lugar nenhum"
+howto_heading = "Como compartilhar texto e arquivos entre navegadores"
 
-card = """
-            Texto e arquivos, de navegador a navegador por uma conexão
-            direta criptografada. Nada guardado em lugar nenhum; o
-            compartilhamento acaba quando você fecha a aba."""
+card = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
 
 [words]
 plural = "textos e arquivos compartilhados"
@@ -59,7 +46,7 @@ choose = "um nome de link"
 
 [[facts]]
 mark = "&#10007;"
-text = "Nada armazenado"
+text = "Sem conteúdo armazenado em servidores"
 
 [[facts]]
 mark = "&#10007;"
@@ -78,9 +65,8 @@ mark = "&#10003;"
 text = "Código aberto"
 
 [[privacy]]
-title = "O conteúdo vai para o seu leitor, e para nenhum outro lugar."
-body = """
-O texto e os arquivos passam por um canal de dados WebRTC: uma conexão direta, criptografada com DTLS, entre seu navegador e o de cada leitor. Não há servidor nesse caminho. O modo Rede local usa os endereços de rede dos próprios navegadores, sem descoberta pública de endereços nem retransmissor de internet. Uma VPN ou as políticas de rede do navegador podem afetar o caminho desses endereços; isso não é uma garantia sobre um prédio físico. No modo normal, um leitor que não pode ser alcançado diretamente pode escolher na própria página um retransmissor criptografado, que encaminha o mesmo conteúdo criptografado sem poder lê-lo."""
+title = "Você escolhe o caminho da conexão criptografada."
+body = "A conexão direta envia conteúdo entre navegadores sem retransmissão. O modo direto comum usa descoberta pública de endereços; Rede local o limita a candidatos de host. A retransmissão na nuvem encaminha pacotes criptografados pelo Cloudflare TURN e pode conectar dispositivos em redes diferentes. O anfitrião escolhe antes de iniciar; o convite inclui a opção, e os leitores a conferem antes de conectar. A conexão direta nunca muda automaticamente. Restrições de rede ou do navegador podem impedir ambos os caminhos."
 
 [[privacy]]
 title = "O que é o intermediário, e tudo o que ele vê."
@@ -110,7 +96,7 @@ body = """
       endereço e a hora, nunca o conteúdo."""
 
 [[privacy]]
-title = "Nada é armazenado: fechar a aba é a exclusão."
+title = "O conteúdo compartilhado não fica em um servidor."
 body = """
  O compartilhamento existe só
       enquanto a sua aba está aberta. Feche-a e leitores novos não encontram
@@ -119,7 +105,7 @@ body = """
       coisa que você tivesse entregado em mãos. O rascunho que você digita
       fica no armazenamento do seu próprio navegador, para estar aqui da
       próxima vez, e só nele; marcado como descartável, não fica em lugar
-      nenhum."""
+      nenhum. Separadamente, o navegador do leitor guarda um comprovante aleatório de aprovação para desconectar e voltar a esta sessão sem nova aprovação. Parar o anfitrião redefine a aprovação. Descartável desativa o armazenamento do rascunho, não deste comprovante. Limpar ou bloquear os dados do site pode exigir nova aprovação; os scripts normais deste site podem ler o comprovante."""
 
 [[privacy]]
 title = "O nome do link é um endereço, e Privado é a tranca."
@@ -136,13 +122,7 @@ body = """
 
 [[privacy]]
 title = "Uma conexão direta mostra a cada lado o endereço do outro."
-body = """
- É isso que
-      ponto a ponto significa, e o leitor sabe antes de acontecer: abrir um
-      link compartilhado só pergunta ao intermediário se alguém está
-      compartilhando; depois a página diz com clareza que conectar revela a
-      cada lado o endereço IP do outro, e espera um clique. Até esse clique,
-      quem compartilha nem sabe que o leitor existe."""
+body = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira a opção de conexão acima antes de escolher Conectar."
 
 [[privacy]]
 title = "O que o Google carrega, e o que ele não recebe."
@@ -199,12 +179,7 @@ body = """
 
 [[howto]]
 title = "Comece a compartilhar, e deixe a aba aberta."
-body = """
- A aba é o servidor: o
-      compartilhamento fica acessível enquanto ela estiver aberta e
-      acordada, e nem um instante a mais. Um notebook fechado também o
-      encerra. Copie o link, ou apenas fale o nome: um leitor pode digitá-lo
-      como <code>#name</code> no fim do endereço desta página. Para o modo Rede local, copie o link: ele contém <code>?local=1</code> antes do nome. Um leitor que usa outro modo precisa escolher antes de tentar de novo com o seu."""
+body = """A aba é o servidor. Mantenha-a aberta e o dispositivo ativo para compartilhar sem interrupções. Uma conexão que funciona continua aberta quando a página fica oculta, mas o telefone ou um notebook em suspensão pode pausar o navegador. Ao voltar, a página tenta restaurar o mesmo compartilhamento. Parar de compartilhar impede a retomada automática. Copie o link ou diga o nome: o leitor pode acrescentar <code>#name</code> ao endereço desta página. No modo Rede local, copie o link que contém <code>?local=1</code> antes do nome. Uma mudança no modo de conexão exige a escolha do leitor."""
 
 [[howto]]
 title = "Do outro lado: primeiro consentir, depois bater."
@@ -218,14 +193,7 @@ body = """
 
 [[faq]]
 q = "Alguma coisa é enviada para algum lugar?"
-a = """
-        Não. O texto e os arquivos vão do seu navegador para o de cada
-        leitor por um canal WebRTC criptografado, diretamente. O único
-        servidor envolvido carrega a apresentação e os nomes de link locais
-        cuja publicação foi escolhida, nunca o conteúdo. Não guarda texto
-        nem bytes de arquivos. Salas e entradas de descoberta acabam com
-        suas conexões abertas; os registros de conexão de sete dias da
-        Cloudflare contêm metadados, nunca o conteúdo."""
+a = "Texto e arquivos são criptografados entre seu navegador e cada leitor. A conexão direta é o padrão. Ao escolher retransmissão na nuvem, os pacotes criptografados passam pela Cloudflare, que não consegue ler o conteúdo. O serviço de apresentação transmite a preparação e os nomes de links visíveis, nunca textos ou arquivos. Não guardamos conteúdo compartilhado em servidores. Fechar a aba encerra a origem; os leitores limpam a visualização após o aviso de encerramento ou uma falha detectada. Cópias já salvas continuam com eles. A Cloudflare mantém os metadados das conexões de apresentação por sete dias; nosso aplicativo não registra conteúdo compartilhado."
 
 [[faq]]
 q = "Então por que esta ferramenta fala com um servidor, logo neste site?"
@@ -261,14 +229,7 @@ a = """
 
 [[faq]]
 q = "O que acontece quando fecho a aba?"
-a = """
-        O compartilhamento acaba em todo lugar ao mesmo tempo. O link para
-        de funcionar em um ou dois segundos, e os leitores que ainda tiverem
-        a página aberta veem a própria cópia sumir, com um aviso de que o
-        compartilhamento terminou. Não é um pedido de exclusão a um
-        servidor: não há cópia em servidor para excluir. A aba era o único
-        lugar onde o compartilhamento existia, e fechá-la é toda a limpeza
-        que existe."""
+a = """O compartilhamento termina quando sua única fonte desaparece. Os leitores limpam a cópia exibida ao detectar o fim ou uma falha na conexão. Parar de compartilhar envia um aviso explícito de encerramento; uma perda temporária de rede pode iniciar um número limitado de tentativas de recuperação. Não existe cópia no servidor para excluir. O que já foi copiado ou baixado permanece com os leitores."""
 
 [[faq]]
 q = "Um leitor pode ficar com o que compartilhei?"
@@ -293,54 +254,19 @@ a = """
 
 [[faq]]
 q = "Por que o leitor vai ver o meu endereço IP?"
-a = """
-        Porque a conexão é direta de verdade, e uma conexão direta corre
-        entre dois endereços: cada ponta necessariamente conhece a da
-        outra, como numa ligação telefônica. O leitor é avisado antes de
-        existir qualquer conexão e só se conecta se decidir; até lá, você
-        nem sabe que ele abriu o link. Se essa troca não servir para um
-        compartilhamento específico, a alternativa é um serviço que passa
-        por um servidor &mdash; com a troca contrária."""
+a = "A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira o tipo de conexão indicado. Escolha Entrar em um item da lista ou Conectar após abrir um convite comum."
 
 [[faq]]
 q = "Qual o tamanho máximo dos arquivos, e qual a velocidade?"
-a = """
-        Até 200&nbsp;MB por arquivo, de qualquer tipo, e tão rápido quanto a
-        mais lenta das duas conexões: não há servidor no meio para frear ou
-        medir. Dois computadores com uma conexão local funcionando transferem em
-        velocidade de rede local; VPNs e roteamento do navegador podem afetar
-        o caminho. Os leitores baixam cada
-        arquivo sob demanda, então anexar algo grande não custa nada até
-        alguém realmente pedir."""
+a = "Até 200&nbsp;MB por arquivo. A velocidade depende dos dois dispositivos e do caminho da rede. A conexão direta pode usar a velocidade da rede local; a retransmissão na nuvem também depende da banda de internet e dos limites do serviço. Os leitores buscam arquivos sob demanda."
 
 [[faq]]
 q = "Funciona offline?"
-a = """
-        Metade, sendo honesto: o editor sim &mdash; a página carrega, seu
-        rascunho está lá, o Markdown renderiza, e dá para escrever e salvar
-        sem rede nenhuma. Compartilhar não, e não tem como: alcançar o
-        navegador de outra pessoa é um ato de rede, e a apresentação precisa
-        do intermediário. É a única ferramenta deste site cuja tarefa é
-        impossível offline, e sugerir outra coisa seria desonesto."""
+a = "O editor funciona sem internet depois que a página é salva: você pode escrever, visualizar Markdown e manter um rascunho. Para compartilhar, os dois dispositivos precisam de internet para que o serviço de apresentação conecte os navegadores. Salvar a página não permite parear sem internet. O modo de rede local também precisa dessa apresentação, embora o conteúdo viaje diretamente entre os navegadores."
 
 [[faq]]
 q = "E se a gente não conseguir conectar?"
-a = """
-A oferta de retransmissor descrita abaixo vale apenas para o modo de conexão normal. A maioria dos pares de navegadores se alcança diretamente depois de
-        apresentada; uma minoria não, geralmente quando um dos lados está na
-        rede de endereços compartilhados de uma operadora de celular ou
-        atrás de uma rede corporativa rígida. Esta página nunca passa para
-        um retransmissor em silêncio &mdash; isso mudaria o que esta
-        ferramenta é sem dizer &mdash;: depois de vinte segundos ela diz com
-        clareza que não houve conexão direta e oferece um ao leitor: um
-        retransmissor mantido pela Cloudflare que repassa os bytes
-        criptografados entre os dois navegadores e não consegue lê-los,
-        porque a chave nunca sai das duas pontas. O leitor o escolhe de
-        forma explícita, na própria página, depois de saber o que ele vê
-        &mdash; os dois endereços, como a conexão direta veria &mdash;, e
-        ali também nada é guardado. O seu lado não muda: seu navegador
-        continua enviando só para aquele leitor, como faria se ele estivesse
-        atrás de uma VPN. O modo Rede local nunca oferece um retransmissor. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet e se o isolamento da rede de convidados, um firewall ou uma VPN está bloqueando a conexão."""
+a = "Confira a internet nos dois dispositivos. Em Rede local, o Wi-Fi ou Ethernet precisa permitir a comunicação entre eles. Se a conexão direta falhar, o anfitrião pode parar, escolher retransmissão na nuvem, iniciar novamente e enviar o novo convite. O leitor confere a opção antes de conectar. Um compartilhamento direto ativo nunca muda automaticamente. Dispositivos gerenciados e redes restritivas também podem bloquear a retransmissão."
 
 [[faq]]
 q = "Renderizar Markdown é seguro, se qualquer um pode compartilhar qualquer coisa?"
@@ -386,40 +312,8 @@ Sim. Antes de começar, escolha Rede local — sem retransmissor de internet, co
 
 [[faq]]
 q = "Como a lista encontra compartilhamentos locais?"
-a = """
-        Abrir a página inicial desta ferramenta pede ao intermediário os
-        nomes de link visíveis na lista de navegadores que usam o mesmo
-        endereço IPv4 público ou a mesma sub-rede IPv6. Normalmente isso
-        significa o mesmo roteador,
-        mas uma VPN compartilhada ou um provedor que compartilha um endereço
-        pode incluir outras redes. Se alguns dispositivos usam IPv4 e outros
-        IPv6, ou seguem caminhos diferentes, podem não aparecer mesmo estando
-        na mesma rede local. A lista não comprova uma mesma rede local
-        física. É preciso ter internet. Só aparecem compartilhamentos no
-        modo Rede local. Escolha esse modo antes de começar, pois vem
-        desativado por padrão. Compartilhamentos locais são
-        anunciados por padrão; desmarque Visível na lista para compartilhar
-        só por link e mantenha Privado ativado em redes compartilhadas.
-        Escolher um nome abre a página de consentimento do compartilhamento;
-        nunca conecta automaticamente nem dispensa a aprovação privada.
-        O diretório mantém só os nomes de link enquanto quem compartilha
-        continua conectado, nunca o texto, os nomes de arquivo ou os bytes
-        dos arquivos. Se a descoberta estiver indisponível, compartilhar
-        por link continua funcionando."""
+a = "A lista agrupa compartilhamentos pelo endereço IPv4 público ou sub-rede IPv6 e pela origem da página, não pela proximidade física. Gateways compartilhados e VPNs podem incluir desconhecidos ou ocultar dispositivos. É preciso internet. Só aparecem compartilhamentos diretos locais ou por retransmissão na nuvem com visibilidade ativada. Descobrível é selecionado por padrão quando disponível; desmarque para usar apenas links e mantenha Privado em redes compartilhadas. Entrar inicia a solicitação com o tipo de conexão indicado em uma nova aba de leitura. Consultar a lista não conecta. Compartilhamentos privados aguardam aprovação; a solicitação aparece em uma caixa de diálogo e fica na lista após Revisar depois."
 
 [schema]
-description = "Compartilhe texto e arquivos de um navegador para outro por uma conexão WebRTC direta e criptografada de ponta a ponta. Nomes de link faláveis, atualização ao vivo enquanto digita, Markdown e aprovação por leitor. Nenhum servidor guarda nada; o compartilhamento acaba quando quem compartilha fecha a aba."
-features = [
-  "O texto e os arquivos vão de navegador a navegador, criptografados de ponta a ponta, nunca por um servidor",
-  "O compartilhamento vive na aba aberta: fechá-la o encerra e esvazia as páginas dos leitores",
-  "Nomes de link faláveis - brave-otter-42 -, editáveis, um compartilhamento vivo por nome",
-  "Privado por padrão: cada leitor se apresenta, e quem compartilha admite ou recusa",
-  "Os leitores consentem antes de existir conexão, avisados de que os IPs ficam visíveis",
-  "Atualização ao vivo: as mudanças chegam aos leitores conectados enquanto se digita",
-  "Markdown alternável dos dois lados, renderizado por um renderizador próprio que escapa primeiro",
-  "Arquivos de até 200 MB cada, baixados sob demanda, com progresso por arquivo",
-  "O rascunho fica só no navegador de quem compartilha - ou em lugar nenhum, se descartável",
-  "Todo o componente de servidor é um intermediário sem armazenamento, publicado no repositório",
-  "Modo opcional de rede local sem descoberta pública de endereços nem retransmissor de internet",
-  "Nomes de link locais visíveis na lista aparecem para navegadores com o mesmo endereço IPv4 público ou sub-rede IPv6, preservando o consentimento e a aprovação privada",
-]
+description = "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor."
+features = ["Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor.", "O compartilhamento vive na aba aberta: fechá-la o encerra e esvazia as páginas dos leitores", "Nomes de link faláveis - brave-otter-42 -, editáveis, um compartilhamento vivo por nome", "Privado por padrão: cada leitor se apresenta, e quem compartilha admite ou recusa", "Os leitores consentem antes de existir conexão, avisados de que os IPs ficam visíveis", "Atualização ao vivo: as mudanças chegam aos leitores conectados enquanto se digita", "Markdown alternável dos dois lados, renderizado por um renderizador próprio que escapa primeiro", "Arquivos de até 200 MB cada, baixados sob demanda, com progresso por arquivo", "Um serviço de apresentação de código aberto conecta os navegadores; o Cloudflare TURN pode encaminhar pacotes criptografados.", "Todo o componente de servidor é um intermediário sem armazenamento, publicado no repositório", "Modo opcional de rede local sem descoberta pública de endereços nem retransmissor de internet", "Nomes de link locais visíveis na lista aparecem para navegadores com o mesmo endereço IPv4 público ou sub-rede IPv6, preservando o consentimento e a aprovação privada"]

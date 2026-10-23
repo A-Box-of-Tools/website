@@ -1,4 +1,6 @@
 import { CODE_PATTERN, normalize } from './shared/room-names.js';
+import { transportUrl } from './shared/peer-transport.js';
+import { validAdmissionToken } from './shared/peer-admission.js';
 
 // The worker's tool namespace and this control handshake keep an identically
 // named text share from becoming a camera invitation.
@@ -22,12 +24,12 @@ export function parseCode(value) {
   return CODE_PATTERN.test(code) ? code : null;
 }
 
-export function viewerLink(href, code) {
+export function viewerLink(href, code, transport = 'direct') {
   if (!CODE_PATTERN.test(code)) throw new Error('code.invalid');
   const url = new URL(href);
   url.search = '';
   url.hash = code;
-  return url.href;
+  return transportUrl(url.href, transport);
 }
 
 export function controlMessage(text) {
@@ -37,6 +39,7 @@ export function controlMessage(text) {
     if (!value || value.protocol !== PROTOCOL) return null;
     if (['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) {
       if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
+      if (value.token !== undefined && (!['request', 'approved'].includes(value.type) || !validAdmissionToken(value.token))) return null;
       return value;
     }
   } catch {}

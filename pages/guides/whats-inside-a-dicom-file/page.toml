@@ -27,9 +27,9 @@ lede = """
     same file as the pixels &mdash; which matters most at the exact moment
     you are handed a CD and go looking for a viewer."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "What's inside a DICOM file?"
 og_description = "A patient record with a picture inside: name, birth date, hospital numbers, and keys back into the archive. What the header carries, and how to look without uploading it."

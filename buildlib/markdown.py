@@ -347,7 +347,7 @@ def tool_page(templates, site, tool, ui, guide, related):
 
     return templates.render('tool.md', {
         'site': site,
-        'name': text(tool['heading']),
+        'name': tool['name'],
         'tagline': text(tool['tagline']),
         'description': text(tool['description']),
         'url': url,

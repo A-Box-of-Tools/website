@@ -1,0 +1,322 @@
+/* Discovery is the same first step across paired tools; each adapter keeps
+   its own permissions and session controls below it. */
+.paired-page .paired-nearby {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: .25rem 1rem;
+  min-width: 0;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.paired-nearby > * { flex-basis: 100%; min-width: 0; }
+.paired-nearby > p { margin-block: .35rem; }
+.paired-nearby > .paired-network,
+.paired-nearby > .paired-icon-legend,
+.paired-nearby > .paired-discovery-details { flex-basis: auto; margin: 0; }
+.paired-nearby > details[open] { flex-basis: 100%; }
+.paired-nearby .paired-nearby-list:empty { margin: 0; }
+/* Empty directories need one useful next step, not instructions for controls
+   which cannot select anything yet. Errors and in-progress status stay visible. */
+.paired-nearby:has(.paired-nearby-list:empty) .paired-selection-help { display: none; }
+.paired-nearby [aria-live]:empty { margin: 0; }
+.paired-nearby-head, .paired-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem;
+}
+.paired-nearby-head { justify-content: space-between; }
+.paired-nearby-head h2 { margin: 0; }
+.paired-nearby h2 { margin-top: 0; }
+.paired-network { color: var(--text-dim); font-size: .875rem; line-height: 1.6; }
+.paired-network > p { margin: .5rem 0; }
+.paired-network > summary, .paired-discovery-details > summary {
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 600;
+  min-height: 44px;
+  align-content: center;
+}
+.paired-network > h3 { margin: .75rem 0 .25rem; font-size: 1rem; }
+.paired-discovery-details > p { font-size: .875rem; color: var(--text-dim); line-height: 1.6; }
+.paired-network ol { padding-inline-start: 1.5rem; }
+.paired-network li + li { margin-top: .4rem; }
+.paired-network-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+.paired-nearby-list { list-style: none; margin: .75rem 0; padding: 0; }
+.paired-nearby-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .75rem 0;
+  border-top: 1px solid var(--border);
+}
+.paired-nearby-row > *, .paired-actions > * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.paired-nearby [role=status] { overflow-wrap: anywhere; }
+.paired-nearby button, .paired-nearby a { white-space: normal; overflow-wrap: anywhere; }
+.paired-page [data-pairing-setup] { min-width: 0; }
+/* Keep the route choice beside the action that uses it, including when a
+   translated label wraps or a phone has room for only one control per line. */
+.paired-start-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1rem;
+  min-width: 0;
+}
+.paired-start-row > * { min-width: 0; max-width: 100%; }
+.paired-start-row[data-group-busy] { opacity: .55; }
+.paired-transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .5rem;
+  max-width: 100%;
+}
+.paired-page .paired-transport-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+  margin: 0;
+  padding: .25rem 0;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.paired-page .paired-transport-toggle input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.paired-transport-track {
+  flex: none;
+  width: 2.25rem;
+  height: 1.25rem;
+  padding: 2px;
+  border: 1px solid var(--text-dim);
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.paired-transport-track::before {
+  content: "";
+  display: block;
+  width: .875rem;
+  height: .875rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+.paired-transport-toggle input:checked ~ .paired-transport-track {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.paired-transport-toggle input:checked ~ .paired-transport-track::before {
+  margin-inline-start: auto;
+  background: var(--accent-text);
+}
+.paired-transport-toggle input:not(:checked) ~ .paired-transport-direct,
+.paired-transport-toggle input:checked ~ .paired-transport-relay { color: var(--text); font-weight: 700; }
+.paired-transport-toggle input:focus-visible ~ .paired-transport-track {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.paired-transport-toggle:has(input:disabled) { opacity: .65; cursor: not-allowed; }
+.paired-transport-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: .35rem .6rem;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.paired-page .paired-transport-toggle[hidden], .paired-transport-badge[hidden] { display: none; }
+.paired-transport-help { margin: 0; }
+.paired-transport-help > summary { min-width: 44px; min-height: 44px; justify-content: center; }
+.paired-transport-help[open] { flex-basis: 100%; }
+/* This live description stays in its own fold, outside the build's field-note gathering. */
+.paired-transport-note { max-width: 62ch; margin: 0 0 .5rem; font-size: .85rem; color: var(--text-dim); line-height: 1.6; }
+.paired-route { margin-block: .75rem; font-size: .9rem; font-weight: 600; }
+.paired-discovery-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem 1rem;
+  margin-block: .25rem;
+  font-size: .9rem;
+}
+.paired-group-current, .paired-group-entry, .paired-connection-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  min-width: 0;
+}
+.paired-group-current { justify-content: space-between; flex: 1 1 auto; }
+.paired-group-details[open], .paired-discovery-group > .paired-group-note { flex-basis: 100%; }
+.paired-group-details > summary, .paired-icon-legend > summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  align-content: center;
+}
+.paired-page .paired-group-label { display: block; margin: .75rem 0 .35rem; font-weight: 600; }
+.paired-group-entry input { flex: 1 1 20rem; width: 100%; min-width: 0; font-family: monospace; }
+.paired-group-entry button { min-height: 44px; }
+.paired-page .paired-discovery-group button.ghost {
+  min-height: 44px;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .875rem;
+  line-height: 1.4;
+  box-shadow: none;
+}
+.paired-page .paired-discovery-group button.ghost:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.paired-group-note { font-size: .875rem; color: var(--text-dim); line-height: 1.6; margin: .5rem 0; }
+.paired-group-note:empty { display: none; }
+.paired-icon-legend { font-size: .875rem; color: var(--text-dim); }
+.paired-icon-legend ul { margin: .5rem 0; padding: 0; list-style: none; }
+.paired-icon-legend li { display: flex; align-items: center; gap: .5rem; margin-block: .4rem; }
+.paired-icon-legend [data-connection-legend] { flex: none; }
+.paired-connection-icons { display: inline-flex; gap: .15rem; align-items: center; flex-wrap: wrap; }
+.paired-connection-icon {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+}
+.paired-connection-icon[tabindex] { cursor: help; }
+.paired-connection-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.paired-connection-icon:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.paired-icon-tip {
+  display: none;
+  position: fixed;
+  z-index: 50;
+  width: max-content;
+  max-width: min(17rem, 70vw);
+  padding: .5rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.paired-connection-icon[data-tooltip-open] .paired-icon-tip { display: block; }
+.paired-dialog {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.paired-dialog::backdrop { background: rgb(0 0 0 / .45); }
+.paired-dialog h2 { margin-top: 0; }
+.paired-dialog p { overflow-wrap: anywhere; }
+.paired-dialog .paired-actions { margin-top: 1rem; }
+.paired-dialog button {
+  min-height: 44px;
+  padding: .7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.paired-dialog button.ghost, .paired-requests button.ghost {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text);
+}
+.paired-dialog button:disabled { opacity: .5; cursor: not-allowed; }
+.paired-dialog :is(button, input):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.paired-dialog label { display: block; margin-block: .75rem .35rem; font-weight: 600; }
+.paired-dialog input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: .7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.paired-requests { margin-block: 1rem; }
+.paired-requests > h3 { margin-bottom: .5rem; }
+.paired-requests ul { list-style: none; padding: 0; margin: 0; }
+/* Pending decisions belong beside the work, before invitations and previews.
+   Keep this inline so a tall queue cannot cover the host's Stop controls. */
+.paired-host-requests {
+  padding: .85rem 1rem;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  min-width: 0;
+}
+.paired-host-requests:has(> #requests:empty) { display: none; }
+.paired-host-requests > h3 { margin: 0 0 .35rem; font-size: 1rem; }
+.paired-host-requests .paired-approval-note {
+  margin: 0 0 .5rem;
+  color: var(--text-dim);
+  font-size: .875rem;
+  line-height: 1.5;
+}
+.paired-host-requests button { min-height: 44px; }
+.paired-host-requests button[data-action$="approve"],
+.paired-host-requests .request button:not(.ghost) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+}
+@media (forced-colors: active) {
+  .paired-transport-track { border-color: ButtonText; }
+  .paired-transport-track::before { background: ButtonText; }
+  .paired-transport-toggle input:checked ~ .paired-transport-track { background: Highlight; border-color: Highlight; }
+  .paired-transport-toggle input:checked ~ .paired-transport-track::before { background: HighlightText; }
+}
+@media (max-width: 600px) {
+  .paired-page .paired-nearby { padding: 1rem; }
+  .paired-nearby-head { align-items: flex-start; }
+  .paired-nearby-row > :first-child { flex: 1 1 10rem; }
+}

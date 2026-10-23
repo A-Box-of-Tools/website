@@ -12,7 +12,7 @@ lede = """
     virar PDF &mdash; e, se foi editado de um certo jeito muito comum,
     cada versão anterior de si mesmo, exclusões incluídas. Nada disso
     aparece na tela."""
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "O que um PDF lembra"
 og_description = "Nomes de autor, o arquivo Word que ele foi, comentários, anexos - às vezes cada versão anterior de si mesmo. Onde mora essa memória, e como enviar um PDF sem ela."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

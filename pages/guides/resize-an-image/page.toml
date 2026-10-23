@@ -24,9 +24,9 @@ lede = """
     the button, by which number you type and which shape you ask for. This is
     what each choice does to the picture, and which of them you can undo."""
 
-updated = "12 October 2026"
+updated = "13 October 2026"
 published = "2026-08-20"
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 
 og_title = "Resizing an image without wrecking it"
 og_description = "What changes when you resize: fine detail lost when shrinking, interpolation when enlarging, fitting a different shape, and choosing when to crop."

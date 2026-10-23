@@ -2,9 +2,10 @@
     <h2>The short answer</h2>
     <p>
       Open <a href="../../images-to-video/">Images to Video</a>, drop the
-      pictures in, put them in order, set how long each one is held, and create
-      the video. You get an MP4 with H.264 video, which plays on essentially
-      anything.
+      pictures in, put them in order, choose seconds for a slideshow or
+      frames for an image sequence, set how long each one is held, and
+      create the video. MP4 with H.264 is the recommended output; check it
+      in the receiving app before sharing.
     </p>
     <p>
       The two settings that most often need a second pass are the duration and
@@ -14,35 +15,58 @@
   </section>
 
   <section>
+    <h2>A slideshow, stop motion or a record of progress</h2>
+    <p>
+      For holiday photos, an event recap or a product catalogue, switch Hold
+      every image for to seconds, enter a hold such as three, and press Apply
+      to all. Arrange the tiles into the story you want, choose 1080p or the
+      destination's vertical shape, and use Fit inside when every part of a
+      photograph matters. Check the total length before rendering, then watch
+      the first, middle and last pictures in the finished video.
+    </p>
+    <p>
+      For stop motion, a render sequence or regularly spaced progress
+      photographs, use frame holds instead: one image held for one frame at 24
+      fps gives 24 images a second. Sort by name and inspect the order before
+      exporting. This tool writes hard cuts between stills, with no zoom,
+      crossfade or soundtrack. A narrated presentation needs another editor
+      for sound; a silent visual progress record can be complete here.
+    </p>
+  </section>
+
+  <section>
     <h2>Frame rate and duration are not the same thing</h2>
     <p>
       This is the confusion that costs people a re-render.
     </p>
     <p>
-      <strong>Duration</strong> is how long each picture stays on screen. It is
-      the setting you actually care about. Three seconds is a comfortable default
+      <strong>Duration in seconds</strong> is how long each picture stays
+      on screen. It is the setting you actually care about. Three seconds is a comfortable default
       for a slideshow somebody is watching; one to two seconds feels brisk;
       anything over five drags unless there is narration over it.
     </p>
     <p>
-      <strong>Frame rate</strong> is how many times a second the video repeats
-      that picture. It changes nothing about what the slideshow looks like
+      <strong>Frame rate, with seconds selected,</strong> is how many times
+      a second the video repeats that picture. It changes nothing about what the slideshow looks like
       &mdash; a still image held for three seconds looks identical at 24 frames
       per second and at 60 &mdash; and it changes the file size and the encoding
       time quite a lot.
     </p>
     <p>
-      So for a plain slideshow, pick a low frame rate. 24 or 30 is plenty. The
-      reason to go higher is if there is motion in the video: a pan or zoom
-      across each photo, or a cross-fade between them, where a low frame rate
-      shows as visible stepping.
+      The tool starts with one frame per image. In that unit, frame rate
+      does change the duration: 24 images at 24 fps last one second, while
+      the same list at 12 fps lasts two. Switch to seconds for a plain
+      slideshow; 24 or 30 fps is plenty. There are no pans, zooms or
+      crossfades in this tool, so a higher rate adds no motion to a still.
     </p>
 
     <figure class="shot">
       <img src="/screens/turn-images-into-a-video/summary.webp" loading="lazy" decoding="async"
            alt="The resolution and frame-rate settings, with a summary counting the images, the total duration, the frame count and the estimated size.">
       <figcaption>
-        Frame rate and duration are different things, and the summary is where that becomes obvious: changing one moves the frame count, not the length.
+        With seconds selected, changing the frame rate changes the frame
+        count while each image keeps its chosen duration. With frame holds,
+        it changes the length too.
       </figcaption>
     </figure>
   </section>
@@ -92,8 +116,10 @@
       alphabetical sort, because the comparison is character by character.
     </p>
     <p>
-      Sorting by date taken is usually right for photographs of an event, since
-      you took them in the order they happened. Dragging the tiles is right for
+      Sort by name counts numeric filenames naturally, so photo2 comes
+      before photo10 here. Sort by date uses the files' modification dates,
+      not a guaranteed camera capture time; copied or edited photographs
+      can therefore need manual reordering. Dragging the tiles is right for
       anything where the story is not chronological. Check before you render:
       the video is the one artefact where fixing the order means doing the whole
       job again.
@@ -145,10 +171,11 @@
       because converting means another generation of lossy encoding.
     </p>
     <p>
-      There is no limit built into the tool on how many pictures you can use.
-      The ceiling is your own machine's memory, because the finished video is
-      assembled there before you download it &mdash; a long 4K slideshow is the
-      first thing to feel it.
+      There is no fixed picture-count limit. The finished video is
+      assembled in memory before you download it and cannot exceed 4 GB;
+      the chosen dimensions must also be supported by your browser's
+      encoder. A long 4K slideshow can hit those limits before the number
+      of source images looks particularly large.
     </p>
   </section>
 

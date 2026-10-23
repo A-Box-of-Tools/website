@@ -36,7 +36,7 @@
       Der <a href="../belege-rechnungen-auslesen/">Beleg- und Rechnungsextraktor</a> liest Bilder und erkennt Text lokal. Der freiwillige historische Kursabruf fragt Währungspaar und gewähltes Datum bei <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a> ab. Das Datum kann vom Beleg stammen. Der Anbieter sieht IP und Anfrage; Zugangsdaten und Referrer werden weggelassen. Bild, Dateiname, Händler, Betrag oder E-Mail-Adresse sind nicht enthalten. Manuelle Kurse brauchen keine Anfrage.
     </p>
     <p>
-      Die E-Mail- und Teilen-Schaltflächen bereiten Berichte und JPEG-Kopien lokal vor, laden dann eine E-Mail-Datei herunter oder übergeben sie an Ihre gewählte App. Die Seite sendet keine E-Mail. App, Anbieter und Empfänger übernehmen den nächsten Schritt nach ihren Richtlinien. <a href="../text-teilen/">Text und Dateien teilen</a> und <a href="../remote-camera/">Remote-Kamera</a> senden bewusst Inhalte an einen anderen Browser; Verbindungsmetadaten werden unten erklärt.
+      Die E-Mail- und Teilen-Schaltflächen bereiten Berichte und JPEG-Kopien lokal vor, laden dann eine E-Mail-Datei herunter oder übergeben sie an Ihre gewählte App. Die Seite sendet keine E-Mail. App, Anbieter und Empfänger übernehmen den nächsten Schritt nach ihren Richtlinien. <a href="../text-teilen/">Text und Dateien teilen</a>, <a href="../share-tab/">Browser-Tab teilen</a> und <a href="../remote-camera/">Remote-Kamera</a> senden bewusst Inhalte an einen anderen Browser; Verbindungsmetadaten werden unten erklärt.
     </p>
   </section>
 
@@ -65,16 +65,18 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics: der Besuchszähler</h3>
+    <h3>Google Analytics: Besuche und erfolgreiche Werkzeugnutzung</h3>
     <p>
-      Wir nutzen Google Analytics 4, um Seitenaufrufe zu zählen, damit wir
-      wissen, an welchen Werkzeugen zu arbeiten sich lohnt. Erfasst werden die
-      aufgerufene Seite, ungefähr wann, eine zufällig erzeugte Kennung, die in
-      Ihrem Browser gespeichert wird, ein ungefährer Standort, Ihr Geräte- und
-      Browsertyp sowie die Seite, die Sie verwiesen hat.
+      Wir nutzen Google Analytics 4, um Seitenaufrufe und erfolgreiche Werkzeugnutzung zu zählen. So wissen wir, an welchen Werkzeugen zu arbeiten sich lohnt. Erfasst werden die aufgerufene Seite, der ungefähre Zeitpunkt, eine zufällig erzeugte und im Browser gespeicherte Kennung, ein ungefährer Standort, Ihr Geräte- und Browsertyp sowie übliche Angaben zur Kampagnenzuordnung.
     </p>
     <p>
-      <code>analytics.js</code> richtet Seitenaufrufe ein. Nach Ihrer freiwilligen Antwort sendet <code>feedback.js</code> außerdem ein <code>tool_feedback</code>-Ereignis: Werkzeugkennung, feste Ja- oder Nein-Antwort und fester Grund. Es gibt kein Freitextfeld; Datei, Name, Größe, Abmessungen, Anzahl, Format und Inhalt gehören nicht dazu. Wir können zusammengefasste Analytics-Berichte sehen. Blockieren lässt lokale Verarbeitung verfügbar.
+      Die an Analytics gesendete Seitenadresse besteht aus der kanonischen URL und nur den üblichen Kampagnenparametern. Andere Abfrageparameter und Adressfragmente entfallen. Der Seitentitel ist fest vorgegeben. Von der verweisenden Website wird nur die Herkunft ohne Pfad oder Abfrage übermittelt.
+    </p>
+    <p>
+      Wir zählen die erste erfolgreiche Werkzeugnutzung pro Seitenaufruf, zum Beispiel einen angeforderten, fertig vorbereiteten Download, erfolgreiches Kopieren oder eine nutzbare Analyse beziehungsweise Ansicht in einem Prüfwerkzeug. Die einzige werkzeugspezifische Angabe in diesem Ereignis ist die feste Werkzeugkennung. Es bestätigt nicht, dass Ihr Betriebssystem einen Download gespeichert hat.
+    </p>
+    <p>
+      Freiwilliges Feedback erfasst nach Ihrer Antwort die feste Werkzeugkennung, eine feste positive oder negative Antwort und einen festen Grund. Es gibt kein Freitextfeld. Die Werkzeuge fügen keinem dieser Datensätze Dateien, Dateinamen, Inhalte, eingegebenen Text, Anzahlen, Größen, Abmessungen, Formate, Einstellungen, Fehler oder andere Eingabe- oder Ergebnisdetails hinzu. Wir können zusammengefasste Analytics-Berichte sehen. Auch mit blockiertem Analytics bleibt lokale Verarbeitung verfügbar, nach vorbereitetem Offline-Cache auch ohne Verbindung.
     </p>
 
     <h3>Buy Me a Coffee: der Spenden-Button</h3>
@@ -99,14 +101,35 @@
       besucherbezogene Protokolle haben wir bei keinem der beiden Zugriff.
     </p>
 
+    <h3>Verbindungswahl für gekoppelte Werkzeuge</h3>
+    <p>Alle fünf Kopplungswerkzeuge beginnen mit Direct. Der Host kann vor dem Start Cloud relay wählen; die Einladung trägt diese Wahl, und die andere Person sieht sie vor dem Verbinden. Direct wechselt nie automatisch zum Relay. Cloudflare TURN leitet dabei verschlüsselten Text, Dateien, Video, Audio und Steuernachrichten ohne deren Entschlüsselungsschlüssel weiter, sieht aber Adressen, Zeitpunkte und Datenvolumen. Beide Geräte brauchen durchgehend Internet. Kurzlebige Zugangsdaten bleiben im Browserspeicher und werden über die Vermittlung erneuert, nicht in Links oder Listen veröffentlicht. Eine Liste kann die gewählte Verbindung zeigen. Zustimmung, Passwort und Mikrofonsteuerung bleiben wirksam.</p>
+    <p>Alle fünf Werkzeuge bieten verfügbare Verbindungen entweder im lokalen Netzwerk oder in einer privaten Gruppe an. Mit demselben zufällig erzeugten Gruppencode können Geräte in unterschiedlichen Netzwerken Sitzungen finden. Jedes Werkzeug hat eine eigene Liste; Gruppensitzungen erscheinen nicht zusätzlich im lokalen Netzwerk. Der Code erlaubt die Suche, nicht den Zugriff: Passwörter, die Zustimmung des Hosts und der gewählte Verbindungsweg gelten weiterhin. Die Vermittlung erhält den Code über eine verschlüsselte Verbindung zur Prüfung der Gruppenzugehörigkeit und behält danach nur eine abgeleitete Kennung und das Ergebnis auf offenen Verbindungen. Anfrageadressen und ihre sieben Tage aufbewahrten Metadatenprotokolle enthalten diese Kennung, nie den Code. Die Seite hält den Code nur im Arbeitsspeicher, nimmt ihn nicht in Einladungen oder Verbindungsberichte auf und vergisst ihn beim Neuladen. Normale Seitenskripte können die Eingabefelder lesen; eine private Gruppe schottet sie nicht ab. Jeder mit dem Code kann die für die Gruppe angebotenen Sitzungen finden. Geben Sie ihn daher nur an die gewünschten Personen weiter.</p>
+
+    <h3>Browser-Tab teilen</h3>
+    <p>
+      <a href="../share-tab/">Browser-Tab teilen</a> verwendet die Auswahl eines Desktop-Browsers, um einen Tab aufzunehmen und dessen Livebild an einen zugelassenen Betrachter zu senden. Der Betrachter fragt an, der Host stimmt zu und der Betrachter bestätigt, bevor Video übertragen wird. Es gibt keine Audio-, Kamera- oder Mikrofonaufnahme. Sichtbare Informationen im gewählten Tab werden geteilt; der Betrachter kann das empfangene Bild aufzeichnen.
+    </p>
+    <p>
+      Die Online-Suche nach Freigaben in der Nähe ist standardmäßig aus. Der Host kann vor dem Start Show in nearby shared tabs aktivieren; der Betrachter öffnet die Liste ausdrücklich mit Find nearby tabs. Die Suchverbindung zeigt nur den zufälligen Einladungscode, niemals Titel, Adresse oder Bild des aufgenommenen Tabs oder die Nachricht des Betrachters. Join neben einem Eintrag sendet die Anfrage über den angezeigten Verbindungsweg. Ohne gültigen Freigabenachweis bleibt die Zustimmung erforderlich. Ein kopierter Einladungslink wartet weiterhin auf Request to watch. Der Dienst gruppiert Seiten dieses Tools nach öffentlicher IPv4-Adresse oder IPv6-/64-Subnetz und Website-Origin, nicht nach dem physischen Standort. Gemeinsame Gateways oder VPNs können Fremde einschließen oder nahe Geräte verbergen. Einträge bestehen ohne gespeicherte Historie auf offenen Verbindungen; Stoppen entfernt den Eintrag des Hosts.
+    </p>
+    <p>
+      Im Modus Direct verwendet Video eine verschlüsselte Direktverbindung in einem erreichbaren lokalen Netz, ohne öffentliches STUN oder TURN. Beide Geräte benötigen Internet für die Suche und Kopplung. Die Vermittlungsstelle sieht Raumcodes, IP-Adressen, Zeiten, WebRTC-Beschreibungen und Verbindungskandidaten, aber keine Videos, Betrachternotizen oder Zulassungsentscheidungen. Cloudflare bewahrt Verbindungsmetadaten sieben Tage lang auf.
+    </p>
+    <p>
+      Die üblichen Seitenskripte können Seitenadresse und Zustand einschließlich eines Einladungscodes lesen; ein Link allein gewährt keinen Videozugang. Der Betrachter kann den Host nicht steuern oder Webseitentext auswählen. Das Tool hat keine Aufnahmefunktion, doch sichtbare angemeldete Inhalte gehören zum Bild und der Betrachter kann es selbst aufnehmen. Die Werkzeugseite erklärt Netzwerkgrenzen; lokale Adresseinstellungen beweisen keine physische Netzwerkgrenze.
+    </p>
+
     <h3>Remote-Kamera und Browser-Vermittlung</h3>
     <p>
-      <a href="../remote-camera/">Remote-Kamera</a> öffnet beim Laden der Seite eine WebSocket-Verbindung zur Erkennung von Kameras. Starten, Verbinden oder die Auswahl einer Kamera, die online ist, öffnet zusätzlich eine Raumverbindung zu unserem Vermittlungsdienst. Die Auswahl eines aufgelisteten Namens fordert sofort eine Verbindung an und tauscht Netzwerkadressen aus. Beim Öffnen eines Links zum Ansehen wartet die Seite weiterhin auf Verbinden. Die Zustimmung des Kamerahosts ist standardmäßig erforderlich und steuert die Videoübertragung, nicht den Austausch von Netzwerkadressen. Die Vermittlungsstelle sieht Codes, Adressen, Zeiten und Einrichtungsmeldungen, niemals Video oder Viewer-Notizen. Video läuft über eine verschlüsselte Direktverbindung ohne konfigurierte STUN-Server oder TURN-Relays, ohne Mikrofon und ohne Aufnahmefunktion. Internet bleibt für die Vermittlung erforderlich. VPN und Betriebssystem können das Routing beeinflussen; lokaler Modus beweist keine physische Netzwerkgrenze. Die Werkzeugseite erklärt diese Grenzen und dass Seitenskripte die vollständige Viewer-Link-Adresse lesen können.
+      <a href="../remote-camera/">Remote-Kamera</a> öffnet beim Laden der Seite eine WebSocket-Verbindung zur Erkennung von Kameras. Starten oder Verbinden öffnet zusätzlich eine Raumverbindung zu unserem Vermittlungsdienst. Join neben einer Kamera fordert über den angezeigten Verbindungsweg eine Verbindung an und tauscht Netzwerkadressen aus. Beim Öffnen eines Links zum Ansehen wartet die Seite weiterhin auf Verbinden. Die Zustimmung des Kamerahosts ist standardmäßig erforderlich und steuert die Übertragung von Video und Audio, nicht den Austausch von Netzwerkadressen. Die Vermittlungsstelle sieht Codes, Adressen, Zeiten und Einrichtungsmeldungen, niemals Video, Audio oder Viewer-Notizen. Im Modus Direct laufen Video und aktiviertes Audio über eine verschlüsselte Direktverbindung ohne konfigurierte STUN-Server oder TURN-Relays und ohne Aufnahmefunktion. Audio ist standardmäßig aus; erst wenn der Host Audio teilen wählt, fragt die Seite nach Mikrofonzugriff. Internet bleibt für die Vermittlung erforderlich. VPN und Betriebssystem können das Routing beeinflussen; lokaler Modus beweist keine physische Netzwerkgrenze. Die Werkzeugseite erklärt diese Grenzen und dass Seitenskripte die vollständige Viewer-Link-Adresse lesen können.
+    </p>
+    <p>
+      Optionale Benachrichtigungen analysieren kleine Videobilder und empfangenes Audio auf dem Gerät des Viewers, ohne Aufnahmen oder Uploads. Beim Aktivieren wird die Erlaubnis für Browser-Benachrichtigungen angefragt. Browser und Betriebssystem zeigen allgemeine Aktivitätsmeldungen ohne Kamerabild, Audio, Linknamen oder Viewer-Notiz. Trennen beendet die Analyse und schließt die Benachrichtigungen dieser Sitzung. Die Viewer-Seite muss offen bleiben; der Browser kann die Analyse im Hintergrund oder im Ruhezustand pausieren.
     </p>
 
     <h3>Text und Dateien teilen und die Vermittlungsstelle</h3>
     <p>
-      <a href="../text-teilen/">Text und Dateien teilen</a> öffnet eine Suchverbindung auf der Startseite und eine weitere beim Teilen. Namen werden nach öffentlicher IPv4-Adresse oder IPv6-Subnetz und Seitenursprung gruppiert; das ist eine Suchhilfe, kein Beweis für dasselbe physische Netz. Die Vermittlungsstelle sieht Namen, IPs, Zeiten und Verhandlungsmeldungen, nie geteilten Text oder Dateien. Veröffentlichte Namen leben nur auf offenen Verbindungen ohne dauerhaften Speicher. Der normale Modus nutzt öffentliche STUN-Server von Google und Cloudflare. Ein Leser kann bewusst über Cloudflares TURN-Relay erneut versuchen; es leitet verschlüsselte Daten ohne deren Schlüssel weiter. Lokaler Modus nutzt weder STUN noch TURN, benötigt aber die öffentliche Vermittlung. Cloudflare speichert sieben Tage Verbindungsmetadaten für Teilen und Kamera; diese Besucherprotokolle können wir lesen. Empfänger behalten bereits kopierte oder heruntergeladene Inhalte auch nach Schließen des Quell-Tabs.
+      <a href="../text-teilen/">Text und Dateien teilen</a> öffnet eine Suchverbindung auf der Startseite und eine weitere beim Teilen. Namen werden nach öffentlicher IPv4-Adresse oder IPv6-Subnetz und Seitenursprung gruppiert; das ist eine Suchhilfe, kein Beweis für dasselbe physische Netz. Die Vermittlungsstelle sieht Namen, IPs, Zeiten und Verhandlungsmeldungen, nie geteilten Text oder Dateien. Veröffentlichte Namen leben nur auf offenen Verbindungen ohne dauerhaften Speicher. Normales Direct nutzt öffentliche STUN-Server von Google und Cloudflare, die die Anfrageadresse sehen. Lokales Netzwerk beschränkt Direct auf Hostadressen ohne STUN oder TURN. Cloud relay ist eine eigene Wahl des Hosts vor dem Start, die der Leser vor dem Verbinden bestätigt. Alle Varianten brauchen die öffentliche Vermittlung für den Verbindungsaufbau. Cloudflare speichert sieben Tage Verbindungsmetadaten für Teilen und Kamera; diese Besucherprotokolle können wir lesen. Empfänger behalten bereits kopierte oder heruntergeladene Inhalte auch nach Schließen des Quell-Tabs.
     </p>
   </section>
 
@@ -115,6 +138,7 @@
     <p>
       Wir setzen keine Login- oder Sitzungscookies. Google-Skripte können die oben beschriebenen Cookies und Kennungen setzen. Die Seite nutzt außerdem lokalen Browserspeicher für Einstellungen und vorübergehende Arbeit.
     </p>
+    <p><strong>Freigaben beim Verbinden.</strong> Die fünf Verbindungswerkzeuge speichern zufällige Zugangsdaten für eine begrenzte Zahl zuletzt verwendeter Kombinationen aus Werkzeug, Raum und Verbindungsweg lokal im Browser. Sie enthalten keine geteilten Inhalte, Namen oder IP-Adressen. Text teilen, Browser-Tab teilen und Remote-Kamera übermitteln Freigabenachweise nur über die verschlüsselte Verbindung zwischen den Browsern; Sprachwerkzeuge senden ihren persönlichen Schlüssel beim Beitreten an den Vermittlungsdienst. Die Freigabe gilt für die aktuelle Hostsitzung: Trennen erhält sie, Entfernen durch den Host widerruft sie und Beenden oder ein Neustart setzt sie zurück. Gelöschter oder blockierter Speicher kann eine neue Freigabe nötig machen. Skripte auf jeder Seite dieses Website-Origins, auch von Drittanbietern, können die gespeicherten Zugangsdaten lesen. Sie sind nicht vor Seitenskripten geschützt und stehen weder in Einladungen noch in Suchlisten.</p>
     <p>
       <strong>Die Sprache, die Sie wählen.</strong> Wenn Sie im Umschalter eine
       Sprache auswählen, wird diese Wahl im lokalen Speicher Ihres Browsers
@@ -130,7 +154,7 @@
       <strong>Weiterer lokaler Speicher.</strong> Feedback merkt sich den Zeitpunkt einer Antwort oder Ablehnung. Werkzeuge können Einstellungen oder einen optionalen Teilen-Entwurf lokal behalten. Sprachwechsel und eine bewusste Weitergabe an ein anderes Werkzeug können Dateien und Einstellungen vorübergehend in IndexedDB ablegen. Das sind keine Cookies und keine Übertragungen an uns; das Löschen der Websitedaten entfernt sie. Das jeweilige Werkzeug erklärt dauerhafte Entwürfe.
     </p>
     <p>
-      Googles Cookies und Kennungen messen Besuche und wählen oder begrenzen Anzeigen. Sie sind von den oben beschriebenen lokalen Aufzeichnungen der Seite zu unterscheiden.
+      Googles Cookies und Kennungen messen Besuche und Werkzeugnutzung und wählen oder begrenzen Anzeigen. Sie sind von den oben beschriebenen lokalen Aufzeichnungen der Seite zu unterscheiden.
     </p>
     <h3>Wie Sie es abschalten</h3>
     <ul>

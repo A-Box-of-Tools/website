@@ -15,18 +15,18 @@
         Dasselbe mit der zweiten Datei, in das rechte Feld.
       </li>
     </ol>
-    <p>
-      Was jetzt aufleuchtet, ist echt: ein Wert, der sich geändert hat, ein
-      Schlüssel, der neu ist, ein Eintrag, der fehlt. Die
-      Formatierungsunterschiede und die umsortierten Schlüssel, in denen ein
-      gewöhnlicher Vergleich ertrunken wäre, sind fort, weil beide Seiten
-      gleich geschrieben waren, bevor der Vergleich begann.
-    </p>
+    <p>Das Ergebnis lässt sich viel leichter lesen. Sie sehen geänderte Werte, neue Schlüssel und entfernte Einträge. Formatunterschiede und umsortierte Schlüssel, die einen normalen Vergleich überlagert hätten, verschwinden, weil beide Seiten vor dem Vergleich gleich geschrieben wurden.</p>
     <p>
       Keine der beiden Seiten hat irgendeine Netzfunktion, was zu wissen sich
       lohnt: Das JSON, das Menschen vergleichen, sind so oft
       Konfigurationsdateien, in denen noch Zugangsdaten stehen.
     </p>
+  </section>
+
+  <section>
+    <h2>Konfigurationsänderungen und API-Regressionen</h2>
+    <p>Behalten Sie beim Vergleich von Staging und Produktion die Originale und formatieren Sie jeweils eine Kopie mit zwei Leerzeichen und sortierten Objektschlüsseln. Setzen Sie Staging links und Produktion rechts ein. Lassen Sie Groß-/Kleinschreibung und Leerraum ignorieren ausgeschaltet und prüfen Sie Endpunkte, Funktionsschalter und Grenzwerte. Leerzeichen in einem String und die Schreibweise eines Schlüssels können wichtig sein. Laden Sie den Patch erst herunter, wenn die Zuordnung der Umgebungen zu den Seiten feststeht.</p>
+    <p>Dasselbe Vorgehen prüft eine API-Antwort vor und nach einer Änderung. Verwenden Sie dieselben Eingaben und berücksichtigen Sie Zeitstempel oder erzeugte IDs getrennt. Arrays behalten ihre Reihenfolge. Eine umsortierte Liste unterscheidet sich weiterhin, wie es für eine geordnete JSON-Sequenz richtig ist. Auch gleichwertige Zahlenschreibweisen wie <code>1</code> und <code>1.0</code> oder unterschiedlich maskierte Strings können abweichen. Hier wird formatierter Text verglichen. Es ist weder eine Schemaprüfung noch eine Prüfung aller JSON-Werte auf Gleichwertigkeit. Der <a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">JSON-Standard</a> unterscheidet ungeordnete Objekte von geordneten Arrays.</p>
   </section>
 
   <section>
@@ -52,9 +52,7 @@
     <figure class="shot">
       <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
            alt="Die Vergleichsoptionen: Ansicht nebeneinander oder untereinander, ein Schalter für nur geänderte Zeilen und Schalter für das Ignorieren von Leerraum, Groß- und Kleinschreibung und Leerzeilen.">
-      <figcaption>
-        Diese verhindern, dass ein Vergleich jede Zeile meldet, weil eine Datei mit anderen Zeilenenden gespeichert wurde.
-      </figcaption>
+      <figcaption>Verwenden Sie die Ignorieren-Schalter vorsichtig. Sie wirken auf die Ansicht, während der heruntergeladene Patch alle Eingabeunterschiede einschließlich Zeilenenden behält.</figcaption>
     </figure>
   </section>
 
@@ -113,13 +111,7 @@
       Code-Reviews verstehen. Sie beschreibt die Normalformen, und das ist
       meist genau, was ein Review will: die Änderung, ohne das Umformatieren.
     </p>
-    <p>
-      Dasselbe Rezept funktioniert für alles andere, das beide Seiten
-      sprechen. YAML und XML kommen genauso in Normalform; und für zwei
-      gleichförmige Dateien aus verschiedenen Quellen sind die
-      Ignorier-Schalter des Vergleichs, Leerraum, Groß- und Kleinschreibung,
-      Leerzeilen, eine leichtere Fassung derselben Idee.
-    </p>
+    <p>Das Vorgehen Formatieren, dann Vergleichen kann auch YAML oder XML leichter prüfbar machen. Ihre Leerraum- und Konvertierungsregeln unterscheiden sich aber von JSON. Behalten Sie die ursprüngliche Sprache, wenn sich nur das Layout ändern soll. Die Ignorieren-Schalter des Vergleichs beeinflussen seine Ansicht. Der Patch vergleicht die tatsächlichen Eingabestrings. Das sind hier Ihre formatierten Kopien, also ist es kein Patch gegen die unveränderten Originale.</p>
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"

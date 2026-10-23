@@ -29,8 +29,8 @@ To see what would be deployed before pushing, run `python build.py` and look at
 | `dist` | the built site, and nothing else — one commit, replaced every deploy | GitHub Pages serves it |
 
 Work is opened against `dev`. **Releasing is opening a pull request from `dev`
-to `main`** and merging it — there is no other step, and no file in the tree has
-to be edited to do it.
+to `main`** and merging it. Ordinary releases need no other step or version
+file edit; choosing a major version has the manual tag step described below.
 
 **That merge is done by hand, on purpose, and nothing here will ever do it for
 you.** No schedule opens the pull request, no workflow merges it, and nothing
@@ -156,6 +156,32 @@ tagged checkout therefore shows the same number. Local and preview builds use
 an existing local release tag: the one on `HEAD`, or the highest version when
 `HEAD` is untagged. A source archive without Git or version tags omits the link
 unless a release version is supplied; discovering it never contacts GitHub.
+
+### Choosing a major version
+
+A major version is a deliberate tag, not an automatic bump. This procedure
+requires explicit authorization to open and merge `dev` → `main` and to publish
+the chosen major tag; preparing a launch does not grant that authorization.
+
+1. Finish the release changes and device checks, then run the full release-PR
+   QA gate on the final candidate. Keep that reviewed `dev` commit fixed.
+2. Choose an unused version higher than the existing version tags. Verify that
+   the prospective release merge has exactly the same file tree as the reviewed
+   commit. A different merge commit ID is fine; different contents are not.
+3. Create the annotated tag on that explicit commit, for example
+   `git tag -a 2.0.0 <reviewed-dev-sha> -m "Release 2.0.0"`, and push it with
+   `git push origin refs/tags/2.0.0` before merging the release PR.
+4. Merge the authorized release without further source changes. The production
+   workflow fetches the tags before calculating its version. An empty diff from
+   `2.0.0` to the deployment commit preserves `2.0.0`; the builds use that number
+   and the workflow creates its GitHub release page after publication. Verify
+   the deployment and the public footer before declaring the release live.
+
+This manual tag precedes publication, unlike automatic patch and minor tags.
+A tag-only push does not deploy, and its existence does not prove publication
+succeeded. Tagging an older commit or adding changes afterwards can produce
+`2.0.1`, or `2.1.0` if those changes add a tool. Pushing the tag after the workflow
+has calculated its version cannot change the saved decision for that run.
 
 ## GitHub Pages
 

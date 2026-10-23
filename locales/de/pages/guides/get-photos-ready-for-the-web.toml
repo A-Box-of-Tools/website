@@ -13,8 +13,8 @@ lede = """
     zuschneiden, komprimieren. Jeder Schritt läuft auf Ihrem eigenen Gerät,
     und genau dorthin gehören Fotos mit Ihren GPS-Koordinaten darin."""
 
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 
 og_title = "Aus Handyfotos postbare Fotos, ohne die Originale hochzuladen"
-og_description = "HEIC zu JPEG, GPS weg, für die Seite skaliert, auf ein Budget komprimiert. Welches Werkzeug welchen Schritt macht, in welcher Reihenfolge, und warum sich die Metadaten von selbst erledigen."
+og_description = "Fotos für eine Webseite konvertieren, skalieren und komprimieren, dann Metadaten der fertigen Kopien prüfen. Welches Werkzeug welchen Schritt übernimmt und was bei unveränderten Dateien anders ist."
 og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

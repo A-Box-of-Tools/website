@@ -24,6 +24,13 @@
   </section>
 
   <section>
+    <h2>Des décodages utiles qui n'exigent pas de secret</h2>
+    <p><strong>Examiner la charge textuelle d'une API.</strong> Choisissez le décodage Base64 dans l'<a href="../../encoder-base64/">encodeur et décodeur</a> et comparez le texte UTF-8 obtenu à ce que l'API devait envoyer. Choisissez Base64 compatible URL pour une charge avec <code>-</code> et <code>_</code>. Le contrôle canonique facultatif teste les règles d'écriture de cet outil&nbsp;; un protocole peut utiliser volontairement un autre remplissage ou retour à la ligne.</p>
+    <p><strong>Trouver un désaccord d'encodage.</strong> Décodez une valeur de requête encodée pour cent ou une chaîne échappée pour vérifier accents, espaces et ponctuation. Choisissez le codec de cette couche et réencodez pour examiner l'aller-retour. Ne décodez pas plusieurs fois une URL entière si un seul paramètre a été encodé.</p>
+    <p>La zone traite du texte, pas la conversion de fichiers binaires quelconques, le chiffrement ou la vérification de signatures JWT. Un identifiant décodé reste un identifiant. Pour une image intégrée plutôt qu'un texte, utilisez le <a href="../integrer-une-image-dans-le-css/">guide des URI de données d'image</a>.</p>
+  </section>
+
+  <section>
     <h2>L'encodage&nbsp;: réversible par tout le monde</h2>
     <p>
       Un encodage change la façon dont les données sont <em>écrites</em>,
@@ -62,18 +69,7 @@
       dans la clé, pas dans la méthode&nbsp;: les algorithmes sont
       publiés, normalisés, et plus forts pour cela.
     </p>
-    <p>
-      C'est ici que la confusion visuelle mord, parce que des octets
-      chiffrés sont routinièrement encodés en base64 pour voyager &mdash;
-      brouillés par une clé, puis costumés pour le transport. Deux
-      couches, deux travaux. Le JSON Web Token est le cas d'école&nbsp;:
-      trois morceaux de base64 joints par des points, dont les deux
-      premiers se <em>décodent</em> en JSON lisible pour quiconque
-      essaie. Des gens collent des jetons dans des décodeurs web publics
-      tous les jours, en ayant supposé que le tout était scellé&nbsp;; la
-      description honnête est qu'un JWT est une carte postale à signature
-      infalsifiable, pas une enveloppe.
-    </p>
+    <p>La confusion visuelle apparaît ici&nbsp;: des octets chiffrés sont souvent encodés en base64 pour être transportés. Une clé les brouille, puis une présentation permet le transport&nbsp;: deux couches aux rôles différents. Un JSON Web Token signé courant comporte trois parties base64url séparées par des points&nbsp;; en-tête et charge se décodent en JSON lisible. Les décoder ne valide pas la signature. Les JWT peuvent aussi être chiffrés ou non sécurisés, comme l'explique la <a href="https://www.rfc-editor.org/rfc/rfc7519" target="_blank" rel="noopener noreferrer">RFC 7519</a>. Ne déduisez ni confidentialité ni authenticité de l'apparence encodée et ne collez pas d'identifiant actif dans un décodeur inconnu.</p>
   </section>
 
   <section>

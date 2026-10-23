@@ -8,6 +8,27 @@
     </figure>
   </section>
   <section>
+    <h2>A talk to listen to, or a track to edit</h2>
+    <p>
+      For a lecture, recorded presentation or interview you want to hear away
+      from the screen, keep the source channels and the default 16-bit PCM
+      first. Listen to the opening and ending, then carry the WAV into the <a
+      href="../../trim-audio/">audio trimmer</a> if only a section matters.
+      WAV can be much larger than the compressed soundtrack, so check what
+      your listening app accepts before transferring it.
+    </p>
+    <p>
+      For a voiceover or podcast edit, choose Float32 with the channels
+      unchanged and keep that WAV as the working copy. Extraction takes the
+      existing mixed soundtrack: it does not separate a speaker from music,
+      remove background noise or transcribe words. Try mono only after
+      listening to both channels; it can save space for a spoken recording,
+      but two microphones may carry different voices or partly cancel when
+      averaged.
+    </p>
+  </section>
+
+  <section>
     <h2>Choose 16-bit or Float32</h2>
     <p>16-bit PCM is the default for broad playback compatibility. Writing it rounds and clamps the decoded samples. Float32 keeps those decoded sample values when the channels are unchanged, including values above full scale, and is useful for further editing. It does not restore detail already lost in a compressed soundtrack.</p>
     <p>WAV stores uncompressed audio, so it can be much larger than the video’s compressed audio track. The extractor does not produce MP3: this tool ships no MP3 encoder. A local encoder in another application can create MP3 without uploading the file.</p>

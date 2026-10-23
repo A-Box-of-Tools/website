@@ -1,17 +1,31 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Lokale Freigaben an diesem Anschluss</h2>
-      <p id="discovery-status" role="status" aria-live="polite">Suche lokale Freigaben…</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
-      <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Verfügbare Verbindungen</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Aktualisieren</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Verfügbare Verbindungen werden gesucht…</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">Beitreten öffnet einen Leser-Tab über den angezeigten Verbindungstyp. Private Freigaben warten auf Zustimmung.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">Diese Liste zeigt Direkt- und Cloud-relay-Freigaben im ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Die Netzwerksuche nutzt die öffentliche IPv4-Adresse oder das IPv6-Subnetz; gemeinsame Gateways können Fremde einschließen und unterschiedliche Routen nahe Geräte verbergen. Eine private Gruppe nutzt stattdessen ihren Code. Beitreten startet eine Verbindungsanfrage in einem neuen Tab; bloßes Durchsehen verbindet nicht. Private Freigaben benötigen weiterhin die Zustimmung der teilenden Person.</p>
+      </details>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Schreiben Sie ihn, oder hängen Sie sie an</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="Leser sehen ihn formatiert, live gerendert beim Tippen">
@@ -29,10 +43,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Anzuhängende Dateien">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Dateien nutzen dieselbe direkte Verbindung wie der Text, bis
-        200&nbsp;MB pro Stück. Leser sehen die Liste und holen jede Datei
-        nur, wenn sie danach fragen. Eine Freigabe kann bis zu 256 Dateien enthalten.</p>
+      <p class="field-note">Dateien nutzen denselben verschlüsselten Kanal wie der Text, bis zu 200&nbsp;MB pro Datei und 256 Dateien pro Freigabe. Leser sehen die Liste und laden Dateien nur auf Wunsch.</p>
     </section>
 
     <section class="card">
@@ -43,26 +54,28 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Anderen Namen vorschlagen">&#8635;</button>
         </div>
-        <p class="field-note">Der Name ist die Adresse, kurz genug, um ihn durch einen Raum zu rufen. Auffindbare lokale Freigaben zeigen ihn anderen an diesem Anschluss. Lassen Sie Privat für alles Sensible an.</p>
+        <p class="field-note">Der Name ist die Adresse und kurz genug, um ihn durch einen Raum zu sagen. Auffindbare Freigaben zeigen ihn im ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat für sensible Inhalte eingeschaltet.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           Privat &mdash; jeder Leser muss anfragen, und Sie lassen ihn ein
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Lokales Netzwerk — kein Internet-Relais
-        </label>
-        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Lokales Netzwerk ist standardmäßig aus; wählen Sie es, um Ihre Freigabe in der lokalen Suche aufzulisten.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Lokales Netzwerk — kein Internet-Relais
+          </label>
+          <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Internet wird weiterhin zur Vermittlung benötigt; dieser Modus nutzt weder öffentliche Adressermittlung noch ein Relay. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Wählen Sie im Direktmodus Lokales Netzwerk oder treten Sie einer privaten Gruppe bei, damit Ihre Freigabe auffindbar wird. Cloud-relay-Freigaben können ebenfalls erscheinen, wenn Auffindbar gewählt ist.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
+            Auffindbar — diesen Link im ausgewählten Netzwerk oder in der Gruppe anzeigen
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Über auffindbare Freigaben</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen im oben ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat eingeschaltet, besonders in gemeinsam genutzten Netzwerken. Ist Privat aus, kann jeder, der den Namen sieht, ohne Ihre Zustimmung verbinden und lesen. Deaktivieren Sie Auffindbar, um nur per Link zu teilen.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -81,7 +94,10 @@
       <h2><span class="step">3</span> Teilen Sie ihn</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Freigabe starten</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="Der Freigabe-Link">
@@ -90,12 +106,11 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>Nichts wird irgendwo gespeichert</h2>
-      <p>Text und Dateien wandern verschlüsselt direkt aus diesem Tab in den jedes Lesers. Der Vermittler stellt die Browser einander vor und listet auffindbare Link-Namen; Text und Dateien sieht er nie. Das Schließen dieses Tabs beendet die Freigabe und leert die offenen Seiten der Leser — was jemand bereits kopiert oder heruntergeladen hat, gehört ihm weiterhin.</p>
+      <h2>Keine Inhaltsablage auf Servern</h2>
+      <p>Text und Dateien sind zwischen Ihrem Browser und jedem Leser verschlüsselt. Direkt ist der Standard. Bei ausgewähltem Cloud-Relais werden verschlüsselte Pakete über Cloudflare weitergeleitet; das Relais kann den Inhalt nicht lesen. Der Vermittler überträgt nur Verbindungsaufbau und auffindbare Link-Namen. Wir speichern keine geteilten Inhalte auf einem Server. Schließen Sie den Tab, endet die Quelle; Leser leeren ihre Ansicht nach der Endnachricht oder einem erkannten Verbindungsfehler. Bereits gespeicherte Kopien bleiben ihnen erhalten.</p>
     </section>
   </section>
 
@@ -106,10 +121,13 @@
       <p id="view-status" role="status" aria-live="polite">Suche den Teilenden&hellip;</p>
 
       <div id="consent" hidden>
-        <p>Durch das Verbinden kann der Teilende Text und Dateien über einen verschlüsselten Kanal direkt an Ihren Browser senden. Wie jede Direktverbindung zeigt sie beiden Seiten die Netzwerkadresse (IP) der jeweils anderen. Der Teilende erfährt erst, dass Sie diesen Link geöffnet haben, wenn Sie sich zum Verbinden entscheiden.</p>
+        <p>Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen aus. Das Cloud-Relais verwendet Relais-Adressen; Cloudflare sieht die Netzwerkadressen beider Geräte sowie Verbindungs- und Verkehrsdaten. Dies ist keine Anonymitätsgarantie. Prüfen Sie die Verbindungsart, bevor Sie ausdrücklich Verbinden wählen.</p>
         <p id="local-note" hidden>Dieser Link nutzt den Modus Lokales Netzwerk. Beide Geräte müssen im selben WLAN oder Ethernet-Netz sein; für die Vermittlung ist weiterhin Internet nötig. Es werden weder öffentliche Server zur Adressermittlung noch ein Internet-Relais genutzt. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen.</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -126,20 +144,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          Die Alternative ist ein verschlüsselter Umweg über ein Relais.
-          Ihr Browser würde über einen Relais-Server von Cloudflare senden
-          und empfangen, der die verschlüsselten Bytes weiterreicht und
-          nicht lesen kann; er erfährt Ihre Netzadresse und die des
-          Teilenden, wie es auch die Direktverbindung getan hätte.
-          Gespeichert wird auch dort nichts, und die Seite des Teilenden
-          sendet weiterhin allein an Sie.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Erneut versuchen, über das Relais</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Mit dem Verbindungsmodus des Teilenden erneut versuchen</button>
@@ -167,20 +172,50 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Verbindungsdetails</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Noch kein Verbindungsversuch.</p>
+    <p class="field-note">Falls eine Verbindung fehlschlägt, kopieren Sie diesen Bericht auf beiden Geräten. Er enthält keine geteilten Texte, Dateinamen, Linknamen, Netzwerkadressen oder Zugangsdaten.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Verbindungsbericht kopieren</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Verbindungsbericht</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">Die Suche kann eine Freigabe finden, auch wenn sich die Browser nicht direkt verbinden können; dieser Bericht zeigt den erreichten Schritt, belegt aber nicht die Ursache.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Noch kein Verbindungsversuch.</span>
+    <span data-phrase="debug.attempt">Verbindungsversuch {n}. {status}</span>
+    <span data-phrase="debug.introduction">Der Vermittlungsserver wird kontaktiert.</span>
+    <span data-phrase="debug.network">Die Verbindung zwischen den Browsern wird eingerichtet.</span>
+    <span data-phrase="debug.channel">Verbindung offen; die Freigabe wird erwartet.</span>
+    <span data-phrase="debug.approval">Verbunden; die Zustimmung wird erwartet.</span>
+    <span data-phrase="debug.connected">Verbunden; die Freigabe wird empfangen.</span>
+    <span data-phrase="debug.host-connected">Mit einem Empfänger verbunden.</span>
+    <span data-phrase="debug.transfer">Eine Datei wird übertragen.</span>
+    <span data-phrase="debug.transfer-complete">Dateiübertragung abgeschlossen.</span>
+    <span data-phrase="debug.transfer-failed">Die Dateiübertragung konnte nicht abgeschlossen werden.</span>
+    <span data-phrase="debug.failed">Dieser Verbindungsversuch wurde vorzeitig beendet; der Bericht hält den zuletzt erreichten Schritt fest.</span>
+    <span data-phrase="debug.ended">Diese Verbindung wurde beendet.</span>
+    <span data-phrase="debug.unsupported">Dieser Browser unterstützt die für dieses Werkzeug benötigten Verbindungsfunktionen nicht.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Suche lokale Freigaben…</span>
-    <span data-phrase="discovery.empty">Hier gibt es noch keine auffindbaren lokalen Freigaben. Lassen Sie den Tab des Teilenden offen, oder nutzen Sie seinen Link.</span>
-    <span data-phrase="discovery.ready">Wählen Sie eine Freigabe, um ihre Verbindungsseite zu öffnen.</span>
-    <span data-phrase="discovery.unavailable">Die lokale Suche ist nicht verfügbar. Sie können weiterhin einen Freigabe-Link nutzen.</span>
-    <span data-phrase="discovery.open">Freigabe öffnen</span>
-    <span data-phrase="discovery.publishing">Diese lokale Freigabe wird auffindbar gemacht…</span>
-    <span data-phrase="discovery.published">Ihre lokale Freigabe ist an diesem Anschluss auffindbar.</span>
-    <span data-phrase="discovery.not-published">Diese Freigabe ist per Link verfügbar; die lokale Suche konnte sie nicht veröffentlichen.</span>
+    <span data-phrase="discovery.connecting">Verfügbare Verbindungen werden gesucht…</span>
+    <span data-phrase="discovery.empty">In diesem Netzwerk oder dieser Gruppe sind noch keine Freigaben gelistet. Lassen Sie den Tab der teilenden Person geöffnet oder verwenden Sie ihren Link.</span>
+    <span data-phrase="discovery.ready">Prüfen Sie den Verbindungstyp und wählen Sie Beitreten.</span>
+    <span data-phrase="discovery.unavailable">Die Suche ist nicht verfügbar. Sie können weiterhin einen Freigabelink verwenden.</span>
+    <span data-phrase="discovery.join">Beitreten</span>
+    <span data-phrase="discovery.join-direct">{code} direkt beitreten</span>
+    <span data-phrase="discovery.join-relay">{code} über Cloud-Relais beitreten</span>
+    <span data-phrase="discovery.publishing">Die Freigabe wird auffindbar gemacht…</span>
+    <span data-phrase="discovery.published">Ihre Freigabe ist im ausgewählten Netzwerk oder in der privaten Gruppe gelistet.</span>
+    <span data-phrase="discovery.not-published">Diese Freigabe ist per Link erreichbar; die Suche konnte sie nicht veröffentlichen.</span>
 
     <span data-phrase="share.active">Freigabe läuft</span>
     <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>
@@ -203,6 +238,8 @@
     <span data-phrase="share.leave-warning">Wenn Sie diese Seite verlassen, endet die Freigabe für alle. Fortfahren?</span>
 
     <span data-phrase="copy.select">Ausgewählt — bitte manuell kopieren</span>
+    <span data-phrase="view.reconnecting">Die Verbindung wurde unterbrochen. Solange diese Seite sichtbar ist, wird versucht, dieselbe Freigabe wieder zu verbinden…</span>
+    <span data-phrase="view.interrupted">Die Verbindung konnte nicht wiederhergestellt werden. Bitten Sie die teilende Person, ihre Seite offen zu lassen, und prüfen Sie diesen Link erneut.</span>
     <span data-phrase="view.file-cancel">Download abbrechen</span>
     <span data-phrase="view.file-retry">Download erneut versuchen</span>
     <span data-phrase="view.file-cancelled">Download abgebrochen. Die Freigabe ist weiterhin geöffnet.</span>
@@ -234,7 +271,7 @@
     <span data-phrase="share.local-waiting">Freigabe im Modus Lokales Netzwerk läuft. Warte, bis jemand den Link öffnet — lassen Sie diesen Tab offen.</span>
     <span data-phrase="view.local-connecting">Verbinde über das lokale Netzwerk…</span>
     <span data-phrase="view.mode-local">Der Teilende nutzt den Modus Lokales Netzwerk. Versuchen Sie es mit seinem Modus erneut, um sich ohne Internet-Relais zu verbinden.</span>
-    <span data-phrase="view.mode-direct">Der Teilende nutzt den normalen Verbindungsmodus. Versuchen Sie es mit seinem Modus erneut; ein Relais wird erst nach einem gescheiterten Direktversuch angeboten und nur genutzt, wenn Sie es wählen.</span>
+    <span data-phrase="view.mode-direct">Der Host nutzt den normalen Direktmodus. Wiederholen Sie die Verbindung mit seinem Modus; Direkt wechselt nicht zu einem Relais. Für einen anderen Weg muss der Host eine neue Cloud-Relais-Sitzung starten.</span>
     <span data-phrase="view.local-no-connect">Der Teilende ist im Modus Lokales Netzwerk nicht erreichbar. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen; die Geräteisolierung im Gastnetz, ein VPN, eine Firewall oder Browsereinstellungen können die Verbindung blockieren. In diesem Modus wird kein Internet-Relais angeboten.</span>
     <span data-phrase="view.file-failed">Der Download konnte nicht abgeschlossen werden. Versuchen Sie diese Datei erneut, solange die Freigabe geöffnet ist.</span>
 
@@ -249,4 +286,5 @@
       Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
       davon hat ein Zeichen davon bekommen.</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

@@ -13,20 +13,9 @@
         <strong>Imprima um.</strong> No tamanho real, no papel real, antes
         da tiragem de duzentos.
       </li>
-      <li>
-        <strong>Prove.</strong> Fotografe a prova com um celular &mdash; de
-        lado, na luz do lugar &mdash; e solte a foto no
-        <a href="../../ler-qr-code/">Leitor de QR e código de
-        barras</a>. Ele mostra a carga decodificada e, para um link, o host
-        que ele alcança de verdade. Se isso bate com o que você queria, a
-        tiragem está segura.
-      </li>
+      <li><strong>Comprove.</strong> Fotografe a prova impressa com um celular, em ângulo e com a luz do local, e adicione ao <a href="../../ler-qr-code/">Leitor de QR e códigos de barras</a>. Mostra o conteúdo e, em links, o host desse endereço codificado. Se corresponder, teste com os celulares que usarão e confira o destino separadamente.</li>
     </ol>
-    <p>
-      As duas ferramentas rodam no seu navegador e não mandam nada para
-      lugar nenhum &mdash; o que, para um código de Wi-Fi, significa que a
-      senha dentro dele nunca foi digitada no site de ninguém.
-    </p>
+    <p>As duas ferramentas funcionam no navegador sem enviar nada. Em um código Wi-Fi, o processamento não transmite a senha para criar ou ler.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-qr-code-and-prove-it-scans/made.webp" loading="lazy" decoding="async"
@@ -35,6 +24,12 @@
         O código, feito.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Confira o destino além da impressão</h2>
+    <p>Para cardápio, inscrição ou manual, cole a URL HTTPS completa, preserve quatro módulos de margem e incorpore o SVG ao layout final. Imprima no tamanho previsto, monte na superfície prevista e escaneie de onde o visitante ficará. Leia o endereço e abra conscientemente no celular para completar a ação: ler o cardápio, chegar ao formulário ou ao manual correto. Uma string correta ainda pode levar a uma página indisponível ou que peça login inesperado.</p>
+    <p>Cartões de contato exigem outro passo: após ler o código impresso, salve o contato no celular e confira nome, número e e-mail. Em folhas de etiquetas, fotografe cada código separadamente: o leitor encontra um por imagem. Repita o teste ao mudar URL, cores, tamanho ou layout e use vários celulares antes de uma tiragem grande.</p>
   </section>
 
   <section>
@@ -53,19 +48,8 @@
         honesto; os níveis de correção de erro do gerador dizem em voz alta
         o que cada um custa em densidade.
       </li>
-      <li>
-        <strong>As cores.</strong> Códigos impressos em claro sobre escuro
-        escaneiam; paletas de marca com pouco contraste, muitas vezes não. O
-        leitor aguenta mais que a maioria dos celulares: se <em>ele</em>
-        sofre com a foto, o celular mais velho do saguão não tem chance
-        nenhuma.
-      </li>
-      <li>
-        <strong>A dobra e o reflexo.</strong> A correção Reed-Solomon faz um
-        código meio coberto ainda ler &mdash; até o nível que você escolheu.
-        Um cartaz destinado ao tempo merece o nível mais alto e o código um
-        pouco mais denso que ele custa.
-      </li>
+      <li><strong>As cores.</strong> Este leitor lê códigos invertidos, mas isso não prova que todos os celulares façam o mesmo. Comece com módulos escuros sobre fundo claro e teste as cores reais da marca após imprimir.</li>
+      <li><strong>Dobras e reflexos.</strong> Reed&ndash;Solomon repara parte dos dados danificados, mas a porcentagem não é uma área garantida que pode cobrir. Os padrões de detecção precisam continuar legíveis. Uma placa exposta ao tempo merece o nível maior e o código um pouco mais denso que isso exige.</li>
     </ul>
 
     <figure class="shot">
@@ -79,15 +63,7 @@
 
   <section>
     <h2>O mesmo leitor, para códigos que não são seus</h2>
-    <p>
-      Verificar é também o jeito seguro de abrir o QR que outra pessoa
-      imprimiu. O leitor mostra o endereço inteiro e o host que ele alcança
-      de verdade <em>antes de qualquer coisa abrir</em>, e nomeia os truques
-      que disfarçam um link: um nome de usuário antes do @, um alfabeto
-      sósia, um redirecionamento. O adesivo no parquímetro merece essa
-      inspeção; o crachá do congresso também. Nada é aberto por você, e nada
-      do que você escaneia é enviado a lugar nenhum.
-    </p>
+    <p>Verificar também permite abrir com mais cuidado um QR alheio. O leitor mostra o endereço inteiro e seu host <em>antes de abrir algo</em> e aponta o que conferir: usuário antes de @, letras parecidas ou encurtador conhecido. Não segue redirecionamentos nem descobre o destino final de um link curto. Vale conferir um adesivo de parquímetro ou crachá de congresso. Nada é aberto por você nem enviado do que escaneia.</p>
   </section>
 
   <section>

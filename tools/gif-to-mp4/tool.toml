@@ -54,7 +54,7 @@ css_parts = ["progress", "form", "notes", "results"]
 #
 # example-gif and example-photo are for the example alone: the animated GIF
 # the splitter and the analyser demonstrate on, drawn in the page.
-js_parts = ["file-picker", "gif-decode", "gif-compose", "gif-working-budget", "mp4-muxer", "mp4-boxes", "mp4-reader", "video-support", "codec-support", "webcodecs", "message-box", "format", "errors", "example-gif", "example-photo"]
+js_parts = ["file-picker", "gif-decode", "gif-compose", "gif-working-budget", "mp4-muxer", "mp4-boxes", "mp4-reader", "video-support", "codec-support", "codec-support-worker", "webcodecs", "message-box", "format", "errors", "example-gif", "example-photo"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the result once there is one. A
 # GIF made into a video is often then too big for where it is going, or

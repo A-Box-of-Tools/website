@@ -658,6 +658,7 @@ function renderShots() {
     save.className = 'as-button';
     save.href = shot.url;
     save.download = shot.name;
+    save.addEventListener('click', () => globalThis.aboxToolComplete?.());
     save.textContent = phrase('shot.save');
     const remove = document.createElement('button');
     remove.type = 'button';

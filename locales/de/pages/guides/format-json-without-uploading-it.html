@@ -8,12 +8,7 @@
       denn es gibt keinen Ort, wohin: Der Parser sind ein paar hundert Zeilen
       JavaScript, die in dem Tab laufen, den Sie ohnehin offen haben.
     </p>
-    <p>
-      Alles Folgende ist das, was zu wissen sich lohnt, bevor Sie eine
-      Konfigurationsdatei in irgendeine der Alternativen einfügen: was ein
-      Formatierer ändern darf, was die meisten trotzdem ändern, und wie man den
-      Fehler liest, wenn sich die Datei gar nicht erst lesen lässt.
-    </p>
+    <p>Alles Folgende sollten Sie wissen, bevor Sie eine Konfigurationsdatei in eine Alternative einfügen. Es geht darum, was ein Formatierer ändern darf, was eine unvorsichtige Umsetzung trotzdem verändern kann und wie Sie den Fehler lesen, wenn die Datei gar nicht geparst werden kann.</p>
 
     <figure class="shot">
       <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
@@ -22,6 +17,12 @@
         Eine Zeile hinein, etwas Lesbares heraus. Dafür wurde nichts irgendwohin geschickt.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Eine API-Antwort oder Konfigurationsdatei untersuchen</h2>
+    <p>Fügen Sie den Antwortinhalt ohne HTTP-Header ein, wählen Sie JSON im Sprachmenü und zwei Leerzeichen Einrückung. Lassen Sie die Schlüsselsortierung zur ersten Prüfung aus, damit die Ausgabe der Quelle folgt. Scheitert das Parsen, verwenden Sie <em>Zur Fehlerstelle</em>, korrigieren Sie das gemeldete Komma, Anführungszeichen oder Escape und prüfen Sie das neue Ergebnis vor dem Kopieren. Erfolgreiches Parsen prüft nicht das API-Schema. Vergleichen Sie erforderliche Schlüssel, Werttypen und lange IDs mit den Erwartungen der Zielanwendung.</p>
+    <p>Für einen kompakten Inhalt auf einem Offlineetikett oder in einem Feld mit Bytelimit behalten Sie eine lesbare Kopie und wählen zur Weitergabe die minifizierte Ausgabe. Prüfen Sie die gemeldete Größe und lesen oder dekodieren Sie den übermittelten Inhalt erneut. Minifizierung entfernt Layoutleerraum. Sie kürzt keine langen Werte und entfernt keine privaten Felder. Soll die formatierte Antwort in eine Supportanfrage, entfernen Sie Zugangsdaten und personenbezogene Werte aus der geteilten Kopie.</p>
   </section>
 
   <section>
@@ -248,35 +249,13 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       wenn eines minifiziert war und das andere nicht, und kein Diff kann daran
       vorbeisehen.
     </p>
-    <p>
-      Also: das erste formatieren, das zweite formatieren, dann die beiden
-      Ergebnisse vergleichen. Alle drei Schritte sind hier auf derselben Seite
-      &mdash; der Reiter <em>Vergleichen</em> teilt sich das Feld mit
-      <em>Formatieren</em>, genau deshalb. Führen die beiden ihre Schlüssel auch
-      noch in unterschiedlicher Reihenfolge, sortieren Sie beim Formatieren beide,
-      und der Vergleich schrumpft auf den Unterschied zusammen, den Sie gesucht
-      haben.
-    </p>
+    <p>Formatieren Sie also erst die eine, dann die andere Datei und fügen Sie beide Ergebnisse in <a href="../../text-vergleichen/">Textvergleich</a> ein. Vergleichen hat eine eigene Seite. Sind auch die Objektschlüssel verschieden geordnet, sortieren Sie beide Kopien beim Formatieren. Der <a href="../zwei-json-dateien-vergleichen/">Vergleichsleitfaden</a> erklärt den gesamten Ablauf und die Unterschiede, die Sortieren nicht beseitigt.</p>
   </section>
 
   <section>
     <h2>Der Teil, den niemand auf die Seite schreibt</h2>
-    <p>
-      Suchen Sie nach einem JSON-Formatierer, und Sie finden Dutzende Seiten mit
-      einem Feld darauf. In dieses Feld einzufügen ist ein Hochladen. Was auch
-      immer in Ihrer Zwischenablage lag &mdash; eine API-Antwort mit der Adresse
-      eines Kunden darin, eine Konfigurationsdatei mit einer
-      Verbindungszeichenkette, ein Token, an dem Sie gerade fehlersuchen &mdash;
-      ist an eine Maschine gegangen, die Ihnen nicht gehört, und ist jetzt deren
-      Logdatei, deren Fehlerbericht und deren Sicherung.
-    </p>
-    <p>
-      Das ist keine Vermutung über böse Absichten. Auch eine völlig
-      wohlmeinende Seite führt Zugriffsprotokolle, betreibt Analytik und hat einen
-      Hoster. Die sichersten Daten sind die, die nie gegangen sind, und für eine
-      Aufgabe, die reine Zeichenkettenarbeit ist, gibt es überhaupt keinen Grund
-      zu gehen.
-    </p>
+    <p>Eine Suche nach JSON-Formatierern liefert Dutzende Websites mit einem Textfeld. Sendet der Formatierer die Eingabe an einen Server, geben Einfügen und Formatieren diesem Server alles aus Ihrer Zwischenablage, etwa eine API-Antwort mit Kundenadresse, eine Verbindungszeichenfolge oder ein Token. Manche Formatierer arbeiten lokal. Prüfen Sie den verwendeten, statt aus der Form seines Textfelds auf den Verarbeitungsort zu schließen.</p>
+    <p>Das setzt keine böse Absicht voraus. Ein Serverdienst kann Eingaben in Protokollen, Fehlerberichten oder Sicherungen behalten, auch wenn sein Betreiber es gut meint. Am sichersten sind Daten, die nie weg waren. Für eine reine Stringverarbeitung müssen sie das Gerät nicht verlassen.</p>
     <p>
       Zwei Prüfungen, und sie funktionieren bei jeder Seite, die das behauptet,
       nicht nur bei dieser:
@@ -303,11 +282,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
 
   <section>
     <h2>Und YAML, XML und der Rest?</h2>
-    <p>
-      Dieselbe Seite liest XML, HTML, CSS und YAML und wandelt zwischen JSON und
-      dem ersten und dem letzten davon um. Zwei Dinge von oben lohnt es sich
-      mitzunehmen, denn sie sind dasselbe Argument in anderem Gewand:
-    </p>
+    <p>Dieselbe Seite liest XML, HTML, CSS und YAML und konvertiert zwischen JSON und XML oder YAML. Der <a href="../../guides/format-and-check-xml/">XML-Leitfaden</a> und der <a href="../../guides/convert-yaml-and-json/">YAML-Konvertierungsleitfaden</a> behandeln diese Abläufe. Zwei Punkte von oben gelten dort ebenso, weil es dieselben Fragen in anderer Form sind.</p>
     <ul>
       <li>
         <strong>YAML nach JSON zu wandeln verliert die Kommentare</strong>, denn

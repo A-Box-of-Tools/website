@@ -15,7 +15,7 @@ lede = """
     rodam no seu navegador, que é onde arquivos de configuração com segredos
     dentro devem ficar."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Compare dois arquivos JSON sem o ruído da formatação"
 og_description = "Canonize os dois arquivos, mesma indentação, chaves ordenadas, e compare depois. O que acende então é real, e nada foi enviado."

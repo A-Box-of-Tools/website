@@ -28,9 +28,9 @@ lede = """
     or copying asks them nicely. Both are worth having, and the difference
     decides what you can promise the person you send the file to."""
 
-updated = "12 September 2026"
+updated = "13 October 2026"
 published = "2026-09-12"
-lastmod = "2026-09-12"
+lastmod = "2026-10-13"
 
 og_title = "How to password-protect a PDF, and what it is worth"
 og_description = "The password is a lock, the restrictions are a request, and the upload every online tool asks for is the strange part. How to do it in your browser instead."

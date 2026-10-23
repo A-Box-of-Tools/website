@@ -757,6 +757,7 @@ async function runExport() {
     resultUrl = URL.createObjectURL(blob);
     el.download.href = resultUrl;
     el.download.download = job.name;
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.resultInfo.textContent = phrase('join.sentences', {
       a: phrase(pages === 1 ? 'result.one' : 'result.many',
         { n: pages, size: formatBytes(blob.size) }),

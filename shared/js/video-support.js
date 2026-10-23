@@ -22,7 +22,7 @@
  * including containers this repository has no demuxer for.
  */
 
-import { askSupported } from './codec-support.js';
+import { askSupported, firstSupported } from './codec-support.js';
 
 /**
  * Candidate H.264 codec strings, best profile/level first. Levels matter: 4.0
@@ -82,20 +82,11 @@ export async function pickH264Codec({ width, height, framerate, bitrate }) {
   // already asked hasWebCodecs(), so nothing is looser for them.
   if (!hasEncoder()) return null;
 
-  for (const codec of H264_CANDIDATES) {
-    const supported = await askSupported(VideoEncoder, {
-      codec, width, height, framerate, bitrate,
-      avc: { format: 'avc' },
-    });
-    if (supported) return codec;
-    // A browser that did not answer at all will not answer for the other
-    // eight either, and asking anyway would turn one deadline into nine. See
-    // shared/js/codec-support.js for the build this really happens on.
-    if (supported === null) return null;
-    // Otherwise a plain no - most often a codec string this browser cannot
-    // parse - so try the next one.
-  }
-  return null;
+  const index = await firstSupported('VideoEncoder', H264_CANDIDATES.map((codec) => ({
+    codec, width, height, framerate, bitrate,
+    avc: { format: 'avc' },
+  })));
+  return index === null || index < 0 ? null : H264_CANDIDATES[index];
 }
 
 /**

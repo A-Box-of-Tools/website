@@ -1,5 +1,6 @@
   <section>
     <h2>A resposta curta</h2>
+  <p>Direct é a opção padrão. As orientações de alcance direto abaixo se referem a esse modo. Para usar Cloud relay, o anfitrião escolhe essa opção antes de iniciar e compartilha o novo convite. A outra pessoa vê a escolha e confirma antes de conectar. Direct nunca muda automaticamente. A Cloudflare encaminha conteúdo criptografado e vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Aprovação, senha e controles do microfone continuam valendo.</p>
     <p>
       Abra <a href="../../compartilhar-texto/">Compartilhar texto e
       arquivos</a> no computador que tem a coisa, escreva ou anexe, e aperte
@@ -11,11 +12,7 @@
       atravessa criptografado, direto de um navegador ao outro. Feche a aba
       que compartilha e acabou, em todo lugar.
     </p>
-    <p>
-      Em nenhum momento houve upload de coisa alguma. Não é uma política: é
-      o formato da coisa. O resto desta página explica por que isso importa,
-      e quais são os limites honestos.
-    </p>
+    <p>Nenhum texto ou arquivo compartilhado foi enviado a um servidor. É assim que a ferramenta funciona. O restante explica por que importa e quais são seus limites.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
@@ -24,6 +21,13 @@
         O que está sendo entregue. Na mesma caixa cabe uma lista de compras ou um documento, e Markdown é um interruptor, não um modo separado.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Passe uma nota ao celular ou um arquivo para uma oficina</h2>
+    <p><strong>Do notebook ao celular.</strong> Coloque um endereço longo, instruções ou arquivo na página do notebook. Mantenha Privado, abra o link copiado no celular, aprove o leitor esperado e copie ou baixe. Mantenha a aba visível e ativa até chegar e encerre. A cópia salva no celular permanece mesmo depois que o link termina.</p>
+    <p><strong>Uma oficina ou chamada de suporte ao vivo.</strong> Compartilhe exercício, configuração de exemplo ou trecho diagnóstico enquanto ambos estão presentes. Use dados fictícios se possível e aprove leitores individualmente. A lista do modo Rede local visível não prova que estão na sua sala. Cada arquivo precisa respeitar o limite de 200 MB.</p>
+    <p>Teste a conexão na rede real antes do encontro. Combine uma alternativa se bloquear o caminho direto. É uma entrega ao vivo: deixar algo durante a noite exige um serviço que armazene deliberadamente.</p>
   </section>
 
   <section>
@@ -53,24 +57,8 @@
 
   <section>
     <h2>O que &ldquo;direto&rdquo; significa de verdade</h2>
-    <p>
-      A ferramenta usa WebRTC, a mesma maquinaria das chamadas de vídeo no
-      navegador: dois navegadores abrem um canal criptografado entre si e
-      mandam os dados por ele, sem servidor no caminho. Na mesma rede, os
-      bytes viajam só pela rede local: dois notebooks no mesmo Wi-Fi passam
-      o arquivo pela sala, não pela internet.
-    </p>
-    <p>
-      Um asterisco honesto, que também está na página da ferramenta: dois
-      navegadores não conseguem se encontrar sozinhos. Um servidor pequeno
-      &mdash; o intermediário &mdash; junta quem digitou o nome com quem
-      compartilha sob ele, e leva alguns kilobytes de estabelecimento de
-      conexão entre os dois. Não guarda nada, e o conteúdo nunca passa por
-      ele; o código completo está publicado ao lado do da ferramenta. É a
-      apresentação, não a conversa &mdash; e é o único servidor com que
-      qualquer coisa fala neste site, razão pela qual a página da
-      ferramenta detalha exatamente o que ele pode e o que não pode ver.
-    </p>
+    <p>A ferramenta usa WebRTC, como chamadas de vídeo do navegador: dois navegadores abrem um canal criptografado e enviam dados sem servidor no caminho. Com uma conexão local funcional, transferem na velocidade dessa rede; a rota também depende de VPN, políticas do navegador e configurações dos aparelhos.</p>
+    <p>Há uma ressalva: os navegadores precisam de ajuda para se encontrar. Um pequeno servidor de encontro liga quem digita o nome a quem compartilha e transmite alguns kilobytes de preparação. Não guarda conteúdo compartilhado nem o transporta; seu código está publicado. Apresenta as partes, não leva a conversa. Também lista nomes locais que aceitaram aparecer para encontrá-los na página inicial. É o serviço usado aqui e na Câmera remota. Obter imagens opcionais, consultar câmbio e scripts de plataforma têm limites próprios na <a href="../../privacidade/">página de privacidade</a>. A página de compartilhamento explica o que o servidor vê.</p>
     <p>
       Direto também significa mútuo: cada navegador fica sabendo o endereço
       de rede do outro, como numa ligação. O lado que lê sabe disso antes de
@@ -79,7 +67,15 @@
   </section>
 
   <section>
-    <h2>O nome é o endereço, e o único segredo</h2>
+    <h2>Compartilhar no mesmo Wi-Fi ou Ethernet</h2>
+    <p>Rede local vem desativada. Antes de começar, escolha <em>Rede local — sem retransmissor de internet</em>. Anexe o arquivo, mantenha Privado para aprovar leitores e comece. Visível vem marcado: no segundo aparelho, confira o tipo de conexão em <em>Conexões disponíveis</em> e escolha Entrar ao lado do nome. Uma aba de leitura é aberta e a solicitação é iniciada. Compartilhamentos privados aguardam sua aprovação. Desmarque Visível antes de começar para compartilhar só por link. Ambos os aparelhos precisam do mesmo Wi-Fi ou Ethernet. Os arquivos mantêm o limite de 200&nbsp;MB e cada leitor escolhe o que baixar.</p>
+    <p>A lista agrupa navegadores por IPv4 público ou sub-rede IPv6 vista pelo servidor. Costuma ser um roteador, mas VPN compartilhada ou provedor que compartilha endereço podem incluir outras redes. Rotas diferentes ou IPv4 e IPv6 podem esconder um aparelho vizinho. Mantenha Privado em redes compartilhadas: o nome aparece ao grupo e a lista não prova estar na mesma sala ou prédio. Precisa de internet. Se a descoberta falhar, o link copiado ainda funciona.</p>
+    <p>O link leva a configuração <code>?local=1#brave-otter-42</code>. Se disser o nome, informe também Rede local: <code>#brave-otter-42</code> sozinho pede modo normal. Se o leitor usar outro modo, a página explica e pede escolher antes de tentar o do remetente.</p>
+    <p>O modo local não usa servidor público de descoberta de endereços nem oferece retransmissor de internet. Ainda precisa de internet para apresentar navegadores. Wi-Fi de visitantes pode isolar aparelhos; firewalls, VPNs e políticas do navegador também bloqueiam ou mudam a rota. Controla como encontra um caminho direto, sem provar que permaneça em um prédio físico.</p>
+  </section>
+
+  <section>
+    <h2>O nome é o endereço; Privado decide quem entra</h2>
     <p>
       Um link de compartilhamento se distingue de qualquer outro numa coisa
       prática: ele sobrevive a ser falado. <code>brave-otter-42</code> dá
@@ -87,20 +83,11 @@
       um quadro, e digitar do outro lado sem ninguém perder os polegares. É
       exatamente para isso que os nomes têm essa cara.
     </p>
-    <p>
-      E corta dos dois lados: qualquer um que conheça ou adivinhe um nome
-      vivo pode abrir o que está por trás. Para o delicado, dê ao
-      compartilhamento um nome que ninguém adivinharia, ou apoie-se no
-      padrão: os compartilhamentos são <em>privados</em> a menos que você
-      desmarque, o que significa que cada leitor que chega precisa se
-      apresentar e você decide, mensagem por mensagem, quem entra. A
-      apresentação viaja pelo canal direto criptografado, então nem o
-      intermediário sabe quem bateu.
-    </p>
+    <p>Quem conhece ou adivinha um nome ativo pode abrir. Compartilhar localmente com visibilidade lista o nome a navegadores com o mesmo IPv4 público ou sub-rede IPv6: é público dentro do grupo. Para dados sensíveis, preserve a opção: compartilha em <em>privado</em> salvo se desmarcar. Cada leitor se apresenta e você decide quem entra. A apresentação cruza o canal direto criptografado: nem o servidor de encontro sabe quem perguntou.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/name.webp" loading="lazy" decoding="async"
-           alt="O segundo cartão: um nome de link escrito thursday-notes, uma nota dizendo que o nome é o endereço e o único segredo, e chaves para privado e para uso único.">
+           alt="O cartão do nome mostra thursday-notes e opções de compartilhamento privado e uso único.">
       <figcaption>
         O nome é todo o endereço. Privado quer dizer que cada leitor precisa pedir e você deixa entrar; uso único quer dizer que o rascunho também não fica neste aparelho.
       </figcaption>
@@ -171,23 +158,7 @@
 
   <section>
     <h2>Quando esta é a ferramenta errada</h2>
-    <p>
-      As duas pontas precisam estar presentes: isto é uma entrega em mãos,
-      não uma caixa de correio. Se a outra pessoa está dormindo, use algo
-      que guarde &mdash; sabendo disso. A aba que compartilha precisa ficar
-      aberta e acordada, o que na prática significa que um desktop ou
-      notebook compartilha; celulares suspendem abas em segundo plano em
-      segundos, embora leiam um compartilhamento perfeitamente. Não tem como
-      funcionar offline, caso único neste site, porque alcançar outra
-      máquina é um ato de rede &mdash; a metade do editor, porém, funciona
-      sem conexão nenhuma. E uma pequena minoria de pares de rede &mdash;
-      tipicamente uma ponta na rede de endereços compartilhados de uma
-      operadora de celular ou atrás de uma rede corporativa rígida &mdash;
-      não consegue se unir diretamente; a ferramenta diz isso com clareza
-      depois de vinte segundos e oferece ao leitor um retransmissor
-      criptografado que repassa os bytes sem conseguir lê-los, em vez de
-      passar para um em silêncio.
-    </p>
+    <p>Ambos precisam estar presentes ao mesmo tempo, e a aba que compartilha precisa continuar aberta. Compartilhar exige conexão; só o editor funciona offline. Se Direct falhar em uma rede móvel ou empresarial, o anfitrião pode parar o compartilhamento e criar outro com Cloud relay. Depois envia o novo convite, cuja opção de conexão o leitor aceita antes de conectar. Direct local não usa retransmissor. A suspensão do navegador e políticas empresariais também podem interromper uma conexão com retransmissor.</p>
     <p>
       Para todo o resto &mdash; a nota, a senha, o arquivo de configuração,
       o vídeo de 100&nbsp;MB a um pulo de Wi-Fi &mdash; a versão direta é

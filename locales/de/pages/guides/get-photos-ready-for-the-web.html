@@ -30,6 +30,14 @@
   </section>
 
   <section>
+    <h2>Bloggalerie und Produktkatalog verteilen ihre Pixel anders</h2>
+    <p><strong>Ein Blogbeitrag oder eine geteilte Galerie.</strong> Messen Sie die größte Darstellungsbreite und wählen Sie genug Pixel für die unterstützten Bildschirmdichten. Legen Sie ein Bytebudget pro Bild fest und prüfen Sie Gesichter, Himmel und feine Texturen auf der fertigen Seite. Die Größen oben sind Ausgangspunkte und keine allgemeinen Limits.</p>
+    <p><strong>Produktkarten mit einheitlichem Ausschnitt.</strong> Beschneiden Sie im Skalierer auf das Kartenverhältnis und prüfen Sie jedes Bild. Ein gemeinsamer Zuschnitt kann den Rand eines anders platzierten Produkts abschneiden. Ergänzen Sie Rand zu einem exakten Rahmen, wenn alle Kanten sichtbar bleiben müssen. Behalten Sie für die Produktzoomansicht eine getrennte größere Kopie, statt das Vorschaubild zu strecken.</p>
+    <p><strong>Diagramme und Screenshots im selben Beitrag.</strong> Verwenden Sie PNG oder bestätigtes verlustfreies WebP für kleine Schrift und harte Kanten, JPEG oder verlustbehaftetes WebP für Fotos. Der <a href="../../png-in-webp-umwandeln/">PNG-zu-WebP-Konverter</a> meldet, ob der Browser tatsächlich verlustfrei kodiert hat. Prüfen Sie die kleinste Schrift auf der Seite, nicht nur die Dateigröße.</p>
+  </section>
+
+
+  <section>
     <h2>Wohin die Metadaten gehen</h2>
     <p>
       Das stille Risiko eines Handyfotos sind nicht die Pixel, sondern die
@@ -38,13 +46,7 @@
       Sie das, veröffentlichen Sie womöglich Ihre Wohnadresse in einer Form,
       die jeder Betrachter lesen kann.
     </p>
-    <p>
-      Das Nützliche an dieser Kette ist, dass sie die Etiketten von selbst
-      erledigt. Skalieren und Komprimieren zeichnen das Bild beide aus Pixeln
-      neu, und neu gezeichnete Pixel tragen keine Etiketten. Was aus Schritt
-      2 oder 3 kommt, ist also sauber, ohne dass Sie darum bitten. Die zwei
-      Fälle, die eine Entscheidung brauchen:
-    </p>
+    <p>Tatsächlich skalierte oder komprimierte Dateien werden aus Pixeln neu gezeichnet, ohne Originaltags zu kopieren. Beide Werkzeuge geben eine bereits passende Datei aber unverändert zurück. Ein kleines Foto, das keinen Schritt benötigt, kann EXIF und GPS behalten. Prüfen Sie fertige Kopien vor der Veröffentlichung und verwenden Sie den <a href="../../exif-daten-entfernen/">EXIF-Betrachter und -Entferner</a> für solche unveränderten Dateien. Zwei Entscheidungen bleiben.</p>
     <ul>
       <li>
         <strong>HEIC umwandeln:</strong> Der Konverter kann die Metadaten

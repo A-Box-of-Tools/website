@@ -1,26 +1,12 @@
   <section>
     <h2>短い答え</h2>
-    <ol>
-      <li>
-        <strong>フレームをつかむ。</strong>
-        <a href="../../grab-frame/">フレーム取り出し</a>を開いて動画をドロップし、ファイル自身のフレームリストをコマ送りで正確な瞬間まで進みます。PNGで保存してください。無劣化のコピーなので、まだ何も決まっていない状態が保てます。
-      </li>
-      <li>
-        <strong>フレームを収める。</strong>そのPNGを<a href="../../resize-image/">画像リサイズ</a>へ。プラットフォームの形に切り抜き
-        &mdash; YouTubeなら16:9 &mdash;
-        長辺を固定します。1280ピクセルがYouTubeの実際に求める数字です。
-      </li>
-      <li>
-        <strong>上限に合わせる。</strong>
-        <a href="../../compress-image/">画像圧縮</a>でプラットフォームの上限を目標に入れ
-        &mdash; YouTubeのサムネイルなら2&nbsp;MB &mdash;
-        JPEGかWebPかはツールに選ばせます。
-      </li>
-    </ol>
+    <ol><li><strong>フレームを取得。</strong><a href="../../grab-frame/">取得器</a>で実フレームへ進みPNGにします。</li><li><strong>形を作る。</strong><a href="../../resize-image/">リサイズ</a>で元と行き先に合う形・寸法へします。YouTubeは現在動画16:9、Shorts9:16を推奨します。</li><li><strong>容量を満たす。</strong><a href="../../compress-image/">圧縮器</a>で現在の上限に余裕を残します。写真のYouTube用はJPEGを選び、JPGかPNGが必要ならAutoにしません。</li></ol>
     <p>
       この連携のどの輪も何もアップロードしません。動画が未公開のときには重要なことで、サムネイルとはそもそも、動画がまだ公開前だからこそ作るものです。
     </p>
   </section>
+
+  <section><h2>実際の小ささで読める表紙</h2><p>完成品、顔を上げた話者、動作直前など内容が分かるフレームを選び、元字幕を小表示でも読めるようにします。ツールは取得・切り抜き・圧縮なので、タイトルや図を加えるならPNG取得と最終圧縮の間に画像編集を行います。</p><p>ウェブの再生前ポスターにも使えます。プレーヤーの形と表示寸法に合わせ、電話でも説明できるか確認します。発表表紙は原寸PNGでなく実スライドの配置で試します。</p></section>
 
   <section>
     <h2>一時停止よりコマ送りが勝る理由</h2>
@@ -30,9 +16,7 @@
     <p>
       取り出しツールは代わりにファイル自身のフレームリストを、両方向に1フレームずつ歩き、デコードされたフレームそのものを動画のフル解像度で手渡します。その瞬間の前後4分の1秒を探るあたりが、たいていサムネイルの住みかです。分かりやすいふたつのフレームの<em>あいだ</em>、動きが読み取れて何もぶれていないフレームです。
     </p>
-    <p>
-      最終的なサムネイルがJPEGやWebPになるとしても、つかんだものはPNGで保存してください。PNGはフレームの正確なコピーです。劣化を伴う決断は、二度重なって積み上がる代わりに、最後にバイト予算の中で一度だけ行われることになります。
-    </p>
+    <p>最終JPEGでも取得はPNGにします。描いた静止画を再非可逆符号化せず保存し、最後の容量判断を1回にして重複損失を避けます。</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
@@ -43,20 +27,7 @@
     </figure>
   </section>
 
-  <section>
-    <h2>プラットフォームの算数</h2>
-    <p>
-      圧縮より先に切り抜きます。<a href="../get-photos-ready-for-the-web/">写真のガイド</a>が挙げるのと同じ理由で、ピクセルこそが予算だからです。4Kフレームから16:9で切り抜いて1280&times;720に落とせば、圧縮ツールは2&nbsp;MBを、誰も目を細める必要のない画質に使えます。リサイズの切り抜き枠は16:9に固定できるので、形は計算ではなくドラッグひとつ。文字と顔は中央の3分の2に収めましょう。フィードは角を丸め、右下に再生時間を重ねるからです。
-    </p>
-
-    <figure class="shot">
-      <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
-           alt="サイズ変更ツールに幅1280、高さ720が入力され、静止画がどう出るかの要約が出ています。">
-      <figcaption>
-        そのあとは算数です。プラットフォームが求める数字を、二つの欄に入れるだけ。
-      </figcaption>
-    </figure>
-  </section>
+  <section><h2>プラットフォームの算数</h2><p><a href="../get-photos-ready-for-the-web/">写真ガイド</a>の通り画素が予算なので圧縮前に切ります。16:9の&#x2066;1280&times;720&#x2069;は小出力例で現YouTube推奨ではありません。<a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">現案内</a>は動画&#x2066;3840&times;2160&#x2069;、Shorts&#x2066;2160&times;3840&#x2069;を推奨し、JPG・PNGなどを示します。PCは最大50MB、モバイル動画のサムネイルは2MB未満です。使う経路の規則を確認し、小原本を数だけのため拡大しません。カスタムには確認済みアカウントが必要で、Shortsのカスタムは現在PCのYouTube Studioを使います。</p><p>リサイズの枠は16:9か9:16に固定できます。角の丸みや右下の時間表示に備え、文字と顔は中央3分の2に置きます。</p><figure class="shot"><img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async" alt="1280×720に切り抜いたサムネイルの例。"><figcaption>1280×720の出力例。現在の提出条件と原本にある細部から寸法を選びます。</figcaption></figure></section>
 
   <section>
     <h2>瞬間が見つからないときはコンタクトシート</h2>

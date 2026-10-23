@@ -1,19 +1,33 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Chinese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>此连接上的本地分享</h2>
-      <p id="discovery-status" role="status" aria-live="polite">正在寻找本地分享…</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">这个列表显示与你使用同一公网 IPv4 地址或 IPv6 子网的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv4 与 IPv6 混用或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
-      <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>可用连接</h2>
+        <button type="button" id="discovery-refresh" class="ghost">刷新</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">正在查找可用连接…</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">加入会使用所示连接类型打开阅读标签页。私密分享会等待批准。</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">此列表显示向所选本地网络或私密群组公开的直连和云中继分享。本地网络匹配使用公网 IPv4 地址或 IPv6 子网；共享网关可能包含陌生人，不同路由可能隐藏附近设备。私密群组则使用群组代码。加入会在新标签页中发起连接请求；仅浏览列表不会连接，私密分享仍需分享者批准。</p>
+      </details>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> 写下来，或附上文件</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="读者看到的是排好版的样子，随键入实时渲染">
@@ -31,7 +45,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="要附上的文件">
       <div id="attachlist"></div>
-      <p class="field-note">文件与文本使用同一直连连接，每个最大 200&nbsp;MB。读者看到列表，只有开口要，文件才会传给他。一次分享最多可以附上 256 个文件。</p>
+      <p class="field-note">文件与文本使用同一个加密通道，每个最大 200&nbsp;MB，一次分享最多 256 个文件。读者看到列表，仅在请求时才传输文件。</p>
     </section>
 
     <section class="card">
@@ -42,26 +56,28 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="换个建议名">&#8635;</button>
         </div>
-        <p class="field-note">名称就是地址，短到可以隔着房间喊出来。可被发现的本地分享会向此连接上的其他人显示名称。敏感内容请保持私密开启。</p>
+        <p class="field-note">名称就是地址，长度适合口头传达。可发现的分享会在所选本地网络或私密群组中显示名称。敏感内容请保持“私密”开启。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           私密——每位读者先申请，由你放行
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          局域网——不使用互联网中转
-        </label>
-        <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。 局域网模式默认关闭；要让自己的分享出现在本地发现列表中，请先选择此模式。</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            局域网——不使用互联网中转
+          </label>
+          <p class="field-note">适用于同一 Wi-Fi 或以太网中的设备。仍需互联网来引见浏览器；此模式不使用公共地址发现服务器或中继。VPN 和浏览器设置可能影响网络路径。复制的链接会携带此设置。在直连方式下，选择本地网络或加入私密群组即可让分享被发现。启用“可发现”后，云中继分享也可以列出。</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            可被发现——在这条互联网连接上显示链接名
+            可发现——在所选网络或群组中显示此链接
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">关于可被发现的分享</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">可被发现的分享会向使用同一公网 IPv4 地址或 IPv6 子网的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">可发现的分享会在上方所选本地网络或私密群组中显示名称。请保持“私密”开启，尤其是在共享网络上。关闭“私密”后，任何看到名称的人都能连接和阅读，无需你的批准。取消“可发现”即可仅通过链接分享。</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -76,7 +92,10 @@
       <h2><span class="step">3</span> 分享出去</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">开始分享</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="分享链接">
@@ -85,12 +104,11 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>哪里都不存任何东西</h2>
-      <p>文字和文件加密后从这个标签页直达每位读者的标签页。引见服务器负责引介浏览器、列出可被发现的链接名，永远看不到文字或文件。关闭此标签页会结束分享并清空读者开着的页面；不过对方已经复制或下载的东西仍归对方。</p>
+      <h2>不在服务器保存内容</h2>
+      <p>文本与文件在你的浏览器和每位读者之间加密。默认直连。选择云中转后，加密数据包会通过 Cloudflare，中转无法读取内容。引介服务只传输连接准备和可被发现的链接名，不接收文本或文件。我们不在服务器保存分享内容。关闭标签页会结束源端；读者收到结束通知或检测到连接故障后清空显示。已经保存的副本仍归读者。</p>
     </section>
   </section>
 
@@ -101,10 +119,13 @@
       <p id="view-status" role="status" aria-live="polite">正在寻找分享的人&hellip;</p>
 
       <div id="consent" hidden>
-        <p>连接后，分享方就能通过加密通道把文字和文件直接送到你的浏览器。和所有直连一样，双方都能看到彼此的网络（IP）地址。只有你选择连接后，分享方才会知道你打开了这个链接。</p>
+        <p>直连会交换到达设备所需的网络地址。云中转使用中转候选地址，Cloudflare 能看到双方设备的网络地址及流量元数据。这不是匿名保证。请先检查连接选项，再明确选择连接。</p>
         <p id="local-note" hidden>这个链接使用局域网模式。两台设备需要连接同一 Wi-Fi 或以太网，引介仍需要互联网。不使用公共地址发现服务器或互联网中转。VPN 和浏览器设置可能影响网络路径。</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">连接并接收分享</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">连接并接收分享</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -117,14 +138,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          另一条路是加密中转。你的浏览器会经由 Cloudflare 运行的一台中转服务器收发，它只转发加密后的字节，读不了内容；它会知道你的网络地址和分享方的地址，直连本来也会如此。那里同样什么都不存，分享方的页面也仍然只发给你一个人。
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">经中转再试一次</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">按分享方的连接模式重试</button>
@@ -152,21 +166,51 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>连接详情</summary>
+    <p id="connection-progress" role="status" aria-live="polite">尚未尝试连接。</p>
+    <p class="field-note">如果连接失败，请在两台设备上复制此报告。报告不包含共享文本、文件名、链接名称、网络地址或凭据。</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>复制连接报告</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">连接报告</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">即使浏览器无法直接连接，搜索仍可能找到共享；此报告说明连接到达的阶段，但不能证明故障原因。</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
        One line per phrase - phrase() collapses a wrap into a space. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">尚未尝试连接。</span>
+    <span data-phrase="debug.attempt">第 {n} 次连接尝试。{status}</span>
+    <span data-phrase="debug.introduction">正在联系引介服务器。</span>
+    <span data-phrase="debug.network">正在建立浏览器之间的连接。</span>
+    <span data-phrase="debug.channel">连接已打开，正在等待共享。</span>
+    <span data-phrase="debug.approval">已连接，正在等待批准。</span>
+    <span data-phrase="debug.connected">已连接，正在接收共享。</span>
+    <span data-phrase="debug.host-connected">已连接到接收方。</span>
+    <span data-phrase="debug.transfer">正在传输文件。</span>
+    <span data-phrase="debug.transfer-complete">文件传输已完成。</span>
+    <span data-phrase="debug.transfer-failed">未能完成文件传输。</span>
+    <span data-phrase="debug.failed">此次连接尝试在完成前已结束，报告保留了最后到达的阶段。</span>
+    <span data-phrase="debug.ended">此连接已结束。</span>
+    <span data-phrase="debug.unsupported">此浏览器不支持本工具所需的连接功能。</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">正在寻找本地分享…</span>
-    <span data-phrase="discovery.empty">这里暂时没有可被发现的本地分享。请让分享方保持标签页开启，或使用对方的链接。</span>
-    <span data-phrase="discovery.ready">选择一个分享，打开其连接页面。</span>
-    <span data-phrase="discovery.unavailable">本地发现暂不可用。你仍可使用分享链接。</span>
-    <span data-phrase="discovery.open">打开分享</span>
-    <span data-phrase="discovery.publishing">正在让这个本地分享可被发现…</span>
-    <span data-phrase="discovery.published">你的本地分享在此连接上可被发现。</span>
-    <span data-phrase="discovery.not-published">此分享可通过链接打开；本地发现未能发布它。</span>
+    <span data-phrase="discovery.connecting">正在查找可用连接…</span>
+    <span data-phrase="discovery.empty">此网络或群组中还没有分享。请让分享者保持标签页打开，或使用其链接。</span>
+    <span data-phrase="discovery.ready">检查连接类型后，选择加入分享。</span>
+    <span data-phrase="discovery.unavailable">发现功能暂不可用，仍可使用分享链接。</span>
+    <span data-phrase="discovery.join">加入</span>
+    <span data-phrase="discovery.join-direct">通过直连加入 {code}</span>
+    <span data-phrase="discovery.join-relay">通过云中继加入 {code}</span>
+    <span data-phrase="discovery.publishing">正在让此分享可被发现…</span>
+    <span data-phrase="discovery.published">你的分享已列在所选网络或私密群组中。</span>
+    <span data-phrase="discovery.not-published">此分享可通过链接访问，但无法发布到发现列表。</span>
 
     <span data-phrase="share.active">分享中</span>
     <span data-phrase="share.waiting">分享中。等着有人打开链接——别关这个标签页。</span>
@@ -189,6 +233,8 @@
     <span data-phrase="share.leave-warning">离开此页面，分享对所有人结束。继续吗？</span>
 
     <span data-phrase="copy.select">已选中，请手动复制</span>
+    <span data-phrase="view.reconnecting">连接已暂停。此页面可见时，会尝试重新连接到同一分享…</span>
+    <span data-phrase="view.interrupted">无法恢复连接。请让分享方保持页面开启，然后再次检查此链接。</span>
     <span data-phrase="view.file-cancel">取消下载</span>
     <span data-phrase="view.file-retry">重试下载</span>
     <span data-phrase="view.file-cancelled">下载已取消。共享仍在继续。</span>
@@ -220,7 +266,7 @@
     <span data-phrase="share.local-waiting">正在以局域网模式分享。等着有人打开链接——别关这个标签页。</span>
     <span data-phrase="view.local-connecting">正在通过局域网连接…</span>
     <span data-phrase="view.mode-local">分享方使用局域网模式。按对方的模式重试，即可在不使用互联网中转的情况下连接。</span>
-    <span data-phrase="view.mode-direct">分享方使用普通连接模式。请按对方的模式重试；只有直连失败后才会提供中转，而且由你选择是否使用。</span>
+    <span data-phrase="view.mode-direct">分享方使用普通直连模式。请按其模式重试；直连不会切换到中转。若要更换路径，主机必须发起新的云中转会话。</span>
     <span data-phrase="view.local-no-connect">在局域网模式下无法连接分享方。请检查两台设备是否使用同一 Wi-Fi 或以太网；访客网络隔离、VPN、防火墙或浏览器设置可能阻止连接。此模式不提供互联网中转。</span>
     <span data-phrase="view.file-failed">未能完成文件下载。请在共享仍在继续时重试下载此文件。</span>
 
@@ -229,4 +275,5 @@
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
     <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

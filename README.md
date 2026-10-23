@@ -1,12 +1,14 @@
 # A Box of Tools
 
 The source for **[abox.tools](https://abox.tools/)** — a small collection of
-single-purpose web tools that do all of their work **in the browser**. No server,
-no upload, no account.
+single-purpose web tools that do their processing **in the browser**. No
+processing uploads, no account.
 
-The selling proposition is not "we promise not to look at your files", it is
-"there is no code path that could send them anywhere". Everything below is
-written to keep that true.
+Local processing keeps your files on your device. Intentional sharing sends
+chosen content to another browser; those tools explain online introductions,
+permissions, Direct connections and optional Cloud relay. Pairing requires
+internet; saving a tool for offline use does not replace introductions. Everything below is written to
+keep those boundaries explicit.
 
 Most of these tools are also small enough to read in one sitting, and that is
 worth keeping wherever it is free. It is not the promise, though. Where the
@@ -73,6 +75,7 @@ finding the part you need does not mean scrolling through the parts you don't:
 | [Adding a tool](docs/adding-a-tool.md) | the checklist, the parts a tool can share, a vendored engine, and adding from a web address |
 | [The prose pages](docs/prose-pages.md) | `pages/`, the legal pages, About and Contact, and what Privacy does and does not claim |
 | [The guides](docs/guides.md) | the longer answer behind each tool, why tool pages link to each other, and the feedback panel |
+| [Analytics](docs/analytics.md) | page visits, the first useful tool result, optional feedback, and the details those events must never carry |
 | [Search and AI answers](docs/geo.md) | source-backed claims, change detection, and a repeatable visibility baseline |
 | [Languages](docs/languages.md) | what a locale is and is not, half-translated pages, and adding a language |
 | [Deploying](docs/deploying.md) | the branches a change passes through, GitHub Pages behind Cloudflare, cache lifetimes, the 404 page, `/llms.txt`, and every page's `index.md` |

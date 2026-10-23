@@ -160,6 +160,7 @@ jobs:
           set -uo pipefail
 
           code=true
+          files=''
           why='what changed could not be worked out'
           zero=0000000000000000000000000000000000000000
 

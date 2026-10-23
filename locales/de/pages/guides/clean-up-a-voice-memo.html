@@ -1,14 +1,7 @@
   <section>
     <h2>Die kurze Antwort</h2>
     <ol>
-      <li>
-        <strong>Schneiden.</strong> Öffnen Sie den
-        <a href="../../audio-schneiden/">Audio-Schneider</a>, ziehen Sie das Memo
-        hinein und markieren Sie beim Abspielen mit <kbd>I</kbd> und
-        <kbd>O</kbd> die Teile, die bleiben sollen. Die Wellenform zeigt
-        Stille und Fehlstarts als flache Strecken, das meiste Schneiden
-        passiert also nach Augenmaß. Exportieren Sie eine Datei.
-      </li>
+      <li><strong>Schneiden.</strong> Öffnen Sie den <a href="../../audio-schneiden/">Audioschneider</a>, legen Sie die Sprachnotiz hinein und markieren Sie während der Wiedergabe mit <kbd>I</kbd> und <kbd>O</kbd> die gewünschten Teile. Die Wellenform zeigt leise Pausen als flache Abschnitte. Hören Sie nach, um einen abgebrochenen Ansatz von der brauchbaren Aufnahme zu unterscheiden, und setzen Sie die Schnitte anhand der Wellenform. Exportieren Sie eine Datei.</li>
       <li>
         <strong>Anheben.</strong> Bringen Sie diese Datei in den
         <a href="../../audio-bearbeiten/">Audio-Editor</a> und normalisieren Sie:
@@ -37,6 +30,12 @@
         Was das Werkzeug ermittelt, bevor Sie irgendetwas anfassen. Der Spitzenpegel ist die Zahl, an der sich entscheidet, ob Lauterdrehen gefahrlos möglich ist.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Eine Sprachnotiz zum Versenden oder eine Passage zum Üben</h2>
+    <p>Behalten Sie für eine Nachricht an Kollegen oder eine Familienaufnahme den Satz samt Atemzug und etwas Raumklang auf beiden Seiten. Schneiden Sie den Fehlstart ab, normalisieren Sie und hören Sie die gesamte heruntergeladene WAV-Datei bei normaler Geschwindigkeit an. Prüfen Sie das erste Wort, die Übergänge und das Ende. Eine lautere Notiz mit abgeschnittenem Konsonanten bleibt die schlechtere Nachricht.</p>
+    <p>Dieselbe Kette erstellt einen Ausschnitt zum Sprachenlernen oder Proben. Behalten Sie im Schneider eine kurze Passage und wählen Sie im Editor 0,75&times; bei erhaltener Tonhöhe. Hören Sie eine schwierige Stelle vor dem Export an. Lassen Sie die Geschwindigkeit für die als Originalstimme versendete Fassung bei 1&times;. Die Spitzenwertnormalisierung hebt die ganze Passage gemeinsam an. Sie kann eine leise Person nicht an eine laute angleichen.</p>
   </section>
 
   <section>
@@ -70,14 +69,7 @@
       Zuhörer zuliebe: 1,25&times; mit gehaltener Tonhöhe ist der
       Podcast-Trick, und er wirkt bei einem ausufernden Memo genauso.
     </p>
-    <p>
-      Der Editor schreibt WAV, exakte Samples, kein Encoder in der Kette,
-      die Datei ist also größer als das komprimierte Original. Für ein Memo
-      von ein paar Minuten ist das ein fairer Preis dafür, nie eine zweite
-      verlustbehaftete Kodierung auf die erste des Telefons zu stapeln;
-      welcher Messenger es auch verschickt, komprimiert es ohnehin noch
-      einmal, und das sollte das einzige Mal sein.
-    </p>
+    <p>Der Editor schreibt WAV statt eines weiteren komprimierten Audioformats. Das voreingestellte 16-Bit-PCM rundet die Samples. Wählen Sie 32-Bit-Float, um die bearbeiteten Fließkommawerte zu behalten. Die Datei ist größer als das komprimierte Original. Bei einer minutenlangen Notiz ist das ein vertretbarer Preis dafür, keine zweite verlustbehaftete Kodierung auf die erste des Telefons zu stapeln. Prüfen Sie vor dem Senden, ob die Nachrichten-App WAV und die Dateigröße annimmt. Manche Dienste kodieren Anhänge erneut. Behalten Sie die WAV-Datei als bearbeitetes Master, statt sich auf die empfangene Kopie zu verlassen.</p>
 
     <figure class="shot">
       <img src="/screens/clean-up-a-voice-memo/edit.webp" loading="lazy" decoding="async"

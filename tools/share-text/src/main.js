@@ -4,43 +4,102 @@ import { phrase } from './shared/phrases.js';
 import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
-import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
+import { makeShareUrl, isLocalLink } from './network.js';
 import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive-file.js';
 import { watchDiscovery } from './discovery.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
 import { fileSender, FILE_CHANNEL } from './send-file.js';
+import { createDiagnostics } from './shared/connection-diagnostics.js';
+import { foregroundRecovery, observeForeground } from './shared/foreground-recovery.js';
+import { PairingSocket } from './shared/peer-pairing.js';
+import { rendezvousEndpoint } from './shared/peer-endpoint.js';
+import { readTransport, transportUrl, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
+import { bindTransportControl } from './shared/peer-transport-ui.js';
+import { groupUrl } from './shared/discovery-group.js';
+import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
+import { createApprovalPrompt } from './shared/peer-approval-ui.js';
+import { AdmissionGrants, createAdmissionCache, validAdmissionToken } from './shared/peer-admission.js';
+import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
-// The one address this tool contacts, named in this page's
+// The environment's address, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
 // It carries WebRTC negotiation and nothing else - the text and the files
 // travel the direct channel it sets up. See workers/rendezvous/ in the
 // repository for the whole of what runs there. A subdomain of the site rather
 // than the worker's workers.dev name: that whole domain is blocked inside
 // mainland China, and this one is not.
-const RENDEZVOUS = 'wss://rendezvous.abox.tools';
+const RENDEZVOUS = rendezvousEndpoint();
 
-// A direct connection is what this page is, and it is also what a minority of
-// network pairs cannot make: a phone on a carrier's address-sharing network
-// and a laptop behind a strict router have no path a STUN server can
-// discover. For that case, and only after the direct attempt has failed, the
-// reader may ask for a relay. The rendezvous mints a short-lived credential
-// for Cloudflare's TURN service, the reader redials with it, and the relay
-// forwards the DTLS-encrypted bytes it cannot read - the same ciphertext the
-// direct path carries. It is the reader's choice, made on the reader's page,
-// and the sharer's side of the exchange does not change: its bytes still go
-// to that one reader and nowhere else, the way they would if the reader sat
-// behind a VPN. The choice rides a reload so the redial is a fresh socket
-// and a fresh peer connection rather than a renegotiation of a failed one.
-const RELAY_FLAG = (code) => `share-text-relay:${code}`;
-const RELAY_WAIT = 5000;
+// A host chooses the route before publishing. Both browsers use that route
+// for the lifetime of the share; failure never widens a Direct session.
 
-const wsUrl = (code, role, advertise = false) => `${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? '&local=1&discover=1' : ''}`;
-const shareUrl = (code) => makeShareUrl(location.href, code, isLocal);
+const wsUrl = (code, role, advertise = false, mode = 'direct') => groupUrl(
+  transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? `&discover=1${isLocal || mode === 'relay' ? '&local=1' : ''}` : ''}`, mode),
+  role === 'host' ? hostGroup : null);
+const shareUrl = (code) => transportUrl(makeShareUrl(location.href, code, isLocal), hostTransport);
+const transportError = error => /^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
+  ? error.message : 'transport.failed';
 
 const MAX_FILE = 200 * 1024 * 1024;
 const MAX_FILES = 256;
 
 const $ = (id) => document.getElementById(id);
+const transportControl = bindTransportControl({ onChange(mode) {
+  $('local-option').hidden = mode === 'relay';
+  $('local').disabled = mode === 'relay';
+  $('discoverable').disabled = mode === 'direct' && !$('local').checked && !groupControl.id();
+} });
+
+const diagnostics = createDiagnostics({
+  version: $('tool-version')?.textContent.trim(),
+  userAgent: navigator.userAgent,
+  changed: renderDiagnostics,
+});
+const peerDiagnostics = new Map();
+let hostDiagnostic = null;
+
+function renderDiagnostics() {
+  const report = diagnostics.report();
+  const attempt = report.attempts.at(-1);
+  const output = $('connection-report');
+  if (!output) return;
+  if (document.activeElement !== output) output.value = JSON.stringify(report, null, 2);
+  $('connection-copy').disabled = !attempt;
+  let key = 'debug.idle';
+  if (attempt) {
+    const stage = attempt.stage;
+    if (attempt.outcome === 'unsupported') key = 'debug.unsupported';
+    else if (attempt.outcome) key = ['stopped', 'peer-left', 'ended', 'denied'].includes(attempt.outcome) ? 'debug.ended' : 'debug.failed';
+    else if (stage === 'transfer-failed') key = 'debug.transfer-failed';
+    else if (stage === 'transfer-complete') key = 'debug.transfer-complete';
+    else if (stage === 'transfer-started') key = 'debug.transfer';
+    else if (['waiting-approval', 'approval-requested'].includes(stage)) key = 'debug.approval';
+    else if (['approved', 'sharing', 'received'].includes(stage)) key = attempt.role === 'sharer' ? 'debug.host-connected' : 'debug.connected';
+    else if (stage === 'channel-open') key = 'debug.channel';
+    else if (['offer-sent', 'offer-received', 'answer-sent', 'answer-accepted'].includes(stage)) key = 'debug.network';
+    else key = 'debug.introduction';
+  }
+  const text = attempt ? phrase('debug.attempt', { n: attempt.attempt, status: phrase(key) }) : phrase(key);
+  if ($('connection-progress').textContent !== text) $('connection-progress').textContent = text;
+}
+
+function revealDiagnostics() { $('connection-details').open = true; }
+const diagnosticCopy = clipboardFeedback({
+  read: () => ({ text: JSON.stringify(diagnostics.report(), null, 2) }),
+  current: () => true,
+  write: text => navigator.clipboard.writeText(text),
+  done: () => { $('connection-copy-status').textContent = phrase('copy.done'); },
+  selected: value => {
+    revealDiagnostics();
+    $('connection-report').value = value.text;
+    $('connection-report').focus(); $('connection-report').select();
+    $('connection-copy-status').textContent = phrase('copy.select');
+  },
+  restore: () => { $('connection-copy-status').textContent = ''; },
+});
+$('connection-copy').addEventListener('click', () => { void diagnosticCopy.copy(); });
+$('connection-report').addEventListener('blur', renderDiagnostics);
 
 const sizeUnits = {
   b: phrase('units.b'),
@@ -52,7 +111,14 @@ const fmtSize = (n) => formatSize(n, sizeUnits);
 /* ------------------------------------------------------------- the sharer */
 
 let sock = null;
-let keepalive = 0;
+let hostPairing = null;
+let hostCredentials = null;
+let hostTransport = 'direct';
+let hostGroup = null;
+let sharing = false;
+let activeCode = '';
+let hostHadRoom = false;
+let hostRetry = 0;
 let attempts = 0;
 let suggestion = '';
 let isPrivate = true;        // captured when sharing starts
@@ -61,13 +127,31 @@ let isDiscoverable = false;
 let discovery = null;
 let discoveryState = 'connecting';
 let foundShares = [];
+const groupControl = createDiscoveryGroupControl({ onChange() {
+  discovery?.close();
+  discovery = null;
+  foundShares = [];
+  withdrawing.clear();
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
+  renderDiscovery();
+  startDiscovery();
+} });
 const withdrawing = new Set();
 let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
+const peerCandidates = new WeakMap();
+const controlChannels = new Map(); // includes readers still waiting to knock
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
-const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
+const pending = new Map();   // viewer id -> {dc, row, note} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
 const sendQueue = new Map(); // viewer id -> its bounded file sender
+const approvalPrompt = createApprovalPrompt({
+  dialog: $('pairing-request-dialog'),
+  isActive: () => sharing && isPrivate,
+  onApprove: id => decideRequest(id, true),
+  onDeny: id => decideRequest(id, false),
+  focusFallback: id => pending.get(id)?.row.querySelector('button') ?? $('stop'),
+});
 
 const payload = () => JSON.stringify({ type: 'text', body: $('text').value, md: $('markdown').checked });
 
@@ -111,6 +195,13 @@ function suggest() {
 }
 
 function unlock() {
+  approvalPrompt.clear();
+  transportControl.lock(false);
+  groupControl.lock(false);
+  transportControl.route(null);
+  sharing = false;
+  clearTimeout(hostRetry);
+  hostPairing?.clear('foreground');
   linkCopy.invalidate();
   isDiscoverable = false;
   $('publish').hidden = false;
@@ -119,8 +210,8 @@ function unlock() {
   $('code').disabled = false;
   $('suggest').disabled = false;
   $('private').disabled = false;
-  $('local').disabled = false;
-  $('discoverable').disabled = !$('local').checked;
+  $('local').disabled = transportControl.value() === 'relay';
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
   $('discovery-share-status').textContent = '';
   $('stop').hidden = true;
   $('linkrow').hidden = true;
@@ -151,25 +242,29 @@ function refreshCount() {
   setStatus(`${parts.join(', ')}. ${phrase('share.closing-note')}`);
 }
 
-// Admission survives a reader's language switch: each admitted channel gets
-// a token, and a knock that carries a valid one is let straight back in -
-// so switching languages does not knock on the sharer's door twice. The
-// tokens live only in this tab's memory and die with the share.
-const admitTokens = new Set();
+// The host remembers its own grants only until Stop. A reader may present
+// one again after choosing to reconnect, including from another browser tab.
+const admitTokens = new AdmissionGrants();
+const admissions = createAdmissionCache();
 
-function admitViewer(id, dc) {
+function admitViewer(id, dc, previousToken = null) {
+  if (!sharing || controlChannels.get(id) !== dc || dc.readyState !== 'open') return false;
+  const token = isPrivate ? admitTokens.issue(previousToken) : null;
+  if (isPrivate && !token) { setStatus(phrase('approval.limit'), true); return false; }
+  peerDiagnostics.get(id)?.mark('approved');
   channels.set(id, dc);
-  const token = crypto.randomUUID();
-  admitTokens.add(token);
   try {
-    dc.send(JSON.stringify({ type: 'token', token }));
+    if (token) dc.send(JSON.stringify({ type: 'token', token }));
     dc.send(payload());
+    if ($('text').value !== '') globalThis.aboxToolComplete?.();
     dc.send(filesMsg());
   } catch {}
   refreshCount();
+  return true;
 }
 
-function addRequest(id, dc, note) {
+function addRequest(id, dc, note, token = null) {
+  peerDiagnostics.get(id)?.mark('approval-requested');
   const row = document.createElement('div');
   row.className = 'request';
   const text = document.createElement('span');
@@ -177,40 +272,57 @@ function addRequest(id, dc, note) {
   const admit = document.createElement('button');
   admit.type = 'button';
   admit.textContent = phrase('share.admit');
-  admit.onclick = () => {
-    pending.delete(id);
-    row.remove();
-    admitViewer(id, dc);
-  };
+  admit.onclick = () => decideRequest(id, true);
   const deny = document.createElement('button');
   deny.type = 'button';
   deny.className = 'ghost';
   deny.textContent = phrase('share.deny');
-  deny.onclick = () => {
-    pending.delete(id);
-    row.remove();
-    try { dc.send(JSON.stringify({ type: 'denied' })); } catch {}
-    // Let the refusal arrive before the channel under it is torn down.
-    setTimeout(() => { peers.get(id)?.close(); peers.delete(id); }, 250);
-    refreshCount();
-  };
+  deny.onclick = () => decideRequest(id, false);
   row.append(text, admit, deny);
-  pending.set(id, { dc, row });
+  pending.set(id, { dc, row, note, token });
   // A carried admission token can belong to a previous share with this name.
   // Acknowledging the pending knock distinguishes a person's decision from
   // a peer channel that has stopped delivering its first response.
   try { dc.send(JSON.stringify({ type: 'asked' })); } catch {}
   $('requests').append(row);
   refreshCount();
+  syncRequests();
+}
+
+function syncRequests() {
+  approvalPrompt.update([...pending].map(([id, entry]) => ({ id, name: entry.note || phrase('share.no-message') })));
+}
+
+function decideRequest(id, approve) {
+  const entry = pending.get(id);
+  if (!sharing || !entry || controlChannels.get(id) !== entry.dc || entry.dc.readyState !== 'open') return;
+  approvalPrompt.close(false);
+  if (approve) {
+    if (admitViewer(id, entry.dc, entry.token)) { removeRequest(id); refreshCount(); }
+    return;
+  }
+  admitTokens.revoke(entry.token);
+  removeRequest(id);
+  peerDiagnostics.get(id)?.finish('denied');
+  try { entry.dc.send(JSON.stringify({ type: 'denied' })); } catch {}
+  // Let the refusal arrive before the channel under it is torn down.
+  const pc = peers.get(id);
+  setTimeout(() => { if (peers.get(id) === pc) dropViewer(id, 'denied'); }, 250);
+  refreshCount();
 }
 
 function removeRequest(id) {
   const entry = pending.get(id);
-  if (entry) { entry.row.remove(); pending.delete(id); }
+  if (entry) { entry.row.remove(); pending.delete(id); syncRequests(); }
 }
 
-function dropViewer(id) {
-  if (peers.has(id)) { peers.get(id).close(); peers.delete(id); }
+function dropViewer(id, reason = 'peer-left') {
+  controlChannels.delete(id);
+  peerDiagnostics.get(id)?.finish(reason);
+  peerDiagnostics.delete(id);
+  const pc = peers.get(id);
+  peers.delete(id);
+  pc?.close();
   channels.delete(id);
   sendQueue.get(id)?.close();
   sendQueue.delete(id);
@@ -220,7 +332,12 @@ function dropViewer(id) {
 
 function broadcast() {
   if ($('publish').hidden === false) return;
-  for (const dc of channels.values()) { try { dc.send(payload()); } catch {} }
+  for (const dc of channels.values()) {
+    try {
+      dc.send(payload());
+      if ($('text').value !== '') globalThis.aboxToolComplete?.();
+    } catch {}
+  }
 }
 
 /* --------------------------------------------------------------- the files */
@@ -261,26 +378,40 @@ function renderAttachlist() {
 
 function renderDiscovery() {
   const hosting = $('publish').hidden;
-  $('discovery').hidden = hosting;
+  $('discovery').hidden = false;
+  $('discovery-refresh').hidden = hosting;
+  $('discovery-status').hidden = hosting;
   const ownCode = hosting ? normalize($('code').value) : '';
   const shares = foundShares.filter((share) => share.code !== ownCode && !withdrawing.has(share.code));
   const list = $('discovery-list');
+  list.hidden = hosting;
   list.textContent = '';
   for (const [index, share] of shares.entries()) {
     const row = document.createElement('div');
-    row.className = 'discovery-row';
+    row.className = 'discovery-row paired-nearby-row';
     const name = document.createElement('span');
     name.className = 'discovery-code';
     name.id = `discovery-code-${index}`;
     name.textContent = share.code;
+    appendConnectionIcons(name, { transport: share.transport, locked: false, approval: 'optional' });
     const open = document.createElement('a');
     open.className = 'discovery-open';
-    open.href = makeShareUrl(location.href, share.code, true);
+    open.href = transportUrl(makeShareUrl(location.href, share.code, share.local && share.transport !== 'relay'), share.transport ?? 'direct');
     // Opening a listed share must not end this tab's own share or draft.
     open.target = '_blank';
     open.rel = 'noopener';
     open.setAttribute('aria-describedby', name.id);
-    open.textContent = phrase('discovery.open');
+    open.setAttribute('aria-label', phrase(share.transport === 'relay' ? 'discovery.join-relay' : 'discovery.join-direct', { code: share.code }));
+    open.textContent = phrase('discovery.join');
+    open.addEventListener('click', event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (sharing || document.hidden || withdrawing.has(share.code) || !foundShares.some(item => item.code === share.code && item.transport === share.transport)) {
+        event.preventDefault(); return;
+      }
+      // Only this deliberate row action carries consent into the fresh tab.
+      // A blocked popup or storage failure keeps the ordinary invitation gate.
+      if (openJoinedPage(open.href)) event.preventDefault();
+    });
     row.append(name, open);
     list.append(row);
   }
@@ -289,6 +420,7 @@ function renderDiscovery() {
 }
 
 function startDiscovery() {
+  if (discovery) return;
   discovery = watchDiscovery(`${RENDEZVOUS}/discover`, {
     list(shares) {
       // A snapshot already in flight can arrive after Stop. Keep its code
@@ -304,28 +436,57 @@ function startDiscovery() {
       $('discovery-share-status').textContent = state && isDiscoverable && $('publish').hidden
         ? phrase(`discovery.${state}`) : '';
     },
-  });
-  $('discovery-refresh').addEventListener('click', () => discovery.refresh());
+  }, { group: groupControl.code() });
 }
+$('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 
 $('local').addEventListener('change', () => {
-  $('discoverable').disabled = !$('local').checked;
+  $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
 });
 wireHelpTooltip($('discoverable-help'));
 wireHelpTooltip($('tool-version-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 
-function hostSocket(code, onOpen) {
-  const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
+function hostSocket(code) {
+  const trace = diagnostics.begin('host', hostTransport === 'relay' ? 'relay' : isLocal ? 'local' : 'internet');
+  hostDiagnostic = trace;
+  const ws = new WebSocket(wsUrl(code, 'host', isDiscoverable, hostTransport));
+  hostCredentials?.close();
+  hostPairing?.close();
   sock = ws;
-  let pulse = 0;
-  ws.onopen = () => {
-    if (sock !== ws) { ws.close(1000); return; }
-    pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
-    keepalive = pulse;
+  const pairing = new PairingSocket(ws, {
+    current: () => sock === ws && sharing,
+    onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
+  });
+  hostPairing = pairing;
+  const credentials = new RelayCredentials({
+    send: frame => pairing.send(frame),
+    current: () => sock === ws && sharing,
+    onRenew: servers => {
+      for (const [id, pc] of peers) {
+        pc.setConfiguration(shareConfiguration(hostTransport, isLocal, servers));
+        pairing.send({ to: id, data: { renew: true, local: isLocal } });
+      }
+    },
+    onError: error => {
+      if (sock !== ws || !sharing) return;
+      stopSharing();
+      setStatus(phrase(transportError(error)), true);
+    },
+  });
+  hostCredentials = credentials;
+  let signals = Promise.resolve();
+  let ready = Promise.resolve();
+  const announce = () => {
+    if (sock !== ws || !sharing || ws.readyState !== 1) return;
     setShareState('share.active');
-    onOpen();
+    attempts = 0;
+    linkCopy.invalidate();
+    $('link').value = shareUrl(code);
+    $('linkrow').hidden = false;
+    $('stop').hidden = false;
+    refreshCount();
     if (isDiscoverable) {
       $('discovery-share-status').textContent = phrase('discovery.publishing');
       announcementTimer = setTimeout(() => {
@@ -333,117 +494,259 @@ function hostSocket(code, onOpen) {
       }, 8000);
     }
   };
-  ws.onmessage = (e) => {
-    if (sock !== ws) return;
-    if (e.data === 'pong') return;
-    const m = JSON.parse(e.data);
-    if (m.type === 'host-ready' && isLocal && isDiscoverable && m.discovery?.code === code) {
-      if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
-      return;
+  pairing.listen({
+    open() {
+      hostPairing?.clear('foreground');
+      hostHadRoom = true;
+      trace.socket('open');
+      trace.mark('server-open');
+      pairing.every('heartbeat', 30000, () => pairing.send('ping'));
+      // The first socket may fail before opening. Its replacement must also
+      // expose the link and Stop control when the same share becomes ready.
+      $('stop').hidden = false;
+      if (hostTransport === 'relay') ready = credentials.prepare().then(announce).catch(error => {
+        if (sock !== ws || !sharing) return;
+        stopSharing();
+        setStatus(phrase(transportError(error)), true);
+      });
+      else announce();
+    },
+    message(e) {
+      hostPairing?.clear('foreground');
+      if (e.data === 'pong') return;
+      let m;
+      try { m = JSON.parse(e.data); }
+      catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
+      if (credentials.receive(m)) return;
+      if (m.type === 'host-ready' && isDiscoverable && m.discovery?.code === code) {
+        void ready.then(() => {
+          if (sock !== ws || !sharing) return;
+          if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
+        });
+        return;
+      }
+      if (m.type === 'leave') {
+        // A reader's introduction can be suspended independently of its
+        // encrypted channel. Native peer failure still retires a dead reader.
+        const dc = controlChannels.get(m.id);
+        const pc = peers.get(m.id);
+        if (hostTransport === 'direct' && dc?.readyState === 'open' && pc && !['failed', 'closed'].includes(pc.connectionState)) return;
+        dropViewer(m.id);
+        return;
+      }
+      if (m.type === 'signal') signals = signals.then(async () => {
+        await ready;
+        if (sock !== ws || !sharing) return;
+        const servers = hostTransport === 'relay' ? await credentials.prepare() : null;
+        if (sock === ws && sharing) await hostSignal(m.from, m.data, servers);
+      }).catch(error => {
+        if (sock !== ws || !sharing) return;
+        trace.error('signaling', error); revealDiagnostics();
+        setStatus(phrase(transportError(error)), true);
+      });
+    },
+    error() {
+      trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics();
+    },
+    close(e) {
+      credentials.close();
+      pairing.close();
+      trace.socket('closed', e.code);
+      trace.finish(sharing ? 'socket-closed' : 'stopped');
+      if (sock !== ws) return;
+      if (hostTransport === 'relay') {
+        for (const id of [...peers.keys()]) dropViewer(id, 'socket-closed');
+        transportControl.route(null);
+      }
+      clearTimeout(announcementTimer);
+      discovery?.unpublish();
+      if (e.code === 4412 || e.code === 4413) {
+        stopSharing();
+        setStatus(phrase(e.code === 4412 ? 'transport.mismatch' : 'transport.unavailable'), true);
+        return;
+      }
+      if (e.code === 4409) {
+        withdrawing.delete(code);
+        // A collision on our own suggestion is bad luck, silently retried; a
+        // collision on a name the user chose is theirs to resolve.
+        if (!hostHadRoom && $('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
+        if (hostHadRoom) stopSharing();
+        else unlock();
+        withdrawing.delete(code);
+        setStatus(phrase('share.name-taken', { name: $('code').value }));
+        return;
+      }
+      if (!sharing || $('publish').hidden === false) return;
+      // Connected readers are unaffected - the peer channels do not run
+      // through the server - but new ones cannot join until this recovers.
+      setStatus(phrase('share.lost-rendezvous'), true);
+      clearTimeout(hostRetry);
+      hostRetry = setTimeout(() => {
+        if (sharing && activeCode === code && sock === ws) {
+          try { hostSocket(code); }
+          catch { resumeHost(); }
+        }
+      }, 5000);
+    },
+  });
+}
+
+function resumeHost() {
+  if (!sharing || document.visibilityState === 'hidden' || navigator.onLine === false) {
+    hostPairing?.clear('foreground');
+    return;
+  }
+  clearTimeout(hostRetry);
+  hostPairing?.clear('foreground');
+  const ws = sock;
+  if (!ws || ws.readyState > 1) {
+    try { hostSocket(activeCode); }
+    catch {
+      setStatus(phrase('share.lost-rendezvous'), true);
+      hostRetry = setTimeout(resumeHost, 5000);
     }
-    if (m.type === 'leave') {
-      // The reader's page never closes its rendezvous socket on purpose, so
-      // a leave means the reader is gone. The peer channel's own close event
-      // can lag an abrupt tab-close by half a minute; this does not.
-      dropViewer(m.id);
-      return;
+    return;
+  }
+  // A suspended socket can still report OPEN until the browser processes
+  // its failure. Keep direct peers intact while probing that introduction.
+  if (ws.readyState === 1) {
+    hostPairing.send('ping');
+  }
+  const pairing = hostPairing;
+  pairing.after('foreground', 8000, () => {
+    if (!sharing || sock !== ws || document.visibilityState === 'hidden' || navigator.onLine === false) return;
+    sock = null;
+    hostCredentials?.close();
+    if (hostTransport === 'relay') {
+      for (const id of [...peers.keys()]) dropViewer(id, 'socket-closed');
+      transportControl.route(null);
     }
-    if (m.type === 'signal') hostSignal(m.from, m.data);
-  };
-  ws.onclose = (e) => {
-    // Stopping and starting can replace the socket before the old close
-    // arrives. That close belongs to its own room and its own heartbeat.
-    clearInterval(pulse);
-    if (sock !== ws) return;
-    clearTimeout(announcementTimer);
-    discovery?.unpublish();
-    if (e.code === 4409) {
-      withdrawing.delete(code);
-      // A collision on our own suggestion is bad luck, silently retried; a
-      // collision on a name the user chose is theirs to resolve.
-      if ($('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
-      unlock();
-      setStatus(phrase('share.name-taken', { name: $('code').value }));
-      return;
-    }
-    if (e.code === 1000 || $('publish').hidden === false) return;
-    // Connected readers are unaffected - the peer channels do not run
-    // through the server - but new ones cannot join until this recovers.
-    setStatus(phrase('share.lost-rendezvous'), true);
-    setTimeout(() => {
-      if ($('publish').hidden && sock === ws) hostSocket(code, refreshCount);
-    }, 5000);
-  };
+    pairing.close();
+    resumeHost();
+  });
 }
 
 function publish() {
+  hostTransport = transportControl.value();
+  if (!hostTransport) { setStatus(phrase('transport.invalid'), true); return; }
   const code = normalize($('code').value);
   if (code === '') {
     setStatus(phrase('share.name-first'));
     return;
   }
   $('code').value = code;
+  transportControl.lock(true);
+  groupControl.lock(true);
+  hostGroup = groupControl.id();
+  sharing = true;
+  activeCode = code;
+  hostHadRoom = false;
+  admitTokens.clear();
   $('code').disabled = true;
   $('suggest').disabled = true;
   isPrivate = $('private').checked;
   $('private').disabled = true;
-  isLocal = $('local').checked;
+  isLocal = hostTransport === 'direct' && $('local').checked;
   $('local').disabled = true;
-  isDiscoverable = isLocal && $('discoverable').checked;
+  isDiscoverable = (hostGroup || isLocal || hostTransport === 'relay') && $('discoverable').checked;
   $('discoverable').disabled = true;
   $('publish').hidden = true;
   setShareState('share.setting-up');
   renderDiscovery();
   setStatus('');
   try {
-    hostSocket(code, () => {
-      attempts = 0;
-      linkCopy.invalidate();
-      $('link').value = shareUrl(code);
-      $('linkrow').hidden = false;
-      $('stop').hidden = false;
-      refreshCount();
-    });
+    hostSocket(code);
   } catch (error) {
-    unlock();
-    throw error;
+    hostDiagnostic?.error('websocket', error);
+    hostDiagnostic?.finish('socket-error');
+    revealDiagnostics();
+    stopSharing();
+    setStatus(phrase('share.lost-rendezvous'), true);
   }
 }
 
-async function hostSignal(from, data) {
-  if (!data || typeof data !== 'object') return;
+async function hostSignal(from, data, servers) {
+  if (!sharing || !data || typeof data !== 'object') return;
   // The copied link carries the mode for convenience; the sharer enforces
   // it too, so removing its query cannot enable a relay on a local share.
   if ((data.local === true) !== isLocal) {
-    if (sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { networkMode: isLocal ? 'local' : 'direct' } }));
+    hostPairing?.send({ to: from, data: { networkMode: isLocal ? 'local' : 'direct' } });
     return;
   }
-  if (data.candidate && !allowedCandidate(data.candidate, isLocal)) return;
+  const socket = sock;
+  const pairing = hostPairing;
   let pc = peers.get(from);
+  let trace = peerDiagnostics.get(from);
+  if (data.candidate && !shareCandidate(data.candidate, hostTransport, isLocal)) {
+    (trace ?? hostDiagnostic)?.count('candidatesReceived');
+    (trace ?? hostDiagnostic)?.candidate('remote', data.candidate, 'filtered');
+    (trace ?? hostDiagnostic)?.count('candidatesFiltered');
+    return;
+  }
   if (!pc) {
-    pc = new RTCPeerConnection(rtcConfig(isLocal));
+    trace = diagnostics.begin('host', hostTransport === 'relay' ? 'relay' : isLocal ? 'local' : 'internet');
+    trace.socket('open');
+    try { pc = new RTCPeerConnection(shareConfiguration(hostTransport, isLocal, servers)); }
+    catch (error) {
+      trace.error('offer', error);
+      trace.finish(typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
+      revealDiagnostics(); return;
+    }
+    peerDiagnostics.set(from, trace);
     peers.set(from, pc);
+    peerCandidates.set(pc, []);
+    trace.attach(pc);
     pc.onicecandidate = (e) => {
-      if (e.candidate && allowedCandidate(e.candidate, isLocal) && sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { candidate: e.candidate, local: isLocal } }));
+      if (!e.candidate || peers.get(from) !== pc) return;
+      const allowed = shareCandidate(e.candidate, hostTransport, isLocal);
+      if (!allowed) {
+        trace.candidate('local', e.candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+      }
+      if (socket.readyState !== 1) { trace.candidate('local', e.candidate, 'rejected'); return; }
+      try {
+        if (!pairing.send({ to: from, data: { candidate: e.candidate, local: isLocal } })) {
+          trace.candidate('local', e.candidate, 'rejected'); return;
+        }
+        trace.candidate('local', e.candidate, 'sent');
+        trace.count('candidatesSent');
+      } catch (error) {
+        trace.candidate('local', e.candidate, 'rejected'); trace.error('send-signal', error); revealDiagnostics();
+      }
     };
+    pc.addEventListener('iceconnectionstatechange', () => {
+      if (pc.iceConnectionState === 'failed' && peers.get(from) === pc) {
+        trace.finish('ice-failed'); revealDiagnostics();
+      }
+    });
+    pc.addEventListener('connectionstatechange', () => {
+      if (peers.get(from) === pc && ['failed', 'closed'].includes(pc.connectionState)) dropViewer(from);
+    });
     let mainChannel = null;
     pc.ondatachannel = (e) => {
       const dc = e.channel;
       if (dc.label !== 'share' || mainChannel || peers.get(from) !== pc) { dc.close(); return; }
       mainChannel = dc;
+      controlChannels.set(from, dc);
+      trace.channel(dc);
       const sender = fileSender({ peer: pc, control: dc, files: attached,
         admitted: () => channels.get(from) === dc && peers.get(from) === pc });
       sendQueue.set(from, sender);
       dc.binaryType = 'arraybuffer';
       let introduced = false;
       const introduce = () => {
-        if (introduced || dc.readyState !== 'open') return;
+        if (!sharing || peers.get(from) !== pc || introduced || dc.readyState !== 'open') return;
         introduced = true;
-        if (isPrivate) { dc.send(JSON.stringify({ type: 'private' })); refreshCount(); }
-        else admitViewer(from, dc);
+        void pc.getStats().then(stats => {
+          if (sharing && peers.get(from) === pc) transportControl.route(selectedTransport(stats));
+        }).catch(() => {});
+        if (isPrivate) {
+          trace.mark('waiting-approval');
+          dc.send(JSON.stringify({ type: 'private' })); refreshCount();
+        } else admitViewer(from, dc);
       };
       dc.onopen = introduce;
       dc.onmessage = (ev) => {
+        if (!sharing || peers.get(from) !== pc) return;
         if (typeof ev.data !== 'string') return;
         let m;
         try { m = JSON.parse(ev.data); } catch { return; }
@@ -453,35 +756,59 @@ async function hostSignal(from, data) {
         // this side can attach an open listener.
         if (m.type === 'hello') {
           if (!introduced) introduce();
-          else if (channels.has(from)) { dc.send(payload()); dc.send(filesMsg()); }
-          else dc.send(JSON.stringify({ type: 'private' }));
+          else if (channels.has(from)) {
+            dc.send(payload());
+            if ($('text').value !== '') globalThis.aboxToolComplete?.();
+            dc.send(filesMsg());
+          }
+          else dc.send(JSON.stringify({ type: pending.has(from) ? 'asked' : 'private' }));
           return;
         }
         if (m.type === 'get') { sender.request(m); return; }
         if (m.type === 'cancel-file') { sender.cancel(m.request); return; }
         if (m.type === 'knock' && isPrivate && !channels.has(from) && !pending.has(from)) {
-          // A knock carrying a token this share issued is a reader who was
-          // already let in and merely switched language - no second knock.
+          // A host-issued grant survives a reader leaving, but never a new share.
           if (typeof m.token === 'string' && admitTokens.has(m.token)) {
-            admitViewer(from, dc);
+            admitViewer(from, dc, m.token);
             return;
           }
-          addRequest(from, dc, String(m.note ?? '').slice(0, 200));
+          addRequest(from, dc, String(m.note ?? '').slice(0, 200), validAdmissionToken(m.token) ? m.token : null);
         }
       };
-      dc.onclose = () => dropViewer(from);
+      dc.onerror = () => { trace.finish('channel-error'); revealDiagnostics(); };
+      dc.onclose = () => { if (peers.get(from) === pc) dropViewer(from); };
       introduce();
     };
   }
   try {
     if (data.sdp) {
-      await pc.setRemoteDescription(isLocal ? localDescription(data.sdp) : data.sdp);
+      trace.count('offerReceived'); trace.mark('offer-received');
+      await pc.setRemoteDescription(shareDescription(data.sdp, hostTransport, isLocal));
+      if (peers.get(from) !== pc || sock !== socket || !sharing) return;
+      for (const candidate of peerCandidates.get(pc).splice(0)) await pc.addIceCandidate(candidate);
       await pc.setLocalDescription(await pc.createAnswer());
-      sock.send(JSON.stringify({ to: from, data: { sdp: pc.localDescription, local: isLocal } }));
+      if (peers.get(from) !== pc || sock !== socket || socket.readyState !== 1) return;
+      if (!pairing.send({ to: from, data: { sdp: shareDescription(pc.localDescription, hostTransport, isLocal), local: isLocal } })) return;
+      trace.count('answerSent'); trace.mark('answer-sent');
     } else if (data.candidate) {
-      await pc.addIceCandidate(data.candidate);
+      trace.count('candidatesReceived');
+      if (!pc.remoteDescription) {
+        const waiting = peerCandidates.get(pc);
+        if (waiting.length < 64) waiting.push(data.candidate);
+        return;
+      }
+      try {
+        await pc.addIceCandidate(data.candidate);
+        trace.candidate('remote', data.candidate, 'accepted'); trace.count('candidatesAccepted');
+      } catch (error) {
+        trace.candidate('remote', data.candidate, 'rejected'); trace.error('add-candidate', error);
+        revealDiagnostics();
+      }
     }
-  } catch {} // a viewer with broken signalling just never connects
+  } catch (error) {
+    trace.error(data.sdp ? 'answer' : 'candidate', error);
+    trace.finish('signaling-error'); revealDiagnostics();
+  }
 }
 
 /* -------------------------------------------------- the sharer's controls */
@@ -547,21 +874,48 @@ $('save').addEventListener('click', () => {
 // while the readers watch it arrive.
 $('publish').addEventListener('click', publish);
 
-$('stop').addEventListener('click', () => {
+function stopSharing() {
+  hostCredentials?.close();
+  hostCredentials = null;
+  sharing = false;
+  clearTimeout(hostRetry);
+  hostPairing?.clear('foreground');
+  const stoppedPeers = [...peers].map(([id, pc]) => ({ pc, dc: controlChannels.get(id) }));
+  for (const sender of sendQueue.values()) sender.close();
+  peers.clear(); channels.clear(); controlChannels.clear(); sendQueue.clear();
+  // Signaling can disappear while direct channels remain healthy. Retire
+  // application authority now, then let each old terminal control drain.
+  for (const { pc, dc } of stoppedPeers) {
+    if (!dc || dc.readyState === 'closed') { pc.close(); continue; }
+    let deadline = 0;
+    const closeOldPeer = () => {
+      clearTimeout(deadline);
+      dc.removeEventListener('close', closeOldPeer);
+      pc.close();
+    };
+    dc.addEventListener('close', closeOldPeer, { once: true });
+    deadline = setTimeout(closeOldPeer, 5000);
+    try {
+      if (dc.readyState === 'open') dc.send(JSON.stringify({ type: 'ended' }));
+      dc.close();
+    } catch { closeOldPeer(); }
+  }
+  admitTokens.clear();
+  hostDiagnostic?.finish('stopped');
+  for (const trace of peerDiagnostics.values()) trace.finish('stopped');
+  peerDiagnostics.clear();
   clearTimeout(announcementTimer);
   const stoppedCode = normalize($('code').value);
   if (isDiscoverable) withdrawing.add(stoppedCode);
   discovery?.unpublish();
   isDiscoverable = false;
   foundShares = foundShares.filter((share) => share.code !== stoppedCode);
-  sock?.close(1000);
-  clearInterval(keepalive);
-  for (const sender of sendQueue.values()) sender.close();
-  for (const pc of peers.values()) pc.close();
-  peers.clear(); channels.clear(); sendQueue.clear();
+  hostPairing?.close();
+  hostPairing = null;
   unlock();
   setStatus(phrase('share.stopped'));
-});
+}
+$('stop').addEventListener('click', stopSharing);
 
 $('suggest').addEventListener('click', suggest);
 
@@ -606,72 +960,145 @@ function fail(text) {
 }
 
 let viewerLive = false;
+let resumeViewer = () => {};
 
-function view(code) {
+function view(code, recovered = null) {
   $('share').hidden = true;
   $('view').hidden = false;
-  const localMode = isLocalLink(location.href);
+  const mode = recovered?.transport ?? readTransport(location.href);
+  if (!mode) { fail(phrase('transport.invalid')); return; }
+  transportControl.set(mode);
+  transportControl.lock(true);
+  transportControl.route(null);
+  const localMode = mode === 'direct' && (recovered?.localMode ?? isLocalLink(location.href));
   $('local-note').hidden = !localMode;
   let retryLocal = localMode;
 
   // A language switch made while connected sets this flag on the way out.
   // It stands in for the consent the same reader gave moments ago on the
-  // same share, so the gate is not shown twice for one session. The relay
-  // button sets it too, along with its own flag: the reader has consented,
-  // watched the direct attempt fail, and asked for the relay by name.
+  // same share, so the gate is not shown twice for one session. A relay
+  // invitation needs its own recorded route consent before a language switch
+  // can carry that consent forward.
   let carried = false;
-  let wantRelay = false;
-  try {
+  let wantRelay = mode === 'relay';
+  if (!recovered) try {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
-    wantRelay = !localMode && carried && sessionStorage.getItem(RELAY_FLAG(code)) === '1';
-    sessionStorage.removeItem(RELAY_FLAG(code));
+    if (wantRelay && sessionStorage.getItem(`share-text-transport:${code}`) !== mode) carried = false;
   } catch {}
 
-  const ws = new WebSocket(wsUrl(code, 'viewer'));
+  const discoveryJoin = !recovered && consumeJoinedPage();
+  const session = recovered ?? { consent: carried || discoveryJoin, discoveryJoin, relay: wantRelay, transport: mode, localMode,
+    token: admissions.read('share-text', code, mode), asMd: false, mdTouched: false, generation: 0 };
+  if (recovered) { carried = session.consent; wantRelay = session.relay; }
+  const events = new AbortController();
+  const listen = (id, event, handler) => $(id).addEventListener(event, handler, { signal: events.signal });
+  const generation = ++session.generation;
+  session.restart = () => { events.abort(); view(code, session); };
+  session.retry ??= foregroundRecovery(() => session.restart(), {
+    visible: () => document.visibilityState !== 'hidden' && navigator.onLine !== false,
+    exhausted() {
+      $('view-status').hidden = false;
+      $('view-status').textContent = phrase('view.interrupted');
+      $('retryrow').hidden = false;
+    },
+  });
+  if (session.consent && !recovered) session.retry.start();
+
+  const trace = diagnostics.begin('viewer', localMode ? 'local' : wantRelay ? 'relay' : 'internet');
+  session.credentials?.close();
+  session.pairing?.close();
+  let ws;
+  try { ws = new WebSocket(wsUrl(code, 'viewer', false, mode)); }
+  catch (error) {
+    trace.error('websocket', error); trace.finish('socket-error');
+    fail(phrase(recovered ? 'view.reconnecting' : 'view.error')); revealDiagnostics();
+    resumeViewer = () => session.retry.foreground();
+    if (recovered) session.retry.pause();
+    return;
+  }
   let pc = null;
   let dcRef = null;
-  let relay = null;      // the TURN entry the rendezvous minted, once asked for
-  let relayReply = null; // resolves the ask, with the entry or null
+  let relay = null;
+  let preparing = false;
   let got = false;
   let connected = false;
   let done = false;
   let introduced = false;
-  let viewerKeepalive = 0;
+  let signals = Promise.resolve();
+  const candidates = [];
+  let makingOffer = false;
+  let restartRequested = false;
+  const pairing = new PairingSocket(ws, {
+    current: () => !done && session.generation === generation,
+    onSendError(error) { trace.error('send-signal', error); revealDiagnostics(); },
+  });
+  session.pairing = pairing;
+  const credentials = new RelayCredentials({
+    send: frame => pairing.send(frame),
+    current: () => !done && session.generation === generation,
+    onRenew: servers => {
+      if (!pc || done) return;
+      relay = servers;
+      pc.setConfiguration(shareConfiguration(mode, localMode, servers));
+      // The viewer remains the offerer during renewal, preserving the
+      // admitted data channels rather than creating another sharing session.
+      restartRequested = true;
+      void renegotiate();
+    },
+    onError: error => stopAttempt(transportError(error), false, 'relay-expired'),
+  });
+  session.credentials = credentials;
   let lastBody = '';
-  let asMd = false;
-  let mdTouched = false;
+  let asMd = session.asMd;
+  let mdTouched = session.mdTouched;
   let rx = null; // Each selected file owns either a dedicated lane or the legacy lane.
   let fileChannels = false;
   let offered = new Map();
   let connectionTimer = 0;
   let deliveryTimer = 0;
+  let foregroundProbe = 0;
+  let relayRecoveryTimer = 0;
   const clearDeadlines = () => {
     clearTimeout(connectionTimer);
     clearTimeout(deliveryTimer);
+    clearTimeout(relayRecoveryTimer);
   };
-  const stopAttempt = (key, offerRelay = false) => {
+  const stopAttempt = (key, offerRelay = false, reason = 'signaling-error') => {
     if (done) return;
+    if (recovered && session.retry.active &&
+        ['signaling-error', 'socket-closed', 'channel-error', 'timeout', 'delivery-timeout', 'ice-failed'].includes(reason)) {
+      sharerGone();
+      return;
+    }
     done = true;
+    session.retry.stop();
+    trace.finish(reason);
+    revealDiagnostics();
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     pc?.close();
-    ws.close();
+    credentials.close();
+    transportControl.route(null);
+    pairing.close();
     $('knockrow').hidden = true;
     $('view-status').hidden = false;
     fail(phrase(key));
-    $('relayrow').hidden = localMode || !offerRelay;
+    $('view-status').textContent = phrase(key);
+    $('relayrow').hidden = true;
   };
   const awaitIntroduction = () => {
     clearTimeout(deliveryTimer);
-    deliveryTimer = setTimeout(() => stopAttempt('view.no-content'), 20000);
+    deliveryTimer = setTimeout(() => stopAttempt('view.no-content', false, 'delivery-timeout'), 20000);
   };
 
   // The raw source always sits in #received (the copy button reads it
   // there); the toggle only decides which of the two views is shown.
   function renderView() {
+    session.asMd = asMd;
+    session.mdTouched = mdTouched;
     $('received').textContent = lastBody;
     const empty = lastBody === '';
     $('panel').hidden = empty;
@@ -682,8 +1109,8 @@ function view(code) {
     $('mode-src').classList.toggle('active', !asMd);
   }
 
-  $('mode-fmt').addEventListener('click', () => { mdTouched = true; asMd = true; renderView(); });
-  $('mode-src').addEventListener('click', () => { mdTouched = true; asMd = false; renderView(); });
+  listen('mode-fmt', 'click', () => { mdTouched = true; asMd = true; renderView(); });
+  listen('mode-src', 'click', () => { mdTouched = true; asMd = false; renderView(); });
 
   function refreshFileButtons() {
     for (const button of $('filelist').querySelectorAll('button')) {
@@ -714,16 +1141,20 @@ function view(code) {
     // Older cached pages put untagged chunks on the text lane. That lane must
     // end before another file can be requested; a retry cannot safely reuse it.
     done = true;
+    session.retry.stop();
+    trace.finish('channel-error');
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     lastBody = '';
     retireTextCopy();
     $('received').textContent = '';
     $('rendered').textContent = '';
     $('panel').hidden = true;
     pc?.close();
-    ws.close(1000);
+    credentials.close();
+    transportControl.route(null);
+    pairing.close();
     for (const button of $('filelist').querySelectorAll('button')) button.disabled = true;
     $('view-status').hidden = false;
     $('view-status').textContent = phrase(key);
@@ -735,6 +1166,7 @@ function view(code) {
     const owner = { ...file, ...controls, mime: '', parts: [], got: 0,
       request: fileChannels ? crypto.randomUUID() : null, channel: null, timer: null };
     rx = owner;
+    trace.mark('transfer-started');
     owner.status.textContent = '';
     owner.btn.textContent = '0%';
     owner.cancel.hidden = false;
@@ -778,7 +1210,7 @@ function view(code) {
         owner.btn.textContent = phrase('view.file-retry');
         owner.status.textContent = phrase('view.file-cancelled');
         if (!modern) legacyFileFailure('view.file-legacy-cancel');
-        else owner.btn.focus({ preventScroll: true });
+        else { trace.mark('received'); owner.btn.focus({ preventScroll: true }); }
       };
       row.append(name, size, btn, cancel, status); box.append(row);
     }
@@ -812,6 +1244,8 @@ function view(code) {
       fileFailed(owner); return;
     }
     retireFile(owner);
+    trace.mark('transfer-complete');
+    globalThis.aboxToolComplete?.();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     owner.btn.textContent = phrase('view.download');
     owner.status.textContent = '';
@@ -821,6 +1255,7 @@ function view(code) {
     if (!owner || rx !== owner) return;
     const modern = !!owner.request;
     retireFile(owner);
+    trace.mark('received');
     owner.btn.textContent = phrase('view.file-gone'); owner.btn.disabled = true;
     // A roster can withdraw a captured old File while its untagged bytes are
     // still arriving. Abandoning that lane needs the same fence as Cancel.
@@ -829,6 +1264,8 @@ function view(code) {
 
   function fileFailed(owner = rx) {
     if (!owner || rx !== owner) return;
+    trace.mark('transfer-failed');
+    revealDiagnostics();
     const modern = !!owner.request;
     retireFile(owner);
     owner.status.textContent = phrase('view.file-failed');
@@ -857,40 +1294,66 @@ function view(code) {
     waitingForFile(owner);
   }
 
-  const sharerGone = () => {
-    if (done) return;
+  function sharerGone(terminal = false) {
+    if (session.generation !== generation) return;
+    if (terminal) {
+      session.retry.stop();
+      session.token = null;
+      try { sessionStorage.removeItem(`share-text-token:${code}`); } catch {}
+    } else if (done) return;
     done = true;
+    trace.finish(terminal ? 'ended' : 'socket-closed');
     viewerLive = false;
     clearDeadlines();
-    clearInterval(viewerKeepalive);
+    clearTimeout(foregroundProbe);
     $('knockrow').hidden = true;
     if (rx) retireFile(rx);
     offered.clear();
     $('filelist').textContent = '';
-    if (got) {
-      // The share ends everywhere at once: what the sharer's tab stops
-      // holding, this page stops showing.
-      lastBody = '';
-      retireTextCopy();
-      $('received').textContent = '';
-      $('rendered').textContent = '';
-      $('panel').hidden = true;
-      $('view-status').hidden = false;
-      $('view-status').textContent = phrase('view.ended');
-      $('retryrow').hidden = false;
+    lastBody = '';
+    retireTextCopy();
+    $('received').textContent = '';
+    $('rendered').textContent = '';
+    $('panel').hidden = true;
+    $('consent').hidden = true;
+    $('relayrow').hidden = true;
+    $('view-status').hidden = false;
+    $('view-status').textContent = phrase(terminal ? (got ? 'view.ended' : 'view.gone-early')
+      : session.retry.active ? 'view.reconnecting' : 'view.interrupted');
+    $('retryrow').hidden = false;
+    pc?.close();
+    credentials.close();
+    transportControl.route(null);
+    pairing.close();
+    if (!terminal) session.retry.pause();
+  }
+
+  resumeViewer = () => {
+    session.retry.foreground();
+    if (document.visibilityState === 'hidden') { clearTimeout(foregroundProbe); return; }
+    if (done || !session.consent || !session.retry.active || navigator.onLine === false) return;
+    if (dcRef?.readyState !== 'open') {
+      if (connected || ws.readyState > 1) sharerGone();
       return;
     }
-    fail(phrase('view.gone-early'));
+    clearTimeout(foregroundProbe);
+    // Repeating hello requests the current introduction on the existing
+    // encrypted peer; it never opens another connection or changes consent.
+    try { dcRef.send(JSON.stringify({ type: 'hello' })); } catch { sharerGone(); return; }
+    foregroundProbe = setTimeout(() => {
+      if (!done && session.generation === generation && document.visibilityState !== 'hidden' && navigator.onLine !== false) sharerGone();
+    }, 8000);
   };
 
-  $('send-knock').addEventListener('click', () => {
-    const note = $('knock').value.trim().slice(0, 200);
+  function sendKnock(note) {
     try { dcRef.send(JSON.stringify({ type: 'knock', note })); } catch { return; }
+    trace.mark('approval-requested');
     $('knock').disabled = true;
     $('send-knock').disabled = true;
     $('view-status').textContent = phrase('view.asked');
-  });
-  $('knock').addEventListener('keydown', (e) => {
+  }
+  listen('send-knock', 'click', () => sendKnock($('knock').value.trim().slice(0, 200)));
+  listen('knock', 'keydown', (e) => {
     if (e.key === 'Enter') $('send-knock').click();
   });
 
@@ -898,15 +1361,36 @@ function view(code) {
   // chosen to connect - before this runs, the sharer has not learned that
   // this reader exists, let alone an address.
   async function dial() {
-    if (pc !== null || ws.readyState !== 1) return;
+    if (pc !== null || preparing || done || ws.readyState !== 1) return;
+    preparing = true;
+    session.consent = true;
+    if (!session.retry.active) session.retry.start();
     $('consent').hidden = true;
-    $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : relay ? 'view.relaying' : 'view.connecting');
-    pc = new RTCPeerConnection(rtcConfig(localMode, relay));
+    $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : wantRelay ? 'view.relaying' : 'view.connecting');
+    try { relay = wantRelay ? await credentials.prepare() : null; }
+    finally { preparing = false; }
+    if (done || session.generation !== generation) return;
+    pc = new RTCPeerConnection(shareConfiguration(mode, localMode, relay));
+    trace.attach(pc);
     connectionTimer = setTimeout(() => {
-      if (!connected) stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay);
+      if (!connected) stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay, 'timeout');
     }, 20000);
     pc.onicecandidate = (ev) => {
-      if (ev.candidate && allowedCandidate(ev.candidate, localMode) && ws.readyState === 1) ws.send(JSON.stringify({ data: { candidate: ev.candidate, local: localMode } }));
+      if (!ev.candidate || done) return;
+      const allowed = shareCandidate(ev.candidate, mode, localMode);
+      if (!allowed) {
+        trace.candidate('local', ev.candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+      }
+      if (ws.readyState !== 1) { trace.candidate('local', ev.candidate, 'rejected'); return; }
+      try {
+        if (!pairing.send({ data: { candidate: ev.candidate, local: localMode } })) {
+          trace.candidate('local', ev.candidate, 'rejected'); return;
+        }
+        trace.candidate('local', ev.candidate, 'sent');
+        trace.count('candidatesSent');
+      } catch (error) {
+        trace.candidate('local', ev.candidate, 'rejected'); trace.error('send-signal', error); revealDiagnostics();
+      }
     };
     // The slow path for noticing an abrupt disappearance: ICE consent
     // expiry flips the connection to failed after ~30s. The fast path is
@@ -916,22 +1400,26 @@ function view(code) {
     };
     // An attempt that never connects: ICE gives up on its own once every
     // candidate pair has been tried, and the timer below covers the case
-    // where it never says so. A direct attempt that fails offers the relay;
-    // a relayed one that fails has nothing left to offer.
+    // where it never says so. A failed attempt keeps its original transport.
     const giveUp = () => {
       if (got || connected || done) return;
-      stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay);
+      stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay, 'ice-failed');
     };
     pc.oniceconnectionstatechange = () => {
       if (pc.iceConnectionState === 'failed') giveUp();
     };
     pc.ondatachannel = event => receiveFileChannel(event.channel);
+    pc.onnegotiationneeded = () => { void renegotiate(); };
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
     dcRef = dc;
+    trace.channel(dc);
     const opened = () => {
-      if (connected || done) return;
+      if (connected || done || session.generation !== generation) return;
       connected = true;
+      void pc.getStats().then(stats => {
+        if (!done && session.generation === generation) transportControl.route(selectedTransport(stats));
+      }).catch(() => {});
       viewerLive = true;
       clearTimeout(connectionTimer);
       if (!introduced) {
@@ -942,11 +1430,15 @@ function view(code) {
     };
     dc.onopen = opened;
     dc.onmessage = (ev) => {
-      if (done) return;
+      if (session.generation !== generation) return;
+      if (done && typeof ev.data !== 'string') return;
       if (typeof ev.data !== 'string') { if (!rx?.request) fileChunk(ev.data); return; }
       let msg;
       try { msg = JSON.parse(ev.data); } catch { return; }
       if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'ended') { sharerGone(true); return; }
+      if (done) return;
+      clearTimeout(foregroundProbe);
       if (msg.type === 'files') { renderFilelist(msg.list ?? [], msg.fileChannels); return; }
       if (msg.type === 'file-begin') { if (!rx?.request) fileBegin(msg); return; }
       if (msg.type === 'file-end') { if (!rx?.request) fileEnd(msg); return; }
@@ -959,48 +1451,69 @@ function view(code) {
         return;
       }
       if (msg.type === 'token') {
-        try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
+        if (!validAdmissionToken(msg.token)) return;
+        session.token = msg.token;
+        admissions.save('share-text', code, mode, msg.token);
+        try { sessionStorage.setItem(`share-text-token:${code}`, msg.token); } catch {}
         return;
       }
       if (msg.type === 'private') {
+        session.retry.ready();
+        trace.mark('waiting-approval');
         if (got) return;
         introduced = true;
         clearDeadlines();
-        // A reader who was admitted and switched language knocks again with
-        // the token the sharer issued, silently; anyone else knocks aloud.
-        let token = null;
-        try { token = carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
+        // Join/Connect remains deliberate; only the host decision is remembered.
+        let token = session.token ?? admissions.read('share-text', code, mode);
+        try { token ??= carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
         if (token !== null) {
           awaitIntroduction();
           dc.send(JSON.stringify({ type: 'knock', note: '', token }));
           return;
         }
+        if (session.discoveryJoin) {
+          sendKnock('');
+          return;
+        }
         $('view-status').textContent = phrase('view.private');
+        $('knock').disabled = false;
+        $('send-knock').disabled = false;
         $('knockrow').hidden = false;
         $('knock').focus();
         return;
       }
       if (msg.type === 'asked') {
+        trace.mark('approval-requested');
         introduced = true;
         clearDeadlines();
         $('view-status').textContent = phrase('view.asked');
         return;
       }
       if (msg.type === 'denied') {
+        session.retry.stop();
+        trace.finish('denied');
         done = true;
         viewerLive = false;
         clearDeadlines();
+        clearTimeout(foregroundProbe);
+        credentials.close();
+        transportControl.route(null);
+        pairing.close();
+        pc?.close();
         $('knockrow').hidden = true;
         $('view-status').textContent = phrase('view.denied');
         $('retryrow').hidden = false;
         return;
       }
       if (msg.type !== 'text' || done) return;
+      session.retry.ready();
       got = true;
+      trace.mark('received');
       introduced = true;
       clearDeadlines();
       retireTextCopy();
       lastBody = String(msg.body ?? '');
+      if (lastBody !== '') globalThis.aboxToolComplete?.();
       // The sharer's markdown flag sets the default; a reader who has
       // touched the view toggle keeps their own choice through live updates.
       if (!mdTouched) asMd = msg.md === true;
@@ -1011,105 +1524,158 @@ function view(code) {
       $('view-status').hidden = lastBody !== '';
       if (lastBody === '') $('view-status').textContent = phrase('view.empty');
     };
-    dc.onclose = sharerGone;
+    dc.onerror = error => {
+      trace.error('channel', error.error);
+      if (!got) stopAttempt('view.error', false, 'channel-error');
+      else revealDiagnostics();
+    };
+    dc.onclose = () => sharerGone();
     if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
     if (done) return;
-    ws.send(JSON.stringify({ data: { sdp: pc.localDescription, local: localMode } }));
+    if (!pairing.send({ data: { sdp: shareDescription(pc.localDescription, mode, localMode), local: localMode } })) throw new Error('signaling-unavailable');
+    trace.count('offerSent'); trace.mark('offer-sent');
   }
 
-  // The credential is minted by the rendezvous, one per socket, and handed
-  // back on the same socket; a rendezvous that has no relay to offer - or an
-  // older one that does not know the question - leaves the ask unanswered,
-  // and the wait below turns that silence into a sentence.
-  function askRelay() {
-    if (localMode) return Promise.resolve(null);
-    return new Promise((resolve) => {
-      relayReply = resolve;
-      setTimeout(() => resolve(null), RELAY_WAIT);
-      ws.send(JSON.stringify({ relay: true }));
-    });
-  }
-
-  async function relayDial() {
-    relay = await askRelay();
-    relayReply = null;
-    if (relay === null) { fail(phrase('view.relay-none')); return; }
-    await dial();
-  }
-
-  $('connect').addEventListener('click', () => {
-    dial().catch(() => stopAttempt('view.error'));
-  });
-
-  $('relay').addEventListener('click', () => {
-    if (localMode) return;
+  async function renegotiate() {
+    if (!connected || done || makingOffer || pc?.signalingState !== 'stable') return;
+    makingOffer = true;
+    const restart = restartRequested;
+    restartRequested = false;
     try {
-      sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
-      sessionStorage.setItem(RELAY_FLAG(code), '1');
-    } catch {
-      stopAttempt('view.error');
-      return;
-    }
-    location.reload();
-  });
-
-  $('mode-retry').addEventListener('click', () => {
-    location.href = makeShareUrl(location.href, code, retryLocal);
-  });
-
-  ws.onopen = () => { viewerKeepalive = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000); };
-
-  ws.onmessage = async (e) => {
-    if (e.data === 'pong') return;
-    const m = JSON.parse(e.data);
-    try {
-      if (m.type === 'ready') {
-        if (wantRelay) {
-          $('consent').hidden = true;
-          $('view-status').textContent = phrase('view.relaying');
-          await relayDial();
-        } else if (carried) {
-          await dial();
-        } else {
-          $('view-status').textContent = phrase('view.someone');
-          $('consent').hidden = false;
-        }
-      } else if (m.type === 'relay' && !localMode && relayReply !== null) {
-        // Only a TURN entry with a credential is worth carrying; anything
-        // else the rendezvous might send is not a relay.
-        const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
-        relayReply(entry ?? null);
-      } else if (m.type === 'signal' && pc && !done) {
-        const mode = m.data.networkMode;
-        if (mode === 'local' || mode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
-          retryLocal = mode === 'local';
-          stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct');
-          $('mode-retryrow').hidden = false;
-          return;
-        }
-        if (m.data.sdp) await pc.setRemoteDescription(localMode ? localDescription(m.data.sdp) : m.data.sdp);
-        else if (m.data.candidate && allowedCandidate(m.data.candidate, localMode)) await pc.addIceCandidate(m.data.candidate);
+      const offer = await pc.createOffer(restart ? { iceRestart: true } : undefined);
+      if (done || session.generation !== generation) return;
+      await pc.setLocalDescription(offer);
+      if (done || session.generation !== generation) return;
+      if (!pairing.send({ data: { sdp: shareDescription(pc.localDescription, mode, localMode), local: localMode } })) {
+        throw new Error('transport.unavailable');
       }
-    } catch {
-      if (!done && !got) stopAttempt('view.error');
-    }
-  };
+    } catch (error) {
+      if (!done && session.generation === generation) stopAttempt(transportError(error), false, 'signaling-error');
+    } finally { makingOffer = false; }
+  }
 
-  ws.onclose = (e) => {
-    clearInterval(viewerKeepalive);
-    // The server closes every reader with host-gone the instant the sharer
-    // disconnects - long before the peer channel notices on its own.
-    if (done) return;
-    if (e.code === 4410) { sharerGone(); return; }
-    if (got) return;
-    if (e.code === 4404) stopAttempt('view.nobody');
-    else if (e.code === 4429) stopAttempt('view.full');
-    else if (!connected) stopAttempt('view.error');
-  };
+  listen('connect', 'click', () => {
+    dial().catch(error => {
+      trace.error('offer', error);
+      stopAttempt(error.message?.startsWith('transport.') ? transportError(error) : 'view.error', false, typeof RTCPeerConnection === 'undefined' ? 'unsupported' : 'signaling-error');
+    });
+  });
+
+  listen('mode-retry', 'click', () => {
+    session.retry.stop();
+    location.href = transportUrl(makeShareUrl(location.href, code, retryLocal), mode);
+  });
+
+  pairing.listen({
+    open() {
+      trace.socket('open'); trace.mark('server-open');
+      pairing.every('heartbeat', 30000, () => pairing.send('ping'));
+    },
+    error() { trace.error('websocket', { name: 'NetworkError' }); revealDiagnostics(); },
+
+    message(e) {
+      if (done || session.generation !== generation) return;
+      if (e.data === 'pong') return;
+      let m;
+      try { m = JSON.parse(e.data); }
+      catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
+      if (credentials.receive(m)) return;
+      signals = signals.then(async () => {
+        if (done || session.generation !== generation) return;
+        if (m.type === 'ready') {
+          trace.mark('room-ready');
+          if (session.consent) {
+            await dial();
+          } else {
+            $('view-status').textContent = phrase('view.someone');
+            $('consent').hidden = false;
+          }
+        } else if (m.type === 'signal' && pc && !done) {
+          if (!m.data || typeof m.data !== 'object') return;
+          const networkMode = m.data.networkMode;
+          if (networkMode === 'local' || networkMode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
+            retryLocal = networkMode === 'local';
+            stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct', false, 'mode-mismatch');
+            $('mode-retryrow').hidden = false;
+            return;
+          }
+          if (m.data.sdp) {
+            await pc.setRemoteDescription(shareDescription(m.data.sdp, mode, localMode));
+            if (done || session.generation !== generation) return;
+            for (const candidate of candidates.splice(0)) await pc.addIceCandidate(candidate);
+            trace.count('answerAccepted'); trace.mark('answer-accepted');
+            if (restartRequested) void renegotiate();
+          } else if (m.data.renew === true && mode === 'relay') {
+            restartRequested = true;
+            void renegotiate();
+          } else if (m.data.candidate) {
+            const candidate = m.data.candidate;
+            trace.count('candidatesReceived');
+            if (!shareCandidate(candidate, mode, localMode)) {
+              trace.candidate('remote', candidate, 'filtered'); trace.count('candidatesFiltered'); return;
+            }
+            if (!pc.remoteDescription) {
+              if (candidates.length < 64) candidates.push(candidate);
+              return;
+            }
+            try {
+              await pc.addIceCandidate(candidate);
+              trace.candidate('remote', candidate, 'accepted'); trace.count('candidatesAccepted');
+            } catch (error) {
+              trace.candidate('remote', candidate, 'rejected'); trace.error('add-candidate', error);
+              throw error;
+            }
+          }
+        }
+      }).catch(error => {
+        if (done || session.generation !== generation) return;
+        trace.error('signaling', error);
+        if (!got || mode === 'relay') stopAttempt(error.message?.startsWith('transport.') ? transportError(error) : 'view.error');
+      });
+    },
+
+    close(e) {
+      credentials.close();
+      pairing.close();
+      trace.socket('closed', e.code);
+      // Losing introductions does not retire a working encrypted peer. An
+      // explicit host-ended control is terminal; transport loss can recover.
+      if (done) return;
+      if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
+          !['failed', 'closed'].includes(pc?.connectionState)) {
+        resumeViewer();
+        return;
+      }
+      if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
+        // Stop travels on the reliable peer channel while the room closes.
+        // Give that terminal frame time to arrive before replacing the peer
+        // for renewed credentials; an ordinary outage still recovers promptly.
+        clearTimeout(relayRecoveryTimer);
+        relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
+        return;
+      }
+      if (e.code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
+      if (e.code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
+      if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
+      if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
+      else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
+      else if (!connected) stopAttempt('view.error', false, 'socket-closed');
+    },
+  });
 }
 
 $('retry').addEventListener('click', () => location.reload());
+
+function resumePairedPage() {
+  resumeHost();
+  resumeViewer();
+}
+observeForeground({
+  foreground: resumePairedPage,
+  hidden() { approvalPrompt.close(false); resumePairedPage(); },
+  suspend() { approvalPrompt.close(false); hostPairing?.clear('foreground'); },
+});
 
 /* ----------------------------------------------------- the frame's panels */
 
@@ -1135,6 +1701,7 @@ window.addEventListener('unhandledrejection', (event) => bootError(event.reason?
 /* --------------------------------------------------------------- routing */
 
 const code = location.hash.replace(/^#/, '').toLowerCase();
+appendConnectionIcons($('viewer-connection-icons'), { transport: readTransport(location.href), locked: false, approval: 'optional' });
 $('local').checked = isLocal;
 if (CODE_PATTERN.test(code)) view(code);
 else {
@@ -1175,10 +1742,14 @@ addEventListener('click', (event) => {
   // the consent they gave moments ago, and the admission token (if any)
   // lets them straight back into a private share.
   if (viewerLive) {
-    try { sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now())); } catch {}
+    try {
+      sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
+      sessionStorage.setItem(`share-text-transport:${code}`, readTransport(location.href));
+    } catch {}
   }
-  anchor.href = makeShareUrl(anchor.href, code, isLocalLink(location.href));
+  anchor.href = transportUrl(makeShareUrl(anchor.href, code, isLocalLink(location.href)), readTransport(location.href) ?? 'direct');
 }, true);
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();
+renderDiagnostics();

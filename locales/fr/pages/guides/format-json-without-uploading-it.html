@@ -8,20 +8,21 @@
       aller&nbsp;: l'analyseur, ce sont quelques centaines de lignes de
       JavaScript qui tournent dans l'onglet déjà ouvert devant vous.
     </p>
-    <p>
-      Tout ce qui suit est ce qu'il vaut la peine de savoir avant de coller un
-      fichier de configuration dans l'une des solutions concurrentes&nbsp;: ce
-      qu'un formateur a le droit de changer, ce que la plupart changent quand
-      même, et comment lire l'erreur quand le fichier refuse d'être analysé.
-    </p>
+    <p>La suite mérite d'être connue avant de coller une configuration dans une autre solution&nbsp;: ce qu'un formateur peut changer, ce qu'une implémentation négligente peut changer malgré tout et comment lire l'erreur lorsqu'un fichier ne s'analyse pas du tout.</p>
 
     <figure class="shot">
       <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
-           alt="Deux volets&nbsp;: une seule ligne de JSON à gauche, le même document formaté avec une indentation de deux espaces à droite.">
+           alt="Deux volets : une seule ligne de JSON à gauche, le même document formaté avec une indentation de deux espaces à droite.">
       <figcaption>
         Une ligne entre, quelque chose de lisible sort. Rien n'a été envoyé nulle part pour cela.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Déboguer une réponse d'API ou un fichier de configuration</h2>
+    <p>Collez le corps de la réponse sans ses en-têtes HTTP, choisissez JSON dans le menu de langue et une indentation de deux espaces. Laissez le tri des clés désactivé au premier examen pour suivre la source. Si l'analyse échoue, utilisez <em>Aller à l'erreur</em>, corrigez la virgule, le guillemet ou l'échappement signalé, puis vérifiez le nouveau résultat avant de le copier. Une analyse réussie ne vérifie pas le schéma de l'API&nbsp;: contrôlez clés requises, types de valeurs et longs identifiants selon les attentes de l'application destinataire.</p>
+    <p>Pour une charge compacte dans une étiquette hors ligne ou un champ limité en octets, gardez une copie lisible et livrez la sortie minifiée. Vérifiez la taille indiquée, puis relisez ou décodez la charge livrée. La minification retire les espaces de présentation&nbsp;; elle ne raccourcit pas les valeurs longues et ne supprime pas les champs privés. Si la réponse formatée va dans une demande d'assistance, retirez identifiants de connexion et données personnelles de la copie partagée.</p>
   </section>
 
   <section>
@@ -175,7 +176,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
 
     <figure class="shot">
       <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
-           alt="Le même outil avec un document cassé&nbsp;: une erreur nommant la ligne et la colonne d'une virgule en trop, et le volet d'entrée montrant la ligne fautive.">
+           alt="Le même outil avec un document cassé : une erreur nommant la ligne et la colonne d&#x27;une virgule en trop, et le volet d&#x27;entrée montrant la ligne fautive.">
       <figcaption>
         Quand cela ne se lit pas, le message dit où. Une virgule en trop est la cause la plus courante et la plus difficile à voir à l'œil.
       </figcaption>
@@ -246,34 +247,13 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       documents qui disent la même chose peuvent différer à chaque ligne si l'un a
       été minifié et l'autre non, et aucun diff ne voit au-delà de cela.
     </p>
-    <p>
-      Donc&nbsp;: formatez le premier, formatez le second, puis comparez les deux
-      résultats. Les trois étapes sont ici sur la même page &mdash; l'onglet
-      <em>Comparer</em> partage la zone avec <em>Formater</em> précisément pour
-      cela. Si en plus les deux listent leurs clés dans des ordres différents,
-      triez-les toutes deux en les formatant et la comparaison se réduit à la
-      différence que vous cherchiez.
-    </p>
+    <p>Formatez donc le premier, puis le second fichier et collez les résultats dans <a href="../../comparer-des-textes/">Comparaison de texte</a>. La comparaison a sa propre page. Si les clés d'objet sont aussi dans des ordres différents, triez les deux copies lors du formatage. Le <a href="../comparer-deux-fichiers-json/">guide de comparaison</a> couvre le parcours complet et les différences que le tri ne retire pas.</p>
   </section>
 
   <section>
     <h2>La partie que personne ne met sur la page</h2>
-    <p>
-      Cherchez un formateur JSON et vous trouverez des dizaines de sites avec une
-      zone de texte. Coller dans cette zone est un envoi. Ce qui se trouvait dans
-      votre presse-papiers &mdash; une réponse d'API contenant l'adresse d'un
-      client, un fichier de configuration avec une chaîne de connexion, un jeton
-      que vous étiez en train de déboguer &mdash; a été transmis à une machine que
-      vous ne contrôlez pas, et le voilà dans leur journal, dans leur rapport
-      d'erreur et dans leur sauvegarde.
-    </p>
-    <p>
-      Ce n'est pas une hypothèse sur la malveillance. Un site parfaitement
-      bien intentionné garde tout de même des journaux d'accès, fait tout de même
-      de l'analytique, et a tout de même un hébergeur. Les données les plus sûres
-      sont celles qui ne sont jamais parties, et pour un travail qui n'est que de
-      la manipulation de texte, il n'y a aucune raison qu'elles partent.
-    </p>
+    <p>Une recherche de formateur JSON donne des dizaines de sites avec une zone de texte. Si le formateur envoie l'entrée au serveur, coller puis formater lui donne le contenu du presse-papiers&nbsp;: réponse d'API avec adresse client, chaîne de connexion ou jeton. Certains fonctionnent localement&nbsp;; vérifiez celui que vous utilisez plutôt que de déduire son lieu de traitement de l'apparence de sa zone de texte.</p>
+    <p>Ce n'est pas une hypothèse de malveillance. Un service serveur peut conserver l'entrée dans des journaux, rapports d'erreur ou sauvegardes même avec de bonnes intentions. Les données les plus sûres sont celles qui ne sont jamais parties, et une simple manipulation de chaînes n'exige aucun départ.</p>
     <p>
       Deux vérifications, valables pour n'importe quel site qui fait cette
       promesse, pas seulement celui-ci&nbsp;:
@@ -300,11 +280,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
 
   <section>
     <h2>Et YAML, XML et le reste&nbsp;?</h2>
-    <p>
-      La même page lit XML, HTML, CSS et YAML, et convertit entre JSON et le
-      premier et le dernier d'entre eux. Deux choses méritent d'être reprises
-      d'en haut, car c'est le même argument dans un autre costume&nbsp;:
-    </p>
+    <p>La même page lit XML, HTML, CSS et YAML, et convertit entre JSON et XML ou YAML. Le <a href="../format-and-check-xml/">guide XML</a> et le <a href="../convert-yaml-and-json/">guide de conversion YAML</a> couvrent ces parcours. Deux points ci-dessus se transposent, car le raisonnement reste le même sous une autre forme&nbsp;:</p>
     <ul>
       <li>
         <strong>Convertir du YAML en JSON perd les commentaires</strong>, parce

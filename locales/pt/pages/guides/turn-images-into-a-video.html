@@ -1,11 +1,6 @@
   <section>
     <h2>A resposta curta</h2>
-    <p>
-      Abra o <a href="../../imagens-para-video/">Imagens para vídeo</a>, jogue
-      as imagens dentro, coloque em ordem, defina quanto tempo cada uma fica na
-      tela e crie o vídeo. Você recebe um MP4 com vídeo H.264, que toca em
-      basicamente qualquer coisa.
-    </p>
+    <p>Abra <a href="../../imagens-para-video/">Imagens para vídeo</a>, adicione e ordene fotos, escolha segundos para slides ou quadros para sequências, informe a duração de cada uma e crie o vídeo. MP4 com H.264 é recomendado; teste no aplicativo receptor antes de compartilhar.</p>
     <p>
       Os dois ajustes que mais costumam obrigar a uma segunda passada são a
       duração e a resolução, e vale entendê-los antes da primeira renderização,
@@ -14,37 +9,24 @@
   </section>
 
   <section>
+    <h2>Slides, stop motion ou registro de progresso</h2>
+    <p>Para férias, resumo de evento ou catálogo, mude Manter cada imagem por para segundos, informe por exemplo três e aperte Aplicar a todas. Ordene a história, escolha 1080p ou formato vertical do destino e Ajustar dentro para preservar a foto inteira. Confira a duração antes de criar e veja primeira, central e última imagem no vídeo final.</p>
+    <p>Para stop motion, render ou fotos periódicas de progresso, use quadros: uma imagem por um quadro a 24 fps dá 24 imagens por segundo. Ordene por nome e confira. Grava cortes diretos entre imagens, sem zoom, transição nem som. Uma apresentação narrada precisa de outro editor; um registro visual silencioso fica completo aqui.</p>
+  </section>
+
+  <section>
     <h2>Taxa de quadros e duração não são a mesma coisa</h2>
     <p>
       Essa é a confusão que custa uma nova renderização às pessoas.
     </p>
-    <p>
-      <strong>Duração</strong> é quanto tempo cada imagem fica na tela. É o
-      ajuste com que você de fato se importa. Três segundos é um padrão
-      confortável para uma apresentação que alguém está assistindo, um a dois
-      segundos parece ágil, e qualquer coisa acima de cinco arrasta, a menos que
-      haja narração por cima.
-    </p>
-    <p>
-      <strong>Taxa de quadros</strong> é quantas vezes por segundo o vídeo repete
-      aquela imagem. Ela não muda nada na aparência da apresentação, porque uma
-      imagem parada mantida por três segundos fica idêntica a 24 quadros por
-      segundo e a 60, e muda bastante o tamanho do arquivo e o tempo de
-      codificação.
-    </p>
-    <p>
-      Então, para uma apresentação simples, escolha uma taxa de quadros baixa. 24
-      ou 30 dá e sobra. O motivo para subir é se houver movimento no vídeo: um
-      travelling ou zoom sobre cada foto, ou uma transição entre elas, onde uma
-      taxa baixa aparece como serrilhado no movimento.
-    </p>
+    <p><strong>Duração em segundos</strong> indica quanto cada imagem permanece. Três segundos é um início confortável para slides; um ou dois é rápido; mais de cinco se arrasta salvo se houver narração.</p>
+    <p><strong>Taxa, com segundos escolhidos,</strong> é quantas vezes a imagem se repete por segundo. Uma imagem estática de três segundos parece igual a 24 e 60 fps, mas muda bastante o tamanho e tempo de codificação.</p>
+    <p>Começa com um quadro por imagem. Assim a taxa muda a duração: 24 imagens a 24 fps duram um, a 12 duram dois segundos. Para slides comuns mude para segundos; 24 ou 30 fps bastam. Sem panorâmicas, zoom nem transições, aumentar a taxa não adiciona movimento.</p>
 
     <figure class="shot">
       <img src="/screens/turn-images-into-a-video/summary.webp" loading="lazy" decoding="async"
            alt="Os ajustes de resolução e taxa de quadros, com um resumo contando as imagens, a duração total, os quadros e o tamanho estimado.">
-      <figcaption>
-        Taxa de quadros e duração são coisas diferentes, e no resumo isso fica óbvio: mudar uma mexe no número de quadros, não na duração.
-      </figcaption>
+      <figcaption>Em segundos, mudar a taxa muda a quantidade de quadros, mas preserva a duração de cada imagem. Em quadros, muda também a duração.</figcaption>
     </figure>
   </section>
 
@@ -94,14 +76,7 @@
       depois de <code>photo10.jpg</code> numa ordenação alfabética, porque a
       comparação é caractere por caractere.
     </p>
-    <p>
-      Ordenar pela data em que a foto foi tirada costuma estar certo para
-      fotografias de um evento, já que você as tirou na ordem em que as coisas
-      aconteceram. Arrastar os quadradinhos está certo para qualquer coisa em
-      que a história não seja cronológica. Confira antes de renderizar, porque o
-      vídeo é o único produto em que consertar a ordem significa refazer o
-      trabalho inteiro.
-    </p>
+    <p>Ordenar por nome conta números: photo2 vem antes de photo10. Por data usa modificação do arquivo, não necessariamente captura; fotos copiadas ou editadas podem precisar de ordem manual. Arraste se a história não for cronológica. Confira antes de criar: mudar a ordem do vídeo exige repetir tudo.</p>
 
     <figure class="shot">
       <img src="/screens/turn-images-into-a-video/order.webp" loading="lazy" decoding="async"
@@ -149,12 +124,7 @@
       converter, porque converter significa mais uma geração de codificação com
       perdas.
     </p>
-    <p>
-      A ferramenta não tem limite embutido para quantas imagens você pode usar. O
-      teto é a memória do seu próprio computador, porque o vídeo pronto é montado
-      ali antes de você baixar, e uma apresentação longa em 4K é a primeira coisa
-      a sentir isso.
-    </p>
+    <p>Não há máximo fixo de imagens. O vídeo é montado na memória e não pode superar 4 GB; o codificador do navegador também precisa aceitar as dimensões. Uma apresentação longa 4K pode atingir esses limites com poucas imagens de origem.</p>
   </section>
 
   <section>

@@ -907,6 +907,7 @@ async function runExport() {
     el.resultAudio.src = resultUrl;
     el.download.href = resultUrl;
     el.download.download = name;
+    el.download.onclick = () => globalThis.aboxToolComplete?.();
     el.result.hidden = false;
     lastOut = summarise(cut.channels);
     drawWaveform(el.outWave, lastOut);

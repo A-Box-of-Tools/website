@@ -16,6 +16,26 @@
   </section>
 
   <section>
+    <h2>Fix the copy that fails on the receiving screen</h2>
+    <p>
+      For a phone video that looks right locally but sideways in a shared
+      document or presentation, try the ordinary header turn first and save a
+      copy. Open that copy in the receiving app or on the presentation
+      computer. If it still ignores the turn, return to the original and
+      choose Bake for the same turn; that writes upright pixels at the cost of
+      a re-encode.
+    </p>
+    <p>
+      An upside-down recording from a mounted camera wants the half turn.
+      Check a recognisable sign or face in the preview, then listen to the
+      result if the sound matters: AAC can be copied, while another decodable
+      soundtrack may be encoded as AAC or omitted if unsupported. Rotation
+      changes orientation, not shape. A vertical crop of a landscape recording
+      belongs in <a href="../crop-a-video/">the cropping guide</a>.
+    </p>
+  </section>
+
+  <section>
     <h2>Why the clip is sideways in the first place</h2>
     <p>
       A phone's camera sensor is landscape. When you hold the phone upright
@@ -45,8 +65,10 @@
       in, in the time it takes to read it once. That is what the
       <a href="../../rotate-video/">Video Rotator</a> does by default: it
       composes the turn you chose with whatever the file already said, writes
-      the matrix for the result, and copies every frame and every packet of
-      sound across byte for byte.
+      the matrix for the result, and copies every picture frame across byte
+      for byte. AAC sound is copied too; another decodable codec is encoded
+      as AAC, and unsupported sound is named and left out. Read the separate
+      sound decision before exporting.
     </p>
     <p>
       Most online rotators decode the clip, turn the pixels, and encode

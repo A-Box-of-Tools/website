@@ -18,6 +18,29 @@
   </section>
 
   <section>
+    <h2>A clip that explains something without the wait</h2>
+    <p>
+      For a bug report, keep the action that triggers the problem and a few
+      seconds showing its result. For a talk or interview excerpt, keep the
+      question or setup when the answer would otherwise lose its meaning. Mark
+      each part with I and O, play the selected rows, then check their order
+      and the total length before choosing the export method. Removing the
+      waiting often saves more bytes than compressing the whole recording.
+    </p>
+    <p>
+      Choose the exact method when the first visible frame must be
+      unambiguous. It removes unwanted picture frames, but copied sound can
+      still contain part of an audio packet before or after a cut. If that
+      sound is private, leave it out or cut and re-encode it separately in a
+      local editor. Copy can
+      retain earlier keyframe footage and ask the player to skip it; that
+      footage still exists in the file. Trimming by Copy is therefore not a
+      privacy redaction. Watch the downloaded clip from start to finish in its
+      destination, including every join, and keep the original separately.
+    </p>
+  </section>
+
+  <section>
     <h2>Why a trim need not lose quality at all</h2>
     <p>
       For a selection that Copy can handle, every retained frame can stay
@@ -117,7 +140,10 @@
       resumes on a keyframe. If a later part needs hidden frames before its
       start, choose &ldquo;Cut exactly here&rdquo; instead. The recording
       fallback below cannot join separate parts, because it records one
-      uninterrupted pass from one playhead.
+      uninterrupted pass from one playhead. The reader also refuses saved
+      MP4 playback timelines whose edits it cannot apply. Export a new
+      video with those edits applied in a local editor before loading it
+      here, rather than treating the hidden samples as the visible clip.
     </p>
 
     <figure class="shot">

@@ -7,6 +7,28 @@
       <figcaption>The attribute becomes @region, the port stays a string, and repeated feature elements become an array.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Debug a response, a feed or a configuration change</h2>
+    <p>
+      A one-line API response or RSS feed is easier to inspect when each
+      element has a line of its own. Import the saved XML, choose two spaces,
+      and use Go to error if parsing stops. Check the expected outer element,
+      attributes and repeated entries in the formatted result. An address
+      containing an ampersand needs <code>&amp;amp;</code> in ordinary XML
+      text or an attribute; a raw ampersand is not a substitute. Recheck the
+      corrected document with the application that consumes it, since this
+      page does not validate a feed's rules or an XSD.
+    </p>
+    <p>
+      For a migration from XML configuration to JSON, convert a copy and
+      inspect the <code>@</code> attributes, repeated-element arrays and
+      string values before comparing it with the proposed JSON file.
+      <a href="../compare-two-json-files/">Format both JSON copies alike</a>
+      first. Use this for data-oriented documents; the mapping loses comments
+      and mixed-content order, so it is not a preservation format for prose.
+    </p>
+  </section>
   <section>
     <h2>Follow a parse error</h2>
     <p>An unclosed tag, mismatched end tag or invalid character reference stops formatting and conversion. Use Go to error to move the caret to the reported position. The document needs one outer element: two roots or text outside the root are refused.</p>

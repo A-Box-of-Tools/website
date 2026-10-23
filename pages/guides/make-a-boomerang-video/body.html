@@ -4,7 +4,11 @@
       <li>
         <strong>Cut the moment.</strong> Open the
         <a href="../../trim-video/">Video Cutter</a>, mark the second or two
-        that should swing back and forth, and export it as its own clip.
+        that should swing back and forth, choose the labelled cut method,
+        and export it as its own clip. Copy can retain hidden opening frames,
+        and an exact cut can still carry audio edits. For a silent loop, leave
+        sound out of this intermediate clip. If the reverser refuses its playback timeline,
+        apply the edits in a new local export before continuing.
       </li>
       <li>
         <strong>Reverse a copy.</strong> Drop that clip into the
@@ -33,12 +37,35 @@
   </section>
 
   <section>
+    <h2>Pick a motion that survives the return trip</h2>
+    <p>
+      A jump or a splash is the familiar case. A turning product, a drawer
+      opening or a hand placing an object can make the same loop useful in a
+      short demonstration. Choose one clear motion from a steady shot, with
+      the subject inside the picture for both directions. A camera pan or a
+      person walking out of frame usually gives the return trip a distracting
+      lurch.
+    </p>
+    <p>
+      Make both halves silent if the finished loop should be silent: turn
+      sound off on the first cut as well as on the reversal. After joining,
+      watch the turn and the return to the start, then test whether the
+      destination repeats the MP4. Looping on this tool's preview does not put
+      a looping instruction into the file. If you need a different shape,
+      finish that crop on the short forward clip before making its reversed
+      copy.
+    </p>
+  </section>
+
+  <section>
     <h2>Why cut first</h2>
     <p>
       Reversing has to decode and re-encode every frame it touches &mdash; the
       <a href="../reverse-a-video/">reversing guide</a> explains why there is
-      no cheaper way. Cutting, by contrast, is close to free: the cutter moves
-      whole frames across without re-encoding them.
+      no cheaper way. Cutting can be close to free when the copy method
+      is available;
+      exact cuts re-encode the picture. The
+      <a href="../trim-a-video/">trimming guide</a> explains the choice.
     </p>
     <p>
       So the order is the whole trick. Reverse a two-second clip and the
@@ -65,8 +92,9 @@
   <section>
     <h2>What to do with the sound</h2>
     <p>
-      Leave it out, and do it at the reversing step &mdash; the reverser has a
-      checkbox for exactly this. A boomerang's audio would play forwards, then
+      Leave it out of both halves &mdash; the cutter and reverser both have
+      a sound choice. Removing it only at the reversing step still leaves
+      sound in the forward half. A boomerang's audio would play forwards, then
       backwards; reversed sound is unmistakably strange, and almost every place
       a boomerang ends up plays it muted anyway. Dropping the sound also makes
       the reverse quicker and both files smaller.
@@ -92,8 +120,9 @@
       boomerang that starts on the backswing reads as a mistake.
     </p>
     <p>
-      One refinement worth the extra ten seconds: trim one frame off the start
-      of the reversed clip before joining. The last frame of the forward clip
+      One refinement worth the extra ten seconds: mark the reversed half
+      from its second frame before joining, then choose the exact method
+      if that later start is not a keyframe. The last frame of the forward clip
       and the first frame of the reversed one are the same picture, and showing
       it twice makes the turn hang for an instant.
     </p>

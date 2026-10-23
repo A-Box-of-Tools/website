@@ -3,20 +3,14 @@
 #
 
 nav = "Zwischen Geräten teilen"
-title = "Text und Dateien zwischen Geräten teilen &mdash; ohne Upload"
-description = "Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen bringen - ohne Mail an sich selbst, ohne Chatverlauf, ohne Konto, und ohne dass ein Server eine Kopie behält."
+title = "Text und Dateien teilen, ohne sie auf einem Server zu speichern"
+description = "Text und Dateien zwischen Browsern teilen: standardmäßig direkt oder wahlweise verschlüsselt über Cloudflare. Kein Konto und keine gespeicherte Serverkopie; Empfänger können eigene Kopien behalten."
 
-heading = "So teilen Sie Text und Dateien zwischen Geräten, ohne sie hochzuladen"
-lede = """
-    Die üblichen Wege, eine Notiz oder Datei auf einen anderen Rechner zu
-    bringen, hinterlassen alle eine Kopie: im Gesendet-Ordner, im
-    Chatverlauf oder auf dem Server einer Sharing-Seite, hinter einem
-    Löschknopf, dem man vertrauen muss. Es gibt einen Weg, der nirgendwo
-    etwas hinterlässt, weil nie etwas gespeichert wird - und es ist zugleich
-    der einzige mit einem Namen, den man durch einen Raum rufen kann."""
+heading = "So teilen Sie Text und Dateien ohne gespeicherte Serverkopie"
+lede = "Übertragen Sie eine Notiz oder Datei ohne Kopie in einem E-Mail-Postfach, Chatverlauf oder Freigabeserver. Standardmäßig verbinden sich die Browser direkt. Wenn das nicht klappt, kann der Host eine neue Freigabe mit Cloud-Relay starten; Cloudflare leitet die verschlüsselten Inhalte weiter. Empfänger können erhaltene Inhalte weiterhin speichern."
 
-updated = "27. August 2026"
+updated = "13. Oktober 2026"
 
 og_title = "Zwischen Geräten teilen, ohne dass ein Server eine Kopie behält"
-og_description = "Text und Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen - ein aussprechbarer Link-Name, nirgendwo etwas gespeichert, und eine Freigabe, die mit dem Tab endet."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_description = "Text und Dateien zwischen Browsern teilen: standardmäßig direkt oder wahlweise verschlüsselt über Cloudflare. Kein Konto und keine gespeicherte Serverkopie; Empfänger können eigene Kopien behalten."
+og_image_alt = "abox.tools - Text und Dateien zwischen Browsern teilen"

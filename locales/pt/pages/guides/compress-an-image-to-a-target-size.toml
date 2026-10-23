@@ -11,7 +11,7 @@ lede = """
     2&nbsp;MB, e a sua foto está longe dele. Aqui está o que esse número custa,
     em que vale gastá-lo, e como saber se o resultado ainda está bom o bastante
     para mandar."""
-updated = "12 de outubro de 2026"
+updated = "13 de outubro de 2026"
 og_title = "Como comprimir uma imagem abaixo de um limite de tamanho"
 og_description = "O que um limite de tamanho custa de verdade, qual ajuste mexer primeiro, e por que um PNG não encolhe como um JPEG."
 og_image_alt = "abox.tools - ferramentas do navegador para processamento local de arquivos"

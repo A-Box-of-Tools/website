@@ -1,17 +1,31 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Partages locaux sur cette connexion</h2>
-      <p id="discovery-status" role="status" aria-live="polite">Recherche de partages locaux…</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
-      <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Connexions disponibles</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Actualiser</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Recherche de connexions disponibles…</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">Rejoindre ouvre un onglet de lecture avec le type de connexion indiqué. Les partages privés attendent une approbation.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">Cette liste affiche les partages directs et par relais cloud proposés au réseau local ou au groupe privé sélectionné. La recherche locale utilise l’adresse IPv4 publique ou le sous-réseau IPv6 ; les passerelles partagées peuvent inclure des inconnus et des routes différentes peuvent masquer des appareils voisins. Un groupe privé utilise son code. Rejoindre envoie une demande de connexion dans un nouvel onglet ; consulter la liste ne connecte pas. Les partages privés exigent encore l’approbation de la personne qui partage.</p>
+      </details>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="Les lecteurs le voient mis en forme, rendu en direct pendant la frappe">
@@ -29,10 +43,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Fichiers à joindre">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Les fichiers voyagent par la même connexion directe que le texte, jusqu'à
-        200&nbsp;Mo pièce. Les lecteurs voient la liste et ne récupèrent
-        chaque fichier que s'ils le demandent. Un partage peut contenir jusqu’à 256 fichiers.</p>
+      <p class="field-note">Les fichiers utilisent le même canal chiffré que le texte, jusqu’à 200&nbsp;Mo par fichier et 256 fichiers par partage. Les lecteurs voient la liste et ne récupèrent un fichier que sur demande.</p>
     </section>
 
     <section class="card">
@@ -43,26 +54,28 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Suggérer un autre nom">&#8635;</button>
         </div>
-        <p class="field-note">Le nom est l’adresse, assez court pour le dire à travers une pièce. Les partages locaux visibles l’affichent pour les autres sur cette connexion. Gardez Privé activé pour tout contenu sensible.</p>
+        <p class="field-note">Le nom est l’adresse, assez court pour le dire à travers une pièce. Les partages visibles l’affichent dans le réseau local ou le groupe privé sélectionné. Gardez Privé activé pour tout contenu sensible.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           Privé &mdash; chaque lecteur doit demander, et vous l'admettez
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Réseau local — sans relais internet
-        </label>
-        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage. Réseau local est désactivé par défaut ; choisissez-le pour afficher votre partage dans la recherche locale.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Réseau local — sans relais internet
+          </label>
+          <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour la mise en relation ; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le chemin. Le lien copié conserve ce choix. En connexion directe, choisissez Réseau local ou rejoignez un groupe privé pour rendre le partage visible. Les partages par relais cloud peuvent aussi apparaître si Visible est activé.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Visible — afficher ce nom de lien sur cette connexion internet
+            Visible — afficher ce lien dans le réseau ou le groupe sélectionné
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">À propos des partages visibles</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Un partage visible affiche son nom dans le réseau local ou le groupe privé sélectionné ci-dessus. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -81,7 +94,10 @@
       <h2><span class="step">3</span> Partagez-le</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Commencer le partage</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="Le lien de partage">
@@ -90,12 +106,11 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>Rien n'est stocké nulle part</h2>
-      <p>Le texte et les fichiers voyagent chiffrés, directement de cet onglet vers celui de chaque lecteur. L’entremetteur présente les navigateurs et liste les noms de lien visibles ; il ne voit jamais le texte ou les fichiers. Fermer cet onglet arrête le partage et vide les pages ouvertes des lecteurs — ce que quelqu’un a déjà copié ou téléchargé reste toutefois à lui.</p>
+      <h2>Aucun contenu stocké sur un serveur</h2>
+      <p>Le texte et les fichiers sont chiffrés entre votre navigateur et chaque lecteur. La connexion directe est choisie par défaut. Si vous choisissez le relais cloud, les paquets chiffrés passent par Cloudflare, qui ne peut pas lire leur contenu. Le service de mise en relation transporte la préparation et les noms de liens visibles, jamais les textes ou fichiers. Nous ne stockons aucun contenu partagé sur un serveur. Fermer l’onglet termine la source ; les lecteurs effacent leur vue après l’avis de fin ou la détection d’une panne. Les copies déjà enregistrées leur restent.</p>
     </section>
   </section>
 
@@ -106,10 +121,13 @@
       <p id="view-status" role="status" aria-live="polite">Recherche de la personne qui partage&hellip;</p>
 
       <div id="consent" hidden>
-        <p>La connexion permet à la personne qui partage d’envoyer le texte et les fichiers directement à votre navigateur par un canal chiffré. Comme toute connexion directe, elle révèle à chacun l’adresse réseau (IP) de l’autre. La personne qui partage apprend que vous avez ouvert ce lien seulement lorsque vous choisissez de vous connecter.</p>
+        <p>La connexion directe échange les adresses réseau nécessaires pour joindre les appareils. Le relais cloud utilise des adresses de relais ; Cloudflare voit les adresses des deux appareils et les métadonnées du trafic. Ce n’est pas une garantie d’anonymat. Vérifiez le choix de connexion avant de choisir explicitement Se connecter.</p>
         <p id="local-note" hidden>Ce lien utilise le mode Réseau local. Les deux appareils doivent être sur le même réseau Wi-Fi ou Ethernet, et internet reste nécessaire pour les mettre en relation. Aucun serveur public de découverte d’adresses ni relais internet n’est utilisé. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau.</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -126,20 +144,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          L'alternative est un relais chiffré. Votre navigateur enverrait
-          et recevrait par un serveur relais de Cloudflare, qui fait suivre
-          les octets chiffrés sans pouvoir les lire ; il apprend votre
-          adresse réseau et celle de la personne qui partage, comme
-          l'aurait fait la connexion directe. Rien n'y est stocké non plus,
-          et la page de la personne qui partage n'envoie toujours qu'à
-          vous.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Réessayer par le relais</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Réessayer avec le mode de connexion de la personne qui partage</button>
@@ -167,20 +172,50 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Détails de la connexion</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Aucune tentative de connexion pour le moment.</p>
+    <p class="field-note">Si une connexion échoue, copiez ce rapport sur les deux appareils. Il ne contient aucun texte partagé, nom de fichier, nom de lien, adresse réseau ou identifiant d’accès.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copier le rapport de connexion</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Rapport de connexion</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">La recherche peut trouver un partage même si les navigateurs ne peuvent pas se connecter directement ; ce rapport indique l’étape atteinte, sans prouver la cause.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Aucune tentative de connexion pour le moment.</span>
+    <span data-phrase="debug.attempt">Tentative de connexion {n}. {status}</span>
+    <span data-phrase="debug.introduction">Prise de contact avec le serveur de mise en relation.</span>
+    <span data-phrase="debug.network">Établissement de la connexion entre les navigateurs.</span>
+    <span data-phrase="debug.channel">Connexion ouverte ; en attente du partage.</span>
+    <span data-phrase="debug.approval">Connecté ; en attente d’approbation.</span>
+    <span data-phrase="debug.connected">Connecté et en cours de réception du partage.</span>
+    <span data-phrase="debug.host-connected">Connecté à un destinataire.</span>
+    <span data-phrase="debug.transfer">Transfert d’un fichier en cours.</span>
+    <span data-phrase="debug.transfer-complete">Transfert du fichier terminé.</span>
+    <span data-phrase="debug.transfer-failed">Le transfert du fichier n’a pas pu être terminé.</span>
+    <span data-phrase="debug.failed">Cette tentative de connexion s’est arrêtée avant d’aboutir ; le rapport conserve la dernière étape atteinte.</span>
+    <span data-phrase="debug.ended">Cette connexion est terminée.</span>
+    <span data-phrase="debug.unsupported">Ce navigateur ne prend pas en charge les fonctions de connexion nécessaires à cet outil.</span>
+
     <span data-phrase="units.b">o</span>
     <span data-phrase="units.kb">Ko</span>
     <span data-phrase="units.mb">Mo</span>
 
-    <span data-phrase="discovery.connecting">Recherche de partages locaux…</span>
-    <span data-phrase="discovery.empty">Aucun partage local visible ici pour le moment. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
-    <span data-phrase="discovery.ready">Choisissez un partage pour ouvrir sa page de connexion.</span>
-    <span data-phrase="discovery.unavailable">La recherche locale est indisponible. Vous pouvez toujours utiliser un lien de partage.</span>
-    <span data-phrase="discovery.open">Ouvrir le partage</span>
-    <span data-phrase="discovery.publishing">Ce partage local devient visible…</span>
-    <span data-phrase="discovery.published">Votre partage local est visible sur cette connexion.</span>
-    <span data-phrase="discovery.not-published">Ce partage est accessible par lien ; la recherche locale n’a pas pu le publier.</span>
+    <span data-phrase="discovery.connecting">Recherche de connexions disponibles…</span>
+    <span data-phrase="discovery.empty">Aucun partage n’est encore proposé dans ce réseau ou ce groupe. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
+    <span data-phrase="discovery.ready">Vérifiez le type de connexion, puis choisissez Rejoindre.</span>
+    <span data-phrase="discovery.unavailable">La recherche est indisponible. Vous pouvez toujours utiliser un lien de partage.</span>
+    <span data-phrase="discovery.join">Rejoindre</span>
+    <span data-phrase="discovery.join-direct">Rejoindre {code} en connexion directe</span>
+    <span data-phrase="discovery.join-relay">Rejoindre {code} par relais cloud</span>
+    <span data-phrase="discovery.publishing">Publication du partage dans la liste…</span>
+    <span data-phrase="discovery.published">Votre partage figure dans le réseau ou le groupe privé sélectionné.</span>
+    <span data-phrase="discovery.not-published">Ce partage est accessible par lien ; la recherche n’a pas pu le publier.</span>
 
     <span data-phrase="share.active">Partage en cours</span>
     <span data-phrase="share.waiting">Partage en cours. En attente que quelqu'un ouvre le lien &mdash; laissez cet onglet ouvert.</span>
@@ -203,6 +238,8 @@
     <span data-phrase="share.leave-warning">Quitter cette page met fin au partage pour tout le monde. Continuer ?</span>
 
     <span data-phrase="copy.select">Sélectionné — copiez-le manuellement</span>
+    <span data-phrase="view.reconnecting">La connexion a été interrompue. La reconnexion au même partage sera tentée tant que cette page est visible…</span>
+    <span data-phrase="view.interrupted">La connexion n’a pas pu être rétablie. Demandez à la personne qui partage de garder sa page ouverte, puis vérifiez à nouveau ce lien.</span>
     <span data-phrase="view.file-cancel">Annuler le téléchargement</span>
     <span data-phrase="view.file-retry">Réessayer le téléchargement</span>
     <span data-phrase="view.file-cancelled">Téléchargement annulé. Le partage reste ouvert.</span>
@@ -234,7 +271,7 @@
     <span data-phrase="share.local-waiting">Partage en mode Réseau local. En attente de l’ouverture du lien — gardez cet onglet ouvert.</span>
     <span data-phrase="view.local-connecting">Connexion par le réseau local…</span>
     <span data-phrase="view.mode-local">La personne qui partage utilise le mode Réseau local. Réessayez avec son mode pour vous connecter sans relais internet.</span>
-    <span data-phrase="view.mode-direct">La personne qui partage utilise le mode de connexion habituel. Réessayez avec son mode&nbsp;; un relais est proposé après l’échec d’une connexion directe et utilisé seulement si vous le choisissez.</span>
+    <span data-phrase="view.mode-direct">L’hôte utilise le mode direct ordinaire. Réessayez avec son mode ; la connexion directe ne passe pas par un relais. L’hôte doit démarrer une nouvelle session par relais cloud pour changer de chemin.</span>
     <span data-phrase="view.local-no-connect">Impossible de joindre la personne qui partage en mode Réseau local. Vérifiez que les deux appareils utilisent le même réseau Wi-Fi ou Ethernet&nbsp;; l’isolation du réseau invité, un VPN, un pare-feu ou les réglages du navigateur peuvent bloquer la connexion. Aucun relais internet n’est proposé dans ce mode.</span>
     <span data-phrase="view.file-failed">Le téléchargement du fichier a échoué. Réessayez ce fichier tant que le partage reste ouvert.</span>
 
@@ -249,4 +286,5 @@
       du bouton de don propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'en a reçu un caractère.</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

@@ -1,27 +1,31 @@
-<main id="main">
+<main id="main" class="paired-page">
+  {% include "partials/paired-route.html" %}
 
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
-    <section id="discovery" class="card">
-      <h2>Compartilhamentos locais nesta conexão</h2>
-      <p id="discovery-status" role="status" aria-live="polite">Procurando compartilhamentos locais&hellip;</p>
-      <div id="discovery-list"></div>
-      <p class="discovery-note">
-        Esta lista mostra os nomes de link de navegadores que compartilham
-        seu endereço IPv4 público ou sua sub-rede IPv6. Normalmente isso
-        significa o mesmo
-        roteador; uma VPN compartilhada ou um provedor que compartilha um
-        endereço pode incluir outras redes. Se alguns dispositivos usam
-        IPv4 e outros IPv6, ou seguem caminhos diferentes, podem não aparecer
-        mesmo estando na mesma rede local. É preciso ter internet. Abrir
-        um compartilhamento ainda pede consentimento antes de conectar, e
-        os privados ainda precisam da aprovação de quem compartilha.
-      </p>
-      <button type="button" id="discovery-refresh" class="ghost">Atualizar compartilhamentos locais</button>
+    <section id="discovery" class="card paired-nearby" data-pairing-nearby>
+      <div class="paired-nearby-head">
+        <h2>Conexões disponíveis</h2>
+        <button type="button" id="discovery-refresh" class="ghost">Atualizar</button>
+      </div>
+      {% include "partials/paired-discovery-group.html" %}
+      {% include "partials/paired-network.html" %}
+      <p id="discovery-status" role="status" aria-live="polite">Buscando conexões disponíveis…</p>
+      <div id="discovery-list" class="paired-nearby-list"></div>
+      <p id="discovery-join-help" class="field-note">Entrar abre uma aba de leitura com o tipo de conexão indicado. Compartilhamentos privados aguardam aprovação.</p>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p class="discovery-note">Esta lista mostra compartilhamentos diretos e por Cloud relay oferecidos à rede local ou ao grupo privado selecionado. A busca local usa o endereço IPv4 público ou a sub-rede IPv6; gateways compartilhados podem incluir desconhecidos, e rotas diferentes podem ocultar dispositivos próximos. Um grupo privado usa seu código. Entrar inicia uma solicitação de conexão em uma nova aba; consultar a lista não conecta. Compartilhamentos privados continuam exigindo aprovação de quem compartilha.</p>
+      </details>
     </section>
 
-    <section class="card">
+    <section class="card" data-pairing-setup>
       <h2><span class="step">1</span> Escreva, ou anexe</h2>
+      <div role="region" class="paired-requests paired-host-requests" aria-labelledby="requests-heading" data-pairing-requests>
+        <h3 id="requests-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <div id="requests"></div>
+      </div>
       <div class="panel" id="editor">
         <div class="toolbar">
           <label title="Os leitores veem formatado, renderizado ao vivo enquanto você digita">
@@ -39,10 +43,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="Arquivos a anexar">
       <div id="attachlist"></div>
-      <p class="field-note">
-        Os arquivos usam a mesma conexão direta que o texto, até
-        200&nbsp;MB cada. Os leitores veem a lista e só baixam um arquivo se
-        pedirem. Uma sessão pode incluir até 256 arquivos.</p>
+      <p class="field-note">Os arquivos usam o mesmo canal criptografado do texto, até 200&nbsp;MB por arquivo e 256 arquivos por compartilhamento. Os leitores veem a lista e baixam cada arquivo apenas quando solicitam.</p>
     </section>
 
     <section class="card">
@@ -53,39 +54,28 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Sugerir outro nome">&#8635;</button>
         </div>
-        <p class="field-note">
-          O nome é o endereço, curto o bastante para falar de um lado a outro
-          da sala. Compartilhamentos locais visíveis na lista mostram o nome
-          a outras pessoas nesta conexão. Mantenha Privado ativado para
-          qualquer conteúdo sensível.
-        </p>
+        <p class="field-note">O nome é o endereço, curto o bastante para dizer em voz alta. Compartilhamentos visíveis o mostram na rede local ou no grupo privado selecionado. Mantenha Privado ativado para conteúdos sensíveis.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           Privado &mdash; cada leitor precisa pedir, e você deixa entrar
         </label>
-        <label class="check" for="local">
-          <input type="checkbox" id="local">
-          Rede local — sem retransmissor de internet
-        </label>
-        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. O modo Rede local vem desativado por padrão; ative para exibir o nome do seu link na lista de descoberta local. A apresentação dos navegadores ainda precisa de internet; este modo não usa servidores públicos para descobrir endereços nem retransmissores. VPNs e configurações do navegador podem afetar o caminho de rede. O link copiado inclui esta opção.</p>
+        <div id="local-option">
+          <label class="check" for="local">
+            <input type="checkbox" id="local">
+            Rede local — sem retransmissor de internet
+          </label>
+          <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A internet ainda é necessária para apresentar os navegadores; este modo não usa servidor público para descobrir endereços nem retransmissor. VPNs e configurações do navegador podem afetar o caminho. O link copiado mantém essa escolha. No modo direto, escolha Rede local ou entre em um grupo privado para tornar o compartilhamento visível. Cloud relay também pode aparecer quando Visível estiver selecionado.</p>
+        </div>
         <div class="discoverable-row">
           <label class="check" for="discoverable">
             <input type="checkbox" id="discoverable" checked disabled>
-            Visível na lista &mdash; mostrar este nome de link nesta conexão à internet
+            Visível — mostrar este link na rede ou no grupo selecionado
           </label>
           <details id="discoverable-help" class="discoverable-help info-fold">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Sobre os compartilhamentos visíveis na lista</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">
-          Um compartilhamento visível na lista mostra seu nome a outras
-          pessoas que usam o mesmo endereço IPv4 público ou a mesma sub-rede
-          IPv6. Mantenha Privado
-          ativado, principalmente em redes compartilhadas. Com Privado
-          desativado, qualquer pessoa que veja o nome pode conectar e ler
-          sem sua aprovação. Desmarque Visível na lista para compartilhar
-          só por link.
-        </p>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Um compartilhamento visível mostra seu nome na rede local ou no grupo privado selecionado acima. Mantenha Privado ativado, especialmente em redes compartilhadas. Com Privado desativado, qualquer pessoa que veja o nome pode conectar e ler sem sua aprovação. Desmarque Visível para compartilhar apenas por link.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -104,7 +94,10 @@
       <h2><span class="step">3</span> Compartilhe</h2>
       <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
+        <div class="paired-start-row" data-pairing-actions="host">
         <button type="button" id="publish" class="primary">Começar a compartilhar</button>
+        {% include "partials/paired-transport.html" %}
+      </div>
       </div>
       <div class="namerow" id="linkrow" hidden>
         <input id="link" readonly aria-label="O link de compartilhamento">
@@ -113,20 +106,11 @@
       </div>
       <p id="status" role="status" aria-live="polite"></p>
       <p id="discovery-share-status" role="status" aria-live="polite"></p>
-      <div id="requests"></div>
     </section>
 
     <section class="card note-card">
-      <h2>Nada é guardado em lugar nenhum</h2>
-      <p>
-        O texto e os arquivos viajam criptografados, direto desta aba para a
-        de cada leitor. O intermediário apresenta os navegadores e lista
-        os nomes de link visíveis na lista; nunca vê o texto ou os arquivos.
-        Fechar esta
-        aba encerra o compartilhamento e esvazia também as páginas abertas
-        dos leitores &mdash; embora o que alguém já copiou ou baixou seja
-        dele.
-      </p>
+      <h2>Sem guardar conteúdo em servidores</h2>
+      <p>Texto e arquivos são criptografados entre seu navegador e cada leitor. A conexão direta é o padrão. Ao escolher retransmissão na nuvem, os pacotes criptografados passam pela Cloudflare, que não consegue ler o conteúdo. O serviço de apresentação transmite a preparação e os nomes de links visíveis, nunca textos ou arquivos. Não guardamos conteúdo compartilhado em servidores. Fechar a aba encerra a origem; os leitores limpam a visualização após o aviso de encerramento ou uma falha detectada. Cópias já salvas continuam com eles.</p>
     </section>
   </section>
 
@@ -137,10 +121,13 @@
       <p id="view-status" role="status" aria-live="polite">Procurando quem compartilha&hellip;</p>
 
       <div id="consent" hidden>
-        <p>Ao se conectar, você permite que quem compartilha envie o texto e os arquivos diretamente ao seu navegador por um canal criptografado. Como em qualquer conexão direta, cada lado pode ver o endereço de rede (IP) do outro. Quem compartilha só descobre que você abriu este link quando você escolhe se conectar.</p>
+        <p>A conexão direta troca os endereços de rede necessários para alcançar os dispositivos. A retransmissão na nuvem usa endereços de retransmissão, e a Cloudflare vê os endereços dos dois dispositivos e os metadados do tráfego. Isso não garante anonimato. Confira a opção de conexão antes de escolher Conectar.</p>
         <p id="local-note" hidden>Este link usa o modo Rede local. Os dois dispositivos precisam estar na mesma rede Wi-Fi ou Ethernet, e a apresentação ainda precisa de internet. Não são usados servidores públicos para descobrir endereços nem retransmissores de internet. VPNs e configurações do navegador podem afetar o caminho de rede.</p>
         <div class="result-actions">
-          <button type="button" id="connect" class="primary">Conectar e receber o compartilhamento</button>
+          <div class="paired-start-row" data-pairing-actions="join">
+        <button type="button" id="connect" class="primary">Conectar e receber o compartilhamento</button>
+        <span id="viewer-connection-icons" class="paired-connection-info"></span>
+      </div>
         </div>
       </div>
 
@@ -157,19 +144,7 @@
         </div>
       </div>
 
-      <div id="relayrow" hidden>
-        <p>
-          A alternativa é um retransmissor criptografado. Seu navegador
-          enviaria e receberia por um servidor retransmissor da Cloudflare,
-          que repassa os bytes criptografados e não consegue lê-los; ele
-          fica sabendo o seu endereço de rede e o de quem compartilha, como
-          a conexão direta também saberia. Ali também nada é guardado, e a
-          página de quem compartilha continua enviando só para você.
-        </p>
-        <div class="result-actions">
-          <button type="button" id="relay" class="primary">Tentar de novo pelo retransmissor</button>
-        </div>
-      </div>
+      <div id="relayrow" hidden></div>
 
       <div class="result-actions" id="mode-retryrow" hidden>
         <button type="button" id="mode-retry" class="ghost">Tentar de novo com o modo de conexão de quem compartilha</button>
@@ -197,20 +172,50 @@
     </section>
   </section>
 
+  <details id="connection-details" class="card connection-details">
+    <summary>Detalhes da conexão</summary>
+    <p id="connection-progress" role="status" aria-live="polite">Nenhuma tentativa de conexão ainda.</p>
+    <p class="field-note">Se uma conexão falhar, copie este relatório nos dois dispositivos. Ele não contém texto compartilhado, nomes de arquivos, nomes de links, endereços de rede nem credenciais.</p>
+    <div class="result-actions">
+      <button type="button" id="connection-copy" class="ghost" disabled>Copiar relatório de conexão</button>
+      <span id="connection-copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <label class="visually-hidden" for="connection-report">Relatório de conexão</label>
+    <textarea id="connection-report" readonly dir="ltr" rows="12" spellcheck="false"></textarea>
+    <p class="field-note">A busca pode encontrar um compartilhamento mesmo quando os navegadores não conseguem se conectar diretamente; este relatório identifica a etapa alcançada, mas não comprova a causa.</p>
+  </details>
+
   <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="debug.idle">Nenhuma tentativa de conexão ainda.</span>
+    <span data-phrase="debug.attempt">Tentativa de conexão {n}. {status}</span>
+    <span data-phrase="debug.introduction">Entrando em contato com o servidor de apresentação.</span>
+    <span data-phrase="debug.network">Estabelecendo a conexão entre os navegadores.</span>
+    <span data-phrase="debug.channel">Conexão aberta; aguardando o compartilhamento.</span>
+    <span data-phrase="debug.approval">Conectado; aguardando aprovação.</span>
+    <span data-phrase="debug.connected">Conectado e recebendo o compartilhamento.</span>
+    <span data-phrase="debug.host-connected">Conectado a um destinatário.</span>
+    <span data-phrase="debug.transfer">Transferindo um arquivo.</span>
+    <span data-phrase="debug.transfer-complete">Transferência do arquivo concluída.</span>
+    <span data-phrase="debug.transfer-failed">Não foi possível concluir a transferência do arquivo.</span>
+    <span data-phrase="debug.failed">Esta tentativa de conexão terminou antes de ser concluída; o relatório preserva a última etapa alcançada.</span>
+    <span data-phrase="debug.ended">Esta conexão foi encerrada.</span>
+    <span data-phrase="debug.unsupported">Este navegador não oferece os recursos de conexão necessários para esta ferramenta.</span>
+
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="discovery.connecting">Procurando compartilhamentos locais&hellip;</span>
-    <span data-phrase="discovery.empty">Ainda não há compartilhamentos locais visíveis na lista. Mantenha aberta a aba de quem compartilha ou use o link dele.</span>
-    <span data-phrase="discovery.ready">Escolha um compartilhamento para abrir sua página de conexão.</span>
-    <span data-phrase="discovery.unavailable">A descoberta de compartilhamentos locais está indisponível. Você ainda pode usar um link de compartilhamento.</span>
-    <span data-phrase="discovery.open">Abrir compartilhamento</span>
-    <span data-phrase="discovery.publishing">Tornando este compartilhamento local visível na lista&hellip;</span>
-    <span data-phrase="discovery.published">Seu compartilhamento local está visível na lista desta conexão.</span>
-    <span data-phrase="discovery.not-published">Este compartilhamento está disponível por link; a descoberta local não conseguiu incluí-lo na lista.</span>
+    <span data-phrase="discovery.connecting">Buscando conexões disponíveis…</span>
+    <span data-phrase="discovery.empty">Ainda não há compartilhamentos nesta rede ou grupo. Mantenha aberta a aba de quem compartilha ou use o link.</span>
+    <span data-phrase="discovery.ready">Confira o tipo de conexão e escolha Entrar.</span>
+    <span data-phrase="discovery.unavailable">A busca não está disponível. Você ainda pode usar um link de compartilhamento.</span>
+    <span data-phrase="discovery.join">Entrar</span>
+    <span data-phrase="discovery.join-direct">Entrar em {code} por conexão direta</span>
+    <span data-phrase="discovery.join-relay">Entrar em {code} por Cloud relay</span>
+    <span data-phrase="discovery.publishing">Tornando este compartilhamento visível…</span>
+    <span data-phrase="discovery.published">Seu compartilhamento aparece na rede ou no grupo privado selecionado.</span>
+    <span data-phrase="discovery.not-published">Este compartilhamento está disponível por link; não foi possível publicá-lo na busca.</span>
 
     <span data-phrase="share.active">Compartilhando</span>
     <span data-phrase="share.waiting">Compartilhando. Esperando alguém abrir o link &mdash; deixe esta aba aberta.</span>
@@ -233,6 +238,8 @@
     <span data-phrase="share.leave-warning">Sair desta página encerra o compartilhamento para todos. Continuar?</span>
 
     <span data-phrase="copy.select">Selecionado — copie manualmente</span>
+    <span data-phrase="view.reconnecting">A conexão foi interrompida. A página tentará reconectar ao mesmo compartilhamento enquanto estiver visível…</span>
+    <span data-phrase="view.interrupted">Não foi possível restaurar a conexão. Peça a quem compartilha para manter a página aberta e verifique este link novamente.</span>
     <span data-phrase="view.file-cancel">Cancelar download</span>
     <span data-phrase="view.file-retry">Tentar o download novamente</span>
     <span data-phrase="view.file-cancelled">Download cancelado. O compartilhamento continua aberto.</span>
@@ -264,7 +271,7 @@
     <span data-phrase="share.local-waiting">Compartilhando no modo Rede local. Aguardando alguém abrir o link — mantenha esta aba aberta.</span>
     <span data-phrase="view.local-connecting">Conectando pela rede local…</span>
     <span data-phrase="view.mode-local">Quem compartilha usa o modo Rede local. Tente de novo com esse modo para se conectar sem um retransmissor de internet.</span>
-    <span data-phrase="view.mode-direct">Quem compartilha usa o modo de conexão normal. Tente de novo com esse modo; um retransmissor só é oferecido após uma tentativa direta falhar e só é usado se você o escolher.</span>
+    <span data-phrase="view.mode-direct">O anfitrião usa o modo direto comum. Tente novamente com o modo dele; a conexão direta não muda para retransmissão. O anfitrião deve iniciar uma nova sessão de retransmissão na nuvem para mudar o caminho.</span>
     <span data-phrase="view.local-no-connect">Não foi possível alcançar quem compartilha no modo Rede local. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet; isolamento da rede de convidados, VPN, firewall ou configurações do navegador podem bloquear a conexão. Este modo não oferece retransmissores de internet.</span>
     <span data-phrase="view.file-failed">Não foi possível concluir o download. Tente baixar este arquivo novamente enquanto o compartilhamento estiver aberto.</span>
 
@@ -279,4 +286,5 @@
       publicidade, medição e o botão de doação vieram de {hosts} hosts; nenhum
       deles recebeu um caractere disso.</span>
   </div>
+  {% include "partials/paired-approval-prompt.html" %}
 </main>

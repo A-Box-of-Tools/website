@@ -1,19 +1,17 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>
-      Den <a href="../../audio-schneiden/">Audio-Schneider</a> öffnen, die
-      Aufnahme hineinziehen, mit <kbd>I</kbd> und <kbd>O</kbd> jeden Teil
-      markieren, den Sie behalten wollen &mdash; so viele Sie mögen &mdash;, und
-      exportieren. Jeder Schnitt landet auf genau dem Sample, das Sie markiert
-      haben, die behaltenen Samples kommen heraus, wie sie hineingingen, und die
-      Nähte bekommen eine Blende von fünf Millisekunden, damit sie nicht knacken
-      können.
-    </p>
+    <p>Öffnen Sie den <a href="../../audio-schneiden/">Audioschneider</a>, legen die Aufnahme hinein, markieren beliebig viele Teile mit <kbd>I</kbd> und <kbd>O</kbd> und exportieren. Jeder Schnitt liegt auf dem genauen Sample. Dazwischen werden dekodierte Samples kopiert, Übergänge erhalten fünf Millisekunden Ein-/Ausblendung gegen abrupte Kanten. Wählen Sie Float32, um abschließende Rundung auf 16-Bit-PCM zu vermeiden.</p>
     <p>
       Das ist die ganze Arbeit. Der Rest dieser Seite erklärt, warum die
       Genauigkeit echt und kein Werbeversprechen ist, und was die eine Sache ist,
       die schiefgeht, wenn man zwei Klangstücke aneinanderfügt.
     </p>
+  </section>
+
+  <section>
+    <h2>Eine saubere Aufnahme, ein Zitat oder eine Übungspassage</h2>
+    <p>Markieren Sie für Voiceover die saubere Aufnahme mit etwas Stille um ersten Atemzug und letztes Wort. Behalten Sie für Interviewzitate genug Frage für eine verständliche Antwort. Spielen Sie jede Zeile vor dem Export und hören jeden Übergang in der fertigen WAV-Datei. Eine Fünf-Millisekunden-Rampe verhindert harte Kanten, stellt aber keine halbierte Silbe wieder her.</p>
+    <p>Für Proben oder Sprachenlernen können Sie mehrere Stellen derselben Aufnahme in gewünschter Hörreihenfolge markieren. Speichern Sie Markierungen zur späteren Rückkehr. Der Schneider nimmt jeweils eine Quelldatei. Getrennte Aufnahmen brauchen einen anderen Editor. Er schreibt WAV statt kleinerer MP3. Wählen Sie 16 Bit zum Hören oder Float32 zum Bearbeiten und prüfen Ziel-App und Größenlimit.</p>
   </section>
 
   <section>
