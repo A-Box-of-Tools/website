@@ -14,7 +14,7 @@
 {% endfor %}{% endfor %}
 ## Guides
 
-[{{ site.guides.nav }}]({{ site.domain }}llms-guides.txt)
+[{{ site.guides.nav }}]({{ site.domain }}{{ site.guides.slug }}/llms.txt)
 
 ## Other languages
 

@@ -321,5 +321,11 @@ def build_llms(out, templates, site, locales, tools, prose):
         'languages': languages,
         'optional': optional,
     }
-    for name in ('llms.txt', 'llms-guides.txt'):
-        write(out / name, templates.render(name, context))
+    write(out / 'llms.txt', templates.render('llms.txt', context))
+    guide_index = templates.render('llms-guides.txt', context)
+    write(out / 'llms-guides.txt', guide_index)
+    # Keep the original linked address while making the section index available
+    # beside the guides, where a reader can discover it without the root index.
+    section = out / site['guides']['slug']
+    section.mkdir(parents=True, exist_ok=True)
+    write(section / 'llms.txt', guide_index)

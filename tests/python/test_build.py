@@ -694,28 +694,30 @@ class BuildTheSite(unittest.TestCase):
 
     def index_pages(self):
         """The hub, the guides index and the roadmap, in every language: the
-        pages that list other pages, and the only ones without a twin."""
+        pages that list other pages and have no embedded copy control."""
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         return ({buildmod.i18n.locale_path(locale, site['guides']['slug']).strip('/')
                  for locale in self.locales}
                 | {name.strip('/') for name in self.roadmap_pages}
                 | {locale['prefix'].strip('/') for locale in self.locales})
 
-    def test_every_page_but_an_index_has_a_markdown_twin_and_carries_it(self):
+    def test_pages_advertise_their_markdown_twins_and_embed_them_for_copying(self):
         import html as htmllib
         indexes = self.index_pages()
+        hubs = {locale['prefix'].strip('/') for locale in self.locales}
         for name in self.written:
             if not name.endswith('index.html'):
                 continue
             folder = name[:-len('index.html')]
-            expected = folder.strip('/') not in indexes
+            copied = folder.strip('/') not in indexes
+            expected = copied or folder.strip('/') in hubs
             page = (self.out / name).read_text(encoding='utf-8')
             twin = self.out / folder / 'index.md'
             with self.subTest(page=folder or '/'):
                 self.assertEqual(twin.is_file(), expected)
                 self.assertEqual('type="text/markdown" href="index.md"' in page, expected)
-                self.assertEqual('class="page-md-copy"' in page, expected)
-                if not expected:
+                self.assertEqual('class="page-md-copy"' in page, copied)
+                if not copied:
                     continue
                 block = re.search(
                     r'<pre\b(?=[^>]*\bid="page-markdown")(?=[^>]*\bhidden)[^>]*>(.*?)</pre>',
@@ -723,6 +725,26 @@ class BuildTheSite(unittest.TestCase):
                 self.assertIsNotNone(block, 'no embedded twin')
                 self.assertEqual(htmllib.unescape(block.group(1)),
                                  twin.read_text(encoding='utf-8'))
+
+    def test_each_hub_twin_lists_exactly_its_localized_cards_in_order(self):
+        from urllib.parse import urljoin
+        for locale in self.locales:
+            folder = self.out / locale['prefix']
+            page = (folder / 'index.html').read_text(encoding='utf-8')
+            twin = (folder / 'index.md').read_text(encoding='utf-8')
+            home = buildmod.i18n.locale_url(locale, '', self.site)
+            cards = re.findall(r'<a class="tool-card" href="([^"]+)"', page)
+            linked = re.findall(r'^- \[[^\n]+\]\((https://[^)]+)\):', twin, re.M)
+            with self.subTest(language=locale['lang']):
+                self.assertTrue(cards)
+                self.assertEqual(linked, [urljoin(home, card) for card in cards])
+                self.assertTrue(twin.startswith('# '))
+                self.assertIn(home, twin)
+                for target in re.findall(r'\]\(([^)]+)\)', twin):
+                    self.assertTrue(target.startswith(('https://', 'mailto:')), target)
+                self.assertNotIn('data-search=', twin)
+                worker = (folder / 'sw.js').read_text(encoding='utf-8')
+                self.assertIn("'index.md'", worker)
 
     def test_a_twin_is_a_document_whose_links_are_absolute(self):
         """It is meant to be pasted somewhere the page is not, so it opens
@@ -1688,7 +1710,8 @@ class BuildTheSite(unittest.TestCase):
     # early, or a language offered before it is finished.
 
     def test_llms_indexes_are_written(self):
-        for name in ('llms.txt', 'llms-guides.txt'):
+        for name in ('llms.txt', 'llms-guides.txt',
+                     f'{self.site["guides"]["slug"]}/llms.txt'):
             with self.subTest(index=name):
                 self.assertIn(name, self.written)
                 self.assertTrue((self.out / name).is_file())
@@ -1733,7 +1756,12 @@ class BuildTheSite(unittest.TestCase):
     def test_llms_txt_links_to_the_full_guide_index(self):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
         section = text.split('## Guides', 1)[1].split('\n## ', 1)[0]
-        self.assertIn(f'({self.site["domain"]}llms-guides.txt)', section)
+        self.assertIn(f'({self.site["domain"]}{self.site["guides"]["slug"]}/llms.txt)', section)
+
+    def test_the_section_guide_index_keeps_the_original_address_compatible(self):
+        self.assertEqual(
+            (self.out / 'llms-guides.txt').read_bytes(),
+            (self.out / self.site['guides']['slug'] / 'llms.txt').read_bytes())
 
     def test_llms_guides_txt_begins_with_the_site_name_and_guides(self):
         first = (self.out / 'llms-guides.txt').read_text(
@@ -2016,9 +2044,9 @@ class BuildTheSite(unittest.TestCase):
             written = buildmod.build(scoped, clean=True, minify_output=False,
                                      only=[slug], langs=['en'])
             self.assertEqual(written, [f'{slug}/index.html'])
-            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt',
+            for name in ('index.html', 'index.md', '404.html', 'sitemap.xml', 'llms.txt',
                          'llms-guides.txt', 'offline-generations.json',
-                         'feed.xml'):
+                         'guides/llms.txt', 'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())
 
