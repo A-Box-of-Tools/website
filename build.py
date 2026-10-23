@@ -616,7 +616,8 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         # same languages.
         catalogue.build_llms(out, templates, site, locales, ordered_tools,
                              ordered_prose)
-        written += ['llms.txt', 'llms-guides.txt']
+        written += ['llms.txt', 'llms-guides.txt',
+                    f'{site["guides"]["slug"]}/llms.txt']
 
         written += agents.build_discovery(out, templates, site)
 
@@ -1927,6 +1928,8 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')
 
+    twin = write(out / 'index.md', mdlib.hub_page(
+        templates, root, categories, context['ui']))
     page = emit.html(out / 'index.html', templates.render('hub.html', context))
 
     analytics = emit.js(out / 'analytics.js', templates.render('analytics.js', {
@@ -1948,9 +1951,9 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     # the end of the build, which has not happened yet, and it has always been
     # hashed nameless - see cache_hash on why that must not change.
     write_worker(out, templates, emit, page,
-                 [('index.html', page), ('analytics.js', analytics),
+                 [('index.html', page), ('index.md', twin), ('analytics.js', analytics),
                   ('manifest.json', manifest)],
-                 ['index.html', css_href, 'manifest.json', site['favorites_href']],
+                 ['index.html', 'index.md', css_href, 'manifest.json', site['favorites_href']],
                  f'/{locale["prefix"]}', {'plural': 'files'}, [site_css])
 
 
