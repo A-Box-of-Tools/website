@@ -371,6 +371,17 @@ class StructuredData(unittest.TestCase):
         self.assertEqual([i['position'] for i in items], [1, 2])
         self.assertEqual([i['name'] for i in items], ['A', 'B'])
 
+    def test_the_publisher_description_uses_the_current_language(self):
+        for description in ('Local tools &amp; guides', 'Outils &amp; guides locaux'):
+            with self.subTest(description=description):
+                site = dict(SITE, hub={'schema_description': description,
+                                       'schema_about': ['x']})
+                graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
+                org = next(node for node in graph if node['@type'] == 'Organization')
+                self.assertEqual(org['description'], description.replace('&amp;', '&'))
+                self.assertEqual(org['alternateName'], 'example.test')
+                self.assertEqual(graph[0]['alternateName'], 'example.test')
+
 
 class LoadTool(TempTree):
     def tool_at(self, folder, body=TOOL_TOML):

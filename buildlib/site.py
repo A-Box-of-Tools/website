@@ -355,12 +355,14 @@ def guides_jsonld(site, guides):
 
 
 def hub_jsonld(site, tools):
+    brand_domain = urllib.parse.urlsplit(site['domain']).hostname
     graph = [
         {
             '@type': 'WebSite',
             '@id': site['home'] + '#website',
             'url': site['home'],
             'name': site['name'],
+            'alternateName': brand_domain,
             'description': site['hub']['schema_description'],
             'inLanguage': site['lang'],
             'publisher': {'@id': site['domain'] + '#publisher'},
@@ -372,15 +374,14 @@ def hub_jsonld(site, tools):
         # actually asking. The fields below are the ones the About and Contact
         # pages answer in prose, in the form a machine can read.
         #
-        # Nothing here is translated, deliberately. An address, an email and a
-        # repository are the same in fifteen languages; a description would not
-        # be, and would arrive in English on the other fourteen pages, so there
-        # is not one. The prose pages carry that, in the language they are
-        # written in.
+        # The description comes from this language's hub, so the publisher can
+        # explain its purpose without introducing another sentence to translate.
         {
             '@type': 'Organization',
             '@id': site['domain'] + '#publisher',
             'name': site['name'],
+            'alternateName': brand_domain,
+            'description': to_text(site['hub']['schema_description']),
             'url': site['domain'],
             'email': site['contact_email'],
             'logo': {
