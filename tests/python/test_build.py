@@ -121,6 +121,52 @@ class VersionedImports(unittest.TestCase):
         self.assertEqual(self.rewrite(once), once)
 
 
+class ToolLinkTargets(unittest.TestCase):
+    """Workflow data attributes must not turn navigation into lost local work."""
+
+    def test_workflow_target_is_not_an_authored_browsing_target(self):
+        source = '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         '<a href="../split-gif/" data-workflow-target="split-gif" '
+                         'target="_blank" rel="noopener">Frames</a>')
+
+    def test_quoted_attribute_text_cannot_impersonate_target_or_rel(self):
+        source = '<a title=\'a > b target="_self" rel="private"\' href="../">Box</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         source.replace('href="../">',
+                                        'href="../" target="_blank" rel="noopener">'))
+
+    def test_authored_rel_is_preserved_without_a_duplicate_attribute(self):
+        for source, expected in [
+            ('<a href="../" rel="nofollow">Box</a>',
+             '<a href="../" rel="nofollow noopener" target="_blank">Box</a>'),
+            ('<a href="../" rel="noopener noreferrer">Box</a>',
+             '<a href="../" rel="noopener noreferrer" target="_blank">Box</a>'),
+            ('<a href="../" data-rel="private">Box</a>',
+             '<a href="../" data-rel="private" target="_blank" rel="noopener">Box</a>'),
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), expected)
+
+    def test_real_targets_downloads_and_non_navigation_links_keep_their_behavior(self):
+        for source in [
+            '<a href="../" target = \'_self\'>Box</a>',
+            '<a href="../" TARGET="named">Box</a>',
+            '<a href="#main" data-workflow-target="split-gif">Main</a>',
+            '<a href="result.png" download>Save</a>',
+            '<a href="mailto:hello@example.com">Email</a>',
+            '<a data-href="../">No destination</a>',
+            '<nav class="lang-switch"><a href="../de/">Deutsch</a></nav>',
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), source)
+
+    def test_rewriting_workflow_links_twice_does_not_duplicate_attributes(self):
+        once = buildmod.open_links_elsewhere(
+            '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>')
+        self.assertEqual(buildmod.open_links_elsewhere(once), once)
+
+
 class GuideGroups(unittest.TestCase):
     """Every way a guide could be written and then linked to from nowhere.
 
