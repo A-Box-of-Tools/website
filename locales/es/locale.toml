@@ -234,7 +234,7 @@ body = "Tu navegador abre, lee y edita los archivos que eliges. No se suben para
 
 [[hub.guarantees]]
 title = "Tus archivos no se entregan a la analítica"
-body = "Se cuentan las visitas, el primer uso completado de una herramienta por cada carga de página y las respuestas fijas de los comentarios voluntarios. No se adjuntan archivos, nombres, contenidos ni detalles de los resultados. Las importaciones opcionales de imágenes y las consultas de cambio de los recibos indican junto a sus controles qué envían."
+body = "Contamos visitas, etapas fijas de uso, el primer resultado satisfactorio por carga de página, algunos enlaces de continuación y respuestas opcionales fijas. No se adjuntan archivos, nombres, contenidos ni detalles de entrada o salida. Las importaciones opcionales de imágenes y las consultas de cambio para recibos explican sus datos junto a sus controles."
 
 [[hub.guarantees]]
 title = "El procesamiento local funciona sin conexión"

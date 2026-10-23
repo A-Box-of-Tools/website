@@ -91,9 +91,8 @@ analytics_id = "G-SCBN29XZ31"
 # Who publishes this, in the form a machine reads it. The About and Contact
 # pages say the same things in prose, at length, in fifteen languages; this is
 # the half that goes into the Organization node on the hub, and it is
-# deliberately only the facts that are identical in every language. An address
-# and an email are; a description of what the site is for is not, and would
-# arrive in English on fourteen pages out of fifteen, so there is not one here.
+# deliberately only the facts that are identical in every language. The
+# publisher's description reuses each language's hub description.
 #
 # `contact_slug` is written down for the same reason `safety_guide` above is:
 # the structured data has to name that page's address, and a slug spelled out
@@ -104,6 +103,18 @@ analytics_id = "G-SCBN29XZ31"
 region = "Ontario"
 country = "CA"
 contact_slug = "contact"
+
+# A public browser-workflow skill, advertised by the generated discovery files.
+# It describes the existing tools; it does not expose a processing endpoint.
+[agents]
+name = "abox-tools"
+display_name = "abox.tools browser tools"
+description = "Choose and operate abox.tools browser tools for local file and text processing, including format conversion, compression, inspection and editing."
+representative_queries = [
+  "Find a browser tool that compresses my image without uploading it.",
+  "Help me choose an abox.tools tool and save its result.",
+  "Can an agent use abox.tools while keeping processing on my device?",
+]
 
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
@@ -342,7 +353,7 @@ body = "Your browser opens, reads and edits the files you choose. There is no up
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
-body = "Page visits, the first successful tool use per page load and optional fixed feedback answers are counted. No files, filenames, contents or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
+body = "Page visits, fixed tool-use stages, the first successful result per page load, selected workflow links and optional fixed feedback are counted. No files, filenames, contents or input or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
 
 [[hub.guarantees]]
 title = "Local processing works offline"
@@ -618,12 +629,15 @@ name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."
 order = [
   "is-it-safe-to-upload-files",
+  "where-do-your-file-copies-go",
   "what-20-converters-do-with-your-file",
   "is-it-safe-to-scan-a-qr-code",
   "is-it-safe-to-upload-a-photo-of-your-id",
   "is-it-safe-to-upload-a-bank-statement",
+  "what-an-ordinary-file-can-reveal-about-you",
   "can-blacked-out-text-be-recovered",
   "is-it-safe-to-paste-into-an-online-tool",
+  "does-private-browsing-keep-downloads-private",
   "is-it-safe-to-use-an-online-password-generator",
   "is-base64-encryption",
   "what-a-pdf-remembers",
@@ -1111,15 +1125,11 @@ licence = """
 summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Share a Browser Tab, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. These paired tools require internet introductions: their public rendezvous carries connection setup, status and discovery metadata, not shared content. Direct is the default and never switches to a relay automatically. Share Text’s ordinary Direct mode uses public STUN; its Local network setting and the other four tools use host addresses without STUN or TURN. The host may explicitly choose Cloud relay before starting. Both peers then use Cloudflare TURN to forward encrypted content, while the relay sees addresses, timing and traffic volume and requires internet throughout. Approval, password and microphone controls still apply. The voice tools host in the browser and use encrypted WebRTC audio. Both voice tools offer nearby discovery using names chosen by hosts. Walkie-Talkie lists the listener invitations of channels offered nearby. Voice Oncall uses password-derived admission credentials and moderation status; callers need no display name, although older clients may still send one. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
+Files are processed on the device running the browser, without processing uploads. Device sharing and live voice/video tools deliberately transmit content between browsers. Optional image imports, receipt exchange-rate lookups and email-app handoffs have their own boundaries. Read the selected tool's page and [Privacy](https://abox.tools/privacy/) for connection modes, relay metadata and optional requests.
 
-The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
+The tools need a browser; there is no processing API, CLI or file-upload endpoint. An agent's cloud browser means the file has already left the person's device. The agent provider's access to files, screenshots and instructions is separate from this site's processing. [Can an AI agent use these tools?](https://abox.tools/guides/can-an-ai-agent-use-these-tools/) explains the distinction.
 
-The code is MIT licensed. Each tool has a folder under `tools/`, a README and ES modules under `src/`; common parsers and writers live under `shared/js/`. Some tools also ship a licensed third-party JavaScript or WebAssembly engine under `vendor/`. The site's build copies shared parts into each built tool and minifies first-party code. Node can import suitable leaf modules; imports of a tool's `./shared/` parts need the repository's `tests/js/resolve-shared.mjs` resolve hook. Browser APIs remain browser APIs.
-
-The prose is licensed separately under CC BY 4.0. Reuse it with a credit and link to A Box of Tools and a note of changes. Both licence files are at the repository root.
-
-Every linked page also has a Markdown copy: append `index.md` to its address, for example https://abox.tools/compress-image/index.md. A tool's copy contains its explanations, steps, questions and privacy details, without the interface. A guide's copy contains the guide. Both are generated from the same source as the HTML.
+Tools and guides have a Markdown copy: append `index.md` to the page URL, for example https://abox.tools/compress-image/index.md. These copies contain explanations and limitations without the interface. Code is MIT licensed; prose is CC BY 4.0.
 
 This index is generated from the site's configuration and page metadata. It describes available tools; it does not measure whether an AI search system has indexed or cited them."""
 

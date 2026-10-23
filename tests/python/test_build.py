@@ -121,6 +121,52 @@ class VersionedImports(unittest.TestCase):
         self.assertEqual(self.rewrite(once), once)
 
 
+class ToolLinkTargets(unittest.TestCase):
+    """Workflow data attributes must not turn navigation into lost local work."""
+
+    def test_workflow_target_is_not_an_authored_browsing_target(self):
+        source = '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         '<a href="../split-gif/" data-workflow-target="split-gif" '
+                         'target="_blank" rel="noopener">Frames</a>')
+
+    def test_quoted_attribute_text_cannot_impersonate_target_or_rel(self):
+        source = '<a title=\'a > b target="_self" rel="private"\' href="../">Box</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         source.replace('href="../">',
+                                        'href="../" target="_blank" rel="noopener">'))
+
+    def test_authored_rel_is_preserved_without_a_duplicate_attribute(self):
+        for source, expected in [
+            ('<a href="../" rel="nofollow">Box</a>',
+             '<a href="../" rel="nofollow noopener" target="_blank">Box</a>'),
+            ('<a href="../" rel="noopener noreferrer">Box</a>',
+             '<a href="../" rel="noopener noreferrer" target="_blank">Box</a>'),
+            ('<a href="../" data-rel="private">Box</a>',
+             '<a href="../" data-rel="private" target="_blank" rel="noopener">Box</a>'),
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), expected)
+
+    def test_real_targets_downloads_and_non_navigation_links_keep_their_behavior(self):
+        for source in [
+            '<a href="../" target = \'_self\'>Box</a>',
+            '<a href="../" TARGET="named">Box</a>',
+            '<a href="#main" data-workflow-target="split-gif">Main</a>',
+            '<a href="result.png" download>Save</a>',
+            '<a href="mailto:hello@example.com">Email</a>',
+            '<a data-href="../">No destination</a>',
+            '<nav class="lang-switch"><a href="../de/">Deutsch</a></nav>',
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), source)
+
+    def test_rewriting_workflow_links_twice_does_not_duplicate_attributes(self):
+        once = buildmod.open_links_elsewhere(
+            '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>')
+        self.assertEqual(buildmod.open_links_elsewhere(once), once)
+
+
 class GuideGroups(unittest.TestCase):
     """Every way a guide could be written and then linked to from nowhere.
 
@@ -1641,9 +1687,11 @@ class BuildTheSite(unittest.TestCase):
     # a tool missing from it, markup leaking into it, a blockquote that ends
     # early, or a language offered before it is finished.
 
-    def test_llms_txt_is_written(self):
-        self.assertIn('llms.txt', self.written)
-        self.assertTrue((self.out / 'llms.txt').is_file())
+    def test_llms_indexes_are_written(self):
+        for name in ('llms.txt', 'llms-guides.txt'):
+            with self.subTest(index=name):
+                self.assertIn(name, self.written)
+                self.assertTrue((self.out / name).is_file())
 
     def test_llms_txt_begins_with_the_site_name_as_a_heading(self):
         """The one thing the format requires, and the one thing a reader of it
@@ -1661,6 +1709,18 @@ class BuildTheSite(unittest.TestCase):
         quote = next(i for i, line in enumerate(lines) if line.startswith('> '))
         self.assertEqual(lines[quote + 1], '')
 
+    def test_llms_indexes_stay_within_the_agent_discovery_character_budget(self):
+        """Each discovery fetch needs room for the entries it helps a reader pick.
+
+        The full guide list has its own address rather than taking that room
+        away from the tools as the catalogue grows.
+        """
+        for name in ('llms.txt', 'llms-guides.txt'):
+            with self.subTest(index=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertLess(len(text), 30_000,
+                                f'Keep {name} below 30,000 characters.')
+
     def test_llms_txt_lists_every_tool(self):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
@@ -1670,24 +1730,39 @@ class BuildTheSite(unittest.TestCase):
             with self.subTest(tool=slug):
                 self.assertIn(f'({site["domain"]}{slug}/)', text)
 
-    def test_llms_txt_lists_every_guide(self):
+    def test_llms_txt_links_to_the_full_guide_index(self):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
-        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
-        slugs = sorted(path.parent.name
-                       for path in ROOT.glob('pages/guides/*/page.toml'))
-        self.assertTrue(slugs)
-        for slug in slugs:
-            with self.subTest(guide=slug):
-                self.assertIn(f'({site["domain"]}guides/{slug}/)', text)
+        section = text.split('## Guides', 1)[1].split('\n## ', 1)[0]
+        self.assertIn(f'({self.site["domain"]}llms-guides.txt)', section)
 
-    def test_llms_txt_carries_no_markup(self):
+    def test_llms_guides_txt_begins_with_the_site_name_and_guides(self):
+        first = (self.out / 'llms-guides.txt').read_text(
+            encoding='utf-8').splitlines()[0]
+        self.assertEqual(first, f'# {self.site["name"]} guides')
+
+    def test_llms_guides_txt_lists_every_guide_with_its_description(self):
+        """Splitting the index should preserve the guide selection information,
+        rather than meet the size budget by silently dropping descriptions."""
+        lines = (self.out / 'llms-guides.txt').read_text(
+            encoding='utf-8').splitlines()
+        paths = sorted(ROOT.glob('pages/guides/*/page.toml'))
+        self.assertTrue(paths)
+        for path in paths:
+            page = buildmod.sitelib.load_page(path, self.site, ROOT / 'pages')
+            heading = buildmod.sitelib.to_text(page['heading'])
+            description = buildmod.sitelib.to_text(page['description'])
+            with self.subTest(guide=page['slug']):
+                self.assertIn(f'- [{heading}]({page["url"]}): {description}', lines)
+
+    def test_llms_indexes_carry_no_markup(self):
         """It is built from config written as HTML fragments, and it is not
         HTML. An &mdash; or a <code> that survives into it is a value that
         skipped site.to_text on the way in."""
-        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
-        for leak in ('&mdash;', '&amp;', '&#', '<code>', '<a ', '{{', '{%'):
-            with self.subTest(leak=leak):
-                self.assertNotIn(leak, text)
+        for name in ('llms.txt', 'llms-guides.txt'):
+            text = (self.out / name).read_text(encoding='utf-8')
+            for leak in ('&mdash;', '&amp;', '&#', '<code>', '<a ', '{{', '{%'):
+                with self.subTest(index=name, leak=leak):
+                    self.assertNotIn(leak, text)
 
     def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
         """The same rule as the sitemap and the hreflang tags, and for the same
@@ -1941,7 +2016,8 @@ class BuildTheSite(unittest.TestCase):
             written = buildmod.build(scoped, clean=True, minify_output=False,
                                      only=[slug], langs=['en'])
             self.assertEqual(written, [f'{slug}/index.html'])
-            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt', 'offline-generations.json',
+            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt',
+                         'llms-guides.txt', 'offline-generations.json',
                          'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())

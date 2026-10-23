@@ -17,20 +17,19 @@ nav = "Split a GIF"
 group = "doing-the-job"
 tool = "split-gif"
 
-title = "How to Split a GIF Into Frames (and What a Frame Really Is)"
-description = "Get every frame of an animated GIF as a PNG: why some frames are only a small patch of the picture, what happens to the transparency, and how to keep the timing so you can put it back together."
+title = "How to Split a GIF Into PNG Frames, a ZIP or a Sprite Sheet"
+description = "Extract GIF frames as complete PNGs, a ZIP or a sprite sheet. Keep transparency and a timing reference, rebuild an edited GIF, or convert the original to MP4."
 
-heading = "How to split a GIF into frames"
+heading = "How to split a GIF into PNG frames"
 lede = """
-    Getting the frames out takes one drop and one button. What is worth
-    understanding is what a "frame" of a GIF actually is, because the format
-    stores something rather different from what you see &mdash; and that
-    difference is why your fourteenth frame is a rectangle of somebody's
-    mouth."""
+    Save one useful still, a folder of PNG frames or one sprite sheet without
+    uploading the animation. Choose complete pictures for editing, keep a
+    separate reference for the frame delays, and decide when converting the
+    original GIF directly to MP4 is the better next step."""
 
-updated = "13 October 2026"
+updated = "23 October 2026"
 published = "2026-08-21"
-lastmod = "2026-10-13"
+lastmod = "2026-10-23"
 
 og_title = "How to split a GIF into frames"
 og_description = "Every frame of a GIF as a PNG: why some frames are only a patch, what happens to the transparency, and how to keep the timing."

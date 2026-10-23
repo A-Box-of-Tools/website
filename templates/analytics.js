@@ -9,6 +9,8 @@
   Behaviour is identical; only the delivery changed.
 
   This measures page visits and the first successful tool use on each visit.
+  Fixed journey stages and selected workflow links explain where a visit stops;
+  their identities come from this source and the generated page, never a file.
   It is never given anything about your {{ words.plural }}: no
   file, no thumbnail, no filename, no dimension, no count{{ words.analytics_extra }}. Nothing here
   can see any of that. `tool_complete` carries only the tool's static slug.
@@ -113,6 +115,76 @@ gtag('config', '{{ site.analytics_id }}', {
       // A blocked or broken counter must never break the local operation.
     }
   };
+
+  try {
+    gtag('event', 'tool_view', {
+      send_to: '{{ site.analytics_id }}',
+      tool_slug: slug,
+    });
+  } catch (err) { /* Measurement must leave the local tool usable. */ }
+
+  // The pilot is explicit so absence of a stage on another tool cannot be
+  // mistaken for abandonment. Each stage describes a page visit, not a job.
+  if (['images-to-video', 'stack-images', 'gif-analyzer', 'split-gif'].indexOf(slug) === -1) return;
+  var stages = {
+    input: 'tool_input',
+    start: 'tool_start',
+    ready: 'tool_ready',
+    problem: 'tool_problem',
+    cancel: 'tool_cancel',
+  };
+  var reached = Object.create(null);
+  window.aboxToolJourney = function (step) {
+    if (typeof step !== 'string' || !Object.prototype.hasOwnProperty.call(stages, step)
+        || reached[step]) return;
+    try {
+      gtag('event', stages[step], {
+        send_to: '{{ site.analytics_id }}',
+        tool_slug: slug,
+      });
+      reached[step] = true;
+    } catch (err) { /* A blocked counter must not consume the stage or stop work. */ }
+  };
+}());
+
+// A selected workflow link identifies two authored pages. The target registry
+// admits the cross-links in the image/video pilot as well as this page's
+// generated guide and neighbouring tools. Neither a live href nor link text is
+// a measurement field: output names and pasted URLs can appear in those.
+(function () {
+  try {
+    var sourceTag = document.querySelector('meta[name="abox-workflow-source"]');
+    var source = sourceTag && sourceTag.content;
+    var validPage = /^[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)?$/;
+    if (!source || !validPage.test(source)) return;
+    var targets = Object.create(null);
+    [
+      'gif-maker', 'gif-to-mp4', 'split-gif', 'images-to-video',
+      'stack-images', 'gif-analyzer', 'timelapse-video', 'resize-image', 'compress-image',
+      'guides/turn-images-into-a-video', 'guides/stack-photos-to-reduce-noise',
+      'guides/whats-inside-a-gif', 'guides/split-a-gif-into-frames',
+      'guides/edit-a-gif-frame-by-frame',
+    ].forEach(function (id) { targets[id] = true; });
+    document.querySelectorAll('meta[name="abox-workflow-target"]').forEach(function (tag) {
+      if (validPage.test(tag.content)) targets[tag.content] = true;
+    });
+    var selected = Object.create(null);
+    document.querySelectorAll('a[data-workflow-target]').forEach(function (link) {
+      var target = link.getAttribute('data-workflow-target');
+      if (!targets[target] || target === source) return;
+      link.addEventListener('click', function (event) {
+        if ((event && event.defaultPrevented) || selected[target]) return;
+        try {
+          gtag('event', 'workflow_link', {
+            send_to: '{{ site.analytics_id }}',
+            source_page: source,
+            target_page: target,
+          });
+          selected[target] = true;
+        } catch (err) { /* Navigation never waits for measurement. */ }
+      });
+    });
+  } catch (err) { /* Missing measurement metadata must not affect the page. */ }
 }());
 
 // AdSense, behind the same test, for a sharper version of the same reason. It

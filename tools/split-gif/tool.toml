@@ -12,7 +12,7 @@ name = "GIF Splitter"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
 heading = "GIF&nbsp;Splitter <span class=\"h1-kw\">&mdash; every frame as its own PNG</span>"
-tagline = "Every frame out as its own PNG."
+tagline = "Extract PNG frames, a ZIP or one sprite sheet, with the timing written down."
 icon = "&#128209;"         # the mark beside the page heading
 favicon = "&#128209;"      # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -33,14 +33,14 @@ css_parts = ["progress", "results", "form", "notes"]
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
 js_parts = ["file-picker", "gif-decode", "gif-compose", "zip", "crc32", "message-box", "format", "example-gif", "example-photo", "errors", "gif-working-budget"]
-lastmod = "2026-10-12"
+lastmod = "2026-10-23"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "GIF Splitter &mdash; Every Frame as a PNG, Free and No Upload"
-description = "Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline."
+description = "Extract GIF frames as PNGs, a ZIP or one sprite sheet in your browser. Keep transparency and save frame delays in a separate timing list. No upload."
 og_title = "GIF Splitter &mdash; take an animation apart, in your browser"
-og_description = "Every frame of a GIF as its own PNG, with the delays and the transparency intact. The file is read on your own machine and never uploaded."
+og_description = "Download PNG frames individually, as a ZIP or as one sprite sheet. Keep transparency and save the frame delays in a separate timing list. Nothing is uploaded."
 og_image_alt = "GIF Splitter - every frame of a GIF as its own PNG"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -242,12 +242,15 @@ a = """
 [[faq]]
 q = "Can I put the frames back together again?"
 a = """
-        Yes, with the <a href="../gif-maker/">GIF Maker</a> on this site or with
-        anything else that takes a folder of images. That is what the
-        <code>frames.txt</code> in the ZIP is for: splitting an animation throws
-        away the timing, because a PNG has nowhere to record how long it was
-        held, so the list carries each frame's delay and position out with
-        it."""
+        Yes. Extract <strong>The frame as it appears</strong>, then add those
+        complete PNGs to <a href="../gif-maker/"
+        data-workflow-target="gif-maker">GIF Maker</a> and sort them by name.
+        Use <code>frames.txt</code> from the ZIP as a reference when setting each
+        frame's hold time; GIF Maker does not import the list automatically.
+        A PNG cannot carry its playback delay on its own. The <a
+        href="../guides/edit-a-gif-frame-by-frame/"
+        data-workflow-target="guides/edit-a-gif-frame-by-frame">frame-by-frame
+        editing guide</a> walks through rebuilding the animation."""
 
 [[faq]]
 q = "What formats can the frames be saved in?"
@@ -292,7 +295,7 @@ features = [
   "The frame as it appears, or only the pixels that frame stores",
   "Per-frame delay, position, size and disposal shown for every frame",
   "Keep every second or every fifth frame, or tick the ones you want",
-  "One ZIP for the lot, with an optional timing list for rebuilding the animation",
+  "One ZIP with an optional timing list, or selected complete frames in one PNG sprite sheet",
   "Runs offline; no upload, no account, no watermark",
 ]
 

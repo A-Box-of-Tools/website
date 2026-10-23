@@ -210,14 +210,15 @@ def rule_pages_note(tool):
 
 
 def build_llms(out, templates, site, locales, tools, prose):
-    """/llms.txt: the whole site as plain text, for a reader that gets one fetch.
+    """/llms.txt and its guide index, for a reader choosing the next fetch.
 
     A search engine is handed a page of structured data per tool and has the
     patience to crawl all of them. An assistant deciding whether this site is
     worth mentioning at all does not - it fetches one address, and if that
     address does not say what the tools are and what they cannot do, it writes
     its own EXIF parser instead of linking to the page that already strips one.
-    This is that address.
+    This is that address. The guides have their own linked index so keeping
+    their full descriptions does not crowd out the tools in the first fetch.
 
     Built from the same tool.toml files as the hub, the sitemap and
     tools/README.md, and in the same hub order, so it cannot fall behind the
@@ -304,7 +305,7 @@ def build_llms(out, templates, site, locales, tools, prose):
     optional += [entry(page) for page in prose if page['kind'] == 'site']
     optional += [entry(page) for page in prose if page['kind'] == 'legal']
 
-    write(out / 'llms.txt', templates.render('llms.txt', {
+    context = {
         'site': site,
         # Trimmed here rather than in the template: these are TOML multi-line
         # strings, so each arrives with the newline its closing quotes sit on,
@@ -319,4 +320,6 @@ def build_llms(out, templates, site, locales, tools, prose):
         'guides': guides,
         'languages': languages,
         'optional': optional,
-    }))
+    }
+    for name in ('llms.txt', 'llms-guides.txt'):
+        write(out / name, templates.render(name, context))

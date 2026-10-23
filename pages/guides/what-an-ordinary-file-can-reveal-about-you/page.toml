@@ -1,0 +1,17 @@
+# This privacy guide covers decisions that apply across tools and browsers.
+# It has no primary tool, so existing tool-guide links stay intact.
+
+slug = "guides/what-an-ordinary-file-can-reveal-about-you"
+kind = "guide"
+nav = "What an ordinary file can reveal about you"
+group = "before-you-upload"
+title = "What an ordinary file can reveal about you"
+description = "Use fictional receipts, screenshots and attendance lists to recognise private information, context and unnecessary disclosure before sharing a file."
+heading = "What an ordinary file can reveal about you"
+lede = "A file does not need a password or a confidential label to say something personal. Look at its contents, its context and its audience before deciding which copy to share."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "What an ordinary file can reveal about you"
+og_description = "Use fictional receipts, screenshots and attendance lists to recognise private information, context and unnecessary disclosure before sharing a file."
+og_image_alt = "abox.tools - browser tools for local file processing"

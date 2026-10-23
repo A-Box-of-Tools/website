@@ -15,19 +15,19 @@ nav = "Images into a video"
 group = "doing-the-job"
 tool = "images-to-video"
 
-title = "How to Turn a Folder of Images Into a Video"
-description = "Make an MP4 slideshow from photos: what frame rate and duration actually control, how to handle pictures that are the wrong shape, and why the result has no soundtrack."
+title = "Image Sequence to MP4: Render Frames, Timelapse or Slideshow"
+description = "Turn numbered render frames or timelapse photos into MP4, or make a photo slideshow. Choose frame holds or seconds, check order, and avoid cropped or mistimed output."
 
-heading = "How to turn a folder of images into a video"
+heading = "Turn an image sequence or photo slideshow into MP4"
 lede = """
-    A slideshow is a simple thing to make and an easy one to render twice,
-    because two of the settings do not mean what they sound like. This is what
-    each of them controls and what to choose."""
+    A render sequence needs one image per video frame; a slideshow needs time
+    to look at each photograph. Start with that choice, then check order,
+    dimensions and duration before encoding on your own device."""
 
-updated = "13 October 2026"
+updated = "23 October 2026"
 published = "2026-08-20"
-lastmod = "2026-10-13"
+lastmod = "2026-10-23"
 
-og_title = "How to turn a folder of images into a video"
-og_description = "What frame rate and duration actually control, how to handle pictures that are the wrong shape, and why there is no soundtrack."
+og_title = "Image sequence or slideshow to MP4"
+og_description = "Choose frames or seconds, sort your pictures, and check the video before sharing. No processing upload."
 og_image_alt = "abox.tools - tools that never touch a server"

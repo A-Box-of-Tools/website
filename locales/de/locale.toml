@@ -274,7 +274,7 @@ body = "Ihr Browser öffnet, liest und bearbeitet die ausgewählten Dateien. Zur
 
 [[hub.guarantees]]
 title = "Ihre Dateien gehen nicht an die Besuchsstatistik"
-body = "Gezählt werden Seitenaufrufe, die erste erfolgreiche Werkzeugnutzung pro Seitenaufruf und freiwillige feste Feedback-Antworten. Dateien, Dateinamen, Inhalte oder Ergebnisdetails werden dabei nicht übergeben. Optionale Bildimporte und Wechselkursabfragen für Belege erklären ihre übermittelten Angaben neben den Bedienelementen."
+body = "Gezählt werden Seitenaufrufe, feste Nutzungsschritte, das erste erfolgreiche Ergebnis pro Seitenaufruf, ausgewählte Weiterführungslinks und freiwilliges festes Feedback. Dateien, Dateinamen, Inhalte sowie Eingabe- und Ergebnisdetails werden nicht mitgesendet. Optionale Bildimporte und Wechselkursabfragen für Belege erklären ihre Daten neben den Bedienelementen."
 
 [[hub.guarantees]]
 title = "Lokale Verarbeitung funktioniert offline"
