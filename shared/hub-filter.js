@@ -17,9 +17,10 @@
  *      A search box is the control a visitor most reasonably expects to be
  *      wired to somebody's server, so on this site of all sites it has to be
  *      obviously not.
- *   2. NOTHING IS REMEMBERED. No history entry, no query string, no
- *      localStorage. Searching and expanding are ways of looking at one page,
- *      not preferences.
+ *   2. TYPING IS TRANSIENT. Typing or clearing writes no history entry, query
+ *      string or localStorage. A supplied #search= link can restore public
+ *      catalogue keywords; browser history can retain that link and page
+ *      scripts can read its fragment, so the link is not a place for secrets.
  *   3. IT IS AN ENHANCEMENT, STRICTLY. The field and expansion buttons carry
  *      `hidden` until this script is ready. With JavaScript off every tool
  *      remains visible, rather than leaving a search box or button that does
@@ -216,6 +217,25 @@
     return true;
   }
 
+  /* Search links use the fragment so opening one sends no query parameter to
+     the host. The same bound as agent discovery keeps a link a short catalogue
+     query, and a malformed link must not break the ordinary filter. */
+  function applyHash(hash, scroll) {
+    if (hash.slice(0, 8) === '#search=') {
+      var query;
+      try {
+        query = decodeURIComponent(hash.slice(8));
+      } catch (error) {
+        return false;
+      }
+      if (Array.from(query).length > 200) return false;
+      input.value = query;
+      apply();
+      return true;
+    }
+    return expandHash(hash, scroll);
+  }
+
   Array.prototype.forEach.call(
     document.querySelectorAll('.hub-categories a'), function (anchor) {
       anchor.addEventListener('click', function (event) {
@@ -227,7 +247,11 @@
       });
     });
   window.addEventListener('hashchange', function () {
-    expandHash(window.location.hash, true);
+    var hash = window.location.hash;
+    if (!applyHash(hash, true) && (!hash || hash === '#')) {
+      input.value = '';
+      apply();
+    }
   });
 
   input.addEventListener('input', apply);
@@ -252,9 +276,9 @@
     input.focus();
   });
 
-  /* A restored search is applied before the field is revealed. An explicit
-     category fragment takes precedence so the browser has a visible target. */
-  if (!expandHash(window.location.hash, true)) apply();
+  /* An explicit search or category link takes precedence over a browser's
+     restored input. Typing and clearing never rewrite that incoming link. */
+  if (!applyHash(window.location.hash, true)) apply();
   box.hidden = false;
 
   /* Discovery reads only the public category cards, never the visitor's query

@@ -144,6 +144,11 @@ function run({ definitions = DEFAULTS, value = '', hash = '',
   const window = element(context);
   window.location = { hash, href };
   window.navigator = { modelContext: navigatorContext };
+  const historyCalls = [];
+  window.history = {
+    pushState(...args) { historyCalls.push(['pushState', ...args]); },
+    replaceState(...args) { historyCalls.push(['replaceState', ...args]); },
+  };
   const requests = [];
   function unexpectedRequest() {
     requests.push(Array.from(arguments));
@@ -157,7 +162,7 @@ function run({ definitions = DEFAULTS, value = '', hash = '',
     document, window, unexpectedRequest, unexpectedRequest, unexpectedRequest);
 
   return {
-    box, input, empty, groups, document, window, requests,
+    box, input, empty, groups, document, window, requests, historyCalls,
     visible(index) { return groups[index].rows.filter(entry => !entry.row.hidden).map(entry => entry.slug); },
     search(query) { input.value = query; input.emit('input'); },
     hash(fragment) { window.location.hash = fragment; window.emit('hashchange'); },
@@ -318,6 +323,68 @@ test('category fragments expand the complete category on load and through histor
   assert.equal(page.input.value, 'compresion');
   page.hash('#%E0%A4%A');
   assert.equal(page.input.value, 'compresion');
+});
+
+test('search fragments initialize the visible filter with decoded public keywords', () => {
+  const page = run({ hash: '#search=overlapping%20photos', value: 'compresion' });
+  assert.equal(page.input.value, 'overlapping photos');
+  assert.deepEqual(page.visible(0), ['four']);
+  assert.equal(page.groups[1].section.hidden, true);
+  assert.equal(page.empty.hidden, true);
+
+  const localized = run({ hash: '#search=compresi%C3%B3n' });
+  assert.equal(localized.input.value, 'compresión');
+  assert.deepEqual(localized.visible(0), ['five']);
+  const maximum = run({ hash: '#search=' + encodeURIComponent('🧰'.repeat(200)) });
+  assert.equal(maximum.input.value, '🧰'.repeat(200));
+});
+
+test('search and category fragment history restores the matching filter and neutral hub', () => {
+  const page = run({ hash: '#search=overlapping%20photos' });
+  page.hash('#video-and-animation');
+  assert.equal(page.input.value, '');
+  assert.deepEqual(page.visible(1), ['six', 'seven', 'eight', 'timelapse-video']);
+  page.hash('#search=overlapping%20photos');
+  assert.equal(page.input.value, 'overlapping photos');
+  assert.deepEqual(page.visible(0), ['four']);
+  page.hash('#search=compresi%C3%B3n');
+  assert.deepEqual(page.visible(0), ['five']);
+  page.hash('');
+  assert.equal(page.input.value, '');
+  assert.equal(page.groups.every(group => !group.section.hidden), true);
+  page.hash('#search=');
+  assert.equal(page.input.value, '');
+  assert.equal(page.groups.every(group => !group.section.hidden), true);
+});
+
+test('malformed and overlong search fragments leave a restored or current search alone', () => {
+  const invalid = ['#search=%E0%A4%A', '#search=' + 'x'.repeat(201),
+    '#search=' + encodeURIComponent('🧰'.repeat(201)), '#search'];
+  for (const hash of invalid) {
+    const page = run({ hash, value: 'compresion' });
+    assert.equal(page.input.value, 'compresion', hash);
+    assert.deepEqual(page.visible(0), ['five'], hash);
+    page.search('overlapping photos');
+    page.hash(hash);
+    assert.equal(page.input.value, 'overlapping photos', hash);
+    assert.deepEqual(page.visible(0), ['four'], hash);
+  }
+});
+
+test('typing, clearing and agent discovery never rewrite an incoming search link', () => {
+  const hash = '#search=overlapping%20photos';
+  const page = withAgent({ hash, href: 'https://abox.tools/' + hash });
+  const before = { ...page.window.location };
+  page.search('compresion');
+  page.input.emit('keydown', { key: 'Escape' });
+  assert.equal(page.input.value, '');
+  page.search('image');
+  page.search('');
+  page.tool.execute({ query: 'image' });
+  assert.deepEqual(page.window.location, before);
+  assert.deepEqual(page.historyCalls, []);
+  assert.deepEqual(page.requests, []);
+  assert.equal(run({ hash }).input.value, 'overlapping photos');
 });
 
 test('category jumps clear a hiding search before native navigation, including repeated fragments', () => {
