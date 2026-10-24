@@ -15,6 +15,40 @@ export const UI_META = Object.freeze({
 
 const catalogueSchemas = new WeakMap();
 
+export function cacheJsonSchema(schema) {
+  const standard = schema['~standard'];
+  const converters = standard?.jsonSchema;
+  if (!converters) return schema;
+  const target = 'draft-2020-12';
+  let cached;
+  try {
+    cached = {
+      input: converters.input({ target }),
+      output: converters.output({ target })
+    };
+  } catch {
+    // Preserve the original schema and the SDK's existing error behavior.
+    return schema;
+  }
+  const convert = (direction, options) => (
+    options.target === target && options.libraryOptions === undefined
+      ? cached[direction]
+      : converters[direction](options)
+  );
+  return {
+    '~standard': {
+      version: standard.version,
+      vendor: standard.vendor,
+      types: standard.types,
+      validate: (value, options) => standard.validate(value, options),
+      jsonSchema: {
+        input: options => convert('input', options),
+        output: options => convert('output', options)
+      }
+    }
+  };
+}
+
 export function prepareCatalogueSchemas(catalogue) {
   const prepared = catalogueSchemas.get(catalogue);
   if (prepared) return prepared;
@@ -33,7 +67,10 @@ export function prepareCatalogueSchemas(catalogue) {
   }).strict();
   // Schemas depend only on the frozen catalogue. Servers and transports still
   // belong to individual requests, as the stateless SDK handler requires.
-  const schemas = Object.freeze({ inputSchema, outputSchema });
+  const schemas = Object.freeze({
+    inputSchema: cacheJsonSchema(inputSchema),
+    outputSchema: cacheJsonSchema(outputSchema)
+  });
   catalogueSchemas.set(catalogue, schemas);
   return schemas;
 }
