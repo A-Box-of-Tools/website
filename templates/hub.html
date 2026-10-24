@@ -19,10 +19,9 @@
 -->
 {{ csp }}
 <!--
-  The title leads with what someone would actually type into a search box and
-  ends with the brand, rather than the other way round. Nobody searches for
-  "a box of tools"; people search for free tools that do not want their files.
-  Keep it under about 60 characters or Google truncates the tail.
+  The title uses the same brand as the visible header and names image
+  compression as one job in the wider catalogue. Keeping the product and its
+  domain together helps a reader recognize which browser tools a result names.
 -->
 <title>{{ site.hub.title }}</title>
 <meta name="description" content="{{ site.hub.description }}">
@@ -101,7 +100,7 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 
 <!--
-  What lets this page be installed as "A Box of Tools". The manifest is scoped
+  What lets this page be installed as "abox.tools". The manifest is scoped
   to this language's root, so the installed window keeps the tools, the guides
   and the roadmap inside it; offline.js registers the worker that has already
   cached this page, so it opens with the network unplugged. The browser offers

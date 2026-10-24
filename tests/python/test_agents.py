@@ -56,16 +56,19 @@ class Discovery(unittest.TestCase):
     def document(self, path):
         return json.loads((self.out / path).read_bytes())
 
-    def test_both_discovery_routes_identify_the_skill_the_build_writes(self):
+    def test_discovery_routes_identify_the_skill_the_build_writes(self):
         written = self.build()
         self.assertEqual(set(written), {
             '.well-known/agent-skills/browser-tools/SKILL.md',
             '.well-known/ard.json',
+            '.well-known/ai-catalog.json',
             '.well-known/agent-skills/index.json',
         })
         self.assertTrue(all((self.out / path).is_file() for path in written))
         ard = self.document('.well-known/ard.json')['entries']
+        catalog = self.document('.well-known/ai-catalog.json')
         index = self.document('.well-known/agent-skills/index.json')
+        self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
         self.assertEqual(len(ard), 1)
         self.assertEqual(len(index['skills']), 1)
         entry, skill = ard[0], index['skills'][0]

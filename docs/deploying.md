@@ -591,7 +591,13 @@ The root hub links to `/.well-known/ard.json`, an
 Agent Skill. It describes how to select and operate these tools in a browser;
 it does not advertise a processing API, MCP server or chat-embedded app.
 
-[`buildlib/agents.py`](../buildlib/agents.py) generates that catalog, the
+`/.well-known/ai-catalog.json` offers the same entries to clients following
+[AI Catalog 1.0](https://ai-catalog.io/spec/), with its required
+`"specVersion": "1.0"` envelope. Both catalogs are generated from one entries
+list, so a skill's identity, description, URL and publisher claim cannot drift
+between discovery paths.
+
+[`buildlib/agents.py`](../buildlib/agents.py) generates both catalogs, the
 [`/.well-known/agent-skills/index.json` discovery index](https://github.com/cloudflare/agent-skills-discovery-rfc)
 and `/.well-known/agent-skills/abox-tools/SKILL.md` during a full build.
 The skill's metadata comes from `[agents]` in

@@ -29,6 +29,7 @@ from buildlib import site as sitelib
 # crawler the two are one document. build.py fills them in per locale; a
 # fixture standing in for a site has to carry them too.
 SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
+        'alternate_name': 'The Site Project',
         'home': 'https://example.test/',
         'guides_url': 'https://example.test/guides/',
         'roadmap_url': 'https://example.test/roadmap/',
@@ -443,16 +444,17 @@ class StructuredData(unittest.TestCase):
                 self.assertTrue(all('potentialAction' not in node for node in graph
                                     if node['@type'] != 'CollectionPage'))
 
-    def test_the_publisher_description_uses_the_current_language(self):
+    def test_the_publisher_and_website_keep_their_explicit_identity_in_each_language(self):
         for description in ('Local tools &amp; guides', 'Outils &amp; guides locaux'):
             with self.subTest(description=description):
-                site = dict(SITE, hub={'schema_description': description,
-                                       'schema_about': ['x']})
+                site = dict(SITE, name='example.test', alternate_name='Example Tools',
+                            hub={'schema_description': description, 'schema_about': ['x']})
                 graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
                 org = next(node for node in graph if node['@type'] == 'Organization')
                 self.assertEqual(org['description'], description.replace('&amp;', '&'))
-                self.assertEqual(org['alternateName'], 'example.test')
-                self.assertEqual(graph[0]['alternateName'], 'example.test')
+                for entity in (org, graph[0]):
+                    self.assertEqual(entity['name'], 'example.test')
+                    self.assertEqual(entity['alternateName'], 'Example Tools')
 
 
 class LoadTool(TempTree):
