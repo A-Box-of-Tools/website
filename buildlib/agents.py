@@ -1,9 +1,10 @@
 """Publish the site's browser-use instructions without inventing a remote API.
 
-ARD describes the skill, and the well-known skill index makes that same file
-discoverable to clients that understand Agent Skills. Both point to the bytes
-this build writes, so publishing instructions never depends on a remote fetch
-or a hand-kept digest that can fall behind the instructions it identifies.
+ARD and its AI Catalog compatibility document describe the same skill, and the
+well-known skill index makes that file discoverable to Agent Skills clients.
+All point to the bytes this build writes, so publishing instructions never
+depends on a remote fetch or a hand-kept digest that can fall behind the
+instructions it identifies.
 """
 
 import hashlib
@@ -31,7 +32,7 @@ def _line(value, key, limit=None):
 
 
 def build_discovery(out, templates, site):
-    """Write a skill and its two discovery documents; return relative paths.
+    """Write a skill and its discovery documents; return relative paths.
 
     The template receives JSON-quoted YAML scalars for its frontmatter. YAML's
     quoted strings accept this spelling, including punctuation that would
@@ -63,6 +64,7 @@ def build_discovery(out, templates, site):
 
     skill_path = f'.well-known/agent-skills/{name}/SKILL.md'
     ard_path = '.well-known/ard.json'
+    catalog_path = '.well-known/ai-catalog.json'
     index_path = '.well-known/agent-skills/index.json'
     skill_url = f'{domain.scheme}://{domain.netloc}/{skill_path}'
     skill_file = out / skill_path
@@ -77,21 +79,23 @@ def build_discovery(out, templates, site):
     emitted = write(skill_file, skill_text)
     digest = 'sha256:' + hashlib.sha256(emitted.encode('utf-8')).hexdigest()
 
+    entries = [{
+        'identifier': f'urn:air:{domain.hostname}:skill:{name}',
+        'displayName': display_name,
+        'type': 'application/agent-skills+md',
+        'url': skill_url,
+        'description': description,
+        'representativeQueries': list(queries),
+        # This binds the declared publisher to the identifier's HTTPS
+        # domain. It makes no signature or independent attestation claim.
+        'trustManifest': {
+            'identity': f'{domain.scheme}://{domain.netloc}/',
+            'identityType': 'https',
+        },
+    }]
     documents = {
-        ard_path: {'entries': [{
-            'identifier': f'urn:air:{domain.hostname}:skill:{name}',
-            'displayName': display_name,
-            'type': 'application/agent-skills+md',
-            'url': skill_url,
-            'description': description,
-            'representativeQueries': list(queries),
-            # This binds the declared publisher to the identifier's HTTPS
-            # domain. It makes no signature or independent attestation claim.
-            'trustManifest': {
-                'identity': f'{domain.scheme}://{domain.netloc}/',
-                'identityType': 'https',
-            },
-        }]},
+        ard_path: {'entries': entries},
+        catalog_path: {'specVersion': '1.0', 'entries': entries},
         index_path: {
             '$schema': SKILL_SCHEMA,
             'skills': [{
@@ -105,4 +109,4 @@ def build_discovery(out, templates, site):
     }
     for relative, document in documents.items():
         write(out / relative, json.dumps(document, ensure_ascii=False, indent=2))
-    return [skill_path, ard_path, index_path]
+    return [skill_path, ard_path, catalog_path, index_path]

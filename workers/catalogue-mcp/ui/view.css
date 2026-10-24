@@ -1,0 +1,24 @@
+:root { color-scheme: light dark; font: 15px/1.55 system-ui,sans-serif; color: var(--color-text-primary, #20242a); background: var(--color-background-primary, #fff); }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 840px; margin: 0 auto; padding: 20px; }
+h1 { margin: 0 0 8px; font-size: 1.65rem; line-height: 1.25; }
+h2 { font-size: 1.04rem; line-height: 1.35; margin: 0 0 5px; }
+p { margin: 0 0 14px; }
+.brand { color: var(--color-text-secondary, #576474); font-weight: 650; margin-bottom: 5px; }
+.controls { display: grid; grid-template-columns: minmax(0,1fr) 160px; gap: 12px; margin: 18px 0 12px; }
+label { display: grid; gap: 5px; font-size: .88rem; font-weight: 600; }
+input, select, button { font: inherit; border: 1px solid var(--color-border-primary, #b6c0cb); border-radius: 7px; color: inherit; background: var(--color-background-secondary, #f5f7fa); }
+input, select { min-width: 0; width: 100%; padding: 9px; }
+button { min-height: 40px; padding: 8px 13px; cursor: pointer; white-space: nowrap; }
+button:disabled { opacity: .55; cursor: default; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid #6d9fe8; outline-offset: 2px; }
+.privacy, .address, #status { color: var(--color-text-secondary, #576474); font-size: .84rem; }
+.address { overflow-wrap: anywhere; margin-bottom: 0; }
+.description { margin-bottom: 5px; }
+ul { padding: 0; margin: 10px 0 0; list-style: none; }
+.tool { display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top: 1px solid var(--color-border-primary, #dce1e8); padding: 14px 0; }
+[hidden] { display: none !important; }
+[role="alert"] { color: #a6382c; }
+@media (prefers-color-scheme: dark) { :root { color: var(--color-text-primary, #e8ecf1); background: var(--color-background-primary, #15191f); } input, select, button { background: var(--color-background-secondary, #242c36); } .privacy,.address,#status,.brand { color: var(--color-text-secondary, #aebdce); } }
+@media (max-width: 520px) { main { padding: 14px; } .controls { grid-template-columns: 1fr; } .tool { align-items: flex-start; } }

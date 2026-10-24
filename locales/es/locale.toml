@@ -204,18 +204,18 @@ complete = true
 #
 
 [hub]
-title = "Herramientas de navegador gratis &mdash; procesamiento local | abox.tools"
+title = "abox.tools &mdash; Compresión de imágenes y herramientas de navegador gratis"
 # Por debajo de 155 caracteres, como en inglés: Google corta la descripción más
 # o menos ahí, y aquí el final es la parte que vende el sitio.
-description = "Herramientas gratis que procesan archivos en el navegador: imágenes a PDF o MP4, compresión a un tamaño objetivo, recorte de vídeo y borrado de EXIF."
+description = "Compresión de imágenes y herramientas gratis para PDF, vídeo, audio y texto de abox.tools (A Box of Tools). Procesamiento local sin subir archivos."
 heading = "Herramientas gratis. Procesamiento local."
-og_title = "A Box of Tools &mdash; procesamiento local en tu navegador"
-og_description = "Herramientas para una sola tarea que procesan archivos en tu dispositivo. Las funciones para compartir o conectarse se explican donde se usan."
+og_title = "abox.tools &mdash; compresión de imágenes y herramientas de navegador gratis"
+og_description = "Herramientas gratis para comprimir imágenes y trabajar con PDF, vídeo, audio y texto en tu dispositivo. Las funciones para compartir y conectarse se explican donde se usan."
 og_image_alt = "abox.tools - herramientas de navegador para procesar archivos localmente"
-schema_description = "Utilidades de navegador para procesar archivos localmente, sin subirlos para procesarlos ni crear una cuenta. Las funciones de red se explican en sus páginas."
-schema_about = "Utilidades de navegador para procesar archivos localmente y compartir entre navegadores de forma deliberada"
+schema_description = "Herramientas de navegador gratis para comprimir imágenes, editar PDF y trabajar con vídeo, audio y texto localmente. Sin subir archivos para procesarlos ni crear una cuenta. Las funciones para compartir y las funciones online opcionales se explican en sus páginas."
+schema_about = "Herramientas de navegador para comprimir imágenes, editar PDF, trabajar con vídeo, audio y texto y compartir entre navegadores de forma deliberada"
 
-lede = "Procesa archivos en tu navegador. Sin subirlos para procesarlos ni iniciar sesión."
+lede = "abox.tools (A Box of Tools) ofrece compresión de imágenes, edición de PDF y herramientas de texto en tu navegador. Sin subir archivos para procesarlos ni iniciar sesión."
 
 support_note = """
       Estas herramientas son gratis y lo van a seguir siendo. Si alguna te ha

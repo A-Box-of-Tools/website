@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Local MCP App sandbox proxy</title>
+<style>html,body,iframe{width:100%;height:100%;margin:0;padding:0;border:0;display:block}</style></head>
+<body>
+<script>
+(() => {
+  'use strict';
+  const allowedHosts = new Set(['http://localhost:8788', 'http://127.0.0.1:8788']);
+  const hostOrigin = new URL(document.referrer).origin;
+  if (window.parent === window || !allowedHosts.has(hostOrigin)) throw new Error('Unexpected preview parent');
+  const ownOrigin = location.origin;
+  if (ownOrigin === hostOrigin) throw new Error('Sandbox must use a separate origin');
+  const inner = document.createElement('iframe');
+  inner.title = 'abox.tools App view';
+  inner.setAttribute('sandbox', 'allow-scripts');
+  document.body.append(inner);
+  const ready = 'ui/notifications/sandbox-resource-ready';
+  const proxyReady = 'ui/notifications/sandbox-proxy-ready';
+  const fields = ['connectDomains', 'resourceDomains', 'frameDomains', 'baseUriDomains'];
+  const viewPolicy = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data: blob:; font-src 'none'; media-src 'none'; worker-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
+  let loaded = false;
+  window.addEventListener('message', event => {
+    const message = event.data;
+    if (!message || typeof message !== 'object' || message.jsonrpc !== '2.0') return;
+    if (message.method !== undefined && typeof message.method !== 'string') return;
+    if (event.source === window.parent) {
+      if (event.origin !== hostOrigin) return;
+      if (message.method === ready) {
+        if (loaded) return;
+        const html = message.params?.html;
+        const csp = message.params?.csp;
+        if (typeof html !== 'string' || html.length > 2_000_000 || !csp || typeof csp !== 'object'
+            || Object.keys(csp).some(key => !fields.includes(key))
+            || fields.some(key => !Array.isArray(csp[key]) || csp[key].length)) throw new Error('Unexpected catalogue resource');
+        const policy = `<meta http-equiv="Content-Security-Policy" content="${viewPolicy}">`;
+        if (!/<head(?:\s[^>]*)?>/i.test(html)) throw new Error('Expected a complete App HTML document');
+        inner.srcdoc = html.replace(/<head(?:\s[^>]*)?>/i, head => head + policy);
+        loaded = true;
+      } else if (!message.method?.startsWith('ui/notifications/sandbox-')) {
+        inner.contentWindow.postMessage(message, '*');
+      }
+    } else if (loaded && event.source === inner.contentWindow && event.origin === 'null'
+        && !message.method?.startsWith('ui/notifications/sandbox-')) {
+      window.parent.postMessage(message, hostOrigin);
+    }
+  });
+  window.parent.postMessage({ jsonrpc: '2.0', method: proxyReady, params: {} }, hostOrigin);
+})();
+</script>
+</body>
+</html>
