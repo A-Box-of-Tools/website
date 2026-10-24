@@ -80,6 +80,10 @@ disabled and show an accurate message. Wrangler's
 dry run writes ignored deployment output. No whole-site asset directory is
 bound or uploaded, and the Worker fetches no runtime catalogue URL.
 
+Validation also prepares folded public names and descriptions for each locale
+once at startup. The index belongs to its immutable catalogue. Queries are
+still normalized per call and each result is a fresh copy; neither is cached.
+
 The resource uses `ui://abox/catalogue.html` with
 `text/html;profile=mcp-app`. The tool links it through `_meta.ui.resourceUri`;
 `resources/read` returns the actual HTML plus resource-level UI metadata.
