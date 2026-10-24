@@ -7,6 +7,9 @@ import { decodeCatalogueData } from './view-data.mjs';
 z.config({ jitless: true });
 
 async function start() {
+  document.body.dataset.appModuleStarted = 'true';
+  document.getElementById('loading-module').hidden = true;
+  document.getElementById('loading-catalogue').hidden = false;
   let catalogue;
   try {
     const data = document.getElementById('catalogue-data');

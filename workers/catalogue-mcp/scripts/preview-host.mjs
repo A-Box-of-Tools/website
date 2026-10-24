@@ -1,8 +1,10 @@
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
+import { gunzipSync } from 'node:zlib';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
+import { MAX_UTF8_DATA_BYTES } from '../ui/view-data.mjs';
 
 const args = process.argv.slice(2);
 if (args.length !== 0 && !(args.length === 2 && args[0] === '--service' && args[1] === 'dev')) {
@@ -16,13 +18,21 @@ const hostHtml = await readFile(new URL('preview-host.html', ui));
 const appHtml = await readFile(new URL('../generated/view.html', import.meta.url));
 const appText = appHtml.toString('utf8');
 const modules = [...appText.matchAll(/<script\s+type="module">([\s\S]*?)<\/script\s*>/gi)];
-if (modules.length !== 1 || appText.includes('\r')) {
-  throw new TypeError('Build one LF-only inline App module before starting the preview.');
+const packed = /<script id="app-module-data" type="application\/octet-stream" data-encoding="gzip-base64" data-bytes="(\d+)" data-sha256="([A-Za-z0-9+/]{43}=)">([A-Za-z0-9+/=]+)<\/script>/.exec(appText);
+if (modules.length !== 1 || appText.includes('\r') || !packed) {
+  throw new TypeError('Build one LF-only bootstrap and compressed App module before starting the preview.');
 }
-const moduleSha256 = createHash('sha256').update(modules[0][1], 'utf8').digest('base64');
+const sourceBytes = gunzipSync(Buffer.from(packed[3], 'base64'), { maxOutputLength: MAX_UTF8_DATA_BYTES });
+const moduleSource = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(sourceBytes);
+const exactBytes = Buffer.from(moduleSource, 'utf8');
+const moduleSha256 = createHash('sha256').update(exactBytes).digest('base64');
+if (exactBytes.byteLength !== Number(packed[1]) || moduleSha256 !== packed[2]) {
+  throw new TypeError('The packed App source does not match its build receipt.');
+}
+const bootstrapSha256 = createHash('sha256').update(modules[0][1], 'utf8').digest('base64');
 const viewReceipt = JSON.stringify({ algorithm: 'SHA-256',
   sha256: createHash('sha256').update(appHtml).digest('hex'), bytes: appHtml.byteLength,
-  moduleSha256 });
+  bootstrapSha256, moduleSha256 });
 const bundled = await build({
   entryPoints: [fileURLToPath(new URL('preview-host.mjs', ui))],
   bundle: true, write: false, format: 'esm', platform: 'browser', target: 'es2022',
@@ -32,7 +42,7 @@ const bundled = await build({
 const hostJs = bundled.outputFiles[0].contents;
 
 const hostPolicy = [
-  "default-src 'none'", `script-src 'self' 'sha256-${moduleSha256}'`, "style-src 'unsafe-inline'",
+  "default-src 'none'", `script-src 'self' 'sha256-${bootstrapSha256}' 'sha256-${moduleSha256}'`, "style-src 'unsafe-inline'",
   `connect-src ${endpoints.join(' ')} http://localhost:8788/view-receipt.json http://127.0.0.1:8788/view-receipt.json`,
   "frame-src 'self'",
   "base-uri 'none'", "object-src 'none'", "form-action 'none'", "frame-ancestors 'none'",
