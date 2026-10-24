@@ -1,6 +1,7 @@
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { AppBridge, PostMessageTransport } from '@modelcontextprotocol/ext-apps/app-bridge';
 import * as z from 'zod/v4';
+import { decodeCatalogueData } from './view-data.mjs';
 
 z.config({ jitless: true });
 
@@ -209,7 +210,9 @@ try {
   log(`resources/read ${resource.uri}: actual ${resource.mimeType} HTML received`);
   await verifyResource();
   const parsed = new DOMParser().parseFromString(resource.text, 'text/html');
-  const catalogue = JSON.parse(parsed.getElementById('catalogue-data').textContent);
+  const data = parsed.getElementById('catalogue-data');
+  if (data?.dataset.encoding !== 'gzip-base64') throw new Error('Expected the compressed public catalogue.');
+  const catalogue = await decodeCatalogueData(data.textContent, Number(data.dataset.bytes));
   approved = new Set(Object.values(catalogue.locales).flatMap(section => section.tools.map(entry => safeToolUrl(entry.url))));
   locale.replaceChildren();
   const names = new Intl.DisplayNames(['en'], { type: 'language' });

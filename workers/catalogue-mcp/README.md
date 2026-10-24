@@ -69,7 +69,12 @@ npx wrangler deploy --dry-run --outdir build/worker
 
 Preparation writes only ignored `generated/catalogue.json`. The UI build
 bundles the Apps SDK, UI code, CSS and that catalogue into a self-contained
-HTML resource, then creates an imported module for the Worker. Wrangler's
+HTML resource, then creates an imported module for the Worker. Only the
+public catalogue data is gzip-compressed and base64-encoded at build time;
+the executable module remains ordinary inline JavaScript. The App uses native
+`DecompressionStream` to decode the catalogue locally before validating it.
+An exact UTF-8 length and a 1 MiB ceiling bound decompression. A decoding
+failure leaves the controls disabled and shows its own message. Wrangler's
 dry run writes ignored deployment output. No whole-site asset directory is
 bound or uploaded, and the Worker fetches no runtime catalogue URL.
 
@@ -107,6 +112,9 @@ the ordinary website remain available.
 
 The server uses the official SDK's `createMcpHandler` with JSON response mode.
 It creates a fresh server for each request and holds no protocol session.
+After enforcing the byte limit and rejecting batches, it passes the parsed
+body through the SDK's public `parsedBody` option. The SDK still validates
+the protocol message; it does not have to read and parse the body again.
 Current MCP 2026-07-28 clients and the SDK's default stateless compatibility
 for 2025-era clients share `/mcp`. Unsupported GET and DELETE requests return
 405. Native and server clients can omit `Origin`; browser origins must match
@@ -180,6 +188,8 @@ its SHA-256, UTF-8 byte count and exact inline-module hash through
 selected service's actual UI resource and must verify both the complete HTML
 and module source against that receipt before creating an iframe. A mismatch
 blocks rendering and asks for the intended rebuild/deploy and preview restart.
+The host decodes the verified public catalogue with the same bounded decoder
+as the App before allowing any tool address.
 
 The verified MCP resource is rendered as `srcdoc` with only a restrictive CSP
 meta tag prepended. Its App script is not changed. The parent allows that

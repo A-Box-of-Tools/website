@@ -16,16 +16,18 @@
   </header>
   <div class="controls">
     <label for="query">Public task or format keywords
-      <input id="query" type="search" autocomplete="off" spellcheck="false" placeholder="compress image, PNG, PDF…">
+      <input id="query" type="search" autocomplete="off" spellcheck="false" placeholder="compress image, PNG, PDF…" disabled>
     </label>
-    <label for="language">Catalogue language<select id="language"></select></label>
+    <label for="language">Catalogue language<select id="language" disabled></select></label>
   </div>
   <p class="privacy">Filtering here stays in this view. The initial MCP request sends public keywords to the catalogue service. Do not enter file contents, filenames, passwords or private information. This view never selects or processes files.</p>
   <p id="status" role="status" aria-live="polite"></p>
   <ul id="results" aria-label="Matching browser tools"></ul>
-  <button id="more" type="button" hidden>Show more tools</button>
+  <button id="more" type="button" hidden disabled>Show more tools</button>
   <p id="empty" hidden>No matching tool. Try a shorter task or file format.</p>
-  <p id="connecting">Connecting to the app host…</p>
+  <p id="loading-catalogue" role="status">Loading the public catalogue…</p>
+  <p id="catalogue-failed" role="alert" hidden>The public catalogue could not be loaded in this view. Open https://abox.tools/ in your browser to find a tool.</p>
+  <p id="connecting" hidden>Connecting to the app host…</p>
   <p id="open-failed" role="alert" hidden>The host could not open this tool. Open its public address in your browser.</p>
   <p id="connect-failed" role="alert" hidden>The interactive host connection is unavailable. The public tool addresses below remain readable; you can open them in your browser.</p>
   <p id="invalid-query" role="alert" hidden>Use up to 200 characters of public catalogue keywords.</p>
@@ -37,7 +39,7 @@
   </template>
   <span id="phrases" hidden data-count="Showing {shown} of {count} tools" data-count-one="1 tool"></span>
 </main>
-<script id="catalogue-data" type="application/json">__APP_CATALOGUE__</script>
+<script id="catalogue-data" type="application/octet-stream" data-encoding="gzip-base64" data-bytes="__APP_CATALOGUE_BYTES__">__APP_CATALOGUE__</script>
 <script type="module">__APP_JS__</script>
 </body>
 </html>

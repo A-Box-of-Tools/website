@@ -286,6 +286,24 @@ test('explicitly allowed localhost remains usable by the same HTTP client', asyn
   assert.equal((await client.listTools()).tools[0].name, 'find_browser_tools');
 });
 
+test('bounded parsed bodies retain legacy protocol handling and reject invalid message shapes', async (t) => {
+  const worker = workerFixture();
+  t.after(() => worker.close());
+  const headers = { 'MCP-Protocol-Version': '2025-11-25' };
+  const response = await worker.fetch(request({ jsonrpc: '2.0', id: 7,
+    method: 'resources/read', params: { uri: resourceUri } }, { headers }), {}, {});
+  assert.equal(response.status, 200);
+  const body = await response.text();
+  const result = response.headers.get('Content-Type').startsWith('text/event-stream')
+    ? JSON.parse(body.split('\n').find(line => line.startsWith('data:')).slice(5)) : JSON.parse(body);
+  assert.equal(result.id, 7);
+  assert.equal(result.result.contents[0].text, viewHtml);
+  for (const message of [null, true, 42, 'hello', {}]) {
+    const invalid = await worker.fetch(request(JSON.stringify(message), { headers }), {}, {});
+    assert.equal(invalid.status, 400);
+  }
+});
+
 test('public discovery cards support cross-origin reads and conditional requests', async (t) => {
   const worker = workerFixture();
   t.after(() => worker.close());
