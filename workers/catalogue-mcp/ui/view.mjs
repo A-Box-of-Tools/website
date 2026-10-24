@@ -1,5 +1,9 @@
 import { App, applyDocumentTheme, applyHostStyleVariables } from '@modelcontextprotocol/ext-apps';
 import { matchingTools, validQuery, validateCatalogue } from '../src/search.mjs';
+import * as z from 'zod/v4';
+
+// The host's resource policy permits this bundle but forbids generated code.
+z.config({ jitless: true });
 
 const catalogue = validateCatalogue(JSON.parse(document.getElementById('catalogue-data').textContent));
 const query = document.getElementById('query');

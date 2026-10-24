@@ -1,46 +1,45 @@
 import { createServer } from 'node:http';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 
+const args = process.argv.slice(2);
+if (args.length !== 0 && !(args.length === 2 && args[0] === '--service' && args[1] === 'dev')) {
+  throw new TypeError('Use npm run preview, or npm run preview -- --service dev. Arbitrary endpoints are not accepted.');
+}
+const service = args.length ? 'dev' : 'local';
+const endpoints = service === 'dev' ? ['https://mcp-dev.abox.tools/mcp']
+  : ['http://localhost:8787/mcp', 'http://127.0.0.1:8787/mcp'];
 const ui = new URL('../ui/', import.meta.url);
 const hostHtml = await readFile(new URL('preview-host.html', ui));
-const sandboxHtml = await readFile(new URL('sandbox.html', ui));
+const appHtml = await readFile(new URL('../generated/view.html', import.meta.url));
+const appText = appHtml.toString('utf8');
+const modules = [...appText.matchAll(/<script\s+type="module">([\s\S]*?)<\/script\s*>/gi)];
+if (modules.length !== 1 || appText.includes('\r')) {
+  throw new TypeError('Build one LF-only inline App module before starting the preview.');
+}
+const moduleSha256 = createHash('sha256').update(modules[0][1], 'utf8').digest('base64');
+const viewReceipt = JSON.stringify({ algorithm: 'SHA-256',
+  sha256: createHash('sha256').update(appHtml).digest('hex'), bytes: appHtml.byteLength,
+  moduleSha256 });
 const bundled = await build({
   entryPoints: [fileURLToPath(new URL('preview-host.mjs', ui))],
   bundle: true, write: false, format: 'esm', platform: 'browser', target: 'es2022',
   legalComments: 'none', logLevel: 'warning',
+  define: { __MCP_SERVICE__: JSON.stringify(service) },
 });
 const hostJs = bundled.outputFiles[0].contents;
-const hostOrigins = ['http://localhost:8788', 'http://127.0.0.1:8788'];
-const servers = [];
 
 const hostPolicy = [
-  "default-src 'none'", "script-src 'self'", "style-src 'unsafe-inline'",
-  'connect-src http://localhost:8787 http://127.0.0.1:8787',
-  'frame-src http://localhost:8789 http://127.0.0.1:8789',
+  "default-src 'none'", `script-src 'self' 'sha256-${moduleSha256}'`, "style-src 'unsafe-inline'",
+  `connect-src ${endpoints.join(' ')} http://localhost:8788/view-receipt.json http://127.0.0.1:8788/view-receipt.json`,
+  "frame-src 'self'",
   "base-uri 'none'", "object-src 'none'", "form-action 'none'", "frame-ancestors 'none'",
 ].join('; ');
 
-function sandboxPolicy(raw) {
-  const csp = JSON.parse(raw);
-  const fields = ['connectDomains', 'resourceDomains', 'frameDomains', 'baseUriDomains'];
-  if (!csp || typeof csp !== 'object' || Array.isArray(csp)
-      || Object.keys(csp).some(key => !fields.includes(key))
-      || fields.some(key => !Array.isArray(csp[key]) || csp[key].length !== 0)) {
-    throw new TypeError('This local harness accepts the catalogue resource with no external domains');
-  }
-  return [
-    "default-src 'none'", "script-src 'unsafe-inline'", "style-src 'unsafe-inline'",
-    "connect-src 'none'", "img-src data: blob:", "font-src 'none'", "media-src 'none'",
-    "worker-src 'none'", "object-src 'none'", "base-uri 'none'", "form-action 'none'",
-    // The proxy creates one srcdoc frame; the view adds a policy denying descendants.
-    "frame-src 'self'", `frame-ancestors ${hostOrigins.join(' ')}`,
-  ].join('; ');
-}
-
-function serve(port, route) {
-  const validHosts = new Set([`localhost:${port}`, `127.0.0.1:${port}`]);
+function serveHost(route) {
+  const validHosts = new Set(['localhost:8788', '127.0.0.1:8788']);
   const server = createServer((request, response) => {
     const send = (status, type, body, policy) => {
       response.writeHead(status, {
@@ -60,32 +59,26 @@ function serve(port, route) {
       send(400, 'text/plain', 'Invalid local preview request');
     }
   });
-  servers.push(server);
   server.on('error', error => {
-    console.error(`Local preview port ${port}: ${error.message}`);
+    console.error(`Local preview port 8788: ${error.message}`);
     process.exitCode = 1;
-    for (const active of servers) active.close();
+    server.close();
   });
-  server.listen(port, '127.0.0.1');
+  server.listen(8788, '127.0.0.1');
   return server;
 }
 
-const host = serve(8788, (url, send) => {
+const host = serveHost((url, send) => {
   if (url.search) return send(404, 'text/plain', 'Not found');
   if (url.pathname === '/' || url.pathname === '/index.html') return send(200, 'text/html', hostHtml, hostPolicy);
   if (url.pathname === '/preview-host.js') return send(200, 'text/javascript', hostJs, hostPolicy);
+  if (url.pathname === '/view-receipt.json') return send(200, 'application/json', viewReceipt, hostPolicy);
   return send(404, 'text/plain', 'Not found');
-});
-const sandbox = serve(8789, (url, send) => {
-  if (url.pathname !== '/sandbox.html') return send(404, 'text/plain', 'Not found');
-  if (url.searchParams.size !== 1 || url.searchParams.getAll('csp').length !== 1) {
-    return send(400, 'text/plain', 'Resource CSP required');
-  }
-  return send(200, 'text/html', sandboxHtml, sandboxPolicy(url.searchParams.get('csp')));
 });
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => {
   host.close();
-  sandbox.close();
 });
 console.log('Local MCP App host: http://localhost:8788/');
-console.log('Sandbox proxy: http://localhost:8789/; MCP Worker must already run at http://localhost:8787/mcp.');
+console.log(`Local public App resource receipt: ${viewReceipt}`);
+console.log(`Selected MCP service (${service}): ${endpoints.join(' or ')}`);
+if (service === 'dev') console.log('Initial public keyword requests go to the deployed development service; local view filtering does not.');

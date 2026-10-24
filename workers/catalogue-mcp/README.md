@@ -4,7 +4,7 @@ This is an optional discovery service, separate from the static site and the
 rendezvous Worker. It lets an agent find a real browser tool and lets a person
 browse those results inside an MCP Apps host. It does not process files.
 
-The proposed development endpoint is `https://mcp-dev.abox.tools/mcp`. The
+The development endpoint is `https://mcp-dev.abox.tools/mcp`. The
 configuration in this folder only declares that development service. A future
 production endpoint at `https://mcp.abox.tools/mcp` needs a separate deployment
 decision and configuration; it is not available merely because this folder
@@ -158,11 +158,41 @@ In another terminal in this folder:
 npm run preview
 ```
 
-The local-only host opens at `http://127.0.0.1:8788/`, with a separate-origin
-sandbox on port 8789. It uses the official MCP client and Apps `AppBridge` to
-call the actual local `/mcp`, read the declared UI resource and render that
-resource. It also shows the real text fallback. It does not expose a preview
-host or sandbox route on the deployed Worker. Verify initial results,
+To exercise the already deployed development Worker instead, stop the preview
+host and restart it with its fixed development selection:
+
+```powershell
+npm run preview -- --service dev
+```
+
+That mode connects only to `https://mcp-dev.abox.tools/mcp`. The default mode
+connects only to the corresponding loopback `/mcp` on port 8787. The launcher
+rejects other arguments; it accepts no arbitrary URL or page-query override.
+Its CSP permits only the selected MCP endpoint, and both the page and console
+show that endpoint. Development mode sends initial public keyword requests
+off this computer; the app's subsequent filtering remains local. Neither
+mode changes the deployed app resource, authentication or rate limiter.
+
+The local-only host opens at `http://127.0.0.1:8788/`; no second server is
+needed. At startup Node reads the generated public App HTML once and exposes
+its SHA-256, UTF-8 byte count and exact inline-module hash through
+`/view-receipt.json`. The browser uses the official MCP client to read the
+selected service's actual UI resource and must verify both the complete HTML
+and module source against that receipt before creating an iframe. A mismatch
+blocks rendering and asks for the intended rebuild/deploy and preview restart.
+
+The verified MCP resource is rendered as `srcdoc` with only a restrictive CSP
+meta tag prepended. Its App script is not changed. The parent allows that
+script's exact SHA-256 and the host's own script; it allows neither arbitrary
+inline scripts nor eval. The child policy further denies network access,
+external resources and nested frames. The iframe has `allow-scripts` only,
+so it has an opaque origin and cannot access the host document. Official
+`AppBridge` checks its specific Window and handles the actual `ui/initialize`
+and tool result delivery directly. This is a local verification harness, not
+a published general-purpose MCP host or an intermediary SandboxProxy test.
+It also shows the real text fallback, and offers light/dark host context and
+a 390-pixel app width. It exposes no preview host or sandbox route on the
+deployed Worker. Verify initial results,
 different language catalogues, local filtering, empty results, pagination and
 opening a selected public tool. Inspect requests to confirm filtering makes
 no additional MCP call. Parent host approval can still reject an open action.

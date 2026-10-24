@@ -16,6 +16,8 @@
   button:disabled { cursor: wait; opacity: .6; }
   input { width: min(380px,65vw); }
   iframe { display: block; width: 100%; min-height: 560px; border: 1px solid #a4bbb0; background: white; }
+  #app-container { max-width: 100%; margin-inline: auto; }
+  #resource-receipt { overflow-wrap: anywhere; font-size: .85rem; }
   pre { white-space: pre-wrap; overflow-wrap: anywhere; background: white; padding: 16px; }
   ol { font-size: .9rem; overflow-wrap: anywhere; }
   #status[data-state="error"] { color: #9b2525; }
@@ -26,18 +28,25 @@
 <body>
 <main>
   <h1>Local MCP App host</h1>
-  <p>This preview connects to the local catalogue Worker through the MCP SDK. The App below comes from its actual UI resource and runs in a separate sandbox origin.</p>
-  <p>Use public catalogue keywords only. The MCP request sends these keywords to the local Worker. No file is selected or processed here.</p>
+  <p>This local preview connects through the MCP SDK to <code id="service-endpoint"></code>. Before rendering, it verifies the live App resource against the local build’s SHA-256 receipt. It renders that source in opaque srcdoc with only a restrictive policy added; the App module is allowed by its exact SHA-256 and is not rewritten.</p>
+  <p id="resource-receipt" role="status">App resource integrity has not been verified.</p>
+  <p id="service-local">Use public catalogue keywords only. The MCP request sends these keywords to the local Worker. No file is selected or processed here.</p>
+  <p id="service-dev" hidden>Use public catalogue keywords only. Initial MCP requests leave this computer and send these keywords to the deployed development service at mcp-dev.abox.tools. Filtering inside its App stays in the local view. No file is selected or processed here.</p>
   <form id="search-form">
     <label for="host-query">Public task or format<input id="host-query" type="search" value="PNG" autocomplete="off" spellcheck="false"></label>
     <label for="host-locale">Catalogue language<select id="host-locale"><option value="en">English</option></select></label>
     <button id="send" type="submit" disabled>Send MCP request</button>
   </form>
-  <p id="status" role="status" aria-live="polite">Connecting to the local MCP Worker…</p>
+  <form id="display-controls">
+    <label for="host-theme">App theme<select id="host-theme"><option value="light">Light</option><option value="dark">Dark</option></select></label>
+    <label for="host-width">App width<select id="host-width"><option value="full">Available width</option><option value="390">390 pixels</option></select></label>
+  </form>
+  <p id="status" role="status" aria-live="polite">Connecting to the selected MCP Worker…</p>
   <div id="app-container"></div>
   <p id="link-result" hidden>Selected public tool: <a id="selected-link" target="_blank" rel="noopener noreferrer"></a>. Use this link if your browser blocked the new tab.</p>
   <details><summary>Actual text fallback from the MCP tool</summary><pre id="text-fallback"></pre></details>
   <details open><summary>Host events</summary><ol id="events"></ol></details>
+  <span id="service-phrases" hidden data-local="Start the local Worker on port 8787." data-dev="Confirm the deployed development service is available."></span>
 </main>
 </body>
 </html>

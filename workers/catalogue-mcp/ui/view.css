@@ -21,4 +21,11 @@ ul { padding: 0; margin: 10px 0 0; list-style: none; }
 [hidden] { display: none !important; }
 [role="alert"] { color: #a6382c; }
 @media (prefers-color-scheme: dark) { :root { color: var(--color-text-primary, #e8ecf1); background: var(--color-background-primary, #15191f); } input, select, button { background: var(--color-background-secondary, #242c36); } .privacy,.address,#status,.brand { color: var(--color-text-secondary, #aebdce); } }
+/* The host can choose a different theme from the device's preference. */
+:root[data-theme="light"] { color: var(--color-text-primary, #20242a); background: var(--color-background-primary, #fff); }
+:root[data-theme="light"] input, :root[data-theme="light"] select, :root[data-theme="light"] button { background: var(--color-background-secondary, #f5f7fa); }
+:root[data-theme="light"] :is(.privacy,.address,#status,.brand) { color: var(--color-text-secondary, #576474); }
+:root[data-theme="dark"] { color: var(--color-text-primary, #e8ecf1); background: var(--color-background-primary, #15191f); }
+:root[data-theme="dark"] input, :root[data-theme="dark"] select, :root[data-theme="dark"] button { background: var(--color-background-secondary, #242c36); }
+:root[data-theme="dark"] :is(.privacy,.address,#status,.brand) { color: var(--color-text-secondary, #aebdce); }
 @media (max-width: 520px) { main { padding: 14px; } .controls { grid-template-columns: 1fr; } .tool { align-items: flex-start; } }
