@@ -1,0 +1,26 @@
+{
+  "id": "/de/biometrisches-passbild/",
+  "name": "Passbild-Ersteller",
+  "short_name": "Passbild-Ersteller",
+  "description": "W\u00e4hlen Sie ein unterst\u00fctztes Land und Dokument. Vorgaben und Orientierung sind gekennzeichnet.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/ja/share-text/",
+  "name": "\u30c6\u30ad\u30b9\u30c8\u3068\u30d5\u30a1\u30a4\u30eb\u306e\u5171\u6709",
+  "short_name": "\u30c6\u30ad\u30b9\u30c8\u3068\u30d5\u30a1\u30a4\u30eb\u306e\u5171\u6709",
+  "description": "\u958b\u3044\u305f\u30d6\u30e9\u30a6\u30b6\u30fc\u304b\u3089\u30c6\u30ad\u30b9\u30c8\u3068\u30d5\u30a1\u30a4\u30eb\u3092\u6697\u53f7\u5316\u3057\u3066\u5171\u6709\u3057\u307e\u3059\u3002\u6a19\u6e96\u306f\u76f4\u63a5\u63a5\u7d9a\u3067\u3001\u30af\u30e9\u30a6\u30c9\u4e2d\u7d99\u3082\u9078\u3079\u307e\u3059\u3002\u8aad\u8005\u3054\u3068\u306b\u627f\u8a8d\u3067\u304d\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

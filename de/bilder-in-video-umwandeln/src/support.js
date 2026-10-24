@@ -1,0 +1,37 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{firstSupported}from'./shared/codec-support.js?v=124e2c1a91';
+const H264_CANDIDATES=[
+'avc1.640034',
+'avc1.640033',
+'avc1.640032',
+'avc1.64002a',
+'avc1.640028',
+'avc1.4d0034',
+'avc1.4d0028',
+'avc1.42003e',
+'avc1.42001f',
+];
+export function hasWebCodecs(){
+return typeof window.VideoEncoder==='function'&&typeof window.VideoFrame==='function';
+}
+export function hasMediaRecorder(){
+return typeof window.MediaRecorder==='function'
+&&typeof HTMLCanvasElement.prototype.captureStream==='function';
+}
+export async function pickH264Codec({width,height,framerate,bitrate}){
+if(!hasWebCodecs())return null;
+const index=await firstSupported('VideoEncoder',H264_CANDIDATES.map((codec)=>({
+codec,width,height,framerate,bitrate,
+avc:{format:'avc'},
+})));
+return index===null||index<0?null:H264_CANDIDATES[index];
+}
+export function pickWebmMimeType(){
+if(!hasMediaRecorder())return null;
+const candidates=[
+'video/webm;codecs=vp9',
+'video/webm;codecs=vp8',
+'video/webm',
+];
+return candidates.find((t)=>MediaRecorder.isTypeSupported(t))??null;
+}

@@ -1,0 +1,93 @@
+# Remote Camera
+
+Open a camera on one device and watch it in another browser, with optional viewer approval. Choose Direct or Cloud relay for encrypted live video.
+
+> Watch a camera with Direct or optional Cloud relay, multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications.
+
+Encrypted camera video with Direct by default or explicit Cloud relay. Viewer approval is on by default. Internet rendezvous carries setup metadata, never media; the relay forwards encrypted traffic and sees connection metadata. Audio is off by default; viewer alerts analyze media locally. No recording feature.
+
+## Camera video is **encrypted for accepted viewers**. Direct is the default; Cloud relay is optional. You choose whether approval is required.
+
+Your camera video and enabled audio go to accepted viewers over separate encrypted WebRTC connections. Our introduction service carries connection negotiation, never video, audio or the viewer's note. Direct is the default; Cloud relay sends encrypted traffic through the relay service only when chosen. The relay sees connection addresses, timing and traffic volume, not decrypted media. Audio is off by default; the source requests microphone access only when you enable it. There is no recording feature. Stop or close the camera page and capture ends. Hiding it keeps the connection where the browser permits; a locked phone may pause capture until you return. An interrupted microphone stays quiet until you choose Resume microphone. Internet access is required for the introduction; pairing also reveals network addresses to the other browser. Viewer approval is on by default; turning it off lets anyone who knows your link or finds your listed camera watch while space is available.
+
+- ✓ Optional microphone audio
+- ✓ Optional viewer approval
+- ✓ Encrypted video
+- ✗ No recording
+- ✓ Optional Cloud relay
+
+## How to watch another device's camera
+
+1. **Start on the camera device.** Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Select Enable microphone before starting to request microphone access; stop before changing this choice.
+2. **Invite the viewing device.** Choose Direct or Cloud relay beside Start camera. Open the viewer link or scan its QR code on the other device; the link carries that choice. You can also select a camera in Available connections. To discover across networks, create or enter the same private group code before starting and choose Cloud relay for reachability. Both devices need internet for pairing. Direct needs a route between devices; finding a session in a private group does not create that route. Cloud relay needs internet throughout.
+3. **Connect the viewer.** Check the icons showing Direct or Cloud relay and access requirements, then Join beside an available camera to request a view. A copied invitation or manually entered code still waits for Connect to camera. If Require my approval is on, approve each request you recognise on the source. A new request opens a review dialog; Review later or Escape keeps it in Viewer requests without approving it. With approval off, viewers connect automatically while space is available. Live video then appears in each viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications.
+4. **Resume if the browser pauses video, then stop.** The connection stays open when the source tab is hidden where the browser permits. A phone can pause its camera when locked. Return to the source; choose Resume camera if needed to keep the same viewer link. If the microphone was interrupted, choose Resume microphone when ready. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel.
+
+## 詳しい解説
+
+[別の端末からカメラを見る方法](https://abox.tools/ja/guides/watch-camera-from-another-device/): 別のブラウザーでカメラを表示し、映像を送る前に視聴者を承認します。通信可能なローカルネットワークでの直接接続か、Cloudflare経由の暗号化されたクラウド中継を選べます。
+
+## よくある質問
+
+### Must both devices use the same Wi-Fi?
+
+Direct needs a route between the devices. Wi-Fi and Ethernet on the same reachable local network can work together. A phone hotspot can also work if it allows device communication and both browsers have internet for pairing. A shared Wi-Fi name alone does not establish reachability: isolation, firewalls, VPN routes and browser permissions can block it. Alternatively, choose Cloud relay before starting and share its invitation; the viewer explicitly connects using that choice. Cloud relay needs internet throughout.
+
+### Does it work without internet?
+
+Internet is required to pair and invite new viewers through our rendezvous. An already accepted Direct view can continue if the introduction service disconnects; the camera retries its invitation without restarting healthy capture or the existing view. Losing the direct route still ends the view. Cloud relay forwards encrypted video and enabled audio through the relay service and requires internet throughout, including renewal of its short-lived credentials.
+
+### Does this turn my phone into a webcam for meeting apps?
+
+It provides a live view in another browser. It does not install a system webcam or make that camera available to desktop meeting applications.
+
+### Why must the camera page use HTTPS?
+
+A browser requires a secure context and camera permission. Use the site's trusted HTTPS address. Ordinary HTTP on a local-network IP cannot request a camera; localhost is a development exception on the same computer.
+
+### Can anyone with the link watch?
+
+With Require my approval on, a link or code permits a request and network-address exchange; the owner must approve each viewer before video. Turn approval off to let anyone with the link or a listed camera name watch while space is available. The optional viewer note is not proof of identity, so approve only the people and requests you expect.
+
+### Can several devices watch at once?
+
+Up to eight accepted viewers can watch together, with separate encrypted connections. Shared video bandwidth divides a chosen video ceiling between them; browsers can lower each connection's quality when congested. A 1 Mbps ceiling permits four new viewers and higher choices permit eight. Audio and network overhead are additional. The browser cannot measure total Wi-Fi capacity, and device performance can also limit how many views work well. Lower the ceiling or disconnect individual viewers if sharing slows down. Lowering the ceiling keeps existing viewers connected, with fewer new admissions until space is available.
+
+### Can the tool measure my Wi-Fi bandwidth?
+
+The browser does not expose the total capacity shared by your Wi-Fi devices. Choose a shared video ceiling that leaves room for other traffic. The tool divides that ceiling among viewers and WebRTC adapts each stream to its connection. If the browser cannot apply sender bitrate limits, the page reports that and its normal connection adaptation continues; the selected shared ceiling cannot be guaranteed there.
+
+### Can the camera keep working when my phone is locked?
+
+It keeps the live connection and camera where your browser allows background use. Phone browsers can pause or end camera capture when locked; this page cannot override that. Return to the source to recover the same viewer link, or choose Resume camera if permission is needed again. A healthy approved video connection can survive loss of the introduction service. Returning to the source tries to restore pairing without replacing that video connection; Restore pairing offers a manual retry. If the direct connection itself ends, the viewer must reconnect. A remembered approval remains valid for the same host session unless the host removed that viewer. Stop and Disconnect remain final for that session.
+
+### Can I change cameras while sharing?
+
+After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again.
+
+### Does it send sound or record video?
+
+Audio is off by default on the host. Select Enable microphone before starting to request the microphone and send encrypted audio to an accepted viewer using the chosen connection mode. Stop before changing this choice. If the browser interrupts the microphone, it stays quiet until you choose Resume microphone. The viewer tries to play shared audio automatically; if the browser requires a tap, choose Unmute audio on the video. Mute silences playback while sound detection remains available. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see.
+
+### Can I receive motion or sound alerts?
+
+Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen.
+
+### Why can pairing fail on the same Wi-Fi?
+
+Guest networks, client isolation, firewalls, local-network permissions and VPN routes can prevent Direct. Stop on both devices and check those settings, or deliberately choose Cloud relay on the host and share its new invitation. The viewer must explicitly connect using that mode. There is no automatic relay fallback, and a managed device can block relay connections too. If relay preparation fails, capture is released instead of retrying through Direct.
+
+## この主張を確かめる方法
+
+- **You choose whether viewers need approval.** The first WebRTC connection carries only an encrypted control channel. Require my approval is on by default. Turning it off accepts new viewers automatically: anyone who knows the link or finds the listed camera can watch while space is available. The camera track and enabled audio are added to each connection only after that viewer acknowledges acceptance. Up to eight viewers can watch together. Changing the setting applies to new requests, not waiting requests or an already connected viewer. Video uses the browser's encrypted media transport between browsers, directly or through the selected cloud relay. It never passes through the rendezvous. A viewer can still capture their own screen; ending the link stops future video and cannot remove anything they already kept. An explicitly approved viewer's browser stores a random receipt locally and presents it only over the encrypted peer channel. That browser can disconnect and rejoin the same host session without another approval. Host removal revokes it; End and a new session reset approval. Automatic acceptance while approval is off does not create a remembered approval. Clearing or blocking site storage can require approval again, and normal scripts on this website can read stored receipts.
+- **The introduction requires internet and exposes connection metadata.** Opening this page opens a discovery WebSocket to `rendezvous.abox.tools`. Start camera or Connect adds a room socket that stays open while the session is active. The service sees the code, IP addresses, connection times, and WebRTC setup descriptions and candidates; those setup messages are not encrypted from the service. It does not receive video, audio or the viewer note. Discovery lists opted-in camera names and their connection mode, grouped by the public IPv4 address or IPv6 /64 seen by the service and the page origin. Shared VPNs or carrier networks can include strangers; nearby devices can be missed. A private group instead uses the same random group code on each device, including devices on different networks. The service receives the code to authenticate that directory. This tool does not save the group code or include it in viewer links. Private sessions do not also appear in the network list. Anyone with the group code can discover its listed cameras; the camera's approval policy still controls access to media. Turn off listing before starting for a link-only camera. Join beside a listed name starts a viewing request using its displayed route. The source chooses whether its owner must approve the request. Rooms and listings exist only on open connections. Cloudflare keeps connection logs for seven days: the code, address and time, never a payload.
+- **A direct connection shares addresses before video is approved.** Opening a viewer link fills the viewing form and waits. Connect, or Join on a listed camera, asks the rendezvous to introduce the devices, and each browser then learns addresses offered by the other. Approval controls video and enabled audio, not that address exchange. The name you enter is a note for the source, not verified identity. Recognise the person and expected request before approving. If you turn approval off, a viewer can receive video and enabled audio without an owner action.
+- **Direct is the default; Cloud relay is an explicit choice.** Direct configures no STUN server or TURN relay, and removes non-host candidates from descriptions and trickled messages. A VPN, public interface or operating-system route can affect where host addresses lead. Use a reachable local network; guest isolation, firewalls and local-network permissions may prevent the connection. Cloud relay must be selected before starting; its viewer link carries that choice, and the viewer must explicitly connect. It uses short-lived credentials and only relay candidates. The relay forwards encrypted media and control traffic and sees addresses, timing and traffic volume, not decrypted content. It requires internet throughout the session and may still be blocked by a managed device. A failed Direct connection never silently switches to the relay.
+- **Stop releases the camera and ends the invitation.** Stop on the source closes its tracks, peers and introduction connection. If viewers are connected or connecting, choosing Stop first asks you to confirm; Keep sharing leaves the camera and connections running. Closing its page does the same without waiting for confirmation. Hiding the tab keeps healthy capture and connections where the browser permits. If a phone interrupts capture, returning offers recovery with the same viewer link; interrupted microphone audio waits for Resume microphone. A lost introduction connection leaves an already accepted direct view running while the source retries its invitation. A permission granted after Stop is immediately released. Disconnect on the viewer ends its connection while the source keeps its local preview available for a new request. Codes and notes are not saved by this tool.
+- **Viewer alerts analyze media locally.** Notification options appear only when this browser supports them. Enabling motion or sound alerts requests notification permission. Small video frames and received audio are analyzed on the viewer device, without recordings or uploads. The browser and operating system display generic activity notices; notices contain no camera image, audio, link name or viewer note. Disconnect stops detection and closes this session's notifications. Keep the viewer page open; a browser may pause analysis in the background or during sleep.
+- **Connection reports stay in this tab until you share them.** Connection details offers Copy connection report and Download JSON for troubleshooting on either device. The report contains browser and tool versions, connection stages, states, counts and error names, without network addresses, pairing codes, viewer notes, video or audio. It is kept only in this tab, remains available after a failure or Stop, and is not uploaded or saved automatically. Copying or downloading shares only the report you requested; reloading clears the tab's report.
+- **The site frame still loads its usual third parties.** Advertising and measurement scripts come from Google, and the donate button from Buy Me a Coffee. The tool does not pass them video, audio or notes. Third-party scripts can read the page address, which includes the camera code in a viewer link. Keep approval on by recognising the intended viewer. With approval off, knowing a code permits viewing while the camera is free, so leave approval on when you want to control admission.
+
+**自分で確かめてください。**以上のどれも、鵜呑みにする必要はありません。このページは、リポジトリにあるテンプレートと設定から、誰でも読んで実行できるビルドスクリプトが生成しています。その結果は`dist`ブランチに置いてあるので、配信されているものと、ソースをビルドした結果とを差分で比べられます。 https://github.com/A-Box-of-Tools/website
+
+まず読むとよいのは、Content-Security-Policyについては`config/site.toml`, `src/capture.js` for permission cancellation and track cleanup, `src/session.js` for acceptance before media, camera replacement and chosen connection policy, and `src/alerts.js` for local activity detection. The introduction service source is `workers/rendezvous/worker.js` in the same repository

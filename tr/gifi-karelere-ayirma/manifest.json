@@ -1,0 +1,26 @@
+{
+  "id": "/tr/gifi-karelere-ayirma/",
+  "name": "GIF Ay\u0131r\u0131c\u0131",
+  "short_name": "GIF Ay\u0131r\u0131c\u0131",
+  "description": "Her kare kendi PNG'si olarak d\u0131\u015far\u0131.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/pt/compartilhar-texto/",
+  "name": "Compartilhar texto e arquivos",
+  "short_name": "Compartilhar texto e arquivos",
+  "description": "Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conex\u00e3o direta \u00e9 o padr\u00e3o; a retransmiss\u00e3o na nuvem \u00e9 opcional. Voc\u00ea aprova cada leitor.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Everything here is meant to be found. There is no admin area, no user
+# content, and no private path to keep out of an index - every file served is
+# also in the public repository, so there is nothing to hide from a crawler.
+#
+# The sitemap line is the part that earns its keep: it is how Search Console
+# and Bing Webmaster Tools discover the full list of pages instead of guessing
+# from links.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://abox.tools/sitemap.xml

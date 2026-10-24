@@ -1,0 +1,1553 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js?v=58de1f8018';
+import{wireHelpTooltip}from'./shared/help-tooltip.js?v=58de1f8018';
+import{renderMarkdown}from'./markdown.js?v=58de1f8018';
+import{CODE_PATTERN,formatSize,makeCode,normalize}from'./names.js?v=58de1f8018';
+import{makeShareUrl,isLocalLink}from'./network.js?v=58de1f8018';
+import{cleanFileList,beginFile,appendFileChunk,finishFile}from'./receive-file.js?v=58de1f8018';
+import{watchDiscovery}from'./discovery.js?v=58de1f8018';
+import{clipboardFeedback}from'./shared/clipboard-feedback.js?v=58de1f8018';
+import{fileSender,FILE_CHANNEL}from'./send-file.js?v=58de1f8018';
+import{createDiagnostics}from'./shared/connection-diagnostics.js?v=58de1f8018';
+import{foregroundRecovery,observeForeground}from'./shared/foreground-recovery.js?v=58de1f8018';
+import{PairingSocket}from'./shared/peer-pairing.js?v=58de1f8018';
+import{rendezvousEndpoint}from'./shared/peer-endpoint.js?v=58de1f8018';
+import{readTransport,transportUrl,selectedTransport,RelayCredentials}from'./shared/peer-transport.js?v=58de1f8018';
+import{bindTransportControl}from'./shared/peer-transport-ui.js?v=58de1f8018';
+import{groupUrl}from'./shared/discovery-group.js?v=58de1f8018';
+import{createDiscoveryGroupControl,appendConnectionIcons}from'./shared/peer-discovery-ui.js?v=58de1f8018';
+import{openJoinedPage,consumeJoinedPage}from'./shared/peer-join.js?v=58de1f8018';
+import{createApprovalPrompt}from'./shared/peer-approval-ui.js?v=58de1f8018';
+import{AdmissionGrants,createAdmissionCache,validAdmissionToken}from'./shared/peer-admission.js?v=58de1f8018';
+import{shareConfiguration,shareCandidate,shareDescription}from'./transport.js?v=58de1f8018';
+const RENDEZVOUS=rendezvousEndpoint();
+const wsUrl=(code,role,advertise=false,mode='direct')=>groupUrl(
+transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? `&discover=1${isLocal || mode === 'relay' ? '&local=1' : ''}` : ''}`,mode),
+role==='host'?hostGroup:null);
+const shareUrl=(code)=>transportUrl(makeShareUrl(location.href,code,isLocal),hostTransport);
+const transportError=error=>/^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
+?error.message:'transport.failed';
+const MAX_FILE=200*1024*1024;
+const MAX_FILES=256;
+const $=(id)=>document.getElementById(id);
+const transportControl=bindTransportControl({onChange(mode){
+$('local-option').hidden=mode==='relay';
+$('local').disabled=mode==='relay';
+$('discoverable').disabled=mode==='direct'&&!$('local').checked&&!groupControl.id();
+}});
+const diagnostics=createDiagnostics({
+version:$('tool-version')?.textContent.trim(),
+userAgent:navigator.userAgent,
+changed:renderDiagnostics,
+});
+const peerDiagnostics=new Map();
+let hostDiagnostic=null;
+function renderDiagnostics(){
+const report=diagnostics.report();
+const attempt=report.attempts.at(-1);
+const output=$('connection-report');
+if(!output)return;
+if(document.activeElement!==output)output.value=JSON.stringify(report,null,2);
+$('connection-copy').disabled=!attempt;
+let key='debug.idle';
+if(attempt){
+const stage=attempt.stage;
+if(attempt.outcome==='unsupported')key='debug.unsupported';
+else if(attempt.outcome)key=['stopped','peer-left','ended','denied'].includes(attempt.outcome)?'debug.ended':'debug.failed';
+else if(stage==='transfer-failed')key='debug.transfer-failed';
+else if(stage==='transfer-complete')key='debug.transfer-complete';
+else if(stage==='transfer-started')key='debug.transfer';
+else if(['waiting-approval','approval-requested'].includes(stage))key='debug.approval';
+else if(['approved','sharing','received'].includes(stage))key=attempt.role==='sharer'?'debug.host-connected':'debug.connected';
+else if(stage==='channel-open')key='debug.channel';
+else if(['offer-sent','offer-received','answer-sent','answer-accepted'].includes(stage))key='debug.network';
+else key='debug.introduction';
+}
+const text=attempt?phrase('debug.attempt',{n:attempt.attempt,status:phrase(key)}):phrase(key);
+if($('connection-progress').textContent!==text)$('connection-progress').textContent=text;
+}
+function revealDiagnostics(){$('connection-details').open=true;}
+const diagnosticCopy=clipboardFeedback({
+read:()=>({text:JSON.stringify(diagnostics.report(),null,2)}),
+current:()=>true,
+write:text=>navigator.clipboard.writeText(text),
+done:()=>{$('connection-copy-status').textContent=phrase('copy.done');},
+selected:value=>{
+revealDiagnostics();
+$('connection-report').value=value.text;
+$('connection-report').focus();$('connection-report').select();
+$('connection-copy-status').textContent=phrase('copy.select');
+},
+restore:()=>{$('connection-copy-status').textContent='';},
+});
+$('connection-copy').addEventListener('click',()=>{void diagnosticCopy.copy();});
+$('connection-report').addEventListener('blur',renderDiagnostics);
+const sizeUnits={
+b:phrase('units.b'),
+kb:phrase('units.kb'),
+mb:phrase('units.mb'),
+};
+const fmtSize=(n)=>formatSize(n,sizeUnits);
+let sock=null;
+let hostPairing=null;
+let hostCredentials=null;
+let hostTransport='direct';
+let hostGroup=null;
+let sharing=false;
+let activeCode='';
+let hostHadRoom=false;
+let hostRetry=0;
+let attempts=0;
+let suggestion='';
+let isPrivate=true;
+let isLocal=isLocalLink(location.href);
+let isDiscoverable=false;
+let discovery=null;
+let discoveryState='connecting';
+let foundShares=[];
+const groupControl=createDiscoveryGroupControl({onChange(){
+discovery?.close();
+discovery=null;
+foundShares=[];
+withdrawing.clear();
+$('discoverable').disabled=transportControl.value()==='direct'&&!$('local').checked&&!groupControl.id();
+renderDiscovery();
+startDiscovery();
+}});
+const withdrawing=new Set();
+let announcementTimer=0;
+const peers=new Map();
+const peerCandidates=new WeakMap();
+const controlChannels=new Map();
+const channels=new Map();
+const pending=new Map();
+const attached=new Map();
+const sendQueue=new Map();
+const approvalPrompt=createApprovalPrompt({
+dialog:$('pairing-request-dialog'),
+isActive:()=>sharing&&isPrivate,
+onApprove:id=>decideRequest(id,true),
+onDeny:id=>decideRequest(id,false),
+focusFallback:id=>pending.get(id)?.row.querySelector('button')??$('stop'),
+});
+const payload=()=>JSON.stringify({type:'text',body:$('text').value,md:$('markdown').checked});
+const STORE='share-text-draft';
+const STORE_ONEOFF='share-text-oneoff';
+const STORE_MD='share-text-md';
+function persist(){
+try{
+if($('oneoff').checked)localStorage.removeItem(STORE);
+else localStorage.setItem(STORE,$('text').value);
+}catch{}
+}
+function restore(){
+try{
+$('markdown').checked=localStorage.getItem(STORE_MD)==='1';
+$('oneoff').checked=localStorage.getItem(STORE_ONEOFF)==='1';
+if(!$('oneoff').checked){
+const saved=localStorage.getItem(STORE);
+if(saved!==null)$('text').value=saved;
+}
+}catch{}
+updateEditor();
+}
+function updateEditor(){
+const body=$('text').value;
+const on=$('markdown').checked&&body.trim()!=='';
+$('live').hidden=!on;
+$('live').innerHTML=on?renderMarkdown(body):'';
+}
+function suggest(){
+suggestion=makeCode();
+$('code').value=suggestion;
+}
+function unlock(){
+approvalPrompt.clear();
+transportControl.lock(false);
+groupControl.lock(false);
+transportControl.route(null);
+sharing=false;
+clearTimeout(hostRetry);
+hostPairing?.clear('foreground');
+linkCopy.invalidate();
+isDiscoverable=false;
+$('publish').hidden=false;
+setShareState();
+renderDiscovery();
+$('code').disabled=false;
+$('suggest').disabled=false;
+$('private').disabled=false;
+$('local').disabled=transportControl.value()==='relay';
+$('discoverable').disabled=transportControl.value()==='direct'&&!$('local').checked&&!groupControl.id();
+$('discovery-share-status').textContent='';
+$('stop').hidden=true;
+$('linkrow').hidden=true;
+$('requests').textContent='';
+pending.clear();
+}
+function setShareState(key=''){
+$('share-state').hidden=!key;
+$('share-state').textContent=key?phrase(key):'';
+}
+function setStatus(text,warn=false){
+$('status').textContent=text;
+$('status').classList.toggle('warn',warn);
+}
+function refreshCount(){
+if(!$('publish').hidden)return;
+const n=channels.size;
+const w=pending.size;
+if(n===0&&w===0){
+setStatus(phrase(isLocal?'share.local-waiting':'share.waiting'));
+return;
+}
+const parts=[n===1?phrase('share.reader-count.one'):phrase('share.reader-count.many',{n})];
+if(w>0)parts.push(w===1?phrase('share.knock-count.one'):phrase('share.knock-count.many',{n:w}));
+setStatus(`${parts.join(', ')}. ${phrase('share.closing-note')}`);
+}
+const admitTokens=new AdmissionGrants();
+const admissions=createAdmissionCache();
+function admitViewer(id,dc,previousToken=null){
+if(!sharing||controlChannels.get(id)!==dc||dc.readyState!=='open')return false;
+const token=isPrivate?admitTokens.issue(previousToken):null;
+if(isPrivate&&!token){setStatus(phrase('approval.limit'),true);return false;}
+peerDiagnostics.get(id)?.mark('approved');
+channels.set(id,dc);
+try{
+if(token)dc.send(JSON.stringify({type:'token',token}));
+dc.send(payload());
+if($('text').value!=='')globalThis.aboxToolComplete?.();
+dc.send(filesMsg());
+}catch{}
+refreshCount();
+return true;
+}
+function addRequest(id,dc,note,token=null){
+peerDiagnostics.get(id)?.mark('approval-requested');
+const row=document.createElement('div');
+row.className='request';
+const text=document.createElement('span');
+text.textContent=note===''?phrase('share.no-message'):`“${note}”`;
+const admit=document.createElement('button');
+admit.type='button';
+admit.textContent=phrase('share.admit');
+admit.onclick=()=>decideRequest(id,true);
+const deny=document.createElement('button');
+deny.type='button';
+deny.className='ghost';
+deny.textContent=phrase('share.deny');
+deny.onclick=()=>decideRequest(id,false);
+row.append(text,admit,deny);
+pending.set(id,{dc,row,note,token});
+try{dc.send(JSON.stringify({type:'asked'}));}catch{}
+$('requests').append(row);
+refreshCount();
+syncRequests();
+}
+function syncRequests(){
+approvalPrompt.update([...pending].map(([id,entry])=>({id,name:entry.note||phrase('share.no-message')})));
+}
+function decideRequest(id,approve){
+const entry=pending.get(id);
+if(!sharing||!entry||controlChannels.get(id)!==entry.dc||entry.dc.readyState!=='open')return;
+approvalPrompt.close(false);
+if(approve){
+if(admitViewer(id,entry.dc,entry.token)){removeRequest(id);refreshCount();}
+return;
+}
+admitTokens.revoke(entry.token);
+removeRequest(id);
+peerDiagnostics.get(id)?.finish('denied');
+try{entry.dc.send(JSON.stringify({type:'denied'}));}catch{}
+const pc=peers.get(id);
+setTimeout(()=>{if(peers.get(id)===pc)dropViewer(id,'denied');},250);
+refreshCount();
+}
+function removeRequest(id){
+const entry=pending.get(id);
+if(entry){entry.row.remove();pending.delete(id);syncRequests();}
+}
+function dropViewer(id,reason='peer-left'){
+controlChannels.delete(id);
+peerDiagnostics.get(id)?.finish(reason);
+peerDiagnostics.delete(id);
+const pc=peers.get(id);
+peers.delete(id);
+pc?.close();
+channels.delete(id);
+sendQueue.get(id)?.close();
+sendQueue.delete(id);
+removeRequest(id);
+refreshCount();
+}
+function broadcast(){
+if($('publish').hidden===false)return;
+for(const dc of channels.values()){
+try{
+dc.send(payload());
+if($('text').value!=='')globalThis.aboxToolComplete?.();
+}catch{}
+}
+}
+const filesMsg=()=>JSON.stringify({
+type:'files',fileChannels:true,
+list:[...attached].map(([id,f])=>({id,name:f.name,size:f.size})),
+});
+function broadcastFiles(){
+if($('publish').hidden===false)return;
+for(const dc of channels.values()){try{dc.send(filesMsg());}catch{}}
+}
+function renderAttachlist(){
+const box=$('attachlist');
+box.textContent='';
+for(const[id,f]of attached){
+const row=document.createElement('div');
+row.className='filerow';
+const name=document.createElement('span');
+name.className='fname';
+name.textContent=f.name;
+const size=document.createElement('span');
+size.className='fsize';
+size.textContent=fmtSize(f.size);
+const del=document.createElement('button');
+del.type='button';
+del.className='ghost';
+del.textContent=phrase('share.remove-file');
+del.onclick=()=>{attached.delete(id);renderAttachlist();broadcastFiles();};
+row.append(name,size,del);
+box.append(row);
+}
+}
+function renderDiscovery(){
+const hosting=$('publish').hidden;
+$('discovery').hidden=false;
+$('discovery-refresh').hidden=hosting;
+$('discovery-status').hidden=hosting;
+const ownCode=hosting?normalize($('code').value):'';
+const shares=foundShares.filter((share)=>share.code!==ownCode&&!withdrawing.has(share.code));
+const list=$('discovery-list');
+list.hidden=hosting;
+list.textContent='';
+for(const[index,share]of shares.entries()){
+const row=document.createElement('div');
+row.className='discovery-row paired-nearby-row';
+const name=document.createElement('span');
+name.className='discovery-code';
+name.id=`discovery-code-${index}`;
+name.textContent=share.code;
+appendConnectionIcons(name,{transport:share.transport,locked:false,approval:'optional'});
+const open=document.createElement('a');
+open.className='discovery-open';
+open.href=transportUrl(makeShareUrl(location.href,share.code,share.local&&share.transport!=='relay'),share.transport??'direct');
+open.target='_blank';
+open.rel='noopener';
+open.setAttribute('aria-describedby',name.id);
+open.setAttribute('aria-label',phrase(share.transport==='relay'?'discovery.join-relay':'discovery.join-direct',{code:share.code}));
+open.textContent=phrase('discovery.join');
+open.addEventListener('click',event=>{
+if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+if(sharing||document.hidden||withdrawing.has(share.code)||!foundShares.some(item=>item.code===share.code&&item.transport===share.transport)){
+event.preventDefault();return;
+}
+if(openJoinedPage(open.href))event.preventDefault();
+});
+row.append(name,open);
+list.append(row);
+}
+const state=discoveryState==='ready'?(shares.length?'ready':'empty'):discoveryState;
+$('discovery-status').textContent=phrase(`discovery.${state}`);
+}
+function startDiscovery(){
+if(discovery)return;
+discovery=watchDiscovery(`${RENDEZVOUS}/discover`,{
+list(shares){
+for(const code of withdrawing){
+if(!shares.some((share)=>share.code===code))withdrawing.delete(code);
+}
+foundShares=shares;
+renderDiscovery();
+},
+status(state){discoveryState=state;renderDiscovery();},
+publication(state){
+$('discovery-share-status').textContent=state&&isDiscoverable&&$('publish').hidden
+?phrase(`discovery.${state}`):'';
+},
+},{group:groupControl.code()});
+}
+$('discovery-refresh').addEventListener('click',()=>discovery?.refresh());
+$('local').addEventListener('change',()=>{
+$('discoverable').disabled=transportControl.value()==='direct'&&!$('local').checked&&!groupControl.id();
+});
+wireHelpTooltip($('discoverable-help'));
+wireHelpTooltip($('tool-version-help'));
+function hostSocket(code){
+const trace=diagnostics.begin('host',hostTransport==='relay'?'relay':isLocal?'local':'internet');
+hostDiagnostic=trace;
+const ws=new WebSocket(wsUrl(code,'host',isDiscoverable,hostTransport));
+hostCredentials?.close();
+hostPairing?.close();
+sock=ws;
+const pairing=new PairingSocket(ws,{
+current:()=>sock===ws&&sharing,
+onSendError(error){trace.error('send-signal',error);revealDiagnostics();},
+});
+hostPairing=pairing;
+const credentials=new RelayCredentials({
+send:frame=>pairing.send(frame),
+current:()=>sock===ws&&sharing,
+onRenew:servers=>{
+for(const[id,pc]of peers){
+pc.setConfiguration(shareConfiguration(hostTransport,isLocal,servers));
+pairing.send({to:id,data:{renew:true,local:isLocal}});
+}
+},
+onError:error=>{
+if(sock!==ws||!sharing)return;
+stopSharing();
+setStatus(phrase(transportError(error)),true);
+},
+});
+hostCredentials=credentials;
+let signals=Promise.resolve();
+let ready=Promise.resolve();
+const announce=()=>{
+if(sock!==ws||!sharing||ws.readyState!==1)return;
+setShareState('share.active');
+attempts=0;
+linkCopy.invalidate();
+$('link').value=shareUrl(code);
+$('linkrow').hidden=false;
+$('stop').hidden=false;
+refreshCount();
+if(isDiscoverable){
+$('discovery-share-status').textContent=phrase('discovery.publishing');
+announcementTimer=setTimeout(()=>{
+if(sock===ws&&isDiscoverable)$('discovery-share-status').textContent=phrase('discovery.not-published');
+},8000);
+}
+};
+pairing.listen({
+open(){
+hostPairing?.clear('foreground');
+hostHadRoom=true;
+trace.socket('open');
+trace.mark('server-open');
+pairing.every('heartbeat',30000,()=>pairing.send('ping'));
+$('stop').hidden=false;
+if(hostTransport==='relay')ready=credentials.prepare().then(announce).catch(error=>{
+if(sock!==ws||!sharing)return;
+stopSharing();
+setStatus(phrase(transportError(error)),true);
+});
+else announce();
+},
+message(e){
+hostPairing?.clear('foreground');
+if(e.data==='pong')return;
+let m;
+try{m=JSON.parse(e.data);}
+catch(error){trace.error('signaling',error);revealDiagnostics();return;}
+if(credentials.receive(m))return;
+if(m.type==='host-ready'&&isDiscoverable&&m.discovery?.code===code){
+void ready.then(()=>{
+if(sock!==ws||!sharing)return;
+if(discovery?.publish(code,m.discovery.lease))clearTimeout(announcementTimer);
+});
+return;
+}
+if(m.type==='leave'){
+const dc=controlChannels.get(m.id);
+const pc=peers.get(m.id);
+if(hostTransport==='direct'&&dc?.readyState==='open'&&pc&&!['failed','closed'].includes(pc.connectionState))return;
+dropViewer(m.id);
+return;
+}
+if(m.type==='signal')signals=signals.then(async()=>{
+await ready;
+if(sock!==ws||!sharing)return;
+const servers=hostTransport==='relay'?await credentials.prepare():null;
+if(sock===ws&&sharing)await hostSignal(m.from,m.data,servers);
+}).catch(error=>{
+if(sock!==ws||!sharing)return;
+trace.error('signaling',error);revealDiagnostics();
+setStatus(phrase(transportError(error)),true);
+});
+},
+error(){
+trace.error('websocket',{name:'NetworkError'});revealDiagnostics();
+},
+close(e){
+credentials.close();
+pairing.close();
+trace.socket('closed',e.code);
+trace.finish(sharing?'socket-closed':'stopped');
+if(sock!==ws)return;
+if(hostTransport==='relay'){
+for(const id of[...peers.keys()])dropViewer(id,'socket-closed');
+transportControl.route(null);
+}
+clearTimeout(announcementTimer);
+discovery?.unpublish();
+if(e.code===4412||e.code===4413){
+stopSharing();
+setStatus(phrase(e.code===4412?'transport.mismatch':'transport.unavailable'),true);
+return;
+}
+if(e.code===4409){
+withdrawing.delete(code);
+if(!hostHadRoom&&$('code').value===suggestion&&attempts<3){attempts+=1;suggest();publish();return;}
+if(hostHadRoom)stopSharing();
+else unlock();
+withdrawing.delete(code);
+setStatus(phrase('share.name-taken',{name:$('code').value}));
+return;
+}
+if(!sharing||$('publish').hidden===false)return;
+setStatus(phrase('share.lost-rendezvous'),true);
+clearTimeout(hostRetry);
+hostRetry=setTimeout(()=>{
+if(sharing&&activeCode===code&&sock===ws){
+try{hostSocket(code);}
+catch{resumeHost();}
+}
+},5000);
+},
+});
+}
+function resumeHost(){
+if(!sharing||document.visibilityState==='hidden'||navigator.onLine===false){
+hostPairing?.clear('foreground');
+return;
+}
+clearTimeout(hostRetry);
+hostPairing?.clear('foreground');
+const ws=sock;
+if(!ws||ws.readyState>1){
+try{hostSocket(activeCode);}
+catch{
+setStatus(phrase('share.lost-rendezvous'),true);
+hostRetry=setTimeout(resumeHost,5000);
+}
+return;
+}
+if(ws.readyState===1){
+hostPairing.send('ping');
+}
+const pairing=hostPairing;
+pairing.after('foreground',8000,()=>{
+if(!sharing||sock!==ws||document.visibilityState==='hidden'||navigator.onLine===false)return;
+sock=null;
+hostCredentials?.close();
+if(hostTransport==='relay'){
+for(const id of[...peers.keys()])dropViewer(id,'socket-closed');
+transportControl.route(null);
+}
+pairing.close();
+resumeHost();
+});
+}
+function publish(){
+hostTransport=transportControl.value();
+if(!hostTransport){setStatus(phrase('transport.invalid'),true);return;}
+const code=normalize($('code').value);
+if(code===''){
+setStatus(phrase('share.name-first'));
+return;
+}
+$('code').value=code;
+transportControl.lock(true);
+groupControl.lock(true);
+hostGroup=groupControl.id();
+sharing=true;
+activeCode=code;
+hostHadRoom=false;
+admitTokens.clear();
+$('code').disabled=true;
+$('suggest').disabled=true;
+isPrivate=$('private').checked;
+$('private').disabled=true;
+isLocal=hostTransport==='direct'&&$('local').checked;
+$('local').disabled=true;
+isDiscoverable=(hostGroup||isLocal||hostTransport==='relay')&&$('discoverable').checked;
+$('discoverable').disabled=true;
+$('publish').hidden=true;
+setShareState('share.setting-up');
+renderDiscovery();
+setStatus('');
+try{
+hostSocket(code);
+}catch(error){
+hostDiagnostic?.error('websocket',error);
+hostDiagnostic?.finish('socket-error');
+revealDiagnostics();
+stopSharing();
+setStatus(phrase('share.lost-rendezvous'),true);
+}
+}
+async function hostSignal(from,data,servers){
+if(!sharing||!data||typeof data!=='object')return;
+if((data.local===true)!==isLocal){
+hostPairing?.send({to:from,data:{networkMode:isLocal?'local':'direct'}});
+return;
+}
+const socket=sock;
+const pairing=hostPairing;
+let pc=peers.get(from);
+let trace=peerDiagnostics.get(from);
+if(data.candidate&&!shareCandidate(data.candidate,hostTransport,isLocal)){
+(trace??hostDiagnostic)?.count('candidatesReceived');
+(trace??hostDiagnostic)?.candidate('remote',data.candidate,'filtered');
+(trace??hostDiagnostic)?.count('candidatesFiltered');
+return;
+}
+if(!pc){
+trace=diagnostics.begin('host',hostTransport==='relay'?'relay':isLocal?'local':'internet');
+trace.socket('open');
+try{pc=new RTCPeerConnection(shareConfiguration(hostTransport,isLocal,servers));}
+catch(error){
+trace.error('offer',error);
+trace.finish(typeof RTCPeerConnection==='undefined'?'unsupported':'signaling-error');
+revealDiagnostics();return;
+}
+peerDiagnostics.set(from,trace);
+peers.set(from,pc);
+peerCandidates.set(pc,[]);
+trace.attach(pc);
+pc.onicecandidate=(e)=>{
+if(!e.candidate||peers.get(from)!==pc)return;
+const allowed=shareCandidate(e.candidate,hostTransport,isLocal);
+if(!allowed){
+trace.candidate('local',e.candidate,'filtered');trace.count('candidatesFiltered');return;
+}
+if(socket.readyState!==1){trace.candidate('local',e.candidate,'rejected');return;}
+try{
+if(!pairing.send({to:from,data:{candidate:e.candidate,local:isLocal}})){
+trace.candidate('local',e.candidate,'rejected');return;
+}
+trace.candidate('local',e.candidate,'sent');
+trace.count('candidatesSent');
+}catch(error){
+trace.candidate('local',e.candidate,'rejected');trace.error('send-signal',error);revealDiagnostics();
+}
+};
+pc.addEventListener('iceconnectionstatechange',()=>{
+if(pc.iceConnectionState==='failed'&&peers.get(from)===pc){
+trace.finish('ice-failed');revealDiagnostics();
+}
+});
+pc.addEventListener('connectionstatechange',()=>{
+if(peers.get(from)===pc&&['failed','closed'].includes(pc.connectionState))dropViewer(from);
+});
+let mainChannel=null;
+pc.ondatachannel=(e)=>{
+const dc=e.channel;
+if(dc.label!=='share'||mainChannel||peers.get(from)!==pc){dc.close();return;}
+mainChannel=dc;
+controlChannels.set(from,dc);
+trace.channel(dc);
+const sender=fileSender({peer:pc,control:dc,files:attached,
+admitted:()=>channels.get(from)===dc&&peers.get(from)===pc});
+sendQueue.set(from,sender);
+dc.binaryType='arraybuffer';
+let introduced=false;
+const introduce=()=>{
+if(!sharing||peers.get(from)!==pc||introduced||dc.readyState!=='open')return;
+introduced=true;
+void pc.getStats().then(stats=>{
+if(sharing&&peers.get(from)===pc)transportControl.route(selectedTransport(stats));
+}).catch(()=>{});
+if(isPrivate){
+trace.mark('waiting-approval');
+dc.send(JSON.stringify({type:'private'}));refreshCount();
+}else admitViewer(from,dc);
+};
+dc.onopen=introduce;
+dc.onmessage=(ev)=>{
+if(!sharing||peers.get(from)!==pc)return;
+if(typeof ev.data!=='string')return;
+let m;
+try{m=JSON.parse(ev.data);}catch{return;}
+if(!m||typeof m!=='object')return;
+if(m.type==='hello'){
+if(!introduced)introduce();
+else if(channels.has(from)){
+dc.send(payload());
+if($('text').value!=='')globalThis.aboxToolComplete?.();
+dc.send(filesMsg());
+}
+else dc.send(JSON.stringify({type:pending.has(from)?'asked':'private'}));
+return;
+}
+if(m.type==='get'){sender.request(m);return;}
+if(m.type==='cancel-file'){sender.cancel(m.request);return;}
+if(m.type==='knock'&&isPrivate&&!channels.has(from)&&!pending.has(from)){
+if(typeof m.token==='string'&&admitTokens.has(m.token)){
+admitViewer(from,dc,m.token);
+return;
+}
+addRequest(from,dc,String(m.note??'').slice(0,200),validAdmissionToken(m.token)?m.token:null);
+}
+};
+dc.onerror=()=>{trace.finish('channel-error');revealDiagnostics();};
+dc.onclose=()=>{if(peers.get(from)===pc)dropViewer(from);};
+introduce();
+};
+}
+try{
+if(data.sdp){
+trace.count('offerReceived');trace.mark('offer-received');
+await pc.setRemoteDescription(shareDescription(data.sdp,hostTransport,isLocal));
+if(peers.get(from)!==pc||sock!==socket||!sharing)return;
+for(const candidate of peerCandidates.get(pc).splice(0))await pc.addIceCandidate(candidate);
+await pc.setLocalDescription(await pc.createAnswer());
+if(peers.get(from)!==pc||sock!==socket||socket.readyState!==1)return;
+if(!pairing.send({to:from,data:{sdp:shareDescription(pc.localDescription,hostTransport,isLocal),local:isLocal}}))return;
+trace.count('answerSent');trace.mark('answer-sent');
+}else if(data.candidate){
+trace.count('candidatesReceived');
+if(!pc.remoteDescription){
+const waiting=peerCandidates.get(pc);
+if(waiting.length<64)waiting.push(data.candidate);
+return;
+}
+try{
+await pc.addIceCandidate(data.candidate);
+trace.candidate('remote',data.candidate,'accepted');trace.count('candidatesAccepted');
+}catch(error){
+trace.candidate('remote',data.candidate,'rejected');trace.error('add-candidate',error);
+revealDiagnostics();
+}
+}
+}catch(error){
+trace.error(data.sdp?'answer':'candidate',error);
+trace.finish('signaling-error');revealDiagnostics();
+}
+}
+let debounce=0;
+$('text').addEventListener('input',()=>{
+updateEditor();
+clearTimeout(debounce);
+debounce=setTimeout(()=>{
+persist();
+broadcast();
+},250);
+});
+$('markdown').addEventListener('change',()=>{
+try{localStorage.setItem(STORE_MD,$('markdown').checked?'1':'0');}catch{}
+updateEditor();
+broadcast();
+});
+$('oneoff').addEventListener('change',()=>{
+try{localStorage.setItem(STORE_ONEOFF,$('oneoff').checked?'1':'0');}catch{}
+persist();
+});
+$('live').addEventListener('click',(e)=>{
+if(e.target.closest('a'))return;
+$('text').focus();
+});
+$('attach').addEventListener('click',()=>$('fileinput').click());
+$('fileinput').addEventListener('change',()=>{
+for(const f of $('fileinput').files){
+if(f.size>MAX_FILE){
+setStatus(phrase('share.file-too-big',{name:f.name}));
+continue;
+}
+if(attached.size>=MAX_FILES){
+setStatus(phrase('share.too-many-files'));
+break;
+}
+attached.set(crypto.randomUUID(),f);
+}
+$('fileinput').value='';
+renderAttachlist();
+broadcastFiles();
+});
+$('save').addEventListener('click',()=>{
+const name=`${normalize($('code').value) || 'shared-text'}.txt`;
+const url=URL.createObjectURL(new Blob([$('text').value],{type:'text/plain'}));
+const a=document.createElement('a');
+a.href=url;
+a.download=name;
+a.click();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+$('publish').addEventListener('click',publish);
+function stopSharing(){
+hostCredentials?.close();
+hostCredentials=null;
+sharing=false;
+clearTimeout(hostRetry);
+hostPairing?.clear('foreground');
+const stoppedPeers=[...peers].map(([id,pc])=>({pc,dc:controlChannels.get(id)}));
+for(const sender of sendQueue.values())sender.close();
+peers.clear();channels.clear();controlChannels.clear();sendQueue.clear();
+for(const{pc,dc}of stoppedPeers){
+if(!dc||dc.readyState==='closed'){pc.close();continue;}
+let deadline=0;
+const closeOldPeer=()=>{
+clearTimeout(deadline);
+dc.removeEventListener('close',closeOldPeer);
+pc.close();
+};
+dc.addEventListener('close',closeOldPeer,{once:true});
+deadline=setTimeout(closeOldPeer,5000);
+try{
+if(dc.readyState==='open')dc.send(JSON.stringify({type:'ended'}));
+dc.close();
+}catch{closeOldPeer();}
+}
+admitTokens.clear();
+hostDiagnostic?.finish('stopped');
+for(const trace of peerDiagnostics.values())trace.finish('stopped');
+peerDiagnostics.clear();
+clearTimeout(announcementTimer);
+const stoppedCode=normalize($('code').value);
+if(isDiscoverable)withdrawing.add(stoppedCode);
+discovery?.unpublish();
+isDiscoverable=false;
+foundShares=foundShares.filter((share)=>share.code!==stoppedCode);
+hostPairing?.close();
+hostPairing=null;
+unlock();
+setStatus(phrase('share.stopped'));
+}
+$('stop').addEventListener('click',stopSharing);
+$('suggest').addEventListener('click',suggest);
+const linkCopy=clipboardFeedback({
+read:()=>({text:$('link').value,owner:sock}),
+current:value=>value.owner===sock&&value.text===$('link').value&&!$('linkrow').hidden,
+write:text=>navigator.clipboard.writeText(text),
+done:()=>{$('copylink').textContent=phrase('copy.done');},
+selected:()=>{
+$('link').focus();$('link').select();
+$('copylink').textContent=phrase('copy.select');
+},
+restore:()=>{$('copylink').textContent=phrase('copy.link');},
+});
+$('copylink').addEventListener('click',()=>{void linkCopy.copy();});
+let textVersion=0;
+const textCopy=clipboardFeedback({
+read:()=>({text:$('received').textContent,version:textVersion}),
+current:value=>value.version===textVersion&&value.text===$('received').textContent&&!$('panel').hidden,
+write:text=>navigator.clipboard.writeText(text),
+done:()=>{$('copytext').textContent=phrase('copy.done');},
+selected:()=>{
+$('mode-src').click();
+const source=$('received');source.tabIndex=-1;source.focus();
+const range=document.createRange();range.selectNodeContents(source);
+const selection=getSelection();selection.removeAllRanges();selection.addRange(range);
+$('copytext').textContent=phrase('copy.select');
+},
+restore:()=>{$('copytext').textContent=phrase('copy.text');},
+});
+function retireTextCopy(){textVersion+=1;textCopy.invalidate();}
+$('copytext').addEventListener('click',()=>{void textCopy.copy();});
+function fail(text){
+if($('received').hidden===false)return;
+$('consent').hidden=true;
+$('relayrow').hidden=true;
+$('retryrow').hidden=false;
+$('view-status').textContent=text;
+}
+let viewerLive=false;
+let resumeViewer=()=>{};
+function view(code,recovered=null){
+$('share').hidden=true;
+$('view').hidden=false;
+const mode=recovered?.transport??readTransport(location.href);
+if(!mode){fail(phrase('transport.invalid'));return;}
+transportControl.set(mode);
+transportControl.lock(true);
+transportControl.route(null);
+const localMode=mode==='direct'&&(recovered?.localMode??isLocalLink(location.href));
+$('local-note').hidden=!localMode;
+let retryLocal=localMode;
+let carried=false;
+let wantRelay=mode==='relay';
+if(!recovered)try{
+const stamp=Number(sessionStorage.getItem(`share-text-carry:${code}`)??0);
+carried=Date.now()-stamp<5*60*1000;
+sessionStorage.removeItem(`share-text-carry:${code}`);
+if(wantRelay&&sessionStorage.getItem(`share-text-transport:${code}`)!==mode)carried=false;
+}catch{}
+const discoveryJoin=!recovered&&consumeJoinedPage();
+const session=recovered??{consent:carried||discoveryJoin,discoveryJoin,relay:wantRelay,transport:mode,localMode,
+token:admissions.read('share-text',code,mode),asMd:false,mdTouched:false,generation:0};
+if(recovered){carried=session.consent;wantRelay=session.relay;}
+const events=new AbortController();
+const listen=(id,event,handler)=>$(id).addEventListener(event,handler,{signal:events.signal});
+const generation=++session.generation;
+session.restart=()=>{events.abort();view(code,session);};
+session.retry??=foregroundRecovery(()=>session.restart(),{
+visible:()=>document.visibilityState!=='hidden'&&navigator.onLine!==false,
+exhausted(){
+$('view-status').hidden=false;
+$('view-status').textContent=phrase('view.interrupted');
+$('retryrow').hidden=false;
+},
+});
+if(session.consent&&!recovered)session.retry.start();
+const trace=diagnostics.begin('viewer',localMode?'local':wantRelay?'relay':'internet');
+session.credentials?.close();
+session.pairing?.close();
+let ws;
+try{ws=new WebSocket(wsUrl(code,'viewer',false,mode));}
+catch(error){
+trace.error('websocket',error);trace.finish('socket-error');
+fail(phrase(recovered?'view.reconnecting':'view.error'));revealDiagnostics();
+resumeViewer=()=>session.retry.foreground();
+if(recovered)session.retry.pause();
+return;
+}
+let pc=null;
+let dcRef=null;
+let relay=null;
+let preparing=false;
+let got=false;
+let connected=false;
+let done=false;
+let introduced=false;
+let signals=Promise.resolve();
+const candidates=[];
+let makingOffer=false;
+let restartRequested=false;
+const pairing=new PairingSocket(ws,{
+current:()=>!done&&session.generation===generation,
+onSendError(error){trace.error('send-signal',error);revealDiagnostics();},
+});
+session.pairing=pairing;
+const credentials=new RelayCredentials({
+send:frame=>pairing.send(frame),
+current:()=>!done&&session.generation===generation,
+onRenew:servers=>{
+if(!pc||done)return;
+relay=servers;
+pc.setConfiguration(shareConfiguration(mode,localMode,servers));
+restartRequested=true;
+void renegotiate();
+},
+onError:error=>stopAttempt(transportError(error),false,'relay-expired'),
+});
+session.credentials=credentials;
+let lastBody='';
+let asMd=session.asMd;
+let mdTouched=session.mdTouched;
+let rx=null;
+let fileChannels=false;
+let offered=new Map();
+let connectionTimer=0;
+let deliveryTimer=0;
+let foregroundProbe=0;
+let relayRecoveryTimer=0;
+const clearDeadlines=()=>{
+clearTimeout(connectionTimer);
+clearTimeout(deliveryTimer);
+clearTimeout(relayRecoveryTimer);
+};
+const stopAttempt=(key,offerRelay=false,reason='signaling-error')=>{
+if(done)return;
+if(recovered&&session.retry.active&&
+['signaling-error','socket-closed','channel-error','timeout','delivery-timeout','ice-failed'].includes(reason)){
+sharerGone();
+return;
+}
+done=true;
+session.retry.stop();
+trace.finish(reason);
+revealDiagnostics();
+viewerLive=false;
+clearDeadlines();
+clearTimeout(foregroundProbe);
+pc?.close();
+credentials.close();
+transportControl.route(null);
+pairing.close();
+$('knockrow').hidden=true;
+$('view-status').hidden=false;
+fail(phrase(key));
+$('view-status').textContent=phrase(key);
+$('relayrow').hidden=true;
+};
+const awaitIntroduction=()=>{
+clearTimeout(deliveryTimer);
+deliveryTimer=setTimeout(()=>stopAttempt('view.no-content',false,'delivery-timeout'),20000);
+};
+function renderView(){
+session.asMd=asMd;
+session.mdTouched=mdTouched;
+$('received').textContent=lastBody;
+const empty=lastBody==='';
+$('panel').hidden=empty;
+$('received').hidden=empty||asMd;
+$('rendered').hidden=empty||!asMd;
+$('rendered').innerHTML=!empty&&asMd?renderMarkdown(lastBody):'';
+$('mode-fmt').classList.toggle('active',asMd);
+$('mode-src').classList.toggle('active',!asMd);
+}
+listen('mode-fmt','click',()=>{mdTouched=true;asMd=true;renderView();});
+listen('mode-src','click',()=>{mdTouched=true;asMd=false;renderView();});
+function refreshFileButtons(){
+for(const button of $('filelist').querySelectorAll('button')){
+button.disabled=done||(button.hasAttribute('data-file-download')&&rx!==null);
+}
+}
+function retireFile(owner){
+if(rx!==owner)return false;
+rx=null;
+clearTimeout(owner.timer);
+owner.parts=[];
+owner.cancel.hidden=true;
+if(owner.request){
+try{dcRef?.send(JSON.stringify({type:'cancel-file',request:owner.request}));}catch{}
+owner.channel?.close();
+}
+refreshFileButtons();
+return true;
+}
+function waitingForFile(owner){
+clearTimeout(owner.timer);
+owner.timer=setTimeout(()=>{if(rx===owner)fileFailed(owner);},30000);
+}
+function legacyFileFailure(key){
+done=true;
+session.retry.stop();
+trace.finish('channel-error');
+viewerLive=false;
+clearDeadlines();
+clearTimeout(foregroundProbe);
+lastBody='';
+retireTextCopy();
+$('received').textContent='';
+$('rendered').textContent='';
+$('panel').hidden=true;
+pc?.close();
+credentials.close();
+transportControl.route(null);
+pairing.close();
+for(const button of $('filelist').querySelectorAll('button'))button.disabled=true;
+$('view-status').hidden=false;
+$('view-status').textContent=phrase(key);
+$('retryrow').hidden=false;
+}
+function startFile(file,controls){
+if(rx||done||dcRef?.readyState!=='open'||!offered.has(file.id))return;
+const owner={...file,...controls,mime:'',parts:[],got:0,
+request:fileChannels?crypto.randomUUID():null,channel:null,timer:null};
+rx=owner;
+trace.mark('transfer-started');
+owner.status.textContent='';
+owner.btn.textContent='0%';
+owner.cancel.hidden=false;
+refreshFileButtons();
+waitingForFile(owner);
+try{dcRef.send(JSON.stringify({type:'get',id:file.id,
+...(owner.request?{request:owner.request}:{})}));}
+catch{fileFailed(owner);}
+}
+function renderFilelist(list,capability){
+const files=cleanFileList(list,MAX_FILE);
+offered=new Map(files.map(file=>[file.id,file]));
+fileChannels=capability===true;
+if(rx){
+const file=offered.get(rx.id);
+if(!file||file.name!==rx.name||file.size!==rx.size)fileGone(rx);
+}
+const box=$('filelist');
+box.replaceChildren();
+for(const file of files){
+if(rx?.id===file.id){box.append(rx.row);continue;}
+const row=document.createElement('div');row.className='filerow';
+const name=document.createElement('span');name.className='fname';name.textContent=file.name;
+name.id='file-'+crypto.randomUUID();
+const size=document.createElement('span');size.className='fsize';size.textContent=fmtSize(file.size);
+const btn=document.createElement('button');btn.type='button';btn.className='ghost';
+btn.dataset.fileDownload='';btn.textContent=phrase('view.download');
+btn.setAttribute('aria-describedby',name.id);
+const cancel=document.createElement('button');cancel.type='button';cancel.className='ghost';
+cancel.textContent=phrase('view.file-cancel');cancel.hidden=true;
+cancel.setAttribute('aria-describedby',name.id);
+const status=document.createElement('span');status.className='file-status';
+status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+btn.onclick=()=>startFile(file,{row,btn,cancel,status});
+cancel.onclick=()=>{
+const owner=rx;
+if(!owner||owner.row!==row)return;
+const modern=!!owner.request;
+retireFile(owner);
+owner.btn.textContent=phrase('view.file-retry');
+owner.status.textContent=phrase('view.file-cancelled');
+if(!modern)legacyFileFailure('view.file-legacy-cancel');
+else{trace.mark('received');owner.btn.focus({preventScroll:true});}
+};
+row.append(name,size,btn,cancel,status);box.append(row);
+}
+refreshFileButtons();
+}
+function fileBegin(msg,owner=rx){
+if(!owner||rx!==owner)return;
+if(!beginFile(owner,msg,MAX_FILE)){fileFailed(owner);return;}
+waitingForFile(owner);
+}
+function fileChunk(buf,owner=rx){
+if(!owner||rx!==owner)return;
+if(!appendFileChunk(owner,buf,MAX_FILE)){fileFailed(owner);return;}
+waitingForFile(owner);
+if(owner.size>0)owner.btn.textContent=`${Math.min(99, Math.floor((owner.got / owner.size) * 100))}%`;
+}
+function fileEnd(msg,owner=rx){
+if(!owner||rx!==owner)return;
+if(!finishFile(owner,msg)){fileFailed(owner);return;}
+let url;
+try{
+const blob=new Blob(owner.parts,{type:owner.mime});
+url=URL.createObjectURL(blob);
+const anchor=document.createElement('a');anchor.href=url;
+anchor.download=owner.name===''?'shared-file':owner.name;anchor.click();
+}catch{
+if(url)URL.revokeObjectURL(url);
+fileFailed(owner);return;
+}
+retireFile(owner);
+trace.mark('transfer-complete');
+globalThis.aboxToolComplete?.();
+setTimeout(()=>URL.revokeObjectURL(url),5000);
+owner.btn.textContent=phrase('view.download');
+owner.status.textContent='';
+}
+function fileGone(owner=rx){
+if(!owner||rx!==owner)return;
+const modern=!!owner.request;
+retireFile(owner);
+trace.mark('received');
+owner.btn.textContent=phrase('view.file-gone');owner.btn.disabled=true;
+if(!modern)legacyFileFailure('view.file-legacy-failed');
+}
+function fileFailed(owner=rx){
+if(!owner||rx!==owner)return;
+trace.mark('transfer-failed');
+revealDiagnostics();
+const modern=!!owner.request;
+retireFile(owner);
+owner.status.textContent=phrase('view.file-failed');
+owner.btn.textContent=phrase('view.file-retry');
+if(!modern)legacyFileFailure('view.file-legacy-failed');
+}
+function receiveFileChannel(channel){
+const owner=rx;
+if(!owner?.request||done||channel.label!==FILE_CHANNEL+owner.request||owner.channel){
+channel.close();return;
+}
+owner.channel=channel;channel.binaryType='arraybuffer';
+channel.onmessage=event=>{
+if(rx!==owner)return;
+if(typeof event.data!=='string'){fileChunk(event.data,owner);return;}
+let message;
+try{message=JSON.parse(event.data);}catch{fileFailed(owner);return;}
+if(message?.type==='file-begin')fileBegin(message,owner);
+else if(message?.type==='file-end')fileEnd(message,owner);
+else if(message?.type==='file-gone')fileGone(owner);
+else fileFailed(owner);
+};
+channel.onclose=()=>{if(rx===owner)fileFailed(owner);};
+channel.onerror=()=>{if(rx===owner)fileFailed(owner);};
+waitingForFile(owner);
+}
+function sharerGone(terminal=false){
+if(session.generation!==generation)return;
+if(terminal){
+session.retry.stop();
+session.token=null;
+try{sessionStorage.removeItem(`share-text-token:${code}`);}catch{}
+}else if(done)return;
+done=true;
+trace.finish(terminal?'ended':'socket-closed');
+viewerLive=false;
+clearDeadlines();
+clearTimeout(foregroundProbe);
+$('knockrow').hidden=true;
+if(rx)retireFile(rx);
+offered.clear();
+$('filelist').textContent='';
+lastBody='';
+retireTextCopy();
+$('received').textContent='';
+$('rendered').textContent='';
+$('panel').hidden=true;
+$('consent').hidden=true;
+$('relayrow').hidden=true;
+$('view-status').hidden=false;
+$('view-status').textContent=phrase(terminal?(got?'view.ended':'view.gone-early')
+:session.retry.active?'view.reconnecting':'view.interrupted');
+$('retryrow').hidden=false;
+pc?.close();
+credentials.close();
+transportControl.route(null);
+pairing.close();
+if(!terminal)session.retry.pause();
+}
+resumeViewer=()=>{
+session.retry.foreground();
+if(document.visibilityState==='hidden'){clearTimeout(foregroundProbe);return;}
+if(done||!session.consent||!session.retry.active||navigator.onLine===false)return;
+if(dcRef?.readyState!=='open'){
+if(connected||ws.readyState>1)sharerGone();
+return;
+}
+clearTimeout(foregroundProbe);
+try{dcRef.send(JSON.stringify({type:'hello'}));}catch{sharerGone();return;}
+foregroundProbe=setTimeout(()=>{
+if(!done&&session.generation===generation&&document.visibilityState!=='hidden'&&navigator.onLine!==false)sharerGone();
+},8000);
+};
+function sendKnock(note){
+try{dcRef.send(JSON.stringify({type:'knock',note}));}catch{return;}
+trace.mark('approval-requested');
+$('knock').disabled=true;
+$('send-knock').disabled=true;
+$('view-status').textContent=phrase('view.asked');
+}
+listen('send-knock','click',()=>sendKnock($('knock').value.trim().slice(0,200)));
+listen('knock','keydown',(e)=>{
+if(e.key==='Enter')$('send-knock').click();
+});
+async function dial(){
+if(pc!==null||preparing||done||ws.readyState!==1)return;
+preparing=true;
+session.consent=true;
+if(!session.retry.active)session.retry.start();
+$('consent').hidden=true;
+$('view-status').textContent=phrase(localMode?'view.local-connecting':wantRelay?'view.relaying':'view.connecting');
+try{relay=wantRelay?await credentials.prepare():null;}
+finally{preparing=false;}
+if(done||session.generation!==generation)return;
+pc=new RTCPeerConnection(shareConfiguration(mode,localMode,relay));
+trace.attach(pc);
+connectionTimer=setTimeout(()=>{
+if(!connected)stopAttempt(localMode?'view.local-no-connect':relay?'view.relay-failed':'view.no-connect',!localMode&&!relay,'timeout');
+},20000);
+pc.onicecandidate=(ev)=>{
+if(!ev.candidate||done)return;
+const allowed=shareCandidate(ev.candidate,mode,localMode);
+if(!allowed){
+trace.candidate('local',ev.candidate,'filtered');trace.count('candidatesFiltered');return;
+}
+if(ws.readyState!==1){trace.candidate('local',ev.candidate,'rejected');return;}
+try{
+if(!pairing.send({data:{candidate:ev.candidate,local:localMode}})){
+trace.candidate('local',ev.candidate,'rejected');return;
+}
+trace.candidate('local',ev.candidate,'sent');
+trace.count('candidatesSent');
+}catch(error){
+trace.candidate('local',ev.candidate,'rejected');trace.error('send-signal',error);revealDiagnostics();
+}
+};
+pc.onconnectionstatechange=()=>{
+if(connected&&(pc.connectionState==='failed'||pc.connectionState==='closed'))sharerGone();
+};
+const giveUp=()=>{
+if(got||connected||done)return;
+stopAttempt(localMode?'view.local-no-connect':relay?'view.relay-failed':'view.no-connect',!localMode&&!relay,'ice-failed');
+};
+pc.oniceconnectionstatechange=()=>{
+if(pc.iceConnectionState==='failed')giveUp();
+};
+pc.ondatachannel=event=>receiveFileChannel(event.channel);
+pc.onnegotiationneeded=()=>{void renegotiate();};
+const dc=pc.createDataChannel('share');
+dc.binaryType='arraybuffer';
+dcRef=dc;
+trace.channel(dc);
+const opened=()=>{
+if(connected||done||session.generation!==generation)return;
+connected=true;
+void pc.getStats().then(stats=>{
+if(!done&&session.generation===generation)transportControl.route(selectedTransport(stats));
+}).catch(()=>{});
+viewerLive=true;
+clearTimeout(connectionTimer);
+if(!introduced){
+$('view-status').textContent=phrase('view.waiting-content');
+awaitIntroduction();
+}
+dc.send(JSON.stringify({type:'hello'}));
+};
+dc.onopen=opened;
+dc.onmessage=(ev)=>{
+if(session.generation!==generation)return;
+if(done&&typeof ev.data!=='string')return;
+if(typeof ev.data!=='string'){if(!rx?.request)fileChunk(ev.data);return;}
+let msg;
+try{msg=JSON.parse(ev.data);}catch{return;}
+if(!msg||typeof msg!=='object')return;
+if(msg.type==='ended'){sharerGone(true);return;}
+if(done)return;
+clearTimeout(foregroundProbe);
+if(msg.type==='files'){renderFilelist(msg.list??[],msg.fileChannels);return;}
+if(msg.type==='file-begin'){if(!rx?.request)fileBegin(msg);return;}
+if(msg.type==='file-end'){if(!rx?.request)fileEnd(msg);return;}
+if(msg.type==='file-gone'){
+if(rx?.id===msg.id&&(!rx.request||msg.request===rx.request))fileGone();
+return;
+}
+if(msg.type==='file-failed'){
+if(rx?.id===msg.id&&(!rx.request||msg.request===rx.request))fileFailed();
+return;
+}
+if(msg.type==='token'){
+if(!validAdmissionToken(msg.token))return;
+session.token=msg.token;
+admissions.save('share-text',code,mode,msg.token);
+try{sessionStorage.setItem(`share-text-token:${code}`,msg.token);}catch{}
+return;
+}
+if(msg.type==='private'){
+session.retry.ready();
+trace.mark('waiting-approval');
+if(got)return;
+introduced=true;
+clearDeadlines();
+let token=session.token??admissions.read('share-text',code,mode);
+try{token??=carried?sessionStorage.getItem(`share-text-token:${code}`):null;}catch{}
+if(token!==null){
+awaitIntroduction();
+dc.send(JSON.stringify({type:'knock',note:'',token}));
+return;
+}
+if(session.discoveryJoin){
+sendKnock('');
+return;
+}
+$('view-status').textContent=phrase('view.private');
+$('knock').disabled=false;
+$('send-knock').disabled=false;
+$('knockrow').hidden=false;
+$('knock').focus();
+return;
+}
+if(msg.type==='asked'){
+trace.mark('approval-requested');
+introduced=true;
+clearDeadlines();
+$('view-status').textContent=phrase('view.asked');
+return;
+}
+if(msg.type==='denied'){
+session.retry.stop();
+trace.finish('denied');
+done=true;
+viewerLive=false;
+clearDeadlines();
+clearTimeout(foregroundProbe);
+credentials.close();
+transportControl.route(null);
+pairing.close();
+pc?.close();
+$('knockrow').hidden=true;
+$('view-status').textContent=phrase('view.denied');
+$('retryrow').hidden=false;
+return;
+}
+if(msg.type!=='text'||done)return;
+session.retry.ready();
+got=true;
+trace.mark('received');
+introduced=true;
+clearDeadlines();
+retireTextCopy();
+lastBody=String(msg.body??'');
+if(lastBody!=='')globalThis.aboxToolComplete?.();
+if(!mdTouched)asMd=msg.md===true;
+renderView();
+$('knockrow').hidden=true;
+$('view-status').hidden=lastBody!=='';
+if(lastBody==='')$('view-status').textContent=phrase('view.empty');
+};
+dc.onerror=error=>{
+trace.error('channel',error.error);
+if(!got)stopAttempt('view.error',false,'channel-error');
+else revealDiagnostics();
+};
+dc.onclose=()=>sharerGone();
+if(dc.readyState==='open')opened();
+await pc.setLocalDescription(await pc.createOffer());
+if(done)return;
+if(!pairing.send({data:{sdp:shareDescription(pc.localDescription,mode,localMode),local:localMode}}))throw new Error('signaling-unavailable');
+trace.count('offerSent');trace.mark('offer-sent');
+}
+async function renegotiate(){
+if(!connected||done||makingOffer||pc?.signalingState!=='stable')return;
+makingOffer=true;
+const restart=restartRequested;
+restartRequested=false;
+try{
+const offer=await pc.createOffer(restart?{iceRestart:true}:undefined);
+if(done||session.generation!==generation)return;
+await pc.setLocalDescription(offer);
+if(done||session.generation!==generation)return;
+if(!pairing.send({data:{sdp:shareDescription(pc.localDescription,mode,localMode),local:localMode}})){
+throw new Error('transport.unavailable');
+}
+}catch(error){
+if(!done&&session.generation===generation)stopAttempt(transportError(error),false,'signaling-error');
+}finally{makingOffer=false;}
+}
+listen('connect','click',()=>{
+dial().catch(error=>{
+trace.error('offer',error);
+stopAttempt(error.message?.startsWith('transport.')?transportError(error):'view.error',false,typeof RTCPeerConnection==='undefined'?'unsupported':'signaling-error');
+});
+});
+listen('mode-retry','click',()=>{
+session.retry.stop();
+location.href=transportUrl(makeShareUrl(location.href,code,retryLocal),mode);
+});
+pairing.listen({
+open(){
+trace.socket('open');trace.mark('server-open');
+pairing.every('heartbeat',30000,()=>pairing.send('ping'));
+},
+error(){trace.error('websocket',{name:'NetworkError'});revealDiagnostics();},
+message(e){
+if(done||session.generation!==generation)return;
+if(e.data==='pong')return;
+let m;
+try{m=JSON.parse(e.data);}
+catch(error){trace.error('signaling',error);stopAttempt('view.error');return;}
+if(credentials.receive(m))return;
+signals=signals.then(async()=>{
+if(done||session.generation!==generation)return;
+if(m.type==='ready'){
+trace.mark('room-ready');
+if(session.consent){
+await dial();
+}else{
+$('view-status').textContent=phrase('view.someone');
+$('consent').hidden=false;
+}
+}else if(m.type==='signal'&&pc&&!done){
+if(!m.data||typeof m.data!=='object')return;
+const networkMode=m.data.networkMode;
+if(networkMode==='local'||networkMode==='direct'||(localMode&&m.data.sdp&&m.data.local!==true)){
+retryLocal=networkMode==='local';
+stopAttempt(retryLocal?'view.mode-local':'view.mode-direct',false,'mode-mismatch');
+$('mode-retryrow').hidden=false;
+return;
+}
+if(m.data.sdp){
+await pc.setRemoteDescription(shareDescription(m.data.sdp,mode,localMode));
+if(done||session.generation!==generation)return;
+for(const candidate of candidates.splice(0))await pc.addIceCandidate(candidate);
+trace.count('answerAccepted');trace.mark('answer-accepted');
+if(restartRequested)void renegotiate();
+}else if(m.data.renew===true&&mode==='relay'){
+restartRequested=true;
+void renegotiate();
+}else if(m.data.candidate){
+const candidate=m.data.candidate;
+trace.count('candidatesReceived');
+if(!shareCandidate(candidate,mode,localMode)){
+trace.candidate('remote',candidate,'filtered');trace.count('candidatesFiltered');return;
+}
+if(!pc.remoteDescription){
+if(candidates.length<64)candidates.push(candidate);
+return;
+}
+try{
+await pc.addIceCandidate(candidate);
+trace.candidate('remote',candidate,'accepted');trace.count('candidatesAccepted');
+}catch(error){
+trace.candidate('remote',candidate,'rejected');trace.error('add-candidate',error);
+throw error;
+}
+}
+}
+}).catch(error=>{
+if(done||session.generation!==generation)return;
+trace.error('signaling',error);
+if(!got||mode==='relay')stopAttempt(error.message?.startsWith('transport.')?transportError(error):'view.error');
+});
+},
+close(e){
+credentials.close();
+pairing.close();
+trace.socket('closed',e.code);
+if(done)return;
+if(mode==='direct'&&connected&&dcRef?.readyState==='open'&&
+!['failed','closed'].includes(pc?.connectionState)){
+resumeViewer();
+return;
+}
+if(mode==='relay'&&connected&&dcRef?.readyState==='open'){
+clearTimeout(relayRecoveryTimer);
+relayRecoveryTimer=setTimeout(()=>sharerGone(),1500);
+return;
+}
+if(e.code===4412){stopAttempt('transport.mismatch',false,'mode-mismatch');return;}
+if(e.code===4413){stopAttempt('transport.unavailable',false,'relay-unavailable');return;}
+if(e.code===4410||(connected&&session.consent)){sharerGone();return;}
+if(e.code===4404)stopAttempt('view.nobody',false,'socket-closed');
+else if(e.code===4429)stopAttempt('view.full',false,'socket-closed');
+else if(!connected)stopAttempt('view.error',false,'socket-closed');
+},
+});
+}
+$('retry').addEventListener('click',()=>location.reload());
+function resumePairedPage(){
+resumeHost();
+resumeViewer();
+}
+observeForeground({
+foreground:resumePairedPage,
+hidden(){approvalPrompt.close(false);resumePairedPage();},
+suspend(){approvalPrompt.close(false);hostPairing?.clear('foreground');},
+});
+$('privacy-toggle').addEventListener('click',()=>{
+const panel=$('privacy-panel');
+const open=panel.hidden;
+panel.hidden=!open;
+$('privacy-toggle').setAttribute('aria-expanded',String(open));
+});
+function bootError(detail){
+const target=$('share').hidden?$('view-status'):$('status');
+target.hidden=false;
+target.classList.add('warn');
+target.textContent=phrase('error.broke',{detail});
+}
+window.addEventListener('error',(event)=>bootError(event.message));
+window.addEventListener('unhandledrejection',(event)=>bootError(event.reason?.message??event.reason));
+const code=location.hash.replace(/^#/,'').toLowerCase();
+appendConnectionIcons($('viewer-connection-icons'),{transport:readTransport(location.href),locked:false,approval:'optional'});
+$('local').checked=isLocal;
+if(CODE_PATTERN.test(code))view(code);
+else{
+$('discoverable').disabled=!isLocal;
+suggest();
+restore();
+startDiscovery();
+}
+addEventListener('hashchange',()=>location.reload());
+const alternates=new Set(
+[...document.querySelectorAll('link[rel="alternate"][hreflang]')]
+.map((link)=>new URL(link.href).pathname),
+);
+addEventListener('click',(event)=>{
+const anchor=event.target.closest('a[href]');
+if(!anchor||anchor.origin!==location.origin||!alternates.has(anchor.pathname))return;
+if($('share').hidden===false&&$('publish').hidden){
+if(!window.confirm(phrase('share.leave-warning'))){
+event.preventDefault();
+return;
+}
+}
+if(location.hash==='')return;
+if(viewerLive){
+try{
+sessionStorage.setItem(`share-text-carry:${code}`,String(Date.now()));
+sessionStorage.setItem(`share-text-transport:${code}`,readTransport(location.href));
+}catch{}
+}
+anchor.href=transportUrl(makeShareUrl(anchor.href,code,isLocalLink(location.href)),readTransport(location.href)??'direct');
+},true);
+document.getElementById('boot-warning')?.remove();
+renderDiagnostics();

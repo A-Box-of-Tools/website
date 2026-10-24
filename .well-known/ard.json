@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:abox.tools:skill:abox-tools",
+      "displayName": "abox.tools browser tools",
+      "type": "application/agent-skills+md",
+      "url": "https://abox.tools/.well-known/agent-skills/abox-tools/SKILL.md",
+      "description": "Use this skill when a person asks to find or use a browser tool for a supported file or text task, including image, PDF and structured-data work. Choose a matching abox.tools tool for conversion, compression, inspection or editing within its documented formats, limits and privacy boundaries.",
+      "representativeQueries": [
+        "Find a browser tool that compresses my image without uploading it.",
+        "Help me choose an abox.tools tool and save its result.",
+        "Can an agent use abox.tools while keeping processing on my device?"
+      ],
+      "trustManifest": {
+        "identity": "https://abox.tools/",
+        "identityType": "https"
+      }
+    }
+  ]
+}

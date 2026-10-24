@@ -1,0 +1,26 @@
+{
+  "id": "/it/impilare-immagini/",
+  "name": "Impilatore di immagini",
+  "short_name": "Impilatore di immagini",
+  "description": "Venti fotogrammi in uno, senza venti caricamenti e senza un convertitore RAW.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

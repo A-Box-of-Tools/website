@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-10-23T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">Can an AI agent use these tools?</title>
+    <id>https://abox.tools/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">An agent can operate these browser tools. Check browser location, the agent vendor’s data handling, required permissions and any deliberate network feature.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Analyzer</title>
+    <id>https://abox.tools/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Inspect GIF frames, delays, palettes and a byte-by-byte size breakdown in your browser. Check large or slow animations without uploading or changing the file.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Splitter</title>
+    <id>https://abox.tools/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Extract GIF frames as PNGs, a ZIP or one sprite sheet in your browser. Keep transparency and save frame delays in a separate timing list. No upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to split a GIF into PNG frames</title>
+    <id>https://abox.tools/guides/split-a-gif-into-frames/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/split-a-gif-into-frames/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Extract GIF frames as complete PNGs, a ZIP or a sprite sheet. Keep transparency and a timing reference, rebuild an edited GIF, or convert the original to MP4.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to stack photos to reduce noise, remove people or make star trails</title>
+    <id>https://abox.tools/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Choose Average for a cleaner burst, Median for moving people, or Lighten for star trails. Prepare consistent frames, align, compare and save, with RAW preview limits explained.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Stacker</title>
+    <id>https://abox.tools/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Stack photos to reduce noise, remove moving people or make star trails. Align frames and save PNG or JPEG in your browser. RAW files use embedded JPEG previews.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images to Video</title>
+    <id>https://abox.tools/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Convert an image sequence to MP4 in your browser. Use one frame per image for renders and timelapses, or seconds per photo for a slideshow. No upload or account.</summary>
+  </entry>
+  <entry>
+    <title type="html">Turn an image sequence or photo slideshow into MP4</title>
+    <id>https://abox.tools/guides/turn-images-into-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/turn-images-into-a-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Turn numbered render frames or timelapse photos into MP4, or make a photo slideshow. Choose frame holds or seconds, check order, and avoid cropped or mistimed output.</summary>
+  </entry>
+  <entry>
+    <title type="html">What is actually inside a GIF</title>
+    <id>https://abox.tools/guides/whats-inside-a-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/whats-inside-a-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Inspect GIF frames, timing, disposal and palettes to explain a large or slow animation. Read the size breakdown, then choose frame extraction, editing or MP4.</summary>
+  </entry>
+  <entry>
+    <title type="html">Does private browsing keep downloaded files private?</title>
+    <id>https://abox.tools/guides/does-private-browsing-keep-downloads-private/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/does-private-browsing-keep-downloads-private/"/>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <summary type="html">Separate private browsing history from saved files, check browser download behaviour, and practise with a harmless sample on your own device.</summary>
+  </entry>
+  <entry>
+    <title type="html">Remote Camera</title>
+    <id>https://abox.tools/remote-camera/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/remote-camera/"/>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <summary type="html">Watch a camera with Direct or optional Cloud relay, multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications.</summary>
+  </entry>
+  <entry>
+    <title type="html">Share a Browser Tab</title>
+    <id>https://abox.tools/share-tab/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/share-tab/"/>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <summary type="html">Share a browser tab with one approved viewer using Direct or optional Cloud relay. Invite by link, network discovery or a private group. No extension, audio or remote control.</summary>
+  </entry>
+  <entry>
+    <title type="html">What an ordinary file can reveal about you</title>
+    <id>https://abox.tools/guides/what-an-ordinary-file-can-reveal-about-you/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/what-an-ordinary-file-can-reveal-about-you/"/>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <summary type="html">Use fictional receipts, screenshots and attendance lists to recognise private information, context and unnecessary disclosure before sharing a file.</summary>
+  </entry>
+  <entry>
+    <title type="html">Where do your file copies go?</title>
+    <id>https://abox.tools/guides/where-do-your-file-copies-go/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/where-do-your-file-copies-go/"/>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <summary type="html">Follow originals, downloads, synced folders and shared copies so you know what remains after editing a file locally.</summary>
+  </entry>
+  <entry>
+    <title type="html">Local Walkie-Talkie</title>
+    <id>https://abox.tools/walkie-talkie/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/walkie-talkie/"/>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary type="html">Broadcast voice to up to ten receive-only browsers. Direct local connections or optional Cloud relay, with push to talk, hands-free speech and private group discovery.</summary>
+  </entry>
+  <entry>
+    <title type="html">Share Text &amp; Files</title>
+    <id>https://abox.tools/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/share-text/"/>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary type="html">Send text or files between browsers with Direct or optional Cloud relay. Live updates, per-reader approval, no server content storage and no account.</summary>
+  </entry>
+  <entry>
+    <title type="html">Voice Oncall</title>
+    <id>https://abox.tools/voice-oncall/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/voice-oncall/"/>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary type="html">Let up to ten people send live voice to one host browser. Direct local connections or optional Cloud relay, with a pager password, push to talk and moderation.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to share a browser tab live without an extension</title>
+    <id>https://abox.tools/guides/share-a-browser-tab/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-a-browser-tab/"/>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary type="html">Show a browser tab to an approved viewer. Choose Direct on a reachable local network or an optional encrypted Cloud relay. No extension or remote control.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to watch a camera from another device</title>
+    <id>https://abox.tools/guides/watch-camera-from-another-device/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/watch-camera-from-another-device/"/>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary type="html">Reuse a phone for pets, entryways or DIY inspections. Approve the viewer and connect with Direct on a reachable local network or an optional encrypted Cloud relay.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to broadcast voice on a local network</title>
+    <id>https://abox.tools/guides/broadcast-voice-on-a-local-network/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/broadcast-voice-on-a-local-network/"/>
+    <updated>2026-10-14T00:00:00Z</updated>
+    <summary type="html">Start a browser voice channel and invite listeners by link or nearby discovery. Direct is the default; an encrypted Cloud relay is available with explicit confirmation.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to receive live voice from nearby people</title>
+    <id>https://abox.tools/guides/receive-voice-from-nearby-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/receive-voice-from-nearby-devices/"/>
+    <updated>2026-10-14T00:00:00Z</updated>
+    <summary type="html">Open a browser voice pager with password admission and individual speaker controls. Choose Direct or an optional encrypted Cloud relay before hosting.</summary>
+  </entry>
+  <entry>
+    <title type="html">Can blacked-out text be recovered?</title>
+    <id>https://abox.tools/guides/can-blacked-out-text-be-recovered/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/can-blacked-out-text-be-recovered/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Often, yes - because most black boxes are drawn over the text rather than put in its place. The three ways redaction fails, the copies a file keeps of its own past, and how to remove something so it stays removed.</summary>
+  </entry>
+  <entry>
+    <title type="html">Does converting a photo remove its metadata?</title>
+    <id>https://abox.tools/guides/does-converting-a-photo-remove-its-metadata/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/does-converting-a-photo-remove-its-metadata/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Sometimes - and both outcomes surprise people. Which operations strip EXIF, which quietly keep it, why the screen shows no difference either way, and how to check a file instead of assuming.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract receipt and invoice details from photos</title>
+    <id>https://abox.tools/guides/extract-receipts-and-invoices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/extract-receipts-and-invoices/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">How to check receipt OCR and crops, choose one email currency and manual or historical rates, then email compressed images with each converted value, the document count and a grand total.</summary>
+  </entry>
+  <entry>
+    <title type="html">How can a web page work with the wi-fi off?</title>
+    <id>https://abox.tools/guides/how-can-a-web-page-work-offline/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/how-can-a-web-page-work-offline/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">How a service worker caches browser tools, what an offline operation proves about local processing, and the network features and limits to check.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to Compress an Image Under a File-Size Limit</title>
+    <id>https://abox.tools/guides/compress-an-image-to-a-target-size/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/compress-an-image-to-a-target-size/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">An upload form wants 500 KB and your photo is 4 MB. What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to arrange multiple images into one picture</title>
+    <id>https://abox.tools/guides/arrange-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/arrange-images/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Make a collage, contact sheet or image strip: choose a grid, keep pictures whole or crop to fill, set the spacing and save a PNG, JPEG or WebP without uploading.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to check a bank statement CSV before you trust it</title>
+    <id>https://abox.tools/guides/check-a-bank-statement-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/check-a-bank-statement-csv/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Check a converted bank statement CSV for wrong amounts, missing rows and misread dates. A worked example shows what running balances can and cannot prove.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to check a download against its checksum</title>
+    <id>https://abox.tools/guides/verify-a-file-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/verify-a-file-checksum/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to clean up a voice memo before sending it</title>
+    <id>https://abox.tools/guides/clean-up-a-voice-memo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/clean-up-a-voice-memo/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Cut the dead air and the false starts, then bring the level up to full scale. Two browser tools in a row, in the order that keeps the quality, and the recording never leaves your machine.</summary>
+  </entry>
+</feed>

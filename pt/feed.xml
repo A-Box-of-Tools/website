@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="pt-BR">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Ferramentas grátis processam arquivos no navegador: imagens em PDF ou MP4, compressão para um tamanho alvo, recorte de vídeo e remoção de EXIF.</subtitle>
+  <id>https://abox.tools/pt/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
+  <updated>2026-10-23T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/pt/</uri>
+  </author>
+  <entry>
+    <title type="html">Analisador de GIF</title>
+    <id>https://abox.tools/pt/analisar-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/analisar-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Desmonte um GIF no navegador: cada quadro com o tempo e o descarte dele, as tabelas de cor, as repetições e um detalhamento byte a byte de para onde foi o tamanho do arquivo. Nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como empilhar fotografias para reduzir o ruído, ou tirar pessoas</title>
+    <id>https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Empilhar junta uma sequência de quadros numa imagem só. Qual método usar depende do que você quer perder: ruído, transeuntes, ou a profundidade de campo rasa de uma macro. Como cada um funciona, quanto custa, e onde os arquivos RAW entram.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como separar um GIF em quadros</title>
+    <id>https://abox.tools/pt/guias/separar-um-gif-em-quadros/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/separar-um-gif-em-quadros/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Tire cada quadro de um GIF animado em PNG: por que alguns quadros são só um pedacinho da imagem, o que acontece com a transparência, e como guardar os tempos para montar tudo de novo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como transformar uma pasta de imagens em um vídeo</title>
+    <id>https://abox.tools/pt/guias/transformar-imagens-em-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/transformar-imagens-em-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Faça uma apresentação em MP4 a partir de fotos: o que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente, e por que o resultado sai sem trilha sonora.</summary>
+  </entry>
+  <entry>
+    <title type="html">Empilhador de imagens</title>
+    <id>https://abox.tools/pt/empilhar-imagens/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/empilhar-imagens/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Imagens para vídeo</title>
+    <id>https://abox.tools/pt/imagens-para-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagens-para-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Transforme imagens JPG, PNG, WebP ou AVIF num vídeo MP4 de apresentação, de graça e inteiramente no seu navegador. Nada é enviado, não pede cadastro e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">O que tem de verdade dentro de um GIF</title>
+    <id>https://abox.tools/pt/guias/o-que-tem-dentro-de-um-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/o-que-tem-dentro-de-um-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Quadros, atrasos, métodos de descarte e tabelas de cor explicados, por que os navegadores recusam os atrasos mais rápidos, e como descobrir para onde foi mesmo o tamanho de um GIF.</summary>
+  </entry>
+  <entry>
+    <title type="html">Separador de GIF</title>
+    <id>https://abox.tools/pt/separar-gif-em-quadros/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/separar-gif-em-quadros/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Separe um GIF animado nos quadros dele e salve cada um como PNG, de graça e inteiramente no navegador. A transparência e os tempos ficam preservados. Nada é enviado, e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Um agente de IA pode usar estas ferramentas?</title>
+    <id>https://abox.tools/pt/guias/um-agente-de-ia-pode-usar-estas-ferramentas/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/um-agente-de-ia-pode-usar-estas-ferramentas/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">Um agente pode usar as ferramentas. Confira localização do navegador, dados do provedor, permissões e funções deliberadas de rede.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compartilhar texto e arquivos</title>
+    <id>https://abox.tools/pt/compartilhar-texto/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/compartilhar-texto/"/>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary type="html">Compartilhe texto e arquivos criptografados a partir do navegador aberto. A conexão direta é o padrão; a retransmissão na nuvem é opcional. Você aprova cada leitor.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como ver uma câmera de outro dispositivo</title>
+    <id>https://abox.tools/pt/guias/ver-camera-de-outro-dispositivo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/ver-camera-de-outro-dispositivo/"/>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary type="html">Veja uma câmera em outro navegador e aprove o espectador antes do vídeo. Conecte diretamente em uma rede local acessível ou escolha a retransmissão criptografada pela Cloudflare.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como transmitir voz em uma rede local</title>
+    <id>https://abox.tools/pt/guias/transmitir-voz-na-rede-local/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/transmitir-voz-na-rede-local/"/>
+    <updated>2026-10-14T00:00:00Z</updated>
+    <summary type="html">Abra um canal de voz no navegador e convide por link ou descoberta de dispositivos próximos. A conexão direta é o padrão; a retransmissão criptografada pela Cloudflare exige confirmação explícita.</summary>
+  </entry>
+  <entry>
+    <title type="html">A foto que seu celular salvou, e o formato que nada abre</title>
+    <id>https://abox.tools/pt/guias/converter-heic-para-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-heic-para-jpg/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">iPhones salvam fotos em HEIC, e metade da internet não consegue abrir uma. O que é o formato, por que só o Safari decodifica, o que a conversão custa à imagem, e como fazer isso sem entregar as fotos a ninguém.</summary>
+  </entry>
+  <entry>
+    <title type="html">A imagem que a web salva e o formato que quase tudo aceita</title>
+    <id>https://abox.tools/pt/guias/converter-webp-para-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-webp-para-jpg/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Salvou uma imagem e recebeu um .webp que outros programas não abrem? O que é WebP, por que converter costuma aumentar o tamanho, o que acontece com a transparência e como fazer sem enviar nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">A mesma imagem, um terço menor e com a transparência intacta</title>
+    <id>https://abox.tools/pt/guias/converter-png-para-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-png-para-webp/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">WebP é menor que PNG mesmo sem descartar informação, e muito menor com uma pequena perda. Qual modo escolher para cada imagem, quanto ele economiza e como converter sem enviar arquivos.</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64 é criptografia?</title>
+    <id>https://abox.tools/pt/guias/base64-e-criptografia/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/base64-e-criptografia/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Não - e a diferença importa na prática. Codificação, criptografia e hash resolvem três problemas diferentes: o primeiro qualquer um desfaz, o segundo só quem tem a chave, o terceiro ninguém. Qual é qual, e como reconhecer de vista.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como abrir um arquivo DCM e o que há dentro dele</title>
+    <id>https://abox.tools/pt/guias/abrir-um-arquivo-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/abrir-um-arquivo-dicom/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">O que é um arquivo .dcm, como abrir um, o que há no disco do hospital, por que alguns arquivos não têm extensão, como usar janela e nível e quais dados do paciente acompanham a imagem.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como aparar um vídeo sem recodificá-lo</title>
+    <id>https://abox.tools/pt/guias/aparar-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/aparar-um-video/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Cortar um clipe não precisa perder um único byte de qualidade. Por que um corte às vezes cai antes de onde você marcou, o que um keyframe tem a ver com isso, e quando aceitar uma recodificação.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como colocar marca d’água em um PDF e para que ela serve</title>
+    <id>https://abox.tools/pt/guias/adicionar-marca-dagua-a-um-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/adicionar-marca-dagua-a-um-pdf/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Por que identificar o destinatário em uma cópia, o que a marca impede ou não, qual texto usar e como aplicá-la no navegador sem enviar o documento.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como comparar dois arquivos JSON</title>
+    <id>https://abox.tools/pt/guias/comparar-dois-arquivos-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comparar-dois-arquivos-json/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Formate os dois arquivos do mesmo jeito, ordene as chaves e compare depois. Por que um diff de JSON cru é quase só ruído, como canonizar os dois lados no navegador, e o que sobrevive até o patch.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como compartilhar texto e arquivos sem guardar cópia no servidor</title>
+    <id>https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Compartilhe texto e arquivos entre navegadores com conexão direta por padrão ou retransmissão criptografada opcional pela Cloudflare. Sem conta nem cópia armazenada no servidor; o destinatário pode guardar o que receber.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como comprimir um vídeo até o tamanho que você consegue enviar</title>
+    <id>https://abox.tools/pt/guias/comprimir-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comprimir-um-video/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">O que um limite de tamanho custa à imagem, para onde vão os megabytes, por que reduzir a resolução antes de perder nitidez e como comprimir no navegador sem enviar o arquivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como comprimir uma imagem abaixo de um limite de tamanho</title>
+    <id>https://abox.tools/pt/guias/comprimir-uma-imagem-para-um-tamanho-exato/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comprimir-uma-imagem-para-um-tamanho-exato/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">O formulário quer 500 KB e sua foto tem 4 MB. O que um limite de tamanho custa de verdade, qual ajuste mexer primeiro, e por que um PNG não encolhe como um JPEG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como conferir um CSV de extrato bancário antes de confiar nele</title>
+    <id>https://abox.tools/pt/guias/conferir-csv-de-extrato-bancario/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/conferir-csv-de-extrato-bancario/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Confira valores, transações ausentes e datas em um CSV de extrato bancário. Um exemplo mostra o que os saldos permitem verificar e quais erros podem passar.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como conferir um download com o checksum dele</title>
+    <id>https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Como comparar um checksum MD5 ou SHA-256 no Windows, no macOS e no Linux ou no navegador, o que uma coincidência realmente prova, e o erro que deixa a operação inteira sem sentido.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como converter entre YAML e JSON</title>
+    <id>https://abox.tools/pt/guides/convert-yaml-and-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guides/convert-yaml-and-json/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Converta um subconjunto de YAML para JSON ou o contrário no navegador. Confira comentários perdidos, construções recusadas e texto numérico antes de reutilizar.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como converter um GIF para MP4 e por que ele fica tão menor</title>
+    <id>https://abox.tools/pt/guias/converter-gif-para-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-gif-para-mp4/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Por que o MP4 da mesma animação costuma ocupar um décimo do GIF, o que muda na conversão, por que o tempo de cada quadro importa e como converter no navegador sem enviar o arquivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como converter um SVG em PNG no tamanho certo</title>
+    <id>https://abox.tools/pt/guias/converter-svg-para-png/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-svg-para-png/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Um vetor não tem tamanho em pixels próprio, então o número é escolha sua. De onde vem esse número para uma tela, um ícone de aplicativo e uma impressora, e o que muda quando um desenho vira pixels.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como converter um vídeo para um MP4 que o destino aceite</title>
+    <id>https://abox.tools/pt/guias/converter-video-para-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-video-para-mp4/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">O que torna um MP4 compatível, por que WebM, MKV ou MOV de iPhone são recusados, quando a conversão não perde nada e quando recodifica, e como fazer tudo no navegador sem enviar o arquivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como cortar um vídeo para outro formato de tela</title>
+    <id>https://abox.tools/pt/guias/cortar-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-video/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa.</summary>
+  </entry>
+</feed>

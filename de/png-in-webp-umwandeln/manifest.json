@@ -1,0 +1,26 @@
+{
+  "id": "/de/png-in-webp-umwandeln/",
+  "name": "PNG zu WebP",
+  "short_name": "PNG zu WebP",
+  "description": "Dasselbe Bild, oft ein Drittel kleiner, mit unver\u00e4nderten transparenten Bereichen.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
