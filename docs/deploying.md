@@ -623,6 +623,23 @@ the catalogue and destination cannot drift into describing different apps.
 This subtype of `SoftwareApplication` defines `browserRequirements`, which is
 why both the catalogue and tool pages use it.
 
+The catalogue's [`SearchAction`](https://schema.org/SearchAction) describes
+the existing browser filter through a fragment link, for example
+`/#search=PNG%20to%20WebP`. Its localized `EntryPoint.urlTemplate` follows
+[RFC 6570](https://www.rfc-editor.org/rfc/rfc6570.html) simple expansion, so
+reserved characters in the public search words are encoded. Opening the link
+requires JavaScript and filters the cards already on the page; an HTTP client
+still receives the full static catalogue. This is not a remote search API.
+
+The fragment accepts at most 200 Unicode code points; malformed or longer
+values are ignored. Typing and clearing the filter never rewrite the URL,
+create history entries or save the words. Following a search link keeps its
+named language rather than automatically redirecting to another catalogue;
+an explicit language switch opens that language's unfiltered hub. Category
+links retain their clear-and-expand behavior. Fragments are absent from the
+HTTP request but remain visible to the browser, anyone receiving the link
+and scripts on the page, so these links are for public tool keywords.
+
 The hub also offers `find_browser_tools` through
 [WebMCP](https://developer.chrome.com/docs/ai/webmcp) when the browser exposes
 that experimental API. It searches only the public tool cards already on the

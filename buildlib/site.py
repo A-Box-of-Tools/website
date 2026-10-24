@@ -438,6 +438,18 @@ def hub_jsonld(site, tools):
             'name': site['name'],
             'isPartOf': {'@id': site['home'] + '#website'},
             'about': site['hub']['schema_about'],
+            # This action searches the visible catalogue in this language.
+            # A fragment restores the browser filter without making the
+            # search words part of the HTTP request to the static host.
+            'potentialAction': {
+                '@type': 'SearchAction',
+                'target': {
+                    '@type': 'EntryPoint',
+                    'urlTemplate': site['home'] + '#search={search_term_string}',
+                    'contentType': 'text/html',
+                },
+                'query-input': 'required name=search_term_string',
+            },
             'mainEntity': {
                 '@type': 'ItemList',
                 'itemListElement': [

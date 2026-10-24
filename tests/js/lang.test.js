@@ -54,6 +54,7 @@ function run({
   alternates = [],
   lang = 'en',
   at = '/',
+  hash = '',
   languages = ['en-US', 'en'],
   chosen = null,
   local = storage(),
@@ -83,8 +84,8 @@ function run({
   const location = {
     pathname: at,
     search: '',
-    hash: '',
-    href: `https://abox.tools${at}`,
+    hash,
+    href: `https://abox.tools${at}${hash}`,
     replace: (to) => replaced.push(to),
   };
 
@@ -126,6 +127,27 @@ test('the page it leaves is replaced rather than pushed', () => {
   // script that called assign() or set href would throw rather than pass.
   const out = run({ alternates: HUB, languages: ['de'] });
   assert.equal(out.went, '/de/');
+});
+
+test('a valid catalogue search keeps the language named by its URL without changing preferences', () => {
+  for (const hash of ['#search=compress%20image', '#search=',
+    '#search=' + encodeURIComponent('🧰'.repeat(200))]) {
+    const out = run({ alternates: HUB, languages: ['de'], chosen: 'de', hash });
+    assert.equal(out.went, null, hash);
+    assert.equal(out.stored(), 'de', hash);
+    assert.equal(out.from, null, hash);
+  }
+});
+
+test('malformed, overlong and category fragments retain the ordinary language rule', () => {
+  for (const hash of ['#search=%E0%A4%A', '#search=' + 'x'.repeat(201),
+    '#search=' + encodeURIComponent('🧰'.repeat(201)), '#search', '#images']) {
+    const out = run({ alternates: HUB, languages: ['de'], hash });
+    assert.equal(out.went, '/de/' + hash, hash);
+  }
+  const hash = '#search=compress%20image';
+  const tool = run({ alternates: TOOL, at: '/compress-image/', languages: ['de'], hash });
+  assert.equal(tool.went, '/de/bild-komprimieren/' + hash);
 });
 
 test('an English browser is left where it is', () => {
@@ -243,6 +265,20 @@ test('a click on a switcher link is what writes a choice down', () => {
   };
   click({ target: { closest: (selector) => (selector === 'a[hreflang]' ? link : null) } });
   assert.equal(out.stored(), 'de');
+});
+
+test('an explicit language switch keeps its clean destination instead of carrying search keywords', () => {
+  const out = run({ alternates: HUB, languages: ['de'], hash: '#search=compress%20image' });
+  const attributes = { hreflang: 'de', href: 'https://abox.tools/de/' };
+  const link = {
+    getAttribute: (name) => attributes[name] ?? null,
+    closest: (selector) => (selector.includes('.lang-switch') ? link : null),
+  };
+  out.listeners.get('click')({
+    target: { closest: (selector) => (selector === 'a[hreflang]' ? link : null) },
+  });
+  assert.equal(out.stored(), 'de');
+  assert.equal(link.getAttribute('href'), 'https://abox.tools/de/');
 });
 
 test('a click on any other link writes nothing', () => {
