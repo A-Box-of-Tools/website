@@ -62,8 +62,8 @@ function request(body = { jsonrpc: '2.0', id: 1, method: 'tools/list', params: {
   });
 }
 
-async function memoryClient(t, withUi = true) {
-  const server = createCatalogueServer(catalogue, viewHtml);
+async function memoryClient(t, withUi = true, publicCatalogue = catalogue) {
+  const server = createCatalogueServer(publicCatalogue, viewHtml);
   const client = new Client({ name: 'catalogue-contract-tests', version: '1.0.0' }, withUi ? {
     capabilities: { extensions: { 'io.modelcontextprotocol/ui': { mimeTypes: [appMime] } } },
   } : {});
@@ -174,6 +174,27 @@ test('search rejects invalid values and private payload fields instead of ignori
   ];
   for (const args of invalid) assert.throws(() => searchCatalogue(catalogue, args), TypeError);
   assert.equal({}.polluted, undefined);
+});
+
+test('independent servers keep their catalogue locale contracts isolated', async (t) => {
+  const englishOnly = structuredClone(catalogue);
+  delete englishOnly.locales.de;
+  const multilingual = await memoryClient(t, false);
+  const english = await memoryClient(t, false, englishOnly);
+  const germanResult = await multilingual.callTool({
+    name: 'find_browser_tools', arguments: { query: 'PNG', locale: 'de' },
+  });
+  const englishResult = await english.callTool({
+    name: 'find_browser_tools', arguments: { query: 'PNG' },
+  });
+  assert.equal(germanResult.structuredContent.locale, 'de');
+  assert.equal(englishResult.structuredContent.locale, 'en');
+  assert.ok(germanResult.structuredContent.tools.every(tool => tool.url.includes('/de/')));
+  assert.ok(englishResult.structuredContent.tools.every(tool => !tool.url.includes('/de/')));
+  const multilingualTool = (await multilingual.listTools()).tools[0];
+  const englishTool = (await english.listTools()).tools[0];
+  assert.deepEqual(multilingualTool.inputSchema.properties.locale.enum, ['en', 'de']);
+  assert.deepEqual(englishTool.inputSchema.properties.locale.enum, ['en']);
 });
 
 test('a real SDK client discovers the read-only tool and its MCP App resource', async (t) => {

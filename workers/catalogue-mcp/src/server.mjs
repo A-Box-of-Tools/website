@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from '@modelcontextprotocol/ext-apps/server';
 import * as z from 'zod/v4';
-import { searchCatalogue, validQuery } from './search.mjs';
+import { searchCatalogue, validQuery, validateCatalogue } from './search.mjs';
 
 // Workers and sandboxed views prohibit the code generation Zod can use for speed.
 z.config({ jitless: true });
@@ -13,13 +13,12 @@ export const UI_META = Object.freeze({
   prefersBorder: true
 });
 
-export function createCatalogueServer(catalogue, viewHtml) {
-  if (typeof viewHtml !== 'string' || viewHtml.slice(0, 15).toLowerCase() !== '<!doctype html>') {
-    throw new TypeError('Build the actual catalogue app HTML before serving MCP');
-  }
-  const server = new McpServer({ name: SERVER_NAME, version: catalogue.build.version },
-    { maxToolInputElements: 10,
-      instructions: 'This public server only finds browser tools. Send short public task or format keywords; never send files, filenames, passwords or private content. A result is a public tool link, not file processing. Open a chosen tool in the browser where processing should happen. Tool pages explain intentional network features. Authentication is not required.' });
+const catalogueSchemas = new WeakMap();
+
+export function prepareCatalogueSchemas(catalogue) {
+  const prepared = catalogueSchemas.get(catalogue);
+  if (prepared) return prepared;
+  validateCatalogue(catalogue);
   const locales = Object.keys(catalogue.locales);
   const inputSchema = z.object({
     query: z.string().refine(validQuery).meta({ maxLength: 200,
@@ -32,6 +31,21 @@ export function createCatalogueServer(catalogue, viewHtml) {
     tools: z.array(z.object({ name: z.string(), description: z.string(),
       url: z.url().regex(/^https:\/\/abox\.tools\//) }).strict()).max(20)
   }).strict();
+  // Schemas depend only on the frozen catalogue. Servers and transports still
+  // belong to individual requests, as the stateless SDK handler requires.
+  const schemas = Object.freeze({ inputSchema, outputSchema });
+  catalogueSchemas.set(catalogue, schemas);
+  return schemas;
+}
+
+export function createCatalogueServer(catalogue, viewHtml) {
+  if (typeof viewHtml !== 'string' || viewHtml.slice(0, 15).toLowerCase() !== '<!doctype html>') {
+    throw new TypeError('Build the actual catalogue app HTML before serving MCP');
+  }
+  const { inputSchema, outputSchema } = prepareCatalogueSchemas(catalogue);
+  const server = new McpServer({ name: SERVER_NAME, version: catalogue.build.version },
+    { maxToolInputElements: 10,
+      instructions: 'This public server only finds browser tools. Send short public task or format keywords; never send files, filenames, passwords or private content. A result is a public tool link, not file processing. Open a chosen tool in the browser where processing should happen. Tool pages explain intentional network features. Authentication is not required.' });
   registerAppTool(server, 'find_browser_tools', {
     title: 'Find a browser tool',
     description: 'Search the public abox.tools catalogue by task, name or format. Returns public tool descriptions and links, with an interactive catalogue where supported. Public keywords are sent to this service. Does not open tools, accept files or process private content.',

@@ -129,7 +129,7 @@ rendezvous namespaces. Production would use its separately reserved namespace
 OAuth issuer, protected resource or Bearer challenge is invented for it.
 
 Cloudflare Free's CPU and request limits still apply. Check the Wrangler dry
-run's compressed bundle size and exercise actual deployed calls before
+run's bundle size and startup time and exercise actual deployed calls before
 advertising the endpoint. A successful local build alone proves neither live
 availability nor an Ora score improvement.
 
