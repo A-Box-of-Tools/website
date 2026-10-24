@@ -28,7 +28,7 @@
 <body>
 <main>
   <h1>Local MCP App host</h1>
-  <p>This local preview connects through the MCP SDK to <code id="service-endpoint"></code>. Before rendering, it verifies the live App resource against the local build’s SHA-256 receipt. It renders that source in opaque srcdoc with only a restrictive policy added; the App module is allowed by its exact SHA-256 and is not rewritten.</p>
+  <p>This local preview connects through the MCP SDK to <code id="service-endpoint"></code>. Before rendering, it verifies the live App resource, bootstrap and decoded build module against the local build’s SHA-256 receipt. It renders that source in opaque srcdoc with only a restrictive policy added; both executable sources are allowed by their exact SHA-256 and are not rewritten.</p>
   <p id="resource-receipt" role="status">App resource integrity has not been verified.</p>
   <p id="service-local">Use public catalogue keywords only. The MCP request sends these keywords to the local Worker. No file is selected or processed here.</p>
   <p id="service-dev" hidden>Use public catalogue keywords only. Initial MCP requests leave this computer and send these keywords to the deployed development service at mcp-dev.abox.tools. Filtering inside its App stays in the local view. No file is selected or processed here.</p>

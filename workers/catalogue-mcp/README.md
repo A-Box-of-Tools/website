@@ -69,15 +69,33 @@ npx wrangler deploy --dry-run --outdir build/worker
 
 Preparation writes only ignored `generated/catalogue.json`. The UI build
 bundles the Apps SDK, UI code, CSS and that catalogue into a self-contained
-HTML resource, then creates an imported module for the Worker. Wrangler's
+HTML resource, then creates an imported module for the Worker. The public
+catalogue and generated App module are gzip-compressed and base64-encoded at
+build time. A small ordinary inline bootstrap uses native decompression and
+WebCrypto to verify the module's exact UTF-8 length and SHA-256, both baked
+into that bootstrap, before inserting its unchanged source as an inline module.
+The App then decodes and validates the public catalogue locally. Each decoded
+artifact has a 1 MiB ceiling. Loading or integrity failures keep the controls
+disabled and show an accurate message. Wrangler's
 dry run writes ignored deployment output. No whole-site asset directory is
 bound or uploaded, and the Worker fetches no runtime catalogue URL.
+
+Validation also prepares folded public names and descriptions for each locale
+once at startup. The index belongs to its immutable catalogue. Queries are
+still normalized per call and each result is a fresh copy; neither is cached.
 
 The resource uses `ui://abox/catalogue.html` with
 `text/html;profile=mcp-app`. The tool links it through `_meta.ui.resourceUri`;
 `resources/read` returns the actual HTML plus resource-level UI metadata.
 The declared network, external-resource and nested-frame domain lists are
 empty. The ordinary site remains protected against framing.
+
+The loader needs a secure browser context with native `DecompressionStream`
+and WebCrypto SHA-256. Its module insertion is subject to the host's script
+and Trusted Types policies; a host that blocks it receives the visible failure
+state, while the MCP tool's text links remain usable. Both executable sources
+can be authorized by exact CSP hashes. No eval, blob/data module URL, external
+asset request or broader script permission is required.
 
 Protocol identity is generated from the existing site version tag plus the
 actual source commit and a dirty-worktree marker. The app and MCP server use
@@ -107,6 +125,9 @@ the ordinary website remain available.
 
 The server uses the official SDK's `createMcpHandler` with JSON response mode.
 It creates a fresh server for each request and holds no protocol session.
+After enforcing the byte limit and rejecting batches, it passes the parsed
+body through the SDK's public `parsedBody` option. The SDK still validates
+the protocol message; it does not have to read and parse the body again.
 Current MCP 2026-07-28 clients and the SDK's default stateless compatibility
 for 2025-era clients share `/mcp`. Unsupported GET and DELETE requests return
 405. Native and server clients can omit `Origin`; browser origins must match
@@ -175,15 +196,17 @@ mode changes the deployed app resource, authentication or rate limiter.
 
 The local-only host opens at `http://127.0.0.1:8788/`; no second server is
 needed. At startup Node reads the generated public App HTML once and exposes
-its SHA-256, UTF-8 byte count and exact inline-module hash through
+its SHA-256, UTF-8 byte count and exact bootstrap and decoded-module hashes through
 `/view-receipt.json`. The browser uses the official MCP client to read the
-selected service's actual UI resource and must verify both the complete HTML
-and module source against that receipt before creating an iframe. A mismatch
+selected service's actual UI resource and must verify the complete HTML,
+ordinary bootstrap and decoded module source against that receipt before creating an iframe. A mismatch
 blocks rendering and asks for the intended rebuild/deploy and preview restart.
+The host decodes the verified public catalogue with the same bounded decoder
+as the App before allowing any tool address.
 
 The verified MCP resource is rendered as `srcdoc` with only a restrictive CSP
-meta tag prepended. Its App script is not changed. The parent allows that
-script's exact SHA-256 and the host's own script; it allows neither arbitrary
+meta tag prepended. Its executable sources are not changed. The parent allows
+both exact SHA-256 hashes and the host's own script; it allows neither arbitrary
 inline scripts nor eval. The child policy further denies network access,
 external resources and nested frames. The iframe has `allow-scripts` only,
 so it has an opaque origin and cannot access the host document. Official

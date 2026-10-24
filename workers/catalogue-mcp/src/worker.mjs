@@ -92,7 +92,10 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
             error: { code: -32600, message: 'JSON-RPC batch requests are not supported' } }),
           { status: 400, headers: { 'Content-Type': 'application/json' } }));
         }
-        return cors(await handler.fetch(new Request(request, { body: bytes })));
+        // The bounded body is already parsed for the batch guard. The SDK's
+        // public parsedBody option preserves its protocol validation without
+        // cloning, reading and parsing the same bytes a second time.
+        return cors(await handler.fetch(request, { parsedBody: message }));
       } catch (failure) {
         return cors(error(failure instanceof SyntaxError ? 400 : 500,
           failure instanceof SyntaxError ? 'Invalid JSON request' : 'The public catalogue is temporarily unavailable'));

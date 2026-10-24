@@ -286,6 +286,24 @@ test('explicitly allowed localhost remains usable by the same HTTP client', asyn
   assert.equal((await client.listTools()).tools[0].name, 'find_browser_tools');
 });
 
+test('bounded parsed bodies retain legacy protocol handling and reject invalid message shapes', async (t) => {
+  const worker = workerFixture();
+  t.after(() => worker.close());
+  const headers = { 'MCP-Protocol-Version': '2025-11-25' };
+  const response = await worker.fetch(request({ jsonrpc: '2.0', id: 7,
+    method: 'resources/read', params: { uri: resourceUri } }, { headers }), {}, {});
+  assert.equal(response.status, 200);
+  const body = await response.text();
+  const result = response.headers.get('Content-Type').startsWith('text/event-stream')
+    ? JSON.parse(body.split('\n').find(line => line.startsWith('data:')).slice(5)) : JSON.parse(body);
+  assert.equal(result.id, 7);
+  assert.equal(result.result.contents[0].text, viewHtml);
+  for (const message of [null, true, 42, 'hello', {}]) {
+    const invalid = await worker.fetch(request(JSON.stringify(message), { headers }), {}, {});
+    assert.equal(invalid.status, 400);
+  }
+});
+
 test('public discovery cards support cross-origin reads and conditional requests', async (t) => {
   const worker = workerFixture();
   t.after(() => worker.close());
@@ -437,4 +455,85 @@ test('POST requires JSON and rate limiting returns a retryable 429', async (t) =
   assert.equal(calls.length, 1);
   assert.equal(typeof calls[0].key, 'string');
   assert.ok(calls[0].key.length > 0);
+});
+
+test('prepared public text is not normalized again while each query remains independent', { concurrency: false }, () => {
+  const copy = structuredClone(catalogue);
+  const publicText = new Set(Object.values(copy.locales).flatMap(section => section.tools.flatMap(tool =>
+    [tool.name.toLowerCase(), `${tool.name} ${tool.description}`.toLowerCase()])));
+  const keywordQuery = 'PNG';
+  const conversionQuery = 'PNG into WebP';
+  const probe = 'A public normalization probe';
+  for (const query of [keywordQuery, conversionQuery, probe]) {
+    assert.ok(!publicText.has(query.toLowerCase()), query);
+  }
+  const original = Object.getOwnPropertyDescriptor(String.prototype, 'normalize');
+  let publicNormalizations = 0;
+  let queryNormalizations = 0;
+  Object.defineProperty(String.prototype, 'normalize', { ...original, value: function (...args) {
+    const text = String(this);
+    if (publicText.has(text)) publicNormalizations += 1;
+    if (text === probe.toLowerCase()) queryNormalizations += 1;
+    return Reflect.apply(original.value, this, args);
+  } });
+  try {
+    validateCatalogue(copy);
+    assert.ok(publicNormalizations > 0);
+    publicNormalizations = 0;
+    validateCatalogue(copy);
+    const first = searchCatalogue(copy, { query: keywordQuery, limit: 1 });
+    const second = searchCatalogue(copy, { query: keywordQuery, locale: 'de', limit: 2 });
+    assert.equal(first.tools.length, 1);
+    assert.equal(second.tools.length, 2);
+    searchCatalogue(copy, { query: conversionQuery });
+    searchCatalogue(copy, { query: probe });
+    const previous = queryNormalizations;
+    searchCatalogue(copy, { query: probe });
+    assert.ok(queryNormalizations > previous);
+    first.tools[0].name = 'Changed result copy';
+    const later = searchCatalogue(copy, { query: keywordQuery, limit: 1 });
+    assert.equal(later.tools[0].name, copy.locales.en.tools[0].name);
+    assert.notStrictEqual(later.tools, first.tools);
+    assert.equal(publicNormalizations, 0);
+  } finally {
+    Object.defineProperty(String.prototype, 'normalize', original);
+  }
+});
+
+test('prepared indexes preserve normalization, direction, locale and catalogue ordering', () => {
+  const left = structuredClone(catalogue);
+  left.locales.en.tools = [
+    { name: 'Café – JPEG to WébP', description: 'Convert public pictures.', url: 'https://abox.tools/png-to-webp/' },
+    { name: 'PNG ⇄ WebP', description: 'Convert either named format.', url: 'https://abox.tools/resize-image/' },
+    { name: 'Document helper', description: 'Read a public PDF guide.', url: 'https://abox.tools/compress-pdf/' }
+  ];
+  left.locales.de.tools = [{ name: 'Deutscher Katalog', description: 'PNG-Bilder lokal bearbeiten.',
+    url: 'https://abox.tools/de/compress-image/' }];
+  const right = structuredClone(left);
+  right.locales.en.tools[0].name = 'Unrelated public tool';
+  right.locales.en.tools.reverse();
+  const queries = ['cafe-', 'jpeg to webp', 'webp to png', 'PDF', ''];
+  const expected = queries.map(query => searchCatalogue(left, { query }));
+  validateCatalogue(left);
+  validateCatalogue(right);
+  for (const [position, query] of queries.entries()) {
+    assert.deepEqual(searchCatalogue(left, { query }), expected[position]);
+  }
+  assert.deepEqual(searchCatalogue(left, { query: 'jpeg to webp' }).tools.map(tool => tool.name), ['Café – JPEG to WébP']);
+  assert.deepEqual(searchCatalogue(left, { query: 'webp to png' }).tools.map(tool => tool.name), ['PNG ⇄ WebP']);
+  assert.equal(searchCatalogue(right, { query: 'jpeg to webp' }).total, 0);
+  assert.equal(searchCatalogue(left, { query: 'jpeg', locale: 'de' }).total, 0);
+  assert.equal(searchCatalogue(left, { query: 'PNG', locale: 'de' }).total, 1);
+  assert.deepEqual(searchCatalogue(right, { query: '' }).tools.map(tool => tool.url),
+    right.locales.en.tools.map(tool => tool.url));
+});
+
+test('unvalidated mutable catalogues keep reflecting public edits and array reordering', () => {
+  const mutable = structuredClone(catalogue);
+  assert.equal(searchCatalogue(mutable, { query: 'JPEG' }).total, 1);
+  mutable.locales.en.tools[0].description = 'Read a public guide.';
+  assert.equal(searchCatalogue(mutable, { query: 'JPEG' }).total, 0);
+  mutable.locales.en.tools.reverse();
+  assert.deepEqual(searchCatalogue(mutable, { query: '' }).tools.map(tool => tool.url),
+    mutable.locales.en.tools.map(tool => tool.url));
 });

@@ -1,6 +1,7 @@
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { AppBridge, PostMessageTransport } from '@modelcontextprotocol/ext-apps/app-bridge';
 import * as z from 'zod/v4';
+import { decodeCatalogueData, decodeUtf8Data } from './view-data.mjs';
 
 z.config({ jitless: true });
 
@@ -29,6 +30,7 @@ let tool;
 let approved;
 let verified = false;
 let verifiedModuleHash;
+let verifiedBootstrapHash;
 
 function hostContext() {
   return { theme: theme.value === 'dark' ? 'dark' : 'light', platform: 'web',
@@ -65,12 +67,22 @@ async function verifyResource() {
   const parsed = new DOMParser().parseFromString(resource.text, 'text/html');
   const modules = [...parsed.querySelectorAll('script[type="module"]')];
   if (modules.length !== 1 || modules[0].hasAttribute('src')
+      || !/^[A-Za-z0-9+/]{43}=$/.test(receipt.bootstrapSha256)
       || !/^[A-Za-z0-9+/]{43}=$/.test(receipt.moduleSha256)) {
-    throw new Error('Expected one self-contained App module with an exact SHA-256 receipt.');
+    throw new Error('Expected a self-contained App bootstrap and module with exact SHA-256 receipts.');
   }
-  const moduleDigest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(modules[0].textContent));
+  const bootstrapDigest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(modules[0].textContent));
+  const bootstrapHash = btoa(String.fromCharCode(...new Uint8Array(bootstrapDigest)));
+  if (bootstrapHash !== receipt.bootstrapSha256) throw new Error('The actual bootstrap differs from the locally allowed script hash.');
+  const packed = parsed.getElementById('app-module-data');
+  if (packed?.dataset.encoding !== 'gzip-base64') throw new Error('Expected a compressed build module.');
+  const source = await decodeUtf8Data(packed.textContent, Number(packed.dataset.bytes));
+  const moduleDigest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source));
   const moduleHash = btoa(String.fromCharCode(...new Uint8Array(moduleDigest)));
-  if (moduleHash !== receipt.moduleSha256) throw new Error('The actual App script differs from the locally allowed script hash.');
+  if (moduleHash !== receipt.moduleSha256 || packed.dataset.sha256 !== moduleHash) {
+    throw new Error('The decoded App script differs from the locally allowed script hash.');
+  }
+  verifiedBootstrapHash = bootstrapHash;
   verifiedModuleHash = moduleHash;
   verified = true;
   document.getElementById('resource-receipt').textContent = `Verified actual MCP resource: SHA-256 ${sha256}, ${bytes.byteLength} bytes.`;
@@ -106,13 +118,13 @@ async function showApp(args) {
   frame.title = 'Sandboxed abox.tools catalogue App';
   frame.setAttribute('sandbox', 'allow-scripts');
   frame.referrerPolicy = 'no-referrer';
-  const policy = ["default-src 'none'", `script-src 'sha256-${verifiedModuleHash}'`,
+  const policy = ["default-src 'none'", `script-src 'sha256-${verifiedBootstrapHash}' 'sha256-${verifiedModuleHash}'`,
     "style-src 'unsafe-inline'", "connect-src 'none'", "img-src data: blob:",
     "font-src 'none'", "media-src 'none'", "worker-src 'none'", "frame-src 'none'",
     "object-src 'none'", "base-uri 'none'", "form-action 'none'"].join('; ');
   if (!/<head(?:\s[^>]*)?>/i.test(resource.text)) throw new Error('Expected a complete verified App HTML document.');
-  // Only this restrictive policy is added. The module whose exact source was
-  // hashed above and allowed by the host CSP is not rewritten.
+  // Only this restrictive policy is added. Both the bootstrap and decoded
+  // build module retain the exact sources verified against the local receipt.
   frame.srcdoc = resource.text.replace(/<head(?:\s[^>]*)?>/i, head => head
     + `<meta http-equiv="Content-Security-Policy" content="${policy}">`);
   bridge = new AppBridge(client, info, {
@@ -163,7 +175,7 @@ async function showApp(args) {
   // await. The iframe's asynchronous navigation cannot dispatch a message
   // until this host task has installed that listener.
   await bridge.connect(new PostMessageTransport(frameWindow, frameWindow));
-  log('Verified App srcdoc attached with its exact script hash and AppBridge transport listening');
+  log('Verified App srcdoc attached with exact bootstrap/module hashes and AppBridge transport listening');
 }
 
 window.addEventListener('message', event => {
@@ -209,7 +221,9 @@ try {
   log(`resources/read ${resource.uri}: actual ${resource.mimeType} HTML received`);
   await verifyResource();
   const parsed = new DOMParser().parseFromString(resource.text, 'text/html');
-  const catalogue = JSON.parse(parsed.getElementById('catalogue-data').textContent);
+  const data = parsed.getElementById('catalogue-data');
+  if (data?.dataset.encoding !== 'gzip-base64') throw new Error('Expected the compressed public catalogue.');
+  const catalogue = await decodeCatalogueData(data.textContent, Number(data.dataset.bytes));
   approved = new Set(Object.values(catalogue.locales).flatMap(section => section.tools.map(entry => safeToolUrl(entry.url))));
   locale.replaceChildren();
   const names = new Intl.DisplayNames(['en'], { type: 'language' });
