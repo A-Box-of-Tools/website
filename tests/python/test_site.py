@@ -16,6 +16,7 @@ stop, and each is one test.
 import json
 import tempfile
 import unittest
+import urllib.parse
 from pathlib import Path
 
 from buildlib import site as sitelib
@@ -417,6 +418,30 @@ class StructuredData(unittest.TestCase):
                 self.assertIn(key, page)
                 self.assertNotIn(key, app)
         self.assertNotIn('FAQPage', json.dumps(app))
+
+    def test_catalogue_search_links_keep_words_in_the_fragment_and_current_language(self):
+        query = 'PNG to WebP & JSON/#'
+        for lang in ('en', 'de', 'ja'):
+            with self.subTest(language=lang):
+                home = SITE['domain'] + (lang + '/' if lang != 'en' else '')
+                site = dict(SITE, lang=lang, home=home,
+                            hub={'schema_description': 'd', 'schema_about': ['x']})
+                graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
+                catalogue = next(node for node in graph if node['@type'] == 'CollectionPage')
+                action = catalogue['potentialAction']
+                self.assertEqual(action['@type'], 'SearchAction')
+                self.assertEqual(action['query-input'], 'required name=search_term_string')
+                self.assertEqual(action['target']['@type'], 'EntryPoint')
+                self.assertEqual(action['target']['contentType'], 'text/html')
+                template = action['target']['urlTemplate']
+                self.assertEqual(template, home + '#search={search_term_string}')
+                linked = urllib.parse.urlsplit(template.replace(
+                    '{search_term_string}', urllib.parse.quote(query, safe='')))
+                self.assertEqual(linked.query, '')
+                self.assertEqual(linked.path, urllib.parse.urlsplit(home).path)
+                self.assertEqual(urllib.parse.unquote(linked.fragment), 'search=' + query)
+                self.assertTrue(all('potentialAction' not in node for node in graph
+                                    if node['@type'] != 'CollectionPage'))
 
     def test_the_publisher_description_uses_the_current_language(self):
         for description in ('Local tools &amp; guides', 'Outils &amp; guides locaux'):
