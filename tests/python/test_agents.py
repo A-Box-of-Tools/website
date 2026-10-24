@@ -102,6 +102,22 @@ class Discovery(unittest.TestCase):
         self.assertEqual(self.document('.well-known/ard.json')['entries'][0]['description'],
                          self.site['agents']['description'])
 
+    def test_publisher_identity_follows_the_resource_domain_without_claiming_attestation(self):
+        from urllib.parse import urlsplit
+        for domain in ('https://example.test/', 'https://other.example.test'):
+            with self.subTest(domain=domain):
+                self.site['domain'] = domain
+                self.build()
+                entry = self.document('.well-known/ard.json')['entries'][0]
+                identity = entry['trustManifest']
+                publisher = entry['identifier'].split(':')[2]
+                self.assertEqual(urlsplit(identity['identity']).hostname, publisher)
+                self.assertEqual(urlsplit(identity['identity']).scheme, 'https')
+                self.assertEqual(identity['identityType'], 'https')
+                self.assertNotIn('signature', identity)
+                self.assertNotIn('attestations', identity)
+                self.assertNotIn('trustSchema', identity)
+
     def test_changing_instructions_changes_the_digest_and_rebuilds_are_stable(self):
         paths = self.build()
         first = {path: (self.out / path).read_bytes() for path in paths}

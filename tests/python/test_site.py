@@ -254,7 +254,7 @@ class StructuredData(unittest.TestCase):
         }
         graph = json.loads(sitelib.tool_jsonld(SITE, tool))['@graph']
         self.assertEqual([item['@type'] for item in graph],
-                         ['SoftwareApplication', 'BreadcrumbList', 'FAQPage'])
+                         ['WebApplication', 'BreadcrumbList', 'FAQPage'])
 
     def test_faq_answers_are_derived_from_the_page_html(self):
         # Authored once as the HTML that renders, so the two cannot contradict
@@ -363,13 +363,60 @@ class StructuredData(unittest.TestCase):
                                          'https://x.example.test/site'])
 
     def test_the_hub_lists_the_tools_in_order(self):
-        tools = [{'name': 'A', 'url': 'https://example.test/a/'},
-                 {'name': 'B', 'url': 'https://example.test/b/'}]
+        tools = [{'name': name, 'url': f'https://example.test/{name.lower()}/',
+                  'schema': {'category': 'UtilitiesApplication',
+                             'description': f'Tool {name}.'}}
+                 for name in ('A', 'B')]
         site = dict(SITE, hub={'schema_description': 'd', 'schema_about': ['x']})
         graph = json.loads(sitelib.hub_jsonld(site, tools))['@graph']
         items = graph[2]['mainEntity']['itemListElement']
         self.assertEqual([i['position'] for i in items], [1, 2])
         self.assertEqual([i['name'] for i in items], ['A', 'B'])
+        self.assertEqual([i['item']['@id'] for i in items],
+                         ['https://example.test/a/#app',
+                          'https://example.test/b/#app'])
+        self.assertTrue(all(i['item']['@type'] == 'WebApplication' for i in items))
+        self.assertTrue(all(i['item']['browserRequirements'] == 'Requires JavaScript.'
+                            for i in items))
+
+    def test_the_catalogue_and_tool_page_identify_the_same_localized_application(self):
+        """Browser requirements need the WebApplication subtype on both pages,
+        while the localized #app identity still names the same application."""
+        site = dict(SITE, lang='fr', home='https://example.test/fr/',
+                    hub={'schema_description': 'd', 'schema_about': ['x']})
+        tool = {
+            'name': 'Vidéo&nbsp;<b>Rogner</b>',
+            'url': 'https://example.test/fr/rogner-video/',
+            'lastmod': '2026-01-01',
+            'schema': {
+                'category': 'MultimediaApplication',
+                'description': 'Crop <b>MP4</b> &amp; WebM locally.',
+                'browser_requirements': 'Requires JavaScript and WebCodecs.',
+                'features': ['Crop a video.'],
+            },
+            'faq': [{'q': 'Does it upload?', 'a': 'No.'}],
+        }
+        graph = json.loads(sitelib.hub_jsonld(site, [tool]))['@graph']
+        listed = graph[2]['mainEntity']['itemListElement'][0]
+        app = listed['item']
+        page = json.loads(sitelib.tool_jsonld(site, tool))['@graph'][0]
+        self.assertEqual(app['@type'], 'WebApplication')
+        self.assertEqual(page['@type'], 'WebApplication')
+        self.assertEqual(app['@id'], 'https://example.test/fr/rogner-video/#app')
+        self.assertEqual(app['url'], listed['url'])
+        self.assertEqual(app['name'], 'Vidéo Rogner')
+        self.assertEqual(app['description'], 'Crop MP4 & WebM locally.')
+        self.assertEqual(app['inLanguage'], 'fr')
+        self.assertEqual(app['applicationCategory'], 'MultimediaApplication')
+        self.assertEqual(app['browserRequirements'], 'Requires JavaScript and WebCodecs.')
+        for key, value in app.items():
+            with self.subTest(field=key):
+                self.assertEqual(page[key], value)
+        for key in ('offers', 'featureList', 'publisher', 'dateModified'):
+            with self.subTest(detail=key):
+                self.assertIn(key, page)
+                self.assertNotIn(key, app)
+        self.assertNotIn('FAQPage', json.dumps(app))
 
     def test_the_publisher_description_uses_the_current_language(self):
         for description in ('Local tools &amp; guides', 'Outils &amp; guides locaux'):

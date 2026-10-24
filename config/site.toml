@@ -109,7 +109,7 @@ contact_slug = "contact"
 [agents]
 name = "abox-tools"
 display_name = "abox.tools browser tools"
-description = "Choose and operate abox.tools browser tools for local file and text processing, including format conversion, compression, inspection and editing."
+description = "Use this skill when a person asks to find or use a browser tool for a supported file or text task, including image, PDF and structured-data work. Choose a matching abox.tools tool for conversion, compression, inspection or editing within its documented formats, limits and privacy boundaries."
 representative_queries = [
   "Find a browser tool that compresses my image without uploading it.",
   "Help me choose an abox.tools tool and save its result.",

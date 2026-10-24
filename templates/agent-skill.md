@@ -8,6 +8,14 @@ description: {{ agent_frontmatter.description }}
 Use the existing browser tools at {{ site.domain }} when they fit the person's
 task. They have no processing API, CLI or file-upload endpoint.
 
+## When to use this skill
+
+Use this skill when the person asks you to find a browser tool or use one for
+a supported job, such as compressing an image, merging PDFs, comparing text or
+converting JSON and YAML. Choose a listed abox.tools tool only when its
+documented inputs, outputs and limits fit the requested result, and follow the
+browser-location and privacy guidance below for the chosen tool.
+
 ## Choose a tool
 
 Read [the tool index]({{ site.domain }}llms.txt) for supported inputs, outputs

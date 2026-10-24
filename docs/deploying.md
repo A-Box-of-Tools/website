@@ -556,8 +556,9 @@ because this is the one output that is not a page. Everything taken from a tool
 config goes through `site.to_text` on the way in for the same reason.
 
 Tool entries retain their capability descriptions. The guide catalogue is a
-linked companion at `/llms-guides.txt`, preserving each guide's title, address
-and description. Each index stays below 30,000 characters so navigation does
+linked section index at `/guides/llms.txt`, preserving each guide's title,
+address and description. `/llms-guides.txt` remains an identical compatibility
+copy for existing links. Each index stays below 30,000 characters so navigation does
 not consume the context needed to read the selected page. The build regression
 checks cover that budget and preserve every tool and guide link.
 
@@ -601,6 +602,27 @@ instructions therefore changes the digest without fetching anything at build
 time. The skill and catalog formats are evolving discovery conventions, not
 evidence that a client has completed a task.
 
+The ARD entry's `trustManifest` identifies the same HTTPS publisher domain as
+its resource identifier. This is a declared origin identity, not a signature,
+independent attestation or compliance certification. The separate Agent Skills
+digest identifies the emitted instruction bytes; it does not authenticate the
+publisher.
+
+Pages also advertise their covering text index with `rel="describedby"`, as
+recommended by the [llms.txt proposal](https://llmstxt.org/). English guides
+point to `/guides/llms.txt`; tools, hubs and translated pages point to the root
+index, which offers the language hubs. No translated guide claims an English
+section index covers its own address. The link is head metadata and makes no
+network request by itself.
+
+The hub's ordered catalogue also identifies each listed tool as a
+[`WebApplication`](https://schema.org/WebApplication), using the same
+localized `#app` identifier and core metadata as that tool's own page. A shared
+builder supplies its name, description, category and browser requirements, so
+the catalogue and destination cannot drift into describing different apps.
+This subtype of `SoftwareApplication` defines `browserRequirements`, which is
+why both the catalogue and tool pages use it.
+
 The hub also offers `find_browser_tools` through
 [WebMCP](https://developer.chrome.com/docs/ai/webmcp) when the browser exposes
 that experimental API. It searches only the public tool cards already on the
@@ -630,9 +652,11 @@ page and every prose page — the guides, About, Contact, the legal pages — in
 every language is written twice: `index.html`, and beside it `index.md`, the
 same page as Markdown at the same address with `index.md` on the end.
 [`/compress-image/index.md`](https://abox.tools/compress-image/index.md) is
-the image compressor's, `/de/bild-komprimieren/index.md` the German one. The
-hub, the guides index and the roadmap have none: they are lists of pages that
-each have their own.
+the image compressor's, `/de/bild-komprimieren/index.md` the German one.
+Each maintained language's hub also has an `index.md`, generated from its own
+cards and privacy text, advertised in the page's head and precached by its
+service worker. It has no copy button. The guides index and the roadmap have
+no Markdown twin.
 
 A tool's twin is the written half of its page — the pledge, the steps, the
 questions, the privacy panel, the guide and the neighbouring tools — rendered
@@ -643,9 +667,10 @@ absolute, because the file is meant to be pasted somewhere the page is not.
 [`buildlib/markdown.py`](../buildlib/markdown.py) is the converter and says
 what it does and does not handle.
 
-Three things point at it. The page's head carries
+The page's head carries
 `<link rel="alternate" type="text/markdown" href="index.md">`, which is how a
-crawler or an agent finds it without guessing. A row on the page — at the head
+crawler or an agent finds it without guessing. On tool and prose pages, a row
+— at the head
 of the written part on a tool page, beside the date on a prose page — offers
 **Copy for LLM**, whose tooltip says the format is Markdown, and **View as
 Markdown**. And the tool's service

@@ -28,10 +28,12 @@
 <meta name="description" content="{{ site.hub.description }}">
 
 <link rel="canonical" href="{{ canonical }}">
+<link rel="alternate" type="text/markdown" href="index.md">
 <link rel="ard" type="application/json" href="{{ site.domain }}.well-known/ard.json">
 {% include "partials/robots.html" %}
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
+{% include "partials/agent-index.html" %}
 {% include "partials/lang-script.html" %}
 
 <!--
