@@ -197,73 +197,28 @@ unimplemented authentication endpoints. A ChatGPT directory preparation package
 is under `integrations/chatgpt/`; it is a draft with separate owner, host-test
 and review requirements.
 
-## Use the real app locally
+## Verify the real app in the lab
 
-After building, start the Worker in one terminal:
+The local MCP App test host lives in
+[etoolbox-lab/experiments/catalogue-mcp-preview](https://github.com/A-Box-of-Tools/etoolbox-lab/tree/main/experiments/catalogue-mcp-preview).
+Build the reviewed website and its public App artifact as above, then follow
+that experiment's README. Its launcher takes an explicit `--website-root`
+checkout and a fixed `local`, `dev` or `production` service selection. It reads
+the generated public artifact without copying production helpers or changing
+the deployed service. The lab owns the localhost 8788 interface and its host
+code; no preview UI or debug endpoint is deployed from this repository.
 
-```powershell
-npm run dev
-```
+The host verifies live App, bootstrap and module hashes before SDK/AppBridge
+initialization in an opaque, CSP-constrained frame. Remote modes send initial
+public keywords to the selected service; filtering stays in the loaded view.
+Keep generated evidence in the lab's ignored output directory.
 
-In another terminal in this folder:
-
-```powershell
-npm run preview
-```
-
-To exercise the already deployed development Worker instead, stop the preview
-host and restart it with its fixed development selection:
-
-```powershell
-npm run preview -- --service dev
-```
-
-That mode connects only to `https://mcp-dev.abox.tools/mcp`. The default mode
-connects only to the corresponding loopback `/mcp` on port 8787. To verify the
-separately deployed production service, use its fixed selection:
-
-```powershell
-npm run preview -- --service production
-```
-
-That selection connects only to `https://mcp.abox.tools/mcp`. The launcher
-rejects other arguments; it accepts no arbitrary URL or page-query override.
-Its CSP permits only the selected MCP endpoint, and both the page and console
-show that endpoint. Both remote modes send initial public keyword requests
-off this computer; the app's subsequent filtering remains local. No
-mode changes the deployed app resource, authentication or rate limiter.
-
-The local-only host opens at `http://127.0.0.1:8788/`; no second server is
-needed. At startup Node reads the generated public App HTML once and exposes
-its SHA-256, UTF-8 byte count and exact bootstrap and decoded-module hashes through
-`/view-receipt.json`. The browser uses the official MCP client to read the
-selected service's actual UI resource and must verify the complete HTML,
-ordinary bootstrap and decoded module source against that receipt before creating an iframe. A mismatch
-blocks rendering and asks for the intended rebuild/deploy and preview restart.
-The host decodes the verified public catalogue with the same bounded decoder
-as the App before allowing any tool address.
-
-The verified MCP resource is rendered as `srcdoc` with only a restrictive CSP
-meta tag prepended. Its executable sources are not changed. The parent allows
-both exact SHA-256 hashes and the host's own script; it allows neither arbitrary
-inline scripts nor eval. The child policy further denies network access,
-external resources and nested frames. The iframe has `allow-scripts` only,
-so it has an opaque origin and cannot access the host document. Official
-`AppBridge` checks its specific Window and handles the actual `ui/initialize`
-and tool result delivery directly. This is a local verification harness, not
-a published general-purpose MCP host or an intermediary SandboxProxy test.
-It also shows the real text fallback, and offers light/dark host context and
-a 390-pixel app width. It exposes no preview host or sandbox route on the
-deployed Worker. Verify initial results,
-different language catalogues, local filtering, empty results, pagination and
-opening a selected public tool. Inspect requests to confirm filtering makes
-no additional MCP call. Parent host approval can still reject an open action.
-
-The meaningful protocol, schema and boundary checks are in `tests/`. CI runs
-them with `npm test`; agents do not run the suite locally. That suite is
-separate from the site's Python and JavaScript suites.
-CI also runs the small builder fixtures with
-`python -m unittest discover -s tests -p "test_*.py"` from this folder.
+The permanent protocol, schema and boundary checks remain in `tests/`. CI
+runs them with `npm test`, separately from the site's Python and JavaScript
+suites, plus the builder fixtures with
+`python -m unittest discover -s tests -p "test_*.py"`. Agents do not run those
+website suites locally. Moving the diagnostic host does not change the
+production Worker, App, localhost CORS origins or service dependencies.
 
 ## Development deployment
 
@@ -293,7 +248,7 @@ This explicitly selects `wrangler.production.toml`: Worker `catalogue-mcp`,
 custom domain `mcp.abox.tools`, and rate namespace 1003. It cannot replace
 the development route or namespace. Its browser-origin allowlist contains
 only `https://abox.tools` and the two exact loopback origins on port 8788 used
-by this local verification host. Development-site origins are not admitted.
+by the lab verification host. Development-site origins are not admitted.
 Observability remains disabled, and the runtime receives its rate binding
 from each request's environment.
 

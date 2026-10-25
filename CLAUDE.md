@@ -30,6 +30,19 @@ No dependencies, no lockfile, no build step for the JavaScript. What is in
 `?v=<hash>` on every relative import so a deploy never pairs a new page with a
 cached old module (`sitelib.version_imports`); nothing else is transformed.
 
+## Debugging tools belong in the lab
+
+Put diagnostic pages, local MCP test hosts, benchmarks and feasibility
+experiments in [etoolbox-lab](https://github.com/A-Box-of-Tools/etoolbox-lab),
+under `experiments/<slug>/`. Choose that destination before creating a helper,
+including a quick proof needed during website maintenance. Link to the lab
+instead of copying its debugging code into this production repository.
+
+Production code, permanent unit and QA checks, build scripts and release
+tooling stay here. When an experiment becomes a supported feature, promote
+only the production implementation; keep its diagnostic harness and evidence
+in the lab. Follow the lab's own `AGENTS.md` and experiment README.
+
 ## Branches
 
 **Open your pull request against `dev`, not `main`.**
