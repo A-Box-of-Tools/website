@@ -1,0 +1,26 @@
+{
+  "id": "/pt/codificar-base64/",
+  "name": "Codificador e decodificador Base64",
+  "short_name": "Codificador e decodificador Base64",
+  "description": "Base64, codifica\u00e7\u00e3o percentual, entidades HTML, hexadecimal e escapes com barra invertida, nos dois sentidos. Nada \u00e9 colado no servidor de ningu\u00e9m.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

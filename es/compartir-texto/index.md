@@ -1,0 +1,112 @@
+# Compartir texto y archivos
+
+Comparte texto y archivos cifrados desde tu navegador abierto. La conexión directa es la predeterminada; la retransmisión en la nube es opcional. Tú apruebas a cada lector.
+
+> Comparte texto y archivos cifrados desde tu navegador abierto. La conexión directa es la predeterminada; la retransmisión en la nube es opcional. Tú apruebas a cada lector.
+
+Esta es una herramienta interactiva de navegador en https://abox.tools/es/compartir-texto/. Los archivos se procesan en el dispositivo donde se ejecuta ese navegador. La página explica las funciones opcionales de red y los envíos deliberados. Lo que sigue es su explicación escrita; abre la dirección para usarla.
+
+## Tus textos y archivos compartidos se **procesan en tu navegador**. No se suben para procesarlos.
+
+El texto y los archivos se cifran entre tu navegador y cada lector. La conexión directa es la predeterminada. Si eliges retransmisión en la nube, los paquetes cifrados pasan por Cloudflare, que no puede leer su contenido. El servicio de presentación transmite la preparación y los nombres de enlaces visibles, nunca texto ni archivos. No guardamos contenido compartido en servidores. Cerrar la pestaña termina la fuente; los lectores borran la vista al recibir el aviso o detectar el fallo. Conservan las copias que ya guardaron.
+
+- ✗ Sin contenido guardado en servidores
+- ✗ Sin cuenta
+- ✓ Cifrado de extremo a extremo
+- ✓ Se acaba con tu pestaña
+- ✓ Código abierto
+
+## Cómo compartir texto y archivos entre navegadores
+
+1. **Escribe el texto, o adjunta los archivos.** El editor es lo compartido: lo que contenga cuando un lector se conecta es lo que recibe, y lo que cambies después llega en vivo a los lectores conectados, mientras escribes. Los archivos viajan por el mismo canal, hasta 200 MB cada uno; los lectores ven la lista y descargan solo lo que piden, así que nadie gasta ancho de banda en un archivo que no quería.
+2. **Activa Markdown si el texto merece formato.** Un solo interruptor. Títulos, negritas, listas, código y enlaces se renderizan en vivo junto al editor mientras escribes, y los lectores reciben la vista formateada por defecto, con un conmutador para volver al texto original. El renderizador viaja con esta página y lo escapa todo: el texto compartido no puede convertirse en script en la máquina de un lector, lo haya escrito quien lo haya escrito.
+3. **Ponle nombre al enlace, o quédate con la sugerencia.** El nombre es la dirección: `brave-otter-42` se puede decir de un lado a otro de una sala, leer por teléfono o copiar de una pizarra. Las comparticiones locales visibles enumeran su nombre, así que mantén Privado activado para cualquier contenido delicado. Para una compartición disponible solo por enlace, un nombre que nadie adivinaría también es útil. Un nombre bajo el que ya comparte otra persona se rechaza, y el tuyo queda libre en cuanto paras.
+4. **Decide quién entra.** Privado es lo predeterminado: a cada lector se le pide presentarse — un nombre, una pista, cualquier cosa que reconozcas — y tú ves el mensaje con un botón para dejarle leer o rechazarlo. La presentación viaja por el canal directo, así que ni el intermediario sabe quién llamó. Desmárcalo para una compartición abierta que pueda leer cualquiera con el nombre.
+5. **Empieza a compartir, y deja la pestaña abierta.** La pestaña es el servidor. Mantenla abierta y el dispositivo activo para compartir sin interrupciones. Una conexión que funciona se conserva al ocultar la página, pero el teléfono o un portátil en reposo pueden suspender el navegador. Al volver, se intenta recuperar la misma compartición. Detenerla impide la reanudación automática. Copia el enlace o comunica el nombre: el lector puede añadir `#name` a la dirección de esta página. Para Red local, copia el enlace con `?local=1` antes del nombre. Cambiar el modo de conexión requiere que el lector lo elija.
+6. **Al otro lado: primero consentir, después llamar.** Quien abre el enlace se entera de que alguien comparte, se le avisa de que una conexión directa muestra a cada lado la dirección de red del otro, y solo se conecta si lo decide. En una compartición privada se presenta y espera a que le abras. Lo que recibe se actualiza en vivo mientras editas, y desaparece cuando cierras la pestaña.
+
+## La versión larga
+
+[Cómo compartir texto y archivos sin guardar una copia en el servidor](https://abox.tools/es/guias/compartir-texto-entre-dispositivos/): Comparte texto y archivos entre navegadores con conexión directa por defecto o retransmisión cifrada opcional por Cloudflare. Sin cuenta ni copia almacenada en el servidor; el destinatario puede guardar lo recibido.
+
+## También en la caja
+
+- [Compresor de imágenes](https://abox.tools/es/comprimir-imagen/): Tú dices el tamaño. Del resto se encarga él.
+- [Redimensionador de imágenes](https://abox.tools/es/redimensionar-imagen/): Di el tamaño. Dibuja la caja. Elige el formato.
+- [HEIC a JPG](https://abox.tools/es/convertir-heic-a-jpg/): Las fotos que hace un iPhone, en un formato que abre todo el mundo.
+- [WebP a JPG](https://abox.tools/es/convertir-webp-a-jpg/): Las imágenes que guarda la web, en el formato que todos siguen aceptando.
+
+## Preguntas
+
+### ¿Se sube algo, a alguna parte?
+
+El texto y los archivos se cifran entre tu navegador y cada lector. La conexión directa es la predeterminada. Si eliges retransmisión en la nube, los paquetes cifrados pasan por Cloudflare, que no puede leer su contenido. El servicio de presentación transmite la preparación y los nombres de enlaces visibles, nunca texto ni archivos. No guardamos contenido compartido en servidores. Cerrar la pestaña termina la fuente; los lectores borran la vista al recibir el aviso o detectar el fallo. Conservan las copias que ya guardaron. Cloudflare conserva los metadatos de las conexiones de presentación durante siete días; nuestra aplicación no registra el contenido compartido.
+
+### ¿Y por qué esta herramienta habla con un servidor, precisamente en este sitio?
+
+Porque dos navegadores no pueden encontrarse solos: algo tiene que juntar a quien tecleó `brave-otter-42` con quien comparte bajo ese nombre, y llevar la oferta de conexión entre ambos. Ese algo es el intermediario, la única dependencia de red de esta página, nombrado en su `Content-Security-Policy` y publicado en el mismo repositorio que la página. Es el servidor más pequeño capaz de hacer el trabajo. También enumera los nombres de enlace locales cuya publicación se haya elegido, para navegadores que usan la misma dirección IPv4 pública o la misma subred IPv6. No guarda contenido ni puede leer el canal cifrado entre los navegadores.
+
+### ¿Qué puede ver exactamente ese servidor?
+
+Que un nombre de enlace está en uso, cuándo se conectan y se van quien comparte y los lectores, sus direcciones IP y el establecimiento de la conexión cifrada que intercambian, y los nombres de enlace cuya publicación en la lista se haya elegido. La lista agrupa los nombres por la dirección IPv4 pública o la subred IPv6 que ve el servidor, y por el origen de la página. No el texto, no los archivos, no sus nombres ni tamaños, no a quién se dejó entrar en una compartición privada, y no lo que nadie escribió al presentarse: todo eso viaja por el canal directo, cifrado de extremo a extremo, que no pasa por el servidor. Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión durante siete días: el nombre de enlace, la dirección y la hora. Nada más sobrevive a la compartición.
+
+### ¿Qué pasa cuando cierro la pestaña?
+
+La compartición termina cuando desaparece su única fuente. Los lectores borran la copia mostrada cuando detectan el final o un fallo de conexión. Detener la compartición envía un aviso explícito de finalización; una pérdida temporal de red puede activar un número limitado de intentos de recuperación. No hay ninguna copia en el servidor que borrar. Lo que el lector ya haya copiado o descargado seguirá en su poder.
+
+### ¿Puede un lector quedarse con lo que compartí?
+
+Mientras la compartición está abierta, sí: compartir es eso. Un lector puede copiar el texto o descargar un archivo, y lo que se llevó es suyo, exactamente como si se lo hubieras dado por cualquier otro medio. Lo que garantiza terminar es el futuro: nadie nuevo puede llegar a ello, y las páginas abiertas dejan de mostrarlo. Ninguna herramienta puede des-enviar lo que ya llegó, y esta página no finge lo contrario.
+
+### ¿Qué es el modo privado?
+
+Lo predeterminado. A cada lector que llega se le dice que la compartición es privada y se le pide presentarse; tú ves el mensaje — «soy Alice, la de la reunión» — con botones para dejarle leer o rechazarlo, y no se envía nada hasta que decides. La presentación viaja por el canal directo ya cifrado, así que el servidor nunca sabe quién llamó ni qué decidiste. Desmarcado antes de compartir, queda una compartición abierta.
+
+### ¿Por qué verá el lector mi dirección IP?
+
+La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa el tipo de conexión indicado. Elige Unirse junto a un recurso de la lista o Conectar después de abrir una invitación normal.
+
+### ¿Cómo de grandes pueden ser los archivos, y qué velocidad tiene?
+
+Hasta 200 MB por archivo. La velocidad depende de ambos dispositivos y de la ruta. La conexión directa puede usar la velocidad de la red local; la retransmisión en la nube también depende del ancho de banda de internet y los límites del servicio. Los archivos se descargan a petición.
+
+### ¿Funciona sin conexión?
+
+El editor funciona sin internet una vez guardada la página: puedes escribir, mostrar Markdown y conservar un borrador. Para compartir, ambos dispositivos necesitan internet para que el servicio de presentación conecte los navegadores. Guardar la página no permite emparejar sin internet. El modo de red local también necesita esa presentación, aunque el contenido viaja directamente entre los navegadores.
+
+### ¿Y si no conseguimos conectar?
+
+Comprueba internet en ambos dispositivos. Con Red local, Wi-Fi o Ethernet deben permitir que los dispositivos se alcancen. Si falla la conexión directa, el anfitrión puede detener el envío, elegir retransmisión en la nube, empezar de nuevo y enviar la nueva invitación. El lector revisa la opción antes de conectarse. Un envío directo activo nunca cambia automáticamente. Los dispositivos administrados o las redes restrictivas también pueden bloquear la retransmisión.
+
+### ¿Es seguro renderizar Markdown, si cualquiera puede compartir cualquier cosa?
+
+Esa pregunta es la razón de que el renderizador sean ochenta líneas en el código de esta página y no una biblioteca. Cada carácter se escapa antes de emitir ninguna etiqueta, solo puede producirse un conjunto fijo de etiquetas inofensivas, y los enlaces aceptan solo `http`, `https` y `mailto`: un enlace `javascript:` se queda en texto inerte. El texto compartido no puede convertirse en script en tu máquina, lo haya escrito quien lo haya escrito, y las ochenta líneas puedes leerlas.
+
+### ¿Pueden dos personas compartir bajo el mismo nombre?
+
+A la vez, no. Una compartición viva por nombre, impuesto en el intermediario: quien llega segundo es rechazado y se le pide otro nombre. En cuanto una compartición termina, su nombre queda libre — lo que también significa que un enlace guardado vale lo que valga la compartición que tenga detrás: el mismo nombre, la semana que viene, puede ser de otra persona. Trata un enlace como algo de un momento, no de una persona.
+
+### ¿Es gratis? ¿Necesito una cuenta?
+
+Gratis, sin cuenta, sin registro, y sin ningún límite que merezca mención: dieciséis lectores simultáneos por compartición. El sitio lleva publicidad, que es lo que lo paga; los anuncios no reciben nada sobre lo que esta página comparte, y el intermediario cabe de sobra en un plan gratuito precisamente porque no guarda nada y casi no hace nada.
+
+### ¿Puedo compartir archivos por mi red local?
+
+Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200 MB por archivo. Una sesión puede incluir hasta 256 archivos. Visible en la lista viene activado en este modo: el otro navegador puede abrir la página de la herramienta y elegir tu nombre en la lista de esta conexión. Desmárcalo para compartir solo por enlace; también puedes seguir copiando el enlace para el lector.
+
+### ¿Cómo encuentra la lista las comparticiones locales?
+
+La lista agrupa envíos por dirección IPv4 pública o subred IPv6 y origen de la página, no por proximidad física. Las pasarelas compartidas y las VPN pueden incluir desconocidos u ocultar dispositivos. Se necesita internet. Solo aparecen envíos locales directos o de retransmisión en la nube que activaron la visibilidad. Descubrible está seleccionado por defecto cuando está disponible; desmárcalo para usar solo enlaces y mantén Privado en redes compartidas. Unirse inicia la solicitud con el tipo de conexión indicado en una pestaña de lectura nueva. Consultar la lista no conecta. Los recursos privados esperan aprobación; la solicitud aparece en un diálogo y permanece en la lista al elegir Revisar después.
+
+## Cómo se comprueba la promesa de privacidad
+
+- **Tú eliges la ruta de la conexión cifrada.** La conexión directa envía contenido entre navegadores sin retransmisión. El modo directo normal usa descubrimiento público de direcciones; Red local lo limita a candidatos de host. La retransmisión en la nube reenvía paquetes cifrados mediante Cloudflare TURN y puede conectar dispositivos de redes distintas. El anfitrión elige antes de empezar; la invitación incluye la opción y los lectores la revisan antes de conectarse. La conexión directa nunca cambia automáticamente. Las restricciones de la red o del navegador pueden impedir ambas rutas.
+- **Qué es el intermediario, y todo lo que ve.** Una conexión directa necesita una presentación. Esta página inicial abre automáticamente un WebSocket a nuestro intermediario para los nombres de enlace locales visibles en la lista; empezar a compartir abre otro para la propia compartición. Un lector usa un solo socket de presentación. Ese servidor junta a quien tecleó un nombre de enlace con quien comparte bajo ese nombre, les pasa unos kilobytes de negociación y no retiene nada: nunca escribe almacenamiento, y una sala deja de existir en cuanto quien comparte se desconecta. Puede ver que un nombre está en uso, cuándo llega y se va cada uno, y sus direcciones IP. No puede ver el texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta la llamada a una compartición privada viaja por el canal directo cifrado. Su código completo está en el repositorio, junto al de esta herramienta. El directorio enumera solo los nombres anunciados por quienes siguen conectados con la misma dirección IPv4 pública o la misma subred IPv6. Puede incluir otras redes detrás de una VPN compartida o de una dirección compartida por el proveedor. Si unos dispositivos usan IPv4 y otros IPv6, o siguen rutas distintas, pueden no aparecer aunque estén en la misma red local. Lo que sobrevive a una compartición es una sola cosa: Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión durante siete días, con el nombre de enlace, la dirección y la hora, nunca el contenido.
+- **El contenido compartido no se guarda en un servidor.** Lo compartido existe solo mientras tu pestaña está abierta. Ciérrala y los lectores nuevos no encuentran nada, y quien esté mirando ve desaparecer su copia — aunque lo que alguien copió o descargó antes es suyo, como lo sería cualquier cosa que le hubieras dado en mano. El borrador que escribes queda en el almacenamiento de tu propio navegador, para que siga ahí la próxima vez, y solo ahí; marcado como de un solo uso, no queda en ninguna parte. Por separado, el navegador del lector guarda un comprobante aleatorio de aprobación para poder desconectarse y volver a esta sesión sin otra aprobación. Detener al anfitrión restablece la aprobación. Un solo uso desactiva el guardado del borrador, no este comprobante. Borrar o bloquear los datos del sitio puede exigir otra aprobación; los scripts normales de este sitio pueden leer el comprobante.
+- **El nombre del enlace es una dirección, y Privado, el cerrojo.** Cualquiera que conozca o adivine un nombre puede abrir lo que hay detrás. Por eso las sugerencias son nombres que se pueden decir en voz alta. Las comparticiones locales visibles publican su nombre en la lista de esta conexión: queda público para los navegadores que usan la misma dirección IPv4 pública o la misma subred IPv6. Mantén Privado activado para cualquier contenido delicado. Viene activado: cada lector que llega debe presentarse, por el canal directo, y no se envía nada hasta que tú lo dejas entrar.
+- **Una conexión directa muestra a cada lado la dirección del otro.** La conexión directa intercambia las direcciones de red necesarias para alcanzar los dispositivos. La retransmisión en la nube usa direcciones del servidor de retransmisión y Cloudflare ve las direcciones de ambos dispositivos y los metadatos del tráfico. No garantiza anonimato. Revisa la opción de conexión de arriba antes de elegir Conectar.
+- **Qué carga Google, y qué no recibe.** Los scripts de anuncios y medición vienen de Google, y el botón de donativos, de Buy Me a Coffee. Ninguno recibe el texto, los archivos, sus nombres o tamaños, ni quién se conectó. La excepción es la propia dirección de esta página: el enlace de un lector lleva el nombre del enlace, y el script de anuncios lee la dirección. Una compartición que deba quedar en privado quiere el interruptor de privado. Cada línea que toca el contenido se sirve desde este origen y está en el repositorio.
+
+**Compruébalo tú.** Nada de lo anterior hay que aceptarlo por fe. Esta página se genera a partir de las plantillas y la configuración del repositorio, con un script de compilación que puedes leer y ejecutar por tu cuenta, y el resultado se publica en la rama `dist`. Así puedes comparar lo que se sirve con lo que sale de compilar las fuentes: https://github.com/A-Box-of-Tools/website
+
+Los archivos por los que conviene empezar son `config/site.toml`, donde está la Content-Security-Policy, `src/main.js` para las dos mitades del intercambio — la pestaña de quien comparte y la del lector son el mismo archivo — y `src/markdown.js` para el renderizador que procesa texto llegado del otro lado del cable, y que por eso escapa todo antes de emitir nada. El código completo del servidor es `workers/rendezvous/worker.js`, en el mismo repositorio: una sala por nombre de enlace, más un directorio de búsqueda con los nombres anunciados en conexiones abiertas, nunca el texto ni los archivos.

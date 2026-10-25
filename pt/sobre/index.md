@@ -1,0 +1,74 @@
+# Sobre o abox.tools
+
+Uma pessoa só, em Ontário, construindo as ferramentas de que vivia precisando e nas quais não confiava. Tudo aqui roda no seu próprio computador, o código é público, e esta página reúne os motivos das duas coisas.
+
+Última atualização 15 de outubro de 2026
+
+## O que é isto
+
+O abox.tools é um conjunto de ferramentas pequenas que fazem uma coisa cada uma: redimensionar uma foto, cortar um vídeo, juntar dois PDFs, ler o que um código QR realmente contém. São 59 no momento, e junto delas há uma [coleção de guias](https://abox.tools/pt/guias/) sobre as tarefas para as quais elas servem.
+
+Cada ferramenta processa arquivos no navegador que a executa, usando o hardware daquele dispositivo. A maioria usa codecs nativos; outras incluem motores locais de JavaScript ou WebAssembly, como o decodificador HEIC e o OCR de recibos. Os arquivos não são enviados para processamento. O site entrega páginas e código estáticos; compartilhamento deliberado e funções online opcionais têm limites próprios, explicados abaixo.
+
+Esse é o produto. Todo o resto desta página explica por que vale a pena construir assim, e quem está construindo.
+
+## Quem faz
+
+Uma pessoa, sozinha, em Ontário, no Canadá. Isto não é uma empresa. Não há equipe, não há investidor, não há uma matriz por trás e não há plano de ser comprado por ninguém. A correspondência chega em [hi@abox.tools](mailto:hi@abox.tools) e é lida por quem escreveu o código; a [página de contato](https://abox.tools/pt/contato/) explica para o que esse endereço serve e para o que não serve.
+
+O site é publicado de propósito sem assinatura pessoal. É um projeto pequeno, não uma marca pessoal, e o que merece confiança aqui não é um nome no rodapé de uma página, e sim [o código](https://github.com/A-Box-of-Tools/website), que qualquer um pode ler, e o comportamento das próprias páginas, que qualquer um confere em uns trinta segundos com as ferramentas de desenvolvedor abertas. Essas duas coisas se verificam. Uma assinatura, não.
+
+## Por que é feito assim
+
+Muitos conversores enviam o arquivo, processam em um servidor e devolvem o resultado. Outros trabalham localmente. A distinção útil é onde o trabalho acontece e se ele exige que o arquivo saia do navegador.
+
+Processar em servidor entrega uma cópia ao provedor. Para passaporte, imagem médica, contrato assinado ou foto com localização, vale conferir essa decisão. Políticas públicas, documentação de segurança, auditorias e comportamento observável oferecem evidências. A página sozinha não mostra toda cópia interna, backup ou acesso após o envio. Uma política descreve o tratamento do provedor; não é a mesma restrição que concluir uma operação local desconectado.
+
+Os navegadores ficaram bons o bastante para tornar essa promessa desnecessária. Eles leem e escrevem JPEG, PNG e WebP; abrem e decodificam vídeo; calculam o hash de um arquivo, leem um código QR e escrevem um PDF. Se o trabalho pode acontecer no seu próprio computador, então “será que eles ficam com o meu arquivo?” deixa de ser uma pergunta sobre a intenção de alguém e passa a ser uma pergunta sobre o que o código consegue fazer fisicamente. E essa você mesmo responde.
+
+É esse o argumento inteiro, e há um guia que o desenvolve direito: [é seguro enviar arquivos para um site?](https://abox.tools/pt/guias/e-seguro-enviar-arquivos/)
+
+## Conferir, em vez de confiar
+
+Quatro verificações oferecem evidências diferentes. Use-as em conjunto e confira a função que você pretende usar:
+
+- **Desconecte para uma operação local.** Deixe a ferramenta carregar e espere o indicador offline mostrar que está pronta. Processe um arquivo do dispositivo. Concluir prova que aquela operação foi local enquanto estava desconectado, mas não o que a página pode enviar ao reconectar.
+- **Inspecione solicitações de rede.** Confira URLs, corpos de solicitações e mensagens WebSocket, não só o tamanho da transferência. O processamento local não envia arquivos. Recursos da página, scripts da plataforma, consultas opcionais e compartilhamento deliberado são tráfegos distintos, explicados nas próprias páginas.
+- **Leia a Content-Security-Policy.** Ela limita recursos e destinos de conexão. Não inspeciona o conteúdo, não impede envio a hosts permitidos e não descreve tráfego WebRTC entre navegadores. Compare com o código e o comportamento observado.
+- **Leia o código e o resultado compilado.** O [repositório](https://github.com/A-Box-of-Tools/website) contém modelos, módulos, partes compartilhadas e motores incluídos. A compilação gera páginas e minifica o código próprio. Cada ferramenta indica o que ler primeiro; você pode compilar e comparar com a publicação.
+
+As funções de rede são deliberadas. [Imagens para vídeo](https://abox.tools/pt/imagens-para-video/) pode buscar uma URL de imagem. O [Extrator de recibos e faturas](https://abox.tools/pt/extrair-recibos-faturas/) pode consultar par de moedas e data no Frankfurter e entregar um relatório ao aplicativo de email ou compartilhamento que você escolhe. [Compartilhar texto e arquivos](https://abox.tools/pt/compartilhar-texto/), [Compartilhar uma aba do navegador](https://abox.tools/pt/share-tab/), [Câmera remota](https://abox.tools/pt/remote-camera/) e as ferramentas de voz ao vivo transferem conteúdo entre navegadores. Os serviços de pareamento online levam metadados de descoberta, quando oferecida, e de conexão, nunca o conteúdo compartilhado. Essas ferramentas precisam de internet para o pareamento. Cada ferramenta explica seu caminho direto ou de retransmissão opcional e as conexões necessárias; sua página e a [página de privacidade](https://abox.tools/pt/privacidade/) explicam o que cada participante vê.
+
+## Como as ferramentas são feitas e conferidas
+
+Uma ferramenta entra no ar quando funciona com arquivos de verdade, não quando funciona com o arquivo contra o qual foi escrita. Na prática, isso quer dizer usá-la na mão, num navegador, com entradas difíceis: o vídeo sem quadro-chave exatamente onde você quer cortar, o HEIC de um celular que escreve o contêiner meio errado, o PDF com uma fonte embutida pela metade. É isso que as pessoas têm de verdade, e é justamente o que um teste escrito pela mesma pessoa que escreveu o defeito não encontra.
+
+Uma suíte automática cobre o gerador e os módulos do navegador. Ela roda no CI e uma falha impede a publicação. Leitores e escritores comuns, como o leitor MP4, ficam em módulos compartilhados copiados para cada ferramenta compilada. Uma verificação de duplicações impede cópias independentes de divergirem.
+
+Os guias seguem o mesmo critério. As capturas de tela deles são tiradas do site já construído por um script, em vez de desenhadas ou simuladas, então uma imagem em um guia é uma imagem da página como ela realmente está hoje.
+
+## Como isto se paga
+
+Com publicidade e com doações de quem acha as ferramentas úteis. É esse o modelo de negócio inteiro, e vale ser preciso sobre o que ele envolve e o que não envolve.
+
+**Não há nada para comprar.** Sem conta, plano pago, marca-d’água para remover pagando ou função reservada. Formatos aceitos, memória do navegador e limites deliberados continuam relevantes; cada ferramenta os explica.
+
+**Seus arquivos não fazem parte do acordo.** Publicidade e contagem de visitas usam serviços do Google. O feedback opcional envia nome da ferramenta, resposta fixa positiva ou negativa e motivo fixo; não envia arquivo, nome, tamanho ou conteúdo. O código não entrega dados de arquivos a esses serviços. Destinos permitidos continuam sendo destinos de rede; a política de segurança sozinha não garante o conteúdo enviado. A [página de privacidade](https://abox.tools/pt/privacidade/) explica coleta e bloqueio. O processamento local funciona com esses scripts bloqueados.
+
+**As ferramentas não são escritas para a publicidade.** Nenhuma ferramenta aqui existe porque uma palavra-chave valia dinheiro, e nenhuma foi deixada mais lenta, mais trabalhosa ou mais dividida em páginas para vender mais exibições. O que se constrói em seguida é discutido à vista de todos, em [ROADMAP.md](https://github.com/A-Box-of-Tools/website/blob/main/ROADMAP.md), um parágrafo por ideia, incluídos os motivos pelos quais várias sugestões aparentemente óbvias foram recusadas.
+
+## Idiomas
+
+Inglês, chinês simplificado, alemão, espanhol, português do Brasil, francês e japonês são mantidos aqui. Oito traduções anteriores continuam disponíveis como páginas arquivadas e não recebem mudanças atuais. Páginas mantidas entram no mapa do site e no seletor apenas quando traduzidas; as incompletas continuam disponíveis sem serem anunciadas como traduções prontas.
+
+A correspondência é respondida em inglês, que é a única coisa honesta a dizer sobre um projeto deste tamanho.
+
+## O que este site não vai fazer
+
+- Exigir conta ou email para processar um arquivo.
+- Receber ou guardar arquivos em um servidor para processamento.
+- Colocar marca d’água em um resultado, nem guardar uma função para um plano pago.
+- Acrescentar uma etapa de rede a uma ferramenta que não precisa dela.
+- Afirmar na página de uma ferramenta algo que o código do repositório não faz.
+
+Se você vir qualquer uma dessas coisas acontecendo, é ao mesmo tempo um defeito e uma promessa quebrada, e vale avisar. A [página de contato](https://abox.tools/pt/contato/) é o caminho mais rápido.

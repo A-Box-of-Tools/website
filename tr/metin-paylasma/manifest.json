@@ -1,0 +1,26 @@
+{
+  "id": "/tr/metin-paylasma/",
+  "name": "Metin ve dosya payla\u015f\u0131m\u0131",
+  "short_name": "Metin ve dosya payla\u015f\u0131m\u0131",
+  "description": "Payla\u015f\u0131m bu a\u00e7\u0131k sekmede ya\u015far. Okuyucular onu \u015fifreli olarak do\u011frudan taray\u0131c\u0131n\u0131zdan al\u0131r ve sekmeyi kapatt\u0131\u011f\u0131n\u0131zda biter - hi\u00e7bir sunucu hi\u00e7bir \u015fey saklamaz.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

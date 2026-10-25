@@ -1,0 +1,26 @@
+{
+  "id": "/tr/pdf-sikistirma/",
+  "name": "PDF S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "short_name": "PDF S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "description": "Belgeyi hi\u00e7bir yere g\u00f6ndermeden k\u00fc\u00e7\u00fclt\u00fcn.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

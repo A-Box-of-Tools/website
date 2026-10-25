@@ -1,0 +1,26 @@
+{
+  "id": "/nl/afbeelding-formaat-wijzigen/",
+  "name": "Afbeeldingsformaat wijzigen",
+  "short_name": "Afbeeldingsformaat wijzigen",
+  "description": "Noem het formaat. Sleep het kader. Kies het bestandstype.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/de/in-mp4-umwandeln/",
+  "name": "MP4-Konverter",
+  "short_name": "MP4-Konverter",
+  "description": "Was auch immer vom Bildschirmrekorder, vom Ripper oder von der Kamera kam, als H.264 und AAC in einem MP4. Kopiert, wo es geht, und nur dort neu kodiert, wo es sein muss.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title type="html">abox.tools</title>
+  <subtitle type="html">abox.tools（A Box of Tools）の無料ツールで、画像圧縮やPDF、動画、音声、テキストの処理をブラウザー内で行えます。処理のためのアップロードは不要です。</subtitle>
+  <id>https://abox.tools/ja/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
+  <updated>2026-10-23T00:00:00Z</updated>
+  <author>
+    <name>abox.tools</name>
+    <uri>https://abox.tools/ja/</uri>
+  </author>
+  <entry>
+    <title type="html">AIエージェントはこの道具を使えますか？</title>
+    <id>https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">エージェントはツールを操作できます。ブラウザーの場所、提供者のデータ処理、権限、意図した通信機能を確認します。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFの中には本当は何があるのか</title>
+    <id>https://abox.tools/ja/guides/whats-inside-a-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/whats-inside-a-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">コマ、待ち時間、後始末の方法、色表の説明。ブラウザがいちばん短い待ち時間を受け付けない理由と、GIFの容量がどこへ消えたのかを突き止める方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをコマに分解する方法</title>
+    <id>https://abox.tools/ja/guides/split-a-gif-into-frames/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/split-a-gif-into-frames/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">アニメーションGIFの全コマをPNGで取り出します。なぜ一部のコマが絵の小さな断片でしかないのか、透明はどうなるのか、そして組み立て直せるように間隔を残しておく方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF分解</title>
+    <id>https://abox.tools/ja/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/split-gif/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">アニメーションGIFをコマに分解し、1枚ずつPNGとして保存します。無料で、処理はすべてブラウザの中。透過も表示時間もそのまま残ります。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF解析</title>
+    <id>https://abox.tools/ja/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">GIFをブラウザの中で分解します。各コマの表示時間と破棄方法、カラーテーブル、繰り返し回数、そしてファイルサイズがどこへ消えたかの1バイト単位の内訳まで。アップロードは一切ありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">ノイズを減らす、あるいは人を消すために写真をスタックする方法</title>
+    <id>https://abox.tools/ja/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">スタックは連写した複数のフレームを1枚にまとめます。どの手法を使うかは、何を失いたいかによります。ノイズか、通行人か、マクロの浅い被写界深度か。それぞれの仕組みと費用、そしてRAWファイルがどこに収まるのか。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→動画変換ツール</title>
+    <id>https://abox.tools/ja/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebP・AVIFの画像をMP4のスライドショー動画にします。無料で、処理はすべてブラウザの中。アップロードなし、登録なし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像の入ったフォルダを動画にする方法</title>
+    <id>https://abox.tools/ja/guides/turn-images-into-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/turn-images-into-a-video/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">写真からMP4のスライドショーを作る方法。フレームレートと表示時間が実際に何を決めているのか、形の合わない画像をどう扱うか、そして結果に音声が入らない理由。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像スタック</title>
+    <id>https://abox.tools/ja/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/stack-images/"/>
+    <updated>2026-10-23T00:00:00Z</updated>
+    <summary type="html">連写した写真を1枚にまとめます。平均でノイズを消し、中央値で場面から人を消し、比較明で星の軌跡にし、あるいはマクロ撮影を深度合成します。CR2・NEF・ARW・DNG・RAF・CR3は、カメラ自身のプレビューを取り出して読みます。すべてブラウザの中で動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキストとファイルの共有</title>
+    <id>https://abox.tools/ja/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary type="html">開いたブラウザーからテキストとファイルを暗号化して共有します。標準は直接接続で、クラウド中継も選べます。読者ごとに承認できます。</summary>
+  </entry>
+  <entry>
+    <title type="html">別の端末からカメラを見る方法</title>
+    <id>https://abox.tools/ja/guides/watch-camera-from-another-device/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/watch-camera-from-another-device/"/>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary type="html">別のブラウザーでカメラを表示し、映像を送る前に視聴者を承認します。通信可能なローカルネットワークでの直接接続か、Cloudflare経由の暗号化されたクラウド中継を選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">ローカルネットワークで音声を配信する方法</title>
+    <id>https://abox.tools/ja/guides/broadcast-voice-on-a-local-network/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/broadcast-voice-on-a-local-network/"/>
+    <updated>2026-10-14T00:00:00Z</updated>
+    <summary type="html">ブラウザーで音声チャンネルを開始し、リンクや近くの検索で招待します。標準は直接接続です。Cloudflare経由の暗号化されたクラウド中継は、明示的に確認してから使えます。</summary>
+  </entry>
+  <entry>
+    <title type="html">16ピクセルでも読めるファビコンの作り方</title>
+    <id>https://abox.tools/ja/guides/make-a-favicon/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-favicon/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">favicon.icoに実際に必要なサイズ、iPhone・Android・Macが求める追加ファイル、そしてポスターでは通用するロゴが16ピクセルでは消えてしまう理由。</summary>
+  </entry>
+  <entry>
+    <title type="html">20のオンライン変換サービスはファイルをどう扱うか</title>
+    <id>https://abox.tools/ja/guides/what-20-converters-do-with-your-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/what-20-converters-do-with-your-file/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">20の無料オンライン変換サービスへ同じファイルを渡し、通信を測りました。19がアップロードしました。どのサービスが、どこへ、いつ送り、プライバシーポリシーで何を約束するかを説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">2つのJSONファイルを比較する方法</title>
+    <id>https://abox.tools/ja/guides/compare-two-json-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/compare-two-json-files/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">両方のファイルを同じように整形し、キーを並べ替えてから比較します。生のJSON差分がほとんどノイズである理由、ブラウザで両側を正規形にする方法、そしてパッチまで生き残るもの。</summary>
+  </entry>
+  <entry>
+    <title type="html">AIにファイルをアップロードしても安全ですか？</title>
+    <id>https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">チャット欄は、そう見えないだけのアップロードフォームです。AIに渡したファイルが実際に行く先、AIが変換サイトと違う3つの点、そして仕事に値するときに、少なく・きれいにして送る方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64は暗号化ですか？</title>
+    <id>https://abox.tools/ja/guides/is-base64-encryption/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-base64-encryption/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">いいえ。そしてその違いは実務で効いてきます。符号化と暗号化とハッシュは三つの別の問題を解きます。ひとつは誰でも戻せて、ひとつは鍵の持ち主だけが戻せて、ひとつは誰にも戻せません。どれがどれか、見た目での見分けかたと一緒に。</summary>
+  </entry>
+  <entry>
+    <title type="html">DCMファイルの開き方と、その中身</title>
+    <id>https://abox.tools/ja/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/open-a-dicom-file/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">.dcmファイルとは何か、何で開けるか、病院のディスクの中身、拡張子のない理由、DCMファイルをブラウザで開く方法、ウィンドウと中心値の働き、画像のほかに患者について何を抱えているかを説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOMファイルの中には何が入っていますか？</title>
+    <id>https://abox.tools/ja/guides/whats-inside-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/whats-inside-a-dicom-file/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">医療スキャンは、画像の入った患者記録です。氏名、生年月日、病院の番号、施設、そしてアーカイブへ戻る鍵。ヘッダーが何を運んでいるか、名前を消すことがなぜ匿名化にならないか、アップロードせずに中を見る方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをMP4に変換する方法と、容量が大幅に減る理由</title>
+    <id>https://abox.tools/ja/guides/convert-a-gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-a-gif-to-mp4/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">同じアニメーションのMP4がGIFの10分の1ほどになる理由、GIFにできて動画にできないこと、多くの変換でフレームの表示時間が崩れる理由、アップロードせずにブラウザーで変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをコマ単位で編集する方法</title>
+    <id>https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSONを誰にも渡さずに整形する方法</title>
+    <id>https://abox.tools/ja/guides/format-json-without-uploading-it/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/format-json-without-uploading-it/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">自分のブラウザの中でJSONを整え、確かめ、詰める方法。整形ツールがファイルについて決して変えてはいけないもの、エラーの読み方、そして貼り付ける先が問題になる理由。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFが覚えていること</title>
+    <id>https://abox.tools/ja/guides/what-a-pdf-remembers/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/what-a-pdf-remembers/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">作成者の名前、かつてそうだったWordファイル、コメント、添付。そしてときには、削除も含めた自分自身のすべての旧版。PDFが記憶をどこにしまうか、そして履歴を持たないPDFを送る方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFにパスワードを付ける方法と、その保護の意味</title>
+    <id>https://abox.tools/ja/guides/protect-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/protect-a-pdf/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">PDFを開くパスワードは実際の鍵で、印刷制限は操作への要請です。それぞれの意味、暗号化方式の選び方、オンラインツールへアップロードする問題、パスワードを忘れた場合を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFに透かしを付ける方法と、その目的</title>
+    <id>https://abox.tools/ja/guides/watermark-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/watermark-a-pdf/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">金融機関や大家が宛名入りのスキャンを求める理由、透かしで防げることと防げないこと、文書をアップロードせずにブラウザーで付ける方法、書く内容を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFのページを結合・分割・並べ替えする方法</title>
+    <id>https://abox.tools/ja/guides/merge-and-split-pdf-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/merge-and-split-pdf-files/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">複数のPDFをまとめ、1つを何本かに切り分け、ページを動かします。並べ替えて何が残り、どの道具にも運べないものは何か、そしてなぜ書類をどこかへ送らずに済むのか。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFの保護を解除する方法と、保護の種類</title>
+    <id>https://abox.tools/ja/guides/unlock-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/unlock-a-pdf/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">印刷できないPDFと開けないPDFは、同じ「保護」という名前でも別の問題です。それぞれの仕組み、片方は1回で外せてももう片方はパスワードなしでは外せない理由、見分け方を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFを小さくする方法と、小さくならないものがある理由</title>
+    <id>https://abox.tools/ja/guides/make-a-pdf-smaller/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-pdf-smaller/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">PDFの容量が実際どこにあるのか、スキャンが80%縮んで契約書がほとんど動かない理由、ここでいうDPIとは何か、そして圧縮ツールが書類に決してすべきでないこと。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコードを作り、読めることを証明する方法</title>
+    <id>https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">コードを生成したら、同じサイトのリーダーで検証します。正確な中身と本当のリンクを、印刷サイズで、写真から、大量印刷の前に。すべてブラウザーで、何もアップロードせずに。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコードを読み取っても安全ですか？</title>
+    <id>https://abox.tools/ja/guides/is-it-safe-to-scan-a-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-scan-a-qr-code/"/>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary type="html">読み取りは「読む」ことであって「開く」ことではありません。危険が始まるのはその1タップあと。QRコードに実際に入っているもの、貼り替え詐欺の仕組み、そしてアドレスが嘘をつく3つの手口。</summary>
+  </entry>
+</feed>

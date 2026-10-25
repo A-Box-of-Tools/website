@@ -1,0 +1,50 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:abox.tools:skill:abox-tools",
+      "displayName": "abox.tools browser tools",
+      "type": "application/agent-skills+md",
+      "url": "https://abox.tools/.well-known/agent-skills/abox-tools/SKILL.md",
+      "description": "Use this skill when a person asks to find or use a browser tool for a supported file or text task, including image, PDF and structured-data work. Choose a matching abox.tools tool for conversion, compression, inspection or editing within its documented formats, limits and privacy boundaries.",
+      "representativeQueries": [
+        "Find a browser tool that compresses my image without uploading it.",
+        "Help me choose an abox.tools tool and save its result.",
+        "Can an agent use abox.tools while keeping processing on my device?"
+      ],
+      "trustManifest": {
+        "identity": "https://abox.tools/",
+        "identityType": "https"
+      }
+    },
+    {
+      "identifier": "urn:air:mcp.abox.tools:mcp:catalogue",
+      "displayName": "abox.tools public catalogue",
+      "type": "application/mcp-server-card+json",
+      "url": "https://mcp.abox.tools/mcp/server-card",
+      "description": "Find browser tools by public task or format keywords. Initial keywords are sent to this catalogue service; it accepts no files and performs no file processing. MCP Apps hosts can display an interactive catalogue, while other hosts receive public tool links.",
+      "representativeQueries": [
+        "Find a browser tool for PNG to WebP.",
+        "Browse the public abox.tools tool catalogue in an MCP Apps host."
+      ],
+      "trustManifest": {
+        "identity": "https://mcp.abox.tools/",
+        "identityType": "https"
+      }
+    },
+    {
+      "identifier": "urn:air:mcp.abox.tools:a2a:catalogue",
+      "displayName": "abox.tools public catalogue agent",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://mcp.abox.tools/.well-known/agent-card.json",
+      "description": "Find browser tools through A2A using public task or format keywords. Initial keywords are sent to the catalogue service, which returns public tool descriptions and links. It accepts no files and performs no file processing.",
+      "representativeQueries": [
+        "Find a browser tool for PNG to WebP through A2A.",
+        "Get public abox.tools catalogue links for PDF compression."
+      ],
+      "trustManifest": {
+        "identity": "https://mcp.abox.tools/",
+        "identityType": "https"
+      }
+    }
+  ]
+}

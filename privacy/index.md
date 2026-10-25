@@ -1,0 +1,135 @@
+# Privacy & Cookies
+
+Files are processed locally. Intentional sharing and optional network features have separate boundaries. This page explains those boundaries and the ads, usage measurement, optional feedback, storage and hosting around them.
+
+Last updated 25 October 2026
+
+## Your files
+
+Files selected for processing are read, edited and written inside the browser on your device. abox.tools has no file-processing upload endpoint or database of those files. Downloads are assembled locally. Sharing, remote camera viewing and handing a receipt report to another app are deliberate transfers, described below.
+
+Local processing does not give us:
+
+- your files or their previews
+- their filenames, sizes, dimensions or formats
+- their contents, including EXIF, GPS and recognised document text
+
+Each page carries a `Content-Security-Policy` that limits permitted resources and destinations. Some tool policies add the rendezvous or the optional exchange-rate API. A policy does not inspect the data sent to an allowed host, and `connect-src` does not describe WebRTC peer traffic. Read it alongside the source and observe the feature you are using, rather than treating the host list as proof of every payload.
+
+Files you produce with a tool are handed to your browser's own download mechanism and saved wherever you tell it to. We are not involved in that step either.
+
+## Features that deliberately use a connection
+
+[Images to Video](https://abox.tools/images-to-video/) can fetch an image from a web address you supply. That server receives your IP address and the requested URL, including query parameters. The image is copied into local memory and re-encoded for processing. This request does not send files selected from your device.
+
+[Receipt & Invoice Extractor](https://abox.tools/receipt-invoice-extractor/) reads photos and recognises text locally. Its optional historical-rate button requests a currency pair and your chosen date from [Frankfurter](https://frankfurter.dev/). The date may be the date printed on a receipt. The provider sees your IP address and request; the request omits credentials and referrers and contains no photo, filename, merchant, amount or email address. Manual rates require no request.
+
+Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. [Share Text & Files](https://abox.tools/share-text/), [Share a Browser Tab](https://abox.tools/share-tab/) and [Remote Camera](https://abox.tools/remote-camera/) deliberately send content to another browser; their connection metadata is described below.
+
+### Public tool catalogue for agents (MCP and A2A)
+
+MCP and A2A clients send public task or format keywords, a catalogue language and a result limit to a Cloudflare Worker at `mcp.abox.tools`. The catalogue services return public tool descriptions and links. They accept no files, provide no upload endpoint and require no account. Do not send private keywords, filenames, file contents or passwords.
+
+Filtering inside the loaded interactive catalogue runs locally without another catalogue request. Opening a selected result asks the host to open that tool's website, where file selection and processing happen in the browser. The agent or app host provider handles your requests and conversation history under its own policy. The service receives what the host sends in the catalogue request; it does not request or retrieve that host's conversation history.
+
+The application writes no query or request-body logs and has no database or persistent tasks. Worker observability is disabled. Cloudflare still processes IP addresses, timing and request metadata for hosting, security and request-rate controls. Retention of that provider-managed metadata is governed by Cloudflare; we have not verified a fixed retention period for this service. Avoiding the remote catalogue leaves the ordinary website and local file processing available.
+
+## What is collected, and by whom
+
+This site is free and is paid for by advertising. That means two Google products run on these pages, and a donate button runs on most of them. Here is the whole list.
+
+### Google AdSense — the ads
+
+Google serves the ads and decides which ones you see. To do that it may set and read cookies or similar identifiers in your browser, and it receives your IP address, an approximate location derived from it, your user agent, and which page you were on. Depending on your settings and where you are, the ads may be personalised using a profile Google holds about you, built largely from your activity on other sites.
+
+We do not receive any of that, we cannot see it, and we never send Google anything about your files. Google's own account of how it uses data from sites that run its ads is at [policies.google.com/technologies/partner-sites](https://policies.google.com/technologies/partner-sites).
+
+### Google Analytics — visits and successful tool use
+
+We use Google Analytics 4 to count page visits and successful tool use, so we know which tools are worth working on. It records the page you viewed, roughly when, a randomly generated identifier stored in your browser, an approximate location, your device and browser type, and standard campaign attribution tags.
+
+The page address sent to Analytics uses its canonical URL with only standard campaign tags. Other query parameters and address fragments are omitted. The page title is fixed, and the referring site is reduced to its origin, without its path or query.
+
+We count the first successful tool use per page load, such as requesting a ready download, completing a copy, or displaying a usable analysis or view in an inspector. The only tool-specific detail added to this event is the tool's fixed identifier. It does not confirm that your operating system saved a download.
+
+We also count tool-page openings. On Images to Video, Image Stacker, GIF Analyzer and GIF Splitter, fixed events record input being supplied, processing starting, a result becoming ready, a problem or a cancellation, at most once per stage per page load. Built-in examples are excluded from those stages. Selected workflow links report only fixed identifiers for the source and destination pages, never the link address or text. These counts help locate where a visit stops; they do not identify individual jobs or confirm arrival at the next page.
+
+Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, error messages or other input or output details to these records. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
+
+### Buy Me a Coffee — the donate button
+
+The hub page and the tool pages carry a donate button, which loads from Buy Me a Coffee's servers. Loading it means their CDN sees your IP address and that you were on this site, and the button's lettering is fetched from Google Fonts, which likewise sees your IP address. Nothing else is sent, and nothing further happens unless you actually click it, at which point you are on their site under their policies. This page and the [Terms page](https://abox.tools/terms/) do not draw the button.
+
+### Hosting
+
+The site is served by GitHub Pages, behind Cloudflare. Like any web host, they process the requests your browser makes — which includes your IP address, the page requested, and your user agent — in order to deliver the page and to keep the service up and secure. We do not have access to per-visitor logs from either of them.
+
+### Connection choices for paired tools
+
+All five paired tools start with Direct. Before starting, a host can instead choose Cloud relay; the invitation carries that choice and the joining person sees it before connecting. Direct never changes to a relay automatically. Cloud relay forwards encrypted text, files, video, audio and control messages through Cloudflare TURN. The relay does not hold their decryption keys, but sees connection addresses, timing and traffic volume. Both devices need internet throughout a relayed session. Temporary relay credentials stay in browser memory and are renewed through the rendezvous; they are not published in invitations or nearby lists. Nearby entries may show the host's connection choice. The tools' approval, password and microphone controls still apply.
+
+All five tools offer Available connections in either the local-network directory or a private group. A private group lets devices on different networks discover sessions using the same randomly generated code. Each tool has a separate list, and group sessions are not also published in the local-network list. The code permits discovery, not access: passwords, host approval and the selected connection route still apply. The rendezvous receives the code inside an encrypted connection to check group membership, then retains only a derived identifier and the result on open connections. Request URLs and their seven-day metadata logs contain that identifier, never the code. The page keeps the code in memory only, excludes it from invitations and connection reports, and forgets it on reload. Normal scripts on the page can read its fields; a private group does not isolate them. Anyone with the code can discover sessions offered to the group, so share it only with the intended people.
+
+### Share a Browser Tab
+
+[Share a Browser Tab](https://abox.tools/share-tab/) uses a desktop browser’s picker to capture one tab and send live video to one approved viewer. The viewer requests access, the host approves and the viewer acknowledges before video is sent. There is no audio, camera or microphone capture. Information visible in the chosen tab is shared; the viewer can record what they receive.
+
+Online nearby discovery is off by default. The host may enable Show in nearby shared tabs before starting; a viewer explicitly chooses Find nearby tabs to open the list. The discovery connection lists the random invitation code and connection choice, never the captured tab’s title, address, picture or viewer note. Join beside a result sends the request using its displayed route; host approval is still required for a browser without a valid approval receipt. A copied invitation still waits for Request to watch. The service groups this tool’s pages by public IPv4 address or IPv6 /64 subnet and website origin, not physical location. Shared gateways or VPNs can include strangers or hide nearby devices. Listings live on open connections without stored history, and stopping withdraws the host’s listing.
+
+Direct video uses an encrypted connection on a reachable network, without public STUN or TURN. Cloud relay uses the encrypted relay path described above. Discovery and pairing need internet access on both devices. The rendezvous sees room codes, IP addresses, times, WebRTC descriptions and candidates, but not video, viewer notes or approval decisions. Cloudflare retains connection metadata logs for seven days.
+
+The page’s normal scripts can read its address and state, including an invitation code; a link alone never grants video access. The viewer cannot control the host or select webpage text. The tool has no recording feature, but visible signed-in content is part of the picture and the viewer can independently capture or record it. The tool page explains its network limits; local address settings do not prove a physical network boundary.
+
+### Remote Camera and browser introductions
+
+[Remote Camera](https://abox.tools/remote-camera/) opens a discovery WebSocket when its page loads; Start camera or Connect adds a room connection to our rendezvous. Join beside a listed camera requests a connection and exchanges network addresses using its displayed route. Opening a viewer link still waits for Connect. Viewer approval is on by default and controls transmitted video and audio, not address exchange. The rendezvous sees codes, addresses, timings and setup messages, never video, audio or viewer notes. In Direct, video and enabled audio use an encrypted browser connection without configured STUN or TURN. Cloud relay uses the encrypted relay path described above. There is no recording feature. Audio is off by default; the host requests microphone access only after choosing to share audio. Internet is still required for introductions. Routing can be affected by VPNs and operating-system policy; local mode does not prove a physical network boundary. The tool page explains these limits and how page scripts can read the viewer-link address.
+
+Optional viewer alerts analyze small video frames and received audio on the viewer device without recordings or uploads. Enabling alerts requests browser notification permission. Generic notices contain no camera image, audio, link name or viewer note; the browser and operating system display them. Disconnect stops analysis and closes this session’s notifications. The viewer page must stay open; browsers may pause analysis in the background or during sleep.
+
+### Local Walkie-Talkie
+
+[Local Walkie-Talkie](https://abox.tools/walkie-talkie/) hosts directly in the website without Python or a download. Opening the page connects securely to our rendezvous for nearby discovery. Starting or joining adds a channel connection for authentication, setup and availability checks. Make this channel discoverable publishes its name and listener invitation to browsers grouped by public IPv4 address or IPv6 /64 subnet and page origin. Shared gateways can include strangers and VPNs can hide nearby devices; this is not a physical Wi-Fi scan. Hosts can turn the option off before starting to keep invitations link-only. Hiding or ending the host withdraws the listing. Live voice travels from the host browser to up to ten receive-only browsers using encrypted WebRTC, directly by default or through the explicitly chosen Cloud relay; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key. Active recovery state stays in per-tab session storage; the browser also retains a random personal key locally for return visits to the same session. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and a working chosen route can request to join. Host approval is required by default before listening; hosts can turn it off. Approved browsers may rejoin the same host session unless removed. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
+
+### Voice Oncall
+
+[Voice Oncall](https://abox.tools/voice-oncall/) receives separate encrypted audio streams, directly by default or through the explicitly chosen Cloud relay, from up to ten participants in one host browser. Its nearby discovery connection lists advertised pagers sharing a public IPv4 address or IPv6 subnet and page origin; this is a hint, not a LAN scan or proof of physical Wi-Fi membership. The service sees pager names, password-derived admission credentials, moderation status and connection details, never voice. Callers need no display name; the host sees a short identifier instead. Older clients may still send a display name. An optional password and host approval control admission. Approval is on by default; an approved browser may rejoin the same host session unless removed. The password-derived access credential is computed in the browser and sent inside secure signaling rather than in a URL. The host never grants microphone access; participants deliberately enable transmission with Talk. Host mute silences each participant's playback locally, and removal blocks its retained session identity rather than a permanent person-level identity. Active recovery state stays in per-tab session storage when available; a random personal key is also kept locally for return visits to the same session. The site's normal scripts can read the page address and both kinds of storage. Socket attachments hold temporary pager state without stored pager history, while Cloudflare keeps seven-day invocation metadata logs. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet is required for discovery and pairing, and direct reachability still depends on browser and network routes.
+
+### Share Text & Files and the rendezvous
+
+[Share Text & Files](https://abox.tools/share-text/) opens a discovery connection on its start page and another connection when sharing. Names are grouped by public IPv4 address or IPv6 subnet and page origin; this is a discovery hint, not proof of the same physical network. The rendezvous sees names, IP addresses, connection times and negotiation messages, never shared text or files. Advertised names live on open connections without durable storage. Ordinary Direct uses public STUN servers from Google and Cloudflare, which learn the address used for those requests. Local network restricts Direct to host addresses without STUN or TURN. Cloud relay is a separate choice made by the host before sharing and accepted by the reader before connecting. All choices need the public rendezvous for setup. Cloudflare keeps seven-day connection metadata logs for the share, camera and voice rendezvous; these are per-visitor service logs we can read. Content copied or downloaded by a recipient remains theirs after the source tab closes.
+
+## Cookies
+
+We set no login or session cookies. Google scripts may set cookies and identifiers as described above. The site also uses local browser storage for preferences and temporary work.
+
+**Pairing approvals.** The five paired tools keep random reconnect credentials in local browser storage for a limited number of recent tool, room and connection-route combinations. These contain no shared content, names or IP addresses. Share Text, Share a Browser Tab and Remote Camera present approval receipts only over the encrypted peer connection; voice tools send their personal key to the introduction service when joining. Approval lasts for the current host session: disconnecting keeps it, host removal revokes it, and ending or starting a new host session resets it. Clearing or blocking storage can require approval again. Scripts running on any page of this website origin, including third-party scripts, can access these stored credentials. They are not isolated from page scripts or placed in invitations or discovery lists.
+
+**The language you choose.** If you pick a language from the switcher, that choice is written to your browser's local storage, under the name `abox-lang`, so that the next page you open is in the language you asked for. It is not a cookie: it is never sent to us or to anybody else, it stays on the device you are reading this on, and clearing your browser's site data removes it. If you never pick a language, nothing is written at all — a page shown in your browser's own language was matched on the spot and forgotten again.
+
+**Other local storage.** Feedback stores an answer or dismissal timestamp to avoid asking again. Tools may keep settings or an optional sharing draft locally. A language switch or an explicit carry-on action can temporarily store files and settings in IndexedDB so another local tool page can pick them up. These records are not cookies and are not sent to us; clearing site data removes them. The relevant tool explains persistent drafts.
+
+Google's cookies and identifiers are used to measure visits and tool use and to select and cap ads. They are distinct from the local site records described above.
+
+### How to switch it off
+
+- Ad personalisation can be turned off, for all sites at once, at [My Ad Center](https://myadcenter.google.com/).
+- Google Analytics can be blocked everywhere with Google's [opt-out browser add-on](https://tools.google.com/dlpage/gaoptout).
+- Your browser's own settings can block or clear third-party cookies, and any content blocker will stop these scripts loading in the first place.
+
+Blocking advertising, Analytics and the donate button leaves local processing available. Once a tool's offline cache is ready, its local processing works disconnected. Web-image imports, online rates, browser introductions and delivery through another app need their respective connections. No processing feature is withheld behind an ad.
+
+## Your rights over the data
+
+We do not hold files you process. Analytics reports and the rendezvous connection metadata described above are different data. Questions or requests about the site's handling of these can go to [hi@abox.tools](mailto:hi@abox.tools); identify the page and approximate date, without attaching a private file.
+
+For data in your Google account, use [your account controls](https://myaccount.google.com/) or Google's privacy contacts. Optional exchange-rate, donation and email providers handle their own services and requests.
+
+## Children
+
+This site is not directed at children and does not request an age or a user account. The automatic page and connection information described above applies to visitors of any age.
+
+## Changes, and how to reach us
+
+If this page changes, the date at the top changes with it, and the edit is in the public commit history along with everything else.
+
+Questions about any of this can go to [hi@abox.tools](mailto:hi@abox.tools), or be raised as an issue on [the repository](https://github.com/A-Box-of-Tools/website), where the answer is visible to everyone else wondering the same thing.

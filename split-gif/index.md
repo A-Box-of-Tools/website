@@ -1,0 +1,92 @@
+# GIF Splitter
+
+Extract PNG frames, a ZIP or one sprite sheet, with the timing written down.
+
+> Extract GIF frames as PNGs, a ZIP or one sprite sheet in your browser. Keep transparency and save frame delays in a separate timing list. No upload.
+
+This is an interactive browser tool at https://abox.tools/split-gif/. Files are processed on the device running that browser. Any deliberate sharing or optional network feature is described on the page. What follows is its written explanation; open the address to use it.
+
+## Your GIFs are **processed in your browser**. No processing upload.
+
+The GIF is read, decompressed and drawn by your own browser, and every PNG is encoded in memory on this machine. There is no server on the other end of this page to send an animation to even if anything here wanted to.
+
+- ✗ No upload
+- ✗ No account
+- ✓ Works offline
+- ✓ Open source
+- ✓ Files stay on your device
+
+## How to split a GIF into frames
+
+1. **Choose the GIF.** Drop it onto the picker, or select it by hand. It is read straight off your disk by the browser, and the page tells you what it found: the size, the frame count, how long it plays and how many times it repeats.
+2. **Decide what each PNG should hold.** **The frame as it appears** is what almost everybody wants: the whole picture at that moment of the animation. **Only the pixels that frame stores** is the patch the file actually carries, at its own size and in its own place, which is how a GIF stays small and is not what the animation looks like.
+3. **Decide what happens to the transparency.** PNG keeps it, which is the honest default. Fill it with a colour instead if the frames are headed somewhere that ignores transparency and would otherwise turn it black.
+4. **Pick the frames you want.** All of them by default. "Keep every second frame" thins a long recording out, and the tick boxes on the grid override it — the numbering never changes, so frame 42 is called frame 42 however few of its neighbours you kept.
+5. **Download them.** One frame at a time from the grid, or all of them as a single ZIP so there is one save prompt instead of hundreds. The ZIP can carry a `frames.txt` listing how long each frame was held, which is the one thing a folder of PNGs cannot say on its own.
+
+## The longer version
+
+[How to split a GIF into PNG frames](https://abox.tools/guides/split-a-gif-into-frames/): Extract GIF frames as complete PNGs, a ZIP or a sprite sheet. Keep transparency and a timing reference, rebuild an edited GIF, or convert the original to MP4.
+
+## Also in the box
+
+- [GIF Analyzer](https://abox.tools/gif-analyzer/): Frames, delays, palettes, and where every byte went.
+- [Video Compressor](https://abox.tools/compress-video/): Say how big it may be. The tool works out the rest, and measures the result before you get it.
+- [MP4 Converter](https://abox.tools/convert-to-mp4/): Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must.
+- [Video Rotator](https://abox.tools/rotate-video/): A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged.
+
+## Questions
+
+### Is my GIF uploaded anywhere?
+
+No. The file is read, decompressed and drawn by your own browser on your own hardware, and every PNG is encoded here in memory. There is no server side to this tool, and the page's `Content-Security-Policy` names every address it may contact — none of them belongs to this site. Unplug from the network and it still splits GIFs.
+
+### Why does one frame look like a small piece of the picture?
+
+Because that is what the file holds. A GIF is a first picture followed by patches: each later frame stores only the rectangle that changed, and everything else on screen is what the frames before it left there. A talking head against a still wall therefore stores a face per frame rather than a picture per frame, which is the whole reason the format is not enormous. \
+\
+You are seeing that because "Only the pixels that frame stores" is selected. Switch to "The frame as it appears" and every PNG is the whole picture as the animation looks at that moment.
+
+### Does it keep the transparency?
+
+Yes. GIF transparency is a single bit — a pixel is either painted or invisible, with nothing in between — and PNG stores exactly that, so the frames come out with their transparent areas intact. If you would rather have a solid background, set "Transparent areas" to fill with a colour; that is written into the PNG and cannot be undone afterwards.
+
+### Why are the frame delays not the numbers I expected?
+
+A GIF stores each delay in hundredths of a second, and browsers have clamped anything under two of them to a tenth of a second since the 1990s — a rule written for the spinning globes of the time and never removed. So a frame whose file says 0.01s is played at 0.10s everywhere. This tool shows the delay as it is really played, and says what the file stores next to it when the two differ.
+
+### Can I put the frames back together again?
+
+Yes. Extract **The frame as it appears**, then add those complete PNGs to [GIF Maker](https://abox.tools/gif-maker/) and sort them by name. Use `frames.txt` from the ZIP as a reference when setting each frame's hold time; GIF Maker does not import the list automatically. A PNG cannot carry its playback delay on its own. The [frame-by-frame editing guide](https://abox.tools/guides/edit-a-gif-frame-by-frame/) walks through rebuilding the animation.
+
+### What formats can the frames be saved in?
+
+PNG, and deliberately only PNG. A GIF frame is at most 256 colours with one bit of transparency; PNG stores that exactly and losslessly, while JPEG would throw the transparency away, invent colours the frame never had, and usually make a *larger* file out of flat artwork. If you need JPEGs, convert the PNGs afterwards with the [Image Resizer](https://abox.tools/resize-image/).
+
+### Is there a limit on how many frames it will read?
+
+The tool uses a 512 MiB planning estimate for source buffers, retained patches, previews and output, and stops before decoded patches exceed 128 Mi pixels. A small stored patch does not make the full source picture cheaper. Unsafe plans are refused before drawing; retained partial results are available only when their buffer plan fits. Sheets and collected PNGs also count. Native browser allocations, JS objects and canvas limits can cost more or refuse earlier, so this is not a measurement of free memory or a guarantee against exhaustion.
+
+### Will it open a damaged GIF?
+
+Often. Complete frames are retained from truncated files and missing end markers. Inside a partial frame, missing areas use the first palette colour unless it is marked transparent; the page warns about this fallback. Files with no readable frames and unsafe buffer plans are refused.
+
+### Is it free, and do I need an account?
+
+It is free, and there is no account, no sign-in and no trial. There is no watermark on the frames either. The site carries advertising, which is what pays for it; the ads are not given anything about your files.
+
+### Does it work offline?
+
+Yes. Load the page once, then disconnect from the internet and it keeps working. That is also the simplest way to prove nothing is being uploaded: a tool that sent your animation away to be processed would stop the moment you unplugged.
+
+## How the privacy claim is verifiable
+
+- **Processing happens in this browser.** This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected.
+- **The GIF reader is two files in this repository.** A browser will play a GIF but will not hand you its parts, so the format is read out here: `src/shared/gif-decode.js` is the container and the LZW decompressor, `src/shared/gif-compose.js` is the disposal rules that decide what each frame looks like once the ones before it are underneath. Nothing is fetched to open a file, and there is no engine downloaded on first use.
+- **What Google loads, and what it is not given.** The ad and measurement scripts come from Google. Neither is handed anything about your animation: not a file, not a frame, not a name, a size, or a count. Every line that reads, decompresses, draws or encodes a picture is served from this origin and listed in the repository.
+- **What the donate button loads, and what it is not given.** The "Buy me a coffee" button in the header is drawn by a script from cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link and nothing more: it reports no visit, and it is handed nothing about you or your files. Nothing happens unless you click it, and what you would be clicking through to is somebody else's site.
+- **It works offline.** Disconnect from the network and every part of this page still works. That is the simplest proof of all: a tool that sent your animation away to be taken apart would stop the moment you unplugged.
+
+**Check it yourself.** None of the above has to be taken on trust. This page is generated from the templates and config in the repository by a build script you can read and run yourself, and the result is committed to the `dist` branch — so you can diff what is served against what a build of the sources produces: https://github.com/A-Box-of-Tools/website
+
+The files worth reading first are `config/site.toml` for the Content-Security-Policy, `src/shared/gif-decode.js` for the reader that decompresses the frames, and `src/shared/gif-compose.js` for the rules that lay them on top of each other — neither of which has a line that could reach the network.

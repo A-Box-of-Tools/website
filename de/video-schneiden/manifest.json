@@ -1,0 +1,26 @@
+{
+  "id": "/de/video-schneiden/",
+  "name": "Video-Schneider",
+  "short_name": "Video-Schneider",
+  "description": "Beim Abspielen markieren, was bleiben soll. Und alles davon als ein Video zur\u00fcckbekommen.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

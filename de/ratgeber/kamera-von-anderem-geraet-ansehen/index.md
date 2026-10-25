@@ -1,0 +1,86 @@
+# Die Kamera von einem anderen Gerät aus ansehen
+
+Nutzen Sie ein altes Telefon für Haustiere, den Eingangsbereich oder schwer einsehbare Stellen. Öffnen Sie die Kamera in einem Browser und geben Sie den Zuschauer frei. Direkt funktioniert im erreichbaren lokalen Netz; mit Cloud-Relay leitet Cloudflare das verschlüsselte Video weiter.
+
+[Remote Camera öffnen](https://abox.tools/de/remote-camera/): Open a camera on one device and watch it in another browser, with optional viewer approval. Choose Direct or Cloud relay for encrypted live video.
+
+Zuletzt aktualisiert 15. Oktober 2026
+
+## Was Sie brauchen
+
+Direct ist voreingestellt. Die folgenden Hinweise zur direkten Erreichbarkeit gelten für diesen Modus. Soll die Verbindung über Cloud relay laufen, wählt der Host dies vor dem Start und teilt die neue Einladung. Die andere Person sieht die Wahl und bestätigt sie vor dem Verbinden. Direct wechselt niemals automatisch. Cloudflare leitet verschlüsselte Inhalte weiter und sieht Adressen, Zeitpunkte und Datenvolumen. Beide Geräte brauchen dabei durchgehend Internet. Zustimmung, Passwort und Mikrofonsteuerung gelten unverändert.
+
+Verwenden Sie zwei Geräte mit Browsern, die Kamerazugriff und WebRTC unterstützen. Beide brauchen Internet für die Kontaktvermittlung und ein Netz, in dem sie einander erreichen können. Ein Telefon im WLAN und ein Computer am Ethernet können funktionieren, wenn das Netz die Kommunikation erlaubt. Ein Smartphone-Hotspot kann ebenfalls funktionieren, wenn beide Geräte für die Vermittlung Internetzugang haben und der Hotspot die Kommunikation zwischen ihnen erlaubt.
+
+Öffnen Sie die vertrauenswürdige HTTPS-Adresse dieser Website. Eine gewöhnliche HTTP-Adresse mit einer LAN-IP kann keine Kamera anfordern. Fragt der Browser oder das Betriebssystem nach Zugriff auf das lokale Netz, erlauben Sie ihn für diese Sitzung.
+
+## Ein altes Telefon zu Hause weiterverwenden
+
+Ein übriges Telefon kann einen anderen Raum oder einen schwer einsehbaren Ort zeigen. Dafür ist dieselbe direkte Verbindung wie für jede Kamerasitzung nötig: Beide Geräte brauchen Internet zum Koppeln und ein Heimnetz, in dem sie einander erreichen.
+
+- **Ein Blick ins Kinderzimmer.** Nutzen Sie das Livebild für eine zusätzliche Sichtkontrolle aus einem anderen Raum, während Sie zu Hause sind. Stellen Sie das Telefon auf eine stabile Halterung außerhalb der Reichweite des Kindes. Optionaler Ton und Aktivitätsalarme können ausbleiben oder vom Browser pausiert werden; das Werkzeug ist kein Sicherheitsmonitor.
+- **Haustiere in einem anderen Raum.** Sehen Sie beim Arbeiten anderswo im Haus, ob der Hund sich in seinem Bett beruhigt hat oder was die Katze an ihrem Lieblingsplatz macht.
+- **Ein Eingangsbereich innen.** Behalten Sie die Haustür von einem anderen Raum aus im Blick. Sie sehen das Livebild während des Zuschauens; eine Aufzeichnung gibt es nicht. Unterstützte Browser können Sie über erkannte Bewegung oder Geräusche benachrichtigen, solange die Zuschauerseite laufen kann.
+- **Heimwerkerprüfungen.** Richten Sie das Telefon auf eine Rohrverbindung unter der Spüle, eine Schraube hinter einem Schrank oder einen Spalt zum Kabelziehen. Der Laptop zeigt Ihnen Stellen, an die Ihr Kopf nicht passt.
+
+Am zuverlässigsten ist die Ansicht, wenn die Kameraseite sichtbar und das Telefon wach bleibt. Die Seite erhält eine funktionierende Verbindung auch im Hintergrund. Beim App-Wechsel oder Sperren des Bildschirms kann der Telefonbrowser die Aufnahme oder die ganze Seite jedoch pausieren. Direct setzt ein erreichbares lokales Netz voraus. Cloud-Relay ist eine ausdrücklich gewählte Alternative mit durchgehendem Internetzugang.
+
+## Eine Ansicht für eine Heimwerkerprüfung einrichten
+
+1. Starten Sie die Kamera, verbinden Sie den Laptop und genehmigen Sie seine Anfrage wie unten beschrieben. Koppeln Sie die Geräte, solange das Telefon noch leicht erreichbar ist.
+2. Wählen Sie die Kamera, die zur Prüfposition zeigt. Stellen Sie das Telefon auf eine stabile Halterung und prüfen Sie den Ausschnitt am Laptop. Bei Dunkelheit helfen eine Lampe oder Taschenlampe.
+3. Sehen Sie auf das Livebild, während Sie die Schraube suchen, die Rohrverbindung prüfen oder ein Kabel durch den Spalt führen. Stellen Sie das Telefon um, wenn das benötigte Detail außerhalb des Bildes liegt.
+4. Lassen Sie die Kameraseite sichtbar und den Bildschirm wach, bis Sie fertig sind. Wählen Sie dann Stop camera and end the link.
+
+## Auf dem Kameragerät beginnen
+
+1. Wählen Sie einen Namen für den Zuschauerlink oder behalten Sie den Zufallsvorschlag. Lassen Sie Require my approval eingeschaltet, um Zuschauer selbst freizugeben, oder schalten Sie es für automatisches Zuschauen aus. Wählen Sie danach Start camera. Die erste Kamera wählt der Browser.
+2. Erlauben Sie den Kamerazugriff. Ton ist standardmäßig ausgeschaltet; wählen Sie vor dem Start Enable microphone, wenn Sie auch Mikrofonzugriff anfordern möchten. Stoppen Sie, bevor Sie diese Auswahl ändern.
+
+Ihre lokale Vorschau erscheint mit Zuschauerlink, gewähltem Code und QR-Code. Video und Ton werden erst gesendet, wenn ein Zuschauer angenommen wurde. Lassen Sie für eine zuverlässige Aufnahme die Seite sichtbar und das Gerät wach. Stoppen Sie, bevor Sie den Linknamen ändern. Deaktivieren Sie die Listung vor dem Start, wenn Sie nur per Link einladen möchten. Meldet der Browser mehrere Kameras, erscheint nach der Erlaubnis die Auswahl Camera. Ein Wechsel dort erhält Link und Zuschauerverbindungen; Geräte, die erst die alte Kamera freigeben müssen, können kurz pausieren.
+
+## Den Zuschauer verbinden und freigeben
+
+1. Tragen Sie auf dem anderen Gerät bei Watch a camera bei Bedarf eine Notiz ein, die der Kamerabesitzer erkennt. Prüfen Sie unter Available connections das Symbol für den Verbindungstyp und wählen Sie Join neben der Kamera, um die Anfrage zu starten.
+2. Oder öffnen Sie den Zuschauerlink, scannen seinen QR-Code oder tragen den Code bei Watch a camera ein. Diese Wege warten auf Connect to camera.
+3. Ist Require my approval eingeschaltet, genehmigen Sie jede erwartete Anfrage am Kameragerät. Ohne Freigabepflicht erhalten Zuschauer automatisch Video, solange noch Plätze frei sind.
+
+Die Notiz ist keine verifizierte Identität. Erkennen Sie jede Person und die erwartete Anfrage, bevor Sie zustimmen. Schon vor der Freigabe werden beim Koppeln Netzwerkadressen ausgetauscht. Die Einstellung bestimmt, ob vor dem Video eine Handlung des Besitzers nötig ist. Ohne Freigabepflicht kann jeder mit dem Link oder einer gefundenen gelisteten Kamera zuschauen, solange noch Plätze frei sind. Änderungen gelten für neue Anfragen; angenommene Zuschauer bleiben verbunden. Pausiert die Wiedergabe, wählen Sie Play live video. Geteilter Ton startet automatisch, wenn der Browser dies erlaubt; andernfalls wählen Sie Unmute audio. Die Schaltflächen zum Stummschalten und Full screen befinden sich im Videobild. Das Stummschalten der Wiedergabe beendet die Geräuschalarme nicht.
+
+## Mit mehreren Zuschauern teilen
+
+Bis zu acht angenommene Zuschauer können dieselbe Kamera über separate direkte Verbindungen ansehen. Die Quelle listet angenommene Zuschauer unter Connected viewers auf. Disconnect this viewer beendet nur die Ansicht dieser Person; Stop camera beendet alle Ansichten.
+
+Wählen Sie an der Quelle Shared video bandwidth, um Platz für anderen WLAN-Verkehr zu lassen. Der Standardwert ist 6 Mbps; zur Auswahl stehen 1, 2, 4, 6 und 10 Mbps. Die Videoobergrenze wird unter den Zuschauern aufgeteilt; bei Überlastung kann jeder Browser seine Datenrate weiter senken. Bei 1 Mbps werden neue Zuschauer nur angenommen, solange insgesamt weniger als vier Zuschauer angenommen sind; höhere Werte verwenden eine Grenze von insgesamt acht. Ton und Netzwerk-Overhead kommen hinzu. Sie können die Grenze während des Teilens ändern. Eine niedrigere Grenze trennt bestehende Zuschauer nicht, auch wenn ihre Zahl die neue Aufnahmegrenze übersteigt.
+
+Der Browser kann die gesamte gemeinsam genutzte Kapazität Ihres WLANs nicht messen. Wird das Video langsam, senken Sie die gewählte Obergrenze oder trennen Sie einige Zuschauer. Auch die Geräteleistung kann das Teilen begrenzen. Kann ein Browser die Videogrenzen nicht anwenden, zeigt die Quelle dies an; seine normale Anpassung an die Verbindung läuft weiter.
+
+## Zuschaueralarme aktivieren, wo sie unterstützt werden
+
+Verbundene Zuschauer können in unterstützten Browsern Bewegungs- oder Geräuschbenachrichtigungen wählen. Aktivieren Sie einen Alarm und erlauben Sie die Benachrichtigungsanfrage des Browsers. Für die Geräuscherkennung muss der Host Ton teilen; sie funktioniert auch bei stummgeschalteter Wiedergabe. Bilder und Ton werden lokal analysiert, ohne Aufzeichnungen oder Uploads. Benachrichtigungen enthalten nur allgemeinen Text über erkannte Aktivität.
+
+Lassen Sie die Zuschauerseite offen. Browser können die Analyse im Hintergrund oder im Ruhezustand des Geräts pausieren, und Änderungen der Beleuchtung können Bewegungsbenachrichtigungen auslösen. Alarme können ausbleiben; sie sind kein Sicherheitsmonitor. Auf iPhone oder iPad kann es für Benachrichtigungen nötig sein, die Website zum Home-Bildschirm hinzuzufügen. Nicht unterstützte Benachrichtigungsoptionen sind ausgeblendet.
+
+## Nach Bildschirmsperre oder Unterbrechung zurückkehren
+
+Bei Ihrer Rückkehr versucht die Seite, mit demselben Zuschauerlink und der gewählten Kamera fortzufahren. Gelingt das nicht, wählen Sie Resume camera; der Browser kann erneut nach der Kameraberechtigung fragen. Solange die ursprüngliche direkte Verbindung besteht, bleibt der Zuschauer freigegeben. Ging diese direkte Verbindung verloren, muss er sich neu verbinden und bei eingeschaltetem Require my approval erneut freigegeben werden. Eine Aufnahme im Hintergrund bei gesperrtem Telefon ist nicht garantiert.
+
+## Nach Gebrauch stoppen
+
+Stop camera and end the link gibt die Kamera frei und schließt die Einladung. Die Rückkehr zur Seite nach Stop startet sie nicht erneut. Das Schließen der Quellseite beendet die Sitzung; bloßes Verbergen erhält eine funktionierende Verbindung. Disconnect beim Zuschauer leert sein Livebild, während die Quelle eine lokale Vorschau für weitere Anfragen behält.
+
+Wird die Kameraberechtigung erst nach Stop erteilt, wird die Kamera sofort wieder freigegeben. Ein Neustart verwendet den Namen im Linknamenfeld; New random name erzeugt eine neue Einladung. Das Sitzungsende stoppt weiteres Video, doch ein Zuschauer kann unabhängig auf seinem Bildschirm aufgezeichnete Inhalte behalten.
+
+## Wenn die Geräte keine Verbindung herstellen
+
+Derselbe WLAN-Name beweist keine Erreichbarkeit. Gastisolation, Firewalls, blockierte lokale Adresserkennung, lokale Netzwerkberechtigungen von Browser und Betriebssystem oder VPN-Routing können die direkte Verbindung verhindern. Stoppen Sie beide Seiten, prüfen Sie Berechtigungen und Netzwerk und versuchen Sie einen neuen Link.
+
+Connection details zeigt die ausgewählten Kandidatentypen und die Zahl der vom Zuschauer dekodierten Frames. Direct verwendet nur Host-Kandidaten, ohne STUN-Server, TURN-Relay oder Relay-Ausweichweg. VPN, öffentliche Schnittstellen oder Betriebssystemrouten können den Pfad verändern; Host-Kandidaten beweisen nicht, dass der Verkehr innerhalb eines Gebäudes bleibt.
+
+## Was der Vermittlungsdienst sieht
+
+Beim Öffnen der Seite entsteht eine WebSocket-Verbindung zum Rendezvous für die Suche. Starten oder Verbinden ergänzt einen Raum-WebSocket. Er bleibt für Einladungen offen, doch eine bereits freigegebene direkte Ansicht läuft weiter, wenn diese Vermittlungsverbindung endet. Die Kamera stellt ihre Einladung erneut bereit, ohne Aufnahme oder Zuschauerfreigabe zu wiederholen. Kann sich der Vermittlungsdienst nicht erholen, läuft die bestehende Ansicht weiter; stoppen und starten Sie erneut, bevor Sie einen weiteren Zuschauer einladen. Der Dienst sieht Code, IP-Adressen, Zeiten sowie WebRTC-Verbindungsbeschreibungen und Kandidaten. Einrichtungsnachrichten sind für ihn sichtbar; Livevideo, aktivierter Ton und Zuschauernotiz reisen stattdessen über die verschlüsselte Peer-Verbindung.
+
+Die Suche gruppiert freiwillig gelistete Kameranamen nach der vom Dienst gesehenen öffentlichen IPv4-Adresse oder dem IPv6-/64-Netz und der Adresse dieser Website. Dadurch können Fremde hinter gemeinsamen VPNs oder Mobilfunknetzen auftauchen und nahe Kameras fehlen. Join neben einer Kamera fordert die Verbindung über den angezeigten Typ an und tauscht Netzwerkadressen aus. Bloßes Durchsehen der Liste verbindet nicht. Die Quelle kann eine Besitzerfreigabe verlangen oder automatisch annehmen. Ein geöffneter Zuschauerlink wartet weiter auf Connect. Räume und Listen bestehen nur bei offenen Verbindungen. Cloudflare speichert sieben Tage Verbindungsprotokolle mit Metadaten, niemals mit Nutzinhalten. Übliche Werbeskripte können die Seitenadresse lesen, einschließlich eines Kameracodes im Fragment. Ein Code ermöglicht eine Anfrage; die Freigabe an der Quelle bleibt deshalb wesentlich.
+
+Das ist eine Kameraansicht im Browser. Mikrofonton ist optional; sie hat keine Aufzeichnungsfunktion und installiert keine System-Webcam für andere Anwendungen.

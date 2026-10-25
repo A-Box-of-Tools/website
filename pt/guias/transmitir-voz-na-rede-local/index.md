@@ -1,0 +1,49 @@
+# Como transmitir voz em uma rede local
+
+Uma pessoa fala e as demais ouvem pelo navegador. Inicie o canal neste site e compartilhe o link ou anuncie-o para dispositivos próximos. A conexão direta usa uma rede local acessível. Se o anfitrião escolher retransmissão na nuvem, os ouvintes confirmam antes de a voz criptografada passar pela Cloudflare.
+
+[Abrir Local Walkie-Talkie](https://abox.tools/pt/walkie-talkie/): Start a named channel, then hold to talk or speak hands-free. Connect directly on your local network, or choose Cloud relay for listeners over the internet.
+
+Última atualização 14 de outubro de 2026
+
+## Comece no dispositivo de quem vai falar
+
+Direct é a opção padrão. As orientações de alcance direto abaixo se referem a esse modo. Para usar Cloud relay, o anfitrião escolhe essa opção antes de iniciar e compartilha o novo convite. A outra pessoa vê a escolha e confirma antes de conectar; um convite do Walkie-Talkie com retransmissor também aguarda Join. Direct nunca muda automaticamente. A Cloudflare encaminha conteúdo criptografado e vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Aprovação, senha e controles do microfone continuam valendo.
+
+Abra o Local Walkie-Talkie neste site, mantenha Require my approval ativado para novas solicitações, escolha Start channel e permita o acesso ao microfone. Um celular ou computador compatível pode hospedar o canal pela página HTTPS. Não há programa auxiliar em Python, download nem conta. Para uma conexão mais confiável, mantenha a página do transmissor visível e o dispositivo ativo sempre que possível.
+
+## Convide os ouvintes
+
+Compartilhe o link ou código QR para ouvintes com dispositivos que possam usar a rota escolhida. Ao abrir um convite Direct, uma solicitação para entrar é enviada automaticamente. Um convite Cloud relay mostra primeiro o tipo de conexão e aguarda Join. Novos canais exigem aprovação do anfitrião por padrão. A solicitação aparece em uma caixa de diálogo: Approve permite entrar, Deny recusa e Review later mantém a solicitação na lista. Nenhum áudio é enviado antes da aprovação, a menos que o anfitrião a tenha desativado. O acesso ao microfone nunca é solicitado. Se o navegador bloquear o som, Unmute inicia a reprodução. Depois de entrar, os ouvintes usam Mute/Unmute e Leave.
+
+Os dois lados precisam de acesso à internet para o pareamento. O serviço transmite informações e status da conexão; em Direct, a voz ao vivo segue uma rota direta e criptografada separada, do transmissor até cada ouvinte. A retransmissão na nuvem só é usada quando escolhida explicitamente, nunca de forma automática.
+
+No dispositivo que vai transmitir, digite em **Channel name** um nome que os ouvintes reconheçam. Se **Make this channel discoverable** estiver marcada, selecionar **Start channel** publica o canal no âmbito de descoberta escolhido. Desmarque a opção para compartilhar convites apenas por link.
+
+A lista **Available connections**, no início da página, é atualizada automaticamente. Os ouvintes conferem o ícone do tipo de conexão e selecionam **Join** ao lado do canal desejado. Apenas consultar a lista não inicia a conexão. Ao entrar, a conexão apenas recebe áudio e nunca solicita acesso ao microfone. Se o canal não aparecer, o link para ouvintes e o código QR continuam disponíveis. Depois de conectar, os ouvintes usam Mute/Unmute e Leave.
+
+A descoberta agrupa os navegadores pelo endereço IPv4 público ou pelo prefixo IPv6 /64 e pela origem deste site; ela não faz uma varredura do Wi-Fi. Conexões de internet compartilhadas podem incluir desconhecidos, enquanto uma VPN ou outras rotas podem ocultar dispositivos que estão ao lado. Publicar um canal compartilha seu nome e a chave de convite para ouvintes com esse grupo. Quem o encontrar e puder alcançar o anfitrião pode solicitar entrada. Só é possível ouvir após a aprovação, a menos que o anfitrião a tenha desativado. O canal permanece na lista enquanto a conexão do anfitrião estiver ativa. End broadcast ou a perda dessa conexão o remove.
+
+## Pressione e segure para falar
+
+Pressione e segure o botão Talk com o toque ou o mouse, ou coloque o foco nele e mantenha a barra de espaço pressionada. Solte para parar de enviar voz. Para falar sem segurar o botão, selecione Start talking: a voz continua sendo transmitida até você selecionar Stop talking. Confira o estado de transmissão exibido antes de deixar o dispositivo de lado. Silenciar o microfone impede o envio de voz nas duas formas de uso. Até dez ouvintes podem se conectar, incluindo conexões em espera; comece com um grupo pequeno e verifique os dispositivos e a rede que pretende usar.
+
+## Recupere a conexão com o transmissor
+
+Os receptores em espera verificam a disponibilidade do transmissor na mesma página e mantêm sua escolha de silenciamento. Com a página em primeiro plano, o intervalo pretendido entre verificações é de um segundo. Uma conexão de voz direta já funcionando pode continuar durante uma breve indisponibilidade do serviço de pareamento. Navegadores em segundo plano, limites de conexão do serviço e dispositivos em suspensão podem atrasar a recuperação.
+
+Ocultar a página mantém uma conexão que está funcionando. O botão de fala mantido pressionado é solto; a transmissão sem segurar o botão, iniciada com Start talking, pode continuar se o navegador permitir. Mesmo assim, o telefone pode suspender o microfone, o áudio ou a rede quando a tela é bloqueada. Uma interrupção real do microfone para a transmissão e mantém o canal aberto. Ao voltar, a página tenta substituir um microfone encerrado; se necessário, selecione Resume microphone. Após a suspensão da página, ela tenta restaurar o mesmo canal; use Resume channel se o navegador exigir uma ação. Depois de uma interrupção, a transmissão permanece desativada até você iniciá-la novamente.
+
+O armazenamento temporário do navegador, específico de cada aba, também permite manter o canal após recarregar a página; quando esse armazenamento não está disponível, recarregar a página do transmissor cria um novo convite. End broadcast remove o canal da lista, encerra a sessão e impede a retomada automática. O próximo início cria um novo convite. Leave interrompe a conexão de um ouvinte e suas novas tentativas.
+
+## Compartilhe os convites com cuidado
+
+Quem tiver um convite de ouvinte e puder alcançar o transmissor pode solicitar entrada. O convite não libera o áudio sem aprovação, a menos que o anfitrião a tenha desativado. A chave separada do transmissor permanece na aba do navegador dele e não é compartilhada. As chaves dos ouvintes são transmitidas no fragmento do link após o caractere # e, depois, em mensagens seguras de pareamento. O serviço mantém o estado temporário da sala nas conexões abertas; a Cloudflare guarda registros de metadados de invocação por sete dias, mas nunca áudio do microfone.
+
+Os scripts habituais de publicidade, medição e do botão de doação do site são executados nesta página. A ferramenta não repassa áudio a eles, mas os scripts da página podem ler o endereço e o armazenamento do navegador. Remover o fragmento do convite quando o armazenamento está disponível reduz sua exposição posterior, mas não isola esses scripts. Só conceda acesso ao microfone se confiar na página. Os destinatários podem gravar por conta própria o que ouvem.
+
+## Verifique se os dispositivos conseguem se conectar
+
+O ponto de acesso de um celular pode funcionar se permitir que os dispositivos se conectem diretamente entre si. Conecte os dispositivos ao mesmo ponto de acesso e mantenha o acesso à internet para a descoberta e o pareamento. Se o canal não aparecer na lista, use o link para ouvintes ou o código QR. Alguns pontos de acesso e dispositivos gerenciados bloqueiam conexões diretas; teste os dispositivos que você realmente pretende usar.
+
+Redes Wi-Fi para convidados podem isolar os dispositivos. Firewalls, permissões de rede local do navegador, VPNs e rotas do sistema operacional podem afetar a conexão direta, mesmo quando dois dispositivos parecem usar o mesmo Wi-Fi. Direct usa apenas candidatos do tipo host, sem servidores STUN ou TURN; isso limita as rotas disponíveis, mas não comprova que a conexão fique restrita a uma rede física. Teste os celulares e computadores que serão usados antes de depender do canal.

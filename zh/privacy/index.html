@@ -1,0 +1,164 @@
+<!-- Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check --><!doctype html> <html lang="zh-Hans"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1">   <meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+"> <title>隐私与 Cookie | abox.tools</title> <meta name="description" content="本地文件处理、主动分享、可选在线汇率、统计、本地存储和托管：各功能发送什么，谁能看到。"> <link rel="canonical" href="https://abox.tools/zh/privacy/">  <link rel="alternate" hreflang="en" href="https://abox.tools/privacy/"> <link rel="alternate" hreflang="de" href="https://abox.tools/de/datenschutz/"> <link rel="alternate" hreflang="es" href="https://abox.tools/es/privacidad/"> <link rel="alternate" hreflang="fr" href="https://abox.tools/fr/confidentialite/"> <link rel="alternate" hreflang="ja" href="https://abox.tools/ja/privacy/"> <link rel="alternate" hreflang="pt-BR" href="https://abox.tools/pt/privacidade/"> <link rel="alternate" hreflang="zh-Hans" href="https://abox.tools/zh/privacy/"> <link rel="alternate" hreflang="x-default" href="https://abox.tools/privacy/">  <link rel="alternate" type="application/atom+xml" title="abox.tools" href="/zh/feed.xml">  <link rel="describedby" href="/llms.txt">  <link rel="alternate" type="text/markdown" href="index.md">  <script src="/lang.js?v=60a24a004f"></script> <meta name="google-adsense-account" content="ca-pub-5997711677062324">  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script> <script src="analytics.js" defer></script> <meta property="og:type" content="article"> <meta property="og:site_name" content="abox.tools"> <meta property="og:url" content="https://abox.tools/zh/privacy/"> <meta property="og:title" content="隐私与 Cookie | abox.tools"> <meta property="og:description" content="什么留在浏览器里，主动联网功能发出什么，平台服务收集什么。"> <meta property="og:image" content="https://abox.tools/og.png"> <meta property="og:image:width" content="1200"> <meta property="og:image:height" content="630">  <meta property="og:image:alt" content="abox.tools - 在浏览器里就地处理文件的工具"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="隐私与 Cookie | abox.tools"> <meta name="twitter:description" content="什么留在浏览器里，主动联网功能发出什么，平台服务收集什么。"> <meta name="twitter:image" content="https://abox.tools/og.png">   <link rel="stylesheet" href="../site.css?v=e42bd916a9"> <link rel="icon" href="/logo.svg" type="image/svg+xml"> <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192"> <link rel="apple-touch-icon" href="/icon-180.png"> </head> <body>  <a class="skip-link" href="#main">跳到主要内容</a>   <div class="lang-auto" id="lang-auto" role="status" hidden> <p> 你的浏览器要的是简体中文，所以这个页面按简体中文显示。 <a class="lang-auto-back" href="../"></a> </p> </div> <header class="hub-head"> <div class="head-row"> <p class="brand"> <a class="brand-home" href="../"> <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3" transform="rotate(18 54.5 21.5)"/> <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1" transform="rotate(-28 41.5 5.5)"/> <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1" transform="rotate(42 56.5 8.5)"/> <g transform="rotate(-12 34.8 26.7)"> <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/> <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/> </g> <g transform="rotate(24 35.3 13.1)"> <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/> <g transform="translate(31.6 9.4) scale(0.3083)"> <path class="logo-stroke" fill="none" stroke-width="3.081" stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/> <circle class="logo-glyph" cx="6" cy="18" r="3.9"/> <circle class="logo-glyph" cx="18" cy="16" r="3.9"/> </g> </g> <g transform="rotate(-20 48.55 29.75)"> <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/> <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/> <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/> </g> <g transform="rotate(34 46.65 14.25)"> <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/> <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/> </g> <g transform="rotate(38 22 42)"> <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/> <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/> <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/> </g> </svg> abox.tools </a> </p>  <details class="lang-pick"> <summary> <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"> <g fill="none" stroke="currentColor" stroke-width="1.2"> <circle cx="8" cy="8" r="6.4"></circle> <path d="M1.6 8h12.8"></path> <path d="M8 1.6c1.7 1.9 2.6 4 2.6 6.4S9.7 12.5 8 14.4C6.3 12.5 5.4 10.4 5.4 8S6.3 3.5 8 1.6z"></path> </g> </svg>  <span class="visually-hidden">语言: </span> <span>简体中文</span> <span class="lang-pick-caret" aria-hidden="true">&#9662;</span> </summary> <ul class="lang-pick-menu"> <li> <a href="/privacy/" lang="en" hreflang="en">English</a> </li> <li> <a href="/de/datenschutz/" lang="de" hreflang="de">Deutsch</a> </li> <li> <a href="/es/privacidad/" lang="es" hreflang="es">Español</a> </li> <li> <a href="/fr/confidentialite/" lang="fr" hreflang="fr">Français</a> </li> <li> <a href="/ja/privacy/" lang="ja" hreflang="ja">日本語</a> </li> <li> <a href="/pt/privacidade/" lang="pt-BR" hreflang="pt-BR">Português</a> </li> <li> <span class="lang-current" lang="zh-Hans" aria-current="true">简体中文</span> </li> </ul> </details> </div>  <h1>隐私与 Cookie</h1> <p class="lede"> 文件在本地处理。主动分享和可选联网功能有各自的边界。本页说明这些边界，以及周围的广告、使用统计、可选反馈、存储和托管。 </p>   <div class="page-meta"> <p class="legal-date">最后更新 2026年10月25日</p>  <p data-indexnow-ignore class="page-md"> <button type="button" class="page-md-copy" title="把本页复制为 Markdown"> <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"> <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/> </svg> 复制给 LLM </button> <span class="page-md-status" role="status" data-copied="已复制" data-failed="复制失败"></span> <a class="page-md-view" href="index.md">以 Markdown 查看</a> </p> <pre data-indexnow-ignore id="page-markdown" hidden># 隐私与 Cookie
+
+文件在本地处理。主动分享和可选联网功能有各自的边界。本页说明这些边界，以及周围的广告、使用统计、可选反馈、存储和托管。
+
+最后更新 2026年10月25日
+
+## 你的文件
+
+你选来处理的文件，在设备上的浏览器里读取、编辑和写出。abox.tools 没有接收文件做处理的上传端点，也没有这些文件的数据库。下载内容在本地组装。分享、远程摄像头观看，以及把收据报告交给其他应用，都是主动的传送，下面会说明。
+
+本地处理不会把以下内容交给我们：
+
+- 你的文件和预览
+- 文件名、大小、尺寸或格式
+- 文件内容，包括 EXIF、GPS 和识别出的文档文字
+
+每页的 `Content-Security-Policy` 限制允许加载的资源和连接目的地。有些工具会加入引见服务器或可选汇率 API。策略不检查送给已允许主机的数据，`connect-src` 也不描述 WebRTC 对等连接的流量。应结合源码观察正在使用的功能，不能把主机列表当成所有载荷的证明。
+
+你用工具做出来的文件，交给的是你浏览器自己的下载机制，你让它存哪儿它就存哪儿。这一步我们同样不参与。
+
+## 主动使用连接的功能
+
+[图片转视频](https://abox.tools/zh/images-to-video/)可以获取你提供的网址图片。那台服务器会收到你的 IP 地址和完整请求 URL，包括查询参数。图片到达后存入本地内存，并重新编码用于处理。这条请求不会发送你从设备上选的文件。
+
+[收据与发票提取](https://abox.tools/zh/receipt-invoice-extractor/)在本地读取照片和识别文字。可选的历史汇率按钮会向 [Frankfurter](https://frankfurter.dev/) 请求货币对和你选的日期。这个日期可能就是收据上印的日期。对方看到你的 IP 地址和请求；请求不带凭据和来源页，也不含照片、文件名、商家、金额或邮箱。手动汇率无须请求。
+
+收据的邮件和分享按钮先在本地准备报告和 JPEG 副本，再下载邮件文件或交给你选择的设备应用。本页不发送邮件；你选择的应用、服务商和收件人按各自政策处理下一步。[文本与文件分享](https://abox.tools/zh/share-text/)、[分享浏览器标签页](https://abox.tools/zh/share-tab/)和[远程摄像头](https://abox.tools/zh/remote-camera/)会主动把内容传给另一浏览器，连接元数据在下面说明。
+
+### 供代理使用的公开工具目录（MCP 和 A2A）
+
+MCP 和 A2A 客户端会把可公开的任务或格式关键词、目录语言和结果数量上限发送到 `mcp.abox.tools` 上的 Cloudflare Worker。目录服务返回公开的工具说明和链接。服务不接收文件，没有上传端点，也不要求账号。不要发送私密关键词、文件名、文件内容或密码。
+
+已加载的交互式目录在本地筛选，不会再向目录服务发出请求。打开所选结果时，会请宿主打开对应工具的网站；文件选择和处理在运行那个网站的浏览器中完成。代理或应用的宿主服务商按自己的政策处理你的请求和对话记录。本服务会接收宿主在目录请求中发送的内容，但不会要求提供或主动获取宿主的对话记录。
+
+应用程序不记录查询或请求正文日志，没有数据库，也不保存持久任务。Worker 的可观测性功能已关闭。Cloudflare 仍会为了托管、安全和请求频率控制而处理 IP 地址、时间和请求元数据。这些由服务商管理的元数据按 Cloudflare 的规定保存；我们尚未核实本服务的固定保存期限。不使用远程目录，仍可使用普通网站和本地文件处理功能。
+
+## 什么被收集了，谁收集的
+
+本站免费，靠广告养着。这意味着这些页面上跑着两个 Google 的产品，大部分页面上还跑着一个捐助按钮。清单如下，就这么多。
+
+### Google AdSense，广告
+
+广告由 Google 投放，看到哪些也由它决定。为此它可能在你的浏览器里设置和读取 Cookie 或者类似的标识，并拿到你的 IP 地址、由此推出的大致位置、你的 user agent，以及你当时在哪个页面上。视你的设置和所在地区而定，广告可能会用 Google 手里关于你的画像做个性化，而那份画像主要是从你在别的网站上的活动攒起来的。
+
+这些我们一样都收不到，也看不见，而且我们从不给 Google 任何关于你文件的信息。Google 自己对“它如何使用来自投放其广告的网站的数据”的说明在 [policies.google.com/technologies/partner-sites](https://policies.google.com/technologies/partner-sites)。
+
+### Google Analytics，访问与工具使用统计
+
+我们用 Google Analytics 4 统计页面访问和成功的工具使用，好知道哪些工具值得继续做。它记录你看了哪个页面、大约什么时候、一个随机生成并存在浏览器里的标识、大致位置、设备和浏览器类型，以及常见的推广来源标签。
+
+发给 Analytics 的页面地址使用规范网址，只保留常见的推广来源标签，省去其他查询参数和地址片段。页面标题是固定的；来源网站只保留源站地址，不含路径或查询参数。
+
+每次加载页面，只统计首次成功的工具使用，例如请求已准备好的下载、完成复制，或在查看工具中显示可用的分析或查看结果。这个事件添加的工具专属信息只有固定的工具标识，不代表操作系统已经保存下载文件。
+
+我们也统计工具页的打开次数。在图片转视频、图片堆栈、GIF 分析和 GIF 拆帧中，固定事件记录提供输入、开始处理、结果就绪、出现问题或取消操作；每次页面加载中，每个阶段最多统计一次，内置示例不计入这些阶段。部分后续操作链接只报告来源页和目标页的固定标识，不发送链接地址或文字。这些计数用于了解访问停在哪一步，不识别单次任务，也不证明用户已到达下一页。
+
+可选反馈在你选定回答后，记录固定的工具标识、固定的赞或踩和固定原因，没有自由文字输入。工具不会在这两类记录中附带文件、文件名、内容、输入文字、数量、大小、尺寸、格式、设置、错误信息或其他输入输出详情。我们能查看汇总的 Analytics 报告。屏蔽 Analytics 不影响本地处理；工具缓存就绪后，离线也能使用。
+
+### Buy Me a Coffee，捐助按钮
+
+首页和各个工具页上带着一个捐助按钮，它从 Buy Me a Coffee 的服务器加载。加载它意味着他们的 CDN 会看到你的 IP 地址，以及你当时在本站；按钮上的字体取自 Google Fonts，那边同样会看到你的 IP 地址。除此之外什么都不发，而且你不真去点它，后面什么都不会发生；点了，你就在他们的站上，按他们的政策来。这一页和[条款页](https://abox.tools/zh/terms/)不画这个按钮。
+
+### 托管
+
+本站由 GitHub Pages 提供，前面挡着 Cloudflare。跟任何网站主机一样，他们要处理你浏览器发出的那些请求，其中包括你的 IP 地址、请求的页面和你的 user agent，为的是把页面送到你手上，以及让服务保持可用和安全。他们两家逐访客的日志，我们都拿不到。
+
+### 配对工具的连接方式
+
+五种配对工具默认使用 Direct。主机可以在开始前选择 Cloud relay，邀请会携带这个选择，另一方在连接前查看并确认。Direct 不会自动切换到中继。Cloudflare TURN 转发加密的文字、文件、视频、音频和控制消息，不持有解密密钥，但能看到地址、时间和流量。双方需要全程联网。临时中继凭据保留在浏览器内存中，通过引见服务更新，不会公开在邀请或附近列表中。列表可以显示主机选择的连接方式。批准、密码和麦克风控制仍然有效。
+
+全部五种工具都能列出本地网络或私密群组中的可用连接。不同网络的设备可以使用同一个随机生成的群组代码来发现会话。每种工具有独立列表，群组会话不会同时公开到本地网络列表。代码只允许发现，不代表获准访问；密码、主机批准和所选连接路径仍然有效。引见服务通过加密连接接收代码以验证群组成员资格，之后只在打开的连接中保留派生标识和验证结果。请求网址及其保留七天的元数据日志包含该标识，不包含代码。页面只在内存中保留代码，不将其写入邀请或连接报告，重新加载后即忘记。页面上的普通脚本可以读取输入字段；私密群组不会将这些脚本隔离。任何知道代码的人都能发现向群组公开的会话，因此只应将代码分享给预期的人。
+
+### 分享浏览器标签页
+
+[分享浏览器标签页](https://abox.tools/zh/share-tab/)通过桌面浏览器自己的选择器捕获一个标签页，把实时视频传给一位获准观看者。观看者请求访问、主持人批准、观看者确认后，才发送视频。它不捕获声音、摄像头或麦克风。所选标签页中可见的信息会被分享；观看者可以录制收到的画面。
+
+在线附近发现默认关闭。主持人可以在开始前启用 Show in nearby shared tabs；观看者主动选择 Find nearby tabs 才会打开列表。发现连接只列出随机邀请码，绝不包含所捕获标签页的标题、地址、画面或观看者留言。选择条目旁的 Join 会按所示方式发出请求。没有有效批准凭据时，仍需主机批准。复制的邀请链接仍会等待 Request to watch 操作。服务根据公网 IPv4 地址或 IPv6 /64 子网以及网站来源对本工具的页面分组，不按实际位置判断。共享网关或 VPN 可能让陌生人出现在同一组，也可能隐藏身边的设备。列表仅存在于打开的连接中，不保存历史，停止后会撤下主持人的条目。
+
+在 Direct 方式下，视频在可互通的本地网络上使用加密直连，不使用公共 STUN 或 TURN。两台设备都需要互联网连接来发现和配对。引见服务器看到房间代码、IP 地址、时间、WebRTC 描述和连接候选，不接收视频、观看者留言或批准决定。Cloudflare 保留连接元数据日志七天。
+
+页面的常规脚本能读取页面地址和状态，包括邀请代码；只有链接并不能获得视频访问权。观看者不能控制主机或选择网页文字。工具没有录制功能，但已登录内容只要出现在画面中就会被分享，观看者也能自行截图或录制。工具页说明网络限制；本地地址设置不能证明物理网络边界。
+
+### 远程摄像头和浏览器引见
+
+[远程摄像头](https://abox.tools/zh/remote-camera/)会在页面加载时打开用于发现摄像头的 WebSocket 连接。启动摄像头或点击连接时，还会与我们的连接协调服务建立房间连接。选择摄像头旁的 Join 会按所示方式请求连接并交换网络地址。打开观看链接时，页面仍会等待点击连接。默认需要摄像头端批准观看；这项设置控制视频和音频传输，不控制网络地址交换。引见服务器能看到代码、地址、时间和连接设置消息，看不到视频、音频或观看者备注。在 Direct 方式下，视频和已启用的音频走浏览器间加密直连，没有配置 STUN 或 TURN，也没有录制功能。音频默认关闭，只有主机选择分享音频后才会请求麦克风访问权限。引见仍需互联网。VPN 和系统策略可能影响路由，本地模式不证明物理网络边界。工具页说明这些限制，以及页面脚本如何读到完整观看链接。
+
+可选的观看者提醒在观看设备上分析小尺寸视频帧和接收到的音频，不录制，也不上传。启用提醒会请求浏览器通知权限。浏览器和操作系统显示的通用活动通知不包含摄像头图像、音频、链接名称或观看者备注。断开连接会停止分析并关闭本次会话的通知。观看页面必须保持打开；浏览器可能在后台或设备休眠时暂停分析。
+
+### 文本与文件分享及引见服务器
+
+[文本与文件分享](https://abox.tools/zh/share-text/)首页打开发现连接，开始分享再打开一条连接。名称按公网 IPv4 地址或 IPv6 子网和页面来源分组；这只是发现线索，不证明同一物理网络。引见服务器看到名称、IP、连接时间和协商消息，不接收分享文字或文件。公开名称只存在于打开的连接里，没有持久存储。普通 Direct 使用 Google 和 Cloudflare 的公共 STUN，这些服务会看到请求来源地址。本地网络将 Direct 限制为主机地址，不使用 STUN 或 TURN。Cloud relay 是独立选择，由主机在分享前选定，并由读者在连接前确认。所有方式都需要公网引见服务器来建立连接。Cloudflare 保留分享和摄像头引见的连接元数据日志七天；这些是我们可读的逐访客服务日志。收件人已复制或下载的内容，不会随着来源标签关闭而消失。
+
+## Cookie
+
+我们不设置登录或会话 Cookie。Google 脚本可能设置上面说明的 Cookie 和标识。本站也使用浏览器本地存储来记住偏好和临时工作。
+
+**配对批准。**五个配对工具会在浏览器本地存储随机重连凭据，仅保留有限数量的近期工具、房间和连接方式组合。凭据不含分享内容、姓名或 IP 地址。文本分享、标签页分享和远程摄像头只通过浏览器间的加密连接出示批准凭据；语音工具在加入时向引见服务发送个人密钥。批准仅在当前主机会话内有效：断开连接会保留批准，主机移除会撤销批准，结束或开始新会话会重置批准。清除或禁止存储可能需要重新批准。同一网站来源下任意页面运行的脚本，包括第三方脚本，都能读取这些凭据。它们不与页面脚本隔离，也不会放进邀请或发现列表。
+
+**你选的语言。**你在切换器里挑了一种语言，这个选择会写进你浏览器的本地存储，名字叫 `abox-lang`，好让你打开的下一个页面就是你要的那种语言。它不是 Cookie：它从不发给我们，也不发给别的任何人，就待在你读这段话的这台设备上，清掉浏览器的站点数据它就没了。你要是从来没挑过语言，那就什么都不会写，一个按你浏览器语言显示的页面，是当场匹配、随后即忘的。
+
+**其他本地存储。**反馈会记住回答或关闭的时间，避免再问。工具可能在本地保留设置或可选的分享草稿。切换语言或主动接续到另一工具时，可以把文件和设置临时存在 IndexedDB，供另一个本地页面取走。这些记录不是 Cookie，不发给我们；清理站点数据会删除它们。持久草稿由相关工具说明。
+
+Google 的 Cookie 和标识用于统计访问和工具使用，以及选择广告和限制展示次数，与上面说明的本站本地记录不同。
+
+### 怎么把它关掉
+
+- 广告个性化可以一次对所有网站关掉，在 [My Ad Center](https://myadcenter.google.com/)。
+- Google Analytics 可以用 Google 自己的[停用浏览器插件](https://tools.google.com/dlpage/gaoptout)在所有站点上拦掉。
+- 你浏览器自己的设置能拦掉或者清掉第三方 Cookie，而任何内容拦截器都能让这些脚本从一开始就加载不了。
+
+拦住广告、Analytics 和捐助按钮，不影响本地处理。工具的离线缓存就绪后，断网也能做本地处理。网址图片导入、在线汇率、浏览器引见和其他应用的发送，需要各自的连接。没有处理功能被扣在广告后面。
+
+## 你对这些数据的权利
+
+我们不持有你处理的文件。上面说明的统计报告和引见连接元数据是另一回事。对本站如何处理这些数据有疑问或请求，可以联系 [hi@abox.tools](mailto:hi@abox.tools)，说明页面和大致日期，不要附上私人文件。
+
+Google 账号里的数据，请使用[账号控制项](https://myaccount.google.com/)或 Google 的隐私联系方式。可选汇率、捐助和邮件服务商各自处理其服务和请求。
+
+## 儿童
+
+本站不面向儿童，不要求年龄或用户账号。上面说明的自动页面和连接信息，适用于任何年龄的访客。
+
+## 变更，以及怎么找到我们
+
+这一页有变动，顶上的日期也跟着变，而这次改动跟别的一切一样，都在公开的提交历史里。
+
+有疑问可以发到 [hi@abox.tools](mailto:hi@abox.tools)，或者在[仓库](https://github.com/A-Box-of-Tools/website)里开一个 issue，那样答案对其他同样在琢磨这件事的人也看得见。
+</pre> <script data-indexnow-ignore src="/page-md.js?v=5d209f19dc" defer></script> </div> </header>  <main id="main" class="legal">  <section> <h2>你的文件</h2> <p> 你选来处理的文件，在设备上的浏览器里读取、编辑和写出。abox.tools 没有接收文件做处理的上传端点，也没有这些文件的数据库。下载内容在本地组装。分享、远程摄像头观看，以及把收据报告交给其他应用，都是主动的传送，下面会说明。 </p> <p> 本地处理不会把以下内容交给我们： </p> <ul> <li> 你的文件和预览 </li> <li> 文件名、大小、尺寸或格式 </li> <li> 文件内容，包括 EXIF、GPS 和识别出的文档文字 </li> </ul> <p> 每页的 <code>Content-Security-Policy</code> 限制允许加载的资源和连接目的地。有些工具会加入引见服务器或可选汇率 API。策略不检查送给已允许主机的数据，<code>connect-src</code> 也不描述 WebRTC 对等连接的流量。应结合源码观察正在使用的功能，不能把主机列表当成所有载荷的证明。 </p> <p> 你用工具做出来的文件，交给的是你浏览器自己的下载机制，你让它存哪儿它就存哪儿。这一步我们同样不参与。 </p> </section> <section> <h2>主动使用连接的功能</h2> <p> <a href="../images-to-video/">图片转视频</a>可以获取你提供的网址图片。那台服务器会收到你的 IP 地址和完整请求 URL，包括查询参数。图片到达后存入本地内存，并重新编码用于处理。这条请求不会发送你从设备上选的文件。 </p> <p> <a href="../receipt-invoice-extractor/">收据与发票提取</a>在本地读取照片和识别文字。可选的历史汇率按钮会向 <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a> 请求货币对和你选的日期。这个日期可能就是收据上印的日期。对方看到你的 IP 地址和请求；请求不带凭据和来源页，也不含照片、文件名、商家、金额或邮箱。手动汇率无须请求。 </p> <p> 收据的邮件和分享按钮先在本地准备报告和 JPEG 副本，再下载邮件文件或交给你选择的设备应用。本页不发送邮件；你选择的应用、服务商和收件人按各自政策处理下一步。<a href="../share-text/">文本与文件分享</a>、<a href="../share-tab/">分享浏览器标签页</a>和<a href="../remote-camera/">远程摄像头</a>会主动把内容传给另一浏览器，连接元数据在下面说明。 </p> <h3>供代理使用的公开工具目录（MCP 和 A2A）</h3> <p> MCP 和 A2A 客户端会把可公开的任务或格式关键词、目录语言和结果数量上限发送到 <code>mcp.abox.tools</code> 上的 Cloudflare Worker。目录服务返回公开的工具说明和链接。服务不接收文件，没有上传端点，也不要求账号。不要发送私密关键词、文件名、文件内容或密码。 </p> <p> 已加载的交互式目录在本地筛选，不会再向目录服务发出请求。打开所选结果时，会请宿主打开对应工具的网站；文件选择和处理在运行那个网站的浏览器中完成。代理或应用的宿主服务商按自己的政策处理你的请求和对话记录。本服务会接收宿主在目录请求中发送的内容，但不会要求提供或主动获取宿主的对话记录。 </p> <p> 应用程序不记录查询或请求正文日志，没有数据库，也不保存持久任务。Worker 的可观测性功能已关闭。Cloudflare 仍会为了托管、安全和请求频率控制而处理 IP 地址、时间和请求元数据。这些由服务商管理的元数据按 Cloudflare 的规定保存；我们尚未核实本服务的固定保存期限。不使用远程目录，仍可使用普通网站和本地文件处理功能。 </p> </section> <section> <h2>什么被收集了，谁收集的</h2> <p> 本站免费，靠广告养着。这意味着这些页面上跑着两个 Google 的产品，大部分页面上还跑着一个捐助按钮。清单如下，就这么多。 </p> <h3>Google AdSense，广告</h3> <p> 广告由 Google 投放，看到哪些也由它决定。为此它可能在你的浏览器里设置和读取 Cookie 或者类似的标识，并拿到你的 IP 地址、由此推出的大致位置、你的 user agent，以及你当时在哪个页面上。视你的设置和所在地区而定，广告可能会用 Google 手里关于你的画像做个性化，而那份画像主要是从你在别的网站上的活动攒起来的。 </p> <p> 这些我们一样都收不到，也看不见，而且我们从不给 Google 任何关于你文件的信息。Google 自己对“它如何使用来自投放其广告的网站的数据”的说明在 <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>。 </p> <h3>Google Analytics，访问与工具使用统计</h3> <p> 我们用 Google Analytics 4 统计页面访问和成功的工具使用，好知道哪些工具值得继续做。它记录你看了哪个页面、大约什么时候、一个随机生成并存在浏览器里的标识、大致位置、设备和浏览器类型，以及常见的推广来源标签。 </p> <p> 发给 Analytics 的页面地址使用规范网址，只保留常见的推广来源标签，省去其他查询参数和地址片段。页面标题是固定的；来源网站只保留源站地址，不含路径或查询参数。 </p> <p> 每次加载页面，只统计首次成功的工具使用，例如请求已准备好的下载、完成复制，或在查看工具中显示可用的分析或查看结果。这个事件添加的工具专属信息只有固定的工具标识，不代表操作系统已经保存下载文件。 </p> <p> 我们也统计工具页的打开次数。在图片转视频、图片堆栈、GIF 分析和 GIF 拆帧中，固定事件记录提供输入、开始处理、结果就绪、出现问题或取消操作；每次页面加载中，每个阶段最多统计一次，内置示例不计入这些阶段。部分后续操作链接只报告来源页和目标页的固定标识，不发送链接地址或文字。这些计数用于了解访问停在哪一步，不识别单次任务，也不证明用户已到达下一页。 </p> <p> 可选反馈在你选定回答后，记录固定的工具标识、固定的赞或踩和固定原因，没有自由文字输入。工具不会在这两类记录中附带文件、文件名、内容、输入文字、数量、大小、尺寸、格式、设置、错误信息或其他输入输出详情。我们能查看汇总的 Analytics 报告。屏蔽 Analytics 不影响本地处理；工具缓存就绪后，离线也能使用。 </p> <h3>Buy Me a Coffee，捐助按钮</h3> <p> 首页和各个工具页上带着一个捐助按钮，它从 Buy Me a Coffee 的服务器加载。加载它意味着他们的 CDN 会看到你的 IP 地址，以及你当时在本站；按钮上的字体取自 Google Fonts，那边同样会看到你的 IP 地址。除此之外什么都不发，而且你不真去点它，后面什么都不会发生；点了，你就在他们的站上，按他们的政策来。这一页和<a href="../terms/">条款页</a>不画这个按钮。 </p> <h3>托管</h3> <p> 本站由 GitHub Pages 提供，前面挡着 Cloudflare。跟任何网站主机一样，他们要处理你浏览器发出的那些请求，其中包括你的 IP 地址、请求的页面和你的 user agent，为的是把页面送到你手上，以及让服务保持可用和安全。他们两家逐访客的日志，我们都拿不到。 </p> <h3>配对工具的连接方式</h3> <p>五种配对工具默认使用 Direct。主机可以在开始前选择 Cloud relay，邀请会携带这个选择，另一方在连接前查看并确认。Direct 不会自动切换到中继。Cloudflare TURN 转发加密的文字、文件、视频、音频和控制消息，不持有解密密钥，但能看到地址、时间和流量。双方需要全程联网。临时中继凭据保留在浏览器内存中，通过引见服务更新，不会公开在邀请或附近列表中。列表可以显示主机选择的连接方式。批准、密码和麦克风控制仍然有效。</p> <p>全部五种工具都能列出本地网络或私密群组中的可用连接。不同网络的设备可以使用同一个随机生成的群组代码来发现会话。每种工具有独立列表，群组会话不会同时公开到本地网络列表。代码只允许发现，不代表获准访问；密码、主机批准和所选连接路径仍然有效。引见服务通过加密连接接收代码以验证群组成员资格，之后只在打开的连接中保留派生标识和验证结果。请求网址及其保留七天的元数据日志包含该标识，不包含代码。页面只在内存中保留代码，不将其写入邀请或连接报告，重新加载后即忘记。页面上的普通脚本可以读取输入字段；私密群组不会将这些脚本隔离。任何知道代码的人都能发现向群组公开的会话，因此只应将代码分享给预期的人。</p> <h3>分享浏览器标签页</h3> <p> <a href="../share-tab/">分享浏览器标签页</a>通过桌面浏览器自己的选择器捕获一个标签页，把实时视频传给一位获准观看者。观看者请求访问、主持人批准、观看者确认后，才发送视频。它不捕获声音、摄像头或麦克风。所选标签页中可见的信息会被分享；观看者可以录制收到的画面。 </p> <p> 在线附近发现默认关闭。主持人可以在开始前启用 Show in nearby shared tabs；观看者主动选择 Find nearby tabs 才会打开列表。发现连接只列出随机邀请码，绝不包含所捕获标签页的标题、地址、画面或观看者留言。选择条目旁的 Join 会按所示方式发出请求。没有有效批准凭据时，仍需主机批准。复制的邀请链接仍会等待 Request to watch 操作。服务根据公网 IPv4 地址或 IPv6 /64 子网以及网站来源对本工具的页面分组，不按实际位置判断。共享网关或 VPN 可能让陌生人出现在同一组，也可能隐藏身边的设备。列表仅存在于打开的连接中，不保存历史，停止后会撤下主持人的条目。 </p> <p> 在 Direct 方式下，视频在可互通的本地网络上使用加密直连，不使用公共 STUN 或 TURN。两台设备都需要互联网连接来发现和配对。引见服务器看到房间代码、IP 地址、时间、WebRTC 描述和连接候选，不接收视频、观看者留言或批准决定。Cloudflare 保留连接元数据日志七天。 </p> <p> 页面的常规脚本能读取页面地址和状态，包括邀请代码；只有链接并不能获得视频访问权。观看者不能控制主机或选择网页文字。工具没有录制功能，但已登录内容只要出现在画面中就会被分享，观看者也能自行截图或录制。工具页说明网络限制；本地地址设置不能证明物理网络边界。 </p> <h3>远程摄像头和浏览器引见</h3> <p> <a href="../remote-camera/">远程摄像头</a>会在页面加载时打开用于发现摄像头的 WebSocket 连接。启动摄像头或点击连接时，还会与我们的连接协调服务建立房间连接。选择摄像头旁的 Join 会按所示方式请求连接并交换网络地址。打开观看链接时，页面仍会等待点击连接。默认需要摄像头端批准观看；这项设置控制视频和音频传输，不控制网络地址交换。引见服务器能看到代码、地址、时间和连接设置消息，看不到视频、音频或观看者备注。在 Direct 方式下，视频和已启用的音频走浏览器间加密直连，没有配置 STUN 或 TURN，也没有录制功能。音频默认关闭，只有主机选择分享音频后才会请求麦克风访问权限。引见仍需互联网。VPN 和系统策略可能影响路由，本地模式不证明物理网络边界。工具页说明这些限制，以及页面脚本如何读到完整观看链接。 </p> <p> 可选的观看者提醒在观看设备上分析小尺寸视频帧和接收到的音频，不录制，也不上传。启用提醒会请求浏览器通知权限。浏览器和操作系统显示的通用活动通知不包含摄像头图像、音频、链接名称或观看者备注。断开连接会停止分析并关闭本次会话的通知。观看页面必须保持打开；浏览器可能在后台或设备休眠时暂停分析。 </p> <h3>文本与文件分享及引见服务器</h3> <p> <a href="../share-text/">文本与文件分享</a>首页打开发现连接，开始分享再打开一条连接。名称按公网 IPv4 地址或 IPv6 子网和页面来源分组；这只是发现线索，不证明同一物理网络。引见服务器看到名称、IP、连接时间和协商消息，不接收分享文字或文件。公开名称只存在于打开的连接里，没有持久存储。普通 Direct 使用 Google 和 Cloudflare 的公共 STUN，这些服务会看到请求来源地址。本地网络将 Direct 限制为主机地址，不使用 STUN 或 TURN。Cloud relay 是独立选择，由主机在分享前选定，并由读者在连接前确认。所有方式都需要公网引见服务器来建立连接。Cloudflare 保留分享和摄像头引见的连接元数据日志七天；这些是我们可读的逐访客服务日志。收件人已复制或下载的内容，不会随着来源标签关闭而消失。 </p> </section> <section> <h2>Cookie</h2> <p> 我们不设置登录或会话 Cookie。Google 脚本可能设置上面说明的 Cookie 和标识。本站也使用浏览器本地存储来记住偏好和临时工作。 </p> <p><strong>配对批准。</strong>五个配对工具会在浏览器本地存储随机重连凭据，仅保留有限数量的近期工具、房间和连接方式组合。凭据不含分享内容、姓名或 IP 地址。文本分享、标签页分享和远程摄像头只通过浏览器间的加密连接出示批准凭据；语音工具在加入时向引见服务发送个人密钥。批准仅在当前主机会话内有效：断开连接会保留批准，主机移除会撤销批准，结束或开始新会话会重置批准。清除或禁止存储可能需要重新批准。同一网站来源下任意页面运行的脚本，包括第三方脚本，都能读取这些凭据。它们不与页面脚本隔离，也不会放进邀请或发现列表。</p> <p> <strong>你选的语言。</strong>你在切换器里挑了一种语言，这个选择会写进你浏览器的本地存储，名字叫 <code>abox-lang</code>，好让你打开的下一个页面就是你要的那种语言。它不是 Cookie：它从不发给我们，也不发给别的任何人，就待在你读这段话的这台设备上，清掉浏览器的站点数据它就没了。你要是从来没挑过语言，那就什么都不会写，一个按你浏览器语言显示的页面，是当场匹配、随后即忘的。 </p> <p> <strong>其他本地存储。</strong>反馈会记住回答或关闭的时间，避免再问。工具可能在本地保留设置或可选的分享草稿。切换语言或主动接续到另一工具时，可以把文件和设置临时存在 IndexedDB，供另一个本地页面取走。这些记录不是 Cookie，不发给我们；清理站点数据会删除它们。持久草稿由相关工具说明。 </p> <p> Google 的 Cookie 和标识用于统计访问和工具使用，以及选择广告和限制展示次数，与上面说明的本站本地记录不同。 </p> <h3>怎么把它关掉</h3> <ul> <li> 广告个性化可以一次对所有网站关掉，在 <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer nofollow">My Ad Center</a>。 </li> <li> Google Analytics 可以用 Google 自己的<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer nofollow">停用浏览器插件</a>在所有站点上拦掉。 </li> <li> 你浏览器自己的设置能拦掉或者清掉第三方 Cookie，而任何内容拦截器都能让这些脚本从一开始就加载不了。 </li> </ul> <p> 拦住广告、Analytics 和捐助按钮，不影响本地处理。工具的离线缓存就绪后，断网也能做本地处理。网址图片导入、在线汇率、浏览器引见和其他应用的发送，需要各自的连接。没有处理功能被扣在广告后面。 </p> </section> <section> <h2>你对这些数据的权利</h2> <p> 我们不持有你处理的文件。上面说明的统计报告和引见连接元数据是另一回事。对本站如何处理这些数据有疑问或请求，可以联系 <a href="mailto:hi@abox.tools">hi@abox.tools</a>，说明页面和大致日期，不要附上私人文件。 </p> <p> Google 账号里的数据，请使用<a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">账号控制项</a>或 Google 的隐私联系方式。可选汇率、捐助和邮件服务商各自处理其服务和请求。 </p> </section> <section> <h2>儿童</h2> <p> 本站不面向儿童，不要求年龄或用户账号。上面说明的自动页面和连接信息，适用于任何年龄的访客。 </p> </section> <section> <h2>变更，以及怎么找到我们</h2> <p> 这一页有变动，顶上的日期也跟着变，而这次改动跟别的一切一样，都在公开的提交历史里。 </p> <p> 有疑问可以发到 <a href="mailto:hi@abox.tools">hi@abox.tools</a>，或者在<a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">仓库</a>里开一个 issue，那样答案对其他同样在琢磨这件事的人也看得见。 </p> </section> </main>  <footer> <div class="footer-cols"> <div class="footer-col footer-brand"> <a class="home-link" href="../"> <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3" transform="rotate(18 54.5 21.5)"/> <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1" transform="rotate(-28 41.5 5.5)"/> <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1" transform="rotate(42 56.5 8.5)"/> <g transform="rotate(-12 34.8 26.7)"> <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/> <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/> </g> <g transform="rotate(24 35.3 13.1)"> <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/> <g transform="translate(31.6 9.4) scale(0.3083)"> <path class="logo-stroke" fill="none" stroke-width="3.081" stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/> <circle class="logo-glyph" cx="6" cy="18" r="3.9"/> <circle class="logo-glyph" cx="18" cy="16" r="3.9"/> </g> </g> <g transform="rotate(-20 48.55 29.75)"> <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/> <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/> <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/> </g> <g transform="rotate(34 46.65 14.25)"> <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/> <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/> </g> <g transform="rotate(38 22 42)"> <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/> <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/> <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/> </g> </svg> abox.tools </a> <p> 在你的设备上处理文件的工具。无需上传文件进行处理，也无需创建账户。 </p> </div>  <div class="footer-col footer-site"> <strong>本站</strong> <ul> <li><a href="../">全部工具</a></li> <li><a href="../guides/">全部指南</a></li> <li><a href="../roadmap/">路线图</a></li> <li><a href="../about/">关于本站</a></li> <li><a href="../contact/">联系</a></li> <li><a href="../privacy/">隐私与 Cookie</a></li> <li><a href="../terms/">使用条款</a></li> <li><a href="/sitemap.xml">站点地图</a></li> </ul> </div>  <div class="footer-col"> <strong>联系我们</strong> <ul class="footer-marks"> <li> <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 上读代码" title="在 GitHub 上读代码"> <svg class="footer-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13 -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66 .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15 -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/> </svg> </a> </li> <li> <a href="https://x.com/aboxtools" target="_blank" rel="noopener noreferrer" aria-label="abox.tools 的 X 账号" title="abox.tools 的 X 账号"> <svg class="footer-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/> </svg> </a> </li> <li> <a href="mailto:hi@abox.tools" aria-label="hi@abox.tools" title="hi@abox.tools"> <svg class="footer-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <path d="M2.4 6.7A1.8 1.8 0 0 1 4.1 5.5h15.8a1.8 1.8 0 0 1 1.7 1.2L12 12.6Z"/> <path d="M2 8.5 12 14.5l10-6V17a1.8 1.8 0 0 1-1.8 1.8H3.8A1.8 1.8 0 0 1 2 17Z"/> </svg> </a> </li> </ul> </div> </div>  <nav class="footer-tools" aria-label="工具"> <div class="footer-col"> <strong>图片</strong> <ul> <li><a href="../compress-image/">图片压缩</a></li> <li><a href="../resize-image/">图片缩放</a></li> <li><a href="../heic-to-jpg/">HEIC 转 JPG</a></li> <li><a href="../webp-to-jpg/">WebP 转 JPG</a></li> <li><a href="../png-to-webp/">PNG 转 WebP</a></li> <li><a href="../avif-to-jpg/">AVIF 转 JPG</a></li> <li><a href="../id-photo/">证件照制作</a></li> <li><a href="../stack-images/">图片堆栈</a></li> <li><a href="../redact-image/">图片涂黑与打码</a></li> <li><a href="../exif-editor/">EXIF 查看与清除</a></li> <li><a href="../dicom-viewer/">DICOM 阅片器</a></li> <li><a href="../image-to-ico/">图片转 ICO</a></li> <li><a href="../image-to-data-uri/">图片转 Data URI</a></li> <li><a href="../svg-to-image/">SVG 转图片</a></li> <li><a href="../image-to-svg/">图片转 SVG</a></li> <li><a href="../compare-heights/">身高对比图</a></li> <li><a href="../business-profile-preview/">商家资料预览</a></li> </ul> </div> <div class="footer-col"> <strong>视频与动画</strong> <ul> <li><a href="../compress-video/">视频压缩</a></li> <li><a href="../convert-to-mp4/">MP4 转换</a></li> <li><a href="../rotate-video/">视频旋转</a></li> <li><a href="../images-to-video/">图片转视频</a></li> <li><a href="../trim-video/">视频剪切</a></li> <li><a href="../crop-video/">视频裁剪</a></li> <li><a href="../reverse-video/">视频倒放</a></li> <li><a href="../timelapse-video/">延时视频</a></li> <li><a href="../grab-frame/">视频截帧</a></li> <li><a href="../gif-to-mp4/">GIF 转 MP4</a></li> <li><a href="../video-to-gif/">视频转 GIF</a></li> <li><a href="../gif-maker/">GIF 制作</a></li> <li><a href="../split-gif/">GIF 拆帧</a></li> <li><a href="../gif-analyzer/">GIF 分析</a></li> </ul> </div> <div class="footer-col"> <strong>文档与音频</strong> <ul> <li><a href="../merge-pdf/">PDF 合并与拆分</a></li> <li><a href="../compress-pdf/">PDF 压缩</a></li> <li><a href="../unlock-pdf/">PDF 解锁</a></li> <li><a href="../protect-pdf/">PDF 加密</a></li> <li><a href="../watermark-pdf/">PDF 水印</a></li> <li><a href="../redact-pdf/">PDF 涂黑</a></li> <li><a href="../pdf-to-csv/">PDF 转 CSV</a></li> <li><a href="../receipt-invoice-extractor/">收据与发票识别</a></li> <li><a href="../images-to-pdf/">图片转 PDF</a></li> <li><a href="../document-scanner/">文档扫描</a></li> <li><a href="../extract-audio-from-video/">从视频里提取音频</a></li> <li><a href="../trim-audio/">音频剪辑</a></li> <li><a href="../edit-audio/">音频编辑</a></li> </ul> </div> <div class="footer-col"> <strong>文本、编码与密码</strong> <ul> <li><a href="../json-formatter/">JSON 格式化</a></li> <li><a href="../yaml-to-json/">YAML 转 JSON</a></li> <li><a href="../xml-formatter/">XML 格式化</a></li> <li><a href="../text-diff/">文本比对</a></li> <li><a href="../base64/">Base64 编码解码</a></li> <li><a href="../qr-barcode/">二维码与条形码生成</a></li> <li><a href="../qr-barcode-reader/">二维码与条形码识读</a></li> <li><a href="../hash-checksum/">哈希与校验和</a></li> <li><a href="../password-generator/">密码与密码短语生成器</a></li> </ul> </div> <div class="footer-col"> <strong>连接设备</strong> <ul> <li><a href="../share-text/">文本与文件分享</a></li> </ul> </div> </nav>  <nav class="lang-switch" aria-label="语言"> <ul> <li> <a href="/privacy/" lang="en" hreflang="en">English</a> </li> <li> <a href="/de/datenschutz/" lang="de" hreflang="de">Deutsch</a> </li> <li> <a href="/es/privacidad/" lang="es" hreflang="es">Español</a> </li> <li> <a href="/fr/confidentialite/" lang="fr" hreflang="fr">Français</a> </li> <li> <a href="/ja/privacy/" lang="ja" hreflang="ja">日本語</a> </li> <li> <a href="/pt/privacidade/" lang="pt-BR" hreflang="pt-BR">Português</a> </li> <li> <span class="lang-current" lang="zh-Hans" aria-current="true">简体中文</span> </li> </ul> </nav> <p class="footer-base"> 本站说的每一句话，都是写来给你核对的，不是写来让你信的。 </p> <p class="footer-licence"> <a class="footer-release" href="https://github.com/A-Box-of-Tools/website/releases/tag/2.0.6" target="_blank" rel="noopener noreferrer"><bdi>v2.0.6</bdi></a> · 本站文字采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>，代码采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>。欢迎取用，注明出处即可。 </p> </footer> </body> </html>

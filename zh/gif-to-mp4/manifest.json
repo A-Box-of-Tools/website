@@ -1,0 +1,26 @@
+{
+  "id": "/zh/gif-to-mp4/",
+  "name": "GIF \u8f6c MP4",
+  "short_name": "GIF \u8f6c MP4",
+  "description": "\u6bcf\u4e00\u5e27\u90fd\u5e26\u7740 GIF \u7ed9\u5b83\u7684\u5ef6\u65f6\uff0c\u53d8\u6210 MP4 \u91cc\u7684 H.264\u3002\u5728\u4f60\u7684\u673a\u5668\u4e0a\u8f6c\uff0c\u6587\u4ef6\u4ece\u4e0d\u4e0a\u4f20\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

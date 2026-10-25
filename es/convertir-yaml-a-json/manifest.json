@@ -1,0 +1,26 @@
+{
+  "id": "/es/convertir-yaml-a-json/",
+  "name": "Conversor de YAML a JSON",
+  "short_name": "Conversor de YAML a JSON",
+  "description": "Los dos sentidos, y te dice lo que cuesta cada uno. Nada de esto se pega en el servidor de otro.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

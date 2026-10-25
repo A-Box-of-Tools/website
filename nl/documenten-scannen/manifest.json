@@ -1,0 +1,26 @@
+{
+  "id": "/nl/documenten-scannen/",
+  "name": "Documentscanner",
+  "short_name": "Documentscanner",
+  "description": "Fotografeer de pagina. Je krijgt iets terug dat eruitziet als een scan.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

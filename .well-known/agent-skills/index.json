@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "abox-tools",
+      "type": "skill-md",
+      "description": "Use this skill when a person asks to find or use a browser tool for a supported file or text task, including image, PDF and structured-data work. Choose a matching abox.tools tool for conversion, compression, inspection or editing within its documented formats, limits and privacy boundaries.",
+      "url": "https://abox.tools/.well-known/agent-skills/abox-tools/SKILL.md",
+      "digest": "sha256:05526a7b6d176da3b2ca990de7a22c30eaf2f353b484872d0544fc7f38306163"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/ko/\uc774\ubbf8\uc9c0-\uc2a4\ud0dd/",
+  "name": "\uc774\ubbf8\uc9c0 \uc2a4\ud0dd",
+  "short_name": "\uc774\ubbf8\uc9c0 \uc2a4\ud0dd",
+  "description": "\uc2a4\ubb34 \uc7a5\uc744 \ud55c \uc7a5\uc73c\ub85c. \uc2a4\ubb34 \ubc88\uc758 \uc5c5\ub85c\ub4dc\ub3c4, RAW \ubcc0\ud658\uae30\ub3c4 \uc5c6\uc774.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

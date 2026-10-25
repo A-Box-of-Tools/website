@@ -1,0 +1,26 @@
+{
+  "id": "/pt/marca-dagua-pdf/",
+  "name": "Marca d'\u00e1gua em PDF",
+  "short_name": "Marca d'\u00e1gua em PDF",
+  "description": "Uma c\u00f3pia com o destinat\u00e1rio identificado n\u00e3o passa despercebida se aparecer em outro lugar.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
