@@ -1,0 +1,25 @@
+# Production is a separate service and route; deploying development cannot
+# replace it or consume its rate-limiter namespace.
+name = "catalogue-mcp"
+main = "src/index.mjs"
+compatibility_date = "2026-10-24"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+routes = [
+  { pattern = "mcp.abox.tools", custom_domain = true },
+]
+
+[vars]
+ALLOWED_HOSTS = '["mcp.abox.tools"]'
+ALLOWED_ORIGINS = '["https://abox.tools","http://127.0.0.1:8788","http://localhost:8788"]'
+
+[[ratelimits]]
+name = "MCP_RATE_LIMIT"
+namespace_id = "1003"
+
+  [ratelimits.simple]
+  limit = 60
+  period = 60
+
+[observability]
+enabled = false

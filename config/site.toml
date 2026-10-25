@@ -117,6 +117,17 @@ representative_queries = [
   "Can an agent use abox.tools while keeping processing on my device?",
 ]
 
+# This service searches public catalogue text, separately from file processing.
+# Deploy and verify the production Worker before releasing these discovery links.
+[agents.mcp]
+server_card = "https://mcp.abox.tools/mcp/server-card"
+display_name = "abox.tools public catalogue"
+description = "Find browser tools by public task or format keywords. Initial keywords are sent to this catalogue service; it accepts no files and performs no file processing. MCP Apps hosts can display an interactive catalogue, while other hosts receive public tool links."
+representative_queries = [
+  "Find a browser tool for PNG to WebP.",
+  "Browse the public abox.tools tool catalogue in an MCP Apps host.",
+]
+
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
 # data- attributes it is configured with.

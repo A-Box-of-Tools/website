@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import { Client, InMemoryTransport, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
@@ -6,6 +7,7 @@ import { Client, InMemoryTransport, StreamableHTTPClientTransport } from '@model
 import { searchCatalogue, validateCatalogue } from '../src/search.mjs';
 import { createCatalogueServer } from '../src/server.mjs';
 import { createWorker } from '../src/worker.mjs';
+import { discoveryResponse } from '../src/discovery.mjs';
 
 const catalogue = {
   schemaVersion: 1,
@@ -364,10 +366,10 @@ test('public discovery cards support cross-origin reads and conditional requests
 });
 
 test('the public landing page identifies development status and where keywords go', async (t) => {
-  const worker = workerFixture();
+  const worker = workerFixture({ allowedHosts: ['mcp-dev.abox.tools'] });
   t.after(() => worker.close());
   const response = await worker.fetch(request(undefined, {
-    url: new URL('/', endpoint).href, method: 'GET', headers: { Origin: 'https://independent-agent.example' },
+    url: 'https://mcp-dev.abox.tools/', method: 'GET', headers: { Origin: 'https://independent-agent.example' },
   }), {}, {});
   assert.equal(response.status, 200);
   assert.ok(response.headers.get('Content-Type').startsWith('text/html'));
@@ -536,4 +538,90 @@ test('unvalidated mutable catalogues keep reflecting public edits and array reor
   mutable.locales.en.tools.reverse();
   assert.deepEqual(searchCatalogue(mutable, { query: '' }).tools.map(tool => tool.url),
     mutable.locales.en.tools.map(tool => tool.url));
+});
+
+test('MCP and unknown paths skip public discovery document construction', () => {
+  const unreadCatalogue = { get build() { assert.fail('Unrelated paths must not read public document data'); } };
+  for (const path of ['/mcp', '/mcp/', '/unknown', '/mcp/server-card/', '/mcp/server-card?query=public', '/?query=public']) {
+    const incoming = new Request(new URL(path, endpoint));
+    assert.equal(discoveryResponse(incoming, unreadCatalogue), null, path);
+  }
+});
+
+test('public discovery reuses parsed request URLs while preserving scheme, host and port', async () => {
+  const incoming = { method: 'GET', headers: new Headers(),
+    get url() { assert.fail('The Worker already parsed this request URL'); } };
+  for (const origin of ['https://mcp.abox.tools:8443', 'http://127.0.0.1:8787']) {
+    const url = new URL('/mcp/server-card', origin);
+    const response = discoveryResponse(incoming, catalogue, url);
+    assert.equal(response.status, 200);
+    assert.deepEqual((await response.json()).remotes, [{ type: 'streamable-http', url: `${origin}/mcp` }]);
+    const index = discoveryResponse(incoming, catalogue, new URL('/.well-known/ai-catalog.json', origin));
+    assert.equal((await index.json()).entries[0].url, `${origin}/mcp/server-card`);
+  }
+});
+
+test('production configuration serves its real identity and restricts browser origins', async (t) => {
+  const config = await readFile(new URL('../wrangler.production.toml', import.meta.url), 'utf8');
+  const configuredArray = name => {
+    const line = config.match(new RegExp(`^${name} = '([^']+)'$`, 'm'));
+    assert.ok(line, name);
+    return JSON.parse(line[1]);
+  };
+  const worker = workerFixture({ allowedHosts: configuredArray('ALLOWED_HOSTS'),
+    allowedOrigins: configuredArray('ALLOWED_ORIGINS'), requireRateLimiter: true });
+  t.after(() => worker.close());
+  const env = { MCP_RATE_LIMIT: { limit: async () => ({ success: true }) } };
+  const landing = await worker.fetch(request(undefined, { url: 'https://mcp.abox.tools/', method: 'GET' }), env, {});
+  assert.equal(landing.status, 200);
+  const html = await landing.text();
+  assert.ok(html.includes('<h1>abox.tools catalogue MCP</h1>'));
+  assert.ok(html.includes('Public catalogue discovery service.'));
+  assert.ok(html.includes(`https://github.com/A-Box-of-Tools/website/tree/${catalogue.build.revision}/workers/catalogue-mcp`));
+  assert.doesNotMatch(html, /development/i);
+  const card = await worker.fetch(request(undefined, {
+    url: 'https://mcp.abox.tools/mcp/server-card', method: 'GET',
+  }), env, {});
+  assert.equal(card.status, 200);
+  assert.deepEqual((await card.json()).remotes, [{ type: 'streamable-http', url: endpoint }]);
+  for (const origin of ['https://abox.tools', 'http://127.0.0.1:8788', 'http://localhost:8788']) {
+    const response = await worker.fetch(request(undefined, { method: 'OPTIONS', headers: {
+      Origin: origin, 'Access-Control-Request-Method': 'POST',
+    } }), env, {});
+    assert.equal(response.status, 204, origin);
+    assert.equal(response.headers.get('Access-Control-Allow-Origin'), origin);
+  }
+  for (const origin of ['https://dev.abox-preview.pages.dev', 'https://attacker.example',
+    'https://abox.tools.attacker.example', 'http://localhost:8789', 'null']) {
+    assert.equal((await worker.fetch(request(undefined, { headers: { Origin: origin } }), env, {})).status, 403, origin);
+  }
+  assert.equal((await worker.fetch(request(undefined, {
+    url: 'https://mcp-dev.abox.tools/mcp',
+  }), env, {})).status, 403);
+});
+
+test('required rate limiting fails closed before discovery and protocol handling', async (t) => {
+  const worker = workerFixture({ requireRateLimiter: true });
+  t.after(() => worker.close());
+  for (const options of [{}, { url: 'https://mcp.abox.tools/', method: 'GET' },
+    { url: 'https://mcp.abox.tools/mcp/server-card', method: 'GET' }]) {
+    const response = await worker.fetch(request(undefined, options), {}, {});
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.get('Cache-Control'), 'no-store');
+    assert.equal(await response.text(), 'Catalogue rate limiter is unavailable');
+  }
+  assert.equal((await worker.fetch(request(), { MCP_RATE_LIMIT: {} }, {})).status, 503);
+  for (const limit of [async () => { throw new Error('Injected limiter failure'); },
+    async () => undefined, async () => null, async () => ({}), async () => ({ success: 'true' })]) {
+    const response = await worker.fetch(request(), { MCP_RATE_LIMIT: { limit } }, {});
+    assert.equal(response.status, 503);
+    assert.equal(await response.text(), 'Catalogue rate limiter is unavailable');
+  }
+  assert.equal((await worker.fetch(request(undefined, { url: 'https://attacker.example/mcp' }), {}, {})).status, 403);
+  let calls = 0;
+  const available = { MCP_RATE_LIMIT: { limit: async () => { calls += 1; return { success: true }; } } };
+  assert.equal((await worker.fetch(request(), available, {})).status, 200);
+  assert.equal(calls, 1);
+  const exhausted = { MCP_RATE_LIMIT: { limit: async () => ({ success: false }) } };
+  assert.equal((await worker.fetch(request(), exhausted, {})).status, 429);
 });

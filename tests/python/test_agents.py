@@ -1,4 +1,4 @@
-"""Discovery must describe real instructions and identify their exact bytes.
+"""Discovery identifies exact instructions and a separate public MCP catalogue.
 
 These cases do not build the site. A small template exercises the same loader
 and emitter as a full build, including YAML quoting, UTF-8 and LF on Windows.
@@ -38,7 +38,7 @@ class Discovery(unittest.TestCase):
         self.out = self.root / 'site'
         self.out.mkdir()
         self.site = {
-            'domain': 'https://example.test/',
+            'domain': 'https://example.com/',
             'agents': {
                 'name': 'browser-tools',
                 'display_name': 'Browser tools',
@@ -47,6 +47,15 @@ class Discovery(unittest.TestCase):
                     'Find a tool to process my file locally.',
                     'Help me use a browser tool.',
                 ],
+                'mcp': {
+                    'server_card': 'https://mcp.example.com/mcp/server-card',
+                    'display_name': 'Public tool catalogue',
+                    'description': 'Find public browser tools; send public keywords, never files.',
+                    'representative_queries': [
+                        'Find a PNG conversion tool.',
+                        'Browse public tool links.',
+                    ],
+                },
             },
         }
 
@@ -69,22 +78,32 @@ class Discovery(unittest.TestCase):
         catalog = self.document('.well-known/ai-catalog.json')
         index = self.document('.well-known/agent-skills/index.json')
         self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
-        self.assertEqual(len(ard), 1)
+        self.assertEqual(len(ard), 2)
         self.assertEqual(len(index['skills']), 1)
         entry, skill = ard[0], index['skills'][0]
         self.assertEqual(entry['identifier'],
-                         'urn:air:example.test:skill:browser-tools')
+                         'urn:air:example.com:skill:browser-tools')
         self.assertEqual(entry['type'], 'application/agent-skills+md')
         self.assertEqual(skill['type'], 'skill-md')
         self.assertEqual(entry['url'], skill['url'])
         self.assertEqual(skill['url'],
-                         'https://example.test/.well-known/agent-skills/browser-tools/SKILL.md')
+                         'https://example.com/.well-known/agent-skills/browser-tools/SKILL.md')
         self.assertNotIn('data', entry)
         self.assertNotIn('specVersion', self.document('.well-known/ard.json'))
         self.assertEqual(entry['representativeQueries'],
                          self.site['agents']['representative_queries'])
         self.assertEqual(index['$schema'],
                          'https://schemas.agentskills.io/discovery/0.2.0/schema.json')
+        mcp = ard[1]
+        self.assertEqual(mcp['identifier'], 'urn:air:mcp.example.com:mcp:catalogue')
+        self.assertEqual(mcp['type'], 'application/mcp-server-card+json')
+        self.assertEqual(mcp['url'], 'https://mcp.example.com/mcp/server-card')
+        for key, config_key in [('displayName', 'display_name'),
+                                ('description', 'description'),
+                                ('representativeQueries', 'representative_queries')]:
+            self.assertEqual(mcp[key], self.site['agents']['mcp'][config_key])
+        self.assertNotIn(mcp['url'], [value['url'] for value in index['skills']])
+        self.assertNotIn('data', mcp)
 
     def test_the_digest_covers_the_emitted_utf8_including_its_final_newline(self):
         self.build()
@@ -107,19 +126,31 @@ class Discovery(unittest.TestCase):
 
     def test_publisher_identity_follows_the_resource_domain_without_claiming_attestation(self):
         from urllib.parse import urlsplit
-        for domain in ('https://example.test/', 'https://other.example.test'):
+        for domain in ('https://example.com/', 'https://other.example.com'):
             with self.subTest(domain=domain):
                 self.site['domain'] = domain
+                hostname = urlsplit(domain).hostname
+                self.site['agents']['mcp']['server_card'] = f'https://mcp.{hostname}/mcp/server-card'
                 self.build()
-                entry = self.document('.well-known/ard.json')['entries'][0]
-                identity = entry['trustManifest']
-                publisher = entry['identifier'].split(':')[2]
-                self.assertEqual(urlsplit(identity['identity']).hostname, publisher)
-                self.assertEqual(urlsplit(identity['identity']).scheme, 'https')
-                self.assertEqual(identity['identityType'], 'https')
-                self.assertNotIn('signature', identity)
-                self.assertNotIn('attestations', identity)
-                self.assertNotIn('trustSchema', identity)
+                for entry in self.document('.well-known/ard.json')['entries']:
+                    identity = entry['trustManifest']
+                    publisher = entry['identifier'].split(':')[2]
+                    self.assertEqual(urlsplit(identity['identity']).hostname, publisher)
+                    self.assertEqual(urlsplit(identity['identity']).scheme, 'https')
+                    self.assertEqual(identity['identityType'], 'https')
+                    self.assertNotIn('signature', identity)
+                    self.assertNotIn('attestations', identity)
+                    self.assertNotIn('trustSchema', identity)
+
+    def test_catalogue_metadata_does_not_change_the_instruction_digest(self):
+        self.build()
+        old_index = self.document('.well-known/agent-skills/index.json')
+        self.site['agents']['mcp']['description'] = 'Updated public catalogue description; no file inputs.'
+        self.build()
+        self.assertEqual(self.document('.well-known/agent-skills/index.json'), old_index)
+        ard = self.document('.well-known/ard.json')['entries']
+        self.assertEqual(self.document('.well-known/ai-catalog.json')['entries'], ard)
+        self.assertEqual(ard[1]['description'], self.site['agents']['mcp']['description'])
 
     def test_changing_instructions_changes_the_digest_and_rebuilds_are_stable(self):
         paths = self.build()
@@ -168,6 +199,47 @@ class Discovery(unittest.TestCase):
             with self.subTest(domain=domain):
                 self.site['domain'] = domain
                 with self.assertRaisesRegex(ConfigError, 'HTTPS site origin'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+
+    def test_mcp_card_requires_the_canonical_production_subdomain_and_path(self):
+        for url in (None, 'http://mcp.example.com/mcp/server-card',
+                    'https://mcp-dev.example.com/mcp/server-card',
+                    'https://mcp.example.com.attacker.example/mcp/server-card',
+                    'https://user@mcp.example.com/mcp/server-card',
+                    'https://mcp.example.com:443/mcp/server-card',
+                    'https://mcp.example.com/mcp',
+                    'https://mcp.example.com/mcp/server-card/',
+                    'https://mcp.example.com/mcp/../mcp/server-card',
+                    'https://mcp.example.com/mcp/server-card?version=1',
+                    'https://mcp.example.com/mcp/server-card#view',
+                    'https://mcp.example.com/mcp/server-card\n',
+                    'https://127.0.0.1/mcp/server-card'):
+            with self.subTest(url=url):
+                self.site['agents']['mcp']['server_card'] = url
+                with self.assertRaisesRegex(ConfigError, 'agents.mcp.server_card'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+
+    def test_mcp_discovery_rejects_nonpublic_or_noncanonical_site_hosts(self):
+        for domain in ('https://127.0.0.1/', 'https://example.local/',
+                       'https://example.test/', 'https://example.com:443/',
+                       'https://EXAMPLE.com/', 'https://example..com/'):
+            with self.subTest(domain=domain):
+                self.site['domain'] = domain
+                with self.assertRaisesRegex(ConfigError, 'canonical public HTTPS site domain'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+
+    def test_invalid_mcp_metadata_stops_before_publishing_discovery(self):
+        original = copy.deepcopy(self.site)
+        for key, value in [('display_name', ''), ('description', 'a' * 1025),
+                           ('description', 'First line\nsecond line'),
+                           ('representative_queries', ['Only one query.'])]:
+            with self.subTest(key=key):
+                self.site = copy.deepcopy(original)
+                self.site['agents']['mcp'][key] = value
+                with self.assertRaisesRegex(ConfigError, 'agents.mcp'):
                     self.build()
                 self.assertEqual(list(self.out.iterdir()), [])
 

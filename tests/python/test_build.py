@@ -782,6 +782,34 @@ class BuildTheSite(unittest.TestCase):
                                             page), [target])
                 self.assertTrue((self.out / target.lstrip('/')).is_file())
 
+    def test_hubs_advertise_the_production_catalogue_beside_the_browser_skill(self):
+        ard = json.loads((self.out / '.well-known/ard.json').read_bytes())['entries']
+        catalog = json.loads((self.out / '.well-known/ai-catalog.json').read_bytes())
+        self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
+        self.assertEqual([entry['type'] for entry in ard],
+                         ['application/agent-skills+md', 'application/mcp-server-card+json'])
+        card_url = self.site['agents']['mcp']['server_card']
+        self.assertEqual(card_url, 'https://mcp.abox.tools/mcp/server-card')
+        self.assertEqual(ard[1]['url'], card_url)
+        self.assertEqual(ard[1]['identifier'], 'urn:air:mcp.abox.tools:mcp:catalogue')
+        self.assertEqual(ard[1]['trustManifest'],
+                         {'identity': 'https://mcp.abox.tools/', 'identityType': 'https'})
+        index = json.loads((self.out / '.well-known/agent-skills/index.json').read_bytes())
+        self.assertEqual([entry['url'] for entry in index['skills']], [ard[0]['url']])
+        for locale in self.locales:
+            page = (self.out / locale['prefix'] / 'index.html').read_text(encoding='utf-8')
+            head = page.split('</head>', 1)[0]
+            with self.subTest(language=locale['lang']):
+                self.assertIn('<link rel="ai-catalog" type="application/ai-catalog+json" '
+                              f'href="{self.site["domain"]}.well-known/ai-catalog.json">', head)
+                self.assertIn('<link rel="describedby" type="application/mcp-server-card+json" '
+                              f'href="{card_url}">', head)
+                self.assertNotIn('mcp-dev.abox.tools', head)
+                policy = re.search(r'<meta http-equiv="Content-Security-Policy" content="(.*?)">',
+                                   head, re.S)
+                self.assertIsNotNone(policy)
+                self.assertNotIn('mcp.abox.tools', policy[1])
+
     def test_a_page_of_prose_carries_neither(self):
         """There is nothing to install on a privacy policy.
 

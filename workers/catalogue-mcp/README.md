@@ -4,11 +4,11 @@ This is an optional discovery service, separate from the static site and the
 rendezvous Worker. It lets an agent find a real browser tool and lets a person
 browse those results inside an MCP Apps host. It does not process files.
 
-The development endpoint is `https://mcp-dev.abox.tools/mcp`. The
-configuration in this folder only declares that development service. A future
-production endpoint at `https://mcp.abox.tools/mcp` needs a separate deployment
-decision and configuration; it is not available merely because this folder
-exists. No site discovery file advertises either endpoint yet.
+The development endpoint is `https://mcp-dev.abox.tools/mcp`, configured by
+`wrangler.toml`. The separate `wrangler.production.toml` configures
+`https://mcp.abox.tools/mcp`. Each service needs its own authorized deployment
+and live verification. Site discovery links must describe the production
+endpoint only after its actual protocol and app have been verified.
 
 ## What crosses the network
 
@@ -143,18 +143,23 @@ for hosts without Apps support.
 Requests must be JSON and are limited to 16 KiB, including streamed bodies.
 JSON-RPC batch arrays are rejected before dispatch, so one request cannot
 multiply the large app resource into many responses.
-The development rate binding permits 60 requests per address per minute in
-Cloudflare's rate-limiter model, using namespace 1004. It does not share the
-rendezvous namespaces. Production would use its separately reserved namespace
-1003. Protocol responses are not cached. This public service requires no token; no
+Each deployment's rate binding permits 60 requests per address per minute in
+Cloudflare's rate-limiter model. Development uses namespace 1004 and production
+uses namespace 1003; neither shares the rendezvous namespaces. The deployed
+entry point requires the binding and returns 503 before discovery or protocol
+handling if it is missing or unusable. Tests and direct utility callers can
+construct non-deployed instances without this requirement. Protocol responses are not cached.
+This public service requires no token; no
 OAuth issuer, protected resource or Bearer challenge is invented for it.
 
 Cloudflare Free's CPU and request limits still apply. Check the Wrangler dry
 run's bundle size and startup time and exercise actual deployed calls before
 advertising the endpoint. A successful local build alone proves neither live
-availability nor an Ora score improvement.
+availability nor an Ora score improvement. Record CPU by operation together
+with outcomes; successful responses alone do not establish that every request
+stayed below the plan's nominal CPU allowance.
 
-The service also provides a small development landing page and a current
+The service also provides a small landing page that identifies the deployment and a current
 [SEP-2127 server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards)
 at `/mcp/server-card`, linked from its own `/.well-known/ai-catalog.json`.
 `/.well-known/mcp.json` is a compatibility alias for that same card, rather
@@ -187,11 +192,18 @@ npm run preview -- --service dev
 ```
 
 That mode connects only to `https://mcp-dev.abox.tools/mcp`. The default mode
-connects only to the corresponding loopback `/mcp` on port 8787. The launcher
+connects only to the corresponding loopback `/mcp` on port 8787. To verify the
+separately deployed production service, use its fixed selection:
+
+```powershell
+npm run preview -- --service production
+```
+
+That selection connects only to `https://mcp.abox.tools/mcp`. The launcher
 rejects other arguments; it accepts no arbitrary URL or page-query override.
 Its CSP permits only the selected MCP endpoint, and both the page and console
-show that endpoint. Development mode sends initial public keyword requests
-off this computer; the app's subsequent filtering remains local. Neither
+show that endpoint. Both remote modes send initial public keyword requests
+off this computer; the app's subsequent filtering remains local. No
 mode changes the deployed app resource, authentication or rate limiter.
 
 The local-only host opens at `http://127.0.0.1:8788/`; no second server is
@@ -241,6 +253,27 @@ and namespace 1004 rate binding. It does not touch GitHub Pages, production
 MCP, rendezvous or the static site's release workflow. Confirm real protocol
 calls and app rendering against development, including Free-plan CPU limits,
 before adding truthful discovery links in a separately reviewed site change.
+
+## Production deployment
+
+After an authorized production decision and verification of the reviewed build:
+
+```powershell
+npm run deploy:production
+```
+
+This explicitly selects `wrangler.production.toml`: Worker `catalogue-mcp`,
+custom domain `mcp.abox.tools`, and rate namespace 1003. It cannot replace
+the development route or namespace. Its browser-origin allowlist contains
+only `https://abox.tools` and the two exact loopback origins on port 8788 used
+by this local verification host. Development-site origins are not admitted.
+Observability remains disabled, and the runtime receives its rate binding
+from each request's environment.
+
+Verify the first production requests and broader public searches, actual App
+integrity and host interaction, text fallback, and rate/security boundaries
+before advertising the endpoint. A service deployment does not release the
+static website; the authorized `dev` to `main` release remains separate.
 
 ## References
 

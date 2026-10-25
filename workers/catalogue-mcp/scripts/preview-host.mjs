@@ -7,11 +7,12 @@ import { build } from 'esbuild';
 import { MAX_UTF8_DATA_BYTES } from '../ui/view-data.mjs';
 
 const args = process.argv.slice(2);
-if (args.length !== 0 && !(args.length === 2 && args[0] === '--service' && args[1] === 'dev')) {
-  throw new TypeError('Use npm run preview, or npm run preview -- --service dev. Arbitrary endpoints are not accepted.');
+if (args.length !== 0 && !(args.length === 2 && args[0] === '--service' && ['dev', 'production'].includes(args[1]))) {
+  throw new TypeError('Use npm run preview, npm run preview -- --service dev, or npm run preview -- --service production. Arbitrary endpoints are not accepted.');
 }
-const service = args.length ? 'dev' : 'local';
+const service = args.length ? args[1] : 'local';
 const endpoints = service === 'dev' ? ['https://mcp-dev.abox.tools/mcp']
+  : service === 'production' ? ['https://mcp.abox.tools/mcp']
   : ['http://localhost:8787/mcp', 'http://127.0.0.1:8787/mcp'];
 const ui = new URL('../ui/', import.meta.url);
 const hostHtml = await readFile(new URL('preview-host.html', ui));
@@ -91,4 +92,4 @@ for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => {
 console.log('Local MCP App host: http://localhost:8788/');
 console.log(`Local public App resource receipt: ${viewReceipt}`);
 console.log(`Selected MCP service (${service}): ${endpoints.join(' or ')}`);
-if (service === 'dev') console.log('Initial public keyword requests go to the deployed development service; local view filtering does not.');
+if (service !== 'local') console.log(`Initial public keyword requests go to the deployed ${service} service; local view filtering does not.`);
