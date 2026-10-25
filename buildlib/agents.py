@@ -1,8 +1,8 @@
-"""Publish browser-use instructions and the public catalogue's real server card.
+"""Publish browser-use instructions and the public catalogue's real protocol cards.
 
 ARD and its AI Catalog compatibility document share entries for the skill and
-the separate, public-keyword MCP catalogue. The skill index identifies only
-instructions this build writes, so its digest never depends on a remote fetch
+the separate public catalogue's MCP and A2A interfaces. The skill index
+identifies only instructions this build writes, so its digest never depends on a remote fetch
 or a hand-kept value that can fall behind the instructions it identifies.
 """
 
@@ -68,6 +68,32 @@ def _mcp_entry(agent, domain):
     }
 
 
+def _a2a_entry(agent, domain):
+    a2a = agent.get('a2a')
+    if not isinstance(a2a, dict):
+        raise ConfigError('config/site.toml: agents.a2a must describe the public catalogue agent card')
+    # The MCP entry has already checked the shared site's public host. Both
+    # protocol cards are served by that same separate catalogue service.
+    host = f'mcp.{domain.hostname}'
+    agent_card = _line(a2a.get('agent_card'), 'agents.a2a.agent_card')
+    expected = f'https://{host}/.well-known/agent-card.json'
+    if agent_card != expected:
+        raise ConfigError(f'config/site.toml: agents.a2a.agent_card must be the canonical HTTPS card {expected}')
+    return {
+        'identifier': f'urn:air:{host}:a2a:catalogue',
+        'displayName': _line(a2a.get('display_name'), 'agents.a2a.display_name'),
+        'type': 'application/a2a-agent-card+json',
+        'url': agent_card,
+        'description': _line(a2a.get('description'), 'agents.a2a.description', 1024),
+        'representativeQueries': _queries(a2a.get('representative_queries'),
+                                         'agents.a2a.representative_queries'),
+        'trustManifest': {
+            'identity': f'https://{host}/',
+            'identityType': 'https',
+        },
+    }
+
+
 def build_discovery(out, templates, site):
     """Write a skill and its discovery documents; return relative paths.
 
@@ -94,6 +120,7 @@ def build_discovery(out, templates, site):
         raise ConfigError('config/site.toml: domain must be an HTTPS site origin '
                          'for well-known agent discovery')
     mcp_entry = _mcp_entry(agent, domain)
+    a2a_entry = _a2a_entry(agent, domain)
 
     skill_path = f'.well-known/agent-skills/{name}/SKILL.md'
     ard_path = '.well-known/ard.json'
@@ -125,7 +152,7 @@ def build_discovery(out, templates, site):
             'identity': f'{domain.scheme}://{domain.netloc}/',
             'identityType': 'https',
         },
-    }, mcp_entry]
+    }, mcp_entry, a2a_entry]
     documents = {
         ard_path: {'entries': entries},
         catalog_path: {'specVersion': '1.0', 'entries': entries},

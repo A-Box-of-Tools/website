@@ -1,7 +1,8 @@
 import { createMcpHandler, hostHeaderValidationResponse, originValidationResponse } from '@modelcontextprotocol/server';
 import { createCatalogueServer } from './server.mjs';
 import { validateCatalogue } from './search.mjs';
-import { discoveryResponse } from './discovery.mjs';
+import { discoveryResponse, apexDiscoveryResponse } from './discovery.mjs';
+import { A2A_PATH, A2A_VERSION, a2aResponse } from './a2a.mjs';
 
 const BODY_LIMIT = 16384;
 
@@ -62,6 +63,8 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
           return error(503, 'Catalogue rate limiter is unavailable');
         }
       }
+      const apex = apexDiscoveryResponse(request, url);
+      if (apex) return apex;
       const discovery = discoveryResponse(request, catalogue, url);
       if (discovery) return discovery;
       const origin = request.headers.get('Origin');
@@ -75,28 +78,32 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
         if (origin !== null) {
           headers.set('Access-Control-Allow-Origin', origin);
           headers.set('Vary', 'Origin');
+          headers.set('Access-Control-Expose-Headers', 'A2A-Version');
         }
         return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
       };
-      if (url.pathname !== '/mcp' || url.search) return cors(error(404, 'Use the public MCP endpoint at /mcp'));
+      if (!['/mcp', A2A_PATH].includes(url.pathname) || url.search) {
+        return cors(error(404, 'Use the public MCP endpoint at /mcp or A2A endpoint at /a2a'));
+      }
       if (request.method === 'OPTIONS') {
         if (origin === null) return error(403, 'A browser preflight needs an allowed origin');
         return cors(new Response(null, { status: 204, headers: {
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Accept, MCP-Protocol-Version, Mcp-Method, Mcp-Name',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept, MCP-Protocol-Version, Mcp-Method, Mcp-Name, A2A-Version, A2A-Extensions',
           'Access-Control-Max-Age': '600'
         } }));
       }
-      if (request.method !== 'POST') return cors(error(405, 'Use POST for MCP requests', { Allow: 'POST, OPTIONS' }));
+      if (request.method !== 'POST') return cors(error(405, 'Use POST for catalogue requests', { Allow: 'POST, OPTIONS' }));
       if (request.headers.get('Content-Type')?.split(';', 1)[0].trim().toLowerCase() !== 'application/json') {
-        return cors(error(415, 'MCP requests must be application/json'));
+        return cors(error(415, 'Catalogue requests must be application/json'));
       }
       const bytes = await boundedBody(request);
-      if (bytes === null) return cors(error(413, 'MCP request exceeds 16384 bytes'));
+      if (bytes === null) return cors(error(413, 'Catalogue request exceeds 16384 bytes'));
       try {
         // A small legacy batch can otherwise repeat the large UI resource many
         // times. This service implements single JSON-RPC messages only.
         const message = JSON.parse(new TextDecoder().decode(bytes));
+        if (url.pathname === A2A_PATH) return cors(a2aResponse(catalogue, message, request.headers));
         if (Array.isArray(message)) {
           return cors(new Response(JSON.stringify({ jsonrpc: '2.0', id: null,
             error: { code: -32600, message: 'JSON-RPC batch requests are not supported' } }),
@@ -107,6 +114,11 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
         // cloning, reading and parsing the same bytes a second time.
         return cors(await handler.fetch(request, { parsedBody: message }));
       } catch (failure) {
+        if (url.pathname === A2A_PATH && failure instanceof SyntaxError) {
+          return cors(new Response(JSON.stringify({ jsonrpc: '2.0', id: null,
+            error: { code: -32700, message: 'Invalid JSON payload' } }),
+          { status: 400, headers: { 'Content-Type': 'application/json', 'A2A-Version': A2A_VERSION } }));
+        }
         return cors(error(failure instanceof SyntaxError ? 400 : 500,
           failure instanceof SyntaxError ? 'Invalid JSON request' : 'The public catalogue is temporarily unavailable'));
       }

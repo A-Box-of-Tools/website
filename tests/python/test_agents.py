@@ -1,4 +1,4 @@
-"""Discovery identifies exact instructions and a separate public MCP catalogue.
+"""Discovery identifies exact instructions and a separate public protocol catalogue.
 
 These cases do not build the site. A small template exercises the same loader
 and emitter as a full build, including YAML quoting, UTF-8 and LF on Windows.
@@ -56,6 +56,15 @@ class Discovery(unittest.TestCase):
                         'Browse public tool links.',
                     ],
                 },
+                'a2a': {
+                    'agent_card': 'https://mcp.example.com/.well-known/agent-card.json',
+                    'display_name': 'Public catalogue agent',
+                    'description': 'Find public browser tool links through A2A; no file inputs or processing.',
+                    'representative_queries': [
+                        'Find a PNG conversion tool through A2A.',
+                        'Get public tool links for PDF compression.',
+                    ],
+                },
             },
         }
 
@@ -78,7 +87,7 @@ class Discovery(unittest.TestCase):
         catalog = self.document('.well-known/ai-catalog.json')
         index = self.document('.well-known/agent-skills/index.json')
         self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
-        self.assertEqual(len(ard), 2)
+        self.assertEqual(len(ard), 3)
         self.assertEqual(len(index['skills']), 1)
         entry, skill = ard[0], index['skills'][0]
         self.assertEqual(entry['identifier'],
@@ -104,6 +113,17 @@ class Discovery(unittest.TestCase):
             self.assertEqual(mcp[key], self.site['agents']['mcp'][config_key])
         self.assertNotIn(mcp['url'], [value['url'] for value in index['skills']])
         self.assertNotIn('data', mcp)
+        a2a = ard[2]
+        self.assertEqual(a2a['identifier'], 'urn:air:mcp.example.com:a2a:catalogue')
+        self.assertEqual(a2a['type'], 'application/a2a-agent-card+json')
+        self.assertEqual(a2a['url'], 'https://mcp.example.com/.well-known/agent-card.json')
+        for key, config_key in [('displayName', 'display_name'),
+                                ('description', 'description'),
+                                ('representativeQueries', 'representative_queries')]:
+            self.assertEqual(a2a[key], self.site['agents']['a2a'][config_key])
+        self.assertNotIn(a2a['url'], [value['url'] for value in index['skills']])
+        for key in ('data', 'version', 'supportedInterfaces', 'capabilities'):
+            self.assertNotIn(key, a2a)
 
     def test_the_digest_covers_the_emitted_utf8_including_its_final_newline(self):
         self.build()
@@ -131,6 +151,7 @@ class Discovery(unittest.TestCase):
                 self.site['domain'] = domain
                 hostname = urlsplit(domain).hostname
                 self.site['agents']['mcp']['server_card'] = f'https://mcp.{hostname}/mcp/server-card'
+                self.site['agents']['a2a']['agent_card'] = f'https://mcp.{hostname}/.well-known/agent-card.json'
                 self.build()
                 for entry in self.document('.well-known/ard.json')['entries']:
                     identity = entry['trustManifest']
@@ -146,11 +167,13 @@ class Discovery(unittest.TestCase):
         self.build()
         old_index = self.document('.well-known/agent-skills/index.json')
         self.site['agents']['mcp']['description'] = 'Updated public catalogue description; no file inputs.'
+        self.site['agents']['a2a']['description'] = 'Updated A2A public catalogue description; no file inputs.'
         self.build()
         self.assertEqual(self.document('.well-known/agent-skills/index.json'), old_index)
         ard = self.document('.well-known/ard.json')['entries']
         self.assertEqual(self.document('.well-known/ai-catalog.json')['entries'], ard)
         self.assertEqual(ard[1]['description'], self.site['agents']['mcp']['description'])
+        self.assertEqual(ard[2]['description'], self.site['agents']['a2a']['description'])
 
     def test_changing_instructions_changes_the_digest_and_rebuilds_are_stable(self):
         paths = self.build()
@@ -240,6 +263,37 @@ class Discovery(unittest.TestCase):
                 self.site = copy.deepcopy(original)
                 self.site['agents']['mcp'][key] = value
                 with self.assertRaisesRegex(ConfigError, 'agents.mcp'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+
+
+    def test_a2a_card_requires_the_canonical_production_subdomain_and_well_known_path(self):
+        for url in (None, 'http://mcp.example.com/.well-known/agent-card.json',
+                    'https://mcp-dev.example.com/.well-known/agent-card.json',
+                    'https://example.com/.well-known/agent-card.json',
+                    'https://mcp.example.com.attacker.example/.well-known/agent-card.json',
+                    'https://user@mcp.example.com/.well-known/agent-card.json',
+                    'https://mcp.example.com:443/.well-known/agent-card.json',
+                    'https://mcp.example.com/a2a',
+                    'https://mcp.example.com/.well-known/agent-card.json/',
+                    'https://mcp.example.com/.well-known/agent-card.json?version=1',
+                    'https://mcp.example.com/.well-known/agent-card.json#view',
+                    'https://mcp.example.com/.well-known/agent-card.json\n'):
+            with self.subTest(url=url):
+                self.site['agents']['a2a']['agent_card'] = url
+                with self.assertRaisesRegex(ConfigError, 'agents.a2a.agent_card'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+
+    def test_invalid_a2a_metadata_stops_before_publishing_discovery(self):
+        original = copy.deepcopy(self.site)
+        for key, value in [('display_name', ''), ('description', 'a' * 1025),
+                           ('description', 'First line\nsecond line'),
+                           ('representative_queries', ['Only one query.'])]:
+            with self.subTest(key=key):
+                self.site = copy.deepcopy(original)
+                self.site['agents']['a2a'][key] = value
+                with self.assertRaisesRegex(ConfigError, 'agents.a2a'):
                     self.build()
                 self.assertEqual(list(self.out.iterdir()), [])
 
