@@ -9,7 +9,6 @@
     "build": "node scripts/package-build.mjs",
     "test": "node --test \"tests/*.test.mjs\"",
     "dev": "wrangler dev --ip 127.0.0.1 --port 8787",
-    "preview": "node scripts/preview-host.mjs",
     "deploy:dev": "wrangler deploy",
     "deploy:production": "wrangler deploy --config wrangler.production.toml"
   },

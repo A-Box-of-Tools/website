@@ -18,6 +18,21 @@ produce a broken site rather than warn about one — a missing key, icon, README
 category or unresolvable import is an error naming the file. When it stops,
 read the message; it is the fastest route to done.
 
+## Route debugging and experiments to the lab
+
+Before creating a helper, distinguish production work from a diagnostic or
+feasibility proof. Put abox.tools debugging pages, local MCP test hosts,
+benchmarks and experimental tools in
+[etoolbox-lab](https://github.com/A-Box-of-Tools/etoolbox-lab), under
+`experiments/<slug>/`, even when the proof is part of website maintenance.
+Read that repository's `AGENTS.md` and experiment README, keep generated
+output there, and link to the lab rather than copying the helper here.
+
+Production implementations, permanent unit and QA checks, build scripts and
+release tooling remain in the website repository. If a proof graduates into
+a supported feature, promote only the production part; its diagnostic harness
+and evidence remain in the lab.
+
 ## Rules that hold for every change
 
 - **Every text file is LF, working tree included** (`.gitattributes`). The
