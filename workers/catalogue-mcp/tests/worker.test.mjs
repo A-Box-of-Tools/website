@@ -620,7 +620,9 @@ test('required rate limiting fails closed before discovery and protocol handling
   assert.equal((await worker.fetch(request(undefined, { url: 'https://attacker.example/mcp' }), {}, {})).status, 403);
   let calls = 0;
   const available = { MCP_RATE_LIMIT: { limit: async () => { calls += 1; return { success: true }; } } };
-  assert.equal((await worker.fetch(request(), available, {})).status, 200);
+  assert.equal((await worker.fetch(request(undefined, {
+    headers: { 'MCP-Protocol-Version': '2025-11-25' },
+  }), available, {})).status, 200);
   assert.equal(calls, 1);
   const exhausted = { MCP_RATE_LIMIT: { limit: async () => ({ success: false }) } };
   assert.equal((await worker.fetch(request(), exhausted, {})).status, 429);
