@@ -1,0 +1,27 @@
+{
+  "name": "abox-catalogue-mcp",
+  "private": true,
+  "type": "module",
+  "description": "An optional public catalogue MCP App. It receives public keywords, never processing files.",
+  "scripts": {
+    "prepare:catalogue": "python prepare.py",
+    "build:ui": "node scripts/build.mjs",
+    "build": "node scripts/package-build.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "dev": "wrangler dev --ip 127.0.0.1 --port 8787",
+    "preview": "node scripts/preview-host.mjs",
+    "deploy:dev": "wrangler deploy",
+    "deploy:production": "wrangler deploy --config wrangler.production.toml"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "2.4.0",
+    "@modelcontextprotocol/core": "2.4.0",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@modelcontextprotocol/ext-apps": "2.0.3",
+    "zod": "4.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "wrangler": "4.152.0"
+  }
+}

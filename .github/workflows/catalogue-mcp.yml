@@ -1,0 +1,46 @@
+name: Catalogue MCP
+
+on:
+  pull_request:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalogue-mcp-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the site version tags for the service build identity
+        run: git fetch --depth=1 origin '+refs/tags/*:refs/tags/*'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: workers/catalogue-mcp/package-lock.json
+      # The service packages only the catalogue in this build. It must agree
+      # with the actual cards, including each language's available tools.
+      - name: Build the catalogue source
+        run: python build.py --out _plain --clean --no-minify --quiet
+      - name: Install the separate service dependencies
+        working-directory: workers/catalogue-mcp
+        run: npm ci --no-audit --no-fund
+      - name: Bundle the app and check the Worker deployment
+        working-directory: workers/catalogue-mcp
+        run: npm run build
+      - name: Verify the MCP contract and request boundaries
+        working-directory: workers/catalogue-mcp
+        run: npm test
+      - name: Verify catalogue preparation against the public cards
+        working-directory: workers/catalogue-mcp
+        run: python -m unittest discover -s tests -p "test_*.py"

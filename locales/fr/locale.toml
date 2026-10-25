@@ -139,15 +139,15 @@ complete = true
 "guides/what-20-converters-do-with-your-file" = "guides/ce-que-20-convertisseurs-font-de-vos-fichiers"
 
 [hub]
-title = "Outils de navigateur gratuits &mdash; traitement local | abox.tools"
-description = "Outils gratuits traitant vos fichiers dans le navigateur : images en PDF ou MP4, compression vers une taille cible, recadrage vidéo, suppression EXIF."
+title = "abox.tools &mdash; Compression d’images et outils de navigateur gratuits"
+description = "Compression d’images et outils gratuits pour PDF, vidéo, audio et texte sur abox.tools (A Box of Tools). Traitement local sans envoi de fichiers."
 heading = "Outils gratuits. Traitement local."
-og_title = "A Box of Tools &mdash; traitement local dans le navigateur"
-og_description = "De petits outils traitent les fichiers sur votre appareil. Le partage volontaire et les fonctions en ligne facultatives sont expliqués là où ils apparaissent."
+og_title = "abox.tools &mdash; compression d’images et outils de navigateur gratuits"
+og_description = "Des outils gratuits traitent images, PDF, vidéos, audio et texte sur votre appareil. Le partage volontaire et les fonctions en ligne facultatives sont expliqués là où ils apparaissent."
 og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
-schema_description = "Utilitaires de navigateur pour traiter les fichiers localement, sans envoi pour traitement ni compte. Les fonctions réseau sont expliquées sur leurs pages."
-schema_about = "Utilitaires de navigateur pour le traitement local et le partage volontaire entre navigateurs"
-lede = "Traitez vos fichiers dans le navigateur. Aucun envoi pour traitement, aucun compte."
+schema_description = "Outils de navigateur gratuits pour compresser des images, modifier des PDF et traiter vidéo, audio et texte localement. Aucun envoi pour traitement ni compte. Le partage volontaire et les fonctions en ligne facultatives sont expliqués sur leurs pages."
+schema_about = "Outils de navigateur pour la compression d’images, la modification de PDF, la vidéo, l’audio, le texte et le partage volontaire entre navigateurs"
+lede = "abox.tools (A Box of Tools) propose la compression d’images, la modification de PDF et des outils de texte dans votre navigateur. Aucun envoi pour traitement, aucune connexion requise."
 support_note = "Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une corvée, voici la seule chose, sur tout ce site, qui vous demande quelque chose."
 
 privacy_heading = "Vos fichiers restent les vôtres."

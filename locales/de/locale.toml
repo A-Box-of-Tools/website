@@ -243,18 +243,18 @@ complete = true
 #
 
 [hub]
-title = "Kostenlose Browser-Tools &mdash; lokale Dateiverarbeitung | abox.tools"
+title = "abox.tools &mdash; Bildkomprimierung &amp; kostenlose Browser-Tools"
 # Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
-description = "Kostenlose Tools verarbeiten Dateien im Browser: Bilder zu PDF oder MP4, auf eine Zielgröße komprimieren, Videos zuschneiden, EXIF entfernen."
+description = "Kostenlose Bildkomprimierung und Tools für PDF, Video, Audio und Text von abox.tools (A Box of Tools). Verarbeitung im Browser, ohne Upload."
 heading = "Kostenlose Werkzeuge. Lokale Verarbeitung."
-og_title = "A Box of Tools &mdash; Dateien lokal im Browser verarbeiten"
-og_description = "Kleine Werkzeuge verarbeiten Dateien auf Ihrem Gerät. Bewusstes Teilen und optionale Onlinefunktionen werden dort erklärt, wo Sie sie nutzen."
+og_title = "abox.tools &mdash; Bildkomprimierung und kostenlose Browser-Tools"
+og_description = "Kostenlose Tools für Bildkomprimierung, PDF, Video, Audio und Text verarbeiten Dateien auf Ihrem Gerät. Bewusstes Teilen und optionale Onlinefunktionen werden dort erklärt, wo Sie sie nutzen."
 og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
-schema_description = "Kleine Browser-Werkzeuge für lokale Dateiverarbeitung, ohne Upload zur Verarbeitung und ohne Konto. Netzwerkfunktionen werden auf ihren Seiten erklärt."
-schema_about = "Browser-Werkzeuge für lokale Dateiverarbeitung und bewusstes Teilen zwischen Browsern"
+schema_description = "Kostenlose Browser-Tools für lokale Bildkomprimierung, PDF-Bearbeitung, Video, Audio und Text. Kein Upload zur Verarbeitung und kein Konto. Bewusstes Teilen und optionale Onlinefunktionen werden auf ihren Seiten erklärt."
+schema_about = "Browser-Tools für Bildkomprimierung, PDF-Bearbeitung, Video, Audio, Text und bewusstes Teilen zwischen Browsern"
 
-lede = "Dateien im Browser verarbeiten. Kein Upload zur Verarbeitung, keine Anmeldung."
+lede = "abox.tools (A Box of Tools) bietet Bildkomprimierung, PDF-Bearbeitung und Textwerkzeuge im Browser. Kein Upload zur Verarbeitung, keine Anmeldung."
 
 support_note = """
       Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit

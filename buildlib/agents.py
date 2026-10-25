@@ -1,9 +1,9 @@
-"""Publish the site's browser-use instructions without inventing a remote API.
+"""Publish browser-use instructions and the public catalogue's real server card.
 
-ARD describes the skill, and the well-known skill index makes that same file
-discoverable to clients that understand Agent Skills. Both point to the bytes
-this build writes, so publishing instructions never depends on a remote fetch
-or a hand-kept digest that can fall behind the instructions it identifies.
+ARD and its AI Catalog compatibility document share entries for the skill and
+the separate, public-keyword MCP catalogue. The skill index identifies only
+instructions this build writes, so its digest never depends on a remote fetch
+or a hand-kept value that can fall behind the instructions it identifies.
 """
 
 import hashlib
@@ -17,6 +17,7 @@ from buildlib.site import ConfigError
 
 SKILL_SCHEMA = 'https://schemas.agentskills.io/discovery/0.2.0/schema.json'
 SKILL_NAME = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*')
+DNS_LABEL = re.compile(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?')
 
 
 def _line(value, key, limit=None):
@@ -30,8 +31,45 @@ def _line(value, key, limit=None):
     return value
 
 
+def _queries(value, key):
+    if not isinstance(value, list) or not 2 <= len(value) <= 5:
+        raise ConfigError(f'config/site.toml: {key} must contain 2-5 queries')
+    return [_line(query, key) for query in value]
+
+
+def _mcp_entry(agent, domain):
+    mcp = agent.get('mcp')
+    if not isinstance(mcp, dict):
+        raise ConfigError('config/site.toml: agents.mcp must describe the public catalogue server card')
+    hostname = domain.hostname
+    labels = hostname.split('.')
+    if (domain.netloc != hostname or len(hostname) > 249
+            or any(DNS_LABEL.fullmatch(label) is None for label in labels)
+            or labels[-1].isdigit()
+            or labels[-1] in ('localhost', 'local', 'internal', 'invalid', 'test', 'example', 'onion')):
+        raise ConfigError('config/site.toml: agents.mcp requires a canonical public HTTPS site domain')
+    mcp_host = f'mcp.{hostname}'
+    server_card = _line(mcp.get('server_card'), 'agents.mcp.server_card')
+    expected = f'https://{mcp_host}/mcp/server-card'
+    if server_card != expected:
+        raise ConfigError(f'config/site.toml: agents.mcp.server_card must be the canonical HTTPS card {expected}')
+    return {
+        'identifier': f'urn:air:{mcp_host}:mcp:catalogue',
+        'displayName': _line(mcp.get('display_name'), 'agents.mcp.display_name'),
+        'type': 'application/mcp-server-card+json',
+        'url': server_card,
+        'description': _line(mcp.get('description'), 'agents.mcp.description', 1024),
+        'representativeQueries': _queries(mcp.get('representative_queries'),
+                                         'agents.mcp.representative_queries'),
+        'trustManifest': {
+            'identity': f'https://{mcp_host}/',
+            'identityType': 'https',
+        },
+    }
+
+
 def build_discovery(out, templates, site):
-    """Write a skill and its two discovery documents; return relative paths.
+    """Write a skill and its discovery documents; return relative paths.
 
     The template receives JSON-quoted YAML scalars for its frontmatter. YAML's
     quoted strings accept this spelling, including punctuation that would
@@ -45,12 +83,7 @@ def build_discovery(out, templates, site):
                          'letters, digits and single hyphens')
     display_name = _line(agent['display_name'], 'agents.display_name')
     description = _line(agent['description'], 'agents.description', 1024)
-    queries = agent['representative_queries']
-    if not isinstance(queries, list) or not 2 <= len(queries) <= 5:
-        raise ConfigError('config/site.toml: agents.representative_queries '
-                         'must contain 2-5 queries')
-    for query in queries:
-        _line(query, 'agents.representative_queries')
+    queries = _queries(agent['representative_queries'], 'agents.representative_queries')
 
     domain = urlsplit(site['domain'])
     if (domain.scheme != 'https' or not domain.hostname
@@ -60,9 +93,11 @@ def build_discovery(out, templates, site):
             or domain.query or domain.fragment):
         raise ConfigError('config/site.toml: domain must be an HTTPS site origin '
                          'for well-known agent discovery')
+    mcp_entry = _mcp_entry(agent, domain)
 
     skill_path = f'.well-known/agent-skills/{name}/SKILL.md'
     ard_path = '.well-known/ard.json'
+    catalog_path = '.well-known/ai-catalog.json'
     index_path = '.well-known/agent-skills/index.json'
     skill_url = f'{domain.scheme}://{domain.netloc}/{skill_path}'
     skill_file = out / skill_path
@@ -77,21 +112,23 @@ def build_discovery(out, templates, site):
     emitted = write(skill_file, skill_text)
     digest = 'sha256:' + hashlib.sha256(emitted.encode('utf-8')).hexdigest()
 
+    entries = [{
+        'identifier': f'urn:air:{domain.hostname}:skill:{name}',
+        'displayName': display_name,
+        'type': 'application/agent-skills+md',
+        'url': skill_url,
+        'description': description,
+        'representativeQueries': list(queries),
+        # This binds the declared publisher to the identifier's HTTPS
+        # domain. It makes no signature or independent attestation claim.
+        'trustManifest': {
+            'identity': f'{domain.scheme}://{domain.netloc}/',
+            'identityType': 'https',
+        },
+    }, mcp_entry]
     documents = {
-        ard_path: {'entries': [{
-            'identifier': f'urn:air:{domain.hostname}:skill:{name}',
-            'displayName': display_name,
-            'type': 'application/agent-skills+md',
-            'url': skill_url,
-            'description': description,
-            'representativeQueries': list(queries),
-            # This binds the declared publisher to the identifier's HTTPS
-            # domain. It makes no signature or independent attestation claim.
-            'trustManifest': {
-                'identity': f'{domain.scheme}://{domain.netloc}/',
-                'identityType': 'https',
-            },
-        }]},
+        ard_path: {'entries': entries},
+        catalog_path: {'specVersion': '1.0', 'entries': entries},
         index_path: {
             '$schema': SKILL_SCHEMA,
             'skills': [{
@@ -105,4 +142,4 @@ def build_discovery(out, templates, site):
     }
     for relative, document in documents.items():
         write(out / relative, json.dumps(document, ensure_ascii=False, indent=2))
-    return [skill_path, ard_path, index_path]
+    return [skill_path, ard_path, catalog_path, index_path]

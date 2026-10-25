@@ -10,10 +10,11 @@
 # it, so they cannot drift.
 #
 
-name = "A Box of Tools"
+name = "abox.tools"
+alternate_name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-10-15"     # the hub page's own sitemap date
+lastmod = "2026-10-24"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -116,6 +117,17 @@ representative_queries = [
   "Can an agent use abox.tools while keeping processing on my device?",
 ]
 
+# This service searches public catalogue text, separately from file processing.
+# Deploy and verify the production Worker before releasing these discovery links.
+[agents.mcp]
+server_card = "https://mcp.abox.tools/mcp/server-card"
+display_name = "abox.tools public catalogue"
+description = "Find browser tools by public task or format keywords. Initial keywords are sent to this catalogue service; it accepts no files and performs no file processing. MCP Apps hosts can display an interactive catalogue, while other hosts receive public tool links."
+representative_queries = [
+  "Find a browser tool for PNG to WebP.",
+  "Browse the public abox.tools tool catalogue in an MCP Apps host.",
+]
+
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
 # data- attributes it is configured with.
@@ -216,7 +228,7 @@ font = "Cookie"
 #
 # There are two kinds and both are written per language: one per tool, scoped to
 # that tool's folder, and one per front page, scoped to that language's root and
-# called "A Box of Tools". Each is scoped to exactly what the service worker
+# called "abox.tools". Each is scoped to exactly what the service worker
 # beside it has already cached, which is the whole point - an app installed from
 # here opens with the network unplugged.
 #
@@ -318,21 +330,21 @@ lede = """
     this site has never held anything of yours to lose."""
 
 [hub]
-title = "Free Browser Tools &mdash; Local File Processing | abox.tools"
+title = "abox.tools &mdash; Image Compression &amp; Free Browser Tools"
 # Kept under 155 characters. Google truncates a description around there, and
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
-description = "Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data."
+description = "Free image compression, PDF, video, audio and text tools from abox.tools (A Box of Tools). Process files in your browser without processing uploads."
 heading = "Free tools. Local processing."
-og_title = "A Box of Tools &mdash; local file processing in your browser"
-og_description = "Small, single-purpose tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
+og_title = "abox.tools &mdash; image compression and free browser tools"
+og_description = "Free image compression, PDF, video, audio and text tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
 og_image_alt = "abox.tools - browser tools for local file processing"
-schema_description = "Small browser utilities for local file processing, with no processing uploads or account required. Network features are described on their own pages."
-schema_about = "Browser utilities for local file processing and intentional browser-to-browser sharing"
+schema_description = "Free browser tools for local image compression, PDF editing, video, audio and text. No processing uploads or accounts. Intentional sharing and optional online features are explained on their own pages."
+schema_about = "Browser tools for image compression, PDF editing, video, audio, text and intentional browser-to-browser sharing"
 
 # Keep the introduction brief so a phone reaches the catalogue quickly.
 # Network use and the limits of offline processing stay in the details below.
-lede = "Process files in your browser. No processing uploads, no sign-in."
+lede = "abox.tools (A Box of Tools) offers image compression, PDF editing and text tools in your browser. No processing uploads, no sign-in."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is

@@ -586,12 +586,23 @@ here.
 
 ## Agent discovery
 
-The root hub links to `/.well-known/ard.json`, an
-[ARD v0.91 catalog](https://agenticresourcediscovery.org/spec/) containing one
-Agent Skill. It describes how to select and operate these tools in a browser;
-it does not advertise a processing API, MCP server or chat-embedded app.
+The hubs link to `/.well-known/ard.json`, an
+[ARD v0.91 catalog](https://agenticresourcediscovery.org/spec/) containing an
+Agent Skill and the public catalogue's MCP server card. The skill describes
+how to select and operate these tools in a browser. The separate MCP service
+finds public tool links and offers an interactive catalogue to MCP Apps hosts;
+it accepts no files and performs no file processing.
 
-[`buildlib/agents.py`](../buildlib/agents.py) generates that catalog, the
+`/.well-known/ai-catalog.json` offers the same entries to clients following
+[AI Catalog 1.0](https://ai-catalog.io/spec/), with its required
+`"specVersion": "1.0"` envelope. Both catalogs are generated from one entries
+list, so each entry's identity, description, URL and publisher claim cannot
+drift between discovery paths. Typed head links also identify the AI Catalog
+and the production card at `https://mcp.abox.tools/mcp/server-card`. The card
+names the actual Streamable HTTP endpoint at `https://mcp.abox.tools/mcp`;
+there is no MCP endpoint or OAuth service on the static site's root.
+
+[`buildlib/agents.py`](../buildlib/agents.py) generates both catalogs, the
 [`/.well-known/agent-skills/index.json` discovery index](https://github.com/cloudflare/agent-skills-discovery-rfc)
 and `/.well-known/agent-skills/abox-tools/SKILL.md` during a full build.
 The skill's metadata comes from `[agents]` in
@@ -600,10 +611,28 @@ The skill's metadata comes from `[agents]` in
 hashes the exact UTF-8 bytes written, including their final LF; changing the
 instructions therefore changes the digest without fetching anything at build
 time. The skill and catalog formats are evolving discovery conventions, not
-evidence that a client has completed a task.
+evidence that a client has completed a task. Only the skill appears in the
+Agent Skills index; changing catalogue metadata does not change its digest.
 
-The ARD entry's `trustManifest` identifies the same HTTPS publisher domain as
-its resource identifier. This is a declared origin identity, not a signature,
+The MCP entry's metadata comes from `[agents.mcp]`. The build accepts only the
+canonical HTTPS `/mcp/server-card` address on the configured site's `mcp`
+subdomain, without credentials, a port, a query or a fragment. It does not
+fetch that address or establish availability. Deploy and verify the separate
+[catalogue Worker](../workers/catalogue-mcp/README.md), its real protocol calls
+and App rendering before releasing discovery that advertises it. Its manual
+deployment and Free-plan checks are separate from the static site workflow;
+publishing the site does not deploy or update the Worker.
+
+Initial public task or format keywords cross the network to that service.
+Filtering inside its returned App uses the embedded public catalogue locally.
+Selecting a tool asks the host to open its ordinary browser page; the host's
+own trust boundary and that page's documented network features still apply.
+The discovery links neither make those calls themselves nor widen the static
+site's CSP or framing permissions.
+
+Each ARD entry's `trustManifest` identifies the same HTTPS publisher domain as
+its resource identifier. The MCP entry uses the live service's subdomain and
+stable catalogue identifier. This is a declared origin identity, not a signature,
 independent attestation or compliance certification. The separate Agent Skills
 digest identifies the emitted instruction bytes; it does not authenticate the
 publisher.

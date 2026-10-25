@@ -368,14 +368,13 @@ def guides_jsonld(site, guides):
 
 
 def hub_jsonld(site, tools):
-    brand_domain = urllib.parse.urlsplit(site['domain']).hostname
     graph = [
         {
             '@type': 'WebSite',
             '@id': site['home'] + '#website',
             'url': site['home'],
             'name': site['name'],
-            'alternateName': brand_domain,
+            'alternateName': site['alternate_name'],
             'description': site['hub']['schema_description'],
             'inLanguage': site['lang'],
             'publisher': {'@id': site['domain'] + '#publisher'},
@@ -393,7 +392,7 @@ def hub_jsonld(site, tools):
             '@type': 'Organization',
             '@id': site['domain'] + '#publisher',
             'name': site['name'],
-            'alternateName': brand_domain,
+            'alternateName': site['alternate_name'],
             'description': to_text(site['hub']['schema_description']),
             'url': site['domain'],
             'email': site['contact_email'],

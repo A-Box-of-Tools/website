@@ -782,6 +782,34 @@ class BuildTheSite(unittest.TestCase):
                                             page), [target])
                 self.assertTrue((self.out / target.lstrip('/')).is_file())
 
+    def test_hubs_advertise_the_production_catalogue_beside_the_browser_skill(self):
+        ard = json.loads((self.out / '.well-known/ard.json').read_bytes())['entries']
+        catalog = json.loads((self.out / '.well-known/ai-catalog.json').read_bytes())
+        self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
+        self.assertEqual([entry['type'] for entry in ard],
+                         ['application/agent-skills+md', 'application/mcp-server-card+json'])
+        card_url = self.site['agents']['mcp']['server_card']
+        self.assertEqual(card_url, 'https://mcp.abox.tools/mcp/server-card')
+        self.assertEqual(ard[1]['url'], card_url)
+        self.assertEqual(ard[1]['identifier'], 'urn:air:mcp.abox.tools:mcp:catalogue')
+        self.assertEqual(ard[1]['trustManifest'],
+                         {'identity': 'https://mcp.abox.tools/', 'identityType': 'https'})
+        index = json.loads((self.out / '.well-known/agent-skills/index.json').read_bytes())
+        self.assertEqual([entry['url'] for entry in index['skills']], [ard[0]['url']])
+        for locale in self.locales:
+            page = (self.out / locale['prefix'] / 'index.html').read_text(encoding='utf-8')
+            head = page.split('</head>', 1)[0]
+            with self.subTest(language=locale['lang']):
+                self.assertIn('<link rel="ai-catalog" type="application/ai-catalog+json" '
+                              f'href="{self.site["domain"]}.well-known/ai-catalog.json">', head)
+                self.assertIn('<link rel="describedby" type="application/mcp-server-card+json" '
+                              f'href="{card_url}">', head)
+                self.assertNotIn('mcp-dev.abox.tools', head)
+                policy = re.search(r'<meta http-equiv="Content-Security-Policy" content="(.*?)">',
+                                   head, re.S)
+                self.assertIsNotNone(policy)
+                self.assertNotIn('mcp.abox.tools', policy[1])
+
     def test_a_page_of_prose_carries_neither(self):
         """There is nothing to install on a privacy policy.
 
@@ -794,7 +822,7 @@ class BuildTheSite(unittest.TestCase):
         self.assertNotIn('manifest-src', page)
 
     def test_every_language_can_be_installed_as_the_whole_site(self):
-        """"A Box of Tools" as one app, once per language.
+        """"abox.tools" as one app, once per language.
 
         The name is the site's and is not translatable, so every language
         installs an app by the same name; what differs is where it opens and
@@ -807,7 +835,8 @@ class BuildTheSite(unittest.TestCase):
                 manifest = json.loads((self.out / folder / 'manifest.json')
                                       .read_text(encoding='utf-8'))
                 self.assertEqual(manifest['id'], f'/{folder}')
-                self.assertEqual(manifest['name'], 'A Box of Tools')
+                self.assertEqual(manifest['name'], self.site['name'])
+                self.assertEqual(manifest['short_name'], self.site['name'])
                 self.assertEqual(manifest['lang'], locale['hreflang'])
                 # And a worker over the same scope, or the installed app is a
                 # shortcut that fails the moment the network does - which is the
@@ -815,6 +844,29 @@ class BuildTheSite(unittest.TestCase):
                 self.assertTrue((self.out / folder / 'sw.js').is_file())
                 page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
                 self.assertIn('/offline.js?v=', page)
+
+    def test_hub_identity_agrees_in_visible_copy_metadata_and_markdown(self):
+        from urllib.parse import urlsplit
+        canonical_name = self.site['name']
+        alternate_name = self.site['alternate_name']
+        self.assertEqual(canonical_name, urlsplit(self.site['domain']).hostname)
+        self.assertNotEqual(canonical_name, alternate_name)
+        for locale in self.locales:
+            folder = self.out / locale['prefix']
+            page = (folder / 'index.html').read_text(encoding='utf-8')
+            twin = (folder / 'index.md').read_text(encoding='utf-8')
+            with self.subTest(language=locale['lang']):
+                graph = json.loads(re.search(
+                    r'<script type="application/ld\+json">(.*?)</script>', page, re.S)[1])['@graph']
+                for entity_type in ('WebSite', 'Organization'):
+                    entity = next(node for node in graph if node['@type'] == entity_type)
+                    self.assertEqual(entity['name'], canonical_name)
+                    self.assertEqual(entity['alternateName'], alternate_name)
+                self.assertIn(f'<meta property="og:site_name" content="{canonical_name}">', page)
+                lede = re.search(r'<p class="lede">(.*?)</p>', page, re.S)[1]
+                for name in (canonical_name, alternate_name):
+                    self.assertIn(name, lede)
+                    self.assertIn(name, twin)
 
     def test_the_offline_receipt_covers_every_rebuilt_worker(self):
         import hashlib
