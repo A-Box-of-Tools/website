@@ -1,5 +1,7 @@
 import { SERVER_NAME } from './server.mjs';
 
+const DISCOVERY_PATHS = new Set(['/', '/mcp/server-card', '/.well-known/mcp.json', '/.well-known/ai-catalog.json']);
+
 function publicResponse(request, body, type) {
   let hash = 2166136261;
   for (let index = 0; index < body.length; index++) hash = Math.imul(hash ^ body.charCodeAt(index), 16777619) >>> 0;
@@ -18,9 +20,9 @@ function publicResponse(request, body, type) {
   return new Response(request.method === 'HEAD' ? null : body, { headers });
 }
 
-export function discoveryResponse(request, catalogue) {
-  const url = new URL(request.url);
-  if (url.search) return null;
+export function discoveryResponse(request, catalogue, url = new URL(request.url)) {
+  // MCP requests share this router but need none of the public document data.
+  if (url.search || !DISCOVERY_PATHS.has(url.pathname)) return null;
   const endpoint = new URL('/mcp', url.origin).href;
   const card = {
     $schema: 'https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json',
@@ -43,18 +45,23 @@ export function discoveryResponse(request, catalogue) {
     }] }), 'application/ai-catalog+json');
   }
   if (url.pathname !== '/') return null;
+  const production = url.origin === 'https://mcp.abox.tools';
+  const title = production ? 'abox.tools catalogue MCP' : 'abox.tools catalogue MCP — development';
+  const sourceRef = production ? catalogue.build.revision : 'dev';
+  const serviceNotice = production ? 'Public catalogue discovery service.'
+    : 'Development service. Its presence does not mean a production MCP endpoint or registry listing exists.';
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>abox.tools catalogue MCP — development</title>
+<meta name="robots" content="noindex"><title>${title}</title>
 <link rel="describedby" type="application/mcp-server-card+json" href="/mcp/server-card">
 <link rel="ai-catalog" type="application/ai-catalog+json" href="/.well-known/ai-catalog.json">
-</head><body><main><h1>abox.tools catalogue MCP — development</h1>
+</head><body><main><h1>${title}</h1>
 <p>Connect an MCP client to this service’s <a href="/mcp">/mcp endpoint</a> using Streamable HTTP.</p>
 <p>The public <code>find_browser_tools</code> tool searches tool names and descriptions. Apps-capable hosts can display an interactive catalogue. Text-only hosts receive the same public tool links.</p>
 <p>Use public task or format keywords only. Initial MCP keywords go to this service; filtering inside its app stays local. Do not send filenames or private information. File uploads are not supported. There is no account or authentication requirement.</p>
 <p>Open a chosen tool on <a href="https://abox.tools/">abox.tools</a> to process files in the browser running on that device. Optional network features are described on their own pages.</p>
-<p><a href="/mcp/server-card">Server card</a> · <a href="/.well-known/ai-catalog.json">AI Catalog</a> · <a href="https://github.com/A-Box-of-Tools/website/tree/dev/workers/catalogue-mcp">Source and setup</a></p>
-<p>Development service. Its presence does not mean a production MCP endpoint or registry listing exists.</p>
+<p><a href="/mcp/server-card">Server card</a> · <a href="/.well-known/ai-catalog.json">AI Catalog</a> · <a href="https://github.com/A-Box-of-Tools/website/tree/${sourceRef}/workers/catalogue-mcp">Source and setup</a></p>
+<p>${serviceNotice}</p>
 <p>Source build: <code>${catalogue.build.version}</code></p>
 </main></body></html>`;
   return publicResponse(request, html, 'text/html; charset=utf-8');

@@ -7,8 +7,9 @@ z.config({ jitless: true });
 
 const MIME = 'text/html;profile=mcp-app';
 const service = __MCP_SERVICE__;
-if (!['local', 'dev'].includes(service)) throw new TypeError('Unexpected fixed preview service');
+if (!['local', 'dev', 'production'].includes(service)) throw new TypeError('Unexpected fixed preview service');
 const endpoint = service === 'dev' ? 'https://mcp-dev.abox.tools/mcp'
+  : service === 'production' ? 'https://mcp.abox.tools/mcp'
   : `http://${location.hostname}:8787/mcp`;
 const info = { name: 'Local abox.tools preview host', version: 'local-preview' };
 const status = document.getElementById('status');
@@ -22,6 +23,7 @@ const width = document.getElementById('host-width');
 document.getElementById('service-endpoint').textContent = endpoint;
 document.getElementById('service-local').hidden = service !== 'local';
 document.getElementById('service-dev').hidden = service !== 'dev';
+document.getElementById('service-production').hidden = service !== 'production';
 let bridge;
 let frame;
 let client;

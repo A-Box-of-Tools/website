@@ -10,7 +10,8 @@
     "test": "node --test \"tests/*.test.mjs\"",
     "dev": "wrangler dev --ip 127.0.0.1 --port 8787",
     "preview": "node scripts/preview-host.mjs",
-    "deploy:dev": "wrangler deploy"
+    "deploy:dev": "wrangler deploy",
+    "deploy:production": "wrangler deploy --config wrangler.production.toml"
   },
   "dependencies": {
     "@modelcontextprotocol/client": "2.4.0",

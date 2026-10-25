@@ -33,7 +33,7 @@ async function boundedBody(request) {
   return bytes;
 }
 
-export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins, rateLimiter }) {
+export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins, rateLimiter, requireRateLimiter = false }) {
   validateCatalogue(catalogue);
   if (!Array.isArray(allowedHosts) || !allowedHosts.length
       || !Array.isArray(allowedOrigins) || allowedOrigins.some(value => new URL(value).origin !== value)) {
@@ -48,11 +48,21 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
       const rejected = hostHeaderValidationResponse(request, allowedHosts);
       if (rejected || !allowedHosts.includes(url.hostname)) return rejected ?? error(403, 'Service host is not allowed');
       const limiter = rateLimiter ?? env.MCP_RATE_LIMIT;
-      if (limiter) {
-        const result = await limiter.limit({ key: request.headers.get('CF-Connecting-IP') || 'local' });
-        if (!result.success) return error(429, 'Catalogue request limit reached', { 'Retry-After': '60' });
+      if (requireRateLimiter && typeof limiter?.limit !== 'function') {
+        return error(503, 'Catalogue rate limiter is unavailable');
       }
-      const discovery = discoveryResponse(request, catalogue);
+      if (limiter) {
+        try {
+          const result = await limiter.limit({ key: request.headers.get('CF-Connecting-IP') || 'local' });
+          const success = result?.success;
+          if (success !== true) return success === false
+            ? error(429, 'Catalogue request limit reached', { 'Retry-After': '60' })
+            : error(503, 'Catalogue rate limiter is unavailable');
+        } catch {
+          return error(503, 'Catalogue rate limiter is unavailable');
+        }
+      }
+      const discovery = discoveryResponse(request, catalogue, url);
       if (discovery) return discovery;
       const origin = request.headers.get('Origin');
       if (origin !== null && (!origins.has(origin) || originValidationResponse(request, originHosts))) {
