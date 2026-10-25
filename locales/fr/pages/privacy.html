@@ -38,6 +38,17 @@
     <p>
       Les boutons de messagerie et de partage préparent rapports et copies JPEG localement, puis téléchargent un fichier de message ou les remettent à l’application choisie. Cette page n’envoie pas de courriel. Application, prestataire et destinataire choisis gèrent la suite selon leurs politiques. <a href="../partager-du-texte/">Partager du texte et des fichiers</a>, <a href="../share-tab/">Partager un onglet du navigateur</a> et <a href="../remote-camera/">Caméra distante</a> envoient volontairement du contenu à un autre navigateur ; les métadonnées sont décrites ci-dessous.
     </p>
+
+    <h3>Catalogue public d’outils pour les agents (MCP et A2A)</h3>
+    <p>
+      Les clients MCP et A2A envoient des mots-clés publics sur la tâche ou le format, la langue du catalogue et une limite de résultats à un Cloudflare Worker sur <code>mcp.abox.tools</code>. Les services de catalogue renvoient des descriptions et liens publics d’outils. Ils n’acceptent aucun fichier, n’offrent aucun point d’envoi et ne demandent aucun compte. N’envoyez pas de mots-clés privés, de noms de fichiers, de contenu de fichiers ou de mots de passe.
+    </p>
+    <p>
+      Le filtrage dans le catalogue interactif déjà chargé s’effectue localement, sans nouvelle requête au catalogue. Ouvrir un résultat demande à l’hôte d’ouvrir le site de cet outil, où les fichiers sont choisis et traités dans le navigateur. Le prestataire qui héberge l’agent ou l’application traite vos requêtes et l’historique de conversation selon sa propre politique. Le service reçoit ce que l’hôte envoie dans la requête au catalogue. Il ne demande pas l’historique de conversation de cet hôte et ne le récupère pas.
+    </p>
+    <p>
+      L’application ne journalise ni les recherches ni le corps des requêtes et n’a ni base de données ni tâches persistantes. L’observabilité du Worker est désactivée. Cloudflare traite néanmoins les adresses IP, les horaires et les métadonnées des requêtes pour l’hébergement, la sécurité et la limitation de leur fréquence. La conservation de ces métadonnées gérées par le prestataire relève de Cloudflare. Nous n’avons pas vérifié de durée fixe de conservation pour ce service. Sans utiliser le catalogue distant, le site habituel et le traitement local restent disponibles.
+    </p>
   </section>
 
   <section>

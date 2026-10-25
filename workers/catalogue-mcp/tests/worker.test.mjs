@@ -222,6 +222,7 @@ test('a real SDK client discovers the read-only tool and its MCP App resource', 
   assert.equal(contents[0].uri, resourceUri);
   assert.equal(contents[0].mimeType, appMime);
   assert.equal(contents[0].text, viewHtml);
+  assert.equal(contents[0]._meta.ui.domain, 'https://mcp.abox.tools');
   assert.equal(contents[0]._meta.ui.prefersBorder, true);
   assert.deepEqual(contents[0]._meta.ui.csp, {
     connectDomains: [], resourceDomains: [], frameDomains: [], baseUriDomains: [],
@@ -322,6 +323,9 @@ test('public discovery cards support cross-origin reads and conditional requests
   const card = JSON.parse(body);
   assert.equal(card.name, 'tools.abox/catalogue');
   assert.equal(card.version, catalogue.build.version);
+  assert.equal(card.title, 'abox.tools public catalogue');
+  assert.ok(card.description);
+  assert.deepEqual(card.icons, [{ src: 'https://abox.tools/icon-192.png', mimeType: 'image/png', sizes: ['192x192'] }]);
   assert.deepEqual(card.remotes, [{ type: 'streamable-http', url: endpoint }]);
   for (const field of ['capabilities', 'tools', 'resources']) assert.equal(Object.hasOwn(card, field), false, field);
 
@@ -362,6 +366,7 @@ test('public discovery cards support cross-origin reads and conditional requests
   assert.equal(index.headers.get('Content-Type'), 'application/ai-catalog+json');
   assert.deepEqual((await index.json()).entries.map(entry => ({ type: entry.type, url: entry.url })), [
     { type: 'application/mcp-server-card+json', url: cardUrl },
+    { type: 'application/a2a-agent-card+json', url: 'https://mcp.abox.tools/.well-known/agent-card.json' },
   ]);
 });
 
@@ -626,4 +631,93 @@ test('required rate limiting fails closed before discovery and protocol handling
   assert.equal(calls, 1);
   const exhausted = { MCP_RATE_LIMIT: { limit: async () => ({ success: false }) } };
   assert.equal((await worker.fetch(request(), exhausted, {})).status, 429);
+});
+
+test('the public A2A card connects to a real bounded catalogue exchange', async (t) => {
+  const worker = workerFixture();
+  t.after(() => worker.close());
+  const cardResponse = await worker.fetch(request(undefined, {
+    url: 'https://mcp.abox.tools/.well-known/agent-card.json', method: 'GET',
+    headers: { Origin: 'https://independent-agent.example' },
+  }));
+  assert.equal(cardResponse.status, 200);
+  assert.equal(cardResponse.headers.get('Access-Control-Allow-Origin'), '*');
+  const card = await cardResponse.json();
+  const service = card.supportedInterfaces[0];
+  assert.deepEqual(service, { url: 'https://mcp.abox.tools/a2a', protocolBinding: 'JSONRPC', protocolVersion: '1.0' });
+  assert.equal(card.version, catalogue.build.version);
+  const response = await worker.fetch(request({ jsonrpc: '2.0', id: 'public-search', method: 'SendMessage',
+    params: { message: { messageId: 'query-1', role: 'ROLE_USER', parts: [{ text: 'png to webp' }] } } },
+  { url: service.url, headers: { 'A2A-Version': service.protocolVersion, Origin: allowedOrigin } }));
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  assert.equal(response.headers.get('A2A-Version'), '1.0');
+  assert.equal(response.headers.get('Access-Control-Allow-Origin'), allowedOrigin);
+  assert.equal(response.headers.get('Access-Control-Expose-Headers'), 'A2A-Version');
+  const answer = await response.json();
+  assert.equal(answer.id, 'public-search');
+  assert.equal(answer.result.message.role, 'ROLE_AGENT');
+  assert.deepEqual(answer.result.message.parts.find(part => part.data).data.tools.map(tool => tool.url),
+    ['https://abox.tools/png-to-webp/']);
+});
+
+test('A2A shares body, method, Origin and required rate-limit boundaries with MCP', async (t) => {
+  const worker = workerFixture({ requireRateLimiter: true });
+  t.after(() => worker.close());
+  const url = 'https://mcp.abox.tools/a2a';
+  const incoming = options => request({ jsonrpc: '2.0', id: 7, method: 'ListTasks', params: {} },
+    { url, headers: { 'A2A-Version': '1.0' }, ...options });
+  assert.equal((await worker.fetch(incoming())).status, 503);
+  assert.equal((await worker.fetch(incoming(), { MCP_RATE_LIMIT: { limit: async () => ({ success: false }) } })).status, 429);
+  const env = { MCP_RATE_LIMIT: { limit: async () => ({ success: true }) } };
+  for (const method of ['GET', 'DELETE']) assert.equal((await worker.fetch(incoming({ method }), env)).status, 405);
+  assert.equal((await worker.fetch(incoming({ headers: { Origin: 'https://attacker.example' } }), env)).status, 403);
+  assert.equal((await worker.fetch(incoming({ url: url + '?private=ignored' }), env)).status, 404);
+  const large = await worker.fetch(request(' '.repeat(16_385), { url }), env);
+  assert.equal(large.status, 413);
+  const invalidType = await worker.fetch(incoming({ headers: { 'Content-Type': 'text/plain' } }), env);
+  assert.equal(invalidType.status, 415);
+  const batch = await worker.fetch(request([{ jsonrpc: '2.0', id: 1, method: 'ListTasks' }], { url,
+    headers: { 'A2A-Version': '1.0' } }), env);
+  assert.equal(batch.status, 400);
+  assert.equal((await batch.json()).error.code, -32600);
+  const malformed = await worker.fetch(request('{', { url, headers: { 'A2A-Version': '1.0' } }), env);
+  assert.equal(malformed.status, 400);
+  assert.equal(malformed.headers.get('Content-Type'), 'application/json');
+  assert.equal(malformed.headers.get('A2A-Version'), '1.0');
+  assert.equal((await malformed.json()).error.code, -32700);
+  const preflight = await worker.fetch(incoming({ method: 'OPTIONS', headers: {
+    Origin: allowedOrigin, 'Access-Control-Request-Method': 'POST',
+    'Access-Control-Request-Headers': 'content-type,a2a-version,a2a-extensions',
+  } }), env);
+  assert.equal(preflight.status, 204);
+  for (const header of ['a2a-version', 'a2a-extensions']) {
+    assert.ok(preflight.headers.get('Access-Control-Allow-Headers').toLowerCase().includes(header));
+  }
+});
+
+test('apex card aliases redirect to fixed production documents behind the limiter', async (t) => {
+  const worker = workerFixture({ allowedHosts: ['mcp.abox.tools', 'abox.tools'], requireRateLimiter: true });
+  t.after(() => worker.close());
+  const env = { MCP_RATE_LIMIT: { limit: async () => ({ success: true }) } };
+  for (const [path, target] of [
+    ['/.well-known/agent-card.json', 'https://mcp.abox.tools/.well-known/agent-card.json'],
+    ['/.well-known/mcp/server-card.json', 'https://mcp.abox.tools/mcp/server-card'],
+  ]) {
+    const get = method => request(undefined, { url: 'https://abox.tools' + path, method });
+    assert.equal((await worker.fetch(get('GET'))).status, 503);
+    for (const method of ['GET', 'HEAD']) {
+      const response = await worker.fetch(get(method), env);
+      assert.equal(response.status, 301);
+      assert.equal(response.headers.get('Location'), target);
+      assert.equal(await response.text(), '');
+    }
+    assert.equal((await worker.fetch(get('POST'), env)).status, 405);
+    assert.equal((await worker.fetch(request(undefined, { url: 'https://abox.tools' + path + '?target=attacker', method: 'GET' }), env)).status, 404);
+  }
+  for (const path of ['/', '/mcp', '/a2a', '/.well-known/agent-card.json/']) {
+    const response = await worker.fetch(request(undefined, { url: 'https://abox.tools' + path, method: 'GET' }), env);
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get('Location'), null);
+  }
 });

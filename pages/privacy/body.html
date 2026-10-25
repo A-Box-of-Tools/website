@@ -38,6 +38,17 @@
     <p>
       Receipt email and sharing buttons prepare reports and JPEG copies locally, then download an email file or hand them to your chosen device app. This page does not send an email. The app, provider and recipient you choose handle the next step under their policies. <a href="../share-text/">Share Text &amp; Files</a>, <a href="../share-tab/">Share a Browser Tab</a> and <a href="../remote-camera/">Remote Camera</a> deliberately send content to another browser; their connection metadata is described below.
     </p>
+
+    <h3>Public tool catalogue for agents (MCP and A2A)</h3>
+    <p>
+      MCP and A2A clients send public task or format keywords, a catalogue language and a result limit to a Cloudflare Worker at <code>mcp.abox.tools</code>. The catalogue services return public tool descriptions and links. They accept no files, provide no upload endpoint and require no account. Do not send private keywords, filenames, file contents or passwords.
+    </p>
+    <p>
+      Filtering inside the loaded interactive catalogue runs locally without another catalogue request. Opening a selected result asks the host to open that tool's website, where file selection and processing happen in the browser. The agent or app host provider handles your requests and conversation history under its own policy. The service receives what the host sends in the catalogue request; it does not request or retrieve that host's conversation history.
+    </p>
+    <p>
+      The application writes no query or request-body logs and has no database or persistent tasks. Worker observability is disabled. Cloudflare still processes IP addresses, timing and request metadata for hosting, security and request-rate controls. Retention of that provider-managed metadata is governed by Cloudflare; we have not verified a fixed retention period for this service. Avoiding the remote catalogue leaves the ordinary website and local file processing available.
+    </p>
   </section>
 
   <section>

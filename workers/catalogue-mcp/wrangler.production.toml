@@ -7,10 +7,12 @@ compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 routes = [
   { pattern = "mcp.abox.tools", custom_domain = true },
+  { pattern = "abox.tools/.well-known/agent-card.json", zone_name = "abox.tools" },
+  { pattern = "abox.tools/.well-known/mcp/server-card.json", zone_name = "abox.tools" },
 ]
 
 [vars]
-ALLOWED_HOSTS = '["mcp.abox.tools"]'
+ALLOWED_HOSTS = '["mcp.abox.tools","abox.tools"]'
 ALLOWED_ORIGINS = '["https://abox.tools","http://127.0.0.1:8788","http://localhost:8788"]'
 
 [[ratelimits]]

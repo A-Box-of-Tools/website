@@ -18,10 +18,15 @@
     "@modelcontextprotocol/core": "2.4.0",
     "@modelcontextprotocol/server": "2.4.0",
     "@modelcontextprotocol/ext-apps": "2.0.3",
-    "zod": "4.2.0"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "esbuild": "0.25.12",
     "wrangler": "4.152.0"
+  },
+  "overrides": {
+    "miniflare@5.20261019.2-beta": {
+      "undici": "7.30.1"
+    }
   }
 }

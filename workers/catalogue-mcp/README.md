@@ -162,13 +162,40 @@ stayed below the plan's nominal CPU allowance.
 The service also provides a small landing page that identifies the deployment and a current
 [SEP-2127 server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards)
 at `/mcp/server-card`, linked from its own `/.well-known/ai-catalog.json`.
-`/.well-known/mcp.json` is a compatibility alias for that same card, rather
+`/.well-known/mcp.json` and `/.well-known/mcp/server-card.json` are compatibility aliases for that same card, rather
 than a claim that this location is required by the current specification.
 Cards advertise identity and connection details; tools, resources and Apps
 support are discovered through the real MCP runtime, not duplicated into a
 static capabilities claim. Public discovery has read-only CORS, cache
 validators and HEAD support. Protected-resource/OAuth discovery is absent
 because this catalogue is public and requires no login.
+
+The card and MCP initialization share the same title, description, website
+and 192-pixel PNG icon. The ordinary homepage also advertises that existing
+PNG explicitly as a favicon: directory caches can otherwise enlarge an old
+16-pixel icon even when they request a larger size. The icon URL stays stable;
+upstream favicon caches refresh on their own schedule.
+
+## A2A catalogue access
+
+The same public catalogue has an [A2A 1.0 interface](docs/catalogue-a2a.md)
+at `/a2a`, with its actual card at `/.well-known/agent-card.json`. It accepts
+one bounded public-keyword message and returns an immediate message containing
+real public tool links. It does not retain tasks, process files, stream or send
+push notifications. Host, required rate limiter, explicit browser origins and
+the 16 KiB body limit apply before protocol handling, just as for MCP.
+
+The two [exact apex discovery routes](APEX-DISCOVERY.md) redirect to the current
+production cards without copying their versions into the static site. Other
+website paths stay at the existing origin. The site's ARD and AI Catalog link
+to the canonical A2A card alongside the existing skill and MCP card.
+
+Public access is not WorkOS anonymous identity registration. There is no
+identity issuer, token exchange, protected resource, account or login here.
+OAuth and `agent_auth` discovery remain absent rather than advertising
+unimplemented authentication endpoints. A ChatGPT directory preparation package
+is under `integrations/chatgpt/`; it is a draft with separate owner, host-test
+and review requirements.
 
 ## Use the real app locally
 

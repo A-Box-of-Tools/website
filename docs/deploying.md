@@ -588,8 +588,9 @@ here.
 
 The hubs link to `/.well-known/ard.json`, an
 [ARD v0.91 catalog](https://agenticresourcediscovery.org/spec/) containing an
-Agent Skill and the public catalogue's MCP server card. The skill describes
-how to select and operate these tools in a browser. The separate MCP service
+Agent Skill and the public catalogue's MCP server card and A2A Agent Card.
+The skill describes how to select and operate these tools in a browser.
+The separate catalogue service
 finds public tool links and offers an interactive catalogue to MCP Apps hosts;
 it accepts no files and performs no file processing.
 
@@ -623,6 +624,17 @@ and App rendering before releasing discovery that advertises it. Its manual
 deployment and Free-plan checks are separate from the static site workflow;
 publishing the site does not deploy or update the Worker.
 
+The A2A entry comes from `[agents.a2a]` and points to the canonical HTTPS
+`/.well-known/agent-card.json` address on that same `mcp` subdomain. It uses
+the [AI Catalog Agent Card type](https://ai-catalog.io/getting-started/),
+`application/a2a-agent-card+json`, with its own `a2a:catalogue` resource
+identifier. The card declares the live A2A interface at `/a2a` and its build
+identity; neither is copied into the static catalog. This interface searches
+public catalogue keywords and returns descriptions and links. It accepts no
+files and performs no file processing. Its direct A2A messages
+and the MCP App are separate protocol features of the same public service.
+Verify the real endpoint before releasing discovery that advertises it.
+
 Initial public task or format keywords cross the network to that service.
 Filtering inside its returned App uses the embedded public catalogue locally.
 Selecting a tool asks the host to open its ordinary browser page; the host's
@@ -631,8 +643,9 @@ The discovery links neither make those calls themselves nor widen the static
 site's CSP or framing permissions.
 
 Each ARD entry's `trustManifest` identifies the same HTTPS publisher domain as
-its resource identifier. The MCP entry uses the live service's subdomain and
-stable catalogue identifier. This is a declared origin identity, not a signature,
+its resource identifier. The MCP and A2A entries use the live service's subdomain
+and distinct stable catalogue identifiers. This is a declared origin identity,
+not a signature,
 independent attestation or compliance certification. The separate Agent Skills
 digest identifies the emitted instruction bytes; it does not authenticate the
 publisher.

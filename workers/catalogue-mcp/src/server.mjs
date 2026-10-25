@@ -8,7 +8,14 @@ z.config({ jitless: true });
 
 export const RESOURCE_URI = 'ui://abox/catalogue.html';
 export const SERVER_NAME = 'tools.abox/catalogue';
+export const SERVER_BRANDING = Object.freeze({
+  title: 'abox.tools public catalogue',
+  description: 'Find public browser tools by task or format. No file processing or account.',
+  websiteUrl: 'https://abox.tools/',
+  icons: [{ src: 'https://abox.tools/icon-192.png', mimeType: 'image/png', sizes: ['192x192'] }]
+});
 export const UI_META = Object.freeze({
+  domain: 'https://mcp.abox.tools',
   csp: { connectDomains: [], resourceDomains: [], frameDomains: [], baseUriDomains: [] },
   prefersBorder: true
 });
@@ -80,7 +87,7 @@ export function createCatalogueServer(catalogue, viewHtml) {
     throw new TypeError('Build the actual catalogue app HTML before serving MCP');
   }
   const { inputSchema, outputSchema } = prepareCatalogueSchemas(catalogue);
-  const server = new McpServer({ name: SERVER_NAME, version: catalogue.build.version },
+  const server = new McpServer({ ...SERVER_BRANDING, name: SERVER_NAME, version: catalogue.build.version },
     { maxToolInputElements: 10,
       instructions: 'This public server only finds browser tools. Send short public task or format keywords; never send files, filenames, passwords or private content. A result is a public tool link, not file processing. Open a chosen tool in the browser where processing should happen. Tool pages explain intentional network features. Authentication is not required.' });
   registerAppTool(server, 'find_browser_tools', {

@@ -787,13 +787,17 @@ class BuildTheSite(unittest.TestCase):
         catalog = json.loads((self.out / '.well-known/ai-catalog.json').read_bytes())
         self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
         self.assertEqual([entry['type'] for entry in ard],
-                         ['application/agent-skills+md', 'application/mcp-server-card+json'])
+                         ['application/agent-skills+md', 'application/mcp-server-card+json',
+                          'application/a2a-agent-card+json'])
         card_url = self.site['agents']['mcp']['server_card']
         self.assertEqual(card_url, 'https://mcp.abox.tools/mcp/server-card')
         self.assertEqual(ard[1]['url'], card_url)
         self.assertEqual(ard[1]['identifier'], 'urn:air:mcp.abox.tools:mcp:catalogue')
         self.assertEqual(ard[1]['trustManifest'],
                          {'identity': 'https://mcp.abox.tools/', 'identityType': 'https'})
+        self.assertEqual(ard[2]['url'], 'https://mcp.abox.tools/.well-known/agent-card.json')
+        self.assertEqual(ard[2]['identifier'], 'urn:air:mcp.abox.tools:a2a:catalogue')
+        self.assertEqual(ard[2]['trustManifest'], ard[1]['trustManifest'])
         index = json.loads((self.out / '.well-known/agent-skills/index.json').read_bytes())
         self.assertEqual([entry['url'] for entry in index['skills']], [ard[0]['url']])
         for locale in self.locales:

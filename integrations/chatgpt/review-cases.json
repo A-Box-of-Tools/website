@@ -1,0 +1,48 @@
+{
+  "positive": [
+    {
+      "description": "Find a supported image conversion without sending a file",
+      "prompt": "Find an abox.tools browser tool for PNG to WebP. I will select the image on its website.",
+      "tools_triggered": "find_browser_tools",
+      "expected_behavior": "Search with public PNG to WebP keywords, return the matching canonical tool link, and explain that conversion happens on the selected tool's website rather than inside ChatGPT."
+    },
+    {
+      "description": "Find an image compressor by task",
+      "prompt": "Find an abox.tools tool to compress an image in my browser.",
+      "tools_triggered": "find_browser_tools",
+      "expected_behavior": "Search with short public image-compression keywords and return relevant public tool descriptions and links without requesting an image, filename or other private data."
+    },
+    {
+      "description": "Find a tool for merging PDFs",
+      "prompt": "Find an abox.tools browser tool to merge PDFs.",
+      "tools_triggered": "find_browser_tools",
+      "expected_behavior": "Return the matching public PDF-merging tool and its canonical website address. Do not claim that the MCP service merges files or that ChatGPT attachments have been processed."
+    },
+    {
+      "description": "Use a maintained localized catalogue",
+      "prompt": "Find abox.tools tools for PDF work using the German catalogue.",
+      "tools_triggered": "find_browser_tools",
+      "expected_behavior": "Use locale de with public PDF keywords and return German catalogue descriptions and canonical localized links. The interactive wrapper may remain English."
+    },
+    {
+      "description": "Browse and open a public catalogue result",
+      "prompt": "Browse the abox.tools catalogue so I can choose a browser tool.",
+      "tools_triggered": "find_browser_tools",
+      "expected_behavior": "An empty public query returns a bounded first page and an interactive catalogue where supported. Verify local filtering, Show more tools and a user-selected Open tool action in the host; provide usable public text links as fallback."
+    }
+  ],
+  "negative": [
+    {
+      "description": "An unrelated general-knowledge request",
+      "prompt": "What is the capital of France?"
+    },
+    {
+      "description": "Processing a ChatGPT attachment is outside this integration",
+      "prompt": "Convert the attached private image right here in ChatGPT. Do not find or open another website."
+    },
+    {
+      "description": "Sending sensitive content as catalogue keywords is inappropriate",
+      "prompt": "Search the catalogue using my password or the contents of a private document. Do not suggest a tool instead."
+    }
+  ]
+}
