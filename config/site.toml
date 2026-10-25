@@ -128,6 +128,17 @@ representative_queries = [
   "Browse the public abox.tools tool catalogue in an MCP Apps host.",
 ]
 
+# This card describes the catalogue's real A2A interface, not file processing.
+# Its version and supported interfaces remain on the separately deployed service.
+[agents.a2a]
+agent_card = "https://mcp.abox.tools/.well-known/agent-card.json"
+display_name = "abox.tools public catalogue agent"
+description = "Find browser tools through A2A using public task or format keywords. Initial keywords are sent to the catalogue service, which returns public tool descriptions and links. It accepts no files and performs no file processing."
+representative_queries = [
+  "Find a browser tool for PNG to WebP through A2A.",
+  "Get public abox.tools catalogue links for PDF compression.",
+]
+
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
 # data- attributes it is configured with.

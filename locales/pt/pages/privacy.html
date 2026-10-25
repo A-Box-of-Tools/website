@@ -38,6 +38,17 @@
     <p>
       Os botões de email e compartilhamento preparam relatórios e JPEGs localmente e depois baixam um arquivo de email ou os entregam ao app escolhido. Esta página não envia email. O app, provedor e destinatário que você escolhe cuidam do próximo passo pelas próprias políticas. <a href="../compartilhar-texto/">Compartilhar texto e arquivos</a>, <a href="../share-tab/">Compartilhar uma aba do navegador</a> e <a href="../remote-camera/">Câmera remota</a> enviam conteúdo a outro navegador deliberadamente; os metadados são descritos abaixo.
     </p>
+
+    <h3>Catálogo público de ferramentas para agentes (MCP e A2A)</h3>
+    <p>
+      Os clientes MCP e A2A enviam palavras-chave públicas sobre a tarefa ou o formato, o idioma do catálogo e um limite de resultados a um Cloudflare Worker em <code>mcp.abox.tools</code>. Os serviços de catálogo retornam descrições e links públicos das ferramentas. Não aceitam arquivos, não oferecem endpoint de envio e não exigem conta. Não envie palavras-chave privadas, nomes de arquivos, conteúdo de arquivos nem senhas.
+    </p>
+    <p>
+      A filtragem no catálogo interativo já carregado acontece localmente, sem outra solicitação ao catálogo. Abrir um resultado pede ao ambiente que abra o site da ferramenta, onde a seleção e o processamento dos arquivos acontecem no navegador. O provedor do ambiente do agente ou do app trata suas solicitações e o histórico de conversa segundo a própria política. O serviço recebe o que o ambiente envia na solicitação ao catálogo. Ele não solicita nem recupera o histórico de conversa desse ambiente.
+    </p>
+    <p>
+      A aplicação não registra consultas nem corpos de solicitações e não tem banco de dados ou tarefas persistentes. A observabilidade do Worker está desativada. A Cloudflare ainda trata endereços IP, horários e metadados das solicitações para hospedagem, segurança e controle da frequência de solicitações. A retenção desses metadados gerenciados pelo provedor segue as regras da Cloudflare. Não verificamos um prazo fixo de retenção para este serviço. Sem usar o catálogo remoto, o site habitual e o processamento local continuam disponíveis.
+    </p>
   </section>
 
   <section>
