@@ -6,6 +6,7 @@ import { clipboardFeedback } from './shared/clipboard-feedback.js';
 const $ = id => document.getElementById(id);
 const sources = ['a', 'b'];
 const fileVersions = { a: 0, b: 0 };
+const sourceTexts = { a: null, b: null };
 const pendingFiles = new Set();
 let tables = null;
 let pairs = [];
@@ -16,11 +17,11 @@ const copy = clipboardFeedback({
   read: () => exportValue,
   current: value => value !== null && value === exportValue,
   write: text => navigator.clipboard.writeText(text),
-  done: () => { $('copy-status').textContent = phrase('copied'); },
+  done: () => { $('copy-status').textContent = phrase('stitch.copied'); },
   selected: () => {
     $('output').focus();
     $('output').select();
-    $('copy-status').textContent = phrase('selected');
+    $('copy-status').textContent = phrase('stitch.selected');
   },
   restore: () => { $('copy-status').textContent = ''; },
 });
@@ -36,7 +37,7 @@ function discardResult() {
   copy.invalidate();
   link.clear();
   $('result').inert = true;
-  $('summary').textContent = phrase('await-result');
+  $('summary').textContent = phrase('stitch.await-result');
   $('duplicates').hidden = true;
   $('output').value = '';
   $('preview').replaceChildren();
@@ -51,14 +52,14 @@ function invalidateInputs() {
   for (const id of ['key-a', 'key-b', 'row-a', 'row-b']) {
     const option = document.createElement('option');
     option.value = '';
-    option.textContent = phrase('read-first');
+    option.textContent = phrase('stitch.read-first');
     $(id).replaceChildren(option);
     $(id).disabled = true;
   }
   $('add-pair').disabled = true;
   $('pairs').replaceChildren();
-  $('pair-status').textContent = phrase('pairs-count', { count: 0 });
-  sources.forEach(side => { $('status-' + side).textContent = phrase('empty'); });
+  $('pair-status').textContent = phrase('stitch.pairs-count', { count: 0 });
+  sources.forEach(side => { $('status-' + side).textContent = phrase('stitch.empty'); });
   sayError('input-error');
 }
 
@@ -67,11 +68,11 @@ function delimiter(id) {
 }
 
 function errorText(error) {
-  return phrase(error?.key || 'unexpected');
+  return phrase(error?.key || 'stitch.unexpected');
 }
 
 function columnName(table, index) {
-  return `${index + 1}. ${table.headers[index] || phrase('column') + ' ' + (index + 1)}`;
+  return `${index + 1}. ${table.headers[index] || phrase('stitch.column') + ' ' + (index + 1)}`;
 }
 
 function fillKeys(side, table) {
@@ -89,18 +90,22 @@ function readTables() {
   const next = [];
   for (const side of sources) {
     try {
-      const table = parseTable($('input-' + side).value, {
+      // A textarea normalizes CRLF, including line breaks inside quoted cells.
+      const field = $('input-' + side);
+      const saved = sourceTexts[side];
+      const text = saved?.shown === field.value ? saved.text : field.value;
+      const table = parseTable(text, {
         delimiter: delimiter('delimiter-' + side), header: $('header-' + side).checked,
       });
       next.push(table);
-      $('status-' + side).textContent = phrase('loaded', { rows: table.rows.length, columns: table.headers.length });
+      $('status-' + side).textContent = phrase('stitch.loaded', { rows: table.rows.length, columns: table.headers.length });
     } catch (error) {
-      sayError('input-error', phrase('side-error', { side: side.toUpperCase(), reason: errorText(error) }));
+      sayError('input-error', phrase('stitch.side-error', { side: side.toUpperCase(), reason: errorText(error) }));
       return;
     }
   }
   if (next.some(table => !table.rows.length)) {
-    sayError('input-error', phrase('no-data'));
+    sayError('input-error', phrase('stitch.no-data'));
     return;
   }
   tables = next;
@@ -121,7 +126,7 @@ function options() {
     match: $('pattern').value, separator: $('separator').value,
     trim: $('trim').checked, ignoreCase: $('ignore-case').checked,
     join: $('join').value, pairs,
-    labels: { left: phrase('left'), right: phrase('right'), column: phrase('column') },
+    labels: { left: phrase('stitch.left'), right: phrase('stitch.right'), column: phrase('stitch.column') },
   };
 }
 
@@ -131,8 +136,8 @@ function updateKeyPreview() {
   try {
     const config = options();
     const keys = tables.map((table, i) => extractKey(table.rows[0][i ? config.rightKey : config.leftKey], config));
-    $('key-preview').textContent = phrase('key-sample', {
-      a: keys[0] || phrase('no-key'), b: keys[1] || phrase('no-key'),
+    $('key-preview').textContent = phrase('stitch.key-sample', {
+      a: keys[0] || phrase('stitch.no-key'), b: keys[1] || phrase('stitch.no-key'),
     });
   } catch {
     // The actionable error is shown beside Stitch; a sample must not retain an old key.
@@ -151,7 +156,7 @@ function updateMode() {
 }
 
 function rowLabel(table, index) {
-  return phrase('row', { row: index + 1, cells: table.rows[index].join(' · ').slice(0, 160) });
+  return phrase('stitch.row', { row: index + 1, cells: table.rows[index].join(' · ').slice(0, 160) });
 }
 
 function updateManual() {
@@ -173,19 +178,19 @@ function updateManual() {
     select.disabled = !select.options.length;
     if (select.disabled) {
       const option = document.createElement('option');
-      option.textContent = phrase('no-rows');
+      option.textContent = phrase('stitch.no-rows');
       select.append(option);
     }
   }
   $('add-pair').disabled = $('row-a').disabled || $('row-b').disabled;
-  $('pair-status').textContent = phrase('pairs-count', { count: pairs.length });
+  $('pair-status').textContent = phrase('stitch.pairs-count', { count: pairs.length });
   $('pairs').replaceChildren(...pairs.map((pair, index) => {
     const item = document.createElement('li');
-    item.textContent = phrase('pair', { a: pair[0] + 1, b: pair[1] + 1 });
+    item.textContent = phrase('stitch.pair', { a: pair[0] + 1, b: pair[1] + 1 });
     const remove = document.createElement('button');
     remove.className = 'btn small';
     remove.type = 'button';
-    remove.textContent = phrase('remove', { number: index + 1 });
+    remove.textContent = phrase('stitch.remove', { number: index + 1 });
     remove.addEventListener('click', () => {
       pairs.splice(index, 1);
       discardResult();
@@ -235,17 +240,17 @@ function prepareExport() {
 function stitch() {
   discardResult();
   if (!tables) {
-    sayError('input-error', phrase('stale'));
+    sayError('input-error', phrase('stitch.stale'));
     return;
   }
   try {
     result = stitchTables(tables[0], tables[1], options());
-    $('summary').textContent = phrase(['append', 'position'].includes(mode()) ? 'simple-summary' : 'summary', {
+    $('summary').textContent = phrase(['append', 'position'].includes(mode()) ? 'stitch.simple-summary' : 'stitch.summary', {
       rows: result.rows.length, columns: result.headers.length, matched: result.matched,
       a: result.unmatchedA, b: result.unmatchedB,
     });
     $('duplicates').hidden = !result.duplicateKeys || mode() !== 'match';
-    $('duplicates').textContent = phrase('duplicates', { count: result.duplicateKeys });
+    $('duplicates').textContent = phrase('stitch.duplicates', { count: result.duplicateKeys });
     renderPreview();
     $('result').inert = false;
     prepareExport();
@@ -257,6 +262,7 @@ function stitch() {
 
 for (const side of sources) {
   $('input-' + side).addEventListener('input', () => {
+    sourceTexts[side] = null;
     fileVersions[side] += 1;
     pendingFiles.delete(side);
     $('load').disabled = pendingFiles.size > 0;
@@ -264,6 +270,7 @@ for (const side of sources) {
   });
   for (const prefix of ['delimiter-', 'header-']) $(prefix + side).addEventListener('change', invalidateInputs);
   $('clear-' + side).addEventListener('click', () => {
+    sourceTexts[side] = null;
     fileVersions[side] += 1;
     pendingFiles.delete(side);
     $('load').disabled = pendingFiles.size > 0;
@@ -275,25 +282,27 @@ for (const side of sources) {
     const file = $('file-' + side).files[0];
     if (!file) return;
     const owner = ++fileVersions[side];
+    sourceTexts[side] = null;
     pendingFiles.add(side);
     $('load').disabled = true;
     $('input-' + side).value = '';
     invalidateInputs();
-    $('status-' + side).textContent = phrase('reading');
+    $('status-' + side).textContent = phrase('stitch.reading');
     try {
       if (file.size > LIMITS.inputChars) throw { key: 'table.input-limit' };
       const text = new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
       if (owner !== fileVersions[side]) return;
-      if (text.includes('\0')) throw { key: 'read-error' };
+      if (text.includes('\0')) throw { key: 'stitch.read-error' };
       $('input-' + side).value = text;
+      sourceTexts[side] = { text, shown: $('input-' + side).value };
     } catch (error) {
       if (owner !== fileVersions[side]) return;
-      sayError('input-error', phrase('side-error', { side: side.toUpperCase(), reason: error?.key ? errorText(error) : phrase('read-error') }));
+      sayError('input-error', phrase('stitch.side-error', { side: side.toUpperCase(), reason: error?.key ? errorText(error) : phrase('stitch.read-error') }));
     } finally {
       if (owner === fileVersions[side]) {
         pendingFiles.delete(side);
         $('load').disabled = pendingFiles.size > 0;
-        $('status-' + side).textContent = phrase('empty');
+        $('status-' + side).textContent = phrase('stitch.empty');
       }
     }
   });
@@ -304,6 +313,7 @@ $('example').addEventListener('click', () => {
   pendingFiles.clear();
   $('load').disabled = false;
   sources.forEach(side => {
+    sourceTexts[side] = null;
     fileVersions[side] += 1;
     $('file-' + side).value = '';
     $('input-' + side).value = $('example-' + side).textContent.trim();
@@ -330,4 +340,9 @@ $('clear-pairs').addEventListener('click', () => { pairs = []; discardResult(); 
 $('stitch').addEventListener('click', stitch);
 for (const id of ['output-delimiter', 'output-header', 'protect']) $(id).addEventListener('change', prepareExport);
 $('copy').addEventListener('click', () => copy.copy());
+$('privacy-toggle').addEventListener('click', () => {
+  const open = $('privacy-panel').hidden;
+  $('privacy-panel').hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
+});
 document.getElementById('boot-warning')?.remove();
