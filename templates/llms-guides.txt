@@ -1,0 +1,6 @@
+# {{ site.name }} guides
+
+{{ llms.guides_note }}
+
+{% for guide in guides %}- [{{ guide.name }}]({{ guide.url }}): {{ guide.description }}
+{% endfor %}

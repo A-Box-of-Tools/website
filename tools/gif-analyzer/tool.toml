@@ -38,12 +38,12 @@ css_parts = ["notes"]
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box", "example-gif", "example-photo", "gif-working-budget", "cooperative-work", "errors"]
-lastmod = "2026-10-12"
+lastmod = "2026-10-23"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "GIF Analyzer &mdash; Frames, Delays, Palette and File Size, No Upload"
-description = "Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded."
+title = "GIF Analyzer &mdash; Check Frames, Timing and File Size, No Upload"
+description = "Inspect GIF frames, delays, palettes and a byte-by-byte size breakdown in your browser. Check large or slow animations without uploading or changing the file."
 og_title = "GIF Analyzer &mdash; take a GIF apart in your browser"
 og_description = "Every frame, every delay, every palette, and an honest account of where the bytes went. The file is read on your own machine and never uploaded."
 og_image_alt = "GIF Analyzer - frames, delays, palette, and where the bytes went"

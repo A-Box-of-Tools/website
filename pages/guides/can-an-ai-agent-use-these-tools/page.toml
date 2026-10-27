@@ -9,7 +9,7 @@
 # keeps the file on the machine; a cloud agent received the file before any
 # tool was opened. The guide also owns up to what the site does for such a
 # reader on purpose: labelled controls, no accounts, public source, and
-# /llms.txt as the one-fetch map.
+# /llms.txt and its linked guide index as plain-text maps.
 #
 # Prose lives next door in body.html.
 #
@@ -26,9 +26,9 @@ description = "An agent can operate these browser tools. Check browser location,
 heading = "Can an AI agent use these tools?"
 lede = "Agents can use the browser interface. To assess where data goes, check where the browser runs, what the agent itself sends and which tool features use the network."
 
-updated = "13 October 2026"
+updated = "23 October 2026"
 published = "2026-08-27"
-lastmod = "2026-10-13"
+lastmod = "2026-10-23"
 
 og_title = "Can an AI agent use these tools?"
 og_description = "Using these tools through an agent: browser location, vendor data handling, permissions and deliberate network features."

@@ -23,7 +23,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [PNG to WebP](png-to-webp/) | `/png-to-webp/` | The same picture, often a third off, with the see-through parts intact. |
 | [AVIF to JPG](avif-to-jpg/) | `/avif-to-jpg/` | The format websites save now, in the one everything has always taken. |
 | [ID Photo Maker](id-photo/) | `/id-photo/` | Choose a supported country and document. Published rules and guidance are marked. |
-| [Image Stacker](stack-images/) | `/stack-images/` | Twenty frames into one, without twenty uploads or a RAW converter. |
+| [Image Stacker](stack-images/) | `/stack-images/` | Average a steady burst, take the median for a clear background, or lighten a night-sky sequence. |
 | [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
 | [DICOM Viewer](dicom-viewer/) | `/dicom-viewer/` | CT, MR, X-ray and ultrasound, with the window, the header and the measurements. |
@@ -36,7 +36,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
 | [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged. |
-| [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
+| [Images to Video](images-to-video/) | `/images-to-video/` | Make an MP4 from a render sequence, timelapse photos or a slideshow. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
 | [Video Reverser](reverse-video/) | `/reverse-video/` | Last frame first, sound and all. |
@@ -45,7 +45,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [GIF to MP4](gif-to-mp4/) | `/gif-to-mp4/` | Every frame, with the delay the GIF gave it, as H.264 in an MP4. Converted on your machine; the file never goes up. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [GIF Maker](gif-maker/) | `/gif-maker/` | Turn a set of pictures into one animation. |
-| [GIF Splitter](split-gif/) | `/split-gif/` | Every frame out as its own PNG. |
+| [GIF Splitter](split-gif/) | `/split-gif/` | Extract PNG frames, a ZIP or one sprite sheet, with the timing written down. |
 | [GIF Analyzer](gif-analyzer/) | `/gif-analyzer/` | Frames, delays, palettes, and where every byte went. |
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |

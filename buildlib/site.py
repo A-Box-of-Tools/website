@@ -108,21 +108,34 @@ def to_text(fragment):
     return ' '.join(text.split())
 
 
+def application_entity(site, tool):
+    """Identify the same application on its own page and in the catalogue.
+
+    The hub needs enough to choose an app, while its full features, offer and
+    FAQ belong on the app's own page rather than repeated across the catalogue.
+    WebApplication supplies browserRequirements and inherits the software
+    fields both descriptions share.
+    """
+    return {
+        '@type': 'WebApplication',
+        '@id': tool['url'] + '#app',
+        'name': to_text(tool['name']),
+        'url': tool['url'],
+        'applicationCategory': tool['schema']['category'],
+        'operatingSystem': 'Any (runs in a web browser)',
+        'browserRequirements': tool['schema'].get(
+            'browser_requirements', 'Requires JavaScript.'),
+        'description': to_text(tool['schema']['description']),
+        'inLanguage': site['lang'],
+    }
+
+
 def tool_jsonld(site, tool):
-    """SoftwareApplication + BreadcrumbList + FAQPage for one tool page."""
+    """WebApplication + BreadcrumbList + FAQPage for one tool page."""
     graph = [
         {
-            '@type': 'SoftwareApplication',
-            '@id': tool['url'] + '#app',
-            'name': to_text(tool['name']),
-            'url': tool['url'],
-            'applicationCategory': tool['schema']['category'],
-            'operatingSystem': 'Any (runs in a web browser)',
-            'browserRequirements': tool['schema'].get(
-                'browser_requirements', 'Requires JavaScript.'),
-            'description': to_text(tool['schema']['description']),
+            **application_entity(site, tool),
             'dateModified': tool['lastmod'],
-            'inLanguage': site['lang'],
             'isAccessibleForFree': True,
             'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
             'featureList': [to_text(feature) for feature in tool['schema']['features']],
@@ -281,7 +294,7 @@ def landing_jsonld(site, tool, page):
     A WebPage that is part of this site and is about the tool, and the trail a
     visitor can see at the top of it: the hub, the tool, this page. Not an
     Article - nobody wrote it, it is a rule read out - and not a second
-    SoftwareApplication, because the application is one page up and claiming
+    WebApplication, because the application is one page up and claiming
     forty-nine of them would be describing a page as something it is not.
     """
     graph = [
@@ -361,6 +374,7 @@ def hub_jsonld(site, tools):
             '@id': site['home'] + '#website',
             'url': site['home'],
             'name': site['name'],
+            'alternateName': site['alternate_name'],
             'description': site['hub']['schema_description'],
             'inLanguage': site['lang'],
             'publisher': {'@id': site['domain'] + '#publisher'},
@@ -372,15 +386,14 @@ def hub_jsonld(site, tools):
         # actually asking. The fields below are the ones the About and Contact
         # pages answer in prose, in the form a machine can read.
         #
-        # Nothing here is translated, deliberately. An address, an email and a
-        # repository are the same in fifteen languages; a description would not
-        # be, and would arrive in English on the other fourteen pages, so there
-        # is not one. The prose pages carry that, in the language they are
-        # written in.
+        # The description comes from this language's hub, so the publisher can
+        # explain its purpose without introducing another sentence to translate.
         {
             '@type': 'Organization',
             '@id': site['domain'] + '#publisher',
             'name': site['name'],
+            'alternateName': site['alternate_name'],
+            'description': to_text(site['hub']['schema_description']),
             'url': site['domain'],
             'email': site['contact_email'],
             'logo': {
@@ -424,6 +437,18 @@ def hub_jsonld(site, tools):
             'name': site['name'],
             'isPartOf': {'@id': site['home'] + '#website'},
             'about': site['hub']['schema_about'],
+            # This action searches the visible catalogue in this language.
+            # A fragment restores the browser filter without making the
+            # search words part of the HTTP request to the static host.
+            'potentialAction': {
+                '@type': 'SearchAction',
+                'target': {
+                    '@type': 'EntryPoint',
+                    'urlTemplate': site['home'] + '#search={search_term_string}',
+                    'contentType': 'text/html',
+                },
+                'query-input': 'required name=search_term_string',
+            },
             'mainEntity': {
                 '@type': 'ItemList',
                 'itemListElement': [
@@ -432,6 +457,7 @@ def hub_jsonld(site, tools):
                         'position': position,
                         'url': tool['url'],
                         'name': to_text(tool['name']),
+                        'item': application_entity(site, tool),
                     }
                     for position, tool in enumerate(tools, start=1)
                 ],
