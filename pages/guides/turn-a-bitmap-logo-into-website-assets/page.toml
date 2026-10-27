@@ -1,0 +1,17 @@
+# This workflow joins tools that already have their own reference guides.
+# Omitting tool keeps their existing guide links intact.
+
+slug = "guides/turn-a-bitmap-logo-into-website-assets"
+kind = "guide"
+nav = "Turn a simple bitmap logo into website assets"
+group = "workflows"
+title = "Turn a simple bitmap logo into website assets"
+description = "Trace a simple one-colour mark into SVG, export transparent PNGs, and build website icons while checking the smallest sizes."
+heading = "Turn a simple bitmap logo into website assets"
+lede = "A simple mark can become a useful set of website assets, but each output needs its own check. Trace the shape once, render the sizes you need, and inspect the smallest icons before publishing."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Turn a simple bitmap logo into website assets"
+og_description = "Trace a simple one-colour mark into SVG, export transparent PNGs, and build website icons while checking the smallest sizes."
+og_image_alt = "abox.tools - browser tools for local file processing"
