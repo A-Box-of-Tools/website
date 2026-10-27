@@ -25,7 +25,7 @@ input does not use a heading row.
 
 ## Comparison keys are not cell edits
 
-`src/table-data.js` owns parsing, key extraction, joining and serialization
+`shared/js/table-data.js` (served as `src/shared/table-data.js`) owns parsing, heading guesses, key extraction, joining and serialization
 without a DOM dependency. Exact matching can trim surrounding whitespace and
 ignore case through visible options. Built-in patterns select the first ASCII
 digit run, remove punctuation and spaces while keeping letters and digits, or
@@ -53,6 +53,25 @@ Short data rows are padded with empty cells. A row wider than its headings is
 refused rather than losing cells or inventing a heading. Header-free input
 derives its width from the data. Empty and repeated headings remain distinct by
 position; stacked repeated headings align by occurrence instead of overwriting.
+
+The UI defaults to automatic heading detection, with explicit present/absent
+overrides. A typed or incomplete first record remains data. Text-only candidates
+need familiar field labels or consistent typed contrasts in later records;
+ambiguous text and missing-value placeholders remain data. The page reports
+the decision so the visitor can correct it before merging.
+
+Headerless columns use patterns from up to 50 rows to suggest localized names
+for email addresses, URLs, dates, times, booleans, formatted phone numbers,
+identifiers and numbers. At least 80% of nonblank samples must share a kind;
+mixed columns fall back to Text, and empty columns to Column. Duplicate localized
+base names all receive occurrence suffixes, such as Email 1 and Email 2. These
+are labels only: original strings and the headerless positional stacking rule
+stay intact.
+
+Text Diff can send its current source pair through the shared one-shot handoff.
+The hidden, labelled #file-input accepts one or two files and delegates to the
+same per-side reader as a manual pick. Excess files are rejected before either
+source changes. Handoffs reset delimiter and heading choices to automatic.
 
 Each input allows 2,097,152 text characters, 5,000 data rows, 100 columns and
 100,000 data cells. Selected files are also limited to 2 MiB. Output allows

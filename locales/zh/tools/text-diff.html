@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>继续使用两份源表：原文 → A，改过的那份 → B。在 Stitch Tables 中可按值或模式匹配、手动配对，或简单合并。</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">拼接这两份表</a>
+{% endfor %}      <p class="field-note">传递的数据留在此浏览器中，十分钟后过期。</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
   <!--
     The tool's own sentences, kept out of the JavaScript so that a translator
@@ -120,6 +126,7 @@
     <span data-phrase="count.summary">{lines}，{characters}，{size}</span>
 
     <span data-phrase="read.failed">这个文件读不了：{detail}</span>
+    <span data-phrase="csv-pipeline.failed">无法传递这些表。文本仍在此页面中。请允许浏览器存储后重试，或保存两个文件并在 Stitch Tables 中打开。</span>
 
     <span data-phrase="result.waiting">两个框里都贴点东西进去。</span>
     <span data-phrase="result.identical">这两份逐字节完全一样。</span>

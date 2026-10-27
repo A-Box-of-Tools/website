@@ -2,6 +2,8 @@
     <h2>Start with two rectangular tables</h2>
     <p>Paste a range copied from a spreadsheet into each box, or choose a CSV or TSV file for each side. Save the relevant sheet as CSV first if you have an XLSX file. Check the separator and heading-row option separately for A and B.</p>
     <p>Use a copy of each original. Cells stay as text inside this tool, so <code>00123</code> is a different identifier from <code>123</code>. Dates and numbers are not calculated or reformatted. A short row receives empty cells; a row with more cells than its headings is reported so you can fix the source.</p>
+    <p>Headings are detected automatically. When there is no clear header row, every row stays as data and value patterns suggest names such as Email, Date, ID, Number or Text. Repeated names receive suffixes: Email 1, Email 2. Review the notice below each table and choose the heading-row setting manually when the guess is wrong. Plain-text columns can be ambiguous, and a suggested name does not change the values.</p>
+    <p>You can also compare two CSV files in <a href="/text-diff/">Text Diff</a> first, then choose Stitch these tables to carry both current sources here. The original becomes A and the changed version becomes B. The transfer stays in browser storage, is consumed once and expires after ten minutes.</p>
   </section>
   <section>
     <h2>Choose what one output row should mean</h2>

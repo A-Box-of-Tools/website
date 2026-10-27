@@ -3,6 +3,7 @@
     <h2><span class="step">1</span> Add two tables</h2>
     <p class="card-lede">Paste cells from a spreadsheet or open a CSV or TSV file. Your tables stay in this browser.</p>
     <p class="field-note">Up to 2 MiB of text, 5,000 data rows, 100 columns and 100,000 cells per table. Export spreadsheets to CSV first; XLSX files are not supported.</p>
+    <input id="file-input" type="file" multiple hidden aria-label="Import tables from another tool" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain">
     <div class="table-inputs">
       <div class="table-source">
         <div class="source-head"><h3>Table A</h3><button type="button" id="clear-a" class="btn small">Clear A</button></div>
@@ -12,9 +13,10 @@
         <textarea id="input-a" data-language-text spellcheck="false" wrap="off" placeholder="ID,Name&#10;001,Ada&#10;002,Sam"></textarea>
         <div class="source-settings">
           <label>Separator <select id="delimiter-a"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value="tab">Tab</option><option value=";">Semicolon</option><option value="|">Pipe</option></select></label>
-          <label class="check"><input type="checkbox" id="header-a" checked> First row contains headings</label>
+          <label>Headings <select id="header-a"><option value="auto">Detect automatically</option><option value="present">First row is headings</option><option value="absent">No heading row — suggest names</option></select></label>
         </div>
         <p id="status-a" class="field-note" role="status">No table loaded.</p>
+        <p id="header-note-a" class="field-note" role="status"></p>
       </div>
       <div class="table-source">
         <div class="source-head"><h3>Table B</h3><button type="button" id="clear-b" class="btn small">Clear B</button></div>
@@ -24,9 +26,10 @@
         <textarea id="input-b" data-language-text spellcheck="false" wrap="off" placeholder="Reference,Team&#10;paid/002,Blue&#10;paid/001,Green"></textarea>
         <div class="source-settings">
           <label>Separator <select id="delimiter-b"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value="tab">Tab</option><option value=";">Semicolon</option><option value="|">Pipe</option></select></label>
-          <label class="check"><input type="checkbox" id="header-b" checked> First row contains headings</label>
+          <label>Headings <select id="header-b"><option value="auto">Detect automatically</option><option value="present">First row is headings</option><option value="absent">No heading row — suggest names</option></select></label>
         </div>
         <p id="status-b" class="field-note" role="status">No table loaded.</p>
+        <p id="header-note-b" class="field-note" role="status"></p>
       </div>
     </div>
     <div class="run-row"><button type="button" id="example" class="btn">Try an example</button><button type="button" id="load" class="btn primary">Read tables</button></div>
@@ -100,6 +103,22 @@ paid/004,Gold,no</pre>
     <span data-phrase="table.pattern">Choose a supported matching pattern.</span>
     <span data-phrase="table.mode">Choose a supported merge method.</span>
     <span data-phrase="table.join">Choose which rows to keep.</span>
+    <span data-phrase="table.header">Choose how to read the heading row.</span>
+    <span data-phrase="stitch.header-detected">First row looks like headings. Check the Headings setting if it contains data.</span>
+    <span data-phrase="stitch.header-present">Using the first row as headings.</span>
+    <span data-phrase="stitch.header-guessed">No clear heading row. All rows kept. Suggested names: {names}. Check the Headings setting if the first row is a header.</span>
+    <span data-phrase="stitch.header-generated">All rows kept. Suggested names: {names}.</span>
+    <span data-phrase="stitch.kind.column">Column</span>
+    <span data-phrase="stitch.kind.email">Email</span>
+    <span data-phrase="stitch.kind.url">URL</span>
+    <span data-phrase="stitch.kind.date">Date</span>
+    <span data-phrase="stitch.kind.datetime">Date and time</span>
+    <span data-phrase="stitch.kind.time">Time</span>
+    <span data-phrase="stitch.kind.boolean">Boolean</span>
+    <span data-phrase="stitch.kind.phone">Phone</span>
+    <span data-phrase="stitch.kind.id">ID</span>
+    <span data-phrase="stitch.kind.number">Number</span>
+    <span data-phrase="stitch.kind.text">Text</span>
     <span data-phrase="stitch.empty">No table loaded.</span>
     <span data-phrase="stitch.reading">Reading the selected file…</span>
     <span data-phrase="stitch.read-first">Read tables first</span>
@@ -109,6 +128,7 @@ paid/004,Gold,no</pre>
     <span data-phrase="stitch.side-error">Table {side}: {reason}</span>
     <span data-phrase="stitch.read-error">Could not read this text file. Save it as UTF-8 CSV or TSV and try again.</span>
     <span data-phrase="stitch.no-data">Both tables need at least one data row.</span>
+    <span data-phrase="stitch.file-count">Open one or two table files. No files were imported.</span>
     <span data-phrase="stitch.stale">The inputs changed. Read the tables again to prepare a new result.</span>
     <span data-phrase="stitch.unexpected">Could not stitch these tables. Check the inputs and settings.</span>
     <span data-phrase="stitch.row">Row {row}: {cells}</span>

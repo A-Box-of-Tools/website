@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>Continue with both source tables: original → A, changed → B. Choose matching, manual pairing or a simple merge in Stitch Tables.</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">Stitch these tables</a>
+{% endfor %}      <p class="field-note">The transfer stays in this browser and expires after ten minutes.</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
 
   <!--
@@ -127,6 +133,7 @@
 
     <!-- `detail` is the browser's own message, in whatever language it speaks. -->
     <span data-phrase="read.failed">That file could not be read: {detail}</span>
+    <span data-phrase="csv-pipeline.failed">Could not transfer these tables. Your texts are still here. Allow browser storage and try again, or save both files and open them in Stitch Tables.</span>
 
     <!--
       The line above the comparison. `note` is the sentence below it or nothing

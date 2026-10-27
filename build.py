@@ -321,13 +321,14 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     for tool in tools:
         tool['glyph_svg'] = glyphs[tool['glyph']]
 
-    # A tool may declare `handoff` targets - the tools its finished result can
+    # A tool may declare result `handoff` or explicit `source_handoff` targets -
+    # the tools its finished result or current inputs can
     # be carried straight into (see shared/handoff.js). Checked here the way
     # roadmap_group is checked elsewhere: against the tools that exist, before
     # anything renders, with the file named.
     slugs = {tool['slug'] for tool in tools}
     for tool in tools:
-        for target in tool.get('handoff', []):
+        for target in tool.get('handoff', []) + tool.get('source_handoff', []):
             if target == tool['slug']:
                 raise sitelib.ConfigError(
                     f'{tool["slug"]}: handoff names itself.')
@@ -814,7 +815,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
                    [by_slug[s] for s in tool.get('handoff', [])], emit,
-                   landings=rules)
+                   landings=rules,
+                   source_handoff=[by_slug[s] for s in tool.get('source_handoff', [])])
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
         # Written here and not further down, so that --only writes them with
         # the tool they belong to - they are the tool's, and the only pages
@@ -1246,7 +1248,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
                lang_v, feedback_v, handoff_v, keep_v, md_v, guide, related,
-               handoff, emit, landings=()):
+               handoff, emit, landings=(), source_handoff=()):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -1351,7 +1353,8 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
                       body_path.read_text(encoding='utf-8')),
         f'{tool["slug"]}/body.html [{locale["lang"]}]',
         {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
-         'links': links, 'js_v': js_v}).rstrip('\n')
+         'links': links, 'js_v': js_v,
+         'source_handoff': source_handoff}).rstrip('\n')
 
     # The explanation each step opens with, folded behind that step's heading.
     # Done here rather than in five hundred bodies, one per tool per language,

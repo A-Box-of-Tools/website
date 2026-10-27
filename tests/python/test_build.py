@@ -1324,6 +1324,29 @@ class BuildTheSite(unittest.TestCase):
                         folder = by_slug[target].split('/')[-1]
                         self.assertIn(f'href="../{folder}/"', page)
 
+    def test_source_handoffs_use_local_tool_addresses_and_accept_both_files(self):
+        senders = {path.parent.name: buildmod.sitelib.load_toml(path).get('source_handoff', [])
+                   for path in ROOT.glob('tools/*/tool.toml')}
+        english = (self.out / 'text-diff/index.html').read_text(encoding='utf-8')
+        self.assertIn('id="csv-pipeline"', english)
+        self.assertNotIn('<nav class="handoff"', english)
+        receiver = (self.out / 'stitch-tables/index.html').read_text(encoding='utf-8')
+        self.assertRegex(receiver, r'<input[^>]*id="file-input"[^>]*multiple')
+        for locale in self.locales:
+            for slug, targets in senders.items():
+                if not targets:
+                    continue
+                folder = buildmod.i18n.locale_path(locale, slug).strip('/')
+                page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+                # Translated bodies adopt optional actions when translated.
+                if 'id="csv-pipeline"' not in page:
+                    continue
+                for target in targets:
+                    with self.subTest(locale=locale['lang'], tool=slug, target=target):
+                        target_folder = buildmod.i18n.locale_path(locale, target).strip('/').split('/')[-1]
+                        self.assertIn(f'href="../{target_folder}/"', page)
+                        self.assertIn(f'data-slug="{target}"', page)
+
     def test_a_tool_that_offers_a_handoff_has_a_result_the_row_can_find(self):
         """A sender needs somewhere for shared/handoff.js to look.
 

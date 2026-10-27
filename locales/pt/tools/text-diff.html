@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>Continue com as duas tabelas de origem: original → A, versão alterada → B. Escolha correspondências, pareamento manual ou uma mesclagem simples no Stitch Tables.</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">Unir estas tabelas</a>
+{% endfor %}      <p class="field-note">A transferência fica neste navegador e expira após dez minutos.</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
   <!--
     The tool's own sentences, kept out of the JavaScript so that a translator
@@ -120,6 +126,7 @@
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
 
     <span data-phrase="read.failed">Esse arquivo não pôde ser lido: {detail}</span>
+    <span data-phrase="csv-pipeline.failed">Não foi possível transferir as tabelas. Seus textos continuam aqui. Permita o armazenamento do navegador e tente novamente, ou salve os dois arquivos e abra-os no Stitch Tables.</span>
 
     <span data-phrase="result.waiting">Cole alguma coisa nas duas caixas.</span>
     <span data-phrase="result.identical">Os dois são idênticos, byte a byte.</span>

@@ -120,6 +120,42 @@
   var page = document.getElementById('feedback');
   var slug = page ? page.getAttribute('data-tool') : '';
 
+  // Source pipelines already own Files, rather than download URLs. Use the
+  // same one-shot store without fetching a patch or another derived result.
+  // The token check keeps a cancelled write from deleting a newer transfer.
+  var explicitHandoff = 0;
+  function removeOwned(target, id) {
+    return inStore('readwrite', function (store) {
+      var got = store.get(target);
+      got.onsuccess = function () {
+        if (got.result && got.result.id === id) store.delete(target);
+      };
+      return got;
+    });
+  }
+
+  window.aboxHandoffFiles = function (target, files, isCurrent) {
+    var owner = ++explicitHandoff;
+    if (typeof target !== 'string' || !target || !Array.isArray(files) || !files.length
+        || !files.every(function (file) { return file instanceof File; })
+        || typeof isCurrent !== 'function') {
+      return Promise.reject(new TypeError('handoff-files'));
+    }
+    function current() { return owner === explicitHandoff && isCurrent(); }
+    if (!current()) return Promise.resolve(false);
+    var packet = { files: files.slice(), from: slug, time: Date.now(), id: crypto.randomUUID() };
+    var wrote = false;
+    return inStore('readwrite', function (store) {
+      if (!current()) return null;
+      wrote = true;
+      return store.put(packet, target);
+    }).then(function () {
+      if (!wrote) return false;
+      if (current()) return true;
+      return removeOwned(target, packet.id).then(function () { return false; });
+    });
+  };
+
   function deliver(files) {
     var input = document.getElementById('file-input');
     if (!input || !files.length || typeof DataTransfer === 'undefined') return;
