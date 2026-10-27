@@ -35,7 +35,9 @@ function discardResult() {
   exportValue = null;
   copy.invalidate();
   link.clear();
-  $('result').hidden = true;
+  $('result').inert = true;
+  $('summary').textContent = phrase('await-result');
+  $('duplicates').hidden = true;
   $('output').value = '';
   $('preview').replaceChildren();
   sayError('stitch-error');
@@ -245,7 +247,7 @@ function stitch() {
     $('duplicates').hidden = !result.duplicateKeys || mode() !== 'match';
     $('duplicates').textContent = phrase('duplicates', { count: result.duplicateKeys });
     renderPreview();
-    $('result').hidden = false;
+    $('result').inert = false;
     prepareExport();
   } catch (error) {
     discardResult();

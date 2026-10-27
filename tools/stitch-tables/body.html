@@ -63,9 +63,9 @@
     <p id="stitch-error" class="error" role="alert" hidden></p>
   </section>
 
-  <section class="card" id="result" hidden>
+  <section class="card" id="result" inert>
     <h2><span class="step">3</span> Review and export</h2>
-    <p id="summary" role="status"></p><p id="duplicates" class="warning" hidden></p>
+    <p id="summary" role="status">Stitch the tables to prepare a preview and export.</p><p id="duplicates" class="warning" hidden></p>
     <p class="field-note">The preview shows the first 100 rows and 20 columns. Copy and download include the whole result, up to 20,000 rows and 500,000 cells.</p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Stitched table preview"><table id="preview"></table></div>
     <div class="export-settings"><label class="field">Output separator<select id="output-delimiter"><option value=",">CSV (comma)</option><option value="tab">TSV (tab)</option><option value=";">CSV (semicolon)</option></select></label><label class="check"><input type="checkbox" id="output-header" checked> Include headings</label></div>
@@ -103,6 +103,7 @@ paid/004,Gold,no</pre>
     <span data-phrase="empty">No table loaded.</span>
     <span data-phrase="reading">Reading the selected file…</span>
     <span data-phrase="read-first">Read tables first</span>
+    <span data-phrase="await-result">Stitch the tables to prepare a preview and export.</span>
     <span data-phrase="loaded">Rows: {rows} · columns: {columns}</span>
     <span data-phrase="column">Column</span><span data-phrase="left">A</span><span data-phrase="right">B</span>
     <span data-phrase="side-error">Table {side}: {reason}</span>
