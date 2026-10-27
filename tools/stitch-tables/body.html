@@ -71,7 +71,7 @@
     <div class="export-settings"><label class="field">Output separator<select id="output-delimiter"><option value=",">CSV (comma)</option><option value="tab">TSV (tab)</option><option value=";">CSV (semicolon)</option></select></label><label class="check"><input type="checkbox" id="output-header" checked> Include headings</label></div>
     <label class="check"><input type="checkbox" id="protect" checked> Protect formula-like cells for spreadsheet import</label>
     <p class="field-note">Protection adds an apostrophe before cells starting with =, +, -, @, a tab or a line break, including negative numbers. Turn it off to export the original cell text. This affects headings too.</p>
-    <div class="run-row"><a id="download" class="btn primary" hidden>Download table</a><button type="button" id="copy" class="btn">Copy table</button></div>
+    <div class="run-row"><a id="download" class="as-button primary" hidden>Download table</a><button type="button" id="copy" class="btn">Copy table</button></div>
     <p id="copy-status" class="field-note" role="status"></p>
     <label for="output">Export text</label><textarea id="output" readonly spellcheck="false" wrap="off"></textarea>
   </section>
