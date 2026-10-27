@@ -1,0 +1,168 @@
+  <section>
+    <h2>Build the pack, remove private details, then finish it</h2>
+    <p>
+      Start with the <a href="../../merge-pdf/">PDF Merger</a> to choose and
+      order the pages. Use the <a href="../../redact-pdf/">PDF Redactor</a>
+      to remove private text from that assembled document. Add a recipient
+      watermark if it helps explain the pack's purpose, then compress only
+      if the finished file needs to be smaller.
+    </p>
+    <p>
+      These tools process the files locally in your browser. Download each
+      result and load that file into the next tool; where a carry-on link is
+      offered, it can pass the result for you. Keep the originals and working
+      copies in a separate folder from the attachment you intend to send.
+    </p>
+  </section>
+
+  <section>
+    <h2>The example: four pages for a workshop reviewer</h2>
+    <p>
+      Morgan is reviewing a fictional workshop plan. The sources also contain
+      a personal phone number and an internal cost that Morgan does not need.
+      Write the page checklist before opening a tool:
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Source pages</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>outline.pdf</code>, pages 1 and 3</td><td>Outline and timetable</td></tr>
+        <tr><td><code>delivery.pdf</code>, page 2</td><td>Delivery arrangements</td></tr>
+        <tr><td><code>equipment.pdf</code>, page 1</td><td>Equipment list</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      The output should contain four pages in that order. Excluding an
+      unnecessary page is simpler to check than keeping it and trying to
+      remove everything private from it. Keep enough context for the reader
+      to understand the material that remains.
+    </p>
+  </section>
+
+  <section>
+    <h2>1. Select and order the pages</h2>
+    <p>
+      Load the source PDFs into the <a href="../../merge-pdf/">merger</a>.
+      Keep the required pages and arrange them in reading order. The page
+      numbers in the working list change as pages are removed or moved;
+      check the source filename and contents against your checklist rather
+      than applying the original numbers to a list you have already changed.
+    </p>
+    <p>
+      Save <code>01-selected.pdf</code>, then open it. Confirm four pages,
+      the right sequence, and no missing timetable or extra equipment notes.
+      Check that references such as "see the next page" still make sense.
+      The <a href="../merge-and-split-pdf-files/">merging and splitting guide</a>
+      explains what page assembly preserves and what it cannot carry across.
+    </p>
+  </section>
+
+  <section>
+    <h2>2. Remove private text from the assembled pack</h2>
+    <p>
+      Load <code>01-selected.pdf</code> into the
+      <a href="../../redact-pdf/">PDF Redactor</a>. Find the phone number and
+      internal cost, review the matches, and select every occurrence that
+      needs removal. Check headers, footers and repeated contact details too.
+      Automatic patterns help find candidates; they do not decide what this
+      particular recipient needs to see.
+    </p>
+    <p>
+      The redactor removes supported text instructions and checks its output
+      before offering the download. A dark rectangle drawn in an ordinary PDF
+      editor can leave the original words underneath. Follow the
+      <a href="../redact-a-pdf/">PDF redaction guide</a> and stop if the tool
+      reports unreadable text or cannot handle the document reliably.
+    </p>
+    <p>
+      Save <code>02-redacted.pdf</code> and reopen that downloaded file.
+      Inspect each removal and the neighbouring information. Search for the
+      removed values and try selecting and copying the affected areas.
+      These are useful checks, not a universal proof: pictures, unreadable
+      font encodings and unsupported content can defeat text search.
+    </p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-redacted-pdf-pack/find.webp" loading="lazy" decoding="async"
+           alt="The PDF redactor's search box and optional sensitive-data patterns, with sample invoice identifiers entered.">
+      <figcaption>
+        Search for the values you have decided to remove, then review the
+        matches. The sample invoice terms shown here are not a complete
+        checklist for another document.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>If a page is a scan, redact its pixels first</h2>
+    <p>
+      A scan is a picture. Removing its searchable OCR text layer does not
+      erase the words visible in that picture. A search that finds nothing
+      does not establish that a scan has been redacted.
+    </p>
+    <p>
+      For source photographs, use the <a href="../../redact-image/">Image
+      Redactor</a> before assembling the exported images with
+      <a href="../../images-to-pdf/">Images to PDF</a>. Inspect the exported
+      pixels, then the resulting PDF. The guides to
+      <a href="../redact-an-image/">image redaction</a> and
+      <a href="../combine-images-into-a-pdf/">combining images</a> cover this
+      alternative. An existing scanned PDF is not an image input to these
+      tools: return to suitable source images or a workflow that supports it.
+    </p>
+  </section>
+
+  <section>
+    <h2>3. Add the recipient and purpose, if useful</h2>
+    <p>
+      Load <code>02-redacted.pdf</code> into
+      <a href="../../watermark-pdf/">PDF Watermark</a> and add
+      "Workshop review - Morgan". Save <code>03-marked.pdf</code>. Check
+      every page to ensure the mark leaves dates, diagrams and small tables
+      readable. The <a href="../watermark-a-pdf/">watermark guide</a>
+      explains placement and the limits of the stamp.
+    </p>
+    <p>
+      The mark tells the reader the intended purpose. It does not prevent
+      forwarding, copying or photography, and it does not replace redaction.
+      Skip it when that label adds no useful information.
+    </p>
+  </section>
+
+  <section>
+    <h2>4. Compress only when the finished file needs it</h2>
+    <p>
+      Check the destination's attachment limit. If the marked file already
+      fits comfortably, keep it. Otherwise try a copy in the
+      <a href="../../compress-pdf/">PDF Compressor</a> and compare the
+      result with the input. A short text document may barely shrink.
+    </p>
+    <p>
+      Read the equipment table and small print at a useful viewing size.
+      A smaller attachment is no improvement if Morgan cannot read it.
+      The <a href="../make-a-pdf-smaller/">compression guide</a> explains
+      where the savings come from. Name the chosen final version
+      <code>workshop-review-morgan.pdf</code>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Check the exact attachment you will send</h2>
+    <p>
+      Open the final downloaded file, rather than an earlier preview. Each
+      operation made a different output, so the last attachment needs its
+      own check:
+    </p>
+    <ul>
+      <li>Count and read all four pages in their final order.</li>
+      <li>Inspect the removal areas and repeat the search and copy checks.</li>
+      <li>Check the recipient label and readability after compression.</li>
+      <li>Check the file size, properties and filename for unintended details.</li>
+      <li>Select that checked file when attaching it, not a working copy.</li>
+    </ul>
+    <p>
+      Selecting pages first limits what needs review. Redaction follows;
+      watermarking and compression finish the copy. If the recipient accepts
+      password-protected PDFs and you need one, finish these edits before
+      adding protection. Keep the originals separate and send only the
+      reviewed attachment.
+    </p>
+  </section>

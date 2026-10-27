@@ -640,6 +640,7 @@ order = [
   "make-a-video-thumbnail",
   "edit-a-gif-frame-by-frame",
   "scan-multiple-pages-into-one-pdf",
+  "prepare-a-redacted-pdf-pack",
   "get-photos-ready-for-the-web",
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
