@@ -645,6 +645,7 @@ order = [
   "turn-a-bitmap-logo-into-website-assets",
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
+  "prepare-a-reimbursement-pdf-and-csv",
   "compare-two-json-files",
 ]
 
