@@ -1,0 +1,101 @@
+# Two source tables stay separate until a visitor chooses how their rows meet.
+# Matching preserves both sources' columns; stacking aligns headings instead.
+# Each source has its own file input, so there is no shared [picker] table.
+slug = "stitch-tables"
+name = "Stitch Tables"
+heading = "Stitch&nbsp;Tables <span class=\"h1-kw\">&mdash; match, pair or merge two tables</span>"
+tagline = "Bring two tables together by a shared value, a pattern, a manual pairing or their row order. Everything stays in your browser."
+icon = "&#129513;"
+favicon = "&#129513;"
+glyph = "table"
+category = "text-codes-and-passwords"
+roadmap_group = "beyond"
+css_parts = ["form", "checks", "notes", "panes"]
+js_parts = ["download", "clipboard-feedback"]
+lastmod = "2026-10-27"
+title = "Stitch Two Tables &mdash; Match, Pair or Merge CSV &mdash; No Upload"
+description = "Join two CSV or pasted spreadsheet tables by matching values or patterns, pair rows manually, stack rows or merge side by side. Preview and export CSV or TSV in your browser. Nothing is uploaded for processing."
+og_title = "Two tables, stitched together in your browser"
+og_description = "Match values or patterns, pair rows manually, stack rows or place them side by side. Review and export CSV or TSV without uploading either table."
+og_image_alt = "Stitch Tables - match, pair or merge two tables in your browser"
+og_card = "Match a pattern, pair rows by hand, or simply merge - with both tables kept on your device."
+csp_note = "This tool adds no network permission. Source files are read locally, matching and merging use the strings in this page, and export creates a local blob URL. It needs no remote parser, spreadsheet service or pattern-matching endpoint."
+pledge = "A customer list and an order export can reveal more together than either one alone. This tool reads, matches and writes both tables in this browser: no processing service receives a file, a heading, a cell or a match key. The parser and row operations are in <code>src/table-data.js</code>, served with the page. Matching uses the rule you choose, and the preview shows the result before you copy or download it."
+live_hint = "Open DevTools, watch the Network tab, and stitch the example or two tables of your own. The processing code makes no request containing either table. After loading the page, you can disconnect and do the same job offline."
+read_first = " and <code>src/table-data.js</code> for quoted-field parsing, key extraction, duplicate matches, manual pairs and output bounds, then <code>src/main.js</code> for the preview and local copy and download actions."
+howto_heading = "How to stitch two tables together"
+card = "Match two tables by a value or a pattern, pair rows manually, or stack and merge them. Preview the result and export CSV or TSV without uploading either source."
+
+[words]
+plural = "tables"
+choose = "a table file"
+analytics_extra = ", and neither source table nor the stitched result"
+
+[[facts]]
+mark = "&#10007;"
+text = "No processing upload"
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+[[facts]]
+mark = "&#10003;"
+text = "CSV &amp; TSV"
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Both tables are processed in this browser."
+body = "The processing code reads selected files or pasted text on your device, creates match keys locally and builds the result in memory. It does not upload the tables for processing. You can inspect the source and compare it with browser requests, or complete the job while disconnected."
+[[privacy]]
+title = "A pattern is applied locally."
+body = "The rules extract part of a value or remove punctuation before comparing keys. There is no remote lookup, AI service or third-party spreadsheet parser. Original cell contents are preserved in the result; only comparison keys are transformed."
+[[privacy]]
+title = "The result leaves the page when you choose an export."
+body = "Copy writes the prepared CSV or TSV to your clipboard. Download gives your browser a local file. The table-processing code does not store either source or the result on a server. Keep the original files if you need to repeat or check the work later."
+[[privacy]]
+title = "The site frame explains its own requests."
+body = "The page's advertising, measurement and feedback features are described separately in the site's privacy information and live network panel. The table-processing code does not hand them source files, cells, filenames or match keys."
+
+[[howto]]
+title = "Add table A and table B."
+body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose a text file for each side. Check the delimiter and whether the first row contains headings. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
+[[howto]]
+title = "Choose how the rows meet."
+body = "Match rows by columns and an exact value or extraction pattern, pair individual rows manually, or use Simple merge to stack rows or place them side by side. For matching and manual pairing, choose whether to keep every row, all of table A, or only paired rows."
+[[howto]]
+title = "Review the matches and the preview."
+body = "Blank keys do not match. Repeated automatic keys produce every matching combination, so check the duplicate count and result size. Manual pairing lets you choose a particular B row for an A row. The preview is limited; the result count describes the full export."
+[[howto]]
+title = "Copy or download the joined table."
+body = "Choose CSV or TSV and check formula protection. Protection adds an apostrophe to cells that a spreadsheet might treat as a formula; turn it off only when you want the original text exported unchanged. Copy and Download use the current prepared result."
+
+[[faq]]
+q = "Can I use tables copied from Excel or Google Sheets?"
+a = "Yes. Copy a rectangular range and paste it into a table box; spreadsheet cells usually arrive separated by tabs. You can also save a sheet as CSV or TSV and choose that file. This tool reads delimited text, not an XLSX workbook, its formulas, cell styles or multiple sheets."
+[[faq]]
+q = "What kinds of pattern matching are available?"
+a = "Compare the whole value, take its first run of digits, keep letters and digits while removing punctuation and spacing, or take text before or after the first separator you supply. For example, the first-number rule extracts 001 from both invoice-001 and paid/001. The extracted text is a comparison key; source cells remain unchanged. These are fixed extraction rules, not fuzzy matching or arbitrary regular expressions."
+[[faq]]
+q = "What happens to blank keys, duplicates and unmatched rows?"
+a = "Blank keys and values from which the chosen pattern extracts nothing remain unmatched. If a key appears twice in table A and three times in table B, matching produces six joined rows. All rows from both tables retains unpaired rows with empty cells for the missing side; All rows from table A omits B-only rows; Matching pairs only omits every unpaired row. Manual pairing is one-to-one."
+[[faq]]
+q = "How do stacking and merging side by side differ?"
+a = "Stacking puts B's rows below A's and aligns columns by trimmed heading text, keeping A's order and adding headings found only in B. Repeated headings align by occurrence. If either table has no heading row, stacking aligns by position. Side-by-side merging pairs corresponding row positions and keeps every row of the longer table, leaving the missing side empty."
+[[faq]]
+q = "How large can the tables be?"
+a = "Each source is limited to 2,097,152 text characters, 5,000 data rows, 100 columns and 100,000 data cells. Selected files are also limited to 2 MiB. The stitched result is limited to 20,000 rows and 500,000 cells. These bounds keep the browser responsive and stop duplicate keys from expanding into an unexpectedly large result. A preview shows part of the result; export includes every prepared row."
+[[faq]]
+q = "Does export change my values?"
+a = "Cells remain text without number or date conversion. Quoting and delimiters may change when written. Formula protection is enabled by default and prefixes potentially active spreadsheet cells with an apostrophe; turn it off for unchanged-text export. Your spreadsheet may still infer dates or numbers when opening CSV, so import columns as text when preserving identifiers matters."
+[[faq]]
+q = "Are either of my tables uploaded?"
+a = "The table-processing code does not upload source files, pasted cells, match keys or results. It runs in this browser and works offline after the page is loaded. Copy intentionally places the result on your clipboard, and Download saves a file through your browser."
+
+[schema]
+category = "BusinessApplication"
+description = "Stitch two delimited-text tables by exact or extracted keys, manual row pairs, stacked rows or side-by-side row order. Preview and export CSV or TSV with local browser processing."
+features = ["Reads pasted spreadsheet cells and CSV or TSV files", "Matches selected columns with built-in extraction patterns", "Manual one-to-one row pairing", "Full, left and inner row retention", "Stacks by heading or merges side by side by row order", "Reports duplicate and unmatched rows", "CSV or TSV export with optional formula protection", "Works offline after loading without processing uploads"]
