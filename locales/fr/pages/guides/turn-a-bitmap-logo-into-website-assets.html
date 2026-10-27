@@ -1,0 +1,94 @@
+  <section>
+    <h2>Partez d'une forme que la vectorisation peut préserver</h2>
+    <p>
+      Un site de jardinage fictif possède un logo matriciel : une feuille pleine et sa tige sur un fond uni. Il lui faut un logo redimensionnable, un PNG transparent et un favicon reconnaissable dans un onglet. L'enchaînement est <a href="../../convertir-image-en-svg/">Image en SVG</a>, <a href="../../convertir-svg-en-png/">SVG en image</a>, puis <a href="../../creer-un-favicon/">Image en ICO</a>.
+    </p>
+    <p>
+      Chaque outil a un rôle différent : tracer un contour, le rendre en pixels, puis préparer les fichiers d'icônes. Cette méthode convient à une forme monochrome simple. La vectorisation crée un seul tracé SVG ; elle ne reconstitue pas un logo multicolore, une photographie, un dégradé ou une illustration à calques. Récupérez le dessin d'origine si ces détails définissent le symbole. Si vous disposez déjà d'un bon SVG, sautez la vectorisation.
+    </p>
+  </section>
+
+  <section>
+    <h2>Choisissez la source la plus nette</h2>
+    <p>
+      Utilisez le meilleur original matriciel disponible. Une capture de page web peut contenir des artefacts de compression, un fond teinté ou du texte sans rapport. L'agrandir ne restaure pas les détails manquants. Dans cet exemple, la feuille se trouve dans une image carrée avec une marge de chaque côté.
+    </p>
+    <p>
+      Décidez de ce qui appartient au symbole. La feuille et la tige vont ensemble ; le nom du site n'a pas besoin de tenir dans le favicon. Gardez la source à part pour comparer. Si elle est minuscule ou floue, le tracé reste une approximation, même si la géométrie obtenue se redimensionne.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vectorisez une fois et examinez le contour</h2>
+    <p>
+      Ouvrez l'image matricielle dans <a href="../../convertir-image-en-svg/">Image en SVG</a>. Comparez la forme tracée à la source en vérifiant la pointe de la feuille, la jonction avec la tige et les ouvertures voulues. Utilisez les commandes de sélection du premier plan et de correction pour retirer les zones parasites ; examinez de nouveau le résultat après avoir modifié le lissage.
+    </p>
+    <p>
+      Une ligne lisse n'est pas forcément fidèle. Trop de lissage peut transformer la feuille en ovale ; trop peu peut figer des taches de compression dans la géométrie. Le <a href="../convertir-une-image-en-svg/">guide de vectorisation</a> explique ces choix. Enregistrez le résultat validé sous <code>leaf-master.svg</code>. Créez les futures tailles matricielles à partir de ce fichier maître, plutôt qu'en agrandissant un PNG déjà réduit.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/outline.webp" loading="lazy" decoding="async"
+           alt="Image en SVG affiche côte à côte un modèle matriciel de pochoir et son contour vectorisé, avec les commandes de correction et de lissage.">
+      <figcaption>
+        Les commandes de vectorisation avec un pochoir d'exemple. Comparez le contour et les ouvertures avant de valider le vecteur ; changer de format ne prouve pas que la forme est correcte.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Produisez des PNG pour des usages précis</h2>
+    <p>
+      Chargez <code>leaf-master.svg</code> dans <a href="../../convertir-svg-en-png/">SVG en image</a>. Pour la source carrée de cet exemple, exportez un PNG transparent de 1024 par 1024 pixels et nommez-le <code>leaf-icon-source.png</code>. C'est une taille de travail pour cet exemple, pas une obligation pour tous les logos. Conservez les proportions et examinez la marge ; n'étirez pas un symbole non carré pour le forcer dans un carré. L'outil d'icônes pourra ensuite compléter une entrée non carrée par des marges.
+    </p>
+    <p>
+      Choisissez les dimensions dans l'outil de rendu. Un redimensionnement séparé est inutile s'il peut produire directement les pixels nécessaires. Exportez aussi un PNG adapté à l'emplacement du logo sur le site, si cet emplacement en a besoin, et nommez-le selon son usage, par exemple <code>leaf-header.png</code>. Conservez le SVG pour les emplacements qui acceptent les illustrations vectorielles.
+    </p>
+    <p>
+      Ouvrez les PNG exportés et examinez les contours et la transparence. Un aperçu blanc ne suffit pas à savoir si le fond est transparent. Le <a href="../convertir-un-svg-en-png/">guide SVG vers PNG</a> explique les dimensions et les choix de fond.
+    </p>
+  </section>
+
+  <section>
+    <h2>Préparez le paquet d'icônes du site</h2>
+    <p>
+      Chargez <code>leaf-icon-source.png</code> dans <a href="../../creer-un-favicon/">Image en ICO</a>. Choisissez la sortie pour site web et les tailles d'icônes nécessaires. Gardez ensemble l'ICO généré, les PNG du site et les fichiers de référence fournis. Le <a href="../creer-son-favicon/">guide des favicons</a> explique leurs rôles.
+    </p>
+    <p>
+      Cet outil prend aussi en charge les icônes d'applications Windows et macOS. Un fichier ICNS appartient au processus macOS ; un site web n'a pas besoin de tous les formats que l'outil peut produire. Choisissez les sorties selon leur destination. Générer le paquet ne l'installe pas : placez les fichiers aux chemins utilisés par votre site et mettez à jour ses références d'icônes.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/sizes.webp" loading="lazy" decoding="async"
+           alt="L'outil d'icônes montre une image d'exemple aux différentes tailles sélectionnées pour la sortie.">
+      <figcaption>
+        Aperçus des tailles avec un dessin d'exemple. Examinez la plus petite icône elle-même, et pas seulement la grande image source au-dessus.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Jugez séparément la plus petite version</h2>
+    <p>
+      Examinez l'icône de 16 par 16 pixels à sa taille réelle d'affichage, puis vérifiez les versions plus grandes. La feuille peut être superbe à 1024 pixels alors que sa tige disparaît ou qu'une ouverture étroite se ferme dans l'icône d'onglet. Davantage de pixels sources ne peut pas rendre chaque détail fin lisible dans seize pixels.
+    </p>
+    <p>
+      Si la petite icône ne fonctionne pas, revenez au dessin et simplifiez-le délibérément. Une tige plus robuste ou une silhouette plus simple relève d'un choix de conception ; un autre réglage du convertisseur ne peut pas décider de l'identité du symbole à votre place. Ces outils ne remplacent pas un éditeur de dessin généraliste lorsque l'illustration elle-même doit être retravaillée.
+    </p>
+    <p>
+      Vérifiez les sorties transparentes sur des fonds clairs et foncés. Une feuille sombre peut disparaître sur une surface sombre. Préparez une variante délibérée à partir de la source si un seul traitement ne convient pas aux deux, puis refaites les exports et vérifications concernés.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transmettez un ensemble de fichiers compréhensible</h2>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Fichier</th><th>Utilité</th></tr></thead>
+      <tbody>
+        <tr><td><code>leaf-master.svg</code></td><td>Dessin vectoriel validé et source des futurs exports</td></tr>
+        <tr><td><code>leaf-header.png</code></td><td>Logo matriciel dimensionné pour son emplacement dans la page</td></tr>
+        <tr><td>Paquet d'icônes du site</td><td>Fichiers ICO et PNG avec les références nécessaires au site</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      Gardez le grand PNG source des icônes avec les fichiers de travail. Ouvrez chaque sortie finale, vérifiez ses dimensions et contrôlez les icônes installées sur le véritable site, y compris lors d'une nouvelle visite si une ancienne icône est en cache. Le traitement des fichiers est local ; publier les sorties les rend accessibles là où le site les sert. Utilisez des dessins que vous comptez publier et que vous avez le droit d'utiliser.
+    </p>
+  </section>

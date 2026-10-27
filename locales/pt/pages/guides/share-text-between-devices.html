@@ -1,18 +1,7 @@
   <section>
     <h2>A resposta curta</h2>
-  <p>Direct é a opção padrão. As orientações de alcance direto abaixo se referem a esse modo. Para usar Cloud relay, o anfitrião escolhe essa opção antes de iniciar e compartilha o novo convite. A outra pessoa vê a escolha e confirma antes de conectar. Direct nunca muda automaticamente. A Cloudflare encaminha conteúdo criptografado e vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Aprovação, senha e controles do microfone continuam valendo.</p>
-    <p>
-      Abra <a href="../../compartilhar-texto/">Compartilhar texto e
-      arquivos</a> no computador que tem a coisa, escreva ou anexe, e aperte
-      <em>Começar a compartilhar</em>. A página dá ao compartilhamento um
-      nome como <code>brave-otter-42</code>; no outro dispositivo, abra a
-      mesma página e acrescente <code>#brave-otter-42</code> ao fim do
-      endereço &mdash; ou apenas siga o link copiado. O outro dispositivo
-      pergunta antes de conectar, você deixa entrar, e o texto ou o arquivo
-      atravessa criptografado, direto de um navegador ao outro. Feche a aba
-      que compartilha e acabou, em todo lugar.
-    </p>
-    <p>Nenhum texto ou arquivo compartilhado foi enviado a um servidor. É assim que a ferramenta funciona. O restante explica por que importa e quais são seus limites.</p>
+    <p>Abra <a href="../../compartilhar-texto/">Compartilhar texto e arquivos</a> no dispositivo que tem o conteúdo, escreva ou anexe e pressione <em>Começar a compartilhar</em>. A página dá ao compartilhamento um nome como <code>brave-otter-42</code>; no outro dispositivo, abra a mesma página e acrescente <code>#brave-otter-42</code> ao fim do endereço, ou siga o link copiado. O outro dispositivo pergunta antes de conectar, você permite a entrada e o texto ou arquivo atravessa uma conexão criptografada. Direct é o padrão. O anfitrião pode escolher Cloud relay antes de começar, e o leitor confirma essa escolha antes de conectar. Feche a aba que compartilha para encerrar a sessão; as cópias já salvas pelo destinatário continuam com ele.</p>
+    <p>Nenhum servidor de compartilhamento guarda uma cópia para buscar depois. Com Cloud relay, a Cloudflare encaminha o conteúdo criptografado sem ter suas chaves de descriptografia, mas vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão retransmitida. Direct nunca muda para essa rota automaticamente.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
@@ -57,7 +46,7 @@
 
   <section>
     <h2>O que &ldquo;direto&rdquo; significa de verdade</h2>
-    <p>A ferramenta usa WebRTC, como chamadas de vídeo do navegador: dois navegadores abrem um canal criptografado e enviam dados sem servidor no caminho. Com uma conexão local funcional, transferem na velocidade dessa rede; a rota também depende de VPN, políticas do navegador e configurações dos aparelhos.</p>
+    <p>Em Direct, a ferramenta usa WebRTC, como chamadas de vídeo do navegador: dois navegadores abrem um canal criptografado e enviam dados sem servidor no caminho. Com uma conexão local funcional, transferem na velocidade dessa rede; a rota também depende de VPN, políticas do navegador e configurações dos aparelhos.</p>
     <p>Há uma ressalva: os navegadores precisam de ajuda para se encontrar. Um pequeno servidor de encontro liga quem digita o nome a quem compartilha e transmite alguns kilobytes de preparação. Não guarda conteúdo compartilhado nem o transporta; seu código está publicado. Apresenta as partes, não leva a conversa. Também lista nomes locais que aceitaram aparecer para encontrá-los na página inicial. É o serviço usado aqui e na Câmera remota. Obter imagens opcionais, consultar câmbio e scripts de plataforma têm limites próprios na <a href="../../privacidade/">página de privacidade</a>. A página de compartilhamento explica o que o servidor vê.</p>
     <p>
       Direto também significa mútuo: cada navegador fica sabendo o endereço
@@ -70,7 +59,7 @@
     <h2>Compartilhar no mesmo Wi-Fi ou Ethernet</h2>
     <p>Rede local vem desativada. Antes de começar, escolha <em>Rede local — sem retransmissor de internet</em>. Anexe o arquivo, mantenha Privado para aprovar leitores e comece. Visível vem marcado: no segundo aparelho, confira o tipo de conexão em <em>Conexões disponíveis</em> e escolha Entrar ao lado do nome. Uma aba de leitura é aberta e a solicitação é iniciada. Compartilhamentos privados aguardam sua aprovação. Desmarque Visível antes de começar para compartilhar só por link. Ambos os aparelhos precisam do mesmo Wi-Fi ou Ethernet. Os arquivos mantêm o limite de 200&nbsp;MB e cada leitor escolhe o que baixar.</p>
     <p>A lista agrupa navegadores por IPv4 público ou sub-rede IPv6 vista pelo servidor. Costuma ser um roteador, mas VPN compartilhada ou provedor que compartilha endereço podem incluir outras redes. Rotas diferentes ou IPv4 e IPv6 podem esconder um aparelho vizinho. Mantenha Privado em redes compartilhadas: o nome aparece ao grupo e a lista não prova estar na mesma sala ou prédio. Precisa de internet. Se a descoberta falhar, o link copiado ainda funciona.</p>
-    <p>O link leva a configuração <code>?local=1#brave-otter-42</code>. Se disser o nome, informe também Rede local: <code>#brave-otter-42</code> sozinho pede modo normal. Se o leitor usar outro modo, a página explica e pede escolher antes de tentar o do remetente.</p>
+    <p>O link leva a configuração <code>?local=1&amp;transport=direct#brave-otter-42</code>. Se disser o nome, informe também Rede local: <code>#brave-otter-42</code> sozinho pede modo normal. Se o leitor usar outro modo, a página explica e pede escolher antes de tentar o do remetente.</p>
     <p>O modo local não usa servidor público de descoberta de endereços nem oferece retransmissor de internet. Ainda precisa de internet para apresentar navegadores. Wi-Fi de visitantes pode isolar aparelhos; firewalls, VPNs e políticas do navegador também bloqueiam ou mudam a rota. Controla como encontra um caminho direto, sem provar que permaneça em um prédio físico.</p>
   </section>
 
@@ -158,7 +147,7 @@
 
   <section>
     <h2>Quando esta é a ferramenta errada</h2>
-    <p>Ambos precisam estar presentes ao mesmo tempo, e a aba que compartilha precisa continuar aberta. Compartilhar exige conexão; só o editor funciona offline. Se Direct falhar em uma rede móvel ou empresarial, o anfitrião pode parar o compartilhamento e criar outro com Cloud relay. Depois envia o novo convite, cuja opção de conexão o leitor aceita antes de conectar. Direct local não usa retransmissor. A suspensão do navegador e políticas empresariais também podem interromper uma conexão com retransmissor.</p>
+    <p>Os dois lados precisam estar presentes: é uma entrega ao vivo, não uma caixa de mensagens. Se a outra pessoa estiver dormindo, escolha conscientemente um serviço que armazene o conteúdo. A aba que compartilha precisa ficar aberta e ativa, o que na prática favorece um computador de mesa ou notebook; celulares suspendem abas em segundo plano em segundos, embora recebam o conteúdo sem problema. Não funciona offline, porque alcançar outro dispositivo exige uma rede, embora o editor funcione sem conexão. Uma pequena minoria de combinações de redes, normalmente quando um lado usa uma rede móvel com endereço compartilhado ou uma rede empresarial restrita, não consegue se conectar diretamente; a ferramenta informa isso após vinte segundos. Direct nunca muda automaticamente para uma retransmissão. O anfitrião pode parar e iniciar um novo compartilhamento com Cloud relay e enviar o novo convite. O leitor vê essa escolha antes de conectar. A Cloudflare encaminha textos e arquivos criptografados sem ter suas chaves de descriptografia, mas vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Rede local restringe Direct e não usa retransmissão.</p>
     <p>
       Para todo o resto &mdash; a nota, a senha, o arquivo de configuração,
       o vídeo de 100&nbsp;MB a um pulo de Wi-Fi &mdash; a versão direta é

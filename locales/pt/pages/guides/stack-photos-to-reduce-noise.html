@@ -6,7 +6,7 @@
     </p>
     <ul>
       <li><strong>Ruído</strong>, e nada se mexeu &mdash; média.</li>
-      <li><strong>Ruído</strong>, e alguma coisa se mexeu &mdash; sigma clipping.</li>
+      <li><strong>Ruído com valores discrepantes ocasionais</strong> &mdash; experimente sigma clipping; use mediana se remover um objeto em movimento for a prioridade.</li>
       <li><strong>Pessoas, carros, um avião</strong> &mdash; mediana.</li>
       <li><strong>Um céu escuro que você quer como rastros de estrelas</strong> &mdash; clarear.</li>
       <li><strong>Uma macro com quase nenhuma profundidade de campo</strong> &mdash; focus stacking.</li>
@@ -15,14 +15,15 @@
       Comece com <strong>Automático com perspectiva</strong> para reduzir ruído, inclusive em fotos noturnas feitas no tripé: as estrelas se movem mesmo com a câmera parada. Use <strong>Não</strong> para rastros de estrelas intencionais ou quadros que já se encaixam. Os RAW podem entrar direto quando contêm uma prévia JPEG utilizável. A linha mostra o tamanho real da imagem.
     </p>
     <p>
-      Tudo o que vem abaixo é o motivo pelo qual aquelas cinco linhas são o que são.
+      Compare o resultado com um quadro de referência antes de salvar. O fluxo de trabalho abaixo explica os ajustes, os problemas comuns e como finalizar a imagem.
     </p>
   </section>
 
   <section>
-    <h2>Um interior ruidoso, um monumento limpo ou um produto nítido</h2>
+    <h2>Uma sequência mais limpa, um fundo vazio ou rastros de estrelas</h2>
     <p><strong>Uma cena estática com pouca luz.</strong> Tire uma sequência com exposição e foco travados, escolha referência nítida e comece com Média e Perspectiva automática. Compare bordas a 100% além de paredes lisas. Se indicar um quadro sem alinhar e ficar suave, remova e repita. Confira o primeiro plano ao empilhar céu: alinhar estrelas pode borrar a paisagem fixa.</p>
     <p><strong>Um monumento com pessoas passando.</strong> Separe as tomadas o bastante para mudarem de posição e use Mediana. Só remove onde o fundo for visível em mais da metade. Se alguém ficar parado, precisa de outras fotografias.</p>
+    <p><strong>Uma sequência de rastros no céu noturno.</strong> Mantenha a câmera fixa, deixe intervalos curtos entre as exposições e use Clarear com o alinhamento em Não. O alinhamento seguiria as estrelas em movimento e atrapalharia os rastros que você quer manter. Para estrelas nítidas com menos ruído, use Média com Automático com perspectiva e confira se o primeiro plano fixo ficou borrado.</p>
     <p><strong>Joias, peças pequenas ou amostras.</strong> Fixe a câmera, mude o foco pelo assunto em passos sobrepostos e use Empilhamento de foco. Confira halos e junções em bordas e reflexos; alinhar a câmera não repara objetos movidos. Use PNG para editar depois. O resultado continua de oito bits, mesmo de prévias RAW.</p>
   </section>
 
@@ -180,6 +181,23 @@
         Mova o divisor sobre ruído e bordas finas para comparar a mesma parte das duas imagens. Confira os detalhes de alinhamento se a pilha parecer sem nitidez.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Confira, salve e finalize a imagem</h2>
+    <ol>
+      <li><strong>Compare o mesmo detalhe.</strong> Use o divisor em Ajustar à janela para comparar uma área lisa e uma borda fina. Depois escolha 100% para examinar a referência e a pilha separadamente. Menos granulação com bordas mais suaves pode indicar que os quadros não se alinharam bem; confira Detalhes do alinhamento, remova um quadro que não pôde ser alinhado e empilhe novamente.</li>
+      <li><strong>Escolha o formato para a próxima etapa.</strong> Salve em PNG se quiser uma imagem sem perdas para continuar editando, ou em JPEG para obter um arquivo menor. Ambos são imagens opacas de oito bits, inclusive quando a pilha foi feita com prévias RAW.</li>
+      <li><strong>Finalize com os links para continuar.</strong> Quando o resultado estiver pronto, os links ao lado do download podem levá-lo diretamente ao
+        <a href="../../redimensionar-imagem/" data-workflow-target="resize-image">redimensionador de imagens</a>
+        quando as dimensões importam, ou ao
+        <a href="../../comprimir-imagem/" data-workflow-target="compress-image">compressor de imagens</a>
+        quando você precisa de um arquivo menor. A imagem permanece neste navegador, sem precisar baixar e escolher de novo entre as ferramentas.</li>
+    </ol>
+    <p>Para preservar uma cena que muda como um vídeo em time-lapse, use a sequência original em
+      <a href="../../imagens-para-video/" data-workflow-target="images-to-video">Imagens para vídeo</a>.
+      O <a href="../transformar-imagens-em-video/" data-workflow-target="guides/turn-images-into-a-video">guia de sequências de imagens</a>
+      explica a ordem, a taxa de quadros e a exportação do vídeo.</p>
   </section>
 
   <section>

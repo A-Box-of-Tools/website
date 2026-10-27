@@ -1,19 +1,18 @@
 <section>
   <h2>O que você precisa</h2>
-  <p>Direct é a opção padrão. As orientações de alcance direto abaixo se referem a esse modo. Para usar Cloud relay, o anfitrião escolhe essa opção antes de iniciar e compartilha o novo convite. A outra pessoa vê a escolha e confirma antes de conectar. Direct nunca muda automaticamente. A Cloudflare encaminha conteúdo criptografado e vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão. Aprovação, senha e controles do microfone continuam valendo.</p>
-  <p>Use dois dispositivos com navegadores que aceitem acesso à câmera e WebRTC. Ambos precisam de internet para a apresentação inicial e de uma rede que permita a comunicação entre eles. Um celular no Wi-Fi e um computador por Ethernet podem funcionar se a rede permitir essa comunicação. O ponto de acesso de um celular também pode funcionar se os dois dispositivos tiverem internet para o emparelhamento e o ponto de acesso permitir a comunicação entre eles.</p>
+  <p>Use dois dispositivos com navegadores que aceitem acesso à câmera e WebRTC. Ambos precisam de internet para a apresentação inicial. A opção padrão Direct também precisa de uma rede que permita a comunicação entre eles. Um celular no Wi-Fi e um computador por Ethernet podem funcionar se a rede permitir essa comunicação. O ponto de acesso de um celular também pode funcionar se os dois dispositivos tiverem internet para o emparelhamento e o ponto de acesso permitir a comunicação entre eles.</p>
   <p>Abra o endereço HTTPS confiável deste site. Um endereço HTTP comum com um IP da rede local não pode pedir a câmera. Se o navegador ou sistema operacional pedir acesso à rede local, permita para esta sessão.</p>
 </section>
 <section>
   <h2>Usos de um celular antigo em casa</h2>
-  <p>Um celular parado pode mostrar outro cômodo ou um lugar difícil de enxergar. Esses usos precisam da mesma conexão direta de qualquer sessão de câmera: internet para o pareamento dos dois dispositivos e uma rede doméstica que permita a comunicação entre eles.</p>
+  <p>Um celular parado pode mostrar outro cômodo ou um lugar difícil de enxergar. Para Direct, ambos os dispositivos precisam de internet para o pareamento e de uma rede doméstica que permita a comunicação entre eles.</p>
   <ul>
     <li><strong>Olhar o quarto infantil.</strong> Enquanto estiver em casa, use a imagem ao vivo como uma verificação visual adicional de outro cômodo. Coloque o celular em um apoio estável, fora do alcance da criança. O áudio e os alertas de atividade são opcionais e podem falhar ou ser pausados pelo navegador; esta ferramenta não é um monitor de segurança.</li>
     <li><strong>Animais em outro cômodo.</strong> Enquanto trabalha em outra parte da casa, veja se o cachorro se acomodou na cama ou o que o gato está fazendo no canto preferido.</li>
     <li><strong>Uma entrada interna.</strong> Observe a porta de outro cômodo. É uma imagem ao vivo enquanto você assiste, sem gravação. Navegadores compatíveis podem avisar quando detectarem movimento ou som enquanto a página do espectador puder continuar funcionando.</li>
     <li><strong>Inspeções de reparos.</strong> Aponte o celular para uma conexão de canos sob a pia, um parafuso atrás de um armário ou uma abertura por onde você está passando cabos. O notebook permite enxergar onde sua cabeça não cabe.</li>
   </ul>
-  <p>Para uma imagem mais confiável, mantenha a página da câmera visível e o celular acordado. A página mantém uma conexão que funciona ao ficar oculta, mas o navegador do celular pode pausar a captura ou suspender a página ao trocar de aplicativo ou bloquear a tela. Direct exige uma rede local acessível. A retransmissão na nuvem é uma alternativa escolhida explicitamente e requer internet durante toda a sessão.</p>
+  <p>Para uma imagem mais confiável, mantenha a página da câmera visível e o celular acordado. A página mantém uma conexão que funciona ao ficar oculta, mas o navegador do celular pode pausar a captura ou suspender a página ao trocar de aplicativo ou bloquear a tela. Direct precisa de uma rede acessível. Se os dispositivos não conseguirem se conectar diretamente, o anfitrião pode escolher Cloud relay antes de começar e compartilhar o novo convite. A Cloudflare então encaminha o vídeo criptografado e o áudio ativado; ela vê endereços, horários e volume de tráfego. Ambos os dispositivos precisam de internet durante toda a sessão, e a aprovação continua valendo.</p>
 </section>
 <section>
   <h2>Prepare uma imagem para inspeção</h2>
@@ -27,7 +26,7 @@
 <section>
   <h2>Comece no dispositivo da câmera</h2>
   <ol>
-    <li>Escolha um nome para o link ou mantenha a sugestão aleatória. Deixe Require my approval ligado para aprovar espectadores, ou desligue para permitir visualização automática. Depois escolha Start camera. O navegador escolhe a câmera inicial.</li>
+    <li>Escolha um nome para o link ou mantenha a sugestão aleatória. Deixe Require my approval ligado para aprovar espectadores, ou desligue para permitir visualização automática. Confira a opção Connection e escolha Start camera. O navegador escolhe a câmera inicial.</li>
     <li>Permita o acesso à câmera. O áudio fica desativado por padrão; selecione Enable microphone antes de iniciar se também quiser pedir acesso ao microfone. Pare a câmera antes de mudar essa opção.</li>
   </ol>
   <p>A prévia local aparece junto com o link, o código escolhido e um código QR. Nenhum vídeo ou áudio é enviado até um espectador ser aceito. Mantenha a página visível e o dispositivo acordado para uma captura confiável. Pare antes de mudar o nome do link. Desative a inclusão na lista antes de iniciar se quiser convidar somente por link. Se o navegador oferecer várias câmeras, o seletor Camera aparece após a permissão. Troque ali para manter o link e as conexões dos espectadores; alguns dispositivos precisam liberar a câmera anterior e podem fazer uma pausa breve.</p>
@@ -39,11 +38,11 @@
     <li>Também é possível abrir o link, ler seu QR ou inserir o código em Watch a camera. Essas opções esperam você escolher Connect to camera.</li>
     <li>Se Require my approval estiver ligado, aprove cada solicitação esperada no dispositivo da câmera. Sem aprovação, os espectadores recebem vídeo automaticamente enquanto houver vagas.</li>
   </ol>
-  <p>A nota não é uma identidade verificada. Reconheça cada pessoa e a solicitação esperada antes de aprovar. O pareamento troca endereços de rede mesmo antes da aprovação. O ajuste determina se o proprietário precisa agir antes do vídeo. Sem aprovação, quem conhece o link ou encontra a câmera na lista pode assistir enquanto houver vagas. Mudanças afetam novas solicitações; espectadores já aceitos continuam conectados. Se a reprodução pausar, escolha Play live video. O áudio compartilhado começa automaticamente quando o navegador permite; caso contrário, escolha Unmute audio. Os controles Mute audio e Full screen ficam dentro do quadro do vídeo. Silenciar a reprodução não interrompe os alertas de som.</p>
+  <p>A nota não é uma identidade verificada. Reconheça cada pessoa e a solicitação esperada antes de aprovar. O pareamento troca endereços de rede mesmo antes da aprovação. O ajuste determina se o proprietário precisa agir antes do vídeo. Sem aprovação, quem conhece o link ou encontra a câmera na lista pode assistir enquanto houver vagas. Mudanças afetam novas solicitações; espectadores já aceitos continuam conectados. Se a reprodução pausar, escolha Play live video. O áudio compartilhado começa automaticamente quando o navegador permite; caso contrário, escolha Unmute audio. Os controles Mute e Full screen ficam dentro do quadro do vídeo. Silenciar a reprodução não interrompe os alertas de som.</p>
 </section>
 <section>
   <h2>Compartilhe com vários espectadores</h2>
-  <p>Até oito espectadores aceitos podem assistir à mesma câmera por conexões diretas independentes. O dispositivo da câmera mostra os espectadores aceitos em Connected viewers. Disconnect this viewer encerra apenas a imagem daquela pessoa; Stop camera encerra todas as imagens. Cada solicitação é aprovada separadamente quando a aprovação está ativada. Uma conexão que falha libera a vaga sem desconectar os demais.</p>
+  <p>Até oito espectadores aceitos podem assistir à mesma câmera por conexões criptografadas independentes com a rota escolhida pelo anfitrião. O dispositivo da câmera mostra os espectadores aceitos em Connected viewers. Disconnect this viewer encerra apenas a imagem daquela pessoa; Stop camera encerra todas as imagens.</p>
   <p>Escolha Shared video bandwidth no dispositivo da câmera para deixar capacidade livre para outros usos do Wi-Fi. As opções são 1, 2, 4, 6 e 10 Mbps; o padrão é 6 Mbps. O limite de vídeo é dividido entre os espectadores, e cada navegador pode reduzir ainda mais a taxa se houver congestionamento. Com um limite de 1 Mbps, novos espectadores só são aceitos enquanto houver menos de quatro aceitos no total; com limites maiores, o máximo total é oito. O áudio e os dados adicionais necessários para a conexão ficam fora desse limite. Você pode mudar o limite durante a transmissão; reduzi-lo mantém os espectadores atuais conectados mesmo que ultrapassem o máximo para aceitar novas solicitações.</p>
   <p>O navegador não consegue medir a capacidade total compartilhada do Wi-Fi. Se o vídeo ficar lento, reduza o limite escolhido ou desconecte alguns espectadores. O desempenho do dispositivo também pode limitar a transmissão. Um navegador que não consegue aplicar os limites de vídeo informa isso no dispositivo da câmera; a adaptação normal de cada conexão continua funcionando.</p>
 </section>
@@ -54,7 +53,7 @@
 </section>
 <section>
   <h2>Volte após um bloqueio de tela ou uma interrupção</h2>
-  <p>Ao voltar, a página tenta continuar com o mesmo link e a câmera escolhida. Se não conseguir retomar, escolha Resume camera; o navegador pode pedir a permissão da câmera novamente. O espectador continua aprovado enquanto a conexão direta original existir. Se essa conexão direta foi perdida, ele precisa se reconectar e receber nova aprovação quando Require my approval estiver ligado. A captura em segundo plano com o celular bloqueado não é garantida.</p>
+  <p>Ao voltar, a página tenta continuar com o mesmo link e a câmera escolhida. Se não conseguir retomar, escolha Resume camera; o navegador pode pedir a permissão da câmera novamente. O espectador continua aprovado enquanto a conexão direta original existir. Se essa conexão direta foi perdida, ele precisa se reconectar e receber nova aprovação quando Require my approval estiver ligado. Cloud relay precisa da sinalização para renovar as credenciais; se ela for perdida, o espectador precisa se reconectar e passar pela aprovação novamente quando ela for exigida. A captura em segundo plano com o celular bloqueado não é garantida.</p>
 </section>
 <section>
   <h2>Pare ao terminar</h2>
@@ -64,7 +63,7 @@
 <section>
   <h2>Se os dispositivos não conectarem</h2>
   <p>O mesmo nome de Wi-Fi não garante comunicação. Isolamento de convidados, firewalls, bloqueio de descoberta de endereços locais, permissões de rede do navegador ou sistema e rotas VPN podem impedir a conexão direta. Pare dos dois lados, confira permissões e rede e tente um link novo.</p>
-  <p>Connection details mostra os tipos de candidatos escolhidos e a quantidade de quadros decodificados pelo espectador. Direct usa apenas candidatos de host, sem servidor STUN, retransmissor TURN ou alternativa por retransmissão. Uma VPN, interface pública ou rota do sistema pode mudar o caminho; candidatos de host não provam que o tráfego fica dentro de um prédio.</p>
+  <p>Connection details mostra os tipos de candidatos escolhidos e a quantidade de quadros decodificados pelo espectador. Direct usa apenas candidatos de host, sem STUN nem TURN e sem mudar automaticamente para uma retransmissão. Cloud relay é uma opção separada escolhida antes de começar; o convite inclui essa escolha e o espectador a vê antes de conectar. Uma VPN, interface pública ou rota do sistema pode mudar o caminho; candidatos de host não provam que o tráfego fica dentro de um prédio.</p>
 </section>
 <section>
   <h2>O que o serviço de apresentação vê</h2>

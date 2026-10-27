@@ -68,6 +68,16 @@ complete = true
 #
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "ratgeber/geschwaerztes-pdf-paket-vorbereiten"
+"guides/prepare-a-screen-recording-for-support" = "ratgeber/bildschirmaufnahme-fuer-fehlerbericht-vorbereiten"
+"guides/turn-a-bitmap-logo-into-website-assets" = "ratgeber/rasterlogo-in-website-grafiken-umwandeln"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "ratgeber/erstattung-pdf-und-csv-aus-belegen-erstellen"
+"guides/protect-transfer-and-verify-a-pdf" = "ratgeber/pdf-schuetzen-uebertragen-und-pruefen"
+"guides/where-do-your-file-copies-go" = "ratgeber/wo-dateikopien-landen"
+"guides/does-private-browsing-keep-downloads-private" = "ratgeber/bleiben-downloads-beim-privaten-surfen-privat"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "ratgeber/was-eine-gewoehnliche-datei-ueber-sie-verraet"
+"guides/receive-voice-from-nearby-devices" = "ratgeber/sprache-von-geraeten-in-der-naehe-empfangen"
+"guides/share-a-browser-tab" = "ratgeber/browser-tab-teilen"
 "guides/broadcast-voice-on-a-local-network" = "ratgeber/stimme-im-lokalen-netzwerk-senden"
 "guides/arrange-images" = "ratgeber/bilder-anordnen"
 "guides/watch-camera-from-another-device" = "ratgeber/kamera-von-anderem-geraet-ansehen"

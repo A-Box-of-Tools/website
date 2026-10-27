@@ -1,19 +1,7 @@
   <section>
     <h2>Die kurze Antwort</h2>
-  <p>Direct ist voreingestellt. Die folgenden Hinweise zur direkten Erreichbarkeit gelten für diesen Modus. Soll die Verbindung über Cloud relay laufen, wählt der Host dies vor dem Start und teilt die neue Einladung. Die andere Person sieht die Wahl und bestätigt sie vor dem Verbinden. Direct wechselt niemals automatisch. Cloudflare leitet verschlüsselte Inhalte weiter und sieht Adressen, Zeitpunkte und Datenvolumen. Beide Geräte brauchen dabei durchgehend Internet. Zustimmung, Passwort und Mikrofonsteuerung gelten unverändert.</p>
-    <p>
-      Öffnen Sie <a href="../../text-teilen/">Text &amp; Dateien teilen</a>
-      auf dem Gerät, das die Sache hat, schreiben Sie oder hängen Sie an, und
-      drücken Sie <em>Freigabe starten</em>. Die Seite gibt der Freigabe
-      einen Namen wie <code>brave-otter-42</code>; auf dem anderen Gerät
-      öffnen Sie dieselbe Seite und setzen <code>#brave-otter-42</code> ans
-      Ende der Adresse &mdash; oder folgen einfach dem kopierten Link. Das
-      andere Gerät fragt vor dem Verbinden nach, Sie lassen es ein, und Text
-      oder Datei wandern verschlüsselt direkt von einem Browser in den
-      anderen. Schließen Sie den teilenden Tab, ist die Freigabe vorbei,
-      überall.
-    </p>
-    <p>Kein geteilter Text und keine Datei wurden auf einen Server hochgeladen. Das folgt aus der Bauform. Der Rest erklärt ihre Bedeutung und ehrlichen Grenzen.</p>
+    <p>Öffnen Sie <a href="../../text-teilen/">Text &amp; Dateien teilen</a> auf dem Gerät, auf dem sich der Inhalt befindet. Schreiben Sie den Text oder hängen Sie die Datei an und wählen Sie <em>Freigabe starten</em>. Die Seite gibt der Freigabe einen Namen wie <code>brave-otter-42</code>. Öffnen Sie auf dem anderen Gerät dieselbe Seite und setzen Sie <code>#brave-otter-42</code> ans Ende der Adresse, oder folgen Sie einfach dem kopierten Link. Das andere Gerät fragt vor dem Verbinden nach, Sie lassen es ein, und der Text oder die Datei wird über eine verschlüsselte Verbindung übertragen. Direct ist voreingestellt. Der Host kann vor dem Start stattdessen Cloud relay wählen; der Leser bestätigt diese Wahl vor dem Verbinden. Schließen Sie den teilenden Tab, um die Livefreigabe zu beenden. Bereits gespeicherte Kopien bleiben beim Empfänger.</p>
+    <p>Kein Freigabeserver speichert eine Kopie zum späteren Abrufen. Bei Cloud relay leitet Cloudflare die verschlüsselten Inhalte ohne deren Entschlüsselungsschlüssel weiter, sieht jedoch Adressen, Zeitpunkte und Datenvolumen. Beide Geräte benötigen während der gesamten Relay-Sitzung Internet. Direct wechselt niemals automatisch zu diesem Verbindungsweg.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
@@ -57,7 +45,7 @@
 
   <section>
     <h2>Was &bdquo;direkt&ldquo; wirklich heißt</h2>
-    <p>Das Werkzeug nutzt WebRTC wie Browservideoanrufe. Zwei Browser öffnen einen verschlüsselten Datenkanal ohne Server im Weg. Eine funktionierende lokale Verbindung überträgt mit Netzgeschwindigkeit. Der Weg hängt auch von VPNs, Browserrichtlinien und Geräteeinstellungen ab.</p>
+    <p>Im Modus Direct nutzt das Werkzeug WebRTC wie Browservideoanrufe. Zwei Browser öffnen einen verschlüsselten Datenkanal ohne Server im Weg. Eine funktionierende lokale Verbindung überträgt mit Netzgeschwindigkeit. Der Weg hängt auch von VPNs, Browserrichtlinien und Geräteeinstellungen ab.</p>
     <p>Ein ehrlicher Vorbehalt steht auch auf der Werkzeugseite. Zwei Browser finden sich nicht allein. Ein kleiner Rendezvousserver verbindet Namen und teilt einige Kilobytes Verbindungsaufbau. Er speichert keine geteilten Inhalte und sie durchlaufen ihn nicht. Sein Quellcode liegt neben dem Werkzeug. Er stellt nur vor und führt kein Gespräch. Er listet auch freiwillig sichtbare lokale Linknamen zur Entdeckung auf der Startseite. Diesen Einführungsdienst verwenden dieses Werkzeug und Remote Camera. Optionale Bildabfrage, Belegwechselkurse und Plattformskripte haben eigene Netzgrenzen auf der <a href="../../datenschutz/">Datenschutzseite</a>. Die Teilen-Seite erklärt die Sichtbarkeit für den Dienst.</p>
     <p>
       Direkt heißt auch gegenseitig: Jeder Browser erfährt die Netzadresse
@@ -71,7 +59,7 @@
     <h2>Im selben WLAN oder Ethernet teilen</h2>
     <p>Lokalnetz ist standardmäßig aus. Wählen Sie vor dem Start <em>Lokales Netzwerk ohne Internet-Relay</em>, hängen die Datei an und lassen Privat an für einzelne Leserfreigaben. Auffindbar ist voreingestellt. Öffnen Sie am zweiten Gerät die Werkzeugseite, prüfen Sie unter <em>Verfügbare Verbindungen</em> den Verbindungstyp und wählen Sie Beitreten neben dem Namen. Dies öffnet einen Leser-Tab und startet die Anfrage. Private Freigaben warten auf Ihre Zustimmung. Schalten Sie Auffindbar vor dem Start aus für reine Linkfreigabe. Beide brauchen dasselbe WLAN oder Ethernet. Es gelten weiter 200&nbsp;MB pro Datei und Leser wählen Downloads selbst.</p>
     <p>Die Liste gruppiert nach öffentlicher IPv4-Adresse oder IPv6-Subnetz, die der Vermittler sieht. Meist ist das ein Router, aber geteilte VPNs oder Provideradressen können andere Netze einschließen. Gemischtes IPv4/IPv6 oder andere Routen können Nachbargeräte verbergen. Lassen Sie Privat in geteilten Netzen an. Listennamen sind für die Gruppe sichtbar und beweisen weder Raum noch Gebäude. Internet ist nötig. Ohne Entdeckung funktioniert der kopierte Link weiterhin.</p>
-    <p>Der Link trägt die Einstellung als <code>?local=1#brave-otter-42</code>. Nennen Sie beim Aussprechen auch Lokalnetz. <code>#brave-otter-42</code> allein verlangt normalen Modus. Bei verschiedenem Leser- und Teilermodus erklärt die Seite es und fragt vor dem Versuch mit dem Teilermodus nach der Wahl.</p>
+    <p>Der Link trägt die Einstellung als <code>?local=1&amp;transport=direct#brave-otter-42</code>. Nennen Sie beim Aussprechen auch Lokalnetz. <code>#brave-otter-42</code> allein verlangt normalen Modus. Bei verschiedenem Leser- und Teilermodus erklärt die Seite es und fragt vor dem Versuch mit dem Teilermodus nach der Wahl.</p>
     <p>Lokaler Modus nutzt keinen öffentlichen Adressentdeckungsserver und bietet kein Internet-Relay. Der Vermittler braucht weiterhin Internet. Gäste-WLAN isoliert möglicherweise Geräte; Firewalls, VPNs und Browserrichtlinien können Verbindungen blockieren oder umleiten. Der Modus steuert die Direktwegsuche und beweist keine Begrenzung auf ein Gebäude.</p>
   </section>
 
@@ -85,7 +73,7 @@
       eintippen, ohne dass jemandem die Daumen ausgehen. Genau dafür sehen
       die Namen so aus, wie sie aussehen.
     </p>
-    <p>Wer einen aktiven Namen kennt oder errät, kann die Freigabe öffnen. Eine auffindbare lokale Freigabe listet ihn für Browser derselben öffentlichen IPv4-Adresse oder IPv6-Subnetzes. Innerhalb der Gruppe ist er öffentlich. Für Sensibles lassen Sie die Voreinstellung. Freigaben sind <em>privat</em>, bis Sie das Häkchen entfernen. Jeder Leser stellt sich vor und Sie entscheiden einzeln. Die Vorstellung reist verschlüsselt direkt. Nicht einmal der Vermittler erfährt, wer fragt.</p>
+    <p>Wer einen aktiven Namen kennt oder errät, kann die Freigabe öffnen. Eine auffindbare lokale Freigabe listet ihn für Browser derselben öffentlichen IPv4-Adresse oder IPv6-Subnetzes. Innerhalb der Gruppe ist er öffentlich. Für Sensibles lassen Sie die Voreinstellung. Freigaben sind <em>privat</em>, bis Sie das Häkchen entfernen. Jeder Leser stellt sich vor und Sie entscheiden einzeln. Die Vorstellung reist über den verschlüsselten Peer-Kanal. Nicht einmal der Vermittler erfährt, wer fragt.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/name.webp" loading="lazy" decoding="async"
@@ -161,7 +149,7 @@
 
   <section>
     <h2>Wann dies das falsche Werkzeug ist</h2>
-    <p>Beide Seiten müssen gleichzeitig anwesend sein, und die Freigabeseite muss offen bleiben. Teilen braucht eine Verbindung; nur der Editor funktioniert offline. Wenn Direct an einem Mobilfunk- oder Firmennetz scheitert, kann der Host die Freigabe beenden und mit Cloud relay neu beginnen. Er sendet dann die neue Einladung, deren Verbindungswahl der Leser vor dem Verbinden bestätigt. Der lokale Direct-Modus verwendet kein Relay. Schlafende Browser und Unternehmensrichtlinien können auch eine Relay-Verbindung unterbrechen.</p>
+    <p>Beide Seiten müssen anwesend sein: Dies ist eine Übergabe, kein Postfach. Schläft die andere Person, nutzen Sie bewusst einen Dienst, der speichert. Der teilende Tab muss offen und wach bleiben. In der Praxis teilt deshalb ein Desktop oder Laptop; Telefone versetzen Tabs im Hintergrund innerhalb von Sekunden in den Ruhezustand, können eine Freigabe aber problemlos lesen. Offline funktioniert das Teilen nicht, denn eine andere Maschine zu erreichen benötigt ein Netzwerk. Der Editor allein funktioniert dagegen vollständig ohne Verbindung. Eine kleine Minderheit von Netzwerkkombinationen, meist mit einem Mobilfunknetz mit geteilter Adresse oder einem strengen Firmennetz auf einer Seite, lässt sich überhaupt nicht direkt verbinden. Das Werkzeug meldet dies nach zwanzig Sekunden deutlich. Direct wechselt niemals automatisch zu einem Relay. Der Host kann die Freigabe beenden, eine neue mit Cloud relay starten und deren neue Einladung senden. Der Leser sieht diese Wahl vor dem Verbinden. Cloudflare leitet verschlüsselten Text und Dateien ohne deren Entschlüsselungsschlüssel weiter, sieht jedoch Adressen, Zeitpunkte und Datenvolumen. Beide Geräte brauchen durchgehend Internet. Lokales Netzwerk schränkt Direct ein und verwendet kein Relay.</p>
     <p>
       Für alles andere &mdash; die Notiz, das Passwort, die
       Konfigurationsdatei, das 100-MB-Video, das einen WLAN-Sprung entfernt

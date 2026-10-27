@@ -1,0 +1,99 @@
+  <section>
+    <h2>Das Dokument vor dem Schutz fertigstellen</h2>
+    <p>
+      Sie möchten eine erfundene Datei <code>committee-papers.pdf</code> an eine andere Person senden. Sie soll sich nur mit Passwort öffnen lassen, und Sie möchten prüfen, ob die heruntergeladene Kopie genau der versendeten Endfassung entspricht. Das sind getrennte Aufgaben: Der Schutz regelt das Öffnen, eine Prüfsumme vergleicht Bytes und die Übertragung bringt diese Bytes zum Empfänger.
+    </p>
+    <ol>
+      <li>Das Dokument fertigstellen und prüfen.</li>
+      <li>Ein einzigartiges Passwort erzeugen und eine Kopie des PDFs schützen.</li>
+      <li>SHA-256 für genau diese geschützte Kopie berechnen.</li>
+      <li>Sie übertragen und den Empfänger die Prüfsumme vergleichen lassen.</li>
+    </ol>
+    <p>
+      Schließen Sie Bearbeitung, Seitenauswahl, Schwärzung und Komprimierung zuerst ab. Ein Passwortschutz entfernt keine Angabe, deren Löschung Sie vergessen haben. Eine Prüfsumme sagt nicht, ob die richtigen Seiten im Paket sind. Bewahren Sie das Original sicher auf. Jede spätere Änderung der geschützten Datei erfordert eine neue Prüfsumme.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ein Passwort zum Öffnen des PDFs verlangen</h2>
+    <p>
+      Erzeugen Sie mit dem <a href="../../passwort-generator/">Passwort- und Passphrasengenerator</a> ein langes, einzigartiges Zufallspasswort. Speichern Sie es dort, wo Sie sicher wieder darauf zugreifen können, beispielsweise in Ihrem Passwortmanager. Verwenden Sie weder ein Kontopasswort erneut noch ein Passwort, das in einem Ratgeber abgedruckt ist. Der <a href="../sind-online-passwortgeneratoren-sicher/">Generator-Ratgeber</a> erklärt die lokale Erzeugung.
+    </p>
+    <p>
+      Laden Sie das fertige Dokument in den <a href="../../pdf-schuetzen/">PDF-Schutz</a> und legen Sie das Öffnungspasswort fest. Einschränkungen beim Drucken oder Kopieren sind eine andere Funktion: Ein Dokument, das sich ohne Passwort öffnet, erfüllt das Ziel dieses Ablaufs nicht. Behalten Sie die Voreinstellung AES-256 bei, sofern eine geprüfte Kompatibilitätsanforderung keinen anderen Ansatz verlangt. Der <a href="../pdf-mit-passwort-schuetzen/">Ratgeber zum PDF-Schutz</a> erläutert die Einstellungen und ihre Grenzen.
+    </p>
+    <p>
+      Laden Sie <code>committee-papers-protected.pdf</code> herunter. Wählen Sie einen Dateinamen, der nicht selbst private Informationen preisgibt. Die Verschlüsselung eines Dokuments verbirgt den Namen des Anhangs nicht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Den geschützten Download testen</h2>
+    <p>
+      Öffnen Sie die heruntergeladene Datei in einem PDF-Leseprogramm und prüfen Sie, dass es das Öffnungspasswort verlangt. Verwenden Sie das gespeicherte Passwort und lesen Sie danach die Seiten. Merkt sich das Leseprogramm Passwörter, beginnen Sie eine neue Sitzung. Eine bereits entsperrte Vorschau zeigt nicht, was ein erstmaliger Empfänger sehen wird.
+    </p>
+    <p>
+      Prüfen Sie, ob der Empfänger passwortgeschützte PDFs verwenden kann und die Datei die Grenze des Übertragungswerkzeugs einhält. Text und Dateien teilen begrenzt eine einzelne Datei derzeit auf 200 MB. Muss das Dokument kleiner werden, kehren Sie zum Original zurück, komprimieren und prüfen Sie es und schützen Sie dann diese Fassung. Erledigen Sie das, bevor Sie ihren Hashwert berechnen.
+    </p>
+    <p>
+      Bewahren Sie Original und Passwort sicher auf. Geht das Passwort verloren, kann die geschützte Kopie unlesbar bleiben. Für die folgenden Schritte ist die verschlüsselte Kopie der Anhang. Wählen Sie nicht versehentlich das Original.
+    </p>
+  </section>
+
+  <section>
+    <h2>Den Hashwert der endgültigen verschlüsselten Bytes berechnen</h2>
+    <p>
+      Wählen Sie <code>committee-papers-protected.pdf</code> in <a href="../../pruefsumme-berechnen/">Hash und Prüfsumme</a> und verwenden Sie das SHA-256-Ergebnis. Kopieren Sie den vollständigen Hashwert: SHA-256 hat 64 hexadezimale Zeichen. Nur Anfang oder Ende zu vergleichen ist eine schwächere Prüfung. Der <a href="../pruefsumme-vergleichen/">Prüfsummen-Ratgeber</a> erklärt den Vergleich mit einem erwarteten Hashwert.
+    </p>
+    <p>
+      Zwei PDFs können identisch aussehen und dennoch unterschiedliche Hashwerte haben. Selbst wenn dasselbe Original zweimal getrennt verschlüsselt wird, können unterschiedliche Bytes entstehen. Berechnen Sie den Hashwert des tatsächlich heruntergeladenen geschützten PDFs, nicht den einer früheren Fassung oder einer vom Leseprogramm unverschlüsselt gespeicherten Kopie.
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Arbeitsbestandteil</th><th>Verwendung</th></tr></thead>
+      <tbody>
+        <tr><td>Original-PDF</td><td>Für spätere Änderungen sicher aufbewahren</td></tr>
+        <tr><td>Geschütztes PDF</td><td>Genau diese Datei hashen, übertragen und prüfen</td></tr>
+        <tr><td>Öffnungspasswort</td><td>Nur an den vorgesehenen Empfänger weitergeben</td></tr>
+        <tr><td>Erwarteter SHA-256-Wert</td><td>Zum Vergleich über einen vertrauenswürdigen Kanal übermitteln</td></tr>
+      </tbody>
+    </table></div></figure>
+  </section>
+
+  <section>
+    <h2>Die geschützte Kopie übertragen</h2>
+    <p>
+      Öffnen Sie <a href="../../text-teilen/">Text und Dateien teilen</a>, wählen Sie den geschützten Download und laden Sie den Empfänger ein. Behalten Sie den privaten Zugang bei und genehmigen Sie das vorgesehene Empfangsgerät. Lassen Sie den sendenden Tab geöffnet, bis der Empfänger den Download abgeschlossen hat. Der <a href="../text-zwischen-geraeten-teilen/">Ratgeber zum Teilen</a> erklärt Verbindungsoptionen und Fehlerbehebung.
+    </p>
+    <p>
+      Dieser Schritt verwendet bewusst ein Netzwerk. Beim üblichen Ablauf zwischen Geräten vermittelt ein öffentlicher Rendezvous-Dienst den Kontakt zwischen den Browsern. Auch der Modus für das lokale Netzwerk braucht diese Vermittlung. Bei Direct wird die Datei direkt zwischen den Gegenstellen übertragen. Die Wahl von Cloud relay leitet dagegen verschlüsselten WebRTC-Verkehr über den Relay-Dienst. Der Vermittlungsdienst transportiert keine Dateiinhalte. Der Passwortschutz bleibt auch auf dem heruntergeladenen PDF erhalten.
+    </p>
+    <p>
+      Übermitteln Sie das Passwort über einen getrennten vertrauenswürdigen Kanal. Geben Sie auch den erwarteten Hashwert über einen authentifizierten Kanal weiter, etwa Ihre bereits bestehende Unterhaltung mit dem Empfänger. Eine ausgetauschte Datei und ein gemeinsam ausgetauschter Hashwert könnten zueinander passen. Ein Hashwert, der nur neben einem nicht vertrauenswürdigen Download steht, belegt daher dessen Herkunft nicht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die empfangene Datei vor einer Änderung vergleichen</h2>
+    <p>
+      Laden Sie auf dem Empfangsgerät die Datei herunter und öffnen Sie <a href="../../pruefsumme-berechnen/">Hash und Prüfsumme</a>. Wählen Sie das empfangene PDF, verwenden Sie SHA-256 und vergleichen Sie den gesamten Hashwert mit dem vertrauenswürdigen erwarteten Wert. Das Vergleichsfeld des Werkzeugs erspart Ihnen, ein einzelnes falsches Zeichen mit bloßem Auge finden zu müssen.
+    </p>
+    <p>
+      Ein übereinstimmender SHA-256-Wert ist ein starker Beleg dafür, dass die empfangenen Bytes der vom Absender gehashten Kopie entsprechen. Er identifiziert allein weder den Urheber noch bestätigt er die Richtigkeit des Inhalts oder macht das Öffnen sicher. Dieser Ablauf setzt ein erwartetes Dokument von einem bekannten Absender voraus.
+    </p>
+    <p>
+      Unterscheiden sich die Hashwerte, prüfen Sie zuerst, ob beide Personen denselben Algorithmus und die geschützte Kopie gewählt haben. Ein ähnlich benanntes Original, ein neuer verschlüsselter Export oder eine später gespeicherte Fassung können die Abweichung erklären. Klären Sie das, bevor Sie die empfangene Kopie als verifiziert bezeichnen. Entschlüsseln und speichern Sie die Datei vor dem Vergleich nicht erneut, denn das würde ihre Bytes verändern.
+    </p>
+    <p>
+      Wenn der Vergleich erfolgreich ist, öffnen Sie dieselbe Datei mit dem Passwort und prüfen Sie, ob die vorgesehenen Seiten lesbar sind. Hashen und Lesen beantworten unterschiedliche Fragen. Diese letzte Prüfung bleibt deshalb wichtig.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Übertragung nach bestätigtem Empfang beenden</h2>
+    <p>
+      Schließen Sie den sendenden Tab, nachdem der Empfänger das Dokument heruntergeladen, geprüft und geöffnet hat. Damit endet die laufende Bereitstellung. Eine bereits heruntergeladene Kopie wird dadurch nicht gelöscht, und das PDF-Passwort bietet weder ein Ablaufdatum noch einen Widerruf aus der Ferne. Wer Datei und Passwort hat, kann den Zugang behalten.
+    </p>
+    <p>
+      Die abgeschlossene Übergabe lässt sich konkret beschreiben: Das PDF verlangt ein Öffnungspasswort, die empfangene verschlüsselte Datei entspricht dem erwarteten SHA-256-Wert, und der vorgesehene Empfänger kann die vorgesehenen Seiten lesen. Beschränken Sie die Weitergabe von Einladung und Passwort auf diesen Empfänger.
+    </p>
+  </section>

@@ -3,13 +3,13 @@
 #
 
 nav = "Apilar fotografías"
-title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
-description = "Apilar combina una ráfaga de tomas en una sola imagen. Qué método te hace falta depende de qué quieras perder: el ruido, los transeúntes o la poca profundidad de campo de una macro. Cómo funciona cada uno, qué cuesta y dónde encajan los archivos RAW."
+title = "Cómo apilar fotos para reducir ruido, quitar personas o crear estelas de estrellas"
+description = "Usa Media para una ráfaga más limpia, Mediana para personas en movimiento o Aclarar para estelas de estrellas. Prepara tomas consistentes, alinea, compara y guarda; conoce los límites de las vistas previas RAW."
 
-heading = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
-lede = "Una ráfaga contiene más información que cada toma por separado. La media reduce el ruido aleatorio independiente; el valor central de cada píxel puede quitar lo que aparece en menos de la mitad de las tomas. La elección depende de lo que se movió."
+heading = "Cómo apilar fotos para reducir ruido, quitar personas o crear estelas de estrellas"
+lede = "Elige el método de apilado según el resultado que necesitas: una ráfaga más limpia, un fondo sin personas en movimiento o estelas de estrellas. Empieza con tomas consistentes, alinea cuando haga falta y compara la pila terminada antes de guardarla."
 
-updated = "13 de octubre de 2026"
+updated = "23 de octubre de 2026"
 
 og_title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
 og_description = "Promedia una ráfaga para matar el ruido, toma la mediana para vaciar una plaza concurrida, aclara para dejar estelas de estrellas. Qué método resuelve qué problema, y dónde encajan los archivos RAW."

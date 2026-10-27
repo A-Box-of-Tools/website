@@ -1,0 +1,57 @@
+  <section>
+    <h2>Empieza reproduciendo el problema una vez de forma controlada</h2>
+    <p>Imagina una página ficticia de existencias en la que cambiar una cantidad de 3 a 4 y guardarla hace que vuelva a 3. Otra persona necesita ver el valor inicial, el cambio, la acción de guardar y el resultado inesperado. Un primer plano del valor final no basta para explicar el fallo.</p>
+    <p>Graba un artículo de prueba, cierra las ventanas ajenas al problema y silencia las notificaciones. Captura solo el sonido que necesite el informe. Si aparece el nombre de un cliente, una contraseña o una conversación privada, haz una nueva grabación con datos de ejemplo seguros siempre que sea posible. Preparar la escena es más sencillo que descubrir contenido sensible después de editar.</p>
+    <p>La secuencia es <a href="../../cortar-video/">Cortar vídeo</a>, de forma opcional <a href="../../recortar-video/">Recortar vídeo</a> y, después, <a href="../../comprimir-video/">Comprimir vídeo</a>. Descarga cada resultado y cárgalo en la siguiente herramienta, usando un enlace para continuar cuando se ofrezca. Guarda el original por separado. La preparación de los archivos se realiza en el navegador; enviar el informe terminado es un paso posterior y deliberado.</p>
+  </section>
+
+  <section>
+    <h2>Conserva lo que ocurre antes del fallo</h2>
+    <p>Abre la grabación en la <a href="../../cortar-video/">herramienta de corte</a> y localiza un intento completo. Empieza antes de que cambie la cantidad, con el valor original visible. Termina cuando se haya estabilizado el resultado del guardado fallido. Conserva las esperas cuando formen parte del problema: cortar directamente desde Guardar al resultado podría ocultar un indicador de carga, un mensaje o un problema de tiempos.</p>
+    <p>Elimina el tiempo de preparación y los intentos repetidos que no aporten información. Un vídeo más breve es más fácil de seguir y suele necesitar menos compresión. En este ejemplo, conserva un intento continuo en lugar de unir momentos independientes como si fueran una sola reproducción del problema.</p>
+    <p>Guarda <code>01-reproduction.mp4</code> y reprodúcelo de principio a fin. Comprueba el inicio y el final realmente exportados: un corte sin pérdidas puede quedar en un fotograma clave cercano en lugar de hacerlo exactamente donde lo marcaste. La <a href="../cortar-un-video/">guía de corte</a> explica cómo elegir entre ese límite y un corte preciso con recodificación. Incluye los fotogramas adicionales en la revisión de privacidad.</p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-screen-recording-for-support/marks.webp" loading="lazy" decoding="async"
+           alt="La línea de tiempo de Cortar vídeo y los controles para marcar las partes que se conservarán.">
+      <figcaption>La herramienta de corte con un vídeo de ejemplo. Conserva la acción anterior al fallo e inspecciona los límites reales del vídeo descargado.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Recorta solo cuando el área circundante sea innecesaria</h2>
+    <p>Si la aplicación está rodeada de un escritorio vacío, carga el archivo cortado en la <a href="../../recortar-video/">herramienta de recorte</a>. Conserva la fila modificada, el control Guardar y la respuesta de la aplicación. Recortar hasta dejar solo el campo de cantidad eliminaría la acción que permite reproducir este ejemplo.</p>
+    <p>Guarda <code>02-framed.mp4</code> y mira el resultado completo. Un mensaje puede aparecer brevemente cerca de un borde, o el puntero puede salir de la zona que al principio considerabas importante. Recortar recodifica la imagen; omite este paso si el encuadre original ya funciona. La <a href="../recortar-un-video/">guía de recorte</a> explica los controles.</p>
+    <p>El recorte elimina los bordes del fotograma. No oculta información privada en la zona conservada, no elimina el audio ni sustituye la revisión de todos los momentos.</p>
+  </section>
+
+  <section>
+    <h2>Comprime pensando tanto en la legibilidad como en el tamaño</h2>
+    <p>Carga la última versión revisada en la <a href="../../comprimir-video/">herramienta de compresión</a>. Consulta los requisitos de archivos adjuntos del sistema de soporte concreto; no supongas que todas las bandejas de entrada aceptan el mismo tamaño o formato. Deja cierto margen por debajo del límite.</p>
+    <p>Guarda <code>stock-save-failure.mp4</code> e inspecciona el resultado descargado al tamaño en que probablemente se verá. ¿Puedes distinguir el 3 del 4 y leer el mensaje que aparece después de guardar? Un vídeo que cabe, pero difumina las pruebas, no cumple su finalidad.</p>
+    <p>Si una compresión mayor destruye ese detalle, vuelve a la versión intermedia más clara y usa un método de transferencia que acepte el destinatario. Elimina el tiempo redundante antes de sacrificar píxeles legibles. Consulta la <a href="../comprimir-un-video/">guía de compresión</a> para conocer las ventajas y limitaciones. No comprimas repetidamente un resultado ya degradado.</p>
+    <p>Si la siguiente herramienta no puede abrir el archivo de origen, el <a href="../../convertir-a-mp4/">Conversor a MP4</a> ofrece un paso de compatibilidad previo a la edición. Omítelo si el archivo ya funciona. Comprueba cada archivo resultante en lugar de asumir que la extensión MP4 garantiza su reproducción.</p>
+  </section>
+
+  <section>
+    <h2>Añade una imagen fija cuando responda a otra pregunta</h2>
+    <p>Una captura puede facilitar la inspección de un mensaje de error pequeño. Abre el original o la versión intermedia más clara en <a href="../../capturar-fotograma-de-video/">Capturar fotograma</a>, elige el momento y guarda un PNG. La <a href="../capturar-un-fotograma-de-un-video/">guía de fotogramas</a> explica cómo extraer la imagen decodificada sin fotografiar los controles de un reproductor.</p>
+    <p>Si la imagen contiene un identificador irrelevante, usa <a href="../../censurar-imagen/">Censurar imagen</a> e inspecciona la imagen exportada. Guárdala como <code>stock-save-result.png</code>. <strong>Censurar la imagen solo modifica esa imagen.</strong> El mismo identificador permanece en el vídeo si aparece allí. Sigue la <a href="../censurar-una-imagen/">guía para censurar una imagen</a> en el caso de la captura; vuelve a grabar el vídeo de forma segura cuando siga conteniendo material privado.</p>
+  </section>
+
+  <section>
+    <h2>Escribe lo que el vídeo no puede explicar por sí solo</h2>
+    <p>Incluye un informe breve que el destinatario pueda buscar y seguir sin transcribir la grabación:</p>
+    <ul>
+      <li><strong>Pasos:</strong> Abre la página de existencias del artículo de prueba, cambia 3 por 4 y guarda.</li>
+      <li><strong>Resultado esperado:</strong> La cantidad guardada sigue siendo 4.</li>
+      <li><strong>Resultado real:</strong> La cantidad vuelve a 3 después de guardar.</li>
+      <li><strong>Contexto:</strong> Navegador y dispositivo relevantes, frecuencia y preparación necesaria para reproducirlo.</li>
+    </ul>
+    <p>Distingue las observaciones de las suposiciones sobre la causa. Indica el nombre exacto del vídeo y de la imagen opcional que adjuntas, para que otra exportación con un nombre parecido no se confunda con las pruebas del informe.</p>
+  </section>
+
+  <section>
+    <h2>Revisa los archivos adjuntos exactos antes de enviarlos</h2>
+    <p>Reproduce de nuevo el vídeo final descargado, incluido el sonido. Busca nombres, notificaciones, pestañas, datos de cuentas y material privado entre los momentos en los que estabas concentrándote. Inspecciona la captura opcional por separado. Comprueba la legibilidad, la reproducción y el tamaño del archivo.</p>
+    <p>Estas herramientas no ofrecen enmascaramiento ni censura de vídeo. La edición y la compresión no demuestran que una grabación sea segura para compartir. Si queda contenido sensible en la imagen o el sonido conservados, vuelve a grabar el ejemplo antes de enviarlo. El informe terminado reúne un vídeo legible, pasos reproducibles y solo la imagen adicional que ayude a explicar el fallo.</p>
+  </section>

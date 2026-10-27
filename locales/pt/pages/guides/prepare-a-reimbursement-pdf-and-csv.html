@@ -1,0 +1,64 @@
+  <section>
+    <h2>Gere os comprovantes e as linhas a partir dos mesmos registros</h2>
+    <p>Um PDF oferece ao destinatário recibos para ler. Um CSV oferece campos para conferir ou abrir em uma planilha. Comece no <a href="../../extrair-recibos-faturas/">Extrator de recibos e faturas</a>, revise os registros e use os anexos JPEG preparados em <a href="../../imagens-para-pdf/">Imagens para PDF</a>. Comprima o PDF apenas se ele precisar atender a um limite menor de anexos.</p>
+    <p>Este exemplo usa três recibos fictícios em dólares canadenses:</p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Recibo, na ordem dos registros</th><th>Total confirmado</th></tr></thead>
+      <tbody>
+        <tr><td>1. North Street Print</td><td>CAD 12,40</td></tr>
+        <tr><td>2. Market Car Park</td><td>CAD 8,00</td></tr>
+        <tr><td>3. Harbour Stationery</td><td>CAD 17,60</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>O total esperado é CAD 38,00. Confira primeiro os campos e formatos de anexos exigidos pelo destinatário. Este artigo monta um par de arquivos correspondentes; ele não decide se uma despesa se qualifica para pagamento.</p>
+  </section>
+
+  <section>
+    <h2>Comece com uma foto por documento</h2>
+    <p>Guarde os originais e selecione cópias no <a href="../../extrair-recibos-faturas/">extrator</a>. Ele aceita JPEG, PNG, WebP e AVIF compatíveis com o navegador, até 20 imagens por lote e 20 MB por imagem. O reconhecimento usa um modelo local de texto impresso em inglês. Converta primeiro as imagens incompatíveis e obtenha uma foto mais nítida quando uma data ou um valor estiver borrado a ponto de não poder ser lido.</p>
+    <p>Uma imagem vira um registro de documento. Três páginas de uma fatura não são agrupadas automaticamente em uma despesa. Totais repetidos nessas páginas podem criar vários registros para a mesma cobrança; este processo simples pressupõe um recibo completo em cada foto. O <a href="../extrair-recibos-e-faturas/">guia de extração</a> descreve o alcance da ferramenta e as etapas de revisão.</p>
+  </section>
+
+  <section>
+    <h2>Revise os campos e os recortes juntos</h2>
+    <p>O reconhecimento sugere valores; compare com a imagem. Confira estabelecimento, data, referência, total e moeda. Um subtotal, imposto, dinheiro entregue ou troco pode parecer plausível sem ser o valor final do recibo. Não invente um valor ausente para fazer uma linha parecer completa.</p>
+    <p>Mantenha o documento inteiro dentro do recorte do anexo, incluindo número do recibo, valor final e detalhamento relevante dos impostos. Confirme campos e recorte somente depois de lê-los. Uma alteração posterior no recorte ou em um campo pode desfazer a confirmação; por isso, revise o status novamente antes de exportar.</p>
+    <p>Neste exemplo, escolha CAD como moeda final e confira se as três moedas originais são CAD. Registros na mesma moeda usam uma taxa de um; não é necessário consultar câmbio online. Com moedas diferentes, siga a revisão de taxas do guia de extração em vez de somar valores em moedas distintas.</p>
+    <p>Somente registros confirmados entram nos totais. Uma soma aparentemente correta ainda pode omitir um recibo inacabado. Confira juntos os três registros confirmados e CAD 38,00. Os avisos de duplicidade comparam apenas nome e tamanho do arquivo: inspecione as imagens, pois duplicatas renomeadas podem escapar de um aviso e imagens diferentes podem gerar um.</p>
+  </section>
+
+  <section>
+    <h2>Exporte linhas e imagens correspondentes</h2>
+    <p>Baixe o CSV revisado e os anexos JPEG preparados, ou o ZIP que contém ambos. Extraia o ZIP antes de selecionar as imagens para a próxima ferramenta. Os nomes dos anexos incluem números de registro estáveis, enquanto a coluna de nome de arquivo do CSV contém o nome da foto original. Salve também uma cópia do relatório de texto: ele lista juntos os nomes originais e os dos anexos preparados. Use essa correspondência e o estabelecimento, a data e o valor para associar linhas e imagens, principalmente quando os nomes de arquivos da câmera se repetirem.</p>
+    <p>É possível exportar um CSV com a revisão inacabada. Abra o arquivo realmente baixado e confira o status e os campos de cada registro; exportar não significa que tudo foi confirmado. Neste exemplo, deve haver três registros de despesas pretendidas, cada um com uma imagem correspondente e o valor em CAD conferido na tabela acima. O CSV também termina com linhas de contagem de documentos, contagem de conferidos e total geral; elas são resumos, não recibos extras. Exclua essas linhas ao somar as despesas por conta própria.</p>
+    <p>Salve o conjunto como <code>workshop-expenses.csv</code> e uma pasta de trabalho com imagens numeradas dos recibos. Mantenha as fotos originais separadas. Abrir o CSV em uma planilha pode aplicar a interpretação de datas ou números desse programa; compare a exibição com o texto exportado e o recibo antes de confiar em um valor importado.</p>
+  </section>
+
+  <section>
+    <h2>Monte o PDF na ordem dos registros</h2>
+    <p>Escolha os JPEGs preparados em <a href="../../imagens-para-pdf/">Imagens para PDF</a>. A passagem entre ferramentas consiste em baixar e selecionar; escolher novamente as fotos originais da câmera descartaria os recortes revisados e quebraria a correspondência com aqueles anexos.</p>
+    <p>Organize as imagens na ordem das linhas de despesas do CSV: impressão, estacionamento e papelaria. Confira a correspondência de nomes no relatório em vez de confiar na ordenação do seletor de arquivos. Escolha uma disposição de página que mantenha cada recibo inteiro e legível e salve <code>workshop-receipts.pdf</code>. O <a href="../juntar-imagens-em-um-pdf/">guia de imagens para PDF</a> explica tamanhos de página e qualidade de imagem.</p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-reimbursement-pdf-and-csv/layout.webp" loading="lazy" decoding="async"
+           alt="Controles de disposição de página de Imagens para PDF para escolher o tamanho do papel e como a imagem se ajusta à página.">
+      <figcaption>Controles de disposição de página. Mantenha recibos longos inteiros e confira as letras pequenas no PDF exportado, não apenas na prévia.</figcaption>
+    </figure>
+    <p>Abra o PDF baixado e leia todas as páginas. Confira orientação, bordas completas, datas e números pequenos dos impostos. Esse PDF de imagens não ganha uma camada de texto pesquisável só porque foi usado OCR para criar o CSV.</p>
+  </section>
+
+  <section>
+    <h2>Comprima apenas se o limite do destinatário exigir</h2>
+    <p>Se o PDF couber, mantenha-o. O extrator já prepara anexos JPEG comprimidos, então outra passagem pode oferecer pouco benefício e dificultar a leitura das letras pequenas. Caso contrário, teste uma cópia em <a href="../../comprimir-pdf/">Comprimir PDF</a>, compare os tamanhos e releia todos os recibos. A compressão não garante uma redução específica. O <a href="../deixar-um-pdf-menor/">guia de compressão de PDF</a> explica as escolhas.</p>
+  </section>
+
+  <section>
+    <h2>Confira o par que você vai apresentar</h2>
+    <ul>
+      <li>O CSV contém as três despesas pretendidas e confirmadas, com as moedas corretas.</li>
+      <li>Cada recibo corresponde a um registro e aparece na ordem correspondente no PDF.</li>
+      <li>Cada página final do PDF preserva os detalhes que sustentam seu valor.</li>
+      <li>Os valores confirmados em CAD somam CAD 38,00.</li>
+      <li>Os anexos exatos atendem aos requisitos de formato e tamanho do destinatário.</li>
+    </ul>
+    <p>O OCR e a revisão manual deste exemplo acontecem localmente. Uma consulta opcional de câmbio histórico é uma ação de rede separada; enviar os arquivos resultantes por e-mail ou outro serviço é outra. Guarde os originais para dúvidas futuras. Um PDF e um CSV correspondentes facilitam a revisão, mas não comprovam que o reconhecimento estava correto nem garantem aceitação.</p>
+  </section>

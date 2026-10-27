@@ -1,0 +1,104 @@
+  <section>
+    <h2>Assemblez le dossier, retirez les détails privés, puis finalisez-le</h2>
+    <p>
+      Commencez par l'<a href="../../fusionner-des-pdf/">outil de fusion PDF</a> pour choisir et ordonner les pages. Utilisez le <a href="../../caviarder-un-pdf/">caviardeur de PDF</a> pour retirer le texte privé du document assemblé. Ajoutez un filigrane indiquant le destinataire s'il aide à comprendre l'usage du dossier, puis compressez uniquement si le fichier final doit être plus petit.
+    </p>
+    <p>
+      Ces outils traitent les fichiers localement dans votre navigateur. Téléchargez chaque résultat et ouvrez ce fichier dans l'outil suivant ; lorsqu'un lien pour poursuivre le travail est proposé, il peut vous transmettre le résultat. Conservez les originaux et les copies de travail dans un dossier distinct de la pièce jointe que vous comptez envoyer.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'exemple : quatre pages pour examiner un atelier</h2>
+    <p>
+      Morgan examine le programme d'un atelier fictif. Les sources contiennent aussi un numéro de téléphone personnel et un coût interne dont Morgan n'a pas besoin. Établissez la liste des pages avant d'ouvrir un outil :
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Pages sources</th><th>Utilité</th></tr></thead>
+      <tbody>
+        <tr><td><code>outline.pdf</code>, pages 1 et 3</td><td>Présentation et horaires</td></tr>
+        <tr><td><code>delivery.pdf</code>, page 2</td><td>Modalités de livraison</td></tr>
+        <tr><td><code>equipment.pdf</code>, page 1</td><td>Liste du matériel</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      Le résultat doit contenir quatre pages dans cet ordre. Écarter une page inutile est plus simple à vérifier que la conserver en essayant d'en retirer tous les détails privés. Gardez assez de contexte pour que le lecteur comprenne ce qui reste.
+    </p>
+  </section>
+
+  <section>
+    <h2>1. Sélectionnez et ordonnez les pages</h2>
+    <p>
+      Chargez les PDF sources dans l'<a href="../../fusionner-des-pdf/">outil de fusion</a>. Conservez les pages nécessaires et placez-les dans l'ordre de lecture. Les numéros de la liste de travail changent à mesure que vous retirez ou déplacez des pages ; vérifiez le nom du fichier source et son contenu par rapport à votre liste, au lieu d'appliquer les numéros d'origine à une liste déjà modifiée.
+    </p>
+    <p>
+      Enregistrez <code>01-selected.pdf</code>, puis ouvrez-le. Vérifiez qu'il contient quatre pages dans le bon ordre, que les horaires sont complets et qu'aucune note supplémentaire sur le matériel ne s'est glissée dedans. Les renvois tels que « voir la page suivante » doivent rester cohérents. Le <a href="../fusionner-et-diviser-des-pdf/">guide de fusion et de découpage</a> explique ce que l'assemblage préserve et ce qu'il ne peut pas reprendre.
+    </p>
+  </section>
+
+  <section>
+    <h2>2. Retirez le texte privé du dossier assemblé</h2>
+    <p>
+      Chargez <code>01-selected.pdf</code> dans le <a href="../../caviarder-un-pdf/">caviardeur de PDF</a>. Recherchez le numéro de téléphone et le coût interne, examinez les résultats et sélectionnez chaque occurrence à retirer. Vérifiez aussi les en-têtes, pieds de page et coordonnées répétées. Les motifs automatiques aident à repérer des éléments possibles ; ils ne décident pas de ce que ce destinataire doit voir.
+    </p>
+    <p>
+      Le caviardeur retire les instructions de texte prises en charge et vérifie sa sortie avant de proposer le téléchargement. Un rectangle sombre dessiné dans un éditeur PDF ordinaire peut laisser les mots d'origine en dessous. Suivez le <a href="../caviarder-un-pdf/">guide de caviardage des PDF</a> et arrêtez si l'outil signale du texte illisible ou ne peut pas traiter le document de manière fiable.
+    </p>
+    <p>
+      Enregistrez <code>02-redacted.pdf</code> et rouvrez ce fichier téléchargé. Examinez chaque suppression et les informations voisines. Recherchez les valeurs retirées et essayez de sélectionner et de copier les zones concernées. Ces vérifications sont utiles, sans constituer une preuve universelle : les images, les encodages de polices illisibles et les contenus non pris en charge peuvent échapper à la recherche de texte.
+    </p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-redacted-pdf-pack/find.webp" loading="lazy" decoding="async"
+           alt="Le champ de recherche du caviardeur de PDF et les motifs facultatifs de données sensibles, avec des identifiants de facture fictifs saisis.">
+      <figcaption>
+        Recherchez les valeurs que vous avez décidé de retirer, puis examinez les résultats. Les termes de facture montrés ici ne constituent pas une liste exhaustive pour un autre document.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Si une page est numérisée, caviardez d'abord ses pixels</h2>
+    <p>
+      Une numérisation est une image. Retirer sa couche de texte OCR consultable n'efface pas les mots visibles dans cette image. Une recherche sans résultat ne prouve pas qu'une page numérisée a été caviardée.
+    </p>
+    <p>
+      Pour des photos sources, utilisez le <a href="../../caviarder-une-image/">caviardeur d'images</a> avant d'assembler les images exportées avec <a href="../../images-en-pdf/">Images en PDF</a>. Examinez les pixels exportés, puis le PDF obtenu. Les guides de <a href="../caviarder-une-image/">caviardage d'images</a> et d'<a href="../reunir-des-images-dans-un-pdf/">assemblage d'images</a> présentent cette solution. Un PDF numérisé existant n'est pas une image que ces outils acceptent en entrée : repartez d'images sources adaptées ou d'un processus qui le prend en charge.
+    </p>
+  </section>
+
+  <section>
+    <h2>3. Ajoutez le destinataire et l'usage, si cela aide</h2>
+    <p>
+      Chargez <code>02-redacted.pdf</code> dans <a href="../../filigrane-pdf/">Filigrane PDF</a> et ajoutez « Examen de l'atelier pour Morgan ». Enregistrez <code>03-marked.pdf</code>. Vérifiez chaque page pour vous assurer que la marque laisse les dates, schémas et petits tableaux lisibles. Le <a href="../ajouter-un-filigrane-a-un-pdf/">guide des filigranes</a> explique le placement et les limites de cette marque.
+    </p>
+    <p>
+      La marque indique au lecteur l'usage prévu. Elle n'empêche ni la transmission, ni la copie, ni la photographie, et ne remplace pas le caviardage. Omettez-la si cette indication n'apporte rien d'utile.
+    </p>
+  </section>
+
+  <section>
+    <h2>4. Compressez uniquement si le fichier final en a besoin</h2>
+    <p>
+      Vérifiez la limite de taille des pièces jointes à destination. Si le fichier marqué reste largement en dessous, conservez-le. Sinon, essayez une copie dans le <a href="../../compresser-un-pdf/">compresseur de PDF</a> et comparez le résultat à l'entrée. Un court document texte peut à peine diminuer.
+    </p>
+    <p>
+      Lisez le tableau du matériel et les petits caractères à une taille d'affichage pratique. Une pièce jointe plus petite n'est pas un progrès si Morgan ne peut pas la lire. Le <a href="../reduire-la-taille-d-un-pdf/">guide de compression</a> explique d'où viennent les économies. Nommez la version finale retenue <code>workshop-review-morgan.pdf</code>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vérifiez la pièce jointe exacte que vous allez envoyer</h2>
+    <p>
+      Ouvrez le fichier final téléchargé, plutôt qu'un aperçu antérieur. Chaque opération a produit une sortie différente ; la dernière pièce jointe doit donc être vérifiée à son tour :
+    </p>
+    <ul>
+      <li>Comptez et lisez les quatre pages dans leur ordre final.</li>
+      <li>Examinez les zones supprimées et répétez les vérifications par recherche et copie.</li>
+      <li>Vérifiez l'indication du destinataire et la lisibilité après compression.</li>
+      <li>Examinez la taille, les propriétés et le nom du fichier pour repérer des détails involontaires.</li>
+      <li>Joignez ce fichier vérifié, et non une copie de travail.</li>
+    </ul>
+    <p>
+      Sélectionner les pages d'abord limite ce qu'il faut examiner. Le caviardage vient ensuite ; le filigrane et la compression finalisent la copie. Si le destinataire accepte les PDF protégés par mot de passe et que vous en avez besoin, terminez ces modifications avant d'ajouter la protection. Gardez les originaux à part et n'envoyez que la pièce jointe vérifiée.
+    </p>
+  </section>

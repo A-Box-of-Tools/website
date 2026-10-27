@@ -3,15 +3,11 @@
 #
 
 nav = "Separar um GIF"
-title = "Como separar um GIF em quadros (e o que é um quadro de verdade)"
-description = "Tire cada quadro de um GIF animado em PNG: por que alguns quadros são só um pedacinho da imagem, o que acontece com a transparência, e como guardar os tempos para montar tudo de novo."
-heading = "Como separar um GIF em quadros"
-lede = """
-    Tirar os quadros custa um arrastar e um botão. O que vale entender é o que é
-    de fato um &ldquo;quadro&rdquo; de GIF, porque o formato guarda uma coisa
-    bem diferente do que você vê &mdash; e é dessa diferença que sai o seu
-    décimo quarto quadro, um retângulo com a boca de alguém dentro."""
-updated = "13 de outubro de 2026"
+title = "Como dividir um GIF em quadros PNG, um ZIP ou uma folha de sprites"
+description = "Extraia quadros GIF como PNGs completos, um ZIP ou uma folha de sprites. Mantenha a transparência e uma referência de tempos, reconstrua um GIF editado ou converta o original em MP4."
+heading = "Como dividir um GIF em quadros PNG"
+lede = "Salve uma imagem útil, uma pasta de quadros PNG ou uma folha de sprites sem enviar a animação. Escolha imagens completas para editar, guarde uma referência separada dos atrasos e decida quando converter o GIF original diretamente em MP4 é o melhor próximo passo."
+updated = "23 de outubro de 2026"
 og_title = "Como separar um GIF em quadros"
 og_description = "Cada quadro de um GIF em PNG: por que alguns são só um pedaço, o que acontece com a transparência, e como guardar os tempos."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

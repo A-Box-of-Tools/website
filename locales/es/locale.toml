@@ -43,6 +43,16 @@ complete = true
 #
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "guias/preparar-paquete-pdf-censurado"
+"guides/prepare-a-screen-recording-for-support" = "guias/preparar-grabacion-de-pantalla-para-soporte"
+"guides/turn-a-bitmap-logo-into-website-assets" = "guias/convertir-logotipo-bitmap-en-recursos-web"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "guias/preparar-pdf-y-csv-para-reembolso"
+"guides/protect-transfer-and-verify-a-pdf" = "guias/proteger-transferir-y-verificar-un-pdf"
+"guides/where-do-your-file-copies-go" = "guias/donde-van-las-copias-de-tus-archivos"
+"guides/does-private-browsing-keep-downloads-private" = "guias/navegacion-privada-y-archivos-descargados"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "guias/que-puede-revelar-un-archivo-corriente-sobre-ti"
+"guides/receive-voice-from-nearby-devices" = "guias/recibir-voz-de-dispositivos-cercanos"
+"guides/share-a-browser-tab" = "guias/compartir-pestana-del-navegador"
 "guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-en-red-local"
 "guides/arrange-images" = "guias/organizar-imagenes"
 "guides/watch-camera-from-another-device" = "guias/ver-camara-de-otro-dispositivo"

@@ -1,0 +1,94 @@
+  <section>
+    <h2>Mit einer Form beginnen, die sich nachzeichnen lässt</h2>
+    <p>
+      Eine erfundene Garten-Website hat ein Rasterlogo: ein ausgefülltes Blatt mit Stiel auf einfarbigem Hintergrund. Sie benötigt ein skalierbares Logo, ein transparentes PNG und ein Favicon, das im Browser-Tab erkennbar bleibt. Die Reihenfolge lautet <a href="../../bild-in-svg-umwandeln/">Bild zu SVG</a>, <a href="../../svg-in-png-umwandeln/">SVG zu Bild</a> und danach <a href="../../favicon-erstellen/">Bild zu ICO</a>.
+    </p>
+    <p>
+      Jedes Werkzeug erfüllt eine andere Aufgabe: einen Umriss nachzeichnen, ihn in Pixel umsetzen und Symboldateien zusammenstellen. Dieser Weg eignet sich für einfache einfarbige Formen. Die Vektorisierung erzeugt einen einzelnen SVG-Pfad. Sie rekonstruiert kein mehrfarbiges Logo, Foto, keinen Farbverlauf und keine Illustration mit Ebenen. Beschaffen Sie die Originalgrafik, wenn solche Einzelheiten das Zeichen ausmachen. Haben Sie bereits ein gutes SVG, überspringen Sie die Vektorisierung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die klarste Ausgangsdatei wählen</h2>
+    <p>
+      Verwenden Sie das beste verfügbare Rasteroriginal. Ein Bildschirmfoto einer Webseite kann Komprimierungsartefakte, einen eingefärbten Hintergrund oder fremden Text enthalten. Vergrößern stellt fehlende Einzelheiten nicht wieder her. In diesem Beispiel liegt das Blatt in einem quadratischen Bild mit einem Rand auf jeder Seite.
+    </p>
+    <p>
+      Entscheiden Sie, was zum Zeichen gehört. Blatt und Stiel gehören zusammen; der Name der Garten-Website muss nicht in ein Favicon passen. Bewahren Sie die Ausgangsdatei zum Vergleich getrennt auf. Ist sie winzig oder unscharf, bleibt die Nachzeichnung eine Annäherung, auch wenn sich die entstandene Geometrie skalieren lässt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Einmal vektorisieren und den Umriss prüfen</h2>
+    <p>
+      Öffnen Sie das Rasterbild in <a href="../../bild-in-svg-umwandeln/">Bild zu SVG</a>. Vergleichen Sie die nachgezeichnete Form mit der Vorlage. Prüfen Sie Blattspitze, Übergang zum Stiel und beabsichtigte Öffnungen. Entfernen Sie unerwünschte Bereiche mit der Vordergrundauswahl und den Korrekturwerkzeugen. Prüfen Sie das Ergebnis erneut, nachdem Sie die Glättung geändert haben.
+    </p>
+    <p>
+      Eine glatte Linie ist nicht automatisch eine getreue Linie. Zu viel Glättung kann das Blatt zu einem Oval machen; zu wenig kann Komprimierungsflecken als dauerhafte Geometrie erhalten. Der <a href="../bild-in-svg-umwandeln/">Vektorisierungsratgeber</a> erläutert diese Entscheidungen. Speichern Sie das akzeptierte Ergebnis als <code>leaf-master.svg</code>. Erzeugen Sie spätere Rastergrößen aus dieser Vorlage, statt ein bereits verkleinertes PNG zu vergrößern.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/outline.webp" loading="lazy" decoding="async"
+           alt="Bild zu SVG zeigt ein Schablonen-Rasterbild und seinen nachgezeichneten Umriss nebeneinander sowie Bedienelemente für Korrektur und Glättung.">
+      <figcaption>
+        Die Vektorisierungsfunktionen mit einer Beispielschablone. Vergleichen Sie Umriss und Öffnungen, bevor Sie den Vektor übernehmen. Ein neues Dateiformat belegt nicht, dass die Form stimmt.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>PNGs für bestimmte Aufgaben erzeugen</h2>
+    <p>
+      Laden Sie <code>leaf-master.svg</code> in <a href="../../svg-in-png-umwandeln/">SVG zu Bild</a>. Exportieren Sie für die quadratische Vorlage dieses Beispiels ein transparentes PNG mit 1024 mal 1024 Pixeln und nennen Sie es <code>leaf-icon-source.png</code>. Das ist eine Arbeitsgröße für dieses Beispiel, keine Vorgabe für jedes Logo. Behalten Sie die Proportionen bei und prüfen Sie den Rand. Verzerren Sie ein nicht quadratisches Zeichen nicht, um es in ein Quadrat zu zwingen. Das Symbolwerkzeug kann eine nicht quadratische Eingabe später mit Rand ergänzen.
+    </p>
+    <p>
+      Wählen Sie die Abmessungen im Rasterisierungswerkzeug. Eine gesonderte Größenänderung ist unnötig, wenn es die benötigten Pixel direkt erzeugen kann. Exportieren Sie außerdem ein PNG in der passenden Größe für die Platzierung des Logos auf der Website, falls dort eines benötigt wird. Benennen Sie es nach seinem Zweck, etwa <code>leaf-header.png</code>. Behalten Sie das SVG für Stellen, die Vektorgrafiken akzeptieren.
+    </p>
+    <p>
+      Öffnen Sie die exportierten PNGs und prüfen Sie Kanten und Transparenz. Eine weiße Vorschau allein sagt nicht, ob der Hintergrund transparent ist. Der <a href="../svg-in-png-umwandeln/">Ratgeber zu SVG und PNG</a> erklärt Abmessungen und Hintergrundoptionen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Website-Symbole zusammenstellen</h2>
+    <p>
+      Laden Sie <code>leaf-icon-source.png</code> in <a href="../../favicon-erstellen/">Bild zu ICO</a>. Wählen Sie die Website-Ausgabe und die benötigten Symbolgrößen. Bewahren Sie das erzeugte ICO, die Website-PNGs und die begleitenden Referenzdateien zusammen auf. Der <a href="../favicon-selbst-erstellen/">Favicon-Ratgeber</a> erklärt ihre Aufgaben.
+    </p>
+    <p>
+      Dieses Werkzeug unterstützt auch Anwendungssymbole für Windows und macOS. Eine ICNS-Datei gehört zu diesem macOS-Arbeitsablauf. Eine Website benötigt nicht jedes Format, das das Werkzeug erzeugen kann. Wählen Sie die Ausgaben nach ihrem Ziel. Das Erzeugen des Pakets installiert es nicht: Legen Sie die Dateien an den von Ihrer Website verwendeten Pfaden ab und aktualisieren Sie deren Symbolverweise.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/sizes.webp" loading="lazy" decoding="async"
+           alt="Das Symbolwerkzeug zeigt ein Beispielbild in den verschiedenen für die Ausgabe gewählten Größen.">
+      <figcaption>
+        Größenvorschauen mit einer Beispielgrafik. Prüfen Sie das kleinste Symbol selbst, nicht nur das große Ausgangsbild darüber.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Die kleinste Fassung gesondert beurteilen</h2>
+    <p>
+      Prüfen Sie das Symbol mit 16 mal 16 Pixeln in seiner tatsächlichen Anzeigegröße und danach die größeren Fassungen. Das Blatt kann bei 1024 Pixeln hervorragend aussehen, während sein Stiel im Tab-Symbol verschwindet oder eine schmale Öffnung zuläuft. Mehr Pixel in der Vorlage machen nicht jede feine Einzelheit in sechzehn Pixeln lesbar.
+    </p>
+    <p>
+      Funktioniert das kleine Symbol nicht, kehren Sie zur Grafik zurück und vereinfachen Sie sie gezielt. Ein kräftigerer Stiel oder eine einfachere Silhouette ist eine gestalterische Entscheidung. Eine andere Konvertereinstellung kann die Identität des Zeichens nicht für Sie bestimmen. Diese Werkzeuge ersetzen kein allgemeines Zeichenprogramm, wenn die Grafik selbst neu gestaltet werden muss.
+    </p>
+    <p>
+      Prüfen Sie transparente Ausgaben vor hellen und dunklen Hintergründen. Ein dunkles Blatt kann auf einer dunklen Fläche verschwinden. Erstellen Sie aus der Vorlage gezielt eine Alternative, wenn eine einzige Ausführung nicht für beide Hintergründe funktioniert, und wiederholen Sie die betreffenden Exporte und Prüfungen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Einen verständlichen Dateisatz übergeben</h2>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Datei</th><th>Zweck</th></tr></thead>
+      <tbody>
+        <tr><td><code>leaf-master.svg</code></td><td>Geprüfte skalierbare Grafik und Vorlage für spätere Exporte</td></tr>
+        <tr><td><code>leaf-header.png</code></td><td>Rasterlogo in der passenden Größe für seine Position auf der Seite</td></tr>
+        <tr><td>Website-Symbolpaket</td><td>ICO- und PNG-Dateien mit den benötigten Website-Verweisen</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      Bewahren Sie das größere PNG als Symbolvorlage bei den Arbeitsdateien auf. Öffnen Sie jede endgültige Ausgabe, prüfen Sie die Abmessungen und kontrollieren Sie die eingebundenen Symbole auf der tatsächlichen Website. Rufen Sie sie gegebenenfalls in einer neuen Browsersitzung auf, falls noch ein altes Symbol zwischengespeichert ist. Die Dateiverarbeitung erfolgt lokal; durch die Veröffentlichung werden die Ausgaben überall dort verfügbar, wo die Website sie bereitstellt. Verwenden Sie Grafiken, die Sie veröffentlichen möchten und nutzen dürfen.
+    </p>
+  </section>

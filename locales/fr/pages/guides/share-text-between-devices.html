@@ -1,18 +1,7 @@
   <section>
     <h2>La réponse courte</h2>
-  <p>Direct est le choix par défaut. Les indications de joignabilité directe ci-dessous concernent ce mode. Pour utiliser Cloud relay, l’hôte le choisit avant de démarrer et partage la nouvelle invitation. L’autre personne voit ce choix et le confirme avant la connexion. Direct ne bascule jamais automatiquement. Cloudflare transmet le contenu chiffré et voit les adresses, les horaires et le volume de trafic. Les deux appareils ont besoin d’internet pendant toute la session. Approbation, mot de passe et commandes du microphone restent nécessaires.</p>
-    <p>
-      Ouvrez <a href="../../partager-du-texte/">Partager du texte et des
-      fichiers</a> sur la machine qui détient la chose, écrivez ou joignez,
-      et appuyez sur <em>Commencer le partage</em>. La page donne au partage
-      un nom comme <code>brave-otter-42</code> ; sur l'autre appareil,
-      ouvrez la même page et ajoutez <code>#brave-otter-42</code> au bout de
-      l'adresse &mdash; ou suivez simplement le lien copié. L'autre appareil
-      demande avant de se connecter, vous l'admettez, et le texte ou le
-      fichier traverse chiffré, directement d'un navigateur à l'autre.
-      Fermez l'onglet qui partage, et c'est terminé, partout.
-    </p>
-    <p>Aucun texte ni fichier partagé n'a été envoyé à un serveur. C'est la forme du système. La suite explique pourquoi cela compte et ses limites réelles.</p>
+    <p>Ouvrez <a href="../../partager-du-texte/">Partager du texte et des fichiers</a> sur l’appareil qui détient le contenu, écrivez ou joignez le fichier, puis choisissez <em>Commencer le partage</em>. La page donne au partage un nom comme <code>brave-otter-42</code>. Sur l’autre appareil, ouvrez la même page et ajoutez <code>#brave-otter-42</code> à la fin de l’adresse, ou suivez simplement le lien copié. L’autre appareil demande avant de se connecter, vous l’admettez, et le texte ou le fichier traverse une connexion chiffrée. Direct est le choix par défaut. L’hôte peut choisir Cloud relay avant de démarrer ; le lecteur confirme ce choix avant de se connecter. Fermez l’onglet qui partage pour terminer le partage en direct ; les copies déjà enregistrées restent chez leur destinataire.</p>
+    <p>Aucun serveur de partage ne stocke une copie à récupérer plus tard. Avec Cloud relay, Cloudflare transmet le contenu chiffré sans ses clés de déchiffrement, mais voit les adresses, les horaires et le volume de trafic. Les deux appareils ont besoin d’internet pendant toute la session relayée. Direct ne bascule jamais automatiquement vers ce mode.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
@@ -59,7 +48,7 @@
 
   <section>
     <h2>Ce que &laquo;&nbsp;direct&nbsp;&raquo; veut vraiment dire</h2>
-    <p>L'outil utilise WebRTC, comme les appels vidéo&nbsp;: deux navigateurs ouvrent un canal chiffré et échangent sans serveur sur le trajet. Une connexion locale fonctionnelle permet la vitesse de ce réseau&nbsp;; le trajet dépend aussi des VPN, politiques du navigateur et réglages des appareils.</p>
+    <p>En mode Direct, l'outil utilise WebRTC, comme les appels vidéo&nbsp;: deux navigateurs ouvrent un canal chiffré et échangent sans serveur sur le trajet. Une connexion locale fonctionnelle permet la vitesse de ce réseau&nbsp;; le trajet dépend aussi des VPN, politiques du navigateur et réglages des appareils.</p>
     <p>Un avertissement honnête figure aussi sur l'outil&nbsp;: deux navigateurs ne se trouvent pas seuls. Un petit serveur rendez-vous associe les noms et transporte quelques kilo-octets de préparation. Il ne garde aucun contenu partagé, qui ne le traverse jamais&nbsp;; son code est publié. Il fait les présentations, pas la conversation. Il liste aussi les noms locaux volontaires pour trouver un partage à l'accueil. Ce service est utilisé ici et par Remote Camera. Récupération d'images facultative, taux de reçus et scripts de plateforme ont leurs frontières réseau sur la <a href="../../confidentialite/">page Confidentialité</a>. Le partage détaille ce que voit son service de mise en relation.</p>
     <p>
       Direct veut aussi dire mutuel : chaque navigateur apprend l'adresse
@@ -72,7 +61,7 @@
     <h2>Partager sur le même Wi-Fi ou Ethernet</h2>
     <p>Réseau local est désactivé par défaut. Avant le partage, choisissez <em>Réseau local — aucun relais Internet</em>, joignez le fichier et gardez Privé pour approuver chacun. Visible est coché par défaut&nbsp;: sur l’autre appareil, vérifiez le type de connexion sous <em>Connexions disponibles</em> et choisissez Rejoindre à côté du nom. Un onglet de lecture s’ouvre et envoie la demande. Les partages privés attendent votre approbation. Décochez Visible avant de commencer pour partager par lien seulement. Les deux utilisent le même Wi-Fi ou Ethernet. La limite reste 200&nbsp;Mo par fichier et les lecteurs choisissent leurs téléchargements.</p>
     <p>La liste groupe selon l'IPv4 publique ou le sous-réseau IPv6 vu par le serveur. C'est souvent un routeur, mais VPN partagé ou adresse opérateur commune peuvent inclure d'autres réseaux. IPv4/IPv6 mixtes ou routes différentes peuvent cacher un voisin. Gardez Privé sur les réseaux partagés&nbsp;: le nom est visible au groupe sans prouver la même pièce ou bâtiment. Internet est nécessaire. Sans découverte, le lien copié marche encore.</p>
-    <p>Le lien porte le réglage sous <code>?local=1#brave-otter-42</code>. À voix haute, précisez aussi Réseau local&nbsp;; <code>#brave-otter-42</code> seul demande le mode ordinaire. Si les modes diffèrent, la page l'explique et demande un choix avant d'essayer celui du partageur.</p>
+    <p>Le lien porte le réglage sous <code>?local=1&amp;transport=direct#brave-otter-42</code>. À voix haute, précisez aussi Réseau local&nbsp;; <code>#brave-otter-42</code> seul demande le mode ordinaire. Si les modes diffèrent, la page l'explique et demande un choix avant d'essayer celui du partageur.</p>
     <p>Le mode local n'utilise aucun serveur public de découverte d'adresse ni relais Internet. Le rendez-vous exige encore Internet. Wi-Fi invité, pare-feu, VPN et politiques peuvent bloquer ou changer le trajet. Ce mode contrôle la recherche du chemin direct, sans prouver qu'il reste dans le bâtiment.</p>
   </section>
 
@@ -86,7 +75,7 @@
       que les pouces de personne ne rendent l'âme. C'est exactement pour
       cela que les noms ont cette allure.
     </p>
-    <p>Qui connaît ou devine le nom actif peut ouvrir le partage. Un partage local visible liste ce nom pour les navigateurs de même IPv4 publique ou sous-réseau IPv6&nbsp;; il est public dans ce groupe. Pour du sensible, gardez le défaut&nbsp;: <em>privé</em> tant que la case reste cochée. Chaque lecteur se présente et vous décidez individuellement. La présentation passe par le canal direct chiffré&nbsp;; même le rendez-vous ne connaît pas le demandeur.</p>
+    <p>Qui connaît ou devine le nom actif peut ouvrir le partage. Un partage local visible liste ce nom pour les navigateurs de même IPv4 publique ou sous-réseau IPv6&nbsp;; il est public dans ce groupe. Pour du sensible, gardez le défaut&nbsp;: <em>privé</em> tant que la case reste cochée. Chaque lecteur se présente et vous décidez individuellement. La présentation passe par le canal chiffré entre pairs&nbsp;; même le rendez-vous ne connaît pas le demandeur.</p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/name.webp" loading="lazy" decoding="async"
@@ -164,7 +153,7 @@
 
   <section>
     <h2>Quand ce n'est pas le bon outil</h2>
-    <p>Les deux côtés doivent être présents en même temps et l’onglet de partage doit rester ouvert. Le partage exige une connexion ; seul l’éditeur fonctionne hors ligne. Si Direct échoue sur un réseau mobile ou d’entreprise, l’hôte peut arrêter le partage et en créer un nouveau avec Cloud relay. Il envoie alors la nouvelle invitation, dont le lecteur accepte le mode avant de se connecter. Direct local n’utilise pas de relais. La suspension du navigateur et les règles de l’entreprise peuvent aussi interrompre une connexion avec relais.</p>
+    <p>Les deux côtés doivent être présents : il s’agit d’une remise en main propre, pas d’une boîte aux lettres. Si l’autre personne dort, choisissez délibérément un service qui stocke. L’onglet de partage doit rester ouvert et éveillé. En pratique, c’est donc un ordinateur de bureau ou portable qui partage ; les téléphones suspendent les onglets en arrière-plan en quelques secondes, mais lisent très bien un partage. Le partage ne fonctionne pas hors ligne, car joindre un autre appareil est une opération réseau ; la partie éditeur fonctionne, elle, sans aucune connexion. Une petite minorité de combinaisons de réseaux, généralement avec un réseau mobile à adresse partagée ou un réseau d’entreprise strict d’un côté, ne permettent aucune connexion directe. L’outil le signale clairement après vingt secondes. Direct ne bascule jamais automatiquement vers un relais. L’hôte peut arrêter le partage et en démarrer un nouveau avec Cloud relay, puis envoyer sa nouvelle invitation. Le lecteur voit ce choix avant de se connecter. Cloudflare transmet le texte et les fichiers chiffrés sans leurs clés de déchiffrement, mais voit les adresses, les horaires et le volume de trafic. Les deux appareils ont besoin d’internet pendant toute la session. Réseau local restreint Direct et n’utilise pas de relais.</p>
     <p>
       Pour tout le reste &mdash; la note, le mot de passe, le fichier de
       configuration, la vidéo de 100&nbsp;Mo à un saut de Wi-Fi &mdash; la
