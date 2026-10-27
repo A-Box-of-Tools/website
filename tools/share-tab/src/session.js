@@ -1,5 +1,6 @@
 import { transportMode, transportUrl, peerConfiguration, transportCandidate, transportDescription, selectedTransport, RelayCredentials } from './shared/peer-transport.js';
 import { PairingSocket } from './shared/peer-pairing.js';
+import { createChannelGreeting } from './shared/peer-greeting.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
@@ -341,11 +342,12 @@ export class TabSession {
 
   channel(entry, channel) {
     entry.dc = channel;
-    const opened = () => {
-      if (!this.current(entry) || entry.opened) return;
-      entry.opened = true;
-      try { this.control(entry, 'hello'); } catch { this.peerFailed(entry); }
-    };
+    const greeting = createChannelGreeting({
+      current: () => this.current(entry),
+      send: () => this.control(entry, 'hello'),
+      failed: () => this.peerFailed(entry),
+    });
+    const opened = () => greeting.open();
     channel.addEventListener('open', opened);
     channel.addEventListener('close', () => { if (this.current(entry)) this.peerFailed(entry, 'connection.ended'); });
     channel.addEventListener('error', () => { if (this.current(entry)) this.peerFailed(entry); });
@@ -353,13 +355,12 @@ export class TabSession {
       if (!this.current(entry)) return;
       // A received frame can arrive before the local open callback. Identify
       // this side before responding, and stop if sending that hello retires it.
-      opened();
-      if (!this.current(entry)) return;
+      if (!greeting.open()) return;
       const message = controlMessage(event.data);
       if (!message) return this.peerFailed(entry, 'connection.invalid');
       try {
         if (message.type === 'hello') {
-          if (entry.hello) return;
+          if (!greeting.receive()) return;
           entry.hello = true;
           this.clear(entry, 'connect');
           if (this.role === 'viewer') {

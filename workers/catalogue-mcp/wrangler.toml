@@ -1,0 +1,27 @@
+# This is a separate public discovery service, deployed by hand. The website
+# build does not deploy it, and its routes do not intercept tools or rendezvous.
+name = "catalogue-mcp-dev"
+main = "src/index.mjs"
+compatibility_date = "2026-10-24"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+routes = [
+  { pattern = "mcp-dev.abox.tools", custom_domain = true },
+]
+
+[vars]
+ALLOWED_HOSTS = '["mcp-dev.abox.tools","127.0.0.1","localhost"]'
+ALLOWED_ORIGINS = '["https://abox.tools","https://dev.abox-preview.pages.dev","http://127.0.0.1:8788","http://localhost:8788"]'
+
+# A separate namespace keeps catalogue requests out of the rendezvous budget.
+# Production, if separately approved, uses namespace 1003 and its own route.
+[[ratelimits]]
+name = "MCP_RATE_LIMIT"
+namespace_id = "1004"
+
+  [ratelimits.simple]
+  limit = 60
+  period = 60
+
+[observability]
+enabled = false

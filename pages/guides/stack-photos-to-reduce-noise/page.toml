@@ -21,19 +21,18 @@ nav = "Stacking photographs"
 group = "doing-the-job"
 tool = "stack-images"
 
-title = "How to Stack Photographs to Reduce Noise, or Remove People"
-description = "Stacking combines a burst of frames into one picture. Which method to use depends on what you are trying to lose: noise, passers-by, or the shallow depth of field on a macro shot. How each one works, what it costs, and how RAW files fit in."
+title = "How to Stack Photos: Reduce Noise, Remove People or Make Star Trails"
+description = "Choose Average for a cleaner burst, Median for moving people, or Lighten for star trails. Prepare consistent frames, align, compare and save, with RAW preview limits explained."
 
-heading = "How to stack photographs to reduce noise, or remove people"
+heading = "How to stack photos to reduce noise, remove people or make star trails"
 lede = """
-    A burst of frames holds more information than any one of them. Averaging
-    them reduces independent random noise; taking the middle value of each pixel
-    can remove things present in fewer than half the frames. Which one you want
-    depends entirely on what moved."""
+    Choose a stacking method by the result you need: a cleaner burst, a
+    background without moving people, or star trails. Start with consistent
+    frames, align where needed, then compare the finished stack before saving."""
 
-updated = "13 October 2026"
+updated = "23 October 2026"
 published = "2026-08-25"
-lastmod = "2026-10-13"
+lastmod = "2026-10-23"
 
 og_title = "How to stack photographs to reduce noise, or remove people"
 og_description = "Average a burst to kill noise, take the median to empty a busy square, lighten for star trails. Which method solves which problem, and where RAW files fit in."

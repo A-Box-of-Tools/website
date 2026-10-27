@@ -68,6 +68,13 @@ another host decision. The acknowledgement and one-viewer limit still apply.
 Remove revokes that receipt, and Stop clears every grant. A new capture session
 requires approval again. Receipts are sent only over the encrypted control
 channel and never appear in the viewer link.
+
+The shared `peer-greeting.js` repeats each peer's hello once after hearing the
+other peer, before requesting approval. This repairs an initial greeting lost
+while the other browser's channel is still connecting. Duplicate hellos do not
+repeat requests, and malformed or premature controls remain invalid. The helper
+owns no approval decisions or media; the gates above still belong to this tool.
+
 The host retains up to 256 grants without evicting earlier viewers; a full set
 refuses a new approval until removal or a new host session frees capacity.
 The browser cache holds 64 recent tool/room/route receipts across Text, Tab and

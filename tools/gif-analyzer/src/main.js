@@ -74,7 +74,7 @@ const { show: showError } = messageBox(el.loadError);
 /** Frame cards stay paged independently of the bounded pixel analysis. */
 const FIRST_PAGE = 60;
 
-/** @type {{name: string, gif: object, view: object, drawn: object[]}|null} */
+/** @type {{name: string, gif: object, view: object, drawn: object[], realInput: boolean}|null} */
 let current = null;
 let previewUrl = null;
 let shown = 0;
@@ -140,14 +140,17 @@ async function openFile(file) {
   if (!file) return;
   retireAnalysis();
   hideError();
-  const job = { file, version: sourceVersion, controller: new AbortController(), gif: null };
+  const job = { file, version: sourceVersion, controller: new AbortController(), gif: null,
+    realInput: !exampleFiles.has(file) };
   reading = job;
+  if (job.realInput) globalThis.aboxToolJourney?.('input');
   picker.busy(readingLabel(1));
   el.working.hidden = el.cancel.hidden = el.clear.hidden = false;
   el.working.textContent = phrase('read.reading', { name: file.name });
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
     if (!readLives(job)) return;
+    if (job.realInput) globalThis.aboxToolJourney?.('start');
     job.gif = parseGif(bytes);
     const decoded = await drawAnalysis(job.gif, bytes, {
       signal: job.controller.signal,
@@ -160,12 +163,20 @@ async function openFile(file) {
     });
     if (!ownsRead(job)) { releaseDrawn(decoded.drawn); return; }
     show(job, decoded);
-    if (!exampleFiles.has(file) && !job.controller.signal.aborted) globalThis.aboxToolComplete?.();
+    if (job.realInput && !job.controller.signal.aborted) {
+      globalThis.aboxToolJourney?.('ready');
+      if (decoded.reason) globalThis.aboxToolJourney?.('problem');
+      globalThis.aboxToolComplete?.();
+    }
   } catch (error) {
     if (!ownsRead(job)) return;
     const why = messageFor(error);
     if (job.gif) show(job, { drawn: job.gif.frames.map(() => null), identical: 0,
       reason: { key: 'drawing.failed', values: { detail: why } } });
+    if (job.realInput && !job.controller.signal.aborted) {
+      if (job.gif) globalThis.aboxToolJourney?.('ready');
+      globalThis.aboxToolJourney?.('problem');
+    }
     showError(phrase(error instanceof NotAGif ? 'read.notagif' : 'read.failed', { name: file.name, why }));
   } finally {
     if (ownsRead(job)) {
@@ -185,6 +196,7 @@ async function openFile(file) {
 el.cancel.addEventListener('click', () => {
   const job = reading;
   if (!job) return;
+  if (job.realInput && !job.controller.signal.aborted) globalThis.aboxToolJourney?.('cancel');
   job.controller.abort();
   el.cancel.hidden = true;
   el.working.textContent = phrase('read.cancelled');
@@ -198,6 +210,7 @@ el.cancel.addEventListener('click', () => {
   } else focusRecovery(el.clear);
 });
 el.clear.addEventListener('click', () => {
+  if (reading?.realInput && !reading.controller.signal.aborted) globalThis.aboxToolJourney?.('cancel');
   retireAnalysis();
   picker.done(); picker.waiting();
   el.working.hidden = true;
@@ -217,7 +230,7 @@ function show(job, decoded) {
   const drawing = { reason, drawn: drawn.filter(Boolean).length, total: gif.frames.length };
   const view = { name: file.name, budget: budget(gif), complete, drawing,
     findings: findings(gif, { decoded: drawn, complete, waste: complete ? waste : undefined, colors, identical }), colors, waste };
-  current = { name: file.name, gif, view, drawn };
+  current = { name: file.name, gif, view, drawn, realInput: job.realInput };
   // A refused source is not handed to the native preview decoder as a second allocation path.
   el.preview.hidden = Boolean(reason);
   if (!reason) {
@@ -585,18 +598,23 @@ function describe(extension) {
 el.downloadReport.addEventListener('click', () => {
   if (!current) return;
   const source = current;
-  const text = report(source.gif, source.view, phrase);
-  const blob = new Blob([text], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${source.name.replace(/\.gif$/i, '')}-analysis.txt`;
-  link.click();
-  globalThis.aboxToolComplete?.();
-  // Long enough for the download to have started, and revoked either way so a
-  // page left open all afternoon does not accumulate them.
-  reportUrls.add(url);
-  setTimeout(() => { URL.revokeObjectURL(url); reportUrls.delete(url); }, 10_000);
+  try {
+    const text = report(source.gif, source.view, phrase);
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${source.name.replace(/\.gif$/i, '')}-analysis.txt`;
+    link.click();
+    if (source.realInput) globalThis.aboxToolComplete?.();
+    // Long enough for the download to have started, and revoked either way so a
+    // page left open all afternoon does not accumulate them.
+    reportUrls.add(url);
+    setTimeout(() => { URL.revokeObjectURL(url); reportUrls.delete(url); }, 10_000);
+  } catch (error) {
+    if (current === source && source.realInput) globalThis.aboxToolJourney?.('problem');
+    throw error;
+  }
 });
 
 el.copyReport.addEventListener('click', async () => {
@@ -605,10 +623,13 @@ el.copyReport.addEventListener('click', async () => {
   const text = report(source.gif, source.view, phrase);
   try {
     await navigator.clipboard.writeText(text);
-    globalThis.aboxToolComplete?.();
+    if (source.realInput) globalThis.aboxToolComplete?.();
     if (current === source) el.copyStatus.textContent = phrase('copy.done');
   } catch {
-    if (current === source) el.copyStatus.textContent = phrase('copy.refused');
+    if (current === source) {
+      if (source.realInput) globalThis.aboxToolJourney?.('problem');
+      el.copyStatus.textContent = phrase('copy.refused');
+    }
   }
 });
 

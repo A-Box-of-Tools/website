@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "abox-tools",
+  "description": "Find and browse the public abox.tools browser-tool catalogue, then open a selected tool on its website. This integration does not accept files or process them inside ChatGPT.",
+  "homepage": "https://abox.tools/",
+  "repository": "https://github.com/A-Box-of-Tools/website",
+  "keywords": ["browser tools", "file formats", "tool discovery"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "abox.tools",
+        "shortDescription": "Find browser tools",
+        "longDescription": "Find abox.tools utilities by public task, tool name or file format, and browse matching tools in an interactive catalogue where supported. Open a selected tool on abox.tools to do the work in that browser. This integration does not accept files, process ChatGPT attachments or perform conversions inside ChatGPT. Initial public search keywords, catalogue language and result limit are sent to the catalogue service; filtering within the loaded view stays local. Do not send private content or filenames. The app wrapper is English; catalogue descriptions are available in maintained site languages. Selected tool pages explain supported formats, browser limits, advertising and any optional network features.",
+        "category": "Productivity",
+        "websiteURL": "https://abox.tools/",
+        "supportURL": "https://abox.tools/contact/",
+        "privacyPolicyURL": "https://abox.tools/privacy/",
+        "termsOfServiceURL": "https://abox.tools/terms/",
+        "defaultPrompt": [
+          "Find a browser tool for PNG to WebP.",
+          "Find a tool to compress an image in my browser.",
+          "Browse tools for working with PDFs."
+        ],
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}

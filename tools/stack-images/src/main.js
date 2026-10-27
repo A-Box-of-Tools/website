@@ -90,6 +90,18 @@ const el = {
 const { show: showError } = messageBox(el.error);
 const comparisonOption = el.viewSource.querySelector('option[value="compare"]');
 
+const exampleFiles = new WeakSet();
+const hasRealInput = (files) => files.some((file) => !exampleFiles.has(file));
+
+function journey(stage, realInput) {
+  if (!realInput) return;
+  try {
+    globalThis.aboxToolJourney?.(stage);
+  } catch {
+    // Optional measurement must never interrupt a local stack.
+  }
+}
+
 /** @type {{file: File, info: object|null, thumb: string|null, ok: boolean}[]} */
 let frames = [];
 
@@ -114,6 +126,9 @@ let resultUrl = null;
 let startedAt = 0;
 let activeRequest = null;
 let activeSlots = [];
+let runId = 0;
+let activeRun = null;
+let comparisonRun = null;
 let completed = null;
 let referenceUrl = null;
 let comparing = false;
@@ -136,16 +151,28 @@ let imagePan = null;
  * for it because there is nothing to fall back to.
  */
 let worker = null;
+let workerRunId = null;
 let local = null;
 
 function ensureWorker() {
   if (worker || local) return;
   try {
-    worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
-    worker.addEventListener('message', (event) => handle(event.data));
-    worker.addEventListener('error', () => {
-      worker?.terminate();
+    const currentWorker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+    worker = currentWorker;
+    currentWorker.addEventListener('message', (event) => {
+      if (worker !== currentWorker) return;
+      // Runs are serial, but their successful reply predates the echoed IDs
+      // used for inspection, comparison and errors. Keep its ID on this worker.
+      const message = event.data;
+      handle(message?.type === 'done' ? { ...message, id: workerRunId } : message);
+    });
+    currentWorker.addEventListener('error', () => {
+      if (worker !== currentWorker) return;
+      journey('problem', activeRun?.realInput && !activeRun.cancelled);
+      journey('problem', comparisonRun?.realInput && !comparisonRun.cancelled);
+      currentWorker.terminate();
       worker = null;
+      workerRunId = null;
       local = import('./pipeline.js');
       for (const id of [...pending.keys()]) batchFailed(id);
       el.viewSource.value = 'result';
@@ -164,6 +191,7 @@ async function send(message) {
   try {
     ensureWorker();
     if (worker) {
+      if (message.type === 'run') workerRunId = message.id;
       worker.postMessage(message);
       return;
     }
@@ -179,7 +207,7 @@ async function send(message) {
         if (message.type === 'inspect') {
           handle({ type: 'inspected', id: message.id, found: await pipeline.inspect(message.files, hooks) });
         } else if (message.type === 'run') {
-          handle({ type: 'done', result: await pipeline.runStack(message.request, hooks) });
+          handle({ type: 'done', id: message.id, result: await pipeline.runStack(message.request, hooks) });
         } else if (message.type === 'compare') {
           handle({ type: 'compared', id: message.id, result: await pipeline.compareReference(message.request, hooks) });
         }
@@ -198,6 +226,12 @@ async function send(message) {
 let cancelled = false;
 
 function stopWork() {
+  if (!busy && !comparing) return;
+  const operation = busy ? activeRun : comparisonRun;
+  if (operation) {
+    journey('cancel', operation.realInput);
+    operation.cancelled = true;
+  }
   cancelled = true;
   if (worker) worker.postMessage({ type: 'cancel' });
 }
@@ -214,6 +248,8 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(chosen) {
+    const realInput = hasRealInput(chosen);
+    journey('input', realInput);
     // Without OffscreenCanvas every frame fails to survey, and the survey
     // says so in the only words it has: "that could not be opened as a
     // picture and was left out". Which is a lie about the picture. It
@@ -223,12 +259,17 @@ const picker = wireFilePicker({
     // So the files are not looked at at all. The message that was already
     // right stays on the page.
     if (unsupported) {
+      journey('problem', realInput);
       showUnsupported();
       return;
     }
-    addFiles(chosen);
+    addFiles(chosen, realInput);
   },
-  example: makeExample,
+  example: async () => {
+    const files = await makeExample();
+    for (const file of files) exampleFiles.add(file);
+    return files;
+  },
 });
 
 let batch = 0;
@@ -236,12 +277,13 @@ let batch = 0;
 /** Batches still being opened, so their answers can be matched back to them. */
 const pending = new Map();
 
-function addFiles(chosen) {
+function addFiles(chosen, realInput) {
   // A run works from the list as it stood when it started, so adding to the
   // list would not corrupt it - but the worker is busy and the new files could
   // not be opened until it finished, which would leave rows sitting blank for
   // however long the stack takes. Saying so beats showing that.
   if (busy || comparing) {
+    journey('problem', realInput);
     showError(phrase('error.busy'));
     return;
   }
@@ -257,21 +299,21 @@ function addFiles(chosen) {
   render();
 
   cancelled = false;
-  pending.set(id, added);
+  pending.set(id, { slots: added, realInput });
   send({ type: 'inspect', id, files: chosen });
 }
 
 /** One batch is finished with, however it finished. */
 function batchDone(id) {
-  const added = pending.get(id);
-  if (!added) return null;
+  const imported = pending.get(id);
+  if (!imported) return null;
   pending.delete(id);
   inspecting -= 1;
   if (inspecting <= 0) {
     inspecting = 0;
     picker.done();
   }
-  return added;
+  return imported;
 }
 
 /**
@@ -281,10 +323,12 @@ function batchDone(id) {
  * rather than staying stuck saying they are being read. Without this the drop
  * zone also never stops looking busy, which is the more visible half of the bug.
  */
-function batchFailed(id) {
-  const added = batchDone(id);
-  if (!added) return;
-  for (const slot of added) {
+function batchFailed(id, reportProblem = true) {
+  const imported = batchDone(id);
+  if (!imported) return;
+  journey('problem', reportProblem && imported.realInput
+    && imported.slots.some((slot) => frames.includes(slot) && !exampleFiles.has(slot.file)));
+  for (const slot of imported.slots) {
     slot.ok = false;
     slot.info = { name: slot.file.name };
   }
@@ -292,8 +336,9 @@ function batchFailed(id) {
 }
 
 function inspected(id, found) {
-  const added = batchDone(id);
-  if (!added) return;
+  const imported = batchDone(id);
+  if (!imported) return;
+  const added = imported.slots;
 
   found.forEach((result, index) => {
     const slot = added[index];
@@ -305,6 +350,8 @@ function inspected(id, found) {
 
   const failed = added.filter((slot) => !slot.ok);
   if (failed.length) {
+    journey('problem', imported.realInput
+      && failed.some((slot) => frames.includes(slot) && !exampleFiles.has(slot.file)));
     showError(phrase('import.skipped', { count: failed.length }));
   }
   if (!reference || !ready().includes(reference)) reference = ready()[0] ?? null;
@@ -696,16 +743,20 @@ function renderPlan() {
 
 function start() {
   if (busy || comparing || inspecting || unsupported) return;
+  const usable = ready();
+  const realInput = hasRealInput(usable.map((slot) => slot.file));
   if (currentPlan?.overBudget) {
+    journey('problem', realInput);
     showError(phrase('plan.too-large'));
     return;
   }
   if (!el.gain.checkValidity()) {
+    journey('problem', realInput);
     el.gain.reportValidity();
     return;
   }
-  const usable = ready();
   if (usable.length < 2) {
+    journey('problem', hasRealInput(frames.map((slot) => slot.file)));
     showError(phrase('error.one.frame'));
     return;
   }
@@ -746,7 +797,9 @@ function start() {
     format: el.format.value,
     quality: Number(el.quality.value),
   };
-  send({ type: 'run', request: activeRequest });
+  activeRun = { id: ++runId, realInput, cancelled: false };
+  journey('start', activeRun.realInput);
+  send({ type: 'run', id: activeRun.id, request: activeRequest });
 }
 
 function handle(message) {
@@ -759,24 +812,37 @@ function handle(message) {
       progress(message.update);
       break;
     case 'done':
-      finished(message.result);
+      finished(message.id, message.result);
       break;
     case 'compared':
       compared(message.id, message.result);
       break;
     case 'cancelled':
-      if (message.kind === 'compare') finishComparison();
-      else if (pending.has(message.id)) batchFailed(message.id);
-      else finishRun();
+      if (message.kind === 'compare') {
+        if (message.id !== comparisonId || comparisonRun?.id !== message.id) return;
+        finishComparison();
+      } else if (message.kind === 'inspect') {
+        if (!pending.has(message.id)) return;
+        batchFailed(message.id, false);
+      } else if (message.kind === 'run' && activeRun?.id === message.id) finishRun();
       break;
     case 'error':
-      showError(resolve(message.message));
       if (message.kind === 'compare') {
+        if (message.id !== comparisonId || comparisonRun?.id !== message.id) return;
+        journey('problem', comparisonRun.realInput && !comparisonRun.cancelled);
+        showError(resolve(message.message));
         el.viewSource.value = 'result';
         finishComparison();
         renderViewer();
-      } else if (pending.has(message.id)) batchFailed(message.id);
-      else finishRun();
+      } else if (message.kind === 'inspect') {
+        if (!pending.has(message.id)) return;
+        showError(resolve(message.message));
+        batchFailed(message.id);
+      } else if (message.kind === 'run' && activeRun?.id === message.id) {
+        journey('problem', activeRun.realInput && !activeRun.cancelled);
+        showError(resolve(message.message));
+        finishRun();
+      }
       break;
     default:
       break;
@@ -816,8 +882,11 @@ function progress(update) {
   el.progressLabel.textContent = phrase(`progress.${update.stage}`, { name: update.name ?? '' });
 }
 
-function finished(result) {
-  completed = { ...result, request: activeRequest, slots: activeSlots };
+function finished(id, result) {
+  if (!busy || activeRun?.id !== id) return;
+  const realInput = activeRun.realInput;
+  const reportReady = realInput && !activeRun.cancelled;
+  completed = { ...result, request: activeRequest, slots: activeSlots, realInput };
   finishRun();
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = URL.createObjectURL(result.blob);
@@ -833,7 +902,14 @@ function finished(result) {
   renderViewer();
   el.download.href = resultUrl;
   el.download.download = `stacked.${result.blob.type === 'image/jpeg' ? 'jpg' : 'png'}`;
-  el.download.onclick = () => globalThis.aboxToolComplete?.();
+  el.download.onclick = () => {
+    if (!realInput) return;
+    try {
+      globalThis.aboxToolComplete?.();
+    } catch {
+      // The save remains usable when optional measurement is unavailable.
+    }
+  };
   el.resultInfo.textContent = phrase('result.info', {
     width: result.width,
     height: result.height,
@@ -861,6 +937,7 @@ function finished(result) {
   renderAlignment(result, completed.request.align);
   el.resultStale.hidden = true;
   el.result.hidden = false;
+  journey('ready', reportReady);
   compare();
 }
 
@@ -889,6 +966,8 @@ function movesNote(moves, alignment) {
 function finishRun() {
   activeRequest = null;
   activeSlots = [];
+  activeRun = null;
+  workerRunId = null;
   busy = false;
   el.cancel.hidden = true;
   el.progress.hidden = true;
@@ -1063,13 +1142,14 @@ function compare() {
   comparing = true;
   cancelled = false;
   const id = ++comparisonId;
+  comparisonRun = { id, realInput: completed.realInput, cancelled: false };
   render();
   renderViewer();
   send({ type: 'compare', id, request: { file: completed.request.files[0], ...completed.comparison } });
 }
 
 function compared(id, result) {
-  if (id !== comparisonId || !completed) return;
+  if (id !== comparisonId || comparisonRun?.id !== id || !completed) return;
   referenceUrl = URL.createObjectURL(result.blob);
   finishComparison();
   renderViewer();
@@ -1077,6 +1157,7 @@ function compared(id, result) {
 
 function finishComparison() {
   comparing = false;
+  comparisonRun = null;
   render();
 }
 

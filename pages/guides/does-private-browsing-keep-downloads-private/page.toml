@@ -1,0 +1,17 @@
+# This privacy guide covers decisions that apply across tools and browsers.
+# It has no primary tool, so existing tool-guide links stay intact.
+
+slug = "guides/does-private-browsing-keep-downloads-private"
+kind = "guide"
+nav = "Does private browsing keep downloaded files private?"
+group = "before-you-upload"
+title = "Does private browsing keep downloaded files private?"
+description = "Separate private browsing history from saved files, check browser download behaviour, and practise with a harmless sample on your own device."
+heading = "Does private browsing keep downloaded files private?"
+lede = "Closing every private window ends that private session. What happens to a downloaded document depends on the browser, its settings and where you saved it. Check those separately before using a shared device."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Does private browsing keep downloaded files private?"
+og_description = "Separate private browsing history from saved files, check browser download behaviour, and practise with a harmless sample on your own device."
+og_image_alt = "abox.tools - browser tools for local file processing"

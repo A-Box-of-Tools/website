@@ -11,6 +11,12 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>Render sequence or photo timelapse:</strong> keep one frame per image.
+      <strong>Photo slideshow:</strong> choose seconds and Apply to all after adding images.
+      Try an example to check the controls before choosing your own files.
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -162,6 +168,15 @@
         <a id="download" class="primary as-button" download>Download video</a>
       </div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>Choose the next step for your footage</h2>
+    <ul>
+      <li>Already have a long video? Use <a href="../timelapse-video/" data-workflow-target="timelapse-video">Time-Lapse Maker</a> to speed up that clip.</li>
+      <li>Starting with an animated GIF? <a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">GIF to MP4</a> carries its played frame timing into a video.</li>
+      <li>Need an animated GIF from your stills? Use <a href="../gif-maker/" data-workflow-target="gif-maker">GIF Maker</a>.</li>
+    </ul>
   </section>
 
   <!--
