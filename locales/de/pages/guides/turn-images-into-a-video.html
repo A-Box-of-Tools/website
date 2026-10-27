@@ -1,6 +1,6 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>Öffnen Sie <a href="../../bilder-in-video-umwandeln/">Bilder zu Video</a>, ordnen die eingelegten Bilder und wählen Sekunden für Diashows oder Frames für Bildfolgen. Stellen Sie die Haltezeit ein und erstellen das Video. MP4 mit H.264 ist empfohlen. Prüfen Sie es vor dem Teilen in der Ziel-App.</p>
+    <p>Öffnen Sie <a href="../../bilder-in-video-umwandeln/">Bilder in Video</a>, ordnen die eingelegten Bilder und wählen Sekunden für Diashows oder Frames für Bildfolgen. Stellen Sie die Haltezeit ein und erstellen das Video. MP4 mit H.264 ist empfohlen. Prüfen Sie es vor dem Teilen in der Ziel-App.</p>
     <p>
       Die beiden Einstellungen, die am häufigsten einen zweiten Durchgang nötig
       machen, sind die Standzeit und die Auflösung, und es zahlt sich aus, sie
@@ -9,8 +9,20 @@
   </section>
 
   <section>
+    <h2>Eine nummerierte Rendersequenz als MP4</h2>
+    <ol>
+      <li>Fügen Sie in <a href="../../bilder-in-video-umwandeln/" data-workflow-target="images-to-video">Bilder in Video</a> die Einzelbilder hinzu, die Blender, After Effects oder ein anderes Renderprogramm exportiert hat. Verwenden Sie ein Bildformat, das Ihr Browser dekodieren kann, etwa PNG oder JPG.</li>
+      <li>Wählen Sie Nach Name sortieren. Die Sortierung erkennt Zahlen, sodass frame_2 vor frame_10 steht. Prüfen Sie die Liste auf fehlende Bilder oder einen unerwünschten Neustart der Nummerierung.</li>
+      <li>Lassen Sie „Jedes Bild halten für“ auf einem Einzelbild und stellen Sie die Bildrate des Renderings ein. Eine Folge von 240 Bildern bei 24 fps dauert zehn Sekunden.</li>
+      <li>Wählen Sie die Ausgabegröße und „Hineinpassen (Letterbox)“, um das gesamte Bild zu erhalten. Transparente Bereiche erhalten den gewählten Hintergrund: H.264-MP4 bewahrt keinen Alphakanal.</li>
+      <li>Erstellen Sie das Video und sehen Sie sich Anfang und Ende an. Laden Sie es dann herunter und öffnen Sie es in der Zielanwendung.</li>
+    </ol>
+    <p>Für einen Ordner mit Zeitrafferfotos gelten dieselben Schritte. Die Bildrate bestimmt die Wiedergabegeschwindigkeit. Nach Datum sortieren verwendet die Änderungszeit der Dateien; prüfen Sie daher die Reihenfolge, wenn die Fotos kopiert oder bearbeitet wurden. Für einen vorhandenen Videoclip verwenden Sie stattdessen den <a href="../../zeitraffer-erstellen/" data-workflow-target="timelapse-video">Zeitraffer-Ersteller</a>.</p>
+  </section>
+
+  <section>
     <h2>Diashow, Stop-Motion oder Fortschrittsnachweis</h2>
-    <p>Wählen Sie für Urlaub, Eventrückblick oder Produktkatalog bei Jedes Bild halten Sekunden, geben etwa drei ein und drücken Auf alle anwenden. Ordnen Sie die Geschichte, wählen 1080p oder die vertikale Zielform und Einpassen, wenn alle Bildteile wichtig sind. Prüfen Sie Gesamtlänge vor dem Rendern und erste, mittlere und letzte Bilder im Ergebnis.</p>
+    <p>Wählen Sie für Urlaub, Eventrückblick oder Produktkatalog bei „Jedes Bild halten für“ Sekunden, geben etwa drei ein und drücken Auf alle anwenden. Ordnen Sie die Geschichte, wählen 1080p oder die vertikale Zielform und „Hineinpassen (Letterbox)“, wenn alle Bildteile wichtig sind. Prüfen Sie Gesamtlänge vor dem Rendern und erste, mittlere und letzte Bilder im Ergebnis.</p>
     <p>Nutzen Sie für Stop-Motion, Renderfolgen oder regelmäßig aufgenommene Fortschrittsfotos Framehaltezeiten. Ein Bild für einen Frame bei 24 fps zeigt 24 Bilder pro Sekunde. Sortieren Sie nach Namen und prüfen die Reihenfolge. Das Werkzeug schreibt harte Schnitte ohne Zoom, Überblendung oder Ton. Erzählte Präsentationen brauchen einen anderen Audioeditor. Stumme visuelle Fortschritte können hier vollständig entstehen.</p>
   </section>
 
@@ -72,8 +84,8 @@
     <h2>Die Reihenfolge, und die Falle mit den Dateinamen</h2>
     <p>
       Wie bei jeder Stapelverarbeitung sortieren sich Dateinamen anders, als Sie
-      gezählt haben. <code>foto2.jpg</code> kommt alphabetisch nach
-      <code>foto10.jpg</code>, weil Zeichen für Zeichen verglichen wird.
+      gezählt haben. <code>photo2.jpg</code> kommt alphabetisch nach
+      <code>photo10.jpg</code>, weil Zeichen für Zeichen verglichen wird.
     </p>
     <p>Namenssortierung zählt numerisch natürlich, also photo2 vor photo10. Datumssortierung nutzt Dateiänderungsdaten, keine garantierten Kameraaufnahmedaten. Kopierte oder bearbeitete Fotos brauchen daher womöglich manuelle Ordnung. Ziehen passt für nicht chronologische Geschichten. Prüfen Sie vor dem Rendern, denn eine Reihenfolgekorrektur verlangt bei Video den ganzen Job erneut.</p>
 
@@ -111,20 +123,15 @@
 
   <section>
     <h2>Was herauskommt, und was zu tun ist, wenn es nicht abspielt</h2>
-    <p>
-      Das Ziel ist MP4 mit H.264, die am breitesten abspielbare Kombination, die
-      es gibt. In einem Browser ohne WebCodecs weicht das Werkzeug darauf aus,
-      stattdessen WebM aufzuzeichnen, also dasselbe Material in einem Container,
-      den weniger Schnittprogramme und soziale Plattformen annehmen.
-    </p>
-    <p>
-      Landen Sie bei einem WebM und irgendetwas weist es zurück, hilft ein
-      Browser mit WebCodecs und keine Umwandlung. Aktuelle Fassungen von Chrome,
-      Edge und Safari können es alle. Neu zu rendern ist besser als umzuwandeln,
-      denn Umwandeln heißt eine weitere Generation verlustbehafteter
-      Kodierung.
-    </p>
-    <p>Es gibt kein festes Bildzahllimit. Das Video wird vor dem Download im Speicher zusammengesetzt und darf 4 GB nicht überschreiten. Die Maße müssen vom Browserencoder unterstützt sein. Lange 4K-Diashows erreichen diese Grenzen vor einer besonders groß wirkenden Quellbildzahl.</p>
+    <p>Das Ziel ist MP4 mit H.264, die am breitesten abspielbare Kombination. Der Ausweichweg zeichnet in Echtzeit auf, meist als WebM, das weniger Schnittprogramme und soziale Plattformen annehmen. Halten Sie den Tab bei dieser Aufzeichnung sichtbar. Das Timing ist nur ungefähr, und Bilder können übersprungen werden, wenn die Dekodierung nicht nachkommt. Für eine exakte nummerierte Sequenz verwenden Sie den MP4-Encoder, sofern Ihr Browser ihn unterstützt.</p>
+    <p>Erhalten Sie ein WebM, das eine Anwendung nicht annimmt, rendern Sie die Originale erneut mit ausgewähltem MP4 in einem Browser, dessen WebCodecs-Encoder H.264 in der gewählten Größe unterstützt. Erneutes Rendern vermeidet die zusätzliche Generation verlustbehafteter Kodierung, die beim Umwandeln eines bereits komprimierten Videos entstehen würde.</p>
+    <p>Es gibt keine feste Grenze für die Bildanzahl. Das fertige Video wird vor dem Herunterladen im Arbeitsspeicher zusammengesetzt. MP4-Exporte müssen unter 4 GiB (etwa 4,3 GB) bleiben, und der Arbeitsspeicher kann schon weit vor dieser Grenze ausgehen. Die gewählte Größe muss außerdem vom Encoder Ihres Browsers unterstützt werden. Eine lange 4K-Diashow kann diese Grenzen erreichen, bevor die Anzahl der Quellbilder besonders groß erscheint.</p>
+  </section>
+
+  <section>
+    <h2>Das Ergebnis vor der Weitergabe prüfen</h2>
+    <p>Wenn die Diashow zu schnell vorbeizieht, prüfen Sie, ob die Halteeinheit Sekunden ist, und wählen Sie Auf alle anwenden. Läuft eine Rendersequenz zu langsam, prüfen Sie sowohl die Bildrate als auch die Framehaltezeit pro Bild. Balken erhalten das ganze Bild; fehlende Ränder bedeuten meist, dass „Bild ausfüllen (schneidet Ränder ab)“ gewählt wurde. Exportieren Sie bei Änderungen dieser Einstellungen erneut aus den ursprünglichen Einzelbildern.</p>
+    <p>Für eine Animation, die ein GIF bleiben soll, verwenden Sie den <a href="../../gif-erstellen/" data-workflow-target="gif-maker">GIF-Ersteller</a>. Um ein vorhandenes GIF in Video umzuwandeln, verwenden Sie direkt <a href="../../gif-in-mp4-umwandeln/" data-workflow-target="gif-to-mp4">GIF zu MP4</a>. Dabei bleibt das Timing der abgespielten GIF-Frames erhalten. Wenn Sie zuerst PNGs extrahieren, müssen Sie das Timing manuell festlegen. Der <a href="../gif-in-einzelbilder-zerlegen/" data-workflow-target="guides/split-a-gif-into-frames">Ratgeber zur GIF-Extraktion</a> erklärt, wann dieser zusätzliche Schritt sinnvoll ist.</p>
   </section>
 
   <section>

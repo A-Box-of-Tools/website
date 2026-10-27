@@ -6,7 +6,7 @@
     </p>
     <ul>
       <li><strong>Rauschen</strong>, und nichts hat sich bewegt &mdash; Mittelwert.</li>
-      <li><strong>Rauschen</strong>, und etwas hat sich bewegt &mdash; Sigma-Clipping.</li>
+      <li><strong>Rauschen mit gelegentlichen Ausreißern</strong> &mdash; versuchen Sie Sigma-Clipping; verwenden Sie Median, wenn das Entfernen eines bewegten Objekts am wichtigsten ist.</li>
       <li><strong>Leute, Autos, ein Flugzeug</strong> &mdash; Median.</li>
       <li><strong>Ein dunkler Himmel, der Sternspuren werden soll</strong> &mdash; Aufhellen.</li>
       <li><strong>Eine Makroaufnahme mit fast keiner Schärfentiefe</strong> &mdash; Focus Stacking.</li>
@@ -14,15 +14,14 @@
     <p>
       Beginnen Sie zur Rauschminderung mit <strong>Automatisch mit Perspektivkorrektur</strong>, auch bei Nachtaufnahmen vom Stativ: Die Sterne bewegen sich, selbst wenn die Kamera stillsteht. Wählen Sie <strong>Nein</strong> für beabsichtigte Sternspuren oder Aufnahmen, die bereits zusammenpassen. RAW-Dateien können direkt hinein, wenn eine brauchbare JPEG-Vorschau enthalten ist. Die Zeile zeigt die tatsächliche Bildgröße.
     </p>
-    <p>
-      Alles Folgende erklärt, warum diese fünf Zeilen so lauten, wie sie lauten.
-    </p>
+    <p>Prüfen Sie das Ergebnis vor dem Speichern im Vergleich mit einer Bezugsaufnahme. Der folgende Ablauf behandelt die Einstellungen, häufige Fehler und die Fertigstellung des Bildes.</p>
   </section>
 
   <section>
-    <h2>Ein dunkler Innenraum, ein freies Wahrzeichen oder ein scharfes Produktdetail</h2>
+    <h2>Eine sauberere Serie, ein leerer Hintergrund oder Sternspuren</h2>
     <p><strong>Eine statische Szene bei wenig Licht.</strong> Fotografieren Sie eine Serie mit gesperrter Belichtung und Fokus, wählen eine scharfe Referenz und beginnen mit Mittelwert und Auto-Perspektive. Prüfen Sie feine Kanten bei 100 % ebenso wie glatte Wände. Nennt die Ausrichtung einen unausgerichteten Frame und ist das Bild weich, entfernen Sie ihn und wiederholen. Prüfen Sie beim Himmelstapeln auch den Vordergrund, denn Sternausrichtung kann feste Landschaft unscharf machen.</p>
     <p><strong>Ein Wahrzeichen mit vorbeigehenden Menschen.</strong> Fotografieren Sie mit genug Abstand für neue Personenpositionen und nutzen Median. Es entfernt Menschen nur, wo in mehr als der Hälfte der Frames der Hintergrund sichtbar ist. Stillstehende brauchen andere Quellfotos.</p>
+    <p><strong>Eine Folge von Aufnahmen des Nachthimmels für Sternspuren.</strong> Halten Sie die Kamera fest, lassen Sie zwischen den Belichtungen nur kurze Pausen und verwenden Sie Aufhellen mit der Ausrichtung Nein. Eine Ausrichtung würde den bewegten Sternen folgen und den gewünschten Spuren entgegenwirken. Für scharfe Sterne mit weniger Rauschen verwenden Sie Mittelwert mit Automatisch mit Perspektivkorrektur und prüfen, ob der unbewegte Vordergrund unscharf geworden ist.</p>
     <p><strong>Schmuck, ein kleines Teil oder ein Präparat.</strong> Halten Sie die Kamera fest, verschieben Fokus in überlappenden Schritten durchs Motiv und verwenden Focus Stacking. Prüfen Sie Kanten und Spiegelungen auf Säume oder Nähte. Bewegte Objekte lassen sich durch Kameraausrichtung nicht reparieren. Nutzen Sie PNG zur Weiterbearbeitung. Das Ergebnis bleibt acht Bit, auch aus RAW-Vorschauen.</p>
   </section>
 
@@ -177,7 +176,7 @@
     </p>
 
     <p>
-      Öffnen Sie nach dem Stacken die <strong>Ausrichtungsdetails</strong>, um Status und Korrektur jeder Aufnahme zu sehen. Eine nicht ausrichtbare Aufnahme bleibt an ihrer ursprünglichen Stelle enthalten. Entfernen Sie sie und starten Sie erneut, wenn sie das Ergebnis unscharf macht. Das Ergebnis öffnet sich mit dem Bezug links und dem Stack rechts. Ziehen Sie die Trennlinie mit der Maus oder dem Finger, oder fokussieren Sie sie und verwenden Sie die linke und rechte Pfeiltaste. Schieben Sie sie an einen Rand, um ein ganzes Bild zu sehen. Die Trennlinie ist in <strong>An Fenster anpassen</strong> verfügbar. <strong>100% &mdash; tatsächliche Pixel</strong> zeigt das gesamte gestackte Ergebnis und entfernt die Vergleichsoption. Ziehen Sie bei 100% das Bild, um den Bildausschnitt zu verschieben, oder fokussieren Sie die Vorschau und verwenden Sie die Pfeiltasten. Unter <strong>Anzeigen</strong> prüfen Sie Bezug und Stack einzeln. Kehren Sie zu An Fenster anpassen zurück, um wieder mit der Trennlinie zu vergleichen.
+      Öffnen Sie nach dem Stacken die <strong>Ausrichtungsdetails</strong>, um Status und Korrektur jeder Aufnahme zu sehen. Eine nicht ausrichtbare Aufnahme bleibt an ihrer ursprünglichen Stelle enthalten. Entfernen Sie sie und starten Sie erneut, wenn sie das Ergebnis unscharf macht. Das Ergebnis öffnet sich mit dem Bezug links und dem Stack rechts. Ziehen Sie die Trennlinie mit der Maus oder dem Finger, oder fokussieren Sie sie und verwenden Sie die linke und rechte Pfeiltaste. Schieben Sie sie an einen Rand, um ein ganzes Bild zu sehen. Die Trennlinie ist in <strong>An Fenster anpassen</strong> verfügbar. <strong>100% &mdash; tatsächliche Pixel</strong> zeigt das gesamte gestackte Ergebnis und entfernt die Vergleichsoption. Unter <strong>Anzeigen</strong> prüfen Sie Bezug und Stack einzeln. Ziehen Sie das Bild, um den Bildausschnitt zu verschieben, oder fokussieren Sie die Vorschau und verwenden Sie die Pfeiltasten. Kehren Sie zu An Fenster anpassen zurück, um wieder mit der Trennlinie zu vergleichen.
     </p>
 
     <figure class="shot">
@@ -187,6 +186,16 @@
         Bewegen Sie die Trennlinie über Rauschen und feine Kanten, um denselben Bereich beider Bilder zu vergleichen. Prüfen Sie die Ausrichtungsdetails, wenn der Stack unscharf wirkt.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Das Bild prüfen, speichern und fertigstellen</h2>
+    <ol>
+      <li><strong>Dasselbe Detail vergleichen.</strong> Vergleichen Sie mit der Trennlinie in An Fenster anpassen eine glatte Fläche und eine feine Kante. Wählen Sie anschließend 100%, um Bezug und Stack einzeln zu prüfen. Weniger Körnung bei weicheren Kanten kann auf eine schlechte Ausrichtung hindeuten. Prüfen Sie die Ausrichtungsdetails, entfernen Sie eine nicht ausrichtbare Aufnahme und starten Sie den Stack erneut.</li>
+      <li><strong>Die Ausgabe für den nächsten Arbeitsschritt wählen.</strong> Speichern Sie PNG für eine verlustfreie Ausgabe zur weiteren Bearbeitung oder JPEG für eine kleinere Datei. Beide sind undurchsichtige Acht-Bit-Bilder, auch wenn der Stack aus RAW-Vorschauen entstanden ist.</li>
+      <li><strong>Mit den Weiterverarbeitungslinks fertigstellen.</strong> Sobald das Ergebnis bereit ist, übertragen die Links neben dem Download es direkt in die <a href="../../bildgroesse-aendern/" data-workflow-target="resize-image">Bildgrößenänderung</a>, wenn die Maße wichtig sind, oder in die <a href="../../bild-komprimieren/" data-workflow-target="compress-image">Bildkomprimierung</a>, wenn Sie eine kleinere Datei brauchen. Das Bild bleibt in diesem Browser. Zwischen den Werkzeugen müssen Sie es deshalb nicht herunterladen und erneut auswählen.</li>
+    </ol>
+    <p>Um eine sich verändernde Szene als Zeitraffer zu bewahren, verwenden Sie die ursprüngliche Bildfolge in <a href="../../bilder-in-video-umwandeln/" data-workflow-target="images-to-video">Bilder in Video</a>. Der <a href="../aus-bildern-ein-video-machen/" data-workflow-target="guides/turn-images-into-a-video">Ratgeber zu Bildsequenzen</a> erklärt Reihenfolge, Bildrate und Videoexport.</p>
   </section>
 
   <section>
@@ -229,7 +238,7 @@
       Median muss die Werte jeder Aufnahme für das aktuelle Band behalten. Zwanzig 24-Megapixel-Aufnahmen bräuchten allein für diese Werte rund 1,4&nbsp;GB. Bänder verringern die Zahl der gleichzeitig verarbeiteten Zeilen, verlangen aber ein erneutes Dekodieren jeder Aufnahme für jedes Band. Auch die anderen Methoden können in Bänder geteilt werden, wenn ihre Arbeitspuffer das Budget überschreiten.
     </p>
     <p>
-      Vor dem Start zeigt das Werkzeug die geplante Ergebnisgröße, den geschätzten Arbeitsspeicher, die geplanten Dekodiervorgänge beim Stacken und die beim Prüfen gelesenen Bytes. Die Speicherschätzung enthält die modellierten Arbeitspuffer; Browserinternes und Speicherbereinigung können den Gesamtbedarf erhöhen. Eine kleinere Arbeitsauflösung viertelt die Bildfläche je Stufe und kann wiederholtes Dekodieren reduzieren. Der Beschnitt durch die Ausrichtung kann weniger Bänder nötig machen als ursprünglich geplant.
+      Vor dem Start zeigt das Werkzeug die geplante Ergebnisgröße, den geschätzten Arbeitsspeicher, die geplanten Dekodiervorgänge beim Stacken und die beim Prüfen gelesenen Bytes. Die Speicherschätzung enthält die modellierten Arbeitspuffer; Browserinternes und Speicherbereinigung können den Gesamtbedarf erhöhen. Wenn der Durchlauf in Bänder aufgeteilt wird, viertelt eine kleinere Arbeitsauflösung die Bildfläche je Stufe und kann wiederholtes Dekodieren reduzieren. Der Beschnitt durch die Ausrichtung kann weniger Bänder nötig machen als ursprünglich geplant.
     </p>
   </section>
 

@@ -4,6 +4,16 @@ endonym = "Français"
 complete = true
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "guides/preparer-un-dossier-pdf-caviarde"
+"guides/prepare-a-screen-recording-for-support" = "guides/preparer-une-capture-video-pour-l-assistance"
+"guides/turn-a-bitmap-logo-into-website-assets" = "guides/transformer-un-logo-matriciel-en-fichiers-pour-le-web"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "guides/preparer-un-pdf-et-un-csv-de-remboursement"
+"guides/protect-transfer-and-verify-a-pdf" = "guides/proteger-transferer-et-verifier-un-pdf"
+"guides/where-do-your-file-copies-go" = "guides/ou-vont-les-copies-de-vos-fichiers"
+"guides/does-private-browsing-keep-downloads-private" = "guides/navigation-privee-et-fichiers-telecharges"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "guides/ce-qu-un-fichier-ordinaire-revele-sur-vous"
+"guides/receive-voice-from-nearby-devices" = "guides/recevoir-la-voix-d-appareils-a-proximite"
+"guides/share-a-browser-tab" = "guides/partager-un-onglet-du-navigateur"
 "guides/broadcast-voice-on-a-local-network" = "guides/diffuser-la-voix-sur-un-reseau-local"
 "guides/arrange-images" = "guides/disposer-des-images"
 "guides/watch-camera-from-another-device" = "guides/voir-la-camera-dun-autre-appareil"

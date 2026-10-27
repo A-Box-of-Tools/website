@@ -1,0 +1,68 @@
+  <section>
+    <h2>Monte o pacote, remova os dados privados e finalize</h2>
+    <p>Comece com <a href="../../juntar-pdf/">Juntar PDF</a> para escolher e ordenar as páginas. Use <a href="../../tarjar-pdf/">Tarjar PDF</a> para remover o texto privado do documento montado. Adicione uma marca-d'água com o destinatário se isso ajudar a explicar a finalidade do pacote e comprima apenas se o arquivo pronto precisar ficar menor.</p>
+    <p>Essas ferramentas processam os arquivos localmente no navegador. Baixe cada resultado e carregue esse arquivo na próxima ferramenta; quando houver um link para continuar, ele poderá transferir o resultado para você. Guarde os originais e as cópias de trabalho em uma pasta separada do anexo que pretende enviar.</p>
+  </section>
+
+  <section>
+    <h2>O exemplo: quatro páginas para revisar uma oficina</h2>
+    <p>Morgan está revisando o plano de uma oficina fictícia. Os documentos de origem também contêm um telefone pessoal e um custo interno de que Morgan não precisa. Escreva a lista de páginas antes de abrir uma ferramenta:</p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Páginas de origem</th><th>Finalidade</th></tr></thead>
+      <tbody>
+        <tr><td><code>outline.pdf</code>, páginas 1 e 3</td><td>Resumo e programação</td></tr>
+        <tr><td><code>delivery.pdf</code>, página 2</td><td>Detalhes da entrega</td></tr>
+        <tr><td><code>equipment.pdf</code>, página 1</td><td>Lista de equipamentos</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>O resultado deve conter quatro páginas nessa ordem. Excluir uma página desnecessária é mais simples de conferir do que mantê-la e tentar remover todos os dados privados. Preserve contexto suficiente para que quem lê entenda o material restante.</p>
+  </section>
+
+  <section>
+    <h2>1. Selecione e ordene as páginas</h2>
+    <p>Carregue os PDFs de origem na <a href="../../juntar-pdf/">ferramenta de junção</a>. Mantenha as páginas necessárias e organize-as na ordem de leitura. Os números de página da lista de trabalho mudam quando páginas são removidas ou movidas; confira o nome do arquivo de origem e o conteúdo com a sua lista, em vez de aplicar os números originais a uma lista que já foi alterada.</p>
+    <p>Salve <code>01-selected.pdf</code> e abra o arquivo. Confirme as quatro páginas, a sequência correta, a programação completa e a ausência de notas extras sobre equipamentos. Confira se referências como “veja a próxima página” continuam fazendo sentido. O <a href="../juntar-e-dividir-arquivos-pdf/">guia de junção e divisão de PDFs</a> explica o que a montagem de páginas preserva e o que não consegue transportar.</p>
+  </section>
+
+  <section>
+    <h2>2. Remova o texto privado do pacote montado</h2>
+    <p>Carregue <code>01-selected.pdf</code> em <a href="../../tarjar-pdf/">Tarjar PDF</a>. Procure o telefone e o custo interno, revise as correspondências e selecione todas as ocorrências que precisam ser removidas. Confira também cabeçalhos, rodapés e dados de contato repetidos. Os padrões automáticos ajudam a encontrar candidatos; eles não decidem o que esse destinatário específico precisa ver.</p>
+    <p>A ferramenta remove as instruções de texto compatíveis e verifica o resultado antes de oferecer o download. Um retângulo escuro desenhado em um editor comum de PDF pode deixar as palavras originais por baixo. Siga o <a href="../tarjar-um-pdf/">guia para tarjar um PDF</a> e pare se a ferramenta indicar texto ilegível ou não conseguir lidar com o documento de forma confiável.</p>
+    <p>Salve <code>02-redacted.pdf</code> e reabra esse arquivo baixado. Inspecione cada remoção e as informações ao redor. Procure os valores removidos e tente selecionar e copiar as áreas afetadas. Essas verificações são úteis, mas não são uma prova universal: imagens, codificações de fontes ilegíveis e conteúdo incompatível podem impedir a busca de encontrar texto.</p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-redacted-pdf-pack/find.webp" loading="lazy" decoding="async"
+           alt="O campo de busca de Tarjar PDF e os padrões opcionais de dados sensíveis, com identificadores de uma fatura de exemplo preenchidos.">
+      <figcaption>Procure os valores que você decidiu remover e revise as correspondências. Os termos da fatura de exemplo mostrados aqui não são uma lista completa para outro documento.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Se a página for digitalizada, tarje primeiro os pixels</h2>
+    <p>Uma digitalização é uma imagem. Remover sua camada pesquisável de texto OCR não apaga as palavras visíveis nessa imagem. Uma busca sem resultados não comprova que a digitalização foi tarjada.</p>
+    <p>Para fotografias de origem, use <a href="../../tarjar-imagem/">Tarjar imagem</a> antes de reunir as imagens exportadas com <a href="../../imagens-para-pdf/">Imagens para PDF</a>. Inspecione os pixels exportados e depois o PDF resultante. Os guias de <a href="../tarjar-uma-imagem/">remoção de dados em imagens</a> e <a href="../juntar-imagens-em-um-pdf/">combinação de imagens</a> explicam essa alternativa. Um PDF digitalizado existente não é uma imagem de entrada para essas ferramentas: volte a imagens de origem adequadas ou a um processo compatível com ele.</p>
+  </section>
+
+  <section>
+    <h2>3. Adicione o destinatário e a finalidade, se for útil</h2>
+    <p>Carregue <code>02-redacted.pdf</code> em <a href="../../marca-dagua-pdf/">Marca-d'água em PDF</a> e adicione “Revisão da oficina - Morgan”. Salve <code>03-marked.pdf</code>. Confira todas as páginas para garantir que a marca mantenha datas, diagramas e tabelas pequenas legíveis. O <a href="../adicionar-marca-dagua-a-um-pdf/">guia de marca-d'água</a> explica o posicionamento e os limites da marca.</p>
+    <p>A marca informa a quem lê a finalidade pretendida. Ela não impede encaminhamento, cópia ou fotografia e não substitui a remoção dos dados. Pule essa etapa quando a identificação não acrescentar informação útil.</p>
+  </section>
+
+  <section>
+    <h2>4. Comprima apenas quando o arquivo pronto precisar</h2>
+    <p>Confira o limite de anexos do destino. Se o arquivo com a marca já estiver confortavelmente abaixo dele, mantenha-o. Caso contrário, teste uma cópia em <a href="../../comprimir-pdf/">Comprimir PDF</a> e compare o resultado com a entrada. Um documento curto de texto pode diminuir muito pouco.</p>
+    <p>Leia a tabela de equipamentos e as letras pequenas em um tamanho de visualização útil. Um anexo menor não é uma melhoria se Morgan não conseguir ler. O <a href="../deixar-um-pdf-menor/">guia de compressão</a> explica de onde vem a redução. Dê à versão final escolhida o nome <code>workshop-review-morgan.pdf</code>.</p>
+  </section>
+
+  <section>
+    <h2>Confira o anexo exato que você vai enviar</h2>
+    <p>Abra o arquivo final baixado, em vez de uma prévia anterior. Cada operação produziu um resultado diferente, então o último anexo precisa da própria conferência:</p>
+    <ul>
+      <li>Conte e leia as quatro páginas na ordem final.</li>
+      <li>Inspecione as áreas removidas e repita as verificações de busca e cópia.</li>
+      <li>Confira a identificação do destinatário e a legibilidade após a compressão.</li>
+      <li>Confira tamanho, propriedades e nome do arquivo em busca de detalhes não intencionais.</li>
+      <li>Ao anexar, selecione esse arquivo conferido, não uma cópia de trabalho.</li>
+    </ul>
+    <p>Selecionar as páginas primeiro limita o que precisa ser revisado. A remoção dos dados vem depois; a marca-d'água e a compressão finalizam a cópia. Se o destinatário aceitar PDFs protegidos por senha e você precisar dessa proteção, termine essas alterações antes de adicioná-la. Mantenha os originais separados e envie apenas o anexo revisado.</p>
+  </section>

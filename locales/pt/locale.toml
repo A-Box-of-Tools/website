@@ -33,6 +33,16 @@ complete = true
 #
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "guias/preparar-pacote-pdf-com-dados-tarjados"
+"guides/prepare-a-screen-recording-for-support" = "guias/preparar-gravacao-de-tela-para-suporte"
+"guides/turn-a-bitmap-logo-into-website-assets" = "guias/transformar-logotipo-bitmap-em-arquivos-para-site"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "guias/preparar-pdf-e-csv-para-reembolso"
+"guides/protect-transfer-and-verify-a-pdf" = "guias/proteger-transferir-e-verificar-pdf"
+"guides/where-do-your-file-copies-go" = "guias/para-onde-vao-as-copias-dos-seus-arquivos"
+"guides/does-private-browsing-keep-downloads-private" = "guias/navegacao-privada-mantem-downloads-privados"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "guias/o-que-um-arquivo-comum-pode-revelar-sobre-voce"
+"guides/receive-voice-from-nearby-devices" = "guias/receber-voz-de-dispositivos-proximos"
+"guides/share-a-browser-tab" = "guias/compartilhar-aba-do-navegador"
 "guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-na-rede-local"
 "guides/arrange-images" = "guias/organizar-imagens"
 "guides/watch-camera-from-another-device" = "guias/ver-camera-de-outro-dispositivo"

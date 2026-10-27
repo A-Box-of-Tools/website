@@ -3,14 +3,11 @@
 #
 
 nav = "Imagens em vídeo"
-title = "Como transformar uma pasta de imagens em um vídeo"
-description = "Faça uma apresentação em MP4 a partir de fotos: o que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente, e por que o resultado sai sem trilha sonora."
-heading = "Como transformar uma pasta de imagens em um vídeo"
-lede = """
-    Uma apresentação de slides é simples de fazer e fácil de ter que renderizar
-    duas vezes, porque dois dos ajustes não significam o que parecem significar.
-    Aqui está o que cada um controla, e o que escolher."""
-updated = "13 de outubro de 2026"
-og_title = "Como transformar uma pasta de imagens em um vídeo"
-og_description = "O que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente, e por que não há trilha sonora."
+title = "Sequência de imagens para MP4: renderizações, time-lapse ou slides"
+description = "Transforme quadros renderizados numerados ou fotos de time-lapse em MP4, ou crie uma apresentação. Escolha a duração em quadros ou segundos, confira a ordem e evite cortes ou tempos incorretos."
+heading = "Transforme uma sequência de imagens ou apresentação de fotos em MP4"
+lede = "Uma sequência renderizada precisa de uma imagem por quadro de vídeo; uma apresentação precisa de tempo para olhar cada fotografia. Comece por essa escolha e confira a ordem, as dimensões e a duração antes de codificar no seu dispositivo."
+updated = "23 de outubro de 2026"
+og_title = "Sequência de imagens ou apresentação para MP4"
+og_description = "Escolha quadros ou segundos, ordene as imagens e confira o vídeo antes de compartilhar. Sem enviar arquivos para processamento."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

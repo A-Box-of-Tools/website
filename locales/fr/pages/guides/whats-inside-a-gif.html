@@ -33,7 +33,16 @@
   <section>
     <h2>Un rapport à remettre à la personne qui l'a créé</h2>
     <p>Si une animation est trop grande, comparez images, dimensions et budget avant de demander une réduction. Si les pixels dominent, demandez séquence raccourcie, moins d'images ou dimensions réduites. Si palettes ou métadonnées pèsent lourd, signalez-le. Un bon rapport nomme le vrai coût sans supposer la même correction pour tous les GIF.</p>
-    <p>Boucle arrêtée, pause perdue ou traînées transparentes se vérifient aussi. Lisez bloc de boucle, délais joués et disposition avec l'aperçu, puis sauvegardez l'analyse texte pour décrire le problème. L'analyseur ne modifie rien, ne répare pas et ne retire pas de métadonnées. Le <a href="../modifier-un-gif-image-par-image/">parcours découper et reconstruire</a> est distinct si vous avez les images à corriger.</p>
+    <p>Boucle arrêtée, pause perdue ou traînées transparentes se vérifient aussi. Lisez bloc de boucle, délais joués et effacement avec l'aperçu, puis sauvegardez l'analyse texte pour décrire le problème. L'analyseur ne modifie rien, ne répare pas et ne retire pas de métadonnées. Le <a data-workflow-target="guides/edit-a-gif-frame-by-frame" href="../modifier-un-gif-image-par-image/">parcours découper et reconstruire</a> est distinct si vous avez les images à corriger.</p>
+  </section>
+
+  <section>
+    <h2>Choisir la suite à partir du rapport</h2>
+    <ul>
+      <li><strong>Enregistrer une image fixe ou modifier des images séparées.</strong> Utilisez le <a href="../../decouper-un-gif-en-images/" data-workflow-target="split-gif">Découpeur de GIF</a> pour extraire des PNG complets, un ZIP ou une planche de sprites. Choisissez <em>L’image telle qu’elle apparaît</em> pour obtenir des images utilisables seules.</li>
+      <li><strong>Changer l’ordre, les pauses ou la boucle.</strong> Ajoutez les PNG extraits au <a href="../../creer-un-gif/" data-workflow-target="gif-maker">Créateur de GIF</a> et servez-vous du <code>frames.txt</code> de l’archive ZIP comme référence pour régler chaque durée. La liste n’est pas importée automatiquement.</li>
+      <li><strong>Partager l’animation en vidéo.</strong> <a href="../../gif-en-mp4/" data-workflow-target="gif-to-mp4">Convertissez directement le GIF original en MP4</a> pour conserver ses délais variables. Comparez la taille du résultat&nbsp;; un petit GIF ne devient pas forcément plus petit. Les zones transparentes ont besoin d’une couleur et le lecteur décide de la répétition.</li>
+    </ul>
   </section>
 
   <section>
