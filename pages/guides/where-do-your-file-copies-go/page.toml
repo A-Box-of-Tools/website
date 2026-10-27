@@ -1,0 +1,17 @@
+# This privacy guide covers decisions that apply across tools and browsers.
+# It has no primary tool, so existing tool-guide links stay intact.
+
+slug = "guides/where-do-your-file-copies-go"
+kind = "guide"
+nav = "Where do your file copies go?"
+group = "before-you-upload"
+title = "Where do your file copies go?"
+description = "Follow originals, downloads, synced folders and shared copies so you know what remains after editing a file locally."
+heading = "Where do your file copies go?"
+lede = "Local processing describes what happens inside the tool. The copies you save, sync and share have their own destinations. Follow one harmless handout to see where those boundaries are."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Where do your file copies go?"
+og_description = "Follow originals, downloads, synced folders and shared copies so you know what remains after editing a file locally."
+og_image_alt = "abox.tools - browser tools for local file processing"

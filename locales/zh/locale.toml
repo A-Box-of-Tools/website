@@ -66,17 +66,17 @@ complete = true
 #
 
 [hub]
-title = "免费浏览器工具箱 | 本地处理文件 | abox.tools"
+title = "abox.tools——图片压缩与免费浏览器工具"
 # 中文搜索结果大约在这个长度截断。
-description = "免费工具，在浏览器里就地处理文件。图片合成 PDF 或 MP4、按目标大小压缩、裁剪视频、删除 EXIF 数据。"
+description = "abox.tools（A Box of Tools）提供免费的图片压缩、PDF、视频、音频和文本工具，在浏览器里就地处理文件，无须上传处理。"
 heading = "免费工具，本地处理。"
-og_title = "A Box of Tools &mdash; 在浏览器里就地处理文件"
-og_description = "一个工具只做一件事，在你的设备上处理文件。主动分享和可选联网功能，都在使用处说明。"
+og_title = "abox.tools——图片压缩与免费浏览器工具"
+og_description = "免费的图片压缩、PDF、视频、音频和文本工具，在你的设备上处理文件。主动分享和可选联网功能，都在使用处说明。"
 og_image_alt = "abox.tools - 在浏览器里就地处理文件的工具"
-schema_description = "在浏览器里就地处理文件的小工具，无须上传处理，也无须账号。联网功能各自在页面上说明。"
-schema_about = "在浏览器里就地处理文件，以及主动在浏览器之间分享的工具"
+schema_description = "在浏览器里就地处理图片压缩、PDF 编辑、视频、音频和文本的免费工具。无须上传处理，也无须账号。主动分享和可选联网功能各自在页面上说明。"
+schema_about = "用于图片压缩、PDF 编辑、视频、音频、文本处理，以及主动在浏览器之间分享的工具"
 
-lede = "文件在浏览器里处理。无须上传处理，无须登录。"
+lede = "abox.tools（A Box of Tools）提供在浏览器里使用的图片压缩、PDF 编辑和文本工具。无须上传处理，无须登录。"
 
 support_note = """
       这些工具免费，以后也一样。要是哪个真帮你省了事，全站开口跟你要点什么\
@@ -95,7 +95,7 @@ body = "你的浏览器打开、读取和编辑你选的文件，处理过程不
 
 [[hub.guarantees]]
 title = "文件不会交给统计服务"
-body = "本站统计页面访问、每次加载页面后的首次成功工具使用，以及你主动选择的固定反馈答案，不附带文件、文件名、内容或输出详情。可选的网址图片导入和收据汇率查询，会在控件旁说明发出什么信息。"
+body = "本站统计页面访问、固定的工具使用阶段、每次加载后的首次成功结果、部分后续操作链接，以及可选的固定反馈答案，不附带文件、文件名、内容或输入输出详情。可选的网址图片导入和收据汇率查询，会在控件旁说明发出什么信息。"
 
 [[hub.guarantees]]
 title = "本地处理可以离线完成"
@@ -278,6 +278,9 @@ hub_show_fewer = "收起"
 hub_privacy_details = "隐私是如何保护的"
 hub_filter_label = "查找工具"
 hub_filter_none = "没有匹配的工具。试试减少关键词，或输入 PDF、PNG 等文件格式。"
+hub_agent_title = "查找浏览器工具"
+hub_agent_description = "按任务、名称或文件格式搜索本页列出的工具。返回公开的工具名称、说明和链接，不打开工具，也不处理文件。匹配本页语言的简短关键词。"
+hub_agent_query_description = "PNG、WebP 或 JSON 等关键词。查询为空时列出工具。"
 
 hub_guides_note = """
     不知道该动哪个设置，也不清楚代价？\

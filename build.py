@@ -86,6 +86,7 @@ import argparse
 import hashlib
 import json
 import html
+from html import escape as html_escape, unescape as html_unescape
 import os
 import posixpath
 import re
@@ -97,6 +98,7 @@ from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from buildlib import agents
 from buildlib import cards
 from buildlib import catalogue
 from buildlib import cssmin
@@ -614,7 +616,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         # same languages.
         catalogue.build_llms(out, templates, site, locales, ordered_tools,
                              ordered_prose)
-        written.append('llms.txt')
+        written += ['llms.txt', 'llms-guides.txt',
+                    f'{site["guides"]["slug"]}/llms.txt']
+
+        written += agents.build_discovery(out, templates, site)
 
         # And once more as a stream, for a reader who wants to be told when a
         # tool ships rather than to come back and check. One file per published
@@ -928,6 +933,14 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None, tail='')
         'base': base,
         'links': links,
         'canonical': i18n.locale_url(locale, slug, site, tail),
+        # The guide index describes English guide URLs. Other languages use
+        # the root index, which offers their own hubs rather than claiming an
+        # English section index covers translated addresses.
+        'agent_index_href': (
+            f'/{site["guides"]["slug"]}/llms.txt'
+            if locale['is_base'] and (slug == site['guides']['slug']
+                                     or slug.startswith(site['guides']['slug'] + '/'))
+            else '/llms.txt'),
         # A page in a language the site does not offer belongs to no cluster,
         # so it claims no alternates either. The set below is reciprocal by
         # construction - each page in it names the same set back - and this
@@ -972,7 +985,9 @@ KEEPS_ITS_TAB = re.compile(
     r'|<div class="lang-auto".*?</div>'
     r'|<nav class="handoff".*?</nav>', re.S)
 
-LEAVING_ANCHOR = re.compile(r'<a\s[^>]*>')
+LEAVING_ANCHOR = re.compile(r'''<a\s(?:[^>"']|"[^"]*"|'[^']*')*>''')
+ANCHOR_ATTRIBUTE = re.compile(
+    r'''([^\s=/>]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?''')
 
 
 def open_links_elsewhere(html):
@@ -991,9 +1006,28 @@ def open_links_elsewhere(html):
     """
     def fix(match):
         tag = match.group(0)
-        if ('href=' not in tag or 'target=' in tag or 'href="#' in tag
-                or 'href="mailto:' in tag or re.search(r'\sdownload[\s>=]', tag)):
+        # A workflow's data-workflow-target and words inside quoted values are
+        # not browsing targets. Read whole attributes before deciding to leave
+        # a link alone, or the new workflow links replace work in progress.
+        attributes = {attr[1].lower(): attr
+                      for attr in ANCHOR_ATTRIBUTE.finditer(tag, 2, len(tag) - 1)}
+
+        def value(name):
+            attr = attributes.get(name)
+            return html_unescape(attr[2].strip('"\'')) if attr and attr[2] else ''
+
+        href = value('href')
+        if (not href or 'target' in attributes or href.startswith('#')
+                or href.lower().startswith('mailto:') or 'download' in attributes):
             return tag
+        rel = attributes.get('rel')
+        if rel:
+            tokens = value('rel').split()
+            if 'noopener' not in [token.lower() for token in tokens]:
+                tokens.append('noopener')
+            replacement = 'rel="' + html_escape(' '.join(tokens), quote=True) + '"'
+            tag = tag[:rel.start()] + replacement + tag[rel.end():]
+            return tag[:-1] + ' target="_blank">'
         return tag[:-1] + ' target="_blank" rel="noopener">'
 
     out, last = [], 0
@@ -1902,6 +1936,8 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')
 
+    twin = write(out / 'index.md', mdlib.hub_page(
+        templates, root, categories, context['ui']))
     page = emit.html(out / 'index.html', templates.render('hub.html', context))
 
     analytics = emit.js(out / 'analytics.js', templates.render('analytics.js', {
@@ -1923,9 +1959,9 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     # the end of the build, which has not happened yet, and it has always been
     # hashed nameless - see cache_hash on why that must not change.
     write_worker(out, templates, emit, page,
-                 [('index.html', page), ('analytics.js', analytics),
+                 [('index.html', page), ('index.md', twin), ('analytics.js', analytics),
                   ('manifest.json', manifest)],
-                 ['index.html', css_href, 'manifest.json', site['favorites_href']],
+                 ['index.html', 'index.md', css_href, 'manifest.json', site['favorites_href']],
                  f'/{locale["prefix"]}', {'plural': 'files'}, [site_css])
 
 

@@ -19,18 +19,22 @@
 -->
 {{ csp }}
 <!--
-  The title leads with what someone would actually type into a search box and
-  ends with the brand, rather than the other way round. Nobody searches for
-  "a box of tools"; people search for free tools that do not want their files.
-  Keep it under about 60 characters or Google truncates the tail.
+  The title uses the same brand as the visible header and names image
+  compression as one job in the wider catalogue. Keeping the product and its
+  domain together helps a reader recognize which browser tools a result names.
 -->
 <title>{{ site.hub.title }}</title>
 <meta name="description" content="{{ site.hub.description }}">
 
 <link rel="canonical" href="{{ canonical }}">
+<link rel="alternate" type="text/markdown" href="index.md">
+<link rel="ard" type="application/json" href="{{ site.domain }}.well-known/ard.json">
+<link rel="ai-catalog" type="application/ai-catalog+json" href="{{ site.domain }}.well-known/ai-catalog.json">
+<link rel="describedby" type="application/mcp-server-card+json" href="{{ site.agents.mcp.server_card | e }}">
 {% include "partials/robots.html" %}
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
+{% include "partials/agent-index.html" %}
 {% include "partials/lang-script.html" %}
 
 <!--
@@ -95,10 +99,11 @@
   SVG; og-image.ps1 draws it from the same shape as the share cards.
 -->
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/icon-180.png">
 
 <!--
-  What lets this page be installed as "A Box of Tools". The manifest is scoped
+  What lets this page be installed as "abox.tools". The manifest is scoped
   to this language's root, so the installed window keeps the tools, the guides
   and the roadmap inside it; offline.js registers the worker that has already
   cached this page, so it opens with the network unplugged. The browser offers
@@ -148,6 +153,10 @@
 </header>
 
 <main id="main">
+<div id="hub-agent-phrases" hidden
+     data-title="{{ ui.hub_agent_title | e }}"
+     data-description="{{ ui.hub_agent_description | e }}"
+     data-query-description="{{ ui.hub_agent_query_description | e }}"></div>
 <div class="hub-catalogue">
 
   <!--

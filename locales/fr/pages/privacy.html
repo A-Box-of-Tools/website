@@ -38,6 +38,17 @@
     <p>
       Les boutons de messagerie et de partage préparent rapports et copies JPEG localement, puis téléchargent un fichier de message ou les remettent à l’application choisie. Cette page n’envoie pas de courriel. Application, prestataire et destinataire choisis gèrent la suite selon leurs politiques. <a href="../partager-du-texte/">Partager du texte et des fichiers</a>, <a href="../share-tab/">Partager un onglet du navigateur</a> et <a href="../remote-camera/">Caméra distante</a> envoient volontairement du contenu à un autre navigateur ; les métadonnées sont décrites ci-dessous.
     </p>
+
+    <h3>Catalogue public d’outils pour les agents (MCP et A2A)</h3>
+    <p>
+      Les clients MCP et A2A envoient des mots-clés publics sur la tâche ou le format, la langue du catalogue et une limite de résultats à un Cloudflare Worker sur <code>mcp.abox.tools</code>. Les services de catalogue renvoient des descriptions et liens publics d’outils. Ils n’acceptent aucun fichier, n’offrent aucun point d’envoi et ne demandent aucun compte. N’envoyez pas de mots-clés privés, de noms de fichiers, de contenu de fichiers ou de mots de passe.
+    </p>
+    <p>
+      Le filtrage dans le catalogue interactif déjà chargé s’effectue localement, sans nouvelle requête au catalogue. Ouvrir un résultat demande à l’hôte d’ouvrir le site de cet outil, où les fichiers sont choisis et traités dans le navigateur. Le prestataire qui héberge l’agent ou l’application traite vos requêtes et l’historique de conversation selon sa propre politique. Le service reçoit ce que l’hôte envoie dans la requête au catalogue. Il ne demande pas l’historique de conversation de cet hôte et ne le récupère pas.
+    </p>
+    <p>
+      L’application ne journalise ni les recherches ni le corps des requêtes et n’a ni base de données ni tâches persistantes. L’observabilité du Worker est désactivée. Cloudflare traite néanmoins les adresses IP, les horaires et les métadonnées des requêtes pour l’hébergement, la sécurité et la limitation de leur fréquence. La conservation de ces métadonnées gérées par le prestataire relève de Cloudflare. Nous n’avons pas vérifié de durée fixe de conservation pour ce service. Sans utiliser le catalogue distant, le site habituel et le traitement local restent disponibles.
+    </p>
   </section>
 
   <section>
@@ -77,7 +88,10 @@
       Nous comptons la première utilisation réussie par chargement de page, par exemple demander un téléchargement prêt, terminer une copie ou afficher une analyse ou une vue exploitable dans un outil d’inspection. La seule donnée propre à l’outil ajoutée à cet événement est son identifiant fixe. Cela ne confirme pas que votre système d’exploitation a enregistré un téléchargement.
     </p>
     <p>
-      Les avis facultatifs enregistrent l’identifiant fixe de l’outil, une réponse fixe positive ou négative et un motif fixe après votre choix. Aucun champ de texte libre n’est proposé. Les outils ne joignent à aucun des deux enregistrements de fichiers, noms, contenus, textes saisis, nombres, tailles, dimensions, formats, réglages, erreurs ou autres détails d’entrée ou de sortie. Nous pouvons consulter des rapports Analytics agrégés. Bloquer Analytics laisse le traitement local disponible, y compris hors ligne une fois le cache de l’outil prêt.
+      Nous comptons aussi les ouvertures de pages d’outils. Pour Images to Video, Image Stacker, GIF Analyzer et GIF Splitter, des événements fixes signalent un apport de données, le début du traitement, un résultat prêt, un problème ou une annulation, au maximum une fois par étape et par chargement de page. Les exemples intégrés sont exclus de ces étapes. Certains liens de continuation transmettent uniquement les identifiants fixes des pages de départ et d’arrivée, jamais l’adresse ni le texte du lien. Ces compteurs aident à repérer où une visite s’arrête ; ils n’identifient pas des tâches individuelles et ne confirment pas l’arrivée sur la page suivante.
+    </p>
+    <p>
+      Les avis facultatifs enregistrent l’identifiant fixe de l’outil, une réponse fixe positive ou négative et un motif fixe après votre choix. Aucun champ de texte libre n’est proposé. Les outils ne joignent à aucun des deux enregistrements de fichiers, noms, contenus, textes saisis, nombres, tailles, dimensions, formats, réglages, messages d’erreur ou autres détails d’entrée ou de sortie. Nous pouvons consulter des rapports Analytics agrégés. Bloquer Analytics laisse le traitement local disponible, y compris hors ligne une fois le cache de l’outil prêt.
     </p>
 
     <h3>Buy Me a Coffee &mdash; le bouton de don</h3>

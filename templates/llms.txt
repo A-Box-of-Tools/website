@@ -3,6 +3,8 @@
 > {{ summary }}
 
 {{ llms.intro }}
+
+[Browser workflow skill]({{ site.domain }}.well-known/agent-skills/{{ site.agents.name }}/SKILL.md)
 {% for group in groups %}
 ## {{ group.name }}
 
@@ -12,10 +14,8 @@
 {% endfor %}{% endfor %}
 ## Guides
 
-{{ llms.guides_note }}
+[{{ site.guides.nav }}]({{ site.domain }}{{ site.guides.slug }}/llms.txt)
 
-{% for guide in guides %}- [{{ guide.name }}]({{ guide.url }}): {{ guide.description }}
-{% endfor %}
 ## Other languages
 
 {{ llms.languages_note }}

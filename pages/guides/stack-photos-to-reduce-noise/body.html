@@ -6,7 +6,7 @@
     </p>
     <ul>
       <li><strong>Noise</strong>, and nothing moved &mdash; average.</li>
-      <li><strong>Noise</strong>, and something moved &mdash; sigma clipping.</li>
+      <li><strong>Noise with occasional outliers</strong> &mdash; try sigma clipping; use median if removing a moving object matters most.</li>
       <li><strong>People, cars, an aeroplane</strong> &mdash; median.</li>
       <li><strong>A dark sky you want as star trails</strong> &mdash; lighten.</li>
       <li><strong>A macro shot with almost no depth of field</strong> &mdash; focus stacking.</li>
@@ -19,12 +19,13 @@
       contain a usable JPEG preview; the row shows the picture's actual size.
     </p>
     <p>
-      Everything below is why those five lines are what they are.
+      Check the result against a reference frame before saving. The workflow
+      below covers the settings, the common failures and how to finish the picture.
     </p>
   </section>
 
   <section>
-    <h2>A noisy interior, a clear landmark or a sharp product close-up</h2>
+    <h2>A cleaner burst, an empty background or star trails</h2>
     <p>
       <strong>A static scene in poor light.</strong> Take a burst with exposure
       and focus locked, choose a sharp reference, and start with Average and
@@ -38,6 +39,13 @@
       enough apart for people to change position and use Median. It only
       removes them where the background is visible in more than half the
       frames. Someone who stays still needs different source photographs.
+    </p>
+    <p>
+      <strong>A night-sky trail sequence.</strong> Keep the camera fixed, keep
+      the gaps between exposures short, and use Lighten with alignment set to
+      None. Alignment would follow the moving stars and work against the trails
+      you want to keep. For sharp stars with less noise, use Average with Auto
+      perspective and check whether the fixed foreground has become blurred.
     </p>
     <p>
       <strong>Jewellery, a small part or a specimen.</strong> Keep the camera
@@ -247,6 +255,40 @@
         Move the divider across noise and fine edges to compare the same part of both images. Check the alignment details if the stack looks soft.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Check, save and finish the picture</h2>
+    <ol>
+      <li>
+        <strong>Compare the same detail.</strong> Use the divider in Fit to
+        window to compare a smooth area and a fine edge. Then choose 100% to
+        inspect the reference and stack separately. Less grain with softer edges
+        can mean the frames did not align well; check Alignment details, remove
+        a frame that could not be aligned and run the stack again.
+      </li>
+      <li>
+        <strong>Choose the output for the next job.</strong> Save PNG when you
+        want lossless output for further editing, or JPEG for a smaller file.
+        Both are opaque, eight-bit images, including a stack made from RAW
+        previews.
+      </li>
+      <li>
+        <strong>Finish with the carry-on links.</strong> Once the result is
+        ready, the links beside its download can move it directly into
+        <a href="../../resize-image/" data-workflow-target="resize-image">the image resizer</a>
+        when dimensions matter, or
+        <a href="../../compress-image/" data-workflow-target="compress-image">the image compressor</a>
+        when you need a smaller file. The picture stays in this browser, so
+        there is no need to download and choose it again between tools.
+      </li>
+    </ol>
+    <p>
+      To keep a changing scene as a time-lapse, use your original sequence in
+      <a href="../../images-to-video/" data-workflow-target="images-to-video">Images to Video</a>.
+      The <a href="../turn-images-into-a-video/" data-workflow-target="guides/turn-images-into-a-video">image-sequence guide</a>
+      covers frame order, frame rate and the video export.
+    </p>
   </section>
 
   <section>

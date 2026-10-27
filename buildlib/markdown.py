@@ -379,6 +379,40 @@ def tool_page(templates, site, tool, ui, guide, related):
     })
 
 
+def hub_page(templates, site, categories, ui):
+    """The localized catalogue, without its filter or saved-tool controls.
+
+    Use exactly the cards chosen for this language: a Markdown reader should
+    not be sent to a page that the translated hub itself holds back.
+    """
+    url = site['home']
+    text = lambda fragment: inline(fragment, url)  # noqa: E731
+    block = lambda fragment: convert(fragment, url).strip()  # noqa: E731
+    return templates.render('hub.md', {
+        'heading': text(site['hub']['heading']),
+        'lede': text(site['hub']['lede']),
+        'url': url,
+        'categories': [{
+            'name': text(category['name']),
+            'note': text(category['note']),
+            'tools': [{'name': text(tool['name']), 'url': tool['url'],
+                       'tagline': text(tool['tagline'])}
+                      for tool in category['tools']],
+        } for category in categories],
+        'guides_note': block(ui['hub_guides_note']),
+        'roadmap_note': block(ui['hub_roadmap_note']),
+        'privacy_heading': text(site['hub']['privacy_heading']),
+        'privacy_lede': text(site['hub']['privacy_lede']),
+        'guarantees': [{'title': text(point['title']), 'body': text(point['body'])}
+                       for point in site['hub']['guarantees']],
+        'guarantees_note': block(ui['guarantees_note']),
+        'support_heading': text(site['hub']['support_heading']),
+        'support_note': block(site['hub']['support_note']),
+        'support_text': text(site['bmc']['text']),
+        'support_url': f'https://www.buymeacoffee.com/{site["bmc"]["slug"]}',
+    })
+
+
 def prose_page(templates, site, page, tool, ui, body):
     """A prose page's twin: heading, lede, the way to the tool if there is
     one, and the body converted. `body` is the rendered body, screenshots

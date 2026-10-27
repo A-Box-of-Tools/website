@@ -17,9 +17,10 @@
  *      A search box is the control a visitor most reasonably expects to be
  *      wired to somebody's server, so on this site of all sites it has to be
  *      obviously not.
- *   2. NOTHING IS REMEMBERED. No history entry, no query string, no
- *      localStorage. Searching and expanding are ways of looking at one page,
- *      not preferences.
+ *   2. TYPING IS TRANSIENT. Typing or clearing writes no history entry, query
+ *      string or localStorage. A supplied #search= link can restore public
+ *      catalogue keywords; browser history can retain that link and page
+ *      scripts can read its fragment, so the link is not a place for secrets.
  *   3. IT IS AN ENHANCEMENT, STRICTLY. The field and expansion buttons carry
  *      `hidden` until this script is ready. With JavaScript off every tool
  *      remains visible, rather than leaving a search box or button that does
@@ -101,6 +102,8 @@
           var capability = formats[slug];
           var description = card ? card.getAttribute('data-search') || '' : '';
           var entry = { row: row, slug: slug, capability: capability,
+            card: card, description: description,
+            category: heading ? heading.textContent.trim() : '',
             text: fold(row.textContent + ' ' + description) + ' ' + groupText
               + ' ' + (capability ? capability.join(' ') : '') };
           rows.push(entry);
@@ -118,18 +121,19 @@
 
   if (!items.length) return;
 
-  function apply() {
-    var query = fold(input.value.trim());
+  /* Both readers search the same catalogue. Keeping the directional rules in
+     one predicate prevents an agent finding a conversion the visible filter
+     correctly refuses. */
+  function matching(value) {
+    var query = fold(value.trim());
     var terms = query.split(/\s+/).filter(function (term) {
       return term && !connectors.test(term);
     });
     var conversion = terms.length === 2 && fileFormat.test(terms[0])
       && fileFormat.test(terms[1]) && query.split(/\s+/).length > 2;
-    var shown = 0;
-
-    groups.forEach(function (group) {
-      var visible = 0;
-      group.rows.forEach(function (entry, index) {
+    return {
+      query: query,
+      matches: function (entry) {
         var match = !query || entry.text.indexOf(query) !== -1
           || (terms.length > 0 && terms.every(function (term) {
             return entry.text.indexOf(term) !== -1;
@@ -143,6 +147,20 @@
               || (terms[1] === 'json' && /^(xml|yaml|yml)$/.test(terms[0]));
           }
         }
+        return match;
+      }
+    };
+  }
+
+  function apply() {
+    var search = matching(input.value);
+    var query = search.query;
+    var shown = 0;
+
+    groups.forEach(function (group) {
+      var visible = 0;
+      group.rows.forEach(function (entry, index) {
+        var match = search.matches(entry);
         entry.row.hidden = !match || (!query && !group.expanded && index >= 3);
         if (match) visible++;
       });
@@ -199,6 +217,25 @@
     return true;
   }
 
+  /* Search links use the fragment so opening one sends no query parameter to
+     the host. The same bound as agent discovery keeps a link a short catalogue
+     query, and a malformed link must not break the ordinary filter. */
+  function applyHash(hash, scroll) {
+    if (hash.slice(0, 8) === '#search=') {
+      var query;
+      try {
+        query = decodeURIComponent(hash.slice(8));
+      } catch (error) {
+        return false;
+      }
+      if (Array.from(query).length > 200) return false;
+      input.value = query;
+      apply();
+      return true;
+    }
+    return expandHash(hash, scroll);
+  }
+
   Array.prototype.forEach.call(
     document.querySelectorAll('.hub-categories a'), function (anchor) {
       anchor.addEventListener('click', function (event) {
@@ -210,7 +247,11 @@
       });
     });
   window.addEventListener('hashchange', function () {
-    expandHash(window.location.hash, true);
+    var hash = window.location.hash;
+    if (!applyHash(hash, true) && (!hash || hash === '#')) {
+      input.value = '';
+      apply();
+    }
   });
 
   input.addEventListener('input', apply);
@@ -235,8 +276,78 @@
     input.focus();
   });
 
-  /* A restored search is applied before the field is revealed. An explicit
-     category fragment takes precedence so the browser has a visible target. */
-  if (!expandHash(window.location.hash, true)) apply();
+  /* An explicit search or category link takes precedence over a browser's
+     restored input. Typing and clearing never rewrite that incoming link. */
+  if (!applyHash(window.location.hash, true)) apply();
   box.hidden = false;
+
+  /* Discovery reads only the public category cards, never the visitor's query
+     or saved cards. Registration is optional and must not become a new boot
+     requirement for the ordinary filter. */
+  function registerDiscovery() {
+    var words = document.getElementById('hub-agent-phrases');
+    var context = document.modelContext;
+    if (!context || typeof context.registerTool !== 'function') {
+      context = window.navigator && window.navigator.modelContext;
+    }
+    if (!words || !context || typeof context.registerTool !== 'function') return;
+    var title = words.getAttribute('data-title');
+    var description = words.getAttribute('data-description');
+    var queryDescription = words.getAttribute('data-query-description');
+    if (!title || !description || !queryDescription) return;
+
+    Promise.resolve(context.registerTool({
+      name: 'find_browser_tools',
+      title: title,
+      description: description,
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', maxLength: 200, description: queryDescription },
+          limit: { type: 'integer', minimum: 1, maximum: 20, default: 10 }
+        },
+        required: ['query'],
+        additionalProperties: false
+      },
+      annotations: {
+        readOnlyHint: true,
+        consequentialHint: false,
+        untrustedContentHint: false
+      },
+      execute: function (args) {
+        var own = Object.prototype.hasOwnProperty;
+        if (!args || typeof args !== 'object' || Array.isArray(args)
+            || !own.call(args, 'query') || typeof args.query !== 'string'
+            || Array.from(args.query).length > 200
+            || Object.keys(args).some(function (key) { return key !== 'query' && key !== 'limit'; })
+            || (own.call(args, 'limit') && (!Number.isInteger(args.limit)
+              || args.limit < 1 || args.limit > 20))) {
+          return { ok: false, code: 'invalid_arguments' };
+        }
+        var limit = own.call(args, 'limit') ? args.limit : 10;
+        var search = matching(args.query);
+        var found = items.filter(function (entry) {
+          return entry.card && search.matches(entry);
+        });
+        return {
+          ok: true,
+          total: found.length,
+          hasMore: found.length > limit,
+          tools: found.slice(0, limit).map(function (entry) {
+            var name = entry.card.querySelector('.tool-name');
+            return {
+              name: (name ? name.textContent : entry.card.textContent).trim(),
+              description: entry.description.trim(),
+              url: new URL(entry.card.getAttribute('href'), window.location.href).href,
+              category: entry.category
+            };
+          })
+        };
+      }
+    })).catch(function () {});
+  }
+
+  try {
+    registerDiscovery();
+  } catch (error) {}
 })();

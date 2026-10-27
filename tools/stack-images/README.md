@@ -223,6 +223,16 @@ of skipped files, and keeps a running request's settings fixed. Alignment
 details name the frames that could not be measured, because a soft stack
 cannot tell the visitor which frame caused it.
 
+Journey measurement follows those same operation snapshots. Example files are
+marked by object identity and do not emit input, start, ready, problem, cancel
+or download completion events. Each inspection batch, stack and reference
+comparison retains whether
+it came from real input; stale replies and replaced workers cannot report a
+problem for a later selection. Only a fixed stage name reaches the optional
+shared helper. Files, settings and timings remain outside that call, and the
+download completion event still means that the save control was used for a
+result made from real input.
+
 The finished result also describes the captured request: method, requested
 alignment, working resolution, exposure and encoding quality, with the sigma
 threshold or focus radius only for the method that uses it. `run-context.js`
