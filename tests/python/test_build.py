@@ -121,6 +121,52 @@ class VersionedImports(unittest.TestCase):
         self.assertEqual(self.rewrite(once), once)
 
 
+class ToolLinkTargets(unittest.TestCase):
+    """Workflow data attributes must not turn navigation into lost local work."""
+
+    def test_workflow_target_is_not_an_authored_browsing_target(self):
+        source = '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         '<a href="../split-gif/" data-workflow-target="split-gif" '
+                         'target="_blank" rel="noopener">Frames</a>')
+
+    def test_quoted_attribute_text_cannot_impersonate_target_or_rel(self):
+        source = '<a title=\'a > b target="_self" rel="private"\' href="../">Box</a>'
+        self.assertEqual(buildmod.open_links_elsewhere(source),
+                         source.replace('href="../">',
+                                        'href="../" target="_blank" rel="noopener">'))
+
+    def test_authored_rel_is_preserved_without_a_duplicate_attribute(self):
+        for source, expected in [
+            ('<a href="../" rel="nofollow">Box</a>',
+             '<a href="../" rel="nofollow noopener" target="_blank">Box</a>'),
+            ('<a href="../" rel="noopener noreferrer">Box</a>',
+             '<a href="../" rel="noopener noreferrer" target="_blank">Box</a>'),
+            ('<a href="../" data-rel="private">Box</a>',
+             '<a href="../" data-rel="private" target="_blank" rel="noopener">Box</a>'),
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), expected)
+
+    def test_real_targets_downloads_and_non_navigation_links_keep_their_behavior(self):
+        for source in [
+            '<a href="../" target = \'_self\'>Box</a>',
+            '<a href="../" TARGET="named">Box</a>',
+            '<a href="#main" data-workflow-target="split-gif">Main</a>',
+            '<a href="result.png" download>Save</a>',
+            '<a href="mailto:hello@example.com">Email</a>',
+            '<a data-href="../">No destination</a>',
+            '<nav class="lang-switch"><a href="../de/">Deutsch</a></nav>',
+        ]:
+            with self.subTest(source=source):
+                self.assertEqual(buildmod.open_links_elsewhere(source), source)
+
+    def test_rewriting_workflow_links_twice_does_not_duplicate_attributes(self):
+        once = buildmod.open_links_elsewhere(
+            '<a href="../split-gif/" data-workflow-target="split-gif">Frames</a>')
+        self.assertEqual(buildmod.open_links_elsewhere(once), once)
+
+
 class GuideGroups(unittest.TestCase):
     """Every way a guide could be written and then linked to from nowhere.
 
@@ -648,28 +694,30 @@ class BuildTheSite(unittest.TestCase):
 
     def index_pages(self):
         """The hub, the guides index and the roadmap, in every language: the
-        pages that list other pages, and the only ones without a twin."""
+        pages that list other pages and have no embedded copy control."""
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         return ({buildmod.i18n.locale_path(locale, site['guides']['slug']).strip('/')
                  for locale in self.locales}
                 | {name.strip('/') for name in self.roadmap_pages}
                 | {locale['prefix'].strip('/') for locale in self.locales})
 
-    def test_every_page_but_an_index_has_a_markdown_twin_and_carries_it(self):
+    def test_pages_advertise_their_markdown_twins_and_embed_them_for_copying(self):
         import html as htmllib
         indexes = self.index_pages()
+        hubs = {locale['prefix'].strip('/') for locale in self.locales}
         for name in self.written:
             if not name.endswith('index.html'):
                 continue
             folder = name[:-len('index.html')]
-            expected = folder.strip('/') not in indexes
+            copied = folder.strip('/') not in indexes
+            expected = copied or folder.strip('/') in hubs
             page = (self.out / name).read_text(encoding='utf-8')
             twin = self.out / folder / 'index.md'
             with self.subTest(page=folder or '/'):
                 self.assertEqual(twin.is_file(), expected)
                 self.assertEqual('type="text/markdown" href="index.md"' in page, expected)
-                self.assertEqual('class="page-md-copy"' in page, expected)
-                if not expected:
+                self.assertEqual('class="page-md-copy"' in page, copied)
+                if not copied:
                     continue
                 block = re.search(
                     r'<pre\b(?=[^>]*\bid="page-markdown")(?=[^>]*\bhidden)[^>]*>(.*?)</pre>',
@@ -677,6 +725,26 @@ class BuildTheSite(unittest.TestCase):
                 self.assertIsNotNone(block, 'no embedded twin')
                 self.assertEqual(htmllib.unescape(block.group(1)),
                                  twin.read_text(encoding='utf-8'))
+
+    def test_each_hub_twin_lists_exactly_its_localized_cards_in_order(self):
+        from urllib.parse import urljoin
+        for locale in self.locales:
+            folder = self.out / locale['prefix']
+            page = (folder / 'index.html').read_text(encoding='utf-8')
+            twin = (folder / 'index.md').read_text(encoding='utf-8')
+            home = buildmod.i18n.locale_url(locale, '', self.site)
+            cards = re.findall(r'<a class="tool-card" href="([^"]+)"', page)
+            linked = re.findall(r'^- \[[^\n]+\]\((https://[^)]+)\):', twin, re.M)
+            with self.subTest(language=locale['lang']):
+                self.assertTrue(cards)
+                self.assertEqual(linked, [urljoin(home, card) for card in cards])
+                self.assertTrue(twin.startswith('# '))
+                self.assertIn(home, twin)
+                for target in re.findall(r'\]\(([^)]+)\)', twin):
+                    self.assertTrue(target.startswith(('https://', 'mailto:')), target)
+                self.assertNotIn('data-search=', twin)
+                worker = (folder / 'sw.js').read_text(encoding='utf-8')
+                self.assertIn("'index.md'", worker)
 
     def test_a_twin_is_a_document_whose_links_are_absolute(self):
         """It is meant to be pasted somewhere the page is not, so it opens
@@ -697,6 +765,55 @@ class BuildTheSite(unittest.TestCase):
         worker = (self.out / self.a_tool() / 'sw.js').read_text(encoding='utf-8')
         self.assertIn("'index.md'", worker)
 
+    def test_direct_arrivals_can_find_a_covering_agent_index(self):
+        guides = {f'{self.site["guides"]["slug"]}/index.html'}
+        guides.update(f'{path.parent.relative_to(ROOT / "pages").as_posix()}/index.html'
+                      for path in (ROOT / 'pages' / 'guides').glob('*/page.toml'))
+        for name in self.written:
+            if not name.endswith('index.html'):
+                continue
+            page = (self.out / name).read_text(encoding='utf-8')
+            if '<meta http-equiv="refresh"' in page:
+                continue
+            target = (f'/{self.site["guides"]["slug"]}/llms.txt'
+                      if name in guides else '/llms.txt')
+            with self.subTest(page=name):
+                self.assertEqual(re.findall(r'<link rel="describedby" href="([^"]+)">',
+                                            page), [target])
+                self.assertTrue((self.out / target.lstrip('/')).is_file())
+
+    def test_hubs_advertise_the_production_catalogue_beside_the_browser_skill(self):
+        ard = json.loads((self.out / '.well-known/ard.json').read_bytes())['entries']
+        catalog = json.loads((self.out / '.well-known/ai-catalog.json').read_bytes())
+        self.assertEqual(catalog, {'specVersion': '1.0', 'entries': ard})
+        self.assertEqual([entry['type'] for entry in ard],
+                         ['application/agent-skills+md', 'application/mcp-server-card+json',
+                          'application/a2a-agent-card+json'])
+        card_url = self.site['agents']['mcp']['server_card']
+        self.assertEqual(card_url, 'https://mcp.abox.tools/mcp/server-card')
+        self.assertEqual(ard[1]['url'], card_url)
+        self.assertEqual(ard[1]['identifier'], 'urn:air:mcp.abox.tools:mcp:catalogue')
+        self.assertEqual(ard[1]['trustManifest'],
+                         {'identity': 'https://mcp.abox.tools/', 'identityType': 'https'})
+        self.assertEqual(ard[2]['url'], 'https://mcp.abox.tools/.well-known/agent-card.json')
+        self.assertEqual(ard[2]['identifier'], 'urn:air:mcp.abox.tools:a2a:catalogue')
+        self.assertEqual(ard[2]['trustManifest'], ard[1]['trustManifest'])
+        index = json.loads((self.out / '.well-known/agent-skills/index.json').read_bytes())
+        self.assertEqual([entry['url'] for entry in index['skills']], [ard[0]['url']])
+        for locale in self.locales:
+            page = (self.out / locale['prefix'] / 'index.html').read_text(encoding='utf-8')
+            head = page.split('</head>', 1)[0]
+            with self.subTest(language=locale['lang']):
+                self.assertIn('<link rel="ai-catalog" type="application/ai-catalog+json" '
+                              f'href="{self.site["domain"]}.well-known/ai-catalog.json">', head)
+                self.assertIn('<link rel="describedby" type="application/mcp-server-card+json" '
+                              f'href="{card_url}">', head)
+                self.assertNotIn('mcp-dev.abox.tools', head)
+                policy = re.search(r'<meta http-equiv="Content-Security-Policy" content="(.*?)">',
+                                   head, re.S)
+                self.assertIsNotNone(policy)
+                self.assertNotIn('mcp.abox.tools', policy[1])
+
     def test_a_page_of_prose_carries_neither(self):
         """There is nothing to install on a privacy policy.
 
@@ -709,7 +826,7 @@ class BuildTheSite(unittest.TestCase):
         self.assertNotIn('manifest-src', page)
 
     def test_every_language_can_be_installed_as_the_whole_site(self):
-        """"A Box of Tools" as one app, once per language.
+        """"abox.tools" as one app, once per language.
 
         The name is the site's and is not translatable, so every language
         installs an app by the same name; what differs is where it opens and
@@ -722,7 +839,8 @@ class BuildTheSite(unittest.TestCase):
                 manifest = json.loads((self.out / folder / 'manifest.json')
                                       .read_text(encoding='utf-8'))
                 self.assertEqual(manifest['id'], f'/{folder}')
-                self.assertEqual(manifest['name'], 'A Box of Tools')
+                self.assertEqual(manifest['name'], self.site['name'])
+                self.assertEqual(manifest['short_name'], self.site['name'])
                 self.assertEqual(manifest['lang'], locale['hreflang'])
                 # And a worker over the same scope, or the installed app is a
                 # shortcut that fails the moment the network does - which is the
@@ -730,6 +848,29 @@ class BuildTheSite(unittest.TestCase):
                 self.assertTrue((self.out / folder / 'sw.js').is_file())
                 page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
                 self.assertIn('/offline.js?v=', page)
+
+    def test_hub_identity_agrees_in_visible_copy_metadata_and_markdown(self):
+        from urllib.parse import urlsplit
+        canonical_name = self.site['name']
+        alternate_name = self.site['alternate_name']
+        self.assertEqual(canonical_name, urlsplit(self.site['domain']).hostname)
+        self.assertNotEqual(canonical_name, alternate_name)
+        for locale in self.locales:
+            folder = self.out / locale['prefix']
+            page = (folder / 'index.html').read_text(encoding='utf-8')
+            twin = (folder / 'index.md').read_text(encoding='utf-8')
+            with self.subTest(language=locale['lang']):
+                graph = json.loads(re.search(
+                    r'<script type="application/ld\+json">(.*?)</script>', page, re.S)[1])['@graph']
+                for entity_type in ('WebSite', 'Organization'):
+                    entity = next(node for node in graph if node['@type'] == entity_type)
+                    self.assertEqual(entity['name'], canonical_name)
+                    self.assertEqual(entity['alternateName'], alternate_name)
+                self.assertIn(f'<meta property="og:site_name" content="{canonical_name}">', page)
+                lede = re.search(r'<p class="lede">(.*?)</p>', page, re.S)[1]
+                for name in (canonical_name, alternate_name):
+                    self.assertIn(name, lede)
+                    self.assertIn(name, twin)
 
     def test_the_offline_receipt_covers_every_rebuilt_worker(self):
         import hashlib
@@ -882,7 +1023,7 @@ class BuildTheSite(unittest.TestCase):
         page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
         self.assertIn('Content-Security-Policy', page)
         self.assertIn('application/ld+json', page)
-        self.assertIn('SoftwareApplication', page)
+        self.assertIn('WebApplication', page)
 
     def test_the_stylesheet_is_asked_for_by_a_versioned_url(self):
         slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
@@ -1641,9 +1782,12 @@ class BuildTheSite(unittest.TestCase):
     # a tool missing from it, markup leaking into it, a blockquote that ends
     # early, or a language offered before it is finished.
 
-    def test_llms_txt_is_written(self):
-        self.assertIn('llms.txt', self.written)
-        self.assertTrue((self.out / 'llms.txt').is_file())
+    def test_llms_indexes_are_written(self):
+        for name in ('llms.txt', 'llms-guides.txt',
+                     f'{self.site["guides"]["slug"]}/llms.txt'):
+            with self.subTest(index=name):
+                self.assertIn(name, self.written)
+                self.assertTrue((self.out / name).is_file())
 
     def test_llms_txt_begins_with_the_site_name_as_a_heading(self):
         """The one thing the format requires, and the one thing a reader of it
@@ -1661,6 +1805,18 @@ class BuildTheSite(unittest.TestCase):
         quote = next(i for i, line in enumerate(lines) if line.startswith('> '))
         self.assertEqual(lines[quote + 1], '')
 
+    def test_llms_indexes_stay_within_the_agent_discovery_character_budget(self):
+        """Each discovery fetch needs room for the entries it helps a reader pick.
+
+        The full guide list has its own address rather than taking that room
+        away from the tools as the catalogue grows.
+        """
+        for name in ('llms.txt', 'llms-guides.txt'):
+            with self.subTest(index=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertLess(len(text), 30_000,
+                                f'Keep {name} below 30,000 characters.')
+
     def test_llms_txt_lists_every_tool(self):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
@@ -1670,24 +1826,44 @@ class BuildTheSite(unittest.TestCase):
             with self.subTest(tool=slug):
                 self.assertIn(f'({site["domain"]}{slug}/)', text)
 
-    def test_llms_txt_lists_every_guide(self):
+    def test_llms_txt_links_to_the_full_guide_index(self):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
-        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
-        slugs = sorted(path.parent.name
-                       for path in ROOT.glob('pages/guides/*/page.toml'))
-        self.assertTrue(slugs)
-        for slug in slugs:
-            with self.subTest(guide=slug):
-                self.assertIn(f'({site["domain"]}guides/{slug}/)', text)
+        section = text.split('## Guides', 1)[1].split('\n## ', 1)[0]
+        self.assertIn(f'({self.site["domain"]}{self.site["guides"]["slug"]}/llms.txt)', section)
 
-    def test_llms_txt_carries_no_markup(self):
+    def test_the_section_guide_index_keeps_the_original_address_compatible(self):
+        self.assertEqual(
+            (self.out / 'llms-guides.txt').read_bytes(),
+            (self.out / self.site['guides']['slug'] / 'llms.txt').read_bytes())
+
+    def test_llms_guides_txt_begins_with_the_site_name_and_guides(self):
+        first = (self.out / 'llms-guides.txt').read_text(
+            encoding='utf-8').splitlines()[0]
+        self.assertEqual(first, f'# {self.site["name"]} guides')
+
+    def test_llms_guides_txt_lists_every_guide_with_its_description(self):
+        """Splitting the index should preserve the guide selection information,
+        rather than meet the size budget by silently dropping descriptions."""
+        lines = (self.out / 'llms-guides.txt').read_text(
+            encoding='utf-8').splitlines()
+        paths = sorted(ROOT.glob('pages/guides/*/page.toml'))
+        self.assertTrue(paths)
+        for path in paths:
+            page = buildmod.sitelib.load_page(path, self.site, ROOT / 'pages')
+            heading = buildmod.sitelib.to_text(page['heading'])
+            description = buildmod.sitelib.to_text(page['description'])
+            with self.subTest(guide=page['slug']):
+                self.assertIn(f'- [{heading}]({page["url"]}): {description}', lines)
+
+    def test_llms_indexes_carry_no_markup(self):
         """It is built from config written as HTML fragments, and it is not
         HTML. An &mdash; or a <code> that survives into it is a value that
         skipped site.to_text on the way in."""
-        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
-        for leak in ('&mdash;', '&amp;', '&#', '<code>', '<a ', '{{', '{%'):
-            with self.subTest(leak=leak):
-                self.assertNotIn(leak, text)
+        for name in ('llms.txt', 'llms-guides.txt'):
+            text = (self.out / name).read_text(encoding='utf-8')
+            for leak in ('&mdash;', '&amp;', '&#', '<code>', '<a ', '{{', '{%'):
+                with self.subTest(index=name, leak=leak):
+                    self.assertNotIn(leak, text)
 
     def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
         """The same rule as the sitemap and the hreflang tags, and for the same
@@ -1941,8 +2117,9 @@ class BuildTheSite(unittest.TestCase):
             written = buildmod.build(scoped, clean=True, minify_output=False,
                                      only=[slug], langs=['en'])
             self.assertEqual(written, [f'{slug}/index.html'])
-            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt', 'offline-generations.json',
-                         'feed.xml'):
+            for name in ('index.html', 'index.md', '404.html', 'sitemap.xml', 'llms.txt',
+                         'llms-guides.txt', 'offline-generations.json',
+                         'guides/llms.txt', 'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())
 

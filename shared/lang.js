@@ -158,7 +158,20 @@
 
   // A page with no alternates has nothing to switch to and this file has
   // nothing to do - which is every page until a second language finishes it.
-  if (base && languages.length > 1 && base.path === location.pathname) {
+  // A catalogue search names the language its keywords were written for. It
+  // must not silently move to cards in another language. This is only a hub
+  // link: a tool's ordinary fragment still follows the existing language rule.
+  function catalogueSearch() {
+    if (!base || base.path !== '/' || location.hash.slice(0, 8) !== '#search=') return false;
+    try {
+      return Array.from(decodeURIComponent(location.hash.slice(8))).length <= 200;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  if (base && languages.length > 1 && base.path === location.pathname
+      && !catalogueSearch()) {
     var choice = read('localStorage', CHOICE);
     var want = (choice && named(languages, choice))
       || (choice ? null : preferred(navigator.languages || [navigator.language], languages));

@@ -10,10 +10,11 @@
 # it, so they cannot drift.
 #
 
-name = "A Box of Tools"
+name = "abox.tools"
+alternate_name = "A Box of Tools"
 domain = "https://abox.tools/"
 lang = "en"
-lastmod = "2026-10-15"     # the hub page's own sitemap date
+lastmod = "2026-10-24"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -91,9 +92,8 @@ analytics_id = "G-SCBN29XZ31"
 # Who publishes this, in the form a machine reads it. The About and Contact
 # pages say the same things in prose, at length, in fifteen languages; this is
 # the half that goes into the Organization node on the hub, and it is
-# deliberately only the facts that are identical in every language. An address
-# and an email are; a description of what the site is for is not, and would
-# arrive in English on fourteen pages out of fifteen, so there is not one here.
+# deliberately only the facts that are identical in every language. The
+# publisher's description reuses each language's hub description.
 #
 # `contact_slug` is written down for the same reason `safety_guide` above is:
 # the structured data has to name that page's address, and a slug spelled out
@@ -104,6 +104,40 @@ analytics_id = "G-SCBN29XZ31"
 region = "Ontario"
 country = "CA"
 contact_slug = "contact"
+
+# A public browser-workflow skill, advertised by the generated discovery files.
+# It describes the existing tools; it does not expose a processing endpoint.
+[agents]
+name = "abox-tools"
+display_name = "abox.tools browser tools"
+description = "Use this skill when a person asks to find or use a browser tool for a supported file or text task, including image, PDF and structured-data work. Choose a matching abox.tools tool for conversion, compression, inspection or editing within its documented formats, limits and privacy boundaries."
+representative_queries = [
+  "Find a browser tool that compresses my image without uploading it.",
+  "Help me choose an abox.tools tool and save its result.",
+  "Can an agent use abox.tools while keeping processing on my device?",
+]
+
+# This service searches public catalogue text, separately from file processing.
+# Deploy and verify the production Worker before releasing these discovery links.
+[agents.mcp]
+server_card = "https://mcp.abox.tools/mcp/server-card"
+display_name = "abox.tools public catalogue"
+description = "Find browser tools by public task or format keywords. Initial keywords are sent to this catalogue service; it accepts no files and performs no file processing. MCP Apps hosts can display an interactive catalogue, while other hosts receive public tool links."
+representative_queries = [
+  "Find a browser tool for PNG to WebP.",
+  "Browse the public abox.tools tool catalogue in an MCP Apps host.",
+]
+
+# This card describes the catalogue's real A2A interface, not file processing.
+# Its version and supported interfaces remain on the separately deployed service.
+[agents.a2a]
+agent_card = "https://mcp.abox.tools/.well-known/agent-card.json"
+display_name = "abox.tools public catalogue agent"
+description = "Find browser tools through A2A using public task or format keywords. Initial keywords are sent to the catalogue service, which returns public tool descriptions and links. It accepts no files and performs no file processing."
+representative_queries = [
+  "Find a browser tool for PNG to WebP through A2A.",
+  "Get public abox.tools catalogue links for PDF compression.",
+]
 
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
@@ -205,7 +239,7 @@ font = "Cookie"
 #
 # There are two kinds and both are written per language: one per tool, scoped to
 # that tool's folder, and one per front page, scoped to that language's root and
-# called "A Box of Tools". Each is scoped to exactly what the service worker
+# called "abox.tools". Each is scoped to exactly what the service worker
 # beside it has already cached, which is the whole point - an app installed from
 # here opens with the network unplugged.
 #
@@ -307,21 +341,21 @@ lede = """
     this site has never held anything of yours to lose."""
 
 [hub]
-title = "Free Browser Tools &mdash; Local File Processing | abox.tools"
+title = "abox.tools &mdash; Image Compression &amp; Free Browser Tools"
 # Kept under 155 characters. Google truncates a description around there, and
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
-description = "Free tools that process files in your browser. Combine images into PDF or MP4, compress toward a target size, crop video, or remove EXIF data."
+description = "Free image compression, PDF, video, audio and text tools from abox.tools (A Box of Tools). Process files in your browser without processing uploads."
 heading = "Free tools. Local processing."
-og_title = "A Box of Tools &mdash; local file processing in your browser"
-og_description = "Small, single-purpose tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
+og_title = "abox.tools &mdash; image compression and free browser tools"
+og_description = "Free image compression, PDF, video, audio and text tools that process files on your device. Intentional sharing and optional online features are explained where they appear."
 og_image_alt = "abox.tools - browser tools for local file processing"
-schema_description = "Small browser utilities for local file processing, with no processing uploads or account required. Network features are described on their own pages."
-schema_about = "Browser utilities for local file processing and intentional browser-to-browser sharing"
+schema_description = "Free browser tools for local image compression, PDF editing, video, audio and text. No processing uploads or accounts. Intentional sharing and optional online features are explained on their own pages."
+schema_about = "Browser tools for image compression, PDF editing, video, audio, text and intentional browser-to-browser sharing"
 
 # Keep the introduction brief so a phone reaches the catalogue quickly.
 # Network use and the limits of offline processing stay in the details below.
-lede = "Process files in your browser. No processing uploads, no sign-in."
+lede = "abox.tools (A Box of Tools) offers image compression, PDF editing and text tools in your browser. No processing uploads, no sign-in."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is
@@ -342,7 +376,7 @@ body = "Your browser opens, reads and edits the files you choose. There is no up
 
 [[hub.guarantees]]
 title = "Your files are not given to analytics"
-body = "Page visits, the first successful tool use per page load and optional fixed feedback answers are counted. No files, filenames, contents or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
+body = "Page visits, fixed tool-use stages, the first successful result per page load, selected workflow links and optional fixed feedback are counted. No files, filenames, contents or input or output details go with those counts. Optional image imports and receipt exchange-rate requests name their data beside their controls."
 
 [[hub.guarantees]]
 title = "Local processing works offline"
@@ -619,12 +653,15 @@ name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."
 order = [
   "is-it-safe-to-upload-files",
+  "where-do-your-file-copies-go",
   "what-20-converters-do-with-your-file",
   "is-it-safe-to-scan-a-qr-code",
   "is-it-safe-to-upload-a-photo-of-your-id",
   "is-it-safe-to-upload-a-bank-statement",
+  "what-an-ordinary-file-can-reveal-about-you",
   "can-blacked-out-text-be-recovered",
   "is-it-safe-to-paste-into-an-online-tool",
+  "does-private-browsing-keep-downloads-private",
   "is-it-safe-to-use-an-online-password-generator",
   "is-base64-encryption",
   "what-a-pdf-remembers",
@@ -750,6 +787,12 @@ hub_privacy_details = "How it stays private"
 
 hub_filter_label = "Find a tool"
 hub_filter_none = "No tool matches that. Try fewer words or a file format, such as PDF or PNG."
+
+# Browser agents read the same public catalogue a person sees. Keeping their
+# tool metadata here lets each hub describe that search in its own language.
+hub_agent_title = "Find a browser tool"
+hub_agent_description = "Search the tools listed on this page by task, name or file format. Returns public tool names, descriptions and links; does not open tools or process files. Matches short keywords in this page's language."
+hub_agent_query_description = "Keywords such as PNG to WebP or JSON. An empty query lists tools."
 
 hub_guides_note = """
     Not sure which setting to move, or what it costs?
@@ -1112,15 +1155,11 @@ licence = """
 summary = "Free single-purpose browser tools for local file processing: compress, resize, crop, trim, convert and inspect. No processing uploads or accounts. Intentional browser-to-browser sharing and optional online features are explained on their own pages."
 
 intro = """
-Files selected for processing are read, edited and written on the device running the browser. Processing does not upload them to abox.tools. Network features have separate boundaries: Images to Video can retrieve an image URL; receipt extraction can request a currency pair and date from Frankfurter; Share Text & Files, Share a Browser Tab, Remote Camera, Local Walkie-Talkie and Voice Oncall deliberately transmit content between browsers. These paired tools require internet introductions: their public rendezvous carries connection setup, status and discovery metadata, not shared content. Direct is the default and never switches to a relay automatically. Share Text’s ordinary Direct mode uses public STUN; its Local network setting and the other four tools use host addresses without STUN or TURN. The host may explicitly choose Cloud relay before starting. Both peers then use Cloudflare TURN to forward encrypted content, while the relay sees addresses, timing and traffic volume and requires internet throughout. Approval, password and microphone controls still apply. The voice tools host in the browser and use encrypted WebRTC audio. Both voice tools offer nearby discovery using names chosen by hosts. Walkie-Talkie lists the listener invitations of channels offered nearby. Voice Oncall uses password-derived admission credentials and moderation status; callers need no display name, although older clients may still send one. Optional receipt email actions hand locally prepared material to an app the visitor chooses. The Privacy page explains these features, platform scripts and fixed feedback votes.
+Files are processed on the device running the browser, without processing uploads. Device sharing and live voice/video tools deliberately transmit content between browsers. Optional image imports, receipt exchange-rate lookups and email-app handoffs have their own boundaries. Read the selected tool's page and [Privacy](https://abox.tools/privacy/) for connection modes, relay metadata and optional requests.
 
-The interactive tools need a browser; this site offers no processing API, CLI or file-upload endpoint. Link a person to the appropriate tool and read its supported inputs, outputs and limitations. An agent uses the tool in the browser it controls: a cloud browser means the file has already left the person's device. The agent vendor's own access to screenshots, instructions or files is a separate question.
+The tools need a browser; there is no processing API, CLI or file-upload endpoint. An agent's cloud browser means the file has already left the person's device. The agent provider's access to files, screenshots and instructions is separate from this site's processing. [Can an AI agent use these tools?](https://abox.tools/guides/can-an-ai-agent-use-these-tools/) explains the distinction.
 
-The code is MIT licensed. Each tool has a folder under `tools/`, a README and ES modules under `src/`; common parsers and writers live under `shared/js/`. Some tools also ship a licensed third-party JavaScript or WebAssembly engine under `vendor/`. The site's build copies shared parts into each built tool and minifies first-party code. Node can import suitable leaf modules; imports of a tool's `./shared/` parts need the repository's `tests/js/resolve-shared.mjs` resolve hook. Browser APIs remain browser APIs.
-
-The prose is licensed separately under CC BY 4.0. Reuse it with a credit and link to A Box of Tools and a note of changes. Both licence files are at the repository root.
-
-Every linked page also has a Markdown copy: append `index.md` to its address, for example https://abox.tools/compress-image/index.md. A tool's copy contains its explanations, steps, questions and privacy details, without the interface. A guide's copy contains the guide. Both are generated from the same source as the HTML.
+Tools and guides have a Markdown copy: append `index.md` to the page URL, for example https://abox.tools/compress-image/index.md. These copies contain explanations and limitations without the interface. Code is MIT licensed; prose is CC BY 4.0.
 
 This index is generated from the site's configuration and page metadata. It describes available tools; it does not measure whether an AI search system has indexed or cited them."""
 

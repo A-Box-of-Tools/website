@@ -1,0 +1,6 @@
+node_modules/
+.wrangler/
+generated/
+build/
+# This service has its own reproducible dependency graph; the static site does not.
+!package-lock.json

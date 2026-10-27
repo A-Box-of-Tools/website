@@ -33,9 +33,13 @@
 <meta name="description" content="{{ page.description }}">
 
 <link rel="canonical" href="{{ page.url }}">
+{% if tool %}<meta name="abox-workflow-source" content="{{ page.slug }}">
+<meta name="abox-workflow-target" content="{{ tool.slug }}">
+{% endif %}
 {% include "partials/robots.html" %}
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
+{% include "partials/agent-index.html" %}
 <!--
   The same page as Markdown, at its own address, for a reader that is not a
   person. The file sits beside this one, and the button under the heading
@@ -83,6 +87,7 @@
 {% endif %}
 <link rel="stylesheet" href="{{ css_href }}">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/icon-180.png">
 </head>
 <body>
@@ -130,7 +135,7 @@
     written at all.
   -->
 {% if tool %}  <p class="guide-cta">
-    <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/">{{ ui.guide.open_tool }}</a>
+    <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/" data-workflow-target="{{ tool.slug }}">{{ ui.guide.open_tool }}</a>
     <span class="guide-cta-note">{{ tool.tagline }}</span>
   </p>
 {% endif %}  <!--

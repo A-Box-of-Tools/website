@@ -38,6 +38,17 @@
     <p>
       Los botones de correo y compartir preparan informes y copias JPEG localmente; después descargan un archivo de correo o los entregan a la aplicación elegida. Esta página no envía correos. La aplicación, proveedor y destinatario que elijas realizan el siguiente paso con sus políticas. <a href="../compartir-texto/">Compartir texto y archivos</a>, <a href="../share-tab/">Compartir una pestaña del navegador</a> y <a href="../remote-camera/">Cámara remota</a> envían contenido a otro navegador de forma deliberada; sus metadatos se describen abajo.
     </p>
+
+    <h3>Catálogo público de herramientas para agentes (MCP y A2A)</h3>
+    <p>
+      Los clientes MCP y A2A envían palabras clave públicas sobre la tarea o el formato, el idioma del catálogo y un límite de resultados a un Cloudflare Worker en <code>mcp.abox.tools</code>. Los servicios de catálogo devuelven descripciones y enlaces públicos de herramientas. No aceptan archivos, no ofrecen un destino para subirlos y no requieren una cuenta. No envíes palabras clave privadas, nombres de archivo, contenido de archivos ni contraseñas.
+    </p>
+    <p>
+      Filtrar dentro del catálogo interactivo ya cargado se hace localmente, sin otra solicitud al catálogo. Al abrir un resultado, se pide al entorno que abra el sitio de esa herramienta, donde eliges y procesas los archivos en el navegador. El proveedor del entorno del agente o de la aplicación trata tus solicitudes y el historial de conversación según su propia política. El servicio recibe lo que el entorno envía en la solicitud al catálogo. No solicita ni recupera el historial de conversación de ese entorno.
+    </p>
+    <p>
+      La aplicación no registra consultas ni cuerpos de solicitudes y no tiene base de datos ni tareas persistentes. La observabilidad del Worker está desactivada. Cloudflare sigue tratando direcciones IP, tiempos y metadatos de las solicitudes para el alojamiento, la seguridad y los controles de frecuencia. Cloudflare determina la conservación de esos metadatos gestionados por el proveedor. No hemos verificado un plazo fijo de conservación para este servicio. Si no usas el catálogo remoto, el sitio habitual y el procesamiento local siguen disponibles.
+    </p>
   </section>
 
   <section>
@@ -75,7 +86,10 @@
       Contamos el primer uso completado por cada carga de página, por ejemplo, solicitar una descarga ya preparada, completar una copia o mostrar un análisis o una vista utilizable en una herramienta de inspección. El único dato específico de la herramienta que se añade al evento es su identificador fijo. No confirma que tu sistema operativo haya guardado una descarga.
     </p>
     <p>
-      Los comentarios voluntarios registran el identificador fijo de la herramienta, una respuesta fija positiva o negativa y un motivo fijo después de que elijas una respuesta. No hay texto libre. Las herramientas no adjuntan archivos, nombres, contenidos, texto introducido, cantidades, tamaños, dimensiones, formatos, ajustes, errores ni otros detalles de entrada o salida a ninguno de los dos registros. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local, también sin conexión cuando la caché de la herramienta esté lista.
+      También contamos la apertura de las páginas de herramientas. En Images to Video, Image Stacker, GIF Analyzer y GIF Splitter, eventos fijos registran la entrada, el inicio del procesamiento, un resultado listo, un problema o una cancelación, como máximo una vez por etapa y carga de página. Los ejemplos integrados se excluyen de esas etapas. Algunos enlaces de continuación solo comunican identificadores fijos de las páginas de origen y destino, nunca la dirección ni el texto del enlace. Estos recuentos ayudan a localizar dónde termina una visita; no identifican trabajos individuales ni confirman la llegada a la siguiente página.
+    </p>
+    <p>
+      Los comentarios voluntarios registran el identificador fijo de la herramienta, una respuesta fija positiva o negativa y un motivo fijo después de que elijas una respuesta. No hay texto libre. Las herramientas no adjuntan archivos, nombres, contenidos, texto introducido, cantidades, tamaños, dimensiones, formatos, ajustes, mensajes de error ni otros detalles de entrada o salida a ninguno de los dos registros. Podemos ver informes agregados de Analytics. Bloquearlo deja disponible el procesamiento local, también sin conexión cuando la caché de la herramienta esté lista.
     </p>
 
     <h3>Buy Me a Coffee &mdash; el botón de donación</h3>

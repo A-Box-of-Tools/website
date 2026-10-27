@@ -16,6 +16,7 @@ stop, and each is one test.
 import json
 import tempfile
 import unittest
+import urllib.parse
 from pathlib import Path
 
 from buildlib import site as sitelib
@@ -28,6 +29,7 @@ from buildlib import site as sitelib
 # crawler the two are one document. build.py fills them in per locale; a
 # fixture standing in for a site has to carry them too.
 SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
+        'alternate_name': 'The Site Project',
         'home': 'https://example.test/',
         'guides_url': 'https://example.test/guides/',
         'roadmap_url': 'https://example.test/roadmap/',
@@ -254,7 +256,7 @@ class StructuredData(unittest.TestCase):
         }
         graph = json.loads(sitelib.tool_jsonld(SITE, tool))['@graph']
         self.assertEqual([item['@type'] for item in graph],
-                         ['SoftwareApplication', 'BreadcrumbList', 'FAQPage'])
+                         ['WebApplication', 'BreadcrumbList', 'FAQPage'])
 
     def test_faq_answers_are_derived_from_the_page_html(self):
         # Authored once as the HTML that renders, so the two cannot contradict
@@ -363,13 +365,96 @@ class StructuredData(unittest.TestCase):
                                          'https://x.example.test/site'])
 
     def test_the_hub_lists_the_tools_in_order(self):
-        tools = [{'name': 'A', 'url': 'https://example.test/a/'},
-                 {'name': 'B', 'url': 'https://example.test/b/'}]
+        tools = [{'name': name, 'url': f'https://example.test/{name.lower()}/',
+                  'schema': {'category': 'UtilitiesApplication',
+                             'description': f'Tool {name}.'}}
+                 for name in ('A', 'B')]
         site = dict(SITE, hub={'schema_description': 'd', 'schema_about': ['x']})
         graph = json.loads(sitelib.hub_jsonld(site, tools))['@graph']
         items = graph[2]['mainEntity']['itemListElement']
         self.assertEqual([i['position'] for i in items], [1, 2])
         self.assertEqual([i['name'] for i in items], ['A', 'B'])
+        self.assertEqual([i['item']['@id'] for i in items],
+                         ['https://example.test/a/#app',
+                          'https://example.test/b/#app'])
+        self.assertTrue(all(i['item']['@type'] == 'WebApplication' for i in items))
+        self.assertTrue(all(i['item']['browserRequirements'] == 'Requires JavaScript.'
+                            for i in items))
+
+    def test_the_catalogue_and_tool_page_identify_the_same_localized_application(self):
+        """Browser requirements need the WebApplication subtype on both pages,
+        while the localized #app identity still names the same application."""
+        site = dict(SITE, lang='fr', home='https://example.test/fr/',
+                    hub={'schema_description': 'd', 'schema_about': ['x']})
+        tool = {
+            'name': 'Vidéo&nbsp;<b>Rogner</b>',
+            'url': 'https://example.test/fr/rogner-video/',
+            'lastmod': '2026-01-01',
+            'schema': {
+                'category': 'MultimediaApplication',
+                'description': 'Crop <b>MP4</b> &amp; WebM locally.',
+                'browser_requirements': 'Requires JavaScript and WebCodecs.',
+                'features': ['Crop a video.'],
+            },
+            'faq': [{'q': 'Does it upload?', 'a': 'No.'}],
+        }
+        graph = json.loads(sitelib.hub_jsonld(site, [tool]))['@graph']
+        listed = graph[2]['mainEntity']['itemListElement'][0]
+        app = listed['item']
+        page = json.loads(sitelib.tool_jsonld(site, tool))['@graph'][0]
+        self.assertEqual(app['@type'], 'WebApplication')
+        self.assertEqual(page['@type'], 'WebApplication')
+        self.assertEqual(app['@id'], 'https://example.test/fr/rogner-video/#app')
+        self.assertEqual(app['url'], listed['url'])
+        self.assertEqual(app['name'], 'Vidéo Rogner')
+        self.assertEqual(app['description'], 'Crop MP4 & WebM locally.')
+        self.assertEqual(app['inLanguage'], 'fr')
+        self.assertEqual(app['applicationCategory'], 'MultimediaApplication')
+        self.assertEqual(app['browserRequirements'], 'Requires JavaScript and WebCodecs.')
+        for key, value in app.items():
+            with self.subTest(field=key):
+                self.assertEqual(page[key], value)
+        for key in ('offers', 'featureList', 'publisher', 'dateModified'):
+            with self.subTest(detail=key):
+                self.assertIn(key, page)
+                self.assertNotIn(key, app)
+        self.assertNotIn('FAQPage', json.dumps(app))
+
+    def test_catalogue_search_links_keep_words_in_the_fragment_and_current_language(self):
+        query = 'PNG to WebP & JSON/#'
+        for lang in ('en', 'de', 'ja'):
+            with self.subTest(language=lang):
+                home = SITE['domain'] + (lang + '/' if lang != 'en' else '')
+                site = dict(SITE, lang=lang, home=home,
+                            hub={'schema_description': 'd', 'schema_about': ['x']})
+                graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
+                catalogue = next(node for node in graph if node['@type'] == 'CollectionPage')
+                action = catalogue['potentialAction']
+                self.assertEqual(action['@type'], 'SearchAction')
+                self.assertEqual(action['query-input'], 'required name=search_term_string')
+                self.assertEqual(action['target']['@type'], 'EntryPoint')
+                self.assertEqual(action['target']['contentType'], 'text/html')
+                template = action['target']['urlTemplate']
+                self.assertEqual(template, home + '#search={search_term_string}')
+                linked = urllib.parse.urlsplit(template.replace(
+                    '{search_term_string}', urllib.parse.quote(query, safe='')))
+                self.assertEqual(linked.query, '')
+                self.assertEqual(linked.path, urllib.parse.urlsplit(home).path)
+                self.assertEqual(urllib.parse.unquote(linked.fragment), 'search=' + query)
+                self.assertTrue(all('potentialAction' not in node for node in graph
+                                    if node['@type'] != 'CollectionPage'))
+
+    def test_the_publisher_and_website_keep_their_explicit_identity_in_each_language(self):
+        for description in ('Local tools &amp; guides', 'Outils &amp; guides locaux'):
+            with self.subTest(description=description):
+                site = dict(SITE, name='example.test', alternate_name='Example Tools',
+                            hub={'schema_description': description, 'schema_about': ['x']})
+                graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
+                org = next(node for node in graph if node['@type'] == 'Organization')
+                self.assertEqual(org['description'], description.replace('&amp;', '&'))
+                for entity in (org, graph[0]):
+                    self.assertEqual(entity['name'], 'example.test')
+                    self.assertEqual(entity['alternateName'], 'Example Tools')
 
 
 class LoadTool(TempTree):

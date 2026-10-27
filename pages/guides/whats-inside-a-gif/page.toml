@@ -19,18 +19,18 @@ group = "doing-the-job"
 tool = "gif-analyzer"
 
 title = "What Is Actually Inside a GIF File (and Why Yours Is So Big)"
-description = "Frames, delays, disposal methods and colour tables explained, why browsers refuse the fastest delays, and how to work out where a GIF's file size really went."
+description = "Inspect GIF frames, timing, disposal and palettes to explain a large or slow animation. Read the size breakdown, then choose frame extraction, editing or MP4."
 
 heading = "What is actually inside a GIF"
 lede = """
-    A GIF is a stack of rectangles, each with a timer and a colour table, and
-    almost every complaint people have about the format comes from one of those
-    three things. This is what each part does, and how to find out which one your
-    file is spending its size on."""
+    Find what makes a GIF large, why a pause plays differently from its stored
+    delay, and what the disposal rules do to transparent frames. Read the
+    analyzer's report, then choose whether to extract pictures, rebuild the
+    animation or turn the original into an MP4."""
 
-updated = "13 October 2026"
+updated = "23 October 2026"
 published = "2026-08-22"
-lastmod = "2026-10-13"
+lastmod = "2026-10-23"
 
 og_title = "What is actually inside a GIF file"
 og_description = "Frames, delays, disposal and palettes - what each one does, why your GIF plays slower than it says, and where its file size went."

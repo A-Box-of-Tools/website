@@ -38,6 +38,17 @@
     <p>
       Die E-Mail- und Teilen-Schaltflächen bereiten Berichte und JPEG-Kopien lokal vor, laden dann eine E-Mail-Datei herunter oder übergeben sie an Ihre gewählte App. Die Seite sendet keine E-Mail. App, Anbieter und Empfänger übernehmen den nächsten Schritt nach ihren Richtlinien. <a href="../text-teilen/">Text und Dateien teilen</a>, <a href="../share-tab/">Browser-Tab teilen</a> und <a href="../remote-camera/">Remote-Kamera</a> senden bewusst Inhalte an einen anderen Browser; Verbindungsmetadaten werden unten erklärt.
     </p>
+
+    <h3>Öffentlicher Werkzeugkatalog für Agenten (MCP und A2A)</h3>
+    <p>
+      MCP- und A2A-Clients senden öffentliche Aufgaben- oder Formatstichwörter, die Katalogsprache und eine Obergrenze für die Ergebnisanzahl an einen Cloudflare Worker unter <code>mcp.abox.tools</code>. Die Katalogdienste liefern öffentliche Werkzeugbeschreibungen und Links. Sie nehmen keine Dateien an, bieten keinen Upload-Endpunkt und benötigen kein Konto. Senden Sie keine vertraulichen Stichwörter, Dateinamen, Dateiinhalte oder Passwörter.
+    </p>
+    <p>
+      Das Filtern im geladenen interaktiven Katalog läuft lokal, ohne weitere Kataloganfrage. Beim Öffnen eines Ergebnisses wird der Host gebeten, die Website des Werkzeugs zu öffnen. Dort werden Dateien im Browser ausgewählt und verarbeitet. Der Anbieter des Agenten- oder App-Hosts verarbeitet Ihre Anfragen und den Gesprächsverlauf nach seinen eigenen Richtlinien. Der Dienst empfängt, was der Host in der Kataloganfrage sendet. Er fordert den Gesprächsverlauf dieses Hosts weder an noch ruft er ihn ab.
+    </p>
+    <p>
+      Die Anwendung protokolliert weder Suchanfragen noch Anfrageinhalte und hat keine Datenbank oder dauerhaft gespeicherten Aufgaben. Die Observability-Funktion des Workers ist deaktiviert. Cloudflare verarbeitet dennoch IP-Adressen, Zeitangaben und Anfragemetadaten für Hosting, Sicherheit und die Begrenzung der Anfragerate. Die Aufbewahrung dieser vom Anbieter verwalteten Metadaten richtet sich nach Cloudflare. Eine feste Aufbewahrungsfrist für diesen Dienst haben wir nicht überprüft. Ohne den entfernten Katalog bleiben die gewöhnliche Website und die lokale Dateiverarbeitung nutzbar.
+    </p>
   </section>
 
   <section>
@@ -76,7 +87,10 @@
       Wir zählen die erste erfolgreiche Werkzeugnutzung pro Seitenaufruf, zum Beispiel einen angeforderten, fertig vorbereiteten Download, erfolgreiches Kopieren oder eine nutzbare Analyse beziehungsweise Ansicht in einem Prüfwerkzeug. Die einzige werkzeugspezifische Angabe in diesem Ereignis ist die feste Werkzeugkennung. Es bestätigt nicht, dass Ihr Betriebssystem einen Download gespeichert hat.
     </p>
     <p>
-      Freiwilliges Feedback erfasst nach Ihrer Antwort die feste Werkzeugkennung, eine feste positive oder negative Antwort und einen festen Grund. Es gibt kein Freitextfeld. Die Werkzeuge fügen keinem dieser Datensätze Dateien, Dateinamen, Inhalte, eingegebenen Text, Anzahlen, Größen, Abmessungen, Formate, Einstellungen, Fehler oder andere Eingabe- oder Ergebnisdetails hinzu. Wir können zusammengefasste Analytics-Berichte sehen. Auch mit blockiertem Analytics bleibt lokale Verarbeitung verfügbar, nach vorbereitetem Offline-Cache auch ohne Verbindung.
+      Wir zählen auch das Öffnen von Werkzeugseiten. Bei Images to Video, Image Stacker, GIF Analyzer und GIF Splitter erfassen feste Ereignisse die Eingabe, den Verarbeitungsstart, ein fertiges Ergebnis, ein Problem oder einen Abbruch, je Schritt höchstens einmal pro Seitenaufruf. Eingebaute Beispiele sind davon ausgenommen. Ausgewählte Weiterführungslinks melden nur feste Kennungen der Ausgangs- und Zielseite, niemals Linkadresse oder Linktext. Diese Zähler zeigen, wo ein Besuch endet; sie kennzeichnen keine einzelnen Aufträge und bestätigen nicht die Ankunft auf der nächsten Seite.
+    </p>
+    <p>
+      Freiwilliges Feedback erfasst nach Ihrer Antwort die feste Werkzeugkennung, eine feste positive oder negative Antwort und einen festen Grund. Es gibt kein Freitextfeld. Die Werkzeuge fügen keinem dieser Datensätze Dateien, Dateinamen, Inhalte, eingegebenen Text, Anzahlen, Größen, Abmessungen, Formate, Einstellungen, Fehlermeldungen oder andere Eingabe- oder Ergebnisdetails hinzu. Wir können zusammengefasste Analytics-Berichte sehen. Auch mit blockiertem Analytics bleibt lokale Verarbeitung verfügbar, nach vorbereitetem Offline-Cache auch ohne Verbindung.
     </p>
 
     <h3>Buy Me a Coffee: der Spenden-Button</h3>

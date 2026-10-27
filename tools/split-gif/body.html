@@ -3,6 +3,15 @@
   <section class="card">
     <h2><span class="step">1</span> Choose a GIF</h2>
 
+    <p class="card-lede">
+      Save a still for instructions, extract PNG frames for editing, or make one
+      sprite sheet. Leave <strong>Each PNG holds</strong> on <strong>The frame
+      as it appears</strong> for complete pictures. The <a
+      href="../guides/split-a-gif-into-frames/"
+      data-workflow-target="guides/split-a-gif-into-frames">GIF frame extraction
+      guide</a> explains the choices.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +114,26 @@
          somebody is about to save, and a checkbox is the one control everybody
          already knows is safe to press. -->
     <ul class="frames" id="frames"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Use the frames in your next step</h2>
+    <p>
+      To rebuild an edited animation, add the complete PNG frames to <a
+      href="../gif-maker/" data-workflow-target="gif-maker">GIF Maker</a>,
+      sort by name and set each hold time using <code>frames.txt</code> as a
+      reference. The timing list is not imported automatically. Follow the <a
+      href="../guides/edit-a-gif-frame-by-frame/"
+      data-workflow-target="guides/edit-a-gif-frame-by-frame">frame-by-frame
+      editing guide</a> for the full workflow.
+    </p>
+    <p>
+      If you only need a video, <a href="../gif-to-mp4/"
+      data-workflow-target="gif-to-mp4">convert the original GIF directly to
+      MP4</a> to keep its varying frame delays. Check unexpected timing or file
+      size in <a href="../gif-analyzer/"
+      data-workflow-target="gif-analyzer">GIF Analyzer</a> before editing.
+    </p>
   </section>
 
   <!--
