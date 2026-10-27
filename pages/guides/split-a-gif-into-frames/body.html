@@ -16,6 +16,29 @@
   </section>
 
   <section>
+    <h2>Choose extraction, editing or video</h2>
+    <p>
+      If the animation's size or timing is the problem, inspect the original
+      in <a href="../../gif-analyzer/"
+      data-workflow-target="gif-analyzer">GIF Analyzer</a> first. Its frame
+      delays, disposal rules and byte budget help explain what needs to change;
+      the <a href="../whats-inside-a-gif/"
+      data-workflow-target="guides/whats-inside-a-gif">GIF structure guide</a>
+      explains how to read them.
+    </p>
+    <p>
+      For an edited GIF, extract complete PNG frames and follow the <a
+      href="../edit-a-gif-frame-by-frame/"
+      data-workflow-target="guides/edit-a-gif-frame-by-frame">split-and-rebuild
+      workflow</a>. If the destination wants video, <a
+      href="../../gif-to-mp4/" data-workflow-target="gif-to-mp4">convert the
+      original directly to MP4</a> instead of rebuilding a PNG sequence. The
+      conversion keeps varying frame delays; transparent areas get a colour
+      and looping is controlled by the player.
+    </p>
+  </section>
+
+  <section>
     <h2>One useful still, an editing folder or a sheet</h2>
     <p>
       To put one step of an animation into instructions or a slide, leave Each
@@ -64,8 +87,9 @@
       its own size, at its own position, with everything it does not carry left
       transparent. Frame 14 might be &#x2066;60&nbsp;&times;&nbsp;40&#x2069; pixels of mouth.
       This is the view that explains where a GIF's bytes went, and it is what
-      you want if you are editing the animation rather than harvesting pictures
-      from it.
+      an editor needs only if it also understands each patch's position and
+      disposal rule. For ordinary image editing or rebuilding in GIF Maker,
+      use complete frames instead.
     </p>
     <p>
       Nothing is wrong with your file when a stored frame looks like a fragment.
@@ -152,18 +176,22 @@
     </p>
     <p>
       That is what the <code>frames.txt</code> in the ZIP is for. It lists every
-      frame's delay, position and size, so the animation can be rebuilt in the
-      <a href="../../gif-maker/">GIF Maker</a> or anywhere else. It costs a
-      couple of kilobytes and there is no way to reconstruct it later.
+      frame's delay, position and size. To rebuild with <a
+      href="../../gif-maker/" data-workflow-target="gif-maker">GIF Maker</a>,
+      extract <em>The frame as it appears</em>, add those PNGs, sort by name and
+      set each hold time using the list as a reference. GIF Maker does not
+      import <code>frames.txt</code> automatically. Keep the list with the
+      images; the PNGs alone cannot recover the original delays.
     </p>
     <p>
       Two things about GIF delays that catch everybody:
     </p>
     <p>
       <strong>The unit is hundredths of a second</strong>, so the finest step
-      the format has is 0.01&nbsp;s. There is no such thing as an exactly
-      30&nbsp;fps GIF; 0.03&nbsp;s a frame is 33.3&nbsp;fps and 0.04&nbsp;s is
-      25.
+      the format has is 0.01&nbsp;s. One fixed delay cannot represent exactly
+      30&nbsp;fps: 0.03&nbsp;s a frame is 33.3&nbsp;fps and 0.04&nbsp;s is
+      25. Mixed holds of 0.03 and 0.04&nbsp;s can match the requested overall
+      speed, which is how GIF Maker handles a requested frame rate.
     </p>
     <p>
       <strong>Anything under 0.02&nbsp;s is played at 0.10&nbsp;s.</strong>

@@ -127,12 +127,26 @@ protocol; an old Worker must cause a visible group-discovery failure.
 
 ## Shared pairing primitives
 
-The library has two layers. `peer-pairing.js` owns a signaling socket's
+`peer-pairing.js` owns a signaling socket's
 callbacks and timers. `foreground-recovery.js` observes page lifecycle events
 and supplies an optional bounded retry controller. `peer-network.js` already
 owns ICE configuration and local candidate/SDP filtering; `peer-discovery.js`
 and `room-names.js` supply the existing discovery and room-name primitives.
 Both voice tools also share their authenticated protocol in `voice-session.js`.
+
+Camera and Tab use `peer-greeting.js` for their encrypted control-channel
+greeting. A browser can discard a frame arriving before its channel opens, so
+each side repeats its hello once after hearing its peer, before requesting
+approval. `createChannelGreeting({ current, send, failed })` bounds initial
+and reply sends and checks ownership after each send. The adapter calls `open()`
+on channel open and before handling incoming frames, validates a remote hello,
+then continues only when `receive()` returns true. Duplicate hellos, a failed
+send and retired sessions cannot repeat the exchange. The helper owns neither
+protocol validation nor approval, timeouts or media.
+
+Share Text already answers a reader hello with its current introduction, so it
+does not need this symmetric greeting helper. The voice tools exchange admission
+over their authenticated signaling socket rather than a data-channel greeting.
 
 ## Choosing the pairing service
 

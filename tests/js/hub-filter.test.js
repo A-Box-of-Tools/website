@@ -72,7 +72,13 @@ const DEFAULTS = [
   },
 ];
 
-function run({ definitions = DEFAULTS, value = '', hash = '' } = {}) {
+function run({ definitions = DEFAULTS, value = '', hash = '',
+  href = 'https://abox.tools/', modelContext, navigatorContext,
+  agentWords = {
+    'data-title': 'Find a browser tool',
+    'data-description': 'Search the public tool catalogue.',
+    'data-query-description': 'The task or formats to find.',
+  }, favorites = [] } = {}) {
   const context = {};
   const box = element(context, { hidden: true });
   const input = element(context, { tagName: 'INPUT' });
@@ -96,8 +102,10 @@ function run({ definitions = DEFAULTS, value = '', hash = '' } = {}) {
       const card = element(context, {
         text: tool.text,
         tagName: 'A',
-        attrs: { 'data-tool': tool.slug, 'data-search': tool.search || '' },
+        attrs: { 'data-tool': tool.slug, 'data-search': tool.search || '',
+          href: tool.href || tool.slug + '/' },
       });
+      card.queries.set('.tool-name', element(context, { text: tool.name || tool.text }));
       row.queries.set('a.tool-card', card);
       return { row, card, slug: tool.slug };
     });
@@ -111,22 +119,80 @@ function run({ definitions = DEFAULTS, value = '', hash = '' } = {}) {
   const document = element(context);
   context.document = document;
   document.activeElement = null;
+  document.modelContext = modelContext;
   const ids = new Map([
     ['tool-filter', box], ['tool-filter-input', input], ['tool-filter-none', empty],
   ]);
+  if (agentWords) ids.set('hub-agent-phrases', element(context, { attrs: agentWords }));
   document.getElementById = id => ids.get(id) ?? null;
   document.queries.set('main .category', groups.map(group => group.section));
   document.queries.set('.hub-categories a', groups.map(group => group.anchor));
+  const favoriteRows = favorites.map(tool => {
+    const row = element(context, { text: tool.text });
+    const card = element(context, {
+      text: tool.text, tagName: 'A',
+      attrs: { 'data-tool': tool.slug, 'data-search': tool.search || '',
+        href: tool.href || tool.slug + '/' },
+    });
+    card.queries.set('.tool-name', element(context, { text: tool.text }));
+    row.queries.set('a.tool-card', card);
+    return row;
+  });
+  document.queries.set('.tool-grid > li', [
+    ...groups.flatMap(group => group.rows.map(entry => entry.row)), ...favoriteRows,
+  ]);
   const window = element(context);
-  window.location = { hash };
+  window.location = { hash, href };
+  window.navigator = { modelContext: navigatorContext };
+  const historyCalls = [];
+  window.history = {
+    pushState(...args) { historyCalls.push(['pushState', ...args]); },
+    replaceState(...args) { historyCalls.push(['replaceState', ...args]); },
+  };
+  const requests = [];
+  function unexpectedRequest() {
+    requests.push(Array.from(arguments));
+    throw new Error('Catalogue discovery must not make a request');
+  }
+  window.fetch = unexpectedRequest;
+  window.XMLHttpRequest = unexpectedRequest;
+  window.WebSocket = unexpectedRequest;
 
-  new Function('document', 'window', SOURCE)(document, window);
+  new Function('document', 'window', 'fetch', 'XMLHttpRequest', 'WebSocket', SOURCE)(
+    document, window, unexpectedRequest, unexpectedRequest, unexpectedRequest);
 
   return {
-    box, input, empty, groups, document, window,
+    box, input, empty, groups, document, window, requests, historyCalls,
     visible(index) { return groups[index].rows.filter(entry => !entry.row.hidden).map(entry => entry.slug); },
     search(query) { input.value = query; input.emit('input'); },
     hash(fragment) { window.location.hash = fragment; window.emit('hashchange'); },
+  };
+}
+
+function withAgent(options = {}) {
+  const registered = [];
+  const page = run({ ...options,
+    modelContext: { registerTool(tool) { registered.push(tool); } },
+  });
+  assert.equal(registered.length, 1);
+  return { ...page, registered, tool: registered[0] };
+}
+
+function viewState(page) {
+  return {
+    query: page.input.value,
+    filterHidden: page.box.hidden,
+    emptyHidden: page.empty.hidden,
+    active: page.document.activeElement,
+    location: { ...page.window.location },
+    groups: page.groups.map(group => ({
+      hidden: group.section.hidden,
+      scrolls: group.section.scrolls,
+      rows: group.rows.map(entry => entry.row.hidden),
+      toggle: group.toggle && [group.toggle.hidden, group.toggle.getAttribute('aria-expanded')],
+      more: group.more.hidden,
+      less: group.less.hidden,
+    })),
   };
 }
 
@@ -259,6 +325,68 @@ test('category fragments expand the complete category on load and through histor
   assert.equal(page.input.value, 'compresion');
 });
 
+test('search fragments initialize the visible filter with decoded public keywords', () => {
+  const page = run({ hash: '#search=overlapping%20photos', value: 'compresion' });
+  assert.equal(page.input.value, 'overlapping photos');
+  assert.deepEqual(page.visible(0), ['four']);
+  assert.equal(page.groups[1].section.hidden, true);
+  assert.equal(page.empty.hidden, true);
+
+  const localized = run({ hash: '#search=compresi%C3%B3n' });
+  assert.equal(localized.input.value, 'compresión');
+  assert.deepEqual(localized.visible(0), ['five']);
+  const maximum = run({ hash: '#search=' + encodeURIComponent('🧰'.repeat(200)) });
+  assert.equal(maximum.input.value, '🧰'.repeat(200));
+});
+
+test('search and category fragment history restores the matching filter and neutral hub', () => {
+  const page = run({ hash: '#search=overlapping%20photos' });
+  page.hash('#video-and-animation');
+  assert.equal(page.input.value, '');
+  assert.deepEqual(page.visible(1), ['six', 'seven', 'eight', 'timelapse-video']);
+  page.hash('#search=overlapping%20photos');
+  assert.equal(page.input.value, 'overlapping photos');
+  assert.deepEqual(page.visible(0), ['four']);
+  page.hash('#search=compresi%C3%B3n');
+  assert.deepEqual(page.visible(0), ['five']);
+  page.hash('');
+  assert.equal(page.input.value, '');
+  assert.equal(page.groups.every(group => !group.section.hidden), true);
+  page.hash('#search=');
+  assert.equal(page.input.value, '');
+  assert.equal(page.groups.every(group => !group.section.hidden), true);
+});
+
+test('malformed and overlong search fragments leave a restored or current search alone', () => {
+  const invalid = ['#search=%E0%A4%A', '#search=' + 'x'.repeat(201),
+    '#search=' + encodeURIComponent('🧰'.repeat(201)), '#search'];
+  for (const hash of invalid) {
+    const page = run({ hash, value: 'compresion' });
+    assert.equal(page.input.value, 'compresion', hash);
+    assert.deepEqual(page.visible(0), ['five'], hash);
+    page.search('overlapping photos');
+    page.hash(hash);
+    assert.equal(page.input.value, 'overlapping photos', hash);
+    assert.deepEqual(page.visible(0), ['four'], hash);
+  }
+});
+
+test('typing, clearing and agent discovery never rewrite an incoming search link', () => {
+  const hash = '#search=overlapping%20photos';
+  const page = withAgent({ hash, href: 'https://abox.tools/' + hash });
+  const before = { ...page.window.location };
+  page.search('compresion');
+  page.input.emit('keydown', { key: 'Escape' });
+  assert.equal(page.input.value, '');
+  page.search('image');
+  page.search('');
+  page.tool.execute({ query: 'image' });
+  assert.deepEqual(page.window.location, before);
+  assert.deepEqual(page.historyCalls, []);
+  assert.deepEqual(page.requests, []);
+  assert.equal(run({ hash }).input.value, 'overlapping photos');
+});
+
 test('category jumps clear a hiding search before native navigation, including repeated fragments', () => {
   const page = run();
   page.search('overlapping');
@@ -301,4 +429,147 @@ test('the slash shortcut respects editing and modifier keys while Escape clears 
   page.input.emit('keydown', { key: 'Escape' });
   assert.equal(page.input.value, '');
   assert.deepEqual(page.visible(0), ['one', 'two', 'three']);
+});
+
+test('agent discovery registers once with localized metadata and a bounded read-only schema', () => {
+  const page = withAgent({ agentWords: {
+    'data-title': 'Trouver un outil',
+    'data-description': 'Chercher dans les outils publics.',
+    'data-query-description': 'La tâche ou les formats recherchés.',
+  } });
+  assert.equal(page.tool.name, 'find_browser_tools');
+  assert.equal(page.tool.title, 'Trouver un outil');
+  assert.equal(page.tool.description, 'Chercher dans les outils publics.');
+  assert.equal(page.tool.inputSchema.properties.query.description,
+    'La tâche ou les formats recherchés.');
+  assert.equal(page.tool.inputSchema.properties.query.type, 'string');
+  assert.equal(page.tool.inputSchema.properties.query.maxLength, 200);
+  assert.deepEqual(page.tool.inputSchema.properties.limit,
+    { type: 'integer', minimum: 1, maximum: 20, default: 10 });
+  assert.deepEqual(page.tool.inputSchema.required, ['query']);
+  assert.equal(page.tool.inputSchema.additionalProperties, false);
+  assert.deepEqual(page.tool.annotations,
+    { readOnlyHint: true, consequentialHint: false, untrustedContentHint: false });
+  page.search('image');
+  page.groups[0].toggle.emit('click');
+  page.tool.execute({ query: 'image' });
+  assert.equal(page.registered.length, 1);
+});
+
+test('agent searches use the same localized, accent-folded and directional matches as the filter', () => {
+  const page = withAgent({ definitions: [{
+    id: 'formats', name: 'Formate', note: 'Bilder und strukturierte Texte.',
+    tools: [
+      { slug: 'resize-image', text: 'Bildgröße ändern' },
+      { slug: 'png-to-webp', text: 'Bildformat ändern' },
+      { slug: 'webp-to-jpg', text: 'Bildformat ändern' },
+      { slug: 'json-formatter', text: 'Texte formatieren' },
+      { slug: 'yaml-to-json', text: 'Textformat ändern' },
+      { slug: 'image', text: 'Compresión', search: 'Overlapping photos' },
+      { slug: 'timelapse-video', text: 'Time-Lapse Maker' },
+      { slug: 'unrelated', text: 'JPG PNG WebP YAML JSON' },
+    ],
+  }] });
+  for (const query of ['jpeg to webp', 'webp to jpeg', 'yaml to json', 'json to yaml',
+    'json to html', 'html to json', 'compresion', 'bildgroße', 'timelapse',
+    'overlapping photos', 'strukturierte texte']) {
+    page.search(query);
+    const visible = page.groups[0].rows.filter(entry => !entry.row.hidden)
+      .map(entry => entry.card.querySelector('.tool-name').textContent);
+    const result = page.tool.execute({ query, limit: 20 });
+    assert.equal(result.ok, true, query);
+    assert.deepEqual(result.tools.map(tool => tool.name), visible, query);
+    assert.equal(result.total, visible.length, query);
+    assert.equal(result.hasMore, false, query);
+  }
+  assert.deepEqual(page.tool.execute({ query: 'bildgroße' }).tools.map(tool => tool.name),
+    ['Bildgröße ändern']);
+  assert.deepEqual(page.tool.execute({ query: 'compresion' }).tools.map(tool => tool.name),
+    ['Compresión']);
+  assert.deepEqual(page.tool.execute({ query: 'json to html' }).tools, []);
+  assert.deepEqual(page.tool.execute({ query: 'html to json' }).tools, []);
+});
+
+test('agent results preserve localized current-origin links and omit saved-card duplicates', () => {
+  const page = withAgent({
+    href: 'https://dev.abox-preview.pages.dev/ja/',
+    definitions: [{ id: 'images', name: '画像', tools: [
+      { slug: 'resize-image', text: '画像をリサイズ', search: '画像の大きさを変更します。',
+        href: '画像リサイズ/' },
+    ] }],
+    favorites: [
+      { slug: 'resize-image', text: '画像をリサイズ', search: '画像の大きさを変更します。' },
+      { slug: 'saved-only', text: 'Saved-only label' },
+    ],
+  });
+  assert.deepEqual(page.tool.execute({ query: '画像' }), {
+    ok: true, total: 1, hasMore: false, tools: [{
+      name: '画像をリサイズ', description: '画像の大きさを変更します。', category: '画像',
+      url: new URL('画像リサイズ/', 'https://dev.abox-preview.pages.dev/ja/').href,
+    }],
+  });
+  assert.deepEqual(page.tool.execute({ query: 'Saved-only label' }),
+    { ok: true, total: 0, hasMore: false, tools: [] });
+});
+
+test('agent discovery counts all public matches while bounding results and leaving the page untouched', () => {
+  const page = withAgent({
+    definitions: [{ id: 'images', name: 'Images', tools: Array.from({ length: 25 }, (_, index) =>
+      ({ slug: 'image-' + index, text: 'Image ' + index })) }],
+    value: 'Image 24',
+  });
+  page.input.focus();
+  const before = viewState(page);
+  const result = page.tool.execute({ query: '' });
+  assert.equal(result.total, 25);
+  assert.equal(result.tools.length, 10);
+  assert.equal(result.hasMore, true);
+  assert.equal(page.tool.execute({ query: 'images', limit: 20 }).tools.length, 20);
+  assert.equal(page.tool.execute({ query: 'images', limit: 1 }).tools.length, 1);
+  assert.deepEqual(page.tool.execute({ query: 'unlisted format' }),
+    { ok: true, total: 0, hasMore: false, tools: [] });
+  assert.equal(page.tool.execute({ query: '🧰'.repeat(200) }).ok, true);
+  assert.deepEqual(viewState(page), before);
+  assert.deepEqual(page.requests, []);
+});
+
+test('agent discovery rejects arguments outside its schema without changing the page', () => {
+  const page = withAgent({ value: 'compresion' });
+  const before = viewState(page);
+  const invalid = [undefined, null, [], '', 1, {}, { query: null }, { query: 1 },
+    { query: 'x'.repeat(201) }, { query: '🧰'.repeat(201) }, { query: '', extra: true },
+    Object.create({ query: 'image' }),
+    ...[0, 21, 1.5, NaN, Infinity, '10', null, undefined].map(limit => ({ query: '', limit })),
+  ];
+  for (const args of invalid) {
+    assert.deepEqual(page.tool.execute(args), { ok: false, code: 'invalid_arguments' });
+  }
+  assert.deepEqual(viewState(page), before);
+});
+
+test('unsupported APIs, missing metadata and registration rejection preserve the ordinary filter', async () => {
+  let calls = 0;
+  const legacy = { registerTool() { calls++; } };
+  const pages = [
+    run(),
+    run({ agentWords: null, modelContext: legacy }),
+    run({ agentWords: { 'data-title': 'Incomplete metadata' }, modelContext: legacy }),
+    run({ modelContext: { registerTool() { throw new Error('Registration refused'); } } }),
+    run({ modelContext: { registerTool() { return Promise.reject(new Error('Registration refused')); } } }),
+  ];
+  await Promise.resolve();
+  assert.equal(calls, 0);
+  for (const page of pages) {
+    assert.equal(page.box.hidden, false);
+    page.search('overlapping photos');
+    assert.deepEqual(page.visible(0), ['four']);
+    page.input.emit('keydown', { key: 'Escape' });
+    assert.deepEqual(page.visible(0), ['one', 'two', 'three']);
+  }
+  run({ navigatorContext: legacy });
+  assert.equal(calls, 1);
+  const preferred = [];
+  run({ modelContext: { registerTool(tool) { preferred.push(tool); } }, navigatorContext: legacy });
+  assert.equal(preferred.length, 1);
+  assert.equal(calls, 1);
 });

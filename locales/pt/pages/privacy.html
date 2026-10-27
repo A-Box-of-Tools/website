@@ -38,6 +38,17 @@
     <p>
       Os botões de email e compartilhamento preparam relatórios e JPEGs localmente e depois baixam um arquivo de email ou os entregam ao app escolhido. Esta página não envia email. O app, provedor e destinatário que você escolhe cuidam do próximo passo pelas próprias políticas. <a href="../compartilhar-texto/">Compartilhar texto e arquivos</a>, <a href="../share-tab/">Compartilhar uma aba do navegador</a> e <a href="../remote-camera/">Câmera remota</a> enviam conteúdo a outro navegador deliberadamente; os metadados são descritos abaixo.
     </p>
+
+    <h3>Catálogo público de ferramentas para agentes (MCP e A2A)</h3>
+    <p>
+      Os clientes MCP e A2A enviam palavras-chave públicas sobre a tarefa ou o formato, o idioma do catálogo e um limite de resultados a um Cloudflare Worker em <code>mcp.abox.tools</code>. Os serviços de catálogo retornam descrições e links públicos das ferramentas. Não aceitam arquivos, não oferecem endpoint de envio e não exigem conta. Não envie palavras-chave privadas, nomes de arquivos, conteúdo de arquivos nem senhas.
+    </p>
+    <p>
+      A filtragem no catálogo interativo já carregado acontece localmente, sem outra solicitação ao catálogo. Abrir um resultado pede ao ambiente que abra o site da ferramenta, onde a seleção e o processamento dos arquivos acontecem no navegador. O provedor do ambiente do agente ou do app trata suas solicitações e o histórico de conversa segundo a própria política. O serviço recebe o que o ambiente envia na solicitação ao catálogo. Ele não solicita nem recupera o histórico de conversa desse ambiente.
+    </p>
+    <p>
+      A aplicação não registra consultas nem corpos de solicitações e não tem banco de dados ou tarefas persistentes. A observabilidade do Worker está desativada. A Cloudflare ainda trata endereços IP, horários e metadados das solicitações para hospedagem, segurança e controle da frequência de solicitações. A retenção desses metadados gerenciados pelo provedor segue as regras da Cloudflare. Não verificamos um prazo fixo de retenção para este serviço. Sem usar o catálogo remoto, o site habitual e o processamento local continuam disponíveis.
+    </p>
   </section>
 
   <section>
@@ -76,7 +87,10 @@
       Contamos o primeiro uso concluído a cada carregamento da página, por exemplo, solicitar um download já preparado, concluir uma cópia ou mostrar uma análise ou visualização utilizável em uma ferramenta de inspeção. O único detalhe específico da ferramenta acrescentado a esse evento é seu identificador fixo. Isso não confirma que seu sistema operacional salvou um download.
     </p>
     <p>
-      O feedback opcional registra o identificador fixo da ferramenta, uma resposta fixa positiva ou negativa e um motivo fixo depois que você escolhe uma resposta. Não há campo de texto livre. As ferramentas não anexam arquivos, nomes, conteúdos, texto digitado, quantidades, tamanhos, dimensões, formatos, configurações, erros ou outros detalhes da entrada ou saída a nenhum dos registros. Podemos ver relatórios agregados do Analytics. Bloquear o Analytics mantém o processamento local disponível, inclusive sem conexão quando o cache da ferramenta estiver pronto.
+      Também contamos a abertura das páginas de ferramentas. Em Images to Video, Image Stacker, GIF Analyzer e GIF Splitter, eventos fixos registram a entrada, o início do processamento, um resultado pronto, um problema ou um cancelamento, no máximo uma vez por etapa e carregamento da página. Os exemplos integrados ficam fora dessas etapas. Alguns links de continuação informam apenas identificadores fixos das páginas de origem e destino, nunca o endereço ou o texto do link. Essas contagens ajudam a localizar onde uma visita termina; não identificam trabalhos individuais nem confirmam a chegada à próxima página.
+    </p>
+    <p>
+      O feedback opcional registra o identificador fixo da ferramenta, uma resposta fixa positiva ou negativa e um motivo fixo depois que você escolhe uma resposta. Não há campo de texto livre. As ferramentas não anexam arquivos, nomes, conteúdos, texto digitado, quantidades, tamanhos, dimensões, formatos, configurações, mensagens de erro ou outros detalhes da entrada ou saída a nenhum dos registros. Podemos ver relatórios agregados do Analytics. Bloquear o Analytics mantém o processamento local disponível, inclusive sem conexão quando o cache da ferramenta estiver pronto.
     </p>
 
     <h3>Buy Me a Coffee &mdash; o botão de doação</h3>
