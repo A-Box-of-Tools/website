@@ -638,6 +638,7 @@ order = [
   "make-a-boomerang-video",
   "turn-a-long-video-into-a-timelapse",
   "make-a-video-thumbnail",
+  "prepare-a-screen-recording-for-support",
   "edit-a-gif-frame-by-frame",
   "scan-multiple-pages-into-one-pdf",
   "prepare-a-redacted-pdf-pack",
