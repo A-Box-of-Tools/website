@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LIMITS, parseTable, extractKey, stitchTables, serializeTable } from '../../tools/stitch-tables/src/table-data.js';
+import { LIMITS, parseTable, extractKey, stitchTables, serializeTable } from '../../shared/js/table-data.js';
 
 const labels = { left: 'A', right: 'B', column: 'Column' };
 const table = (headers, rows, header = true) => ({ headers, rows, header });

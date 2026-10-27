@@ -11,7 +11,7 @@ glyph = "table"
 category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 css_parts = ["form", "checks", "notes", "panes"]
-js_parts = ["download", "clipboard-feedback"]
+js_parts = ["download", "clipboard-feedback", "table-data"]
 lastmod = "2026-10-27"
 title = "Stitch Two Tables &mdash; Match, Pair or Merge CSV &mdash; No Upload"
 description = "Join two CSV or pasted spreadsheet tables by matching values or patterns, pair rows manually, stack rows or merge side by side. Preview and export CSV or TSV in your browser. Nothing is uploaded for processing."
@@ -20,9 +20,9 @@ og_description = "Match values or patterns, pair rows manually, stack rows or pl
 og_image_alt = "Stitch Tables - match, pair or merge two tables in your browser"
 og_card = "Match a pattern, pair rows by hand, or simply merge - with both tables kept on your device."
 csp_note = "This tool adds no network permission. Source files are read locally, matching and merging use the strings in this page, and export creates a local blob URL. It needs no remote parser, spreadsheet service or pattern-matching endpoint."
-pledge = "A customer list and an order export can reveal more together than either one alone. This tool reads, matches and writes both tables in this browser: no processing service receives a file, a heading, a cell or a match key. The parser and row operations are in <code>src/table-data.js</code>, served with the page. Matching uses the rule you choose, and the preview shows the result before you copy or download it."
+pledge = "A customer list and an order export can reveal more together than either one alone. This tool reads, matches and writes both tables in this browser: no processing service receives a file, a heading, a cell or a match key. The parser and row operations are in <code>src/shared/table-data.js</code>, served with the page. Matching uses the rule you choose, and the preview shows the result before you copy or download it."
 live_hint = "Open DevTools, watch the Network tab, and stitch the example or two tables of your own. The processing code makes no request containing either table. After loading the page, you can disconnect and do the same job offline."
-read_first = " and <code>src/table-data.js</code> for quoted-field parsing, key extraction, duplicate matches, manual pairs and output bounds, then <code>src/main.js</code> for the preview and local copy and download actions."
+read_first = " and <code>src/shared/table-data.js</code> for quoted-field parsing, key extraction, duplicate matches, manual pairs and output bounds, then <code>src/main.js</code> for the preview and local copy and download actions."
 howto_heading = "How to stitch two tables together"
 card = "Match two tables by a value or a pattern, pair rows manually, or stack and merge them. Preview the result and export CSV or TSV without uploading either source."
 
@@ -62,7 +62,7 @@ body = "The page's advertising, measurement and feedback features are described 
 
 [[howto]]
 title = "Add table A and table B."
-body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose a text file for each side. Check the delimiter and whether the first row contains headings. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
+body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose a text file for each side. Check the delimiter and automatic heading guess. Without a clear heading row, all rows are kept and column names are suggested from value patterns. You can choose the heading-row setting manually. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
 [[howto]]
 title = "Choose how the rows meet."
 body = "Match rows by columns and an exact value or extraction pattern, pair individual rows manually, or use Simple merge to stack rows or place them side by side. For matching and manual pairing, choose whether to keep every row, all of table A, or only paired rows."
@@ -76,6 +76,9 @@ body = "Choose CSV or TSV and check formula protection. Protection adds an apost
 [[faq]]
 q = "Can I use tables copied from Excel or Google Sheets?"
 a = "Yes. Copy a rectangular range and paste it into a table box; spreadsheet cells usually arrive separated by tabs. You can also save a sheet as CSV or TSV and choose that file. This tool reads delimited text, not an XLSX workbook, its formulas, cell styles or multiple sheets."
+[[faq]]
+q = "What if my table has no header row?"
+a = "Automatic detection keeps the first row as data unless it looks like headings. Headerless columns receive suggested names such as Email, Date, ID, Number or Text based on up to 50 rows. Repeated suggested names become Email 1, Email 2 and so on. Guesses do not change cell values. Review the notice and choose First row is headings or No heading row if needed; ambiguous all-text tables cannot always be distinguished automatically. Stacking still aligns headerless tables by column position."
 [[faq]]
 q = "What kinds of pattern matching are available?"
 a = "Compare the whole value, take its first run of digits, keep letters and digits while removing punctuation and spacing, or take text before or after the first separator you supply. For example, the first-number rule extracts 001 from both invoice-001 and paid/001. The extracted text is a comparison key; source cells remain unchanged. These are fixed extraction rules, not fuzzy matching or arbitrary regular expressions."

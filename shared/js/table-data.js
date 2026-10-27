@@ -38,6 +38,7 @@ function detectDelimiter(text) {
 }
 
 export function parseTable(text, { delimiter = 'auto', header = true } = {}) {
+  if (header !== 'auto' && typeof header !== 'boolean') fail('table.header');
   if (typeof text !== 'string') fail('table.empty');
   if (text.length > LIMITS.inputChars) fail('table.input-limit');
   const source = text.replace(/^\uFEFF/, '');
@@ -76,11 +77,97 @@ export function parseTable(text, { delimiter = 'auto', header = true } = {}) {
   if (state === 2) fail('table.quotes');
   if (touched) endRecord();
   if (!records.length) fail('table.empty');
-  const headers = header ? records.shift() : Array(Math.max(...records.map(row => row.length))).fill('');
+  const hasHeader = header === 'auto' ? detectHeader(records) : header;
+  const headers = hasHeader ? records.shift() : Array(Math.max(...records.map(row => row.length))).fill('');
   if (records.some(row => row.length > headers.length)) fail('table.ragged');
+  if (records.length > LIMITS.rows) fail('table.row-limit');
   if (records.length * headers.length > LIMITS.cells) fail('table.cell-limit');
   const rows = records.map(row => row.concat(Array(headers.length - row.length).fill('')));
-  return { headers, rows, header: Boolean(header), delimiter: separator };
+  return { headers, rows, header: hasHeader, delimiter: separator };
+}
+
+function calendarDate(year, month, day) {
+  if (year < 100 || month < 1 || month > 12 || day < 1) return false;
+  return day <= new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+function datePattern(value) {
+  let match = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.exec(value);
+  if (match) return calendarDate(+match[1], +match[2], +match[3]);
+  match = /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/.exec(value);
+  return Boolean(match && (calendarDate(+match[3], +match[2], +match[1])
+    || calendarDate(+match[3], +match[1], +match[2])));
+}
+
+function valueKind(value) {
+  const text = String(value ?? '').trim();
+  if (!text) return 'column';
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) return 'email';
+  if (/^https?:\/\/[^/\s]+(?:[/?#]\S*)?$/i.test(text)) return 'url';
+  const stamp = /^(\d{4}-\d{2}-\d{2})[T ]((?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?)(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)?$/.exec(text);
+  if (stamp && datePattern(stamp[1])) return 'datetime';
+  if (datePattern(text)) return 'date';
+  if (/^(?:[01]?\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?$/.test(text)) return 'time';
+  if (/^(?:true|false|yes|no)$/i.test(text)) return 'boolean';
+  if (/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(text)) return 'id';
+  const digits = text.replace(/\D/g, '');
+  if (digits.length >= 7 && digits.length <= 15 && /^[+()\d .-]+$/.test(text)
+      && (/^\+/.test(text) || /[() ]/.test(text) || /^\d{3}-\d{3}-\d{4}$/.test(text))) return 'phone';
+  if (/^0\d+$/.test(text)) return 'id';
+  if (/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(text)) return 'number';
+  if (/^(?=.*\p{L})(?=.*\d)[\p{L}\p{N}_.\/-]+$/u.test(text)) return 'id';
+  return 'text';
+}
+
+function columnKind(rows, column) {
+  const counts = new Map();
+  let total = 0;
+  for (const row of rows.slice(0, 50)) {
+    const kind = valueKind(row[column]);
+    if (kind === 'column') continue;
+    total++;
+    counts.set(kind, (counts.get(kind) || 0) + 1);
+  }
+  if (!total) return 'column';
+  for (const [kind, count] of counts) if (count / total >= .8) return kind;
+  return 'text';
+}
+
+const HEADER_LABELS = new Set(['id', 'identifier', 'name', 'first name', 'last name', 'email', 'email address',
+  'phone', 'telephone', 'url', 'website', 'date', 'time', 'timestamp', 'amount', 'price', 'total', 'quantity',
+  'number', 'text', 'boolean', 'column', 'date and time', 'count', 'status', 'team', 'reference', 'ref', 'note', 'notes', 'description', 'city', 'country', 'address',
+  'code', 'sku', 'product', 'customer', 'invoice', 'paid', 'budget']);
+
+function detectHeader(records) {
+  if (records.length < 2) return false;
+  const first = records[0];
+  const width = Math.max(...records.map(row => row.length));
+  // Typed or incomplete first rows stay data. Text-only data is ambiguous,
+  // so removing it requires either typed contrasts or familiar field labels.
+  if (first.length !== width || first.some(value => valueKind(value) !== 'text'
+      || /^(?:n\/?a|null|none|unknown|missing|[-—])$/i.test(value.trim()))) return false;
+  let contrasts = 0, labels = 0;
+  for (let column = 0; column < width; column++) {
+    const kind = columnKind(records.slice(1, 51), column);
+    if (kind !== 'text' && kind !== 'column'
+        && records.slice(1, 51).filter(row => String(row[column] ?? '').trim()).length >= 2) contrasts++;
+    if (HEADER_LABELS.has(first[column].trim().toLowerCase().replace(/[_-]+/g, ' ').replace(/\s+\d+$/, ''))) labels++;
+  }
+  return (width > 1 && contrasts >= 2)
+    || (labels >= Math.ceil(width * .6) && (labels >= 2 || (width === 1
+      && columnKind(records.slice(1, 51), 0) !== 'text')));
+}
+
+export function inferHeaders(table, labels = {}) {
+  const bases = table.headers.map((_, column) => labels[columnKind(table.rows, column)] || labels.column || '');
+  const totals = new Map(), seen = new Map();
+  for (const base of bases) totals.set(base, (totals.get(base) || 0) + 1);
+  return bases.map((base, index) => {
+    if (!base) return String(index + 1);
+    const occurrence = (seen.get(base) || 0) + 1;
+    seen.set(base, occurrence);
+    return totals.get(base) > 1 ? `${base} ${occurrence}` : base;
+  });
 }
 
 function validateTable(table) {

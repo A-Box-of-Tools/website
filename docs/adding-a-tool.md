@@ -368,6 +368,29 @@ answer to either without complaint:
   what the visitor then sees depends on what that tool does with a list it was
   never written to expect.
 
+### Carrying source files instead of a result
+
+Some workflows continue with their inputs. Text Diff sends two current CSV
+sources to Stitch Tables; sending its downloaded patch would lose that meaning.
+Declare `source_handoff = ["stitch-tables"]` and render the localized target
+from `source_handoff` in the body. This declaration does not create the
+download-driven result row.
+
+Call `window.aboxHandoffFiles(targetSlug, orderedFiles, isCurrent)` from the
+tool's explicit action. It parks Files directly in the same one-shot store,
+without reading Blob URLs, making a request or needing `connect-src blob:`.
+Navigate only after it resolves true and the source revision is still current.
+False means cancelled; storage errors reject so the source page can retain its
+inputs and show its own localized error. Retire pending transfers on edits,
+replacement and pagehide. A packet id prevents cancellation from deleting a
+newer transfer to the same target.
+
+A receiver with separate per-source pickers needs a labelled, multiple
+`#file-input` adapter that validates the count before passing the ordered files
+to its existing readers. Stitch Tables is the example. Check that both input
+orders, edited and identical sources, one-shot receipt and storage failure keep
+their meaning.
+
 ## A vendored engine
 
 A codec nobody here wrote goes in `tools/<slug>/vendor/`, and only one tool has

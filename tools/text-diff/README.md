@@ -112,6 +112,23 @@ src/diff.js          Myers, the word diff, and the unified output
 src/samples.js       the example behind "Try an example"
 ```
 
+## Continue with CSV source tables
+
+When both current inputs parse as delimited tables with at least two columns,
+Stitch these tables sends the original as A and the changed source as B. It
+sends exact source strings, including untouched CRLF, rather than the patch or
+the filtered diff view. Identical tables remain eligible. The shared table-data
+part is also Stitch Tables' parser, so malformed or over-limit tables are not
+offered a transfer. Headerless input is recognized without consuming its first
+record; Stitch's own automatic heading detection runs on arrival.
+
+source_handoff targets are resolved to local tool addresses by the build.
+The frame's aboxHandoffFiles API parks ordered Files directly, without fetching
+Blob URLs or widening CSP. Records are consumed once and expire after ten
+minutes. Editing, replacing, swapping or clearing inputs, changing options and
+pagehide retire pending transfers. Packet ownership prevents late cleanup from
+deleting a newer transfer. Storage failures leave both inputs on this page.
+
 ## The tests
 
 ```bash

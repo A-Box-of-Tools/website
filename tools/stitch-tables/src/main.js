@@ -1,4 +1,4 @@
-import { parseTable, stitchTables, serializeTable, extractKey, LIMITS } from './table-data.js';
+import { parseTable, inferHeaders, stitchTables, serializeTable, extractKey, LIMITS } from './shared/table-data.js';
 import { phrase } from './shared/phrases.js';
 import { downloadLink } from './shared/download.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
@@ -59,7 +59,10 @@ function invalidateInputs() {
   $('add-pair').disabled = true;
   $('pairs').replaceChildren();
   $('pair-status').textContent = phrase('stitch.pairs-count', { count: 0 });
-  sources.forEach(side => { $('status-' + side).textContent = phrase('stitch.empty'); });
+  sources.forEach(side => {
+    $('status-' + side).textContent = phrase('stitch.empty');
+    $('header-note-' + side).textContent = '';
+  });
   sayError('input-error');
 }
 
@@ -94,9 +97,18 @@ function readTables() {
       const field = $('input-' + side);
       const saved = sourceTexts[side];
       const text = saved?.shown === field.value ? saved.text : field.value;
+      const headerMode = $('header-' + side).value;
       const table = parseTable(text, {
-        delimiter: delimiter('delimiter-' + side), header: $('header-' + side).checked,
+        delimiter: delimiter('delimiter-' + side), header: headerMode === 'auto' ? 'auto' : headerMode === 'present',
       });
+      if (!table.header) {
+        const labels = Object.fromEntries(['column', 'email', 'url', 'date', 'datetime', 'time', 'boolean', 'phone', 'id', 'number', 'text']
+          .map(kind => [kind, phrase('stitch.kind.' + kind)]));
+        table.headers = inferHeaders(table, labels);
+      }
+      $('header-note-' + side).textContent = phrase(table.header
+        ? (headerMode === 'auto' ? 'stitch.header-detected' : 'stitch.header-present')
+        : (headerMode === 'auto' ? 'stitch.header-guessed' : 'stitch.header-generated'), { names: table.headers.join(' · ') });
       next.push(table);
       $('status-' + side).textContent = phrase('stitch.loaded', { rows: table.rows.length, columns: table.headers.length });
     } catch (error) {
@@ -278,35 +290,54 @@ for (const side of sources) {
     $('input-' + side).value = '';
     invalidateInputs();
   });
-  $('file-' + side).addEventListener('change', async () => {
-    const file = $('file-' + side).files[0];
-    if (!file) return;
-    const owner = ++fileVersions[side];
-    sourceTexts[side] = null;
-    pendingFiles.add(side);
-    $('load').disabled = true;
-    $('input-' + side).value = '';
-    invalidateInputs();
-    $('status-' + side).textContent = phrase('stitch.reading');
-    try {
-      if (file.size > LIMITS.inputChars) throw { key: 'table.input-limit' };
-      const text = new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
-      if (owner !== fileVersions[side]) return;
-      if (text.includes('\0')) throw { key: 'stitch.read-error' };
-      $('input-' + side).value = text;
-      sourceTexts[side] = { text, shown: $('input-' + side).value };
-    } catch (error) {
-      if (owner !== fileVersions[side]) return;
-      sayError('input-error', phrase('stitch.side-error', { side: side.toUpperCase(), reason: error?.key ? errorText(error) : phrase('stitch.read-error') }));
-    } finally {
-      if (owner === fileVersions[side]) {
-        pendingFiles.delete(side);
-        $('load').disabled = pendingFiles.size > 0;
-        $('status-' + side).textContent = phrase('stitch.empty');
-      }
-    }
-  });
+  $('file-' + side).addEventListener('change', () => loadFile(side, $('file-' + side).files[0]));
 }
+
+async function loadFile(side, file) {
+  if (!file) return;
+  const owner = ++fileVersions[side];
+  sourceTexts[side] = null;
+  pendingFiles.add(side);
+  $('load').disabled = true;
+  $('input-' + side).value = '';
+  invalidateInputs();
+  $('status-' + side).textContent = phrase('stitch.reading');
+  try {
+    if (file.size > LIMITS.inputChars) throw { key: 'table.input-limit' };
+    const text = new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
+    if (owner !== fileVersions[side]) return;
+    if (text.includes('\0')) throw { key: 'stitch.read-error' };
+    $('input-' + side).value = text;
+    sourceTexts[side] = { text, shown: $('input-' + side).value };
+  } catch (error) {
+    if (owner !== fileVersions[side]) return;
+    sayError('input-error', phrase('stitch.side-error', { side: side.toUpperCase(), reason: error?.key ? errorText(error) : phrase('stitch.read-error') }));
+  } finally {
+    if (owner === fileVersions[side]) {
+      pendingFiles.delete(side);
+      $('load').disabled = pendingFiles.size > 0;
+      $('status-' + side).textContent = phrase('stitch.empty');
+    }
+  }
+}
+
+// The frame delivers handoffs through this input. Feed the ordered pair into
+// the same per-side reader as a manual pick, preserving its edit ownership.
+$('file-input').addEventListener('change', () => {
+  const files = Array.from($('file-input').files);
+  $('file-input').value = '';
+  if (!files.length || files.length > 2) {
+    sayError('input-error', phrase('stitch.file-count'));
+    return;
+  }
+  files.forEach((file, index) => {
+    const side = sources[index];
+    $('file-' + side).value = '';
+    $('delimiter-' + side).value = 'auto';
+    $('header-' + side).value = 'auto';
+    loadFile(side, file);
+  });
+});
 
 $('load').addEventListener('click', readTables);
 $('example').addEventListener('click', () => {
@@ -318,7 +349,7 @@ $('example').addEventListener('click', () => {
     $('file-' + side).value = '';
     $('input-' + side).value = $('example-' + side).textContent.trim();
     $('delimiter-' + side).value = 'auto';
-    $('header-' + side).checked = true;
+    $('header-' + side).value = 'present';
   });
   document.querySelector('input[name="mode"][value="match"]').checked = true;
   $('pattern').value = 'digits';
