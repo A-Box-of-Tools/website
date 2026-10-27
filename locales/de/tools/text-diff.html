@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>Beide Quelltabellen weiterverwenden: Original → A, geänderte Fassung → B. In Stitch Tables lassen sich Zeilen nach Werten oder Mustern abgleichen, manuell zuordnen oder einfach zusammenführen.</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">Diese Tabellen verbinden</a>
+{% endfor %}      <p class="field-note">Die Übergabe bleibt in diesem Browser und verfällt nach zehn Minuten.</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
   <!--
     The tool's own sentences, kept out of the JavaScript so that a translator
@@ -120,6 +126,7 @@
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
 
     <span data-phrase="read.failed">Diese Datei ließ sich nicht lesen: {detail}</span>
+    <span data-phrase="csv-pipeline.failed">Die Tabellen konnten nicht übergeben werden. Die Texte sind noch hier. Erlaube Browserspeicher und versuche es erneut, oder speichere beide Dateien und öffne sie in Stitch Tables.</span>
 
     <span data-phrase="result.waiting">Fügen Sie in beide Felder etwas ein.</span>
     <span data-phrase="result.identical">Die beiden sind identisch, Byte für Byte.</span>

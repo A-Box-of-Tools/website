@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>両方の元テーブルを引き継ぎます。元のテキスト → A、変更後のテキスト → B。Stitch Tablesで値やパターンによる照合、手動の対応付け、単純な結合を選べます。</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">この2つのテーブルを結合</a>
+{% endfor %}      <p class="field-note">データの受け渡しはこのブラウザ内で行われ、10分後に期限切れになります。</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
   <!--
     The tool's own sentences, kept out of the JavaScript so that a translator
@@ -120,6 +126,7 @@
     <span data-phrase="count.summary">{lines}、{characters}、{size}</span>
 
     <span data-phrase="read.failed">そのファイルは読めませんでした：{detail}</span>
+    <span data-phrase="csv-pipeline.failed">テーブルを引き継げませんでした。テキストはこのページに残っています。ブラウザの保存機能を許可して再試行するか、両方のファイルを保存してStitch Tablesで開いてください。</span>
 
     <span data-phrase="result.waiting">両方の欄に何か貼り付けてください。</span>
     <span data-phrase="result.identical">この2つはバイト単位で同一です。</span>
