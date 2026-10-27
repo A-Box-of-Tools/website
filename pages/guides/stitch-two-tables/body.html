@@ -1,0 +1,43 @@
+  <section>
+    <h2>Start with two rectangular tables</h2>
+    <p>Paste a range copied from a spreadsheet into each box, or choose a CSV or TSV file for each side. Save the relevant sheet as CSV first if you have an XLSX file. Check the separator and heading-row option separately for A and B.</p>
+    <p>Use a copy of each original. Cells stay as text inside this tool, so <code>00123</code> is a different identifier from <code>123</code>. Dates and numbers are not calculated or reformatted. A short row receives empty cells; a row with more cells than its headings is reported so you can fix the source.</p>
+  </section>
+  <section>
+    <h2>Choose what one output row should mean</h2>
+    <p>If you are adding a customer's address to each order, one output row should describe an order and its customer. Choose Match rows and select the customer-identifier column from each table. Different row orders do not matter because the key connects the records.</p>
+    <ul>
+      <li><strong>All rows from both tables</strong> keeps pairs and every unpaired source row. Empty cells on one side help reveal a missing record.</li>
+      <li><strong>All rows from table A</strong> keeps all A rows and any B rows they match. B-only records are omitted.</li>
+      <li><strong>Matching pairs only</strong> exports pairs and omits every unpaired row.</li>
+    </ul>
+    <p>Start with all rows when checking unfamiliar data. A match count alone cannot tell you that an unmatched order has disappeared from an inner join.</p>
+  </section>
+  <section>
+    <h2>Match a stable value, or extract one with a pattern</h2>
+    <p>Whole cell value compares the selected cells. Trim ignores spaces around a key, and ignore case makes <code>ABC</code> and <code>abc</code> equal for matching. These options change the comparison while the original cell contents remain in the output.</p>
+    <p>The first-number rule extracts <code>001</code> from both <code>invoice-001</code> and <code>paid/001</code>. It does not match <code>paid/1</code>. Review real values first: in <code>2026-invoice-001</code>, the first number is <code>2026</code>.</p>
+    <p>Letters and numbers only removes punctuation and spacing. Before-separator and after-separator use the first occurrence of your literal separator. A missing separator or value with no required digits produces no key. Blank keys never match each other. The fixed rules do not guess similar names or run arbitrary regular expressions.</p>
+  </section>
+  <section>
+    <h2>Check repeated keys before trusting the row count</h2>
+    <p>If A has two rows with key <code>001</code> and B has three, matching produces all six combinations. That preserves every possible pair, but it may be the wrong relationship for your job. The duplicate count is a reason to inspect the data.</p>
+    <p>Choose a more specific key, remove accidental duplicates in your source copy, or pair manually when only one combination is intended. Results above the output bounds are refused instead of silently dropping matches.</p>
+  </section>
+  <section>
+    <h2>Choose individual pairs when the connection needs judgement</h2>
+    <p>Pair manually lets you choose a B row for an A row. Use it for a short list whose connection is clear to you but has no reliable shared value. Each row can be used once.</p>
+    <p>Leave a row unpaired when you cannot establish the connection. The retention choices still apply. Editing a source clears pairings because old row numbers may refer to different records.</p>
+  </section>
+  <section>
+    <h2>Use a simple merge when no matching rule is needed</h2>
+    <p><strong>Stack rows</strong> puts B below A. Headings align by trimmed text, so a column can move in B without putting values in the wrong field. A's column order stays first, followed by B-only columns. Repeated headings align by occurrence. With headings off in either source, columns align by position.</p>
+    <p><strong>Side by side</strong> combines corresponding row positions and keeps every row from the longer table, padding the missing side with empty cells. Use it when the row order is known to correspond. Sorting one source independently can make every pair wrong while the result still looks tidy.</p>
+  </section>
+  <section>
+    <h2>Review the full counts and choose an export</h2>
+    <p>The preview shows the first 100 rows and 20 columns. Check the full row count, duplicate count and unmatched counts. Each input allows 2,097,152 text characters, 5,000 data rows, 100 columns and 100,000 data cells. Selected files are also limited to 2 MiB. Output allows 20,000 rows and 500,000 cells.</p>
+    <p>CSV is convenient for a saved file; TSV is convenient for spreadsheet pasting. Neither stores spreadsheet cell types. Import identifier columns as text in the receiving application when leading zeroes or date-like strings matter.</p>
+    <p>Formula protection is on by default and adds an apostrophe to cells that a spreadsheet might treat as a formula. This changes exported text. Turn it off when you have reviewed the values and need original strings. Review the file in its receiving application before replacing a working dataset.</p>
+    <p>Both sources, keys and the result are processed in your browser. After the page loads, you can disconnect and complete the same operation offline. Copy puts the result on your clipboard, and Download saves a local file.</p>
+  </section>

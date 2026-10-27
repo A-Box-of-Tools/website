@@ -1,0 +1,55 @@
+.table-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.table-source { min-width: 0; }
+.source-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.source-head h3 { margin: .4rem 0; }
+.table-source > label, #result > label { display: block; margin: .75rem 0 .35rem; font-weight: 600; }
+.table-source textarea, #output {
+  width: 100%;
+  min-height: 13rem;
+  resize: vertical;
+  font: .88rem/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+  padding: .85rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--bg);
+  color: var(--text);
+}
+.source-settings { display: grid; gap: .7rem; margin-top: .7rem; }
+.source-settings select { display: block; margin-top: .35rem; max-width: 100%; }
+.table-source input[type=file] { width: 100%; font: inherit; }
+.settings-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1rem 0; }
+.workflow { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; border: 0; padding: 0; margin: 1rem 0 1.5rem; }
+.workflow legend { font-weight: 600; margin-bottom: .6rem; }
+.workflow > label { display: flex; align-items: flex-start; gap: .6rem; border: 1px solid var(--border); border-radius: .65rem; padding: 1rem; cursor: pointer; }
+.workflow > label:has(input:checked) { border-color: var(--accent); background: var(--surface-2); }
+.workflow input { margin-top: .3rem; }
+.workflow small { display: block; margin-top: .35rem; color: var(--text-dim); font-size: .85rem; line-height: 1.5; }
+.normalization { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin: 1rem 0; }
+.export-settings { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin: 1rem 0; }
+#join-options { margin: 1rem 0; }
+#join-options .field { max-width: 30rem; }
+.table-scroll { overflow: auto; max-height: 32rem; border: 1px solid var(--border); border-radius: .5rem; margin: 1rem 0; }
+.table-scroll:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+#preview { border-collapse: collapse; width: 100%; font-size: .86rem; text-align: start; }
+#preview th, #preview td { border-bottom: 1px solid var(--border); border-inline-end: 1px solid var(--border); padding: .6rem .8rem; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 7rem; max-width: 24rem; }
+#preview th { position: sticky; top: 0; background: var(--surface); font-weight: 700; }
+#preview tbody tr:nth-child(even) { background: var(--surface-2); }
+#pairs { max-height: 18rem; overflow: auto; padding-inline-start: 1.6rem; }
+#pairs li { padding: .4rem 0; }
+#pairs button { margin-inline-start: 1rem; }
+#output { min-height: 7rem; max-height: 20rem; }
+.warning { border-inline-start: 3px solid var(--accent); padding: .8rem; background: var(--surface-2); }
+#main .run-row { margin-top: 1.2rem; }
+#main .field-note { margin-top: .6rem; }
+#main [hidden] { display: none; }
+@media (max-width: 720px) {
+  .table-inputs, .workflow { grid-template-columns: 1fr; }
+  .workflow > label { padding: .8rem; }
+  .table-source textarea { min-height: 10rem; }
+  .export-settings { align-items: stretch; gap: .8rem; }
+  .normalization { display: grid; }
+}

@@ -154,6 +154,7 @@ BASELINE = {
     # reader throws internally and never shows.
     'split-gif': 2,
     'stack-images': 6,
+    'stitch-tables': 0,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
     'text-diff': 3,
