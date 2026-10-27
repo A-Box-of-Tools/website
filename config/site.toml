@@ -648,6 +648,7 @@ order = [
   "clean-up-a-voice-memo",
   "prepare-a-reimbursement-pdf-and-csv",
   "compare-two-json-files",
+  "protect-transfer-and-verify-a-pdf",
 ]
 
 [[guides.groups]]
