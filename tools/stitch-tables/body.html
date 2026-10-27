@@ -33,7 +33,7 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <section class="card" id="setup" hidden>
+  <section class="card" id="setup">
     <h2><span class="step">2</span> Choose how to stitch</h2>
     <fieldset class="workflow"><legend>Method</legend>
       <label><input type="radio" name="mode" value="match" checked> <span><strong>Match rows</strong><small>Join on values or a pattern in chosen columns.</small></span></label>
@@ -42,8 +42,8 @@
     </fieldset>
     <div id="matching">
       <div class="settings-grid">
-        <label class="field">Match column in A<select id="key-a"></select></label>
-        <label class="field">Match column in B<select id="key-b"></select></label>
+        <label class="field">Match column in A<select id="key-a" disabled><option value="">Read tables first</option></select></label>
+        <label class="field">Match column in B<select id="key-b" disabled><option value="">Read tables first</option></select></label>
         <label class="field">Match using<select id="pattern"><option value="exact">Whole cell value</option><option value="digits">First number in the cell</option><option value="letters-digits">Letters and numbers only</option><option value="before">Text before a separator</option><option value="after">Text after a separator</option></select></label>
         <label class="field" id="separator-field" hidden>Pattern separator<input id="separator" type="text" value="-" maxlength="100"></label>
       </div>
@@ -55,11 +55,11 @@
     <div id="join-options"><label class="field">Rows to keep<select id="join"><option value="full">All rows from both tables</option><option value="left">All rows from table A</option><option value="inner">Matching pairs only</option></select></label><p class="field-note">Blank matching values never match. Repeated keys produce every matching combination; the summary reports them. Original cell values stay unchanged.</p></div>
     <div id="manual" hidden>
       <p>Choose a row from each table, then add the pair. Each row can belong to one pair. Unpaired rows follow your “Rows to keep” setting.</p>
-      <div class="settings-grid"><label class="field">Row in table A<select id="row-a"></select></label><label class="field">Row in table B<select id="row-b"></select></label></div>
-      <div class="run-row"><button type="button" class="btn" id="add-pair">Add pair</button><button type="button" class="btn" id="clear-pairs">Clear pairs</button></div>
+      <div class="settings-grid"><label class="field">Row in table A<select id="row-a" disabled><option value="">Read tables first</option></select></label><label class="field">Row in table B<select id="row-b" disabled><option value="">Read tables first</option></select></label></div>
+      <div class="run-row"><button type="button" class="btn" id="add-pair" disabled>Add pair</button><button type="button" class="btn" id="clear-pairs">Clear pairs</button></div>
       <p id="pair-status" class="field-note" role="status"></p><ol id="pairs"></ol>
     </div>
-    <div class="run-row"><button type="button" id="stitch" class="btn primary">Stitch tables</button></div>
+    <div class="run-row"><button type="button" id="stitch" class="btn primary" disabled>Stitch tables</button></div>
     <p id="stitch-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -102,6 +102,7 @@ paid/004,Gold,no</pre>
     <span data-phrase="table.join">Choose which rows to keep.</span>
     <span data-phrase="empty">No table loaded.</span>
     <span data-phrase="reading">Reading the selected file…</span>
+    <span data-phrase="read-first">Read tables first</span>
     <span data-phrase="loaded">Rows: {rows} · columns: {columns}</span>
     <span data-phrase="column">Column</span><span data-phrase="left">A</span><span data-phrase="right">B</span>
     <span data-phrase="side-error">Table {side}: {reason}</span>

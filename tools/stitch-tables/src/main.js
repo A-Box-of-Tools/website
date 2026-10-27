@@ -45,7 +45,17 @@ function invalidateInputs() {
   tables = null;
   pairs = [];
   discardResult();
-  $('setup').hidden = true;
+  $('stitch').disabled = true;
+  for (const id of ['key-a', 'key-b', 'row-a', 'row-b']) {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = phrase('read-first');
+    $(id).replaceChildren(option);
+    $(id).disabled = true;
+  }
+  $('add-pair').disabled = true;
+  $('pairs').replaceChildren();
+  $('pair-status').textContent = phrase('pairs-count', { count: 0 });
   sources.forEach(side => { $('status-' + side).textContent = phrase('empty'); });
   sayError('input-error');
 }
@@ -63,6 +73,7 @@ function columnName(table, index) {
 }
 
 function fillKeys(side, table) {
+  $('key-' + side).disabled = false;
   $('key-' + side).replaceChildren(...table.headers.map((_, index) => {
     const option = document.createElement('option');
     option.value = index;
@@ -92,7 +103,7 @@ function readTables() {
   }
   tables = next;
   next.forEach((table, index) => fillKeys(sources[index], table));
-  $('setup').hidden = false;
+  $('stitch').disabled = false;
   updateManual();
   updateMode();
 }
