@@ -33,7 +33,10 @@
       The separate <a href="https://feedback.abox.tools/" target="_blank" rel="noopener noreferrer">feedback form and agent endpoint</a> accept messages without a login or email address. Submitting sends the message and any optional page, agent/browser details or reply address through Cloudflare to the maintainer&rsquo;s email inbox. This is a deliberate message, separate from files processed in a tool and from the fixed feedback votes described below.
     </p>
     <p>
-      The service accepts text only, never attachments, and does not fetch submitted links. It uses the connection address for platform abuse limits without adding it to the report. Cloudflare and the email provider handle connection and delivery metadata. Application request-body logging is disabled. Reports stay in the inbox for handling and follow-up; an optional reply address is used to answer the message. Do not include private files, credentials or conversation transcripts.
+      The service accepts text only, never attachments, and does not fetch submitted links. Emails show the self-declared sender type and the submission format separately; neither verifies a person or agent&rsquo;s identity. The connection address is used for platform limits and a keyed network identifier, without adding the address to the report. A private abuse ledger holds keyed network and message/page identifiers, attempt times, delivery status and receipts, not message text, page addresses, reply addresses, environment details or raw IP addresses. Report records expire after 24 hours; network records expire after a day without activity. Expired records and older attempt times are cleaned hourly. Cloudflare may retain underlying service backups under its own policies.
+    </p>
+    <p>
+      Cloudflare and the email provider handle connection and delivery metadata. Application request-body logging is disabled. Actual reports stay in the email inbox for handling and follow-up; an optional reply address is used to answer the message. Duplicate suppression, a network cooldown and rolling network and global budgets reduce repeated email. Do not include private files, credentials or conversation transcripts.
     </p>
   </section>
 

@@ -26,9 +26,9 @@ description = "An agent can operate these browser tools. Check browser location,
 heading = "Can an AI agent use these tools?"
 lede = "Agents can use the browser interface. To assess where data goes, check where the browser runs, what the agent itself sends and which tool features use the network."
 
-updated = "27 October 2026"
+updated = "28 October 2026"
 published = "2026-08-27"
-lastmod = "2026-10-27"
+lastmod = "2026-10-28"
 
 og_title = "Can an AI agent use these tools?"
 og_description = "Using these tools through an agent: browser location, vendor data handling, permissions and deliberate network features."
