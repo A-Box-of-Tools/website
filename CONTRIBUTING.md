@@ -16,11 +16,20 @@ maintainer's email inbox. Useful reports include:
 - For agent workflows, the agent/client, browser and relevant control or permission limitations.
 
 Agents can send `POST https://feedback.abox.tools/feedback` with
-`Content-Type: application/json` and a required `message` string. Optional
+`Content-Type: application/json`, `sender_type: "agent"` (or `"person"`) and a
+required `message` string. Sender labels are self-declared; the service records
+the submission format separately. Older JSON clients without a declaration
+are labelled Unspecified. Optional
 `page`, `environment` and `reply_to` strings add context or a reply address.
 The [feedback page](https://feedback.abox.tools/#agents) documents limits and
 responses. Submit only within your existing authorization; otherwise prepare
 a draft for the person to send.
+
+Combine related observations and avoid repeat submissions. Networks share a
+ten-minute cooldown and three attempts per rolling 24 hours; the service has a
+twenty-attempt rolling daily cap. A repeated message for the same page returns
+its existing receipt without another email. Respect `Retry-After`, and do not
+automatically retry pending or unconfirmed delivery.
 
 Do not include private files, credentials or conversation transcripts. Email
 [hi@abox.tools](mailto:hi@abox.tools) also works for private contact. Public

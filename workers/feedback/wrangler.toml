@@ -13,6 +13,14 @@ fallthrough = true
 [[send_email]]
 name = "FEEDBACK_MAIL"
 
+# Keep this class and object name stable across deployments so budgets survive.
+[durable_objects]
+bindings = [{ name = "FEEDBACK_GATE", class_name = "FeedbackGate" }]
+
+[[migrations]]
+tag = "feedback-gate"
+new_sqlite_classes = ["FeedbackGate"]
+
 [[ratelimits]]
 name = "FEEDBACK_RATE_LIMIT"
 namespace_id = "1005"

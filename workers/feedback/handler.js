@@ -1,5 +1,5 @@
 const MAX_BYTES = 16384;
-const FIELDS = { message: 4000, page: 512, environment: 500, reply_to: 254, company: 100 };
+const FIELDS = { message: 4000, page: 512, environment: 500, reply_to: 254, company: 100, sender_type: 11 };
 const ORIGINS = new Set(['https://feedback.abox.tools', 'https://abox.tools']);
 const HEADERS = {
   'Cache-Control': 'no-store',
@@ -69,7 +69,31 @@ function fieldsFrom(raw, json) {
   }
   if (!clean.message || clean.company) invalid();
   if (clean.reply_to && !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(clean.reply_to)) invalid();
+  if (clean.sender_type !== undefined && !['person', 'agent', 'unspecified'].includes(clean.sender_type)) invalid();
+  if (!json && !['person', 'agent'].includes(clean.sender_type)) invalid();
+  clean.sender_type ||= 'unspecified';
   return clean;
+}
+
+function normalized(text) {
+  return text.normalize('NFKC').trim().replace(/\s+/gu, ' ').toLowerCase();
+}
+
+function pageIdentity(page = '') {
+  try {
+    const url = new URL(page);
+    url.search = '';
+    url.hash = '';
+    url.pathname = url.pathname.replace(/\/index\.html$/, '/');
+    return normalized(url.href);
+  } catch { return normalized(page); }
+}
+
+async function keyedHash(secret, text) {
+  const bytes = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', bytes.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const digest = await crypto.subtle.sign('HMAC', key, bytes.encode(text));
+  return [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('');
 }
 
 export function createFeedbackHandler(page) {
@@ -89,19 +113,20 @@ export function createFeedbackHandler(page) {
       headers.Vary = 'Origin';
     }
     const json = type === 'application/json';
-    function reply(status, message, values = {}, receipt) {
+    function reply(status, message, values = {}, detail = {}) {
       const body = json
-        ? JSON.stringify({ ok: status === 201, message, ...(receipt ? { receipt } : {}) })
-        : page.replace(/\{\{(notice|message|page|environment|reply_to)\}\}/g,
-          (_, key) => key === 'notice'
-            ? (message ? `<div class="notice" role="status">${escaped(message)}</div>` : '')
-            : escaped(values[key] || ''));
+        ? JSON.stringify({ ok: status === 201 || (status === 200 && detail.duplicate === true), message, ...detail })
+        : page.replace(/\{\{(notice|message|page|environment|reply_to|person_checked|agent_checked)\}\}/g, (_, key) => {
+          if (key === 'notice') return message ? `<div class="notice" role="status">${escaped(message)}</div>` : '';
+          if (key.endsWith('_checked')) return values.sender_type === key.split('_')[0] ? ' checked' : '';
+          return escaped(values[key] || '');
+        });
       return new Response(request.method === 'HEAD' ? null : body, {
         status,
         headers: {
           ...headers,
           'Content-Type': json ? 'application/json; charset=utf-8' : 'text/html; charset=utf-8',
-          ...(status === 429 ? { 'Retry-After': '60' } : {}),
+          ...(status === 429 ? { 'Retry-After': String(detail.retry_after || 60) } : {}),
           ...(status === 405 ? { Allow: 'GET, HEAD, POST, OPTIONS' } : {}),
         },
       });
@@ -122,7 +147,7 @@ export function createFeedbackHandler(page) {
 
     // A missing limiter must not turn a deployment mistake into an open mail relay.
     try {
-      if (!env.FEEDBACK_TO || !env.FEEDBACK_MAIL?.send
+      if (!env.FEEDBACK_HASH_KEY || !env.FEEDBACK_GATE?.get || !env.FEEDBACK_GATE?.idFromName
           || !env.FEEDBACK_RATE_LIMIT?.limit || !env.FEEDBACK_GLOBAL_LIMIT?.limit) throw new Error();
       const perAddress = await env.FEEDBACK_RATE_LIMIT.limit({
         key: request.headers.get('CF-Connecting-IP') || 'unknown',
@@ -137,27 +162,37 @@ export function createFeedbackHandler(page) {
     catch (error) {
       return reply(error === 413 ? 413 : 400, error === 413
         ? 'The request is too large. Keep the message under 4,000 characters and the whole request under 16 KiB.'
-        : 'Enter a message of up to 4,000 characters. Check the optional fields and leave the last field empty.', error?.values);
+        : 'Enter a message of up to 4,000 characters, choose who is sending, and check the optional fields.', error?.values);
     }
-    const receipt = crypto.randomUUID();
-    const text = [
-      'Anonymous abox.tools feedback',
-      `Receipt: ${receipt}`,
-      `Received: ${new Date().toISOString()}`,
-      `Page: ${fields.page || '(not provided)'}`,
-      `Agent / browser: ${fields.environment || '(not provided)'}`,
-      `Optional reply address: ${fields.reply_to || '(not provided)'}`,
-      '', fields.message,
-    ].join('\n');
+    let delivery;
+    let status;
     try {
-      // The destination and headers are server-controlled. Submitted URLs are never fetched.
-      await env.FEEDBACK_MAIL.send({
-        to: env.FEEDBACK_TO,
-        from: 'hi@abox.tools',
-        subject: `abox.tools feedback ${receipt}`,
-        text,
-      });
-    } catch { return reply(503, 'Email delivery could not be confirmed. Please try later or email hi@abox.tools.', fields); }
-    return reply(201, `Thank you. Your feedback was accepted for email delivery. Receipt: ${receipt}`, {}, receipt);
+      const client = await keyedHash(env.FEEDBACK_HASH_KEY, `network\0${request.headers.get('CF-Connecting-IP') || 'unknown'}`);
+      // Changing a sender label, transport or reply address cannot create a new report.
+      const fingerprint = await keyedHash(env.FEEDBACK_HASH_KEY, `report\0${JSON.stringify([pageIdentity(fields.page), normalized(fields.message)])}`);
+      const gate = env.FEEDBACK_GATE.get(env.FEEDBACK_GATE.idFromName('feedback-mail-budget'));
+      const response = await gate.fetch(new Request('https://feedback.internal/deliver', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields, client, fingerprint, channel: json ? 'JSON' : 'Form submission' }),
+      }));
+      delivery = await response.json();
+      status = response.status;
+    } catch { return reply(503, 'Feedback is temporarily unavailable. Please email hi@abox.tools instead of submitting repeatedly.', fields); }
+    const receipt = delivery.receipt;
+    if (status === 201 && delivery.state === 'accepted' && receipt) {
+      return reply(201, `Thank you. Your feedback was accepted for email delivery. Receipt: ${receipt}`, {}, { receipt, duplicate: false });
+    }
+    if (status === 200 && delivery.state === 'accepted' && delivery.duplicate && receipt) {
+      return reply(200, `This report was already accepted. No new email was sent. Receipt: ${receipt}`, {}, { receipt, duplicate: true });
+    }
+    if (status === 202 && delivery.state === 'pending' && receipt) {
+      return reply(202, `This report is still being checked. No additional email was sent. Keep the receipt instead of submitting again: ${receipt}`, {}, { receipt });
+    }
+    if (status === 429 && Number.isInteger(delivery.retry_after) && delivery.retry_after > 0) {
+      const minutes = Math.ceil(delivery.retry_after / 60);
+      const wait = minutes < 60 ? `${minutes} minutes` : `${Math.ceil(minutes / 60)} hours`;
+      return reply(429, `The sending limit has been reached. Please wait about ${wait} before sending another report.`, fields, { retry_after: delivery.retry_after });
+    }
+    return reply(503, `Delivery could not be confirmed. This report will not be sent again automatically. Email hi@abox.tools with this receipt: ${receipt || '(unavailable)'}`, fields, receipt ? { receipt } : {});
   };
 }

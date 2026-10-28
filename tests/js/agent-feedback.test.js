@@ -1,22 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createFeedbackHandler } from '../../workers/feedback/handler.js';
+import { feedbackFixture as fixture } from './helpers/feedback-store.js';
 
 const handler = createFeedbackHandler('<main>{{notice}}<textarea>{{message}}</textarea><input value="{{page}}"></main>');
-
-function fixture() {
-  const sent = [];
-  const keys = [];
-  return {
-    sent, keys,
-    env: {
-      FEEDBACK_TO: 'owner@example.com',
-      FEEDBACK_MAIL: { async send(message) { sent.push(message); } },
-      FEEDBACK_RATE_LIMIT: { async limit({ key }) { keys.push(key); return { success: true }; } },
-      FEEDBACK_GLOBAL_LIMIT: { async limit() { return { success: true }; } },
-    },
-  };
-}
 
 function request(body, options = {}) {
   return new Request('https://feedback.abox.tools/feedback', {
@@ -53,11 +40,11 @@ test('feedback is acknowledged only after provider acceptance', async () => {
   const body = await response.text();
   assert.ok(!body.includes('Private provider error'));
   assert.equal(JSON.parse(body).ok, false);
-  assert.ok(!Object.hasOwn(JSON.parse(body), 'receipt'));
+  assert.match(JSON.parse(body).receipt, /^[\da-f-]{36}$/);
 });
 
 test('missing delivery or abuse bindings fail closed', async () => {
-  for (const binding of ['FEEDBACK_TO', 'FEEDBACK_MAIL', 'FEEDBACK_RATE_LIMIT', 'FEEDBACK_GLOBAL_LIMIT']) {
+  for (const binding of ['FEEDBACK_TO', 'FEEDBACK_MAIL', 'FEEDBACK_HASH_KEY', 'FEEDBACK_GATE', 'FEEDBACK_RATE_LIMIT', 'FEEDBACK_GLOBAL_LIMIT']) {
     const { env, sent } = fixture();
     delete env[binding];
     assert.equal((await handler(request({ message: 'Test' }), env)).status, 503);
@@ -81,7 +68,7 @@ test('only bounded string fields can enter a report', async () => {
     { message: 'x'.repeat(4001) }, { message: 'x', page: 'x'.repeat(513) },
     { message: 'x', environment: 'x'.repeat(501) }, { message: 'x', reply_to: 'a\r\nb@c.test' },
     { message: 'x', to: 'someone@example.com' }, { message: 'x', company: 'bot' },
-    { message: '\u0000' }]) {
+    { message: '\u0000' }, { message: 'x', sender_type: 'verified-human' }]) {
     const { env, sent } = fixture();
     assert.equal((await handler(request(fields), env)).status, 400);
     assert.equal(sent.length, 0);
@@ -131,7 +118,7 @@ test('the no-script form supports anonymous submission and escapes reflected fai
   env.FEEDBACK_MAIL.send = async () => { throw new Error(); };
   const response = await handler(new Request('https://feedback.abox.tools/feedback', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ message: '</textarea><script>bad()</script>{{notice}}', page: '"><svg onload=bad()>', company: '' }),
+    body: new URLSearchParams({ sender_type: 'agent', message: '</textarea><script>bad()</script>{{notice}}', page: '"><svg onload=bad()>', company: '' }),
   }), env);
   const html = await response.text();
   assert.equal(response.status, 503);
@@ -158,7 +145,7 @@ test('a validation error preserves safe text so a reply-address typo does not er
   const { env, sent } = fixture();
   const response = await handler(new Request('https://feedback.abox.tools/feedback', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ message: 'Keep this report <safely>.', reply_to: 'typo' }),
+    body: new URLSearchParams({ sender_type: 'agent', message: 'Keep this report <safely>.', reply_to: 'typo' }),
   }), env);
   assert.equal(response.status, 400);
   assert.ok((await response.text()).includes('Keep this report &lt;safely&gt;.'));
@@ -171,7 +158,7 @@ test('no-referrer form navigation uses same-origin metadata without granting nul
     const response = await handler(new Request('https://feedback.abox.tools/feedback', {
       method: 'POST', headers: {
         'Content-Type': 'application/x-www-form-urlencoded', Origin: 'null', 'Sec-Fetch-Site': site,
-      }, body: 'message=A+synthetic+form+report',
+      }, body: 'message=A+synthetic+form+report&sender_type=agent',
     }), env);
     assert.equal(response.status, site === 'same-origin' ? 201 : 403);
     assert.equal(sent.length, site === 'same-origin' ? 1 : 0);
@@ -186,7 +173,7 @@ test('unknown routes, unsupported uploads and duplicate form fields are rejected
     method: 'POST', headers: { 'Content-Type': 'multipart/form-data; boundary=test' }, body: 'test',
   }), env)).status, 415);
   assert.equal((await handler(new Request('https://feedback.abox.tools/feedback', {
-    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'message=one&message=two',
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'message=one&message=two&sender_type=agent',
   }), env)).status, 400);
   assert.equal(sent.length, 0);
 });
