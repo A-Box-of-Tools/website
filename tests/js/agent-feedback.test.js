@@ -88,6 +88,16 @@ test('only bounded string fields can enter a report', async () => {
   }
 });
 
+test('an already limited address cannot spend other reporters shared capacity', async () => {
+  const { env, sent } = fixture();
+  let sharedCalls = 0;
+  env.FEEDBACK_RATE_LIMIT.limit = async () => ({ success: false });
+  env.FEEDBACK_GLOBAL_LIMIT.limit = async () => { sharedCalls++; return { success: true }; };
+  assert.equal((await handler(request({ message: 'Test' }), env)).status, 429);
+  assert.equal(sharedCalls, 0);
+  assert.equal(sent.length, 0);
+});
+
 test('streamed requests cannot evade the byte limit by omitting Content-Length', async () => {
   const { env, sent } = fixture();
   const stream = new ReadableStream({ start(controller) {

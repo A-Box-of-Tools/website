@@ -127,8 +127,9 @@ export function createFeedbackHandler(page) {
       const perAddress = await env.FEEDBACK_RATE_LIMIT.limit({
         key: request.headers.get('CF-Connecting-IP') || 'unknown',
       });
+      if (!perAddress.success) return reply(429, 'Too many requests. Please wait a minute and try again.');
       const global = await env.FEEDBACK_GLOBAL_LIMIT.limit({ key: 'feedback' });
-      if (!perAddress.success || !global.success) return reply(429, 'Too many requests. Please wait a minute and try again.');
+      if (!global.success) return reply(429, 'Too many requests. Please wait a minute and try again.');
     } catch { return reply(503, 'Feedback is temporarily unavailable. Please try later or email hi@abox.tools.'); }
 
     let fields;
