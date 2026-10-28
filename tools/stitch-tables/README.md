@@ -8,7 +8,7 @@ pipe-delimited files. It is not an XLSX reader. Keeping that boundary makes a
 table operation small enough to ship with the page and run offline without
 uploading either source to a spreadsheet service.
 
-## The three jobs
+## Merge directions
 
 | Job | What decides the rows | What happens to columns |
 |---|---|---|
@@ -16,12 +16,31 @@ uploading either source to a spreadsheet service.
 | Pair rows manually | Explicit one-to-one A/B pairs | Both sources are retained |
 | Stack rows | A rows followed by B rows | Trimmed headings and occurrence align columns; B-only columns follow A's |
 | Place side by side | Equal row positions | Both sources are retained; the shorter side is padded |
+| Add rows and columns | Equal keys, with all unmatched rows retained | Shared headed fields coalesce; conflicting fields retain full A/B columns |
 
 For matching and manual pairing, full output preserves every unpaired row,
 left output preserves A's rows and drops B-only rows, and inner output keeps
 only pairs. Full output is the default because an unexplained missing record is
 harder to notice than an empty half-row. Stack aligns by position if either
 input does not use a heading row.
+
+## Adding rows and columns together
+
+The combined direction performs a full key match. For A with id/name rows 1/Ada
+and 2/Bo, and B with id/email rows 2/bo@example.com and 3/cy@example.com, it emits
+id/name/email with three records, preserving the unmatched ids 1 and 3.
+
+Shared nonblank headings align by their trimmed text and occurrence. Exactly
+empty cells can take the other source's value; equal strings need one column.
+If any matched pair disagrees on two nonempty values, that entire field is
+retained as A/B columns. This includes differing raw key spellings that a
+pattern considers equal. Whitespace is data, and a string zero is not empty.
+
+Headerless or inferred fields stay separate because a suggested type name is
+not proof that two fields have the same meaning. Duplicate keys still produce
+every combination. The full row count and minimum output width are bounded
+before scanning conflicts, and the final width is checked before rows are
+allocated.
 
 ## Comparison keys are not cell edits
 

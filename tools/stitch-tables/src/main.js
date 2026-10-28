@@ -39,6 +39,7 @@ function discardResult() {
   $('result').inert = true;
   $('summary').textContent = phrase('stitch.await-result');
   $('duplicates').hidden = true;
+  $('conflicts').hidden = true;
   $('output').value = '';
   $('preview').replaceChildren();
   sayError('stitch-error');
@@ -137,7 +138,7 @@ function options() {
     mode: mode(), leftKey: Number($('key-a').value), rightKey: Number($('key-b').value),
     match: $('pattern').value, separator: $('separator').value,
     trim: $('trim').checked, ignoreCase: $('ignore-case').checked,
-    join: $('join').value, pairs,
+    join: mode() === 'both' ? 'full' : $('join').value, pairs,
     labels: { left: phrase('stitch.left'), right: phrase('stitch.right'), column: phrase('stitch.column') },
   };
 }
@@ -159,10 +160,11 @@ function updateKeyPreview() {
 function updateMode() {
   discardResult();
   const current = mode();
-  $('matching').hidden = current !== 'match';
+  $('matching').hidden = !['match', 'both'].includes(current);
   $('manual').hidden = current !== 'manual';
-  $('simple').hidden = !['append', 'position'].includes(current);
-  $('join-options').hidden = ['append', 'position'].includes(current);
+  $('simple').hidden = !['append', 'position', 'both'].includes(current);
+  $('join-options').hidden = ['append', 'position', 'both'].includes(current);
+  for (const direction of ['append', 'position', 'both']) $('direction-' + direction).hidden = current !== direction;
   $('separator-field').hidden = !['before', 'after'].includes($('pattern').value);
   updateKeyPreview();
 }
@@ -261,8 +263,10 @@ function stitch() {
       rows: result.rows.length, columns: result.headers.length, matched: result.matched,
       a: result.unmatchedA, b: result.unmatchedB,
     });
-    $('duplicates').hidden = !result.duplicateKeys || mode() !== 'match';
+    $('duplicates').hidden = !result.duplicateKeys || !['match', 'both'].includes(mode());
     $('duplicates').textContent = phrase('stitch.duplicates', { count: result.duplicateKeys });
+    $('conflicts').hidden = !result.conflicts;
+    $('conflicts').textContent = phrase('stitch.conflicts', { count: result.conflicts });
     renderPreview();
     $('result').inert = false;
     prepareExport();

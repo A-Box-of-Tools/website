@@ -225,17 +225,85 @@ function columnIdentities(headers) {
   });
 }
 
+// Decide the full column shape before emitting rows. A conflicting field
+// retains both whole source columns, including its otherwise equal values.
+function mergedColumns(a, b, pairs, labels) {
+  let outputRows = 0;
+  const usedB = new Set();
+  for (let index = 0; index < a.rows.length; index++) {
+    const matching = pairs.get(index) || [];
+    outputRows += matching.length || 1;
+    if (outputRows > LIMITS.outputRows) fail('table.output-limit');
+    for (const right of matching) usedB.add(right);
+  }
+  outputRows += b.rows.length - usedB.size;
+  const checkSize = width => {
+    if (outputRows > LIMITS.outputRows || outputRows * width > LIMITS.outputCells) fail('table.output-limit');
+  };
+
+  // Suggested names describe value shapes, not field identity.
+  if (a.header === false || b.header === false) {
+    const headers = joinedHeaders(a, b, labels);
+    checkSize(headers.length);
+    return { headers, conflicts: 0, row: (left, right) => [...left, ...right] };
+  }
+  const aIds = columnIdentities(a.headers), bIds = columnIdentities(b.headers);
+  const indices = new Map(aIds.map((id, index) => [id, index]));
+  const shared = new Map();
+  const bToA = bIds.map((id, index) => {
+    const left = indices.get(id);
+    if (left === undefined || !String(b.headers[index]).trim()) return -1;
+    shared.set(left, index);
+    return left;
+  });
+  checkSize(a.headers.length + bToA.filter(index => index < 0).length);
+  const conflicting = new Set();
+  for (const [left, matching] of pairs) {
+    for (const right of matching) {
+      for (const [ac, bc] of shared) {
+        if (!conflicting.has(ac) && a.rows[left][ac] !== '' && b.rows[right][bc] !== ''
+            && a.rows[left][ac] !== b.rows[right][bc]) conflicting.add(ac);
+      }
+    }
+  }
+
+  const headers = a.headers.map((header, index) => {
+    const name = nameHeader(header, index, labels);
+    return conflicting.has(index) ? `${name} (${labels.left || '1'})` : name;
+  });
+  const bMap = b.headers.map((header, index) => {
+    const left = bToA[index];
+    if (left >= 0 && !conflicting.has(left)) return left;
+    const name = nameHeader(header, index, labels);
+    headers.push(left >= 0 ? `${name} (${labels.right || '2'})` : name);
+    return headers.length - 1;
+  });
+  checkSize(headers.length);
+  return {
+    headers: uniqueHeaders(headers), conflicts: conflicting.size,
+    row(left, right) {
+      const row = Array(headers.length).fill('');
+      left.forEach((value, index) => { row[index] = value; });
+      right.forEach((value, index) => {
+        if (row[bMap[index]] === '') row[bMap[index]] = value;
+      });
+      return row;
+    },
+  };
+}
+
 export function stitchTables(a, b, options = {}) {
   validateTable(a); validateTable(b);
   const settings = { mode: 'match', leftKey: 0, rightKey: 0, match: 'exact', separator: '-', trim: true, ignoreCase: true, join: 'full', pairs: [], labels: {}, ...options };
-  const { mode, labels, join } = settings;
+  const { mode, labels } = settings;
+  const join = mode === 'both' ? 'full' : settings.join;
   let headers;
   const rows = [];
   const add = row => {
     if (rows.length + 1 > LIMITS.outputRows || (rows.length + 1) * headers.length > LIMITS.outputCells) fail('table.output-limit');
     rows.push(row);
   };
-  let matched = 0, unmatchedA = 0, unmatchedB = 0, duplicateKeys = 0;
+  let matched = 0, unmatchedA = 0, unmatchedB = 0, duplicateKeys = 0, conflicts = 0;
   if (mode === 'append') {
     let aMap, bMap;
     if (a.header === false || b.header === false) {
@@ -280,7 +348,7 @@ export function stitchTables(a, b, options = {}) {
           pairs.set(left, [right]); usedB.add(right);
         }
         usedB.clear();
-      } else if (mode === 'match') {
+      } else if (mode === 'match' || mode === 'both') {
         if (!Number.isInteger(settings.leftKey) || !Number.isInteger(settings.rightKey) || settings.leftKey < 0 || settings.rightKey < 0 || settings.leftKey >= a.headers.length || settings.rightKey >= b.headers.length) fail('table.key');
         if (!['exact', 'digits', 'letters-digits', 'before', 'after'].includes(settings.match)) fail('table.pattern');
         if (['before', 'after'].includes(settings.match) && (typeof settings.separator !== 'string' || !settings.separator.length)) fail('table.separator');
@@ -301,18 +369,25 @@ export function stitchTables(a, b, options = {}) {
         });
         duplicateKeys = duplicates.size;
       } else fail('table.mode');
+      let joinRow = (left, right) => [...left, ...right];
+      if (mode === 'both') {
+        const combined = mergedColumns(a, b, pairs, labels);
+        headers = combined.headers;
+        conflicts = combined.conflicts;
+        joinRow = combined.row;
+      }
       a.rows.forEach((row, index) => {
         const matching = pairs.get(index);
         if (matching?.length) {
-          for (const right of matching) { add([...row, ...b.rows[right]]); matched++; usedB.add(right); }
-        } else { unmatchedA++; if (join !== 'inner') add([...row, ...blankB]); }
+          for (const right of matching) { add(joinRow(row, b.rows[right])); matched++; usedB.add(right); }
+        } else { unmatchedA++; if (join !== 'inner') add(joinRow(row, blankB)); }
       });
       b.rows.forEach((row, index) => {
-        if (!usedB.has(index)) { unmatchedB++; if (join === 'full') add([...blankA, ...row]); }
+        if (!usedB.has(index)) { unmatchedB++; if (join === 'full') add(joinRow(blankA, row)); }
       });
     }
   }
-  return { headers, rows, matched, unmatchedA, unmatchedB, duplicateKeys };
+  return { headers, rows, matched, unmatchedA, unmatchedB, duplicateKeys, conflicts };
 }
 
 export function serializeTable(headers, rows, { delimiter = ',', protectFormulas = true, includeHeader = true } = {}) {

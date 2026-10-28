@@ -1,5 +1,5 @@
 # Two source tables stay separate until a visitor chooses how their rows meet.
-# Matching preserves both sources' columns; stacking aligns headings instead.
+# Matching keeps source columns; the combined direction coalesces shared fields.
 # Each source has its own file input, so there is no shared [picker] table.
 slug = "stitch-tables"
 name = "Stitch Tables"
@@ -65,7 +65,7 @@ title = "Add table A and table B."
 body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose a text file for each side. Check the delimiter and automatic heading guess. Without a clear heading row, all rows are kept and column names are suggested from value patterns. You can choose the heading-row setting manually. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
 [[howto]]
 title = "Choose how the rows meet."
-body = "Match rows by columns and an exact value or extraction pattern, pair individual rows manually, or use Simple merge to stack rows or place them side by side. For matching and manual pairing, choose whether to keep every row, all of table A, or only paired rows."
+body = "Match rows by columns and an exact value or extraction pattern, pair individual rows manually, or use Simple merge to add rows, columns, or both. The combined direction matches a selected key, retains every unmatched row, and combines shared fields when their values agree or one is empty. Conflicting fields keep separate A/B columns. For matching and manual pairing, choose whether to keep every row, all of table A, or only paired rows."
 [[howto]]
 title = "Review the matches and the preview."
 body = "Blank keys do not match. Repeated automatic keys produce every matching combination, so check the duplicate count and result size. Manual pairing lets you choose a particular B row for an A row. The preview is limited; the result count describes the full export."
@@ -86,8 +86,8 @@ a = "Compare the whole value, take its first run of digits, keep letters and dig
 q = "What happens to blank keys, duplicates and unmatched rows?"
 a = "Blank keys and values from which the chosen pattern extracts nothing remain unmatched. If a key appears twice in table A and three times in table B, matching produces six joined rows. All rows from both tables retains unpaired rows with empty cells for the missing side; All rows from table A omits B-only rows; Matching pairs only omits every unpaired row. Manual pairing is one-to-one."
 [[faq]]
-q = "How do stacking and merging side by side differ?"
-a = "Stacking puts B's rows below A's and aligns columns by trimmed heading text, keeping A's order and adding headings found only in B. Repeated headings align by occurrence. If either table has no heading row, stacking aligns by position. Side-by-side merging pairs corresponding row positions and keeps every row of the longer table, leaving the missing side empty."
+q = "Can I merge more rows, more columns, or both?"
+a = "Yes. Add rows stacks B below A and aligns headed columns, keeping extra columns; without headings it aligns by position. Add columns places tables side by side and retains the longer table's rows. Add rows and columns matches records by your chosen key and keeps unmatched records from both sides. Shared headings combine equal values or fill exactly empty cells. If a shared field has any conflicting nonempty values, its full A/B columns remain separate. Headerless fields stay separate because inferred names do not establish that they mean the same thing."
 [[faq]]
 q = "How large can the tables be?"
 a = "Each source is limited to 2,097,152 text characters, 5,000 data rows, 100 columns and 100,000 data cells. Selected files are also limited to 2 MiB. The stitched result is limited to 20,000 rows and 500,000 cells. These bounds keep the browser responsive and stop duplicate keys from expanding into an unexpectedly large result. A preview shows part of the result; export includes every prepared row."
@@ -101,4 +101,4 @@ a = "The table-processing code does not upload source files, pasted cells, match
 [schema]
 category = "BusinessApplication"
 description = "Stitch two delimited-text tables by exact or extracted keys, manual row pairs, stacked rows or side-by-side row order. Preview and export CSV or TSV with local browser processing."
-features = ["Reads pasted spreadsheet cells and CSV or TSV files", "Matches selected columns with built-in extraction patterns", "Manual one-to-one row pairing", "Full, left and inner row retention", "Stacks by heading or merges side by side by row order", "Reports duplicate and unmatched rows", "CSV or TSV export with optional formula protection", "Works offline after loading without processing uploads"]
+features = ["Reads pasted spreadsheet cells and CSV or TSV files", "Matches selected columns with built-in extraction patterns", "Manual one-to-one row pairing", "Full, left and inner row retention", "Adds rows, columns, or both with a full key merge", "Reports duplicate and unmatched rows", "CSV or TSV export with optional formula protection", "Works offline after loading without processing uploads"]
