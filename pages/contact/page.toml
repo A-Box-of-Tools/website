@@ -20,17 +20,17 @@ schema_type = "ContactPage"
 nav = "Contact"
 
 title = "Contact abox.tools &mdash; Report a Bug, Ask, or Suggest a Tool"
-description = "How to reach the person who builds abox.tools: one email address, one public issue tracker, what each is best for, and what actually happens when you write."
+description = "Send private feedback without an account, email the maintainer, or use the public issue tracker. People and agents are welcome to report bugs and contribute fixes."
 
 heading = "Contact"
 lede = """
-    One person reads this, and reads all of it. Below is what each of the two
+    One person reads this, and reads all of it. Below is what each of the
     ways in is best for, what to include so a bug can actually be found, and
     what happens after you send it."""
 
-updated = "27 August 2026"
-lastmod = "2026-08-27"
+updated = "27 October 2026"
+lastmod = "2026-10-27"
 
 og_title = "Contact abox.tools"
-og_description = "Email or a public issue tracker, what each is best for, and what happens after you write."
+og_description = "Private feedback without an account, email or a public issue tracker: how to reach the maintainer and contribute."
 og_image_alt = "abox.tools - tools that never touch a server"

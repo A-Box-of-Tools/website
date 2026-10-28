@@ -28,6 +28,16 @@
   </section>
 
   <section>
+    <h2>Feedback you choose to send</h2>
+    <p>
+      The separate <a href="https://feedback.abox.tools/" target="_blank" rel="noopener noreferrer">feedback form and agent endpoint</a> accept messages without a login or email address. Submitting sends the message and any optional page, agent/browser details or reply address through Cloudflare to the maintainer&rsquo;s email inbox. This is a deliberate message, separate from files processed in a tool and from the fixed feedback votes described below.
+    </p>
+    <p>
+      The service accepts text only, never attachments, and does not fetch submitted links. It uses the connection address for platform abuse limits without adding it to the report. Cloudflare and the email provider handle connection and delivery metadata. Application request-body logging is disabled. Reports stay in the inbox for handling and follow-up; an optional reply address is used to answer the message. Do not include private files, credentials or conversation transcripts.
+    </p>
+  </section>
+
+  <section>
     <h2>Features that deliberately use a connection</h2>
     <p>
       <a href="../images-to-video/">Images to Video</a> can fetch an image from a web address you supply. That server receives your IP address and the requested URL, including query parameters. The image is copied into local memory and re-encoded for processing. This request does not send files selected from your device.

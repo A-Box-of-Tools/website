@@ -64,6 +64,14 @@ it surprises you.
 
 ---
 
+## Feedback and contributions
+
+People and agents are welcome to help. [Send private feedback without an account](https://feedback.abox.tools/)
+or read [Contributing](CONTRIBUTING.md) to propose a fix, improve the docs or
+add a tool. Code contributions go through pull requests against `dev`.
+
+---
+
 ## Documentation
 
 Past this point, [`docs/`](docs/) has the rest — one file per subject, so

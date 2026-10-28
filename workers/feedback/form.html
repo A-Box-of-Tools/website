@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'">
+  <title>Send feedback — abox.tools</title>
+  <style>
+    :root { color-scheme: light dark; font: 17px/1.6 system-ui, sans-serif; color: #26323d; background: #f5f6f8; }
+    * { box-sizing: border-box; }
+    body { max-width: 44rem; padding: 2rem 1.25rem 4rem; margin: auto; }
+    a { color: #345b7d; text-underline-offset: .15em; }
+    h1 { line-height: 1.2; margin-bottom: .6rem; font-size: 2.2rem; }
+    h2 { font-size: 1.2rem; margin-top: 2rem; }
+    .brand { font-weight: 700; text-decoration: none; }
+    .lede { font-size: 1.1rem; }
+    label { display: block; font-weight: 650; margin-top: 1.25rem; }
+    .hint { display: block; font-size: .9rem; color: #56616d; margin: .15rem 0 .4rem; }
+    input, textarea, button { font: inherit; }
+    input, textarea { width: 100%; padding: .65rem; border: 1px solid #8b98a5; border-radius: .35rem; background: #fff; color: #26323d; }
+    textarea { min-height: 11rem; resize: vertical; }
+    button { margin-top: 1.3rem; padding: .65rem 1.15rem; border: 0; border-radius: .35rem; color: #fff; background: #294d6d; font-weight: 650; cursor: pointer; }
+    :focus-visible { outline: 3px solid #bf6800; outline-offset: 3px; }
+    .notice { padding: 1rem; margin: 1.5rem 0; border: 2px solid #557a55; border-radius: .35rem; background: #ecf3ec; }
+    .trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    code, pre { font-size: .88rem; }
+    pre { overflow: auto; padding: 1rem; background: #e8ecf0; border-radius: .35rem; }
+    footer { margin-top: 2rem; border-top: 1px solid #ccd2d8; padding-top: 1rem; }
+    @media (prefers-color-scheme: dark) {
+      :root { color: #e3e8ed; background: #18212b; }
+      a { color: #a8c8e7; }
+      .hint { color: #bdc8d2; }
+      input, textarea { color: #e3e8ed; background: #222e3a; }
+      .notice { background: #23392b; }
+      pre { background: #222e3a; }
+    }
+  </style>
+</head>
+<body>
+  <header><a class="brand" href="https://abox.tools/">🧰 abox.tools</a></header>
+  <main>
+    <h1>Help make the tools better.</h1>
+    <p class="lede">Feedback from people and agents is welcome. No account, login or email address is required.</p>
+    <p>Tell us about a bug, a confusing control, missing documentation or an idea. Your message goes privately to the maintainer’s email inbox.</p>
+    {{notice}}
+    <form method="post" action="/feedback">
+      <label for="message">Your feedback</label>
+      <span class="hint" id="message-hint">What were you trying to do, what did you expect, and what happened? For an idea, describe the improvement. Up to 4,000 characters.</span>
+      <textarea id="message" name="message" required maxlength="4000" aria-describedby="message-hint">{{message}}</textarea>
+      <label for="page">Page or tool <span class="hint">Optional. A page address or tool name is enough.</span></label>
+      <input id="page" name="page" maxlength="512" value="{{page}}">
+      <label for="environment">Agent and browser <span class="hint">Optional. Include relevant browser versions, permissions or control limitations.</span></label>
+      <input id="environment" name="environment" maxlength="500" value="{{environment}}">
+      <label for="reply_to">Email for a reply <span class="hint">Optional. Leave this empty to send without identifying yourself.</span></label>
+      <input id="reply_to" name="reply_to" type="email" maxlength="254" autocomplete="email" value="{{reply_to}}">
+      <div class="trap" aria-hidden="true"><label for="company">Leave this empty</label><input id="company" name="company" tabindex="-1" autocomplete="off"></div>
+      <p class="hint">Sending this form sends the text you enter through Cloudflare to our email inbox. Cloudflare handles connection metadata and abuse limits. We do not add your IP address to the report. Reports stay in the inbox for follow-up. Include only information you may share; use synthetic examples instead of private files, credentials or conversation transcripts. No attachments are accepted.</p>
+      <button type="submit">Send feedback</button>
+    </form>
+    <h2 id="agents">Sending from an agent</h2>
+    <p>Send a JSON <code>POST</code> to <code>https://feedback.abox.tools/feedback</code> with <code>Content-Type: application/json</code>. No token or registration is needed. Use a descriptive <code>User-Agent</code>, such as <code>abox-feedback-client/1.0</code>; the host may reject generic automated-client signatures. Only <code>message</code> is required; the other fields below are optional.</p>
+    <pre>{
+  "message": "The download control was hard to find after conversion.",
+  "page": "https://abox.tools/compress-image/",
+  "environment": "Browser agent, Chrome"
+}</pre>
+    <p class="hint">A <code>201</code> response with <code>ok: true</code> and a receipt means the email service accepted the report. A <code>429</code> response asks you to wait a minute. A <code>503</code> means delivery could not be confirmed. Requests are limited to 16 KiB; message, page, environment and optional <code>reply_to</code> limits are 4,000, 512, 500 and 254 characters. Post only within the person’s authorization; otherwise prepare a draft for them.</p>
+    <h2>Code contributions are welcome too.</h2>
+    <p>People and agents can contribute fixes, documentation, accessibility improvements and new tools. Read <a href="https://github.com/A-Box-of-Tools/website/blob/dev/CONTRIBUTING.md">the contribution guide</a> and open pull requests against <code>dev</code>. GitHub requires an account for pull requests; you can also describe a fix or share a public patch link in this form.</p>
+  </main>
+  <footer><a href="mailto:hi@abox.tools">Email hi@abox.tools</a> · <a href="https://abox.tools/">Back to the tools</a></footer>
+</body>
+</html>
