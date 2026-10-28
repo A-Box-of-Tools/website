@@ -6,7 +6,11 @@
     <p>You can also compare two CSV files in <a href="/text-diff/">Text Diff</a> first, then choose Stitch these tables to carry both current sources here. The original becomes A and the changed version becomes B. The transfer stays in browser storage, is consumed once and expires after ten minutes.</p>
   </section>
   <section>
-    <h2>Choose what one output row should mean</h2>
+    <h2>Choose more rows, more columns, or both</h2>
+    <p>In Simple merge, Add rows stacks B below A and aligns headed columns, keeping fields found only in B. Add columns places B beside A by row position and keeps the longer table's rows. Add rows and columns matches records by a key and keeps every unmatched record from either table.</p>
+    <p>For example, A has id/name records 1/Ada and 2/Bo; B has id/email records 2/bo@example.com and 3/cy@example.com. The combined direction gives id/name/email with three records: 1, 2 and 3. The shared record 2 receives both its name and email.</p>
+    <p>Shared headings combine when values agree or one is exactly empty. When a field has conflicting nonempty values, its full A/B columns stay separate and the result reports it. Without source headings, fields stay separate; inferred names such as Text or Number cannot establish that two columns mean the same thing.</p>
+    <h3>Choose what one output row should mean</h3>
     <p>If you are adding a customer's address to each order, one output row should describe an order and its customer. Choose Match rows and select the customer-identifier column from each table. Different row orders do not matter because the key connects the records.</p>
     <ul>
       <li><strong>All rows from both tables</strong> keeps pairs and every unpaired source row. Empty cells on one side help reveal a missing record.</li>

@@ -41,8 +41,14 @@
     <fieldset class="workflow"><legend>Method</legend>
       <label><input type="radio" name="mode" value="match" checked> <span><strong>Match rows</strong><small>Join on values or a pattern in chosen columns.</small></span></label>
       <label><input type="radio" name="mode" value="manual"> <span><strong>Pair manually</strong><small>Choose which rows belong together.</small></span></label>
-      <label><input type="radio" name="mode" value="simple"> <span><strong>Simple merge</strong><small>Stack rows or place tables side by side.</small></span></label>
+      <label><input type="radio" name="mode" value="simple"> <span><strong>Simple merge</strong><small>Add rows, add columns, or merge both directions.</small></span></label>
     </fieldset>
+    <div id="simple" hidden>
+      <label class="field">Merge direction<select id="simple-mode"><option value="append">Add rows — stack tables</option><option value="position">Add columns — place side by side</option><option value="both">Add rows and columns — match records and combine fields</option></select></label>
+      <p id="direction-append" class="field-note">Stack B below A. Headed columns align by exact, trimmed names and extra columns are kept. Without headings, stacking uses column position.</p>
+      <p id="direction-position" class="field-note" hidden>Place B beside A. Rows pair by position, and every row from the longer table remains.</p>
+      <p id="direction-both" class="field-note" hidden>Choose a match key below. All rows remain. Shared headings combine equal values or fill exactly empty cells. If a field has conflicting values, its full A/B columns stay separate. Without source headings, columns stay separate.</p>
+    </div>
     <div id="matching">
       <div class="settings-grid">
         <label class="field">Match column in A<select id="key-a" disabled><option value="">Read tables first</option></select></label>
@@ -54,7 +60,6 @@
       <div class="normalization"><label class="check"><input type="checkbox" id="trim" checked> Trim spaces around matching values</label><label class="check"><input type="checkbox" id="ignore-case" checked> Ignore case when matching</label></div>
       <p class="field-note" id="key-preview"></p>
     </div>
-    <div id="simple" hidden><label class="field">Merge direction<select id="simple-mode"><option value="append">Stack rows — align columns by heading</option><option value="position">Side by side — pair rows by position</option></select></label><p class="field-note">Stacking uses exact, trimmed headings and keeps extra columns. With headings off in either table it uses column position. Side by side keeps every row from the longer table.</p></div>
     <div id="join-options"><label class="field">Rows to keep<select id="join"><option value="full">All rows from both tables</option><option value="left">All rows from table A</option><option value="inner">Matching pairs only</option></select></label><p class="field-note">Blank matching values never match. Repeated keys produce every matching combination; the summary reports them. Original cell values stay unchanged.</p></div>
     <div id="manual" hidden>
       <p>Choose a row from each table, then add the pair. Each row can belong to one pair. Unpaired rows follow your “Rows to keep” setting.</p>
@@ -69,6 +74,7 @@
   <section class="card" id="result" inert>
     <h2><span class="step">3</span> Review and export</h2>
     <p id="summary" role="status">Stitch the tables to prepare a preview and export.</p><p id="duplicates" class="warning" hidden></p>
+    <p id="conflicts" class="warning" role="status" hidden></p>
     <p class="field-note">The preview shows the first 100 rows and 20 columns. Copy and download include the whole result, up to 20,000 rows and 500,000 cells.</p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Stitched table preview"><table id="preview"></table></div>
     <div class="export-settings"><label class="field">Output separator<select id="output-delimiter"><option value=",">CSV (comma)</option><option value="tab">TSV (tab)</option><option value=";">CSV (semicolon)</option></select></label><label class="check"><input type="checkbox" id="output-header" checked> Include headings</label></div>
@@ -139,6 +145,7 @@ paid/004,Gold,no</pre>
     <span data-phrase="stitch.summary">Result rows: {rows} · columns: {columns} · pairs: {matched} · unpaired rows in A: {a} · unpaired rows in B: {b}.</span>
     <span data-phrase="stitch.simple-summary">Result rows: {rows} · columns: {columns}.</span>
     <span data-phrase="stitch.duplicates">Repeated matching keys: {count}. Automatic matching includes every combination; review the result carefully.</span>
+    <span data-phrase="stitch.conflicts">Fields with conflicting values: {count}. Their A/B columns stay separate.</span>
     <span data-phrase="stitch.copied">Table copied.</span>
     <span data-phrase="stitch.selected">Export text selected. Copy it with your browser’s copy command.</span>
     <span data-phrase="stitch.key-sample">First extracted keys — A: {a} · B: {b}</span>
