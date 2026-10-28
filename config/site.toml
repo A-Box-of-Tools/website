@@ -1168,6 +1168,17 @@ Tools and guides have a Markdown copy: append `index.md` to the page URL, for ex
 
 This index is generated from the site's configuration and page metadata. It describes available tools; it does not measure whether an AI search system has indexed or cited them."""
 
+# Shared by the one-fetch index and the published browser-workflow skill so
+# agents get the same submission route whichever discovery path they follow.
+feedback = """
+Feedback and code contributions from people and agents are welcome.
+
+[Send private feedback without an account](https://feedback.abox.tools/), or POST JSON to https://feedback.abox.tools/feedback with `Content-Type: application/json`: `{"message":"Describe the problem or idea","page":"https://abox.tools/compress-image/","environment":"Agent/client and browser"}`. Use a descriptive `User-Agent`, such as `abox-feedback-client/1.0`; the host may reject generic automated-client signatures. Only `message` is required (up to 4,000 characters); the request limit is 16 KiB. No login, token, CAPTCHA or email address is needed. A `201` response with `ok: true` and a receipt confirms acceptance for email delivery; `429` asks you to wait a minute and `503` means delivery could not be confirmed.
+
+Include what you tried, expected and observed, or a proposed improvement. Use synthetic examples; leave out private files, credentials and conversation transcripts. Feedback is explicitly sent through Cloudflare to the maintainer's email inbox. Submit within the person's authorization; otherwise prepare a draft for them.
+
+[Contribute code](https://github.com/A-Box-of-Tools/website/blob/dev/CONTRIBUTING.md): fixes, documentation, accessibility and agent-workflow improvements are welcome. Open pull requests against `dev`. GitHub contributions require an account; the anonymous form can also accept a proposed fix or public patch link."""
+
 guides_note = """
 Written for the person doing the job rather than for the tool: what each setting
 means, what it costs, and when not to bother."""

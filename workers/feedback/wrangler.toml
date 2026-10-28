@@ -1,0 +1,31 @@
+# Feedback is an explicit message to the maintainer, separate from tool input.
+name = "abox-feedback"
+main = "worker.js"
+compatibility_date = "2026-10-27"
+workers_dev = false
+routes = [{ pattern = "feedback.abox.tools", custom_domain = true }]
+
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
+
+[[send_email]]
+name = "FEEDBACK_MAIL"
+
+[[ratelimits]]
+name = "FEEDBACK_RATE_LIMIT"
+namespace_id = "1005"
+[ratelimits.simple]
+limit = 3
+period = 60
+
+[[ratelimits]]
+name = "FEEDBACK_GLOBAL_LIMIT"
+namespace_id = "1006"
+[ratelimits.simple]
+limit = 30
+period = 60
+
+[observability]
+enabled = false
