@@ -270,5 +270,11 @@ $('more').addEventListener('click', () => multiply(10n));
 $('guess-yes').addEventListener('click', () => guess(true));
 $('guess-no').addEventListener('click', () => guess(false));
 $('download-svg').addEventListener('click', save);
+$('privacy-toggle').addEventListener('click', () => {
+  const panel = $('privacy-panel');
+  const open = panel.hidden;
+  panel.hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
+});
 render();
 document.getElementById('boot-warning')?.remove();
