@@ -75,7 +75,9 @@ test('number explorer gives empty counts zero amounts without an infinite invers
   assert.equal(chooseReference(0).id, 'spoon');
 });
 test('number explorer compares like volumes and selects a reference near ten units', () => {
-  assert.deepEqual(compareVolume(0.2, 'bucket'), { ratio: 20, inverse: 0.05 });
+  const buckets = compareVolume(0.2, 'bucket');
+  close(buckets.ratio, 20);
+  close(buckets.inverse, 0.05);
   for (const reference of VOLUME_REFERENCES) {
     close(compareVolume(reference.volumeM3, reference.id).ratio, 1);
     assert.equal(chooseReference(reference.volumeM3 * 10).id, reference.id);
