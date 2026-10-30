@@ -119,7 +119,7 @@ function render() {
   $('books-view').disabled = source.value !== 'tokens';
   if (view === 'books' && source.value !== 'tokens') view = 'sand';
   document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-  setText('read-number', phrase('readback', { number: exact.format(count), object: phrase(`source.${source.value}`) }));
+  setText('read-number', phrase('input.readback', { number: exact.format(count), object: phrase(`source.${source.value}`) }));
   setText('meaning-note', phrase(view === 'sand' ? `meaning.${source.value}` : `meaning.${view}`));
   setText('model-summary', phrase('model.summary', { diameter: number(diameter) }));
   $('volume-picker').hidden = view !== 'sand';
@@ -171,7 +171,7 @@ function render() {
   if (nearest > 0 && Math.abs(ratio - nearest) <= Math.max(1, ratio) * 1e-14) ratio = nearest;
   if (ratio === 1) unit = singleUnit;
   const display = number(ratio);
-  setText('result-heading', count === 0n ? phrase('zero') : phrase('about'));
+  setText('result-heading', count === 0n ? phrase('result.empty') : phrase('result.approximate'));
   setText('answer-number', display);
   setText('answer-unit', unit);
   setText('answer-story', story);
