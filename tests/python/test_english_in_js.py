@@ -119,6 +119,7 @@ BASELINE = {
     'images-to-video': 1,
     'json-formatter': 3,
     'merge-pdf': 2,
+    'number-explorer': 0,
     'password-generator': 8,
     'png-to-webp': 0,
     # Both layouts join translated fact fragments; neither carries an English
