@@ -437,7 +437,7 @@ id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "stitch-tables", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "stitch-tables", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator", "number-explorer"]
 
 [[hub.categories]]
 id = "connect-devices"
@@ -628,6 +628,7 @@ order = [
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
+  "understand-big-numbers",
 ]
 
 [[guides.groups]]

@@ -70,6 +70,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [QR & Barcode Reader](qr-barcode-reader/) | `/qr-barcode-reader/` | Point it at a code, or drop a picture of one. It is read here, and nowhere else. |
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |
 | [Password & Passphrase Generator](password-generator/) | `/password-generator/` | Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history. |
+| [Number Explorer](number-explorer/) | `/number-explorer/` | Turn big numbers into buckets of sand, books, and time. Explore the scale together, one familiar thing at a time. |
 | [Share Text & Files](share-text/) | `/share-text/` | Share text and files from your open browser, encrypted. Direct is the default; Cloud relay is an optional route when devices cannot connect directly. |
 | [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Connect directly on your local network, or choose Cloud relay for listeners over the internet. |
 | [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager and hear live voice from people who connect. Use Direct on your local network or choose Cloud relay over the internet, with a password and individual mute or remove controls. |
