@@ -733,7 +733,9 @@ test('a stale refresh result cannot remove a newly verified lease', async () => 
   assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }]);
 });
 
-test('discovery bounds observers, listed shares, messages, and updates per socket', async () => {
+test('discovery bounds observers, listed shares, messages, and updates per socket', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
   const s = system();
   for (let i = 0; i < 64; i += 1) await observer(s);
   const excess = await observer(s);
@@ -753,10 +755,46 @@ test('discovery bounds observers, listed shares, messages, and updates per socke
     JSON.stringify({ publish: { code: 'room-0', lease: '' } })]) await instance.webSocketMessage(watching, message);
   assert.equal(listSystem.calls.length, before);
   assert.equal(watching.deserializeAttachment().updates, 0);
-  for (let i = 0; i < 120; i += 1) await publish(listSystem, watching, null);
+  // Slowly enough for the rolling window: this is the per-connection allowance.
+  for (let i = 0; i < 120; i += 1) {
+    if (i % 100 === 0) now += 10000;
+    await publish(listSystem, watching, null);
+  }
+  assert.equal(watching.readyState, 1);
   await publish(listSystem, watching, null);
   assert.equal(watching.closed.code, 4429);
+  assert.equal(watching.closed.reason, 'too-many-updates');
   assert.equal(watching.deserializeAttachment(), null);
+});
+
+test('a socket looping frames discovery would ignore is closed by its window', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  for (const frame of ['{}', '{"unknown":true}', 'not json', '[]', 'null', 'x'.repeat(513), new ArrayBuffer(1),
+    JSON.stringify({ publish: { code: '', lease: '' } })]) {
+    const s = system(), watching = await observer(s), { instance } = s.discovery();
+    for (let i = 0; i < 120; i += 1) await instance.webSocketMessage(watching, frame);
+    assert.equal(watching.readyState, 1, String(frame).slice(0, 20));
+    await instance.webSocketMessage(watching, frame);
+    assert.equal(watching.closed?.code, 4429, String(frame).slice(0, 20));
+    assert.equal(watching.closed.reason, 'too-many-frames');
+    assert.equal(watching.deserializeAttachment(), null);
+    now += 10000;
+  }
+  const s = system(), steady = await observer(s), { instance } = s.discovery();
+  for (let round = 0; round < 3; round += 1) {
+    for (let i = 0; i < 120; i += 1) await instance.webSocketMessage(steady, '{}');
+    now += 10000;
+  }
+  assert.equal(steady.readyState, 1, 'the window rolls');
+  assert.equal(steady.deserializeAttachment().updates, 0, 'and ignored frames still spend no update');
+  for (let i = 0; i < 500; i += 1) await instance.webSocketMessage(steady, 'ping');
+  assert.equal(steady.readyState, 1, 'keepalives are not frames');
+  // Attachments written by the previous deployment have neither field.
+  const { window: unusedWindow, frames: unusedFrames, ...older } = steady.deserializeAttachment();
+  steady.serializeAttachment(older);
+  await instance.webSocketMessage(steady, '{}');
+  assert.equal(steady.deserializeAttachment().frames, 1);
 });
 
 test('public requests cannot forge a Room lease or reach binding-only control paths', async () => {

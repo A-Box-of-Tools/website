@@ -4,7 +4,10 @@
 // It upgrades /ws/<code> to a WebSocket handled by one Durable Object per
 // code word. The object stores nothing - its whole state is the sockets
 // currently connected to it, so a room ceases to exist the moment the
-// sharer's tab closes. All it does is forward small JSON blobs (WebRTC
+// sharer's tab closes. (A host whose connection is lost rather than closed
+// leaves one opaque digest in the object's memory for two minutes, so its own
+// retry finds the name still held. That is never written anywhere.) All it
+// does is forward small JSON blobs (WebRTC
 // session descriptions and ICE candidates) between the one host and each
 // viewer. A separate discovery socket lists only the live codes that local
 // hosts explicitly offer, grouped by the edge address and page origin. The
@@ -36,15 +39,24 @@
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
 import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, requestedGroup, roomName, validPublication, validScope, validVoiceQuery } from "./discovery.js";
-import { Broadcast } from "./broadcast.js";
+import { Broadcast, broadcastCode } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
-import { answerRelayRequest, relayEnabled, relayPolicy, relayServers } from "./relay.js";
+import { answerRelayRequest, relayEnabled, relayPolicy, relayServers, validRelayRequest } from "./relay.js";
+import { requestNetwork } from "../shared/address.js";
 
 export { Broadcast, Discovery, Inbox, relayServers };
 
 function roomTransport(url) {
   const values = url.searchParams.getAll('transport');
   return values.length > 1 || values.length && !['direct', 'relay'].includes(values[0]) ? null : values[0] ?? 'direct';
+}
+
+// A cached page sends no digest and keeps first-come hosting. Invalid must not
+// silently become that: it would drop the credential the page thinks it has.
+function roomHolder(url) {
+  const values = url.searchParams.getAll('holder');
+  if (values.length === 0) return undefined;
+  return values.length === 1 && /^[a-f0-9]{64}$/.test(values[0]) ? values[0] : null;
 }
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
 // (see the `preview` job in .github/workflows/build.yml), at
@@ -73,7 +85,7 @@ export default {
       if (!validVoiceQuery(url)) return new Response("unexpected parameters", { status: 400 });
       if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
       if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
-      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      const knock = await env.LIMIT.limit({ key: requestNetwork(request) });
       if (!knock.success) return new Response("too many connections from this address", { status: 429 });
       const scope = await discoveryScope(request, "walkie-talkie");
       const headers = new Headers(request.headers);
@@ -86,7 +98,7 @@ export default {
       if (!validVoiceQuery(url)) return new Response("unexpected parameters", { status: 400 });
       if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
       if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
-      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      const knock = await env.LIMIT.limit({ key: requestNetwork(request) });
       if (!knock.success) return new Response("too many connections from this address", { status: 429 });
       const scope = await discoveryScope(request, "voice-oncall");
       const headers = new Headers(request.headers);
@@ -100,6 +112,7 @@ export default {
       if (tool === null) return new Response("unknown tool", { status: 400 });
       if (requestedGroup(url) === null) return new Response("invalid discovery group", { status: 400 });
       if (room && roomTransport(url) === null) return new Response("invalid transport", { status: 400 });
+      if (room && roomHolder(url) === null) return new Response("invalid holder", { status: 400 });
       if (room && ["voice-oncall", "walkie-talkie"].includes(tool)) return new Response("not found", { status: 404 });
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
@@ -119,7 +132,7 @@ export default {
       // Keyed by address rather than by room: the nuisance this caps is one
       // client opening rooms by the thousand, and the room name is theirs to
       // vary. Counted per Cloudflare location, so it is a cap, not a wall.
-      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      const knock = await env.LIMIT.limit({ key: requestNetwork(request) });
       if (!knock.success) {
         return new Response("too many connections from this address", { status: 429 });
       }
@@ -141,16 +154,105 @@ const MAX_VIEWERS = 16;
 // UTF-16 units, not bytes, so up to three times this on the wire: a bound on
 // nonsense rather than a budget. A session description is a few kilobytes.
 const MAX_MESSAGE = 64 * 1024;
+const RATE_WINDOW = 10000;
+const MAX_UPDATES = 120;
+const HOST_KEY = /^[A-Za-z0-9_-]{43}$/;
+const PROOF_TIMEOUT = 8000;
+// Outlasts a page's automatic retries (Camera's run for about a minute). It
+// binds nobody who left deliberately: a clean close frees the name at once.
+const HOST_GRACE = 120000;
+
+// The one line this worker prints. A refusal completes the upgrade with 101
+// exactly like an admission, so the invocation log cannot tell the two apart;
+// this can, and it carries the code alone - no name, no address, nothing a
+// person typed.
+const logRefusal = (code, reason) => console.log(JSON.stringify({ refused: code, reason }));
 
 // One room. Sockets are tagged with their role - viewers also with a random
-// id - so the object needs no fields of its own and hibernation has nothing
-// to lose.
+// id - and everything that must survive hibernation lives on them. A voice
+// room's code is the digest of its host's secret, so its address alone can
+// recognise that host after every socket has gone. A text or camera room is
+// named by people and has no such memory, which is why `vacancy` exists: the
+// digest of a host whose connection was lost, held only in this object's
+// memory. Eviction forgets it and the name reverts to first come, the same as
+// any name nobody holds, which is the most a room can promise without storage.
 export class Room {
   constructor(ctx, env) {
     this.ctx = ctx;
     this.env = env;
+    this.vacancy = null;
     // Keepalives are answered without waking the object.
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
+  }
+
+  // Tags are fixed when a socket is accepted, and a socket waiting to prove it
+  // holds the room may yet become its host, so the attachment decides.
+  hosts() {
+    return this.ctx.getWebSockets("host").filter((ws) => ws.deserializeAttachment()?.role === "host");
+  }
+
+  vacated() {
+    if (this.vacancy !== null && this.vacancy.until <= Date.now()) this.vacancy = null;
+    return this.vacancy;
+  }
+
+  retire(ws, code, reason) {
+    this.drop(ws);
+    try { ws.close(code, reason); } catch {}
+  }
+
+  seat(ws, { code, tool, scope, local, offered, transport, transportPinned, holder }) {
+    this.vacancy = null;
+    const policy = { transport, transportPinned, generation: crypto.randomUUID(), window: Date.now(), updates: 0,
+      ...(holder === undefined ? {} : { holder }) };
+    if (offered) {
+      const lease = crypto.randomUUID();
+      ws.serializeAttachment({ role: "host", code, scope, tool, local, discover: true, lease, ...policy });
+      ws.send(JSON.stringify({ type: "host-ready", ...(transport === 'relay' ? { transport } : {}), discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }), ...(transport === 'relay' ? { transport } : {}) } }));
+    } else {
+      ws.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }), local, ...policy });
+      if (transport === 'relay') ws.send(JSON.stringify({ type: 'host-ready', transport }));
+    }
+  }
+
+  // Naming the digest is not enough to displace anybody: it can be read back out
+  // of an invocation log. Only the secret behind it replaces a host.
+  async prove(ws, parsed, who) {
+    // A relay page asks for credentials the moment its socket opens, before it
+    // has read the request for proof. Its question is answered once it is seated.
+    if (parsed.type === "relay-request") {
+      if (validRelayRequest(parsed)) ws.serializeAttachment({ ...who, relayAsk: parsed.id });
+      return;
+    }
+    if (parsed.type !== "host-proof" || who.proving) return;
+    ws.serializeAttachment({ ...who, proving: true });
+    const digest = typeof parsed.key === "string" && HOST_KEY.test(parsed.key) ? await broadcastCode(parsed.key) : null;
+    const current = ws.deserializeAttachment();
+    if (ws.readyState !== 1 || current?.role !== "pending") return;
+    if (current.deadline <= Date.now()) { logRefusal(4408, "timeout"); this.retire(ws, 4408, "timeout"); return; }
+    const held = this.hosts()[0]?.deserializeAttachment() ?? this.vacated();
+    if (digest !== current.claim.holder || held && held.holder !== current.claim.holder) {
+      logRefusal(4409, "taken");
+      this.retire(ws, 4409, "taken");
+      return;
+    }
+    // Readers hear host-gone exactly as if the stale socket had closed a moment
+    // sooner. Their ids belonged to that connection and a relay host discards
+    // its peers with it, so nothing here can be carried across.
+    for (const old of this.hosts()) this.retire(old, 4409, "replaced");
+    this.seat(ws, current.claim);
+    if (current.relayAsk) await this.relayRequest(ws, { type: "relay-request", id: current.relayAsk }, ws.deserializeAttachment());
+  }
+
+  relayRequest(ws, parsed, who) {
+    const host = this.hosts()[0];
+    const owner = host?.deserializeAttachment();
+    const current = () => ws.deserializeAttachment()?.generation === who.generation
+      && this.hosts()[0] === host && host?.readyState === 1
+      && host.deserializeAttachment()?.generation === owner?.generation;
+    return answerRelayRequest(ws, parsed, { env: this.env, tool: owner?.tool ?? 'share-text', current,
+      authorized: () => current() && who.transport === 'relay' && owner?.transport === 'relay'
+        && (who.role === 'host' ? ws === host : who.role === 'viewer' && who.generation === owner.generation) });
   }
 
   async fetch(request) {
@@ -188,6 +290,8 @@ export class Room {
     if (group === null) return new Response(null, { status: 400 });
     const transport = roomTransport(url);
     if (transport === null) return new Response(null, { status: 400 });
+    const holder = roomHolder(url);
+    if (holder === null) return new Response(null, { status: 400 });
     const transportPinned = url.searchParams.has('transport');
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
     // Discovery can be unavailable behind a proxy or an address transform.
@@ -202,30 +306,30 @@ export class Room {
     // attached, so rejections complete the upgrade and then close with a
     // 4xxx code the page can read.
     const refuse = (code, reason) => {
-      // The one line this worker prints. A refusal completes the upgrade with
-      // 101 exactly like an admission, so the invocation log cannot tell the
-      // two apart; this can, and it carries the code alone - no name, no
-      // address, nothing a person typed.
-      console.log(JSON.stringify({ refused: code, reason }));
+      logRefusal(code, reason);
       server.accept();
       server.close(code, reason);
       return new Response(null, { status: 101, webSocket: client });
     };
 
-    const hosts = this.ctx.getWebSockets("host");
+    for (const ws of this.ctx.getWebSockets("host")) {
+      const who = ws.deserializeAttachment();
+      if (who?.role !== "pending") continue;
+      // A silent claim has no alarm to expire it, and a retrying page only
+      // wants its newest socket to be the one that proves itself.
+      if (who.deadline <= Date.now() || role === "host" && who.claim.holder === holder) this.retire(ws, 4408, "timeout");
+    }
+    const hosts = this.hosts();
     if (role === "host") {
-      if (hosts.length > 0) return refuse(4409, "taken");
+      const claimed = hosts[0]?.deserializeAttachment() ?? this.vacated();
+      if (claimed && (holder === undefined || claimed.holder !== holder)) return refuse(4409, "taken");
       if (transport === 'relay' && !relayEnabled(this.env, tool)) return refuse(4413, 'relay-unavailable');
       this.ctx.acceptWebSocket(server, ["host"]);
-      const policy = { transport, transportPinned, generation: crypto.randomUUID() };
-      if (offered) {
-        const lease = crypto.randomUUID();
-        server.serializeAttachment({ role: "host", code, scope, tool, local, discover: true, lease, ...policy });
-        server.send(JSON.stringify({ type: "host-ready", ...(transport === 'relay' ? { transport } : {}), discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }), ...(transport === 'relay' ? { transport } : {}) } }));
-      } else {
-        server.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }), local: url.searchParams.get('local') === '1', ...policy });
-        if (transport === 'relay') server.send(JSON.stringify({ type: 'host-ready', transport }));
-      }
+      const claim = { code, tool, scope, local, offered, transport, transportPinned, holder };
+      if (claimed) {
+        server.serializeAttachment({ role: "pending", claim, deadline: Date.now() + PROOF_TIMEOUT, window: Date.now(), updates: 0 });
+        server.send(JSON.stringify({ type: "host-prove" }));
+      } else this.seat(server, claim);
     } else if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
       const owner = hosts[0].deserializeAttachment();
@@ -237,8 +341,10 @@ export class Room {
       // only in that shape. Without both, `to: "viewer"` would reach the room.
       const id = "v:" + crypto.randomUUID();
       this.ctx.acceptWebSocket(server, ["viewer", id]);
-      server.serializeAttachment({ role: "viewer", id, transport, generation: owner?.generation });
-      this.toHost({ type: "join", id });
+      server.serializeAttachment({ role: "viewer", id, transport, generation: owner?.generation, window: Date.now(), updates: 0 });
+      // Nothing tells the host yet. A reader's page opens this socket to ask
+      // whether anyone is sharing, and promises the host hears nothing of them
+      // until they choose to connect.
       server.send(JSON.stringify({ type: "ready", ...(transport === 'relay' ? { transport } : {}) }));
     } else {
       return refuse(4400, "bad-role");
@@ -246,7 +352,28 @@ export class Room {
     return new Response(null, { status: 101, webSocket: client });
   }
 
+  // A host answers every reader through this one socket, so a room filling at
+  // once needs far more than a single reader's share. It earns that by holding
+  // the room's capped seats, and an empty room earns nothing beyond the base.
+  allowance(who) {
+    return MAX_UPDATES * (who.role === "host" ? Math.max(1, this.ctx.getWebSockets("viewer").length) : 1);
+  }
+
   webSocketMessage(ws, message) {
+    if (message === "ping") return;
+    let who = ws.deserializeAttachment();
+    if (who === null) return;
+    // Every frame wakes this object, so the window comes before anything about
+    // the frame is believed: an empty or malformed one costs the same as an offer.
+    const now = Date.now(), restart = now - (who.window ?? 0) >= RATE_WINDOW, updates = restart ? 1 : who.updates + 1;
+    if (updates > this.allowance(who)) {
+      logRefusal(4429, "busy");
+      this.drop(ws, true);
+      try { ws.close(4429, "busy"); } catch {}
+      return;
+    }
+    who = { ...who, window: restart ? now : who.window, updates };
+    ws.serializeAttachment(who);
     if (typeof message !== "string" || message.length > MAX_MESSAGE) return;
     let parsed;
     try {
@@ -255,21 +382,11 @@ export class Room {
       return;
     }
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return;
-    const who = ws.deserializeAttachment();
-    if (who === null) return;
-    if (parsed.type === 'relay-request') {
-      const host = this.ctx.getWebSockets('host')[0];
-      const owner = host?.deserializeAttachment();
-      const current = () => ws.deserializeAttachment()?.generation === who.generation
-        && this.ctx.getWebSockets('host')[0] === host && host?.readyState === 1
-        && host.deserializeAttachment()?.generation === owner?.generation;
-      return answerRelayRequest(ws, parsed, { env: this.env, tool: owner?.tool ?? 'share-text', current,
-        authorized: () => current() && who.transport === 'relay' && owner?.transport === 'relay'
-          && (who.role === 'host' ? ws === host : who.role === 'viewer' && who.generation === owner.generation) });
-    }
+    if (who.role === "pending") return this.prove(ws, parsed, who);
+    if (parsed.type === 'relay-request') return this.relayRequest(ws, parsed, who);
     if (who.role === "viewer") {
       if (parsed.relay === true) {
-        const host = this.ctx.getWebSockets('host')[0]?.deserializeAttachment();
+        const host = this.hosts()[0]?.deserializeAttachment();
         // Cached text pages retain their old explicit fallback. A new Direct
         // host, a local share, or any other tool never grants that authority.
         if (!host || (host.tool ?? 'share-text') !== 'share-text' || host.transportPinned || host.local === true) return;
@@ -279,6 +396,7 @@ export class Room {
         ws.serializeAttachment({ ...who, relayed: true });
         return this.relay(ws);
       }
+      if (!who.introduced) ws.serializeAttachment({ ...who, introduced: true });
       this.toHost({ type: "signal", from: who.id, data: parsed.data });
     } else if (typeof parsed.to === "string" && parsed.to.startsWith("v:")) {
       // The viewer's id doubles as its socket tag, so addressing a reply is
@@ -289,21 +407,25 @@ export class Room {
     }
   }
 
-  webSocketClose(ws) {
-    this.drop(ws);
+  // A page that stops, navigates or closes sends a close frame and means it. A
+  // connection that merely died may be back in seconds, and a script polling the
+  // name must not be able to take it in between.
+  webSocketClose(ws, code, reason, wasClean) {
+    this.drop(ws, wasClean !== true);
   }
 
   webSocketError(ws) {
-    this.drop(ws);
+    this.drop(ws, true);
   }
 
-  drop(ws) {
+  drop(ws, lost = false) {
     const who = ws.deserializeAttachment();
     if (who === null) return;
     // Close and error can both fire for one socket; blank the attachment so
     // the second pass finds nothing to do.
     ws.serializeAttachment(null);
     if (who.role === "host") {
+      if (lost && who.holder !== undefined) this.vacancy = { holder: who.holder, until: Date.now() + HOST_GRACE };
       if (who.discover === true && validScope(who.scope) && validPublication(who)) {
         // A closing browser may never deliver its fast unpublish hint. Room
         // owns the live-host lease and authoritatively removes both verified
@@ -321,7 +443,7 @@ export class Room {
           viewer.close(4410, "host-gone");
         } catch {}
       }
-    } else {
+    } else if (who.introduced) {
       this.toHost({ type: "leave", id: who.id });
     }
   }
@@ -334,7 +456,7 @@ export class Room {
   }
 
   toHost(message) {
-    for (const host of this.ctx.getWebSockets("host")) {
+    for (const host of this.hosts()) {
       try {
         host.send(JSON.stringify(message));
       } catch {}

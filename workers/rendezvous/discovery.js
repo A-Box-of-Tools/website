@@ -3,6 +3,7 @@
 // gateways can include strangers, and nearby devices can use different routes.
 // Nothing here decides whether their eventual WebRTC connection is local.
 import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
+import { ipv4Octets, ipv6Network } from "../shared/address.js";
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
 export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
@@ -12,6 +13,7 @@ const MAX_OBSERVERS = 64;
 const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
+const RATE_WINDOW = 10000;
 const MAX_PENDING = 8;
 const AUTH_TIMEOUT = 8000;
 
@@ -54,13 +56,6 @@ export function pageOrigin(value) {
   return null;
 }
 
-function ipv4Octets(value) {
-  if (typeof value !== "string" || !/^(?:\d{1,3}\.){3}\d{1,3}$/.test(value)) return null;
-  const parts = value.split(".");
-  const octets = parts.map(Number);
-  return octets.some((n, i) => n > 255 || String(n) !== parts[i]) ? null : octets;
-}
-
 function publicAddress(value) {
   if (typeof value !== "string" || value.length > 64) return null;
   const octets = ipv4Octets(value);
@@ -96,14 +91,7 @@ function networkAddress(request) {
     ? request.headers.get("CF-Connecting-IPv6") : edgeAddress);
   if (address === null) return null;
   if (!address.includes(":")) return octets !== null && octets[0] >= 240 ? null : address;
-  // Devices on an IPv6 LAN have distinct interface identifiers. Expanding
-  // the compressed form before masking avoids dividing one /64 by device.
-  const [left, right] = address.split("::");
-  const leading = left ? left.split(":") : [];
-  const trailing = right ? right.split(":") : [];
-  const groups = right === undefined ? leading
-    : [...leading, ...Array(8 - leading.length - trailing.length).fill("0"), ...trailing];
-  return `${groups.slice(0, 4).map((n) => parseInt(n, 16).toString(16)).join(":")}::/64`;
+  return ipv6Network(address);
 }
 
 // CF-Connecting-IP is supplied by the edge, but a same-zone Worker may
@@ -314,8 +302,15 @@ export class Discovery {
 
   async webSocketMessage(ws, message) {
     this.cleanup();
-    const who = ws.deserializeAttachment();
-    if (who === null || ws.readyState !== 1) return;
+    let who = ws.deserializeAttachment();
+    if (who === null || ws.readyState !== 1 || message === "ping") return;
+    // Every frame wakes this object, so the window comes before anything about
+    // the frame is believed: an empty or malformed one costs the same as a
+    // publication. `updates` remains the separate per-connection allowance.
+    const now = Date.now(), restart = now - (who.window ?? 0) >= RATE_WINDOW, frames = restart ? 1 : who.frames + 1;
+    if (frames > MAX_UPDATES) { this.drop(ws); try { ws.close(4429, "too-many-frames"); } catch {} return; }
+    who = { ...who, window: restart ? now : who.window, frames };
+    ws.serializeAttachment(who);
     const refuse = () => { this.drop(ws); try { ws.close(4403, "unauthorized"); } catch {} };
     if (typeof message !== "string" || message.length > MAX_MESSAGE) {
       if (!this.authorized(who)) refuse();

@@ -164,6 +164,16 @@ Consequently local builds and preview deployments need the development
 worker and pair only with pages selecting that same service. This separates
 rooms, discovery and runtime bindings from the live worker.
 
+## Holding a room's name
+
+Share Text, Share a Browser Tab and Remote Camera name their rooms in words people
+can say aloud, so unlike a voice room's address the name cannot carry a credential.
+Add `"peer-host-claim"` to `js_parts`, create one claim when the page loads, pass the
+host's socket URL through `holderUrl()` and hand each frame to `answerHostProve()`
+before anything that can queue it. The URL carries only a digest. The key behind it
+stays in the page unless the rendezvous asks for it, which it does only when that
+digest already holds the room and this socket is its replacement.
+
 ## Owning an introduction
 
 Add `"peer-pairing"` to a tool's `js_parts`, then import `PairingSocket` from

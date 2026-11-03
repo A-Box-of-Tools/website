@@ -17,6 +17,7 @@ import { readTransport, transportUrl, selectedTransport, RelayCredentials } from
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { answerHostProve, createHostClaim, holderUrl } from './shared/peer-host-claim.js';
 import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
 import { createApprovalPrompt } from './shared/peer-approval-ui.js';
 import { AdmissionGrants, createAdmissionCache, validAdmissionToken } from './shared/peer-admission.js';
@@ -34,9 +35,14 @@ const RENDEZVOUS = rendezvousEndpoint();
 // A host chooses the route before publishing. Both browsers use that route
 // for the lifetime of the share; failure never widens a Direct session.
 
-const wsUrl = (code, role, advertise = false, mode = 'direct') => groupUrl(
+// Settled long before anybody can press Share. Without WebCrypto the page still
+// shares, as an older page does, with nothing to prove its name is its own.
+let hostClaim = null;
+createHostClaim().then(claim => { hostClaim = claim; }).catch(() => {});
+
+const wsUrl = (code, role, advertise = false, mode = 'direct') => holderUrl(groupUrl(
   transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? `&discover=1${isLocal || mode === 'relay' ? '&local=1' : ''}` : ''}`, mode),
-  role === 'host' ? hostGroup : null);
+  role === 'host' ? hostGroup : null), role === 'host' ? hostClaim : null);
 const shareUrl = (code) => transportUrl(makeShareUrl(location.href, code, isLocal), hostTransport);
 const transportError = error => /^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
   ? error.message : 'transport.failed';
@@ -518,6 +524,7 @@ function hostSocket(code) {
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
       if (credentials.receive(m)) return;
+      if (answerHostProve(m, hostClaim, frame => pairing.send(frame))) return;
       if (m.type === 'host-ready' && isDiscoverable && m.discovery?.code === code) {
         void ready.then(() => {
           if (sock !== ws || !sharing) return;
