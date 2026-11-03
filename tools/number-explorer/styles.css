@@ -38,7 +38,7 @@
 .ne-world-name { font-weight: 700; font-size: .86rem; }
 .ne-world-value { grid-column: 2; color: var(--text-dim); font-size: .72rem; line-height: 1.25; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .ne-worlds button[aria-pressed="true"] { background: var(--world); border-color: var(--world); color: #fff; }
-.ne-worlds button[aria-pressed="true"] .ne-world-value { color: rgb(255 255 255 / 86%); }
+.ne-worlds button[aria-pressed="true"] .ne-world-value { color: inherit; }
 
 .ne-stage { position: relative; border-radius: 0 0 12px 12px; overflow: hidden; background: #0b1226; box-shadow: 0 0 0 1px var(--border); }
 #stage { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 64vh; min-height: 280px; touch-action: pan-y; }
@@ -108,7 +108,6 @@
   #main[data-scene="sand"] { --world: #dba83f; }
   #main[data-scene="time"] { --world: #ec7a92; }
   .ne-worlds button[aria-pressed="true"], .ne-here, .ne-magnify { color: #10141b; }
-  .ne-worlds button[aria-pressed="true"] .ne-world-value { color: rgb(16 20 27 / 82%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .ne-pop { animation: none; }
