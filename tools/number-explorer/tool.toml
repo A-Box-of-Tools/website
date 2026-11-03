@@ -1,0 +1,101 @@
+# A count has no physical size until a reference is chosen. The sand analogy,
+# writing estimate and counting time stay separate so an attractive picture
+# cannot silently change the question somebody asked.
+slug = "number-explorer"
+name = "Number Explorer"
+heading = "Number&nbsp;Explorer <span class=\"h1-kw\">&mdash; picture a million, a billion, and beyond</span>"
+tagline = "Turn big numbers into buckets of sand, books, and time. Explore the scale together, one familiar thing at a time."
+icon = "&#128290;"
+favicon = "&#128290;"
+glyph = "ruler"
+category = "text-codes-and-passwords"
+roadmap_group = "beyond"
+css_parts = ["form", "notes", "chips"]
+js_parts = []
+lastmod = "2026-10-29"
+title = "Number Visualizer &mdash; Understand Millions and Billions &mdash; Free, Offline"
+description = "Picture large numbers as grains of sand, buckets, rooms, books and counting time. Compare token counts with English writing, change the assumptions and explore automatically suggested comparisons. Free and offline."
+og_title = "What does a billion look like?"
+og_description = "Turn a huge number into familiar objects. Sand, books and time, with clear assumptions and no AI or upload."
+og_image_alt = "Number Explorer - picture big numbers as sand, books and time"
+og_card = "A million tokens, a billion grains: make big numbers feel familiar."
+csp_note = "The calculator and SVG drawings run locally. The tool has no network feature and needs no CSP additions. Reference links are optional reading, not requests made by the calculator."
+pledge = "A comparison is a count, a chosen reference and some arithmetic, all in this page. There is no AI service to ask and no input to upload. The sand model, English writing estimate and counting time are kept separate, and their assumptions are written beside the result rather than hidden behind the picture."
+live_hint = "Change the number with the Network tab open. The calculator makes no requests. Load the page once, disconnect, and keep exploring."
+read_first = ", <code>src/scale.js</code> for the count parser and unit conversions, <code>src/scene.js</code> for grouped counting pictures, and <code>src/main.js</code> for choosing comparisons and saving them."
+howto_heading = "How to picture a large number"
+card = "How much sand is a billion grains? How many books is a million tokens? Explore large numbers through familiar objects and counting time, with the assumptions in view."
+
+[words]
+plural = "numbers and comparisons"
+choose = "a number"
+analytics_extra = ", and no number or comparison you enter"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+[[facts]]
+mark = "&#10007;"
+text = "No AI or API cost"
+[[facts]]
+mark = "&#10003;"
+text = "Clear assumptions"
+[[facts]]
+mark = "&#10003;"
+text = "Download the picture"
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "The calculator runs in this browser."
+body = "The tool's processing code calculates results and draws pictures locally. It sends no input or result to a service. Content-Security-Policy restricts connection destinations but does not inspect payloads; compare the source with the Network tab, or use the calculator while disconnected."
+[[privacy]]
+title = "There is no model or live lookup."
+body = "References and formulas ship with this page. Follow-up comparisons are selected by arithmetic over that catalogue. Source links open only when you choose to read them."
+[[privacy]]
+title = "Your entries stay in the page."
+body = "The calculator writes no inputs to storage or to the address bar. Reloading resets the exploration. A downloaded comparison is a file you deliberately keep on your device."
+[[privacy]]
+title = "The site's other scripts have their own boundaries."
+body = "The frame may load advertising, measurement and donation scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
+
+[[howto]]
+title = "Enter a number and say what it counts."
+body = "Try a billion grains of sand, a million AI text tokens, or a plain count. Whole counts from zero to 10³⁰ are accepted, including shorthand such as 1.5b."
+[[howto]]
+title = "Choose sand, writing or counting time."
+body = "Tokens can be estimated as English writing, or imagined as one grain each. Other counts can be represented by grains or by the time it takes to count them. The page states which meaning is being used."
+[[howto]]
+title = "Explore the next size."
+body = "Try ten times more, choose another reference or follow a suggested question. A prediction asks whether the sand would fit before revealing the answer."
+[[howto]]
+title = "Check the assumptions, then keep the comparison."
+body = "Change grain diameter, example book length or counting rate. Download the comparison as an SVG with its assumptions included."
+
+[[faq]]
+q = "Does this need an AI model?"
+a = "No. The browser selects useful comparisons from a small reference catalogue and calculates the results itself. There is no API key, model download or ongoing AI charge."
+[[faq]]
+q = "How much sand is a billion grains?"
+a = "With the chosen model of spherical grains 0.5 mm across and a container holding 60% grains and 40% air, about 109 liters: roughly eleven 10-liter buckets. Real grains vary, so this is an estimate under those assumptions."
+[[faq]]
+q = "How many books is a million tokens?"
+a = "For English text, the rough estimate of 0.75 words per token gives about 750,000 words. With the default example of 75,000 words per book, that is ten books. Language, tokenization and book length change the answer. It is a writing equivalent, not evidence of books actually read or generated."
+[[faq]]
+q = "What mountain is used?"
+a = "A deliberately defined example: a cone 1,000 meters tall with a base radius of 1,000 meters. Its volume is one third of pi times radius squared times height. A real mountain needs its own geometry; height alone cannot tell you its volume."
+[[faq]]
+q = "Can it compare with all the sand on Earth?"
+a = "This version does not invent an exact global grain count. Such an estimate first needs a scope, such as beaches or deserts, and assumptions about area, depth and grain size. Use the defined container and mountain references for comparisons whose assumptions can be inspected."
+[[faq]]
+q = "Are the pictures drawn to physical scale?"
+a = "They are counting pictures. Each picture states how many reference objects it represents; a partial picture is labeled as a fraction. Different object types are not drawn on one physical ruler, and fractions of volume are not presented as fractions of height. The sand result also states the edge length of a cube holding the modeled amount."
+[[faq]]
+q = "Does the tool work offline?"
+a = "Yes. After the page is loaded, all calculations, suggestions, drawings and SVG downloads work without a connection. No input is uploaded for processing."
+
+[schema]
+category = "EducationalApplication"
+description = "Visualize large counts as sand volumes, English writing equivalents and counting time, entirely in the browser."
+features = ["Exact whole-count input up to 10^30", "Adjustable sand grain size and book length", "Automatic comparisons with familiar objects", "Counting time without breaks", "Prediction questions and follow-up comparisons", "SVG download with assumptions", "Works offline without an AI model"]
