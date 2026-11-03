@@ -50,7 +50,7 @@ body = "JSON supprime les commentaires. Ce parseur prend volontairement en charg
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit un caractère de votre texte. Chaque ligne qui le lit, l'analyse ou l'écrit est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit un caractère de votre texte. Chaque ligne qui le lit, l'analyse ou l'écrit est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Cela fonctionne hors ligne."

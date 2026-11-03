@@ -62,7 +62,7 @@ body = "Il n’y a ni compte ni historique de documents ici. Gardez la page ouve
 
 [[privacy]]
 title = "Ce que reçoivent les autres scripts de la page."
-body = "Les scripts de publicité, de mesure et du bouton de don du site se chargent comme sur les autres outils. Aucune photo, aucun texte OCR, nom de fichier, nom de commerçant, montant ou nombre de documents ne leur est transmis. Le code qui lit les photos et crée le rapport est servi depuis ce site et figure dans le dépôt."
+body = "Les scripts de publicité et de mesure du site se chargent comme sur les autres outils. Aucune photo, aucun texte OCR, nom de fichier, nom de commerçant, montant ou nombre de documents ne leur est transmis. Le code qui lit les photos et crée le rapport est servi depuis ce site et figure dans le dépôt."
 
 [[privacy]]
 title = "La lecture fonctionne hors ligne&nbsp;; la livraison dépend de l’application."

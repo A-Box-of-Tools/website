@@ -46,7 +46,7 @@ body = "Un objet JSON revient avec ses clés dans l'ordre où vous les avez écr
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit un caractère de votre texte. Chaque ligne qui le lit, l'analyse ou l'écrit est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit un caractère de votre texte. Chaque ligne qui le lit, l'analyse ou l'écrit est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."

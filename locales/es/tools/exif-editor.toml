@@ -84,11 +84,11 @@ body = """
       sirve desde este origen y está en el repositorio."""
 
 [[privacy]]
-title = "Qué carga el botón de donación, y qué no llega a ver."
+title = "El botón de donación no carga nada y no recibe nada."
 body = """
 
-      El botón «Buy me a coffee» de la cabecera lo dibuja un script de
-      cdnjs.buymeacoffee.com y se compone con Google Fonts. No es más que un
+      El botón «Buy me a coffee» de la cabecera lo dibuja esta misma página y
+      no carga nada de ningún sitio. No es más que un
       enlace: no avisa de ninguna visita, y no se le entrega nada sobre ti ni
       sobre tus archivos. Si no lo pulsas no ocurre nada, y lo que hay al otro
       lado es un sitio ajeno."""

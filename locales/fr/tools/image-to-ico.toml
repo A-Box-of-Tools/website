@@ -45,7 +45,7 @@ body = "La liste des tailles montrée à côté d'une icône finie n'est pas la 
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre image. Chaque ligne qui lit, met à l'échelle ou écrit un fichier est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur votre image. Chaque ligne qui lit, met à l'échelle ou écrit un fichier est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."

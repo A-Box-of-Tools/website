@@ -104,7 +104,7 @@ body = """
 title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de publicidad y de
-      medición vienen de Google, y el botón de donación, de Buy Me a Coffee. A ninguno
+      medición vienen de Google. A ninguno
       se le entrega nada sobre tu fotografía, tu cara ni el país cuya norma has
       elegido. Cada línea que lee, recorta, mide o escribe un archivo se sirve desde
       este origen y está en el repositorio."""

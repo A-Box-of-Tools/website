@@ -50,7 +50,7 @@ body = "La imagen se decodifica y dibuja en un lienzo que solo guarda píxeles. 
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
-body = "Los scripts de publicidad y medición vienen de Google, y el botón de donación, de Buy Me a Coffee. No reciben información sobre tus imágenes. Todo el código que lee, decodifica o escribe un archivo se sirve desde este origen y está en el repositorio."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben información sobre tus imágenes. Todo el código que lee, decodifica o escribe un archivo se sirve desde este origen y está en el repositorio."
 
 [[privacy]]
 title = "Funciona sin conexión."

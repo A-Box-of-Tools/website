@@ -139,12 +139,12 @@ body = """
       Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt und was er nicht bekommt."
+title = "Der Spenden-Button lädt nichts und bekommt nichts."
 body = """
 
-      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
-      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von
+      dieser Seite selbst gezeichnet und lädt nirgendwoher etwas. Mehr als ein
+      Link ist er nicht. Er meldet keinen Besuch, und
       über Sie oder Ihre Aufnahme bekommt er nichts."""
 
 [[privacy]]

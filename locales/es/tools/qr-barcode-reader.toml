@@ -116,7 +116,7 @@ body = """
 title = "Qué carga Google y qué no se le da."
 body = """
  Los scripts de anuncios y
-      de medición vienen de Google, y el botón de donación de Buy Me a Coffee. A
+      de medición vienen de Google. A
       ninguno se le da una imagen, ni un fotograma, ni nada leído de ellos. Cada
       línea que convierte píxeles en una cadena se sirve desde este mismo origen
       y está en el repositorio."""

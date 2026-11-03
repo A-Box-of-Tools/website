@@ -92,7 +92,7 @@ body = "Direkt tauscht die zum Erreichen der Geräte nötigen Netzwerkadressen a
 [[privacy]]
 title = "Was Google lädt, und was es nicht bekommt."
 body = """ Die Werbe- und Messskripte
-      kommen von Google, der Spenden-Button von Buy Me a Coffee. Keines
+      kommen von Google. Keines
       davon bekommt den Text, die Dateien, ihre Namen oder Größen oder wer
       sich verbunden hat. Die Ausnahme ist die Adresse dieser Seite selbst:
       der Link eines Lesers trägt den Link-Namen, und das Werbeskript liest

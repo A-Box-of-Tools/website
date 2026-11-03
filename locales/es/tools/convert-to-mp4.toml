@@ -61,8 +61,8 @@ title = "Qué carga Google, y qué no llega a ver."
 body = "Los scripts de publicidad y medición vienen de Google. No reciben el vídeo, fotogramas, nombre, tamaño, duración ni formato original. Todo el código que lee, codifica y escribe se sirve desde este origen y está en el repositorio."
 
 [[privacy]]
-title = "Qué carga el botón de donación, y qué no llega a ver."
-body = "El botón de donación lo dibuja un script de cdnjs.buymeacoffee.com, con letras de Google Fonts. Es solo un enlace: no registra la visita ni recibe datos tuyos o de tus vídeos. Solo pasa algo al pulsarlo, cuando abres un sitio ajeno."
+title = "El botón de donación no carga nada y no recibe nada."
+body = "El botón de donación lo dibuja esta misma página y no carga nada de ningún sitio. Es solo un enlace: no registra la visita ni recibe datos tuyos o de tus vídeos. Solo pasa algo al pulsarlo, cuando abres un sitio ajeno."
 
 [[privacy]]
 title = "Funciona sin conexión."
