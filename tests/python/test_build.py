@@ -1940,6 +1940,34 @@ class BuildTheSite(unittest.TestCase):
         self.assertLess(script.index('if (!notAVisit) {'),
                         script.index('pagead2.googlesyndication.com/pagead/js'))
 
+    # -- the donate link --------------------------------------------------
+    #
+    # It used to be the service's own snippet: a classic script in the header
+    # that drew the button with document.writeln, so it could not be deferred,
+    # and every tool waited on a third party before it could appear. Pasting a
+    # provider's snippet back is a one-line change that reads as harmless, and
+    # the page would still work, only slower, so nothing else here would notice.
+
+    def test_no_page_makes_the_parser_wait_for_another_host(self):
+        blocking = re.compile(
+            r'<script\b(?![^>]*\b(?:async|defer)\b)[^>]*\bsrc="(?:https?:)?//[^"]*"')
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertIsNone(blocking.search(page))
+
+    def test_the_donate_button_is_a_link_and_the_policy_opens_nothing_for_it(self):
+        page = (self.out / self.a_tool() / 'index.html').read_text(encoding='utf-8')
+        slug = self.site['bmc']['slug']
+        self.assertIn(f'<a class="bmc-link" href="https://www.buymeacoffee.com/{slug}" '
+                      'target="_blank" rel="noopener noreferrer">', page)
+        policy = re.search(r'<meta http-equiv="Content-Security-Policy" content="(.*?)">',
+                           page, re.S)[1]
+        for host in ('buymeacoffee.com', 'fonts.googleapis.com', 'fonts.gstatic.com'):
+            self.assertNotIn(host, policy)
+
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)
         self.assertTrue((self.out / '404.html').is_file())

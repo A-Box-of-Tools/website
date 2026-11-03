@@ -140,20 +140,20 @@ representative_queries = [
 ]
 
 [bmc]
-# Buy Me a Coffee. The build writes their snippet out unchanged; these are the
-# data- attributes it is configured with.
+# Buy Me a Coffee: where the donate link goes and what it says. It is a plain
+# link the frame draws itself; its colours are in shared/css/tool-frame.css.
 slug = "aboxtools"
 text = "Buy me a coffee"
-color = "#FFDD00"
-font = "Cookie"
 
 #
 # ---------------------------------------------------------------------------
 # The Content-Security-Policy every page carries.
 #
 # As narrow as AdSense can be made to work with: Google's own script, frame and
-# measurement origins, plus the two the donate button needs, and no wildcards
-# except on img-src where creatives legitimately come from anywhere.
+# measurement origins, and no wildcards except on img-src where creatives
+# legitimately come from anywhere. The donate button is a plain link and needs
+# nothing here: no script, stylesheet or font comes from anywhere else, which is
+# why font-src is absent and falls back to default-src.
 #
 # A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
 # does NOT cover the bare host analytics.google.com - and the bare host is where
@@ -189,7 +189,6 @@ font = "Cookie"
   "https://adservice.google.com",
   "https://ep1.adtrafficquality.google",
   "https://ep2.adtrafficquality.google",
-  "https://cdnjs.buymeacoffee.com",
 ]
 "frame-src" = [
   "https://googleads.g.doubleclick.net",
@@ -212,8 +211,7 @@ font = "Cookie"
   "https://ep2.adtrafficquality.google",
   "https://csi.gstatic.com",
 ]
-"style-src" = ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"]
-"font-src" = ["https://fonts.gstatic.com"]
+"style-src" = ["'self'", "'unsafe-inline'"]
 "img-src" = ["'self'", "data:", "https:"]
 "form-action" = ["'none'"]
 "base-uri" = ["'none'"]
@@ -989,8 +987,8 @@ offline_failed = "caching unavailable here, but nothing is uploaded either way."
 # the same four keys in the #phrases block of its own body.html, which wins.
 net_clean = "your files have gone nowhere. {total} files loaded, all of them this page's own. {platform}"
 net_dirty = "something contacted {hosts}, which this tool never does. Treat that as worth investigating. {platform}"
-net_platform_one = "The page's own ad, measurement and donate-button scripts loaded from {hosts} host; not one of them was given a file or a byte of one."
-net_platform_many = "The page's own ad, measurement and donate-button scripts loaded from {hosts} hosts; not one of them was given a file or a byte of one."
+net_platform_one = "The page's own ad and measurement scripts loaded from {hosts} host; not one of them was given a file or a byte of one."
+net_platform_many = "The page's own ad and measurement scripts loaded from {hosts} hosts; not one of them was given a file or a byte of one."
 
 # What the window's own `error` and `unhandledrejection` handlers say. `detail`
 # is the browser's own message, which stays in whatever language the browser
