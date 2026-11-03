@@ -12,7 +12,7 @@ category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 css_parts = ["form", "notes", "chips"]
 js_parts = []
-lastmod = "2026-10-29"
+lastmod = "2026-11-03"
 title = "Number Visualizer &mdash; Understand Millions and Billions &mdash; Free, Offline"
 description = "Picture large numbers as grains of sand, buckets, rooms, books and counting time. Compare token counts with English writing, change the assumptions and explore automatically suggested comparisons. Free and offline."
 og_title = "What does a billion look like?"
@@ -58,7 +58,7 @@ title = "Your entries stay in the page."
 body = "The calculator writes no inputs to storage or to the address bar. Reloading resets the exploration. A downloaded comparison is a file you deliberately keep on your device."
 [[privacy]]
 title = "The site's other scripts have their own boundaries."
-body = "The frame may load advertising, measurement and donation scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
+body = "The frame may load advertising and measurement scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
 
 [[howto]]
 title = "Enter a number and say what it counts."
