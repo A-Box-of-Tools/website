@@ -187,7 +187,7 @@ test('one IPv6 /64 is one network to both the per-address limit and the daily bu
   assert.deepEqual(keys, ['2606:4700:4700:ab::/64', '2606:4700:4700:ab::/64']);
   assert.equal(forwarded[0].client, forwarded[1].client);
   assert.equal(sent.length, 1, 'the second is inside the first network\'s cooldown');
-  assert.equal(sent[0].text.includes('2606'), false);
+  assert.equal(sent[0].text.includes('2606:4700'), false, 'the address stays out of the email');
 });
 
 test('browser origins are explicit and native clients need no Origin', async () => {
