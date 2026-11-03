@@ -372,7 +372,7 @@ export function createStarsScene() {
         drawLevel(ctx, f, id);
       }
       const name = words.level(id);
-      if (name) write(ctx, name, w / 2, h - 18, { size: 13, weight: 700, align: 'center', fill: '#eef3fb', halo: 'rgba(3,6,16,.9)' });
+      if (name) write(ctx, name, w / 2, h - 18, { size: 13, weight: 700, align: 'center', fill: '#eef3fb', halo: 'rgba(3,6,16,.9)', within: w });
       return { dark: 1 };
     }
   };

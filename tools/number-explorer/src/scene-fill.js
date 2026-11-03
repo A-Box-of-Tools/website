@@ -570,13 +570,12 @@ export function createFillScene(kind) {
       const ink = pale ? '#16202a' : '#f1f5fb';
       const halo = pale ? 'rgba(255,255,255,.85)' : 'rgba(4,8,20,.85)';
       const nameY = Math.max(box.y - 16, 58);
-      write(ctx, words.name(id), w / 2, nameY, { size: 13, weight: 700, fill: ink, halo, align: 'center' });
       if (share < 1 && showingFrom === null) {
         const tagX = Math.min(box.x + box.w + 10, w - 8);
         const align = box.x + box.w + 90 < w ? 'left' : 'right';
-        chip(ctx, words.full(share), align === 'left' ? tagX : w - 10, clamp(level, box.y + 10, box.y + box.h - 10), { size: 12, align, fill: pale ? '#0f6db6' : '#ffffff', ink: pale ? '#ffffff' : '#0a1626' });
+        chip(ctx, words.full(share), align === 'left' ? tagX : w - 10, clamp(level, box.y + 10, box.y + box.h - 10), { size: 12, align, fill: pale ? '#0f6db6' : '#ffffff', ink: pale ? '#ffffff' : '#0a1626', within: w });
       }
-      if (share >= 1) chip(ctx, words.times(amount / rungs[index].size), w / 2, box.y + box.h / 2, { size: 15, align: 'center', fill: '#ffffff', ink: '#0a1626' });
+      if (share >= 1) chip(ctx, words.times(amount / rungs[index].size), w / 2, box.y + box.h / 2, { size: 15, align: 'center', fill: '#ffffff', ink: '#0a1626', within: w });
 
       // Corner inset: the last thing this amount filled, and how many times over.
       if (index > 0 && showingFrom === null) {
@@ -587,8 +586,10 @@ export function createFillScene(kind) {
         const inset = { x: w - 18 - insetW, y: 62, w: insetW, h: insetH };
         drawContainer(ctx, lastId, inset, 1, f, scenery.shell, true);
         const times = amount / rungs[index - 1].size;
-        chip(ctx, words.times(times), w - 18, inset.y + insetH + 15, { size: 12, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)' });
+        chip(ctx, words.times(times), w - 18, inset.y + insetH + 15, { size: 12, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w });
       }
+      // After the inset, which a long name reaches on a narrow stage.
+      write(ctx, words.name(id), w / 2, nameY, { size: 13, weight: 700, fill: ink, halo, align: 'center', within: w });
       if (previous !== null && previous > 0 && share < 1 && previous < rungs[index].size && Math.abs(previous - amount) > amount * 1e-6) {
         const beforeLevel = drawn.y + levelForShare(CONTAINERS[id].inside, clamp(previous / rungs[index].size)) * drawn.h;
         ctx.save();
@@ -600,7 +601,7 @@ export function createFillScene(kind) {
         ctx.lineTo(drawn.x + drawn.w * 0.28, beforeLevel);
         ctx.stroke();
         ctx.restore();
-        chip(ctx, words.before(previous), Math.max(drawn.x - 12, 92), beforeLevel, { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)' });
+        chip(ctx, words.before(previous), Math.max(drawn.x - 12, 92), beforeLevel, { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w });
       }
       return { dark: darkness };
     }

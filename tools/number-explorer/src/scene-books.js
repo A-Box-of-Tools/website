@@ -82,7 +82,7 @@ export function createBooksScene() {
     const { w, h, t, rungs } = f;
     const inkDark = smooth(4.2, 4.9, view);
     const lineInk = mix([48, 62, 78], [224, 233, 245], inkDark);
-    const iconX = Math.min(w - 26, Math.max(stackRight + 56, w * 0.64));
+    const iconX = Math.min(w - 26, Math.max(stackRight + 40, w * 0.64));
     const labels = [];
 
     // Far things are drawn first, at true size, so the stack crosses in front of them.
@@ -120,23 +120,30 @@ export function createBooksScene() {
     // the stack, the next thing to be reached, is the one that keeps it.
     labels.sort((a, b) => b.size - a.size);
     const kept = [];
-    const rightSide = iconX < w * 0.7;
+    // The side with room for a name, which takes more than one short word in most languages.
+    const rightSide = w - iconX - 24 >= 72;
     const x = rightSide ? iconX + 16 : iconX - 16;
     const align = rightSide ? 'left' : 'right';
     const room = rightSide ? w - x - 8 : x - 8;
     const fill = rgba(mix([24, 34, 46], [240, 245, 252], inkDark));
     const halo = rgba(mix([255, 255, 255], [4, 8, 20], inkDark), 0.78);
     for (const label of labels) {
+      // On a narrow stage the top of the sky is the readout's. What reaches it there is
+      // the next landmark, which the readout is already naming.
+      const alpha = w < 560 ? label.alpha * smooth(84, 100, label.y) : label.alpha;
+      if (alpha <= 0.01) continue;
       const lines = wrapLines(ctx, words.name(label.id), room, 12, 700);
-      const tall = 32 + (lines.length - 1) * 14;
+      const sizes = wrapLines(ctx, words.length(rungs.find(r => r.id === label.id).size, 4), room, 11, 500);
+      const tall = 32 + (lines.length - 1) * 14 + (sizes.length - 1) * 13;
       if (kept.some(other => Math.abs(other.y - label.y) < Math.max(tall, other.tall))) continue;
-      const wide = Math.max(...lines.map(line => widthOf(ctx, line, 12, 700)));
+      const wide = Math.max(...lines.map(line => widthOf(ctx, line, 12, 700)), ...sizes.map(line => widthOf(ctx, line, 11, 500)));
       const left = rightSide ? x : x - wide;
       const top = label.y - 14 - (lines.length - 1) * 14;
-      if (taken.some(box => left < box.right && left + wide > box.left && top < box.bottom && label.y + 16 > box.top)) continue;
+      const bottom = label.y + 16 + (sizes.length - 1) * 13;
+      if (taken.some(box => left < box.right && left + wide > box.left && top < box.bottom && bottom > box.top)) continue;
       kept.push({ y: label.y, tall });
-      lines.forEach((line, i) => write(ctx, line, x, label.y - 7 - (lines.length - 1 - i) * 14, { size: 12, weight: 700, fill, halo, align, alpha: label.alpha }));
-      write(ctx, words.length(rungs.find(r => r.id === label.id).size, 4), x, label.y + 8, { size: 11, weight: 500, fill, halo, align, alpha: label.alpha * 0.86 });
+      lines.forEach((line, i) => write(ctx, line, x, label.y - 7 - (lines.length - 1 - i) * 14, { size: 12, weight: 700, fill, halo, align, alpha }));
+      sizes.forEach((line, i) => write(ctx, line, x, label.y + 8 + i * 13, { size: 11, weight: 500, fill, halo, align, alpha: alpha * 0.86 }));
     }
   }
 
@@ -387,7 +394,6 @@ export function createBooksScene() {
   }
 
   function drawStanding(ctx, f, scale, view, base, placed) {
-    const { words } = f;
     const shade = mix([44, 60, 76], [140, 166, 190], smooth(3.8, 4.8, view));
     for (const { rung, x, tall, wide, alpha } of placed) {
       const shape = OUTLINES[rung.id];
@@ -403,12 +409,16 @@ export function createBooksScene() {
       }
       ctx.restore();
     }
+  }
+
+  function writeStandingNames(ctx, f, view, placed) {
+    const { w, words } = f;
     const dark = view > 4.4;
     const fill = dark ? '#eef3fa' : '#1c2733';
     const halo = dark ? 'rgba(4,8,20,.8)' : 'rgba(255,255,255,.85)';
     for (const { rung, alpha, labelX, labelY } of placed) {
-      write(ctx, words.name(rung.id), labelX, labelY, { size: 12, weight: 700, fill, halo, align: 'center', alpha });
-      write(ctx, words.length(rung.size, 4), labelX, labelY + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86 });
+      write(ctx, words.name(rung.id), labelX, labelY, { size: 12, weight: 700, fill, halo, align: 'center', alpha, within: w });
+      write(ctx, words.length(rung.size, 4), labelX, labelY + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86, within: w });
     }
   }
 
@@ -536,8 +546,6 @@ export function createBooksScene() {
       drawClouds(ctx, f, scale, view, base);
       drawStanding(ctx, f, scale, view, base, placed);
       drawGround(ctx, f, scale, view, base, stackX + stackWidth / 2);
-      writeOverviewLabels(ctx, f, view, overview, taken);
-      drawRuler(ctx, f, scale, view, base);
       if (!zero) {
         drawStack(ctx, f, scale, view, base, stackX, stackWidth);
         // Small enough to hide behind the stack, the observable universe is drawn in
@@ -550,16 +558,17 @@ export function createBooksScene() {
           ctx.arc(stackX + stackWidth / 2, base, Math.max(universe, 3), 0, Math.PI * 2);
           ctx.stroke();
         }
-        // Whatever the stack has outgrown has shrunk to nothing at its foot, and how
-        // far it has been left behind is the whole of the magnification.
-        const passed = f.rungs.filter(rung => rung.size <= amount).pop();
-        if (passed && passed.size * scale < h * 0.06 && amount > passed.size * 1.05) {
-          const dim = view < 4.4;
-          chip(ctx, words.passed(passed.id, amount / passed.size), stackRight + 10, base - 13, { size: 11, weight: 600, fill: dim ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,.12)', ink: dim ? '#16202a' : '#f5f8fd', stroke: dim ? 'rgba(16,24,34,.2)' : 'rgba(255,255,255,.22)', within: w, room: w - stackRight - 16 });
-        }
+      }
+      // Names go on after the stack, because on a narrow stage a long one reaches across
+      // it, and a name behind a stack is half a name.
+      writeStandingNames(ctx, f, view, placed);
+      writeOverviewLabels(ctx, f, view, overview, taken);
+      drawRuler(ctx, f, scale, view, base);
+      if (!zero) {
         const top = base - amount * scale;
         const pale = view < 4.4;
         chip(ctx, words.top(amount), stackRight + 8, top - 2, { size: 12, fill: pale ? '#16202a' : '#ffffff', ink: pale ? '#ffffff' : '#10161e', within: w });
+        let beforeChip = null;
         if (previous !== null && previous > 0 && Math.abs(previous - amount) > amount * 1e-6) {
           const y = Math.min(base - 3, base - previous * scale);
           ctx.save();
@@ -571,7 +580,14 @@ export function createBooksScene() {
           ctx.lineTo(stackRight + 6, y);
           ctx.stroke();
           ctx.restore();
-          chip(ctx, words.before(previous), stackX - 14, Math.min(y, base - 14), { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.3)' : 'rgba(255,255,255,.3)', within: w, room: stackX - 20 });
+          beforeChip = chip(ctx, words.before(previous), stackX - 14, Math.min(y, base - 14), { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.3)' : 'rgba(255,255,255,.3)', within: w });
+        }
+        // Whatever the stack has outgrown has shrunk to nothing at its foot, and how
+        // far it has been left behind is the whole of the magnification.
+        const passed = f.rungs.filter(rung => rung.size <= amount).pop();
+        if (passed && passed.size * scale < h * 0.06 && amount > passed.size * 1.05) {
+          const dim = view < 4.4;
+          chip(ctx, words.passed(passed.id, amount / passed.size), stackRight + 10, base - 13, { size: 11, weight: 600, fill: dim ? 'rgba(255,255,255,.9)' : 'rgba(16,24,34,.88)', ink: dim ? '#16202a' : '#f5f8fd', stroke: dim ? 'rgba(16,24,34,.2)' : 'rgba(255,255,255,.3)', within: w, clear: beforeChip });
         }
       }
       return { dark: smooth(4.2, 4.9, view) };

@@ -19,6 +19,11 @@ function format(options) {
 const significant = (digits = 3) => format({ maximumSignificantDigits: digits });
 const compact = (digits = 3) => format({ notation: 'compact', compactDisplay: 'long', maximumSignificantDigits: digits });
 
+// Which amounts take the singular is the language's to say: one in English, and anything
+// under two in French, where it is 1,5 année-lumière.
+const plurals = new Intl.PluralRules(locale);
+const singular = (value, digits = 3) => plurals.select(Number(value.toPrecision(digits))) === 'one';
+
 const phrases = new Map();
 export function cached(key) {
   if (!phrases.has(key)) phrases.set(key, phrase(key));
@@ -87,7 +92,10 @@ function unitLong(value, unit) {
 }
 
 export function length(metres, digits = 3) {
-  if (metres >= LIGHT_YEAR_M * 0.1) return `${pretty(metres / LIGHT_YEAR_M, digits)} ${cached('unit.lightyears')}`;
+  if (metres >= LIGHT_YEAR_M * 0.1) {
+    const value = metres / LIGHT_YEAR_M;
+    return `${pretty(value, digits)} ${cached(singular(value, digits) ? 'unit.lightyear' : 'unit.lightyears')}`;
+  }
   if (metres >= 1000) return unitShort(metres / 1000, 'kilometer', digits);
   if (metres >= 1) return unitShort(metres, 'meter', digits);
   if (metres >= 0.01) return unitShort(metres * 100, 'centimeter', digits);
@@ -97,7 +105,7 @@ export function length(metres, digits = 3) {
 function lengthWords(metres) {
   if (metres >= LIGHT_YEAR_M * 0.1) {
     const value = metres / LIGHT_YEAR_M;
-    return { number: pretty(value), unit: cached(value === 1 ? 'unit.lightyear' : 'unit.lightyears') };
+    return { number: pretty(value), unit: cached(singular(value) ? 'unit.lightyear' : 'unit.lightyears') };
   }
   if (metres >= 1000) return unitLong(metres / 1000, 'kilometer');
   if (metres >= 1) return unitLong(metres, 'meter');
@@ -115,7 +123,7 @@ export function volume(cubicMetres, digits = 3) {
 function volumeWords(cubicMetres) {
   if (cubicMetres >= 1e9) {
     const value = cubicMetres / 1e9;
-    return { number: pretty(value), unit: cached(value === 1 ? 'unit.km3.single' : 'unit.km3') };
+    return { number: pretty(value), unit: cached(singular(value) ? 'unit.km3.single' : 'unit.km3') };
   }
   if (cubicMetres >= 1000) return { number: pretty(cubicMetres), unit: cached('unit.m3') };
   if (cubicMetres >= 0.001) return unitLong(cubicMetres * 1000, 'liter');
@@ -147,6 +155,12 @@ export function rungName(world, id) {
   return cached(`${world === 'water' || world === 'sand' ? 'volume' : world === 'books' ? 'height' : world}.${id}`);
 }
 
+// Sentences side by side. Chinese and Japanese end theirs with a mark that already holds
+// its own space, so one more would be a hole in the line.
+export function joined(sentences) {
+  return sentences.filter(Boolean).join(' ').replace(/([。！？]) /g, '$1');
+}
+
 export function capital(line) {
   return line ? line[0].toLocaleUpperCase(locale) + line.slice(1) : line;
 }
@@ -169,7 +183,7 @@ function standing(world, place) {
     else lines.push(phrase(`past.${family}`, { name, times: pretty(place.times) }));
   }
   if (place.above) lines.push(phrase(`next.${family}`, { name: rungName(world, place.above.id), share: percent(place.share) }));
-  return lines.join(' ');
+  return joined(lines);
 }
 
 function finishing(seconds) {
@@ -216,14 +230,14 @@ export function describe(world, count, settings, perUnit, rungs) {
       const kicker = phrase(single ? 'kicker.stars.single' : 'kicker.stars', { count: said });
       if (amount >= universe) {
         const many = amount / universe;
-        answer = { kicker, number: pretty(many), unit: cached(many === 1 ? 'stars.universe.single' : 'stars.universes') };
+        answer = { kicker, number: pretty(many), unit: cached(singular(many) ? 'stars.universe.single' : 'stars.universes') };
       } else if (amount >= milkyWay) {
         const many = amount / milkyWay;
-        answer = { kicker, number: pretty(many), unit: cached(many === 1 ? 'stars.milkyway.single' : 'stars.milkyways') };
+        answer = { kicker, number: pretty(many), unit: cached(singular(many) ? 'stars.milkyway.single' : 'stars.milkyways') };
       } else {
         answer = { kicker, number: percent(place.share), unit: phrase('stars.of', { name: rungName(world, place.above.id) }) };
       }
-      tab = amount >= milkyWay ? `${pretty(amount / milkyWay)} ${cached(amount === milkyWay ? 'stars.milkyway.single' : 'stars.milkyways')}` : phrase('stars.tab', { share: percent(amount / milkyWay) });
+      tab = amount >= milkyWay ? `${pretty(amount / milkyWay)} ${cached(singular(amount / milkyWay) ? 'stars.milkyway.single' : 'stars.milkyways')}` : phrase('stars.tab', { share: percent(amount / milkyWay) });
       break;
     }
     default: {
@@ -233,7 +247,7 @@ export function describe(world, count, settings, perUnit, rungs) {
     }
   }
   const finish = world === 'time' ? finishing(amount) : '';
-  return { ...answer, story: [standing(world, place), finish].filter(Boolean).join(' '), tab, place };
+  return { ...answer, story: joined([standing(world, place), finish]), tab, place };
 }
 
 export function hud(world, log, settings, perUnit) {
