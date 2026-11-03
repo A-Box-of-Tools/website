@@ -16,7 +16,7 @@ test('identical, edited, swapped and headerless CSV sources can continue to Stit
   assert.equal(tablePair(a, a).length, 2);
   assert.equal(await tablePair(b, a)[0].text(), b);
   assert.equal(await tablePair(a + '\n3,Sam', b)[0].text(), a + '\n3,Sam');
-  assert.equal(tablePair('1\n2,Lin', '2,North\n3,West').length, 2);
+  assert.equal(tablePair('1,Ada\n2,Lin', '2,North\n3,West').length, 2);
 });
 
 test('CSV pipeline declines prose, incomplete pairs, malformed quotes and receiver limits', () => {
@@ -30,4 +30,22 @@ test('CSV pipeline declines prose, incomplete pairs, malformed quotes and receiv
 test('CSV pipeline accepts the full receiver bound with a recognized heading row', () => {
   const source = 'ID,Name\n' + Array(5000).fill('001,Ada').join('\n');
   assert.equal(tablePair(source, source).length, 2);
+});
+
+test('CSV pipeline declines text that merely contains commas', () => {
+  const valid = 'id,name\n1,Ada';
+  for (const text of ['Dear team, thanks for the update.\nThe meeting moved to Friday, at noon.\n',
+    'Dear team, thanks', 'function add(a, b) {\n  return a + b;\n}\n', 'foo(1, 2);\nbar(3, 4);',
+    'apples, pears\nbread\nmilk, eggs, butter', 'apples, pears\nmilk, eggs',
+    '2026-11-03 12:00:01 INFO started; waiting\n2026-11-03 12:00:02 WARN slow; retry\n']) {
+    assert.equal(tablePair(text, valid), null, text);
+    assert.equal(tablePair(valid, text), null, text);
+  }
+});
+
+test('CSV pipeline still accepts tables with spaces, tabs, stray quotes and a few short rows', () => {
+  for (const text of ['id, name\n1, Ada', '1, Ada\n2, Lin', 'SKU\tName\nA1\t5" screen\nA2\tCable',
+    'a,b,c\n1,2,3\n4,5,6\n7,8,9\n10,11,12\n13,14']) {
+    assert.equal(tablePair(text, text)?.length, 2, text);
+  }
 });

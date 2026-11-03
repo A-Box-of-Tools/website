@@ -618,6 +618,7 @@ error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um v
 
 reading_one = "{count} Datei wird gelesen&hellip;"
 reading_many = "{count} Dateien werden gelesen&hellip;"
+text_encoding = "Sie ist nicht als UTF-8-Text gespeichert. Speichern Sie sie als UTF-8 und versuchen Sie es erneut, oder fügen Sie den Text direkt ein."
 
 check_yourself = """
       <strong>Prüfen Sie es selbst.</strong> Nichts davon müssen Sie uns glauben.
