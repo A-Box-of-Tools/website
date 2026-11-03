@@ -136,6 +136,28 @@ function monitorNetwork() {
   }
 }
 
+/**
+ * Make WebKit work out a stale computed style again.
+ *
+ * Parsed early enough, a <select> leaves itself and every ancestor up to <body>
+ * reporting a style that inherited nothing: transparent, black, color-scheme
+ * normal. It paints correctly and is wrong only when read, and the reader that
+ * matters is axe, which then calls the text on a dark page unreadable against
+ * white. Nothing at parse time prevents it, not even moving the stylesheet. The
+ * old donate widget hid it only by holding the parser back until the page had
+ * been styled once. Changing an inherited property on the root does clear it, and
+ * the check keeps that from running in an engine with nothing to clear.
+ *
+ * @param {{ colorScheme?: string }} bodyStyle  the computed style of <body>
+ * @param {{ style: { setProperty(name: string, value: string): void } }} root
+ * @returns {boolean} whether the root was changed
+ */
+export function refreshStaleStyle(bodyStyle, root) {
+  if (bodyStyle.colorScheme !== 'normal') return false;
+  root.style.setProperty('--style-refreshed', '1');
+  return true;
+}
+
 /** Confirm the exact worker named by this page, including its saved assets. */
 export async function prepareOffline(container, url, version, {
   timeout = 45_000, createChannel = () => new MessageChannel(),
@@ -225,6 +247,7 @@ async function registerServiceWorker() {
 // The page runs both on load. The tests import the two exported functions and
 // never reach here, because there is no document for them to fill in.
 if (typeof document !== 'undefined') {
+  refreshStaleStyle(getComputedStyle(document.body), document.documentElement);
   monitorNetwork();
   registerServiceWorker();
 }

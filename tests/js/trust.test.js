@@ -13,7 +13,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { sortHosts, describe, PLATFORM_HOSTS, prepareOffline } from '../../shared/js/trust.js';
+import {
+  sortHosts, describe, PLATFORM_HOSTS, prepareOffline, refreshStaleStyle,
+} from '../../shared/js/trust.js';
 
 const ORIGIN = 'https://abox.tools';
 const entries = (...names) => names.map((name) => ({ name }));
@@ -140,6 +142,22 @@ test('describe: an external host makes it dirty and names every one', () => {
     hosts: 'example.com, evil.example',
     platform: '<net.platform.one>',
   }]);
+});
+
+test('a body that inherited nothing gets the root restyled, and any other is left alone', () => {
+  const root = () => {
+    const set = [];
+    return { set, style: { setProperty: (name, value) => set.push([name, value]) } };
+  };
+  const stale = root();
+  assert.equal(refreshStaleStyle({ colorScheme: 'normal' }, stale), true);
+  assert.deepEqual(stale.set, [['--style-refreshed', '1']]);
+
+  for (const colorScheme of ['light dark', undefined]) {
+    const healthy = root();
+    assert.equal(refreshStaleStyle({ colorScheme }, healthy), false);
+    assert.deepEqual(healthy.set, []);
+  }
 });
 
 function offlineFixture(reply = { ready: true, version: '0123456789' }) {
