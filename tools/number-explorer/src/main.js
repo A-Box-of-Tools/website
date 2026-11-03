@@ -1,48 +1,192 @@
 import { phrase } from './shared/phrases.js';
-import { MAX_COUNT, parseCount, sandModel, textModel, countingModel, VOLUME_REFERENCES, chooseReference, compareVolume, countForVolume } from './scale.js';
-import { drawScene, sceneGroupSize } from './scene.js';
+import { saveBlob } from './shared/download.js';
+import { MAX_COUNT, countForSize, countText, dialCount, ladderFor, log10Count, parseCount, placeOnLadder, sizePerUnit } from './scale.js';
+import { chip, fontFor, useFont, write } from './paint.js';
+import { createStage } from './stage.js';
+import { createBooksScene } from './scene-books.js';
+import { createFillScene } from './scene-fill.js';
+import { circleGroup, createStarsScene, starLevel } from './scene-stars.js';
+import { createTimeScene } from './scene-time.js';
+import { cached, capital, describe, duration, durationLong, exact, hud, length, percent, pretty, readback, rungName, sizeOf, times, volume } from './say.js';
 
 const $ = id => document.getElementById(id);
-const locale = document.documentElement.lang || undefined;
-const numeric = new Intl.NumberFormat(locale, { maximumSignificantDigits: 3 });
-const compact = new Intl.NumberFormat(locale, { notation: 'compact', maximumSignificantDigits: 3 });
-const exact = new Intl.NumberFormat(locale);
-const scientific = new Intl.NumberFormat(locale, { notation: 'scientific', maximumSignificantDigits: 3 });
 const amount = $('amount');
-const source = $('source');
-let view = 'sand';
-let current = null;
-let lastBookLength = 75000;
-let guessReference = null;
+const dial = $('dial');
+const page = $('main');
 
-function number(value) {
-  if (value === 0) return numeric.format(0);
-  if (Math.abs(value) < 0.001 || Math.abs(value) >= 1e15) return scientific.format(value);
-  return Math.abs(value) >= 1e6 ? compact.format(value) : numeric.format(value);
+let world = 'books';
+let unit = 'book';
+let count = 1000000000n;
+let committed = count;
+let previous = null;
+let lastBookLength = 75000;
+let showAllRungs = false;
+let dragging = false;
+let aimed = null;
+let tallyFrom = 0;
+let clockNow = 0;
+let badgeTimer = 0;
+let announceTimer = 0;
+
+const scenes = {
+  books: createBooksScene(),
+  water: createFillScene('water'),
+  sand: createFillScene('sand'),
+  stars: createStarsScene(),
+  time: createTimeScene()
+};
+
+function settings() {
+  return {
+    unit,
+    thicknessM: Number($('book-thickness').value),
+    wordsPerBook: lastBookLength,
+    dropMl: Number($('drop-size').value),
+    diameterMm: Number($('grain-size').value),
+    rate: Number($('count-rate').value)
+  };
 }
 
 function setText(id, text) { $(id).textContent = text; }
 
-function stat(value, key) {
-  const item = document.createElement('div');
-  item.className = 'detail-stat';
-  const strong = document.createElement('strong');
-  strong.textContent = number(value);
+function stageWords() {
+  return {
+    name: id => capital(rungName(world, id)),
+    length,
+    duration,
+    volume,
+    top: value => (world === 'books' ? length(value) : world === 'time' ? duration(value) : volume(value)),
+    long: durationLong,
+    before: value => phrase('stage.before', { value: world === 'books' ? length(value) : world === 'time' ? duration(value) : world === 'stars' ? pretty(value) : volume(value) }),
+    full: share => phrase('stage.full', { share: percent(share) }),
+    times,
+    passed: (id, ratio) => phrase('stage.passed', { name: rungName(world, id), times: times(ratio) }),
+    share: share => phrase('stage.share', { share: percent(share) }),
+    level: id => cached(`level.${id}`),
+    tally: (counted, fraction) => phrase('stage.tally', { count: pretty(counted), share: percent(fraction) })
+  };
+}
+
+function paint(ctx, frame) {
+  const current = settings();
+  const perUnit = sizePerUnit(world, current);
+  const rungs = ladderFor(world, current);
+  const zero = count === 0n;
+  const measure = zero ? 0 : 10 ** frame.log * perUnit;
+  if (!frame.still) clockNow = frame.t;
+  const drawn = scenes[world].draw(ctx, {
+    ...frame,
+    amount: measure,
+    perUnit,
+    zero,
+    rungs,
+    thickness: current.thicknessM,
+    words: stageWords(),
+    previous: previous === null || stage.playing ? null : Number(previous) * perUnit,
+    sinceOpened: frame.t - tallyFrom
+  });
+  if (zero) return;
+  const pale = drawn.dark <= 0.5;
+  const fill = pale ? '#121a24' : '#f5f8fd';
+  const halo = pale ? 'rgba(255,255,255,.8)' : 'rgba(3,6,16,.78)';
+  const line = hud(world, frame.log, current, perUnit);
+  write(ctx, line.big, 14, 24, { size: frame.w < 480 ? 16 : 19, weight: 800, fill, halo });
+  if (line.small) write(ctx, line.small, 14, 46, { size: 13, weight: 600, fill, halo });
+  // What the number is climbing toward, always in view: most of the sky between two
+  // landmarks is otherwise empty, and the next one is the reason to keep going.
+  if (world !== 'water' && world !== 'sand') {
+    const { above, share } = placeOnLadder(measure, rungs);
+    if (above) chip(ctx, phrase('stage.next', { name: rungName(world, above.id), share: percent(share) }), 14, line.small ? 72 : 50, { size: 12, weight: 600, fill: pale ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.14)', ink: pale ? '#121a24' : '#f5f8fd', stroke: pale ? 'rgba(18,26,36,.18)' : 'rgba(255,255,255,.24)', within: frame.w });
+  }
+}
+
+const stage = createStage($('stage'), paint);
+
+function showBadge(ratio) {
+  clearTimeout(badgeTimer);
+  const badge = $('magnify');
+  if (!(ratio >= 2 || ratio <= 0.5)) {
+    badge.hidden = true;
+    return;
+  }
+  badge.textContent = ratio >= 1 ? `× ${pretty(Math.round(ratio))}` : `÷ ${pretty(Math.round(1 / ratio))}`;
+  badge.hidden = false;
+  badge.classList.remove('ne-pop');
+  void badge.offsetWidth;
+  badge.classList.add('ne-pop');
+  badgeTimer = setTimeout(() => { badge.hidden = true; }, 1900);
+}
+
+// One gesture, however many values it passes through, is one change: the marker
+// left behind shows where the number stood before the whole drag or the typing.
+function commit() {
+  if (count === committed) return;
+  previous = committed;
+  if (previous > 0n && count > 0n) showBadge(Number(count) / Number(previous));
+  committed = count;
+  stage.redraw();
+}
+
+function renderTabs(current) {
+  for (const name of Object.keys(scenes)) {
+    const said = describe(name, count, current, sizePerUnit(name, current), ladderFor(name, current));
+    setText(`tab-${name}`, said.tab);
+    document.querySelector(`[data-world="${name}"]`).setAttribute('aria-pressed', String(name === world));
+  }
+}
+
+function renderLadder(said, rungs, perUnit) {
+  const value = Number(count) * perUnit;
+  const here = said.place.index;
+  const low = showAllRungs ? 0 : Math.max(0, here - 2);
+  const high = showAllRungs ? rungs.length - 1 : Math.min(rungs.length - 1, here + 3);
+  const rows = [];
+  for (let i = high; i >= low; i--) {
+    if (i === here) rows.push(hereRow(said));
+    rows.push(rungRow(rungs[i], value, perUnit));
+  }
+  if (here < low) rows.push(hereRow(said));
+  $('ladder').replaceChildren(...rows);
+  $('ladder-all').hidden = rungs.length <= 6;
+  $('ladder-all').setAttribute('aria-expanded', String(showAllRungs));
+  setText('ladder-all', cached(showAllRungs ? 'ladder.fewer' : 'ladder.all'));
+}
+
+function hereRow(said) {
+  const row = document.createElement('li');
+  row.className = 'ne-here';
   const label = document.createElement('span');
-  label.textContent = phrase(key);
-  item.append(strong, label);
-  return item;
+  label.textContent = cached('ladder.here');
+  const value = document.createElement('strong');
+  value.textContent = said.tab;
+  row.append(label, value);
+  return row;
 }
 
-function timeUnit(seconds) {
-  const units = [['seconds', 1], ['minutes', 60], ['hours', 3600], ['days', 86400], ['years', 31557600], ['centuries', 3155760000]];
-  return [...units].reverse().find(([, size]) => seconds >= size) || units[0];
-}
-
-function setView(next) {
-  view = next === 'books' && source.value !== 'tokens' ? 'sand' : next;
-  $('step-note').textContent = '';
-  render();
+function rungRow(rung, value, perUnit) {
+  const row = document.createElement('li');
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'ne-rung';
+  const reach = countForSize(rung.size, perUnit);
+  if (reach === null || reach < 1n) button.disabled = true;
+  const name = document.createElement('span');
+  name.className = 'ne-rung-name';
+  name.textContent = capital(rungName(world, rung.id));
+  const size = document.createElement('span');
+  size.className = 'ne-rung-size';
+  size.textContent = sizeOf(world, rung.size);
+  const ratio = document.createElement('span');
+  ratio.className = 'ne-rung-ratio';
+  ratio.textContent = value >= rung.size ? times(value / rung.size) : percent(value / rung.size);
+  button.append(name, size, ratio);
+  button.addEventListener('click', () => {
+    setCount(reach);
+    commit();
+    setText('step-note', phrase('jump.note', { number: pretty(Number(reach)), name: rungName(world, rung.id) }));
+  });
+  row.append(button);
+  return row;
 }
 
 function followup(key, handler) {
@@ -53,33 +197,141 @@ function followup(key, handler) {
   return button;
 }
 
-function updateFollowups() {
+function renderFollowups(current) {
   const buttons = [];
-  if (view !== 'time') buttons.push(followup('follow.time', () => setView('time')));
-  if (view !== 'sand') buttons.push(followup('follow.sand', () => setView('sand')));
-  if (source.value === 'tokens' && view !== 'books') buttons.push(followup('follow.books', () => setView('books')));
-  if (view === 'sand' && Number($('grain-size').value) < 1) {
+  const go = (key, next, change) => buttons.push(followup(key, () => { change?.(); switchWorld(next); }));
+  if (world !== 'stars') go('follow.stars', 'stars');
+  if (world !== 'water') go('follow.water', 'water');
+  if (world !== 'time') go('follow.time', 'time');
+  if (world !== 'books') go('follow.books', 'books', () => setUnit('book'));
+  if (world === 'books' && unit !== 'token') buttons.push(followup('follow.tokens', () => setUnit('token')));
+  if (world === 'sand' && current.diameterMm < 1) {
     buttons.push(followup('follow.grain', () => {
       const sizes = [0.25, 0.5, 1];
-      $('grain-size').value = String(sizes[sizes.indexOf(Number($('grain-size').value)) + 1]);
-      render();
+      $('grain-size').value = String(sizes[sizes.indexOf(current.diameterMm) + 1]);
+      update();
     }));
   }
-  if (view === 'sand') buttons.push(followup('follow.mountain', () => {
-    const count = countForVolume('mountain', Number($('grain-size').value));
-    amount.value = String(count);
-    source.value = 'sand';
-    $('reference').value = 'mountain';
-    render();
-    setText('step-note', phrase('inverse.note', { number: number(Number(count)) }));
-  }));
   buttons.push(followup('follow.thousand', () => multiply(1000n)));
-  $('followups').replaceChildren(...buttons);
+  $('followups').replaceChildren(...buttons.slice(0, 4));
+}
+
+function renderGuess(place, perUnit) {
+  const rung = place.above;
+  const next = count * 10n;
+  const box = $('guess-box');
+  // Asked about the step still to come, because the answer to anything about the
+  // present is already written in the ladder right beside this box.
+  box.hidden = !rung || next > MAX_COUNT || count === 0n;
+  if (box.hidden) return;
+  const family = world === 'water' || world === 'sand' ? 'fill' : world;
+  setText('guess-question', phrase(`guess.${family}`, { name: rungName(world, rung.id) }));
+  box.dataset.reaches = String(Number(next) * perUnit >= rung.size * (1 - 1e-12));
+}
+
+function guess(answer) {
+  const reaches = $('guess-box').dataset.reaches === 'true';
+  const said = phrase(answer === reaches ? 'guess.right' : 'guess.wrong', { fact: phrase(reaches ? 'guess.yes' : 'guess.no') });
+  multiply(10n);
+  setText('guess-answer', said);
+  $('guess-answer').hidden = false;
+}
+
+function renderCaption() {
+  const key = {
+    books: 'caption.books',
+    water: 'caption.fill',
+    sand: 'caption.fill',
+    time: 'caption.time'
+  }[world];
+  if (key) {
+    const lines = [phrase(key)];
+    if (world === 'books' && unit !== 'book') lines.unshift(phrase(`meaning.${unit}`));
+    setText('stage-caption', lines.join(' '));
+    return;
+  }
+  const stars = Number(count);
+  const level = starLevel(stars);
+  setText('stage-caption', phrase(`caption.stars.${level.id}`, { number: pretty(level.id === 'multi' ? circleGroup(stars / 1e23) : level.perDot) }));
+}
+
+function announce(said) {
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(() => {
+    setText('announce', `${said.kicker} ${said.number} ${said.unit}. ${said.story}`);
+  }, 500);
+}
+
+function update({ moveDial = true, jump = false } = {}) {
+  const parsed = parseCount(amount.value);
+  amount.setAttribute('aria-invalid', String(!parsed.ok));
+  $('amount-error').hidden = parsed.ok;
+  setText('amount-error', parsed.ok ? '' : phrase(parsed.key));
+  if (!parsed.ok) {
+    setText('read-number', '');
+    return;
+  }
+  if (parsed.count !== count) tallyFrom = clockNow;
+  count = parsed.count;
+  const enteredBookLength = Number($('book-length').value);
+  const validBookLength = Number.isInteger(enteredBookLength) && enteredBookLength >= 100 && enteredBookLength <= 1000000;
+  $('book-length').setAttribute('aria-invalid', String(!validBookLength));
+  $('settings-error').hidden = validBookLength;
+  setText('settings-error', validBookLength ? '' : phrase('settings.invalid'));
+  // An unfinished edit must not silently replace an accepted book length.
+  if (validBookLength) lastBookLength = enteredBookLength;
+  const current = settings();
+  const perUnit = sizePerUnit(world, current);
+  const rungs = ladderFor(world, current);
+  const said = describe(world, count, current, perUnit, rungs);
+  const position = log10Count(count);
+  setText('read-number', readback(count));
+  if (moveDial) dial.value = String(position);
+  dial.style.setProperty('--fill', `${position / 30 * 100}%`);
+  dial.setAttribute('aria-valuetext', readback(count));
+  page.dataset.world = world;
+  setText('answer-kicker', said.kicker);
+  setText('answer-number', said.number);
+  setText('answer-unit', said.unit);
+  setText('answer-story', said.story);
+  $('stage').setAttribute('aria-label', `${said.kicker} ${said.number} ${said.unit}. ${said.story}`);
+  $('unit-row').hidden = world !== 'books';
+  document.querySelectorAll('[data-unit]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.unit === unit)));
+  $('less').disabled = count === 0n || count === 1n;
+  $('more').disabled = count >= MAX_COUNT;
+  renderTabs(current);
+  renderLadder(said, rungs, perUnit);
+  renderFollowups(current);
+  renderGuess(said.place, perUnit);
+  renderCaption();
+  setText('model-summary', phrase('model.summary', { diameter: pretty(current.diameterMm) }));
+  announce(said);
+  // Only a new position moves the camera: a setting or a fold changing must not
+  // cut short a journey that is on its way to the same number.
+  if (jump) stage.jump(position);
+  else if (position !== aimed) stage.aim(position, { dragging });
+  aimed = position;
+  setPlaying(stage.playing);
+}
+
+function setCount(next) {
+  amount.value = countText(next);
+  $('guess-answer').hidden = true;
+  setText('step-note', '');
+  setText('save-note', '');
+  update();
+}
+
+function setUnit(next) {
+  unit = next;
+  previous = null;
+  update();
+  stage.redraw();
 }
 
 function multiply(factor) {
   const parsed = parseCount(amount.value);
-  if (!parsed.ok) { render(); amount.focus(); return; }
+  if (!parsed.ok) { update(); amount.focus(); return; }
   let next = factor < 0n ? parsed.count / -factor : parsed.count * factor;
   let note = '';
   if (factor < 0n && parsed.count > 0n && next === 0n) {
@@ -89,192 +341,205 @@ function multiply(factor) {
     note = phrase('step.rounded');
   }
   if (next > MAX_COUNT) { next = MAX_COUNT; note = phrase('step.limit'); }
-  amount.value = String(next);
-  render();
+  setCount(next);
+  commit();
   setText('step-note', note);
 }
 
-function render() {
-  const parsed = parseCount(amount.value);
-  amount.setAttribute('aria-invalid', String(!parsed.ok));
-  $('amount-error').hidden = parsed.ok;
-  setText('amount-error', parsed.ok ? '' : phrase(parsed.key));
-  if (!parsed.ok) {
-    current = null;
-    $('result-card').hidden = true;
-    setText('read-number', '');
+function switchWorld(next) {
+  world = next;
+  previous = null;
+  tallyFrom = clockNow;
+  $('magnify').hidden = true;
+  $('guess-answer').hidden = true;
+  setText('step-note', '');
+  update();
+  // Each world opens by growing into the number, so changing the picture is also
+  // seeing this number's size again rather than a cut to a finished image. It is
+  // too short to offer a Stop for.
+  if (count > 0n) stage.travel(Math.max(0, log10Count(count) - 2.2), log10Count(count), 0.9);
+  setPlaying(false);
+}
+
+function journey(from, seconds) {
+  const to = log10Count(count);
+  setPlaying(true);
+  stage.travel(from, to, seconds, () => setPlaying(false));
+}
+
+function setPlaying(playing) {
+  $('play').setAttribute('aria-pressed', String(playing));
+  setText('play-label', cached(playing ? 'play.stop' : 'play.start'));
+}
+
+function play() {
+  if (stage.playing) {
+    stage.jump(log10Count(count));
+    setPlaying(false);
     return;
   }
-  $('result-card').hidden = false;
-  const count = parsed.count;
-  const diameter = Number($('grain-size').value);
-  const enteredBookLength = Number($('book-length').value);
-  const validBookLength = Number.isInteger(enteredBookLength) && enteredBookLength >= 100 && enteredBookLength <= 1000000;
-  $('book-length').setAttribute('aria-invalid', String(!validBookLength));
-  $('settings-error').hidden = validBookLength;
-  setText('settings-error', validBookLength ? '' : phrase('settings.invalid'));
-  // An unfinished edit must not silently replace an accepted book length.
-  if (validBookLength) lastBookLength = enteredBookLength;
-  const rate = Number($('count-rate').value);
-  $('books-view').disabled = source.value !== 'tokens';
-  if (view === 'books' && source.value !== 'tokens') view = 'sand';
-  document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-  setText('read-number', phrase('input.readback', { number: exact.format(count), object: phrase(`source.${source.value}`) }));
-  setText('meaning-note', phrase(view === 'sand' ? `meaning.${source.value}` : `meaning.${view}`));
-  setText('model-summary', phrase('model.summary', { diameter: number(diameter) }));
-  $('volume-picker').hidden = view !== 'sand';
-  $('guess-box').hidden = view !== 'sand';
-  $('guess-answer').hidden = true;
-  setText('save-note', '');
-  let ratio, kind, unit, singleUnit, story, stats;
-  if (view === 'sand') {
-    const model = sandModel(count, diameter);
-    const reference = $('reference').value === 'auto' ? chooseReference(model.volumeM3) : VOLUME_REFERENCES.find(item => item.id === $('reference').value);
-    const comparison = compareVolume(model.volumeM3, reference.id);
-    ratio = comparison.ratio;
-    kind = reference.id;
-    singleUnit = phrase(`one.${kind}`);
-    unit = phrase(Math.abs(ratio - 1) < 1e-12 ? `one.${kind}` : `ref.${kind}`);
-    story = count === 0n ? phrase('zero.story') : ratio < 0.01
-      ? phrase('sand.tiny', { unit: phrase(`one.${kind}`), number: number(comparison.inverse) })
-      : phrase('sand.story', { number: number(ratio), unit });
-    stats = [stat(model.liters, 'stat.liters'), stat(model.cubeSideM, 'stat.edge')];
-    // The prediction uses the next larger reference, rather than asking about
-    // a container whose answer is already written in the headline.
-    guessReference = VOLUME_REFERENCES.find(item => item.volumeM3 > reference.volumeM3) || reference;
-    current = { count, sand: model, reference, diameter, rate, bookLength: lastBookLength };
-    setText('guess-question', phrase('guess.question', { unit: phrase(`one.${guessReference.id}`) }));
-    setText('guess-detail', phrase('guess.detail'));
-  } else if (view === 'books') {
-    const model = textModel(count, lastBookLength);
-    ratio = model.books;
-    kind = 'book';
-    unit = phrase('ref.book');
-    singleUnit = phrase('one.book');
-    story = phrase('books.story', { words: number(model.words), length: exact.format(lastBookLength) });
-    stats = [stat(model.words, 'stat.words'), stat(lastBookLength, 'stat.books')];
-    current = { count, diameter, rate, bookLength: lastBookLength };
-  } else {
-    const model = countingModel(count, rate);
-    const [id, size] = timeUnit(model.seconds);
-    ratio = model.seconds / size;
-    kind = 'clock';
-    unit = phrase(`time.${id}`);
-    singleUnit = phrase(`time.one.${id}`);
-    story = phrase('time.story', { rate: number(rate) });
-    stats = [stat(model.seconds, 'stat.seconds'), stat(rate, 'stat.rate')];
-    current = { count, diameter, rate, bookLength: lastBookLength };
-  }
-  // A reversed reference can land one rounding bit below a whole container.
-  // Keep that numerical noise from inventing a fractional counting picture.
-  const nearest = Math.round(ratio);
-  if (nearest > 0 && Math.abs(ratio - nearest) <= Math.max(1, ratio) * 1e-14) ratio = nearest;
-  if (ratio === 1) unit = singleUnit;
-  const display = number(ratio);
-  setText('result-heading', count === 0n ? phrase('result.empty') : phrase('result.approximate'));
-  setText('answer-number', display);
-  setText('answer-unit', unit);
-  setText('answer-story', story);
-  $('detail-stats').replaceChildren(...stats);
-  const group = sceneGroupSize(ratio);
-  const fraction = ratio / group - Math.floor(ratio / group);
-  const svg = drawScene({
-    kind, ratio,
-    label: phrase('scene.label', { number: display, unit }),
-    description: story,
-    groupLabel: phrase('scene.group', { number: number(group), unit: group === 1 ? singleUnit : unit }),
-    fractionLabel: phrase('scene.part', { number: number(fraction) }),
-    zeroLabel: phrase('scene.zero')
-  });
-  $('scene').replaceChildren(svg);
-  setText('group-label', phrase('scene.group', { number: number(group), unit: group === 1 ? singleUnit : unit })
-    + (fraction > 0 ? ` ${phrase('scene.fraction', { number: number(fraction) })}` : ''));
-  setText('scene-note', phrase('scene.note'));
-  $('less').disabled = count === 0n || count === 1n;
-  $('more').disabled = count >= MAX_COUNT;
-  updateFollowups();
+  previous = null;
+  journey(0, Math.min(14, Math.max(1.8, log10Count(count) * 0.55)));
 }
 
-function guess(answer) {
-  if (!current?.sand || !guessReference) return;
-  const fits = current.sand.volumeM3 <= guessReference.volumeM3 * (1 + 1e-12);
-  setText('guess-answer', phrase(answer === fits ? 'guess.correct' : 'guess.again', { answer: phrase(fits ? 'guess.fits' : 'guess.over') }));
-  $('guess-answer').hidden = false;
+function caption() {
+  const current = settings();
+  return [
+    $('read-number').textContent,
+    `${$('answer-number').textContent} ${$('answer-unit').textContent}`,
+    $('answer-story').textContent,
+    $('stage-caption').textContent,
+    phrase('save.assumptions', { thickness: pretty(current.thicknessM * 100), length: exact(current.wordsPerBook), drop: pretty(current.dropMl), diameter: pretty(current.diameterMm), rate: pretty(current.rate) })
+  ];
 }
 
-function save() {
-  if (!current) return;
-  const ns = 'http://www.w3.org/2000/svg';
-  const wrapper = document.createElementNS(ns, 'svg');
-  const scene = $('scene').firstElementChild.cloneNode(true);
-  const box = scene.viewBox.baseVal;
-  const width = 900;
-  const sceneHeight = box.height * width / box.width;
-  const lines = [ $('read-number').textContent, `${$('answer-number').textContent} ${$('answer-unit').textContent}`, $('meaning-note').textContent, $('answer-story').textContent,
-    phrase('save.assumptions', { diameter: number(current.diameter), length: exact.format(current.bookLength), rate: number(current.rate) }),
-    $('scene-note').textContent ];
-  if (current.reference) {
-    lines.push(phrase('save.reference', { unit: phrase(`one.${current.reference.id}`), volume: number(current.reference.volumeM3) }));
-    if (current.reference.id === 'mountain') lines.push(phrase('save.mountain'));
-  }
-  const chunks = [];
-  for (const line of lines) {
-    const words = line.split(/\s+/);
+function savePicture() {
+  const scale = 2;
+  const width = 1000;
+  const height = 562;
+  const measure = document.createElement('canvas').getContext('2d');
+  measure.font = fontFor(15, 500);
+  const lines = [];
+  for (const sentence of caption()) {
     let part = '';
-    for (const word of words) {
-      if ((part + word).length > 90) { chunks.push(part); part = ''; }
-      part += `${word} `;
+    for (const word of sentence.split(/\s+/)) {
+      const longer = part ? `${part} ${word}` : word;
+      if (measure.measureText(longer).width > width - 48 && part) {
+        lines.push(part);
+        part = word;
+      } else {
+        part = longer;
+      }
     }
-    if (part) chunks.push(part.trim());
+    if (part) lines.push(part);
   }
-  const textHeight = 40 + chunks.length * 25;
-  wrapper.setAttribute('xmlns', ns);
-  wrapper.setAttribute('width', String(width));
-  wrapper.setAttribute('height', String(textHeight + sceneHeight + 20));
-  wrapper.setAttribute('viewBox', `0 0 ${width} ${textHeight + sceneHeight + 20}`);
-  const background = document.createElementNS(ns, 'rect');
-  background.setAttribute('width', '100%'); background.setAttribute('height', '100%'); background.setAttribute('fill', '#ffffff');
-  wrapper.append(background);
-  chunks.forEach((line, i) => {
-    const text = document.createElementNS(ns, 'text');
-    text.setAttribute('x', '30'); text.setAttribute('y', String(35 + i * 25));
-    text.setAttribute('font-family', 'system-ui, sans-serif'); text.setAttribute('font-size', i === 1 ? '20' : '15'); text.setAttribute('fill', '#273740');
-    text.textContent = line;
-    wrapper.append(text);
+  const textHeight = 28 + lines.length * 23;
+  const canvas = document.createElement('canvas');
+  canvas.width = width * scale;
+  canvas.height = (height + textHeight) * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, width, height);
+  ctx.clip();
+  paint(ctx, { w: width, h: height, t: 2.5, dt: 0, log: log10Count(count), velocity: 0, moving: false, motion: false, still: true });
+  ctx.restore();
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, height, width, textHeight);
+  ctx.fillStyle = '#273740';
+  ctx.textBaseline = 'middle';
+  lines.forEach((line, i) => {
+    ctx.font = fontFor(i === 1 ? 17 : 15, i === 1 ? 700 : 500);
+    ctx.fillText(line, 24, height + 26 + i * 23);
   });
-  scene.setAttribute('x', '0'); scene.setAttribute('y', String(textHeight)); scene.setAttribute('width', String(width)); scene.setAttribute('height', String(sceneHeight));
-  wrapper.append(scene);
-  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(wrapper)], { type: 'image/svg+xml' }));
-  const link = document.createElement('a');
-  link.href = url; link.download = 'number-comparison.svg'; link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-  setText('save-note', phrase('save.done'));
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    saveBlob(blob, `number-explorer-${world}.png`);
+    setText('save-note', phrase('save.done'));
+  }, 'image/png');
 }
 
-amount.addEventListener('input', () => { setText('step-note', ''); render(); });
-source.addEventListener('change', () => { setText('step-note', ''); render(); });
-['reference', 'grain-size', 'count-rate'].forEach(id => $(id).addEventListener('change', render));
-$('book-length').addEventListener('input', render);
-document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => setView(button.dataset.view)));
-document.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => {
-  const example = button.dataset.example;
-  source.value = example;
-  amount.value = example === 'tokens' ? '1 million' : example === 'count' ? '1 trillion' : '1 billion';
-  view = example === 'tokens' ? 'books' : example === 'count' ? 'time' : 'sand';
-  $('grain-size').value = '0.5'; $('count-rate').value = '1'; $('reference').value = 'auto';
+function drawTicks() {
+  const ticks = $('dial-ticks');
+  const short = new Intl.NumberFormat(document.documentElement.lang || undefined, { notation: 'compact', compactDisplay: 'short' });
+  for (const power of [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30]) {
+    const tick = document.createElement('button');
+    tick.type = 'button';
+    tick.tabIndex = -1;
+    tick.textContent = power === 0 ? '1' : power <= 12 ? short.format(10 ** power) : `10${pretty(10 ** power).slice(2)}`;
+    tick.style.setProperty('--at', String(power / 30));
+    if (power % 6) tick.classList.add('ne-tick-minor');
+    tick.addEventListener('click', () => {
+      setCount(10n ** BigInt(power));
+      commit();
+    });
+    ticks.append(tick);
+  }
+}
+
+amount.addEventListener('input', () => {
+  dragging = false;
+  $('guess-answer').hidden = true;
   setText('step-note', '');
-  render();
+  update();
+});
+amount.addEventListener('change', commit);
+
+dial.addEventListener('input', () => {
+  dragging = true;
+  amount.value = countText(dialCount(Number(dial.value)));
+  $('guess-answer').hidden = true;
+  setText('step-note', '');
+  update({ moveDial: false });
+});
+dial.addEventListener('change', () => {
+  dragging = false;
+  commit();
+});
+// The browser's own arrow step is the dial's finest, a hundredth of a power of ten,
+// which would take a hundred presses to do what one drag does.
+dial.addEventListener('keydown', event => {
+  const steps = { ArrowRight: 0.25, ArrowUp: 0.25, ArrowLeft: -0.25, ArrowDown: -0.25, PageUp: 1, PageDown: -1 };
+  const step = steps[event.key];
+  if (!step) return;
+  event.preventDefault();
+  dial.value = String(Math.max(0, Math.min(30, Number(dial.value) + step)));
+  dial.dispatchEvent(new Event('input', { bubbles: true }));
+  dial.dispatchEvent(new Event('change', { bubbles: true }));
+});
+
+document.querySelectorAll('[data-world]').forEach(button => button.addEventListener('click', () => {
+  if (button.dataset.world !== world) switchWorld(button.dataset.world);
 }));
+document.querySelectorAll('[data-unit]').forEach(button => button.addEventListener('click', () => setUnit(button.dataset.unit)));
+document.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => {
+  const [next, value, nextUnit] = button.dataset.example.split(':');
+  unit = nextUnit || 'book';
+  amount.value = value;
+  world = next;
+  previous = null;
+  $('guess-answer').hidden = true;
+  setText('step-note', '');
+  update();
+  committed = count;
+  $('magnify').hidden = true;
+  journey(0, Math.min(10, Math.max(1.6, log10Count(count) * 0.42)));
+}));
+
+$('ladder-all').addEventListener('click', () => {
+  showAllRungs = !showAllRungs;
+  update();
+});
 $('less').addEventListener('click', () => multiply(-10n));
 $('more').addEventListener('click', () => multiply(10n));
 $('guess-yes').addEventListener('click', () => guess(true));
 $('guess-no').addEventListener('click', () => guess(false));
-$('download-svg').addEventListener('click', save);
+$('download-picture').addEventListener('click', savePicture);
+$('play').addEventListener('click', play);
+$('still').addEventListener('click', () => {
+  const pausing = !stage.paused;
+  stage.pause(pausing);
+  $('still').setAttribute('aria-pressed', String(pausing));
+  setText('still-label', cached(pausing ? 'still.resume' : 'still.pause'));
+});
+['book-thickness', 'drop-size', 'grain-size', 'count-rate'].forEach(id => $(id).addEventListener('change', () => { update(); stage.redraw(); }));
+$('book-length').addEventListener('input', () => { update(); stage.redraw(); });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
   const open = panel.hidden;
   panel.hidden = !open;
   $('privacy-toggle').setAttribute('aria-expanded', String(open));
 });
-render();
+
+useFont(getComputedStyle(document.body).fontFamily);
+drawTicks();
+update({ jump: true });
+if (stage.quiet) {
+  $('play').hidden = true;
+  $('still').hidden = true;
+} else {
+  // The first thing the page does is the thing it is for.
+  journey(0, Math.min(5.5, Math.max(1.8, log10Count(count) * 0.5)));
+}
 document.getElementById('boot-warning')?.remove();
