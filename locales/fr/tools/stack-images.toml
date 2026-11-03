@@ -1,8 +1,8 @@
 name = "Empileur d'images"
-heading = "Empileur&nbsp;d'images <span class=\"h1-kw\">&mdash; combiner une rafale, fichiers RAW compris</span>"
-tagline = "Vingt prises n'en font plus qu'une, sans vingt envois et sans dérawtiseur."
-title = "Empileur d'images &mdash; moyenne, médiane et empilement de mise au point dans le navigateur"
-description = "Combinez une rafale de photographies en une seule&nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur."
+heading = """Empileur&nbsp;d'images <span class="h1-kw">&mdash; réduire le bruit, retirer les passants, créer des filés d’étoiles</span>"""
+tagline = "Faites la moyenne d’une rafale stable, prenez la médiane pour un arrière-plan dégagé ou éclaircissez une séquence de ciel nocturne."
+title = "Empileur d’images &mdash; réduire le bruit et retirer les passants"
+description = "Empilez des photos pour réduire le bruit, retirer les passants ou créer des filés d’étoiles. Alignez les prises et enregistrez en PNG ou JPEG dans le navigateur. Les fichiers RAW utilisent leurs aperçus JPEG intégrés."
 og_title = "Empiler une rafale de photographies, fichiers RAW compris"
 og_description = "Moyenne, médiane, écrêtage sigma, éclaircir, assombrir, additionner ou empilement de mise au point, avec les prises alignées au préalable. Les fichiers RAW sont ouverts depuis l'aperçu JPEG intégré par l'appareil, lorsqu'il existe, sans décoder les données du capteur. Rien n'est envoyé."
 og_image_alt = "Empileur d'images - plusieurs prises combinées en une seule, dans le navigateur"
@@ -47,8 +47,8 @@ title = "Le travail se fait dans un Worker sur cette machine, pas sur un serveur
 body = "L’empilement peut durer des minutes ; un Worker calcule pendant que la page répond, affiche la progression et permet l’annulation. C’est un autre fil du navigateur : <code>src/worker.js</code>. Les références sont transmises localement sans envoyer les octets. Le Worker lit et combine les fichiers sur cet appareil. Examinez ce code sans prendre la politique de la page pour preuve de ses chemins de données."
 
 [[privacy]]
-title = "Rien de la série n'est rapporté nulle part."
-body = "Combien de prises vous avez empilées, quel appareil les a écrites, de combien chacune avait bougé, quelle méthode vous avez choisie et combien de temps cela a pris restent dans la mémoire de cette page jusqu'à ce que vous la fermiez. Il n'existe dans ce dépôt aucun événement de mesure qui transporte quoi que ce soit de cela, et la seule question que ce site pose après un téléchargement envoie un pouce en haut ou en bas et le nom de l'outil, rien d'autre."
+title = "Les événements de parcours comptent des étapes fixes."
+body = " Les événements de parcours du site peuvent compter des étapes fixes, comme l’ajout d’entrées, le lancement d’un empilement, un résultat prêt, un problème, une annulation ou l’enregistrement. Ils utilisent le nom de l’outil et des libellés d’étape fixes ; les événements de navigation utilisent des noms fixes de pages d’origine et de destination. Ils ne contiennent ni photos, ni noms de fichiers, ni données d’appareil photo, ni nombre d’images, ni dimensions, ni méthodes choisies, ni réglages, ni durées de traitement, ni contenu du résultat. La question facultative après un téléchargement envoie un pouce levé ou baissé et une raison fixe."
 
 [[privacy]]
 title = "Il fonctionne hors ligne."
@@ -68,7 +68,7 @@ body = "Commencez avec Auto&nbsp;: il mesure décalage, rotation et échelle, pu
 
 [[howto]]
 title = "Lisez les quatre chiffres, puis appuyez sur le bouton."
-body = "Avant de commencer, la page affiche la taille prévue du résultat, la mémoire estimée de l'empilement, les décodages prévus pour empiler et les octets lus pendant l'inspection. Le fonctionnement interne du navigateur et la récupération de mémoire peuvent dépasser les tampons modélisés&nbsp;: ces chiffres sont un plan, pas une garantie d'usage total. Si des bandes sont nécessaires, la page suggère une résolution de travail plus petite. Ensuite, comparez la référence au résultat à la taille réelle des pixels et vérifiez les détails d'alignement avant de télécharger."
+body = " Avant de commencer, la page affiche la taille prévue du résultat, la mémoire estimée de l'empilement, les décodages prévus pour empiler et les octets lus pendant l'inspection. Le fonctionnement interne du navigateur et la récupération de mémoire peuvent dépasser les tampons modélisés&nbsp;: ces chiffres sont un plan, pas une garantie d'usage total. Si des bandes sont nécessaires, la page suggère une résolution de travail plus petite. Ensuite, comparez la référence au résultat à la taille réelle des pixels et vérifiez les détails d'alignement avant de télécharger. Utilisez les liens à côté du téléchargement pour redimensionner ou compresser l’image terminée sans choisir à nouveau le fichier."
 
 [[faq]]
 q = "Mes photographies sont-elles envoyées quelque part&nbsp;?"
@@ -107,8 +107,8 @@ q = "Il dit que le passage se fera en bandes. Qu'est-ce que cela veut dire&nbsp;
 a = "La mémoire de travail nécessaire dépasse ce que l'outil veut réserver d'un coup. L'image est divisée en bandes horizontales, empilées une par une. La géométrie d'alignement et la méthode restent les mêmes&nbsp;; le rééchantillonnage du navigateur peut varier légèrement au dernier bit. Les prises sont lues à nouveau pour chaque bande, donc le calcul prend plus de temps. La page indique combien de décodages cela demande. Baisser la résolution de travail d'un niveau divise la mémoire par quatre et permet presque toujours une seule passe. La note indique le réglage adapté."
 
 [[faq]]
-q = "Pourquoi cet outil emploie-t-il un Worker et aucun des autres&nbsp;?"
-a = "Parce qu'il est le seul dont le travail se compte en minutes. Tous les autres outils d'ici font quelque chose qui prend une seconde ou deux, et sortir ce travail du fil principal y serait une cérémonie. Empiler vingt grandes prises, c'est du calcul massif sur des centaines de mégaoctets, et sur le fil principal cela veut dire une page figée&nbsp;: aucune barre de progression qui bouge, un bouton Annuler qui ne répond pas, et pour finir un navigateur qui propose de tuer l'onglet. Le Worker est un second fil dans ce même navigateur, exécutant un fichier de ce même dossier, sous cette même politique. Ce n'est pas un serveur et ce n'est pas une fonction réseau."
+q = "Pourquoi l’empilement s’exécute-t-il dans un Worker ?"
+a = " Combiner de grandes images peut prendre plusieurs minutes. Un Worker se charge des calculs pendant que la page reste assez réactive pour mettre à jour la progression et répondre à Annuler. C’est un autre fil d’exécution de ce navigateur, qui exécute un fichier local sous la politique de la page. Vos photos restent sur cet appareil pendant qu’il travaille."
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"

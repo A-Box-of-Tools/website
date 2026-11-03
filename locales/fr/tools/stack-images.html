@@ -11,6 +11,10 @@
   <section class="card">
     <h2><span class="step">1</span> Choisissez les prises</h2>
 
+    <p>
+      Ajoutez au moins deux photos de la même scène, ou essayez l’exemple pour comparer une prise bruitée à son empilement. Gardez une exposition et un cadrage constants dans votre propre série.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -48,13 +52,19 @@
   <section class="card">
     <h2><span class="step">2</span> Comment les combiner</h2>
 
+    <ul class="note">
+      <li><strong>Réduire le bruit :</strong> commencez par Moyenne et l’alignement Auto pour une rafale stable.</li>
+      <li><strong>Retirer les passants :</strong> utilisez Médiane, avec l’arrière-plan visible dans plus de la moitié des prises.</li>
+      <li><strong>Créer des filés d’étoiles :</strong> utilisez Éclaircir et réglez l’alignement sur Non pour préserver le mouvement du ciel.</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">Méthode d'empilement</label>
         <select id="mode">
           <option value="mean" selected>Moyenne &mdash; réduire le bruit</option>
           <option value="median">Médiane &mdash; retirer les gens et les voitures qui passent</option>
-          <option value="sigma">Écrêtage sigma &mdash; les deux à la fois</option>
+          <option value="sigma">Écrêtage sigma &mdash; réduire le bruit et rejeter les valeurs aberrantes</option>
           <option value="max">Éclaircir &mdash; filés d'étoiles, feux d'artifice, light painting</option>
           <option value="min">Assombrir &mdash; retirer ce qui est clair et qui a bougé</option>
           <option value="sum">Additionner &mdash; mélange additif</option>
@@ -207,6 +217,9 @@
           <summary>Détails d'alignement</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          Vérifiez les contours fins et les zones lisses à 100 % avant d’enregistrer. Si l’empilement paraît mou, consultez les Détails d’alignement, retirez une prise douteuse et empilez à nouveau. Les liens à côté du téléchargement peuvent porter ce résultat directement vers le redimensionneur ou le compresseur dans ce navigateur.
+        </p>
         <a id="download" class="primary as-button" download>Télécharger l'image</a>
       </div>
     </div>
