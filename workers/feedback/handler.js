@@ -1,4 +1,9 @@
-const MAX_BYTES = 16384;
+import { requestNetwork } from '../shared/address.js';
+
+// Sized for what the form itself can produce: a browser percent-encodes each
+// UTF-16 unit of CJK into nine bytes (%E4%BD%A0), so these limits come to a
+// little over 48,000 bytes before anybody has done anything wrong.
+const MAX_BYTES = 48 * 1024;
 const FIELDS = { message: 4000, page: 512, environment: 500, reply_to: 254, company: 100, sender_type: 11 };
 const ORIGINS = new Set(['https://feedback.abox.tools', 'https://abox.tools']);
 const HEADERS = {
@@ -17,23 +22,24 @@ function escaped(text) {
   })[character]);
 }
 
+// An oversized form is still read up to the ceiling, whatever it declares, so
+// the visitor can be handed back what they wrote instead of an empty page.
 async function readBody(request) {
-  if (Number(request.headers.get('Content-Length')) > MAX_BYTES) throw 413;
   const reader = request.body?.getReader();
   if (!reader) return '';
   const chunks = [];
   let length = 0;
+  let oversized = false;
   try {
-    while (true) {
+    while (!oversized) {
       const { done, value } = await reader.read();
       if (done) break;
-      length += value.byteLength;
-      if (length > MAX_BYTES) {
-        await reader.cancel();
-        throw 413;
-      }
-      chunks.push(value);
+      oversized = length + value.byteLength > MAX_BYTES;
+      const kept = oversized ? value.subarray(0, MAX_BYTES - length) : value;
+      length += kept.byteLength;
+      chunks.push(kept);
     }
+    if (oversized) await reader.cancel();
   } finally {
     reader.releaseLock();
   }
@@ -43,8 +49,20 @@ async function readBody(request) {
     bytes.set(chunk, offset);
     offset += chunk.byteLength;
   }
+  if (oversized) throw { status: 413, received: bytes };
   try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
   catch { throw 400; }
+}
+
+// The ceiling can fall inside a percent escape or between the bytes of one
+// character. Neither is worth showing a visitor, so the tail is trimmed to what
+// decodes; the rest goes back into the form, where maxlength asks them to shorten it.
+function receivedForm(bytes) {
+  const values = {};
+  for (const [key, value] of new URLSearchParams(new TextDecoder().decode(bytes).replace(/%[\da-f]?$/i, ''))) {
+    if (Object.hasOwn(FIELDS, key)) values[key] = value.replace(/\ufffd+$/, '');
+  }
+  return values;
 }
 
 function fieldsFrom(raw, json) {
@@ -63,9 +81,15 @@ function fieldsFrom(raw, json) {
   const invalid = () => { throw { status: 400, values }; };
   const clean = {};
   for (const [key, value] of Object.entries(fields)) {
-    if (!Object.hasOwn(FIELDS, key) || typeof value !== 'string'
-        || value.length > FIELDS[key] || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(value)) invalid();
-    clean[key] = value.trim().replace(/\r\n?/g, '\n');
+    if (!Object.hasOwn(FIELDS, key) || typeof value !== 'string') invalid();
+    // A browser submits every textarea newline as CRLF while maxlength counts it
+    // once, so the limit has to be applied to what the visitor was told about.
+    const text = value.replace(/\r\n?/g, '\n');
+    if (text.length > FIELDS[key] || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(value)) invalid();
+    clean[key] = text.trim();
+    // Everything but the message prints as one line of the email, among labels
+    // its reader relies on. A line break there would let a report write its own.
+    if (key !== 'message' && /[\n\u0085\u2028\u2029]/.test(clean[key])) invalid();
   }
   if (!clean.message || clean.company) invalid();
   if (clean.reply_to && !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(clean.reply_to)) invalid();
@@ -150,7 +174,7 @@ export function createFeedbackHandler(page) {
       if (!env.FEEDBACK_HASH_KEY || !env.FEEDBACK_GATE?.get || !env.FEEDBACK_GATE?.idFromName
           || !env.FEEDBACK_RATE_LIMIT?.limit || !env.FEEDBACK_GLOBAL_LIMIT?.limit) throw new Error();
       const perAddress = await env.FEEDBACK_RATE_LIMIT.limit({
-        key: request.headers.get('CF-Connecting-IP') || 'unknown',
+        key: requestNetwork(request, 'unknown'),
       });
       if (!perAddress.success) return reply(429, 'Too many requests. Please wait a minute and try again.');
       const global = await env.FEEDBACK_GLOBAL_LIMIT.limit({ key: 'feedback' });
@@ -160,14 +184,16 @@ export function createFeedbackHandler(page) {
     let fields;
     try { fields = fieldsFrom(await readBody(request), json); }
     catch (error) {
-      return reply(error === 413 ? 413 : 400, error === 413
-        ? 'The request is too large. Keep the message under 4,000 characters and the whole request under 16 KiB.'
-        : 'Enter a message of up to 4,000 characters, choose who is sending, and check the optional fields.', error?.values);
+      if (error?.status === 413) {
+        return reply(413, 'The request is too large. Keep the message under 4,000 characters and the whole request under 48 KiB.',
+          json ? {} : receivedForm(error.received));
+      }
+      return reply(400, 'Enter a message of up to 4,000 characters, choose who is sending, and check the optional fields.', error?.values);
     }
     let delivery;
     let status;
     try {
-      const client = await keyedHash(env.FEEDBACK_HASH_KEY, `network\0${request.headers.get('CF-Connecting-IP') || 'unknown'}`);
+      const client = await keyedHash(env.FEEDBACK_HASH_KEY, `network\0${requestNetwork(request, 'unknown')}`);
       // Changing a sender label, transport or reply address cannot create a new report.
       const fingerprint = await keyedHash(env.FEEDBACK_HASH_KEY, `report\0${JSON.stringify([pageIdentity(fields.page), normalized(fields.message)])}`);
       const gate = env.FEEDBACK_GATE.get(env.FEEDBACK_GATE.idFromName('feedback-mail-budget'));
