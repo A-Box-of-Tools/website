@@ -44,7 +44,7 @@ css_parts = ["form", "panes", "checks", "notes"]
 # and copy - twice.
 js_parts = ["file-picker", "text-import", "message-box", "download", "table-data"]
 source_handoff = ["stitch-tables"]
-lastmod = "2026-10-27"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -159,8 +159,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed a character of either text. Every line
+      measurement scripts come from Google. None of them is handed a character
+      of either text. Every line
       that reads or compares them is served from this origin and listed in the
       repository."""
 

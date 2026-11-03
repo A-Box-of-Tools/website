@@ -34,7 +34,7 @@ roadmap_group = "images"
 css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "format", "errors", "image-convert", "heif-metadata"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -185,8 +185,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your photos. Every line that
+      measurement scripts come from Google. None of them is handed anything
+      about your photos. Every line that
       reads, decodes or writes a file is served from this origin and listed in
       the repository."""
 

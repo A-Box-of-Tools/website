@@ -75,9 +75,9 @@ reassuring. File processing stays in the browser; deliberate sharing, browser
 introductions, optional remote-image or exchange-rate requests and external-app
 handoffs have their own disclosures. CSP bounds destinations but cannot prove
 what goes to an allowed destination or describe WebRTC traffic. The page also
-names AdSense, Analytics, the donate button's CDN, Google Fonts and hosting,
-with their controls. Blocking those services leaves local processing usable;
-network features still need their respective connections.
+names AdSense, Analytics, the donate link and hosting, with their controls.
+Blocking those services leaves local processing usable; network features still
+need their respective connections.
 
 Private discovery groups have a separate disclosure across the built languages:
 the code reaches the rendezvous transiently inside encrypted signaling, only its
