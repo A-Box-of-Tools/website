@@ -1,4 +1,4 @@
-<main id="main" data-world="books">
+<main id="main" data-scene="books">
   <section class="card ne-card" aria-labelledby="start-title">
     <div class="ne-heading"><span class="eyebrow">A little number wonder</span><span class="local-badge">Works offline · No AI needed</span></div>
     <h2 id="start-title">How big does your number feel?</h2>
@@ -28,7 +28,7 @@
     <div class="ne-stage">
       <canvas id="stage" role="img" aria-label="An animated picture of the number's size"></canvas>
       <p id="magnify" class="ne-magnify" aria-hidden="true" hidden></p>
-      <div class="ne-stage-controls">
+      <div class="ne-stage-controls" id="stage-controls">
         <button type="button" id="play" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.500v11l9-5.500z"/></svg><span id="play-label">Grow from 1</span></button>
         <button type="button" id="still" aria-pressed="false"><span id="still-label">Pause motion</span></button>
       </div>
@@ -85,7 +85,7 @@
 
   <div id="phrases" hidden aria-hidden="true">
     <span data-phrase="amount-required">Enter a number to start exploring.</span><span data-phrase="amount-invalid">Try a whole number such as 1,000,000, 1 billion, 1.5b, or 1e12. Separate thousands in groups of three.</span><span data-phrase="amount-whole">Use a whole number of things, with no fraction left over.</span><span data-phrase="amount-too-large">This explorer goes up to 10³⁰. Try a smaller number.</span>
-    <span data-phrase="result.empty">Nothing to fill yet</span><span data-phrase="zero.story">Start with one, then try ten times more.</span><span data-phrase="ratio.times">{number} ×</span><span data-phrase="tall">{unit} tall</span>
+    <span data-phrase="result.empty">Nothing to fill yet</span><span data-phrase="zero.story">Start with one, then try ten times more.</span><span data-phrase="ratio.times">{number} ×</span><span data-phrase="unit.tall">{unit} tall</span>
     <span data-phrase="unit.lightyears">light-years</span><span data-phrase="unit.lightyear">light-year</span><span data-phrase="unit.m3">cubic meters</span><span data-phrase="unit.km3">cubic kilometers</span><span data-phrase="unit.km3.single">cubic kilometer</span>
     <span data-phrase="kicker.books">A stack of {count} books would be about</span><span data-phrase="kicker.books.single">One book is about</span><span data-phrase="kicker.words">{count} words is about {books} example books, a stack about</span><span data-phrase="kicker.tokens">{count} AI text tokens is about {words} English words, or {books} example books, a stack about</span><span data-phrase="kicker.water">{count} drops of water would make about</span><span data-phrase="kicker.water.single">One drop of water is about</span><span data-phrase="kicker.sand">{count} grains of sand would make about</span><span data-phrase="kicker.sand.single">One grain of sand takes up about</span><span data-phrase="kicker.stars">{count} stars would be</span><span data-phrase="kicker.stars.single">One star would be</span><span data-phrase="kicker.time">Counting to {count} would take about</span>
     <span data-phrase="stars.of">of {name}</span><span data-phrase="stars.tab">{share} of the Milky Way</span><span data-phrase="stars.milkyways">Milky Ways</span><span data-phrase="stars.milkyway.single">Milky Way</span><span data-phrase="stars.universes">observable universes</span><span data-phrase="stars.universe.single">observable universe</span>

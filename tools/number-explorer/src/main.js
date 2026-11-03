@@ -289,7 +289,7 @@ function update({ moveDial = true, jump = false } = {}) {
   if (moveDial) dial.value = String(position);
   dial.style.setProperty('--fill', `${position / 30 * 100}%`);
   dial.setAttribute('aria-valuetext', readback(count));
-  page.dataset.world = world;
+  page.dataset.scene = world;
   setText('answer-kicker', said.kicker);
   setText('answer-number', said.number);
   setText('answer-unit', said.unit);
@@ -444,9 +444,9 @@ function drawTicks() {
   const ticks = $('dial-ticks');
   const short = new Intl.NumberFormat(document.documentElement.lang || undefined, { notation: 'compact', compactDisplay: 'short' });
   for (const power of [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30]) {
-    const tick = document.createElement('button');
-    tick.type = 'button';
-    tick.tabIndex = -1;
+    // Labels rather than buttons: the dial is the control, and these are a shortcut
+    // along it for a pointer, too close together to be targets for a finger.
+    const tick = document.createElement('span');
     tick.textContent = power === 0 ? '1' : power <= 12 ? short.format(10 ** power) : `10${pretty(10 ** power).slice(2)}`;
     tick.style.setProperty('--at', String(power / 30));
     if (power % 6) tick.classList.add('ne-tick-minor');
@@ -536,8 +536,7 @@ useFont(getComputedStyle(document.body).fontFamily);
 drawTicks();
 update({ jump: true });
 if (stage.quiet) {
-  $('play').hidden = true;
-  $('still').hidden = true;
+  $('stage-controls').hidden = true;
 } else {
   // The first thing the page does is the thing it is for.
   journey(0, Math.min(5.5, Math.max(1.8, log10Count(count) * 0.5)));

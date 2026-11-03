@@ -119,6 +119,14 @@ export function chip(ctx, line, x, y, { size = 12, weight = 700, fill = '#fff', 
   ctx.restore();
 }
 
+export function widthOf(ctx, line, size, weight = 600) {
+  ctx.save();
+  ctx.font = fontFor(size, weight);
+  const width = ctx.measureText(line).width;
+  ctx.restore();
+  return width;
+}
+
 export function wrapLines(ctx, line, width, size, weight = 600) {
   ctx.save();
   ctx.font = fontFor(size, weight);
@@ -202,7 +210,8 @@ export function paintEarth(ctx, cx, cy, radius, alpha = 1) {
       ctx.ellipse(cx + x * radius, cy + y * radius, rx * radius, ry * radius, turn, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.fillStyle = 'rgba(255,255,255,.85)';
+    // A globe has caps. Close up, one would fill the frame and read as snow.
+    ctx.fillStyle = `rgba(255,255,255,${0.85 * (1 - smooth(140, 420, radius))})`;
     ctx.beginPath();
     ctx.ellipse(cx, cy - radius * 0.98, radius * 0.5, radius * 0.1, 0, 0, Math.PI * 2);
     ctx.ellipse(cx, cy + radius * 0.98, radius * 0.56, radius * 0.11, 0, 0, Math.PI * 2);

@@ -1,4 +1,4 @@
-import { backdrop, chip, clamp, hash, keyed, mix, nebula, nightSky, paintEarth, paintGalaxy, rgba, rounded, scatter, smooth, wrapLines, write } from './paint.js';
+import { backdrop, chip, clamp, hash, keyed, mix, nebula, nightSky, paintEarth, paintGalaxy, rgba, rounded, scatter, smooth, widthOf, wrapLines, write } from './paint.js';
 
 // A stack of books on one true ruler, from a single book on the floor to a line
 // that crosses the observable universe. The camera is the whole animation: it pulls
@@ -78,8 +78,8 @@ export function createBooksScene() {
   const falling = [];
   let settledBooks = 0;
 
-  function drawOverview(ctx, f, scale, view, base, stackX, stackRight) {
-    const { w, h, t, rungs, words } = f;
+  function drawOverview(ctx, f, scale, view, base, stackX, stackRight, taken) {
+    const { w, h, t, rungs } = f;
     const inkDark = smooth(4.2, 4.9, view);
     const lineInk = mix([48, 62, 78], [224, 233, 245], inkDark);
     const iconX = Math.min(w - 26, Math.max(stackRight + 56, w * 0.64));
@@ -93,6 +93,7 @@ export function createBooksScene() {
       const alpha = smooth(h * 0.025, h * 0.08, lift) * smooth(h * 0.015, h * 0.09, y);
       drawFar(ctx, rung, f, scale, base, iconX, stackX);
       if (alpha <= 0.01) continue;
+      if (taken.some(box => iconX + 14 > box.left && iconX - 14 < box.right && y + 14 > box.top && y - 14 < box.bottom)) continue;
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.strokeStyle = rgba(lineInk, 0.36);
@@ -107,6 +108,14 @@ export function createBooksScene() {
       labels.push({ y, alpha, size: rung.size, id: rung.id });
     }
 
+    return { labels, iconX };
+  }
+
+  // Written after everything standing on the ground, because a mountain's name has
+  // first claim on the sky above it: the mountain is what the picture is showing there.
+  function writeOverviewLabels(ctx, f, view, { labels, iconX }, taken) {
+    const { w, rungs, words } = f;
+    const inkDark = smooth(4.2, 4.9, view);
     // Largest first, so when two labels want one line the one nearer the top of
     // the stack, the next thing to be reached, is the one that keeps it.
     labels.sort((a, b) => b.size - a.size);
@@ -121,6 +130,10 @@ export function createBooksScene() {
       const lines = wrapLines(ctx, words.name(label.id), room, 12, 700);
       const tall = 32 + (lines.length - 1) * 14;
       if (kept.some(other => Math.abs(other.y - label.y) < Math.max(tall, other.tall))) continue;
+      const wide = Math.max(...lines.map(line => widthOf(ctx, line, 12, 700)));
+      const left = rightSide ? x : x - wide;
+      const top = label.y - 14 - (lines.length - 1) * 14;
+      if (taken.some(box => left < box.right && left + wide > box.left && top < box.bottom && label.y + 16 > box.top)) continue;
       kept.push({ y: label.y, tall });
       lines.forEach((line, i) => write(ctx, line, x, label.y - 7 - (lines.length - 1 - i) * 14, { size: 12, weight: 700, fill, halo, align, alpha: label.alpha }));
       write(ctx, words.length(rungs.find(r => r.id === label.id).size, 4), x, label.y + 8, { size: 11, weight: 500, fill, halo, align, alpha: label.alpha * 0.86 });
@@ -292,7 +305,13 @@ export function createBooksScene() {
     const radius = EARTH_RADIUS_M * scale;
     if (radius < 30000) {
       const centre = stackX;
-      if (radius > 2600) {
+      // The surface close up and the globe from afar hand over gradually, so the
+      // ground does not change colour at one particular zoom.
+      const close = smooth(1500, 3200, radius);
+      if (close < 1) paintEarth(ctx, centre, base + radius, radius, 1 - close);
+      if (close > 0) {
+        ctx.save();
+        ctx.globalAlpha = close;
         const land = ctx.createLinearGradient(0, base, 0, base + h * 0.2);
         land.addColorStop(0, '#4f8f6a');
         land.addColorStop(1, '#1e5583');
@@ -307,8 +326,7 @@ export function createBooksScene() {
         ctx.beginPath();
         ctx.arc(centre, base + radius, radius + 22, 0, Math.PI * 2);
         ctx.fill();
-      } else {
-        paintEarth(ctx, centre, base + radius, radius);
+        ctx.restore();
       }
       return;
     }
@@ -347,20 +365,32 @@ export function createBooksScene() {
     ctx.restore();
   }
 
-  function drawStanding(ctx, f, scale, view, base, stackRight) {
+  // Where each landmark on the ground stands this frame and where its name goes,
+  // worked out first because everything in the sky has to keep clear of those names.
+  function placeStanding(ctx, f, scale, base, stackRight) {
     const { w, h, rungs, words } = f;
-    const shade = mix([44, 60, 76], [140, 166, 190], smooth(3.8, 4.8, view));
-    const standing = rungs.filter(rung => rung.standing);
     const slots = [0.62, 0.8, 0.71];
     const room = w - stackRight;
-    const labels = [];
-    standing.forEach((rung, i) => {
+    const placed = [];
+    rungs.filter(rung => rung.standing).forEach((rung, i) => {
       const tall = rung.size * scale;
       const alpha = smooth(h * 0.04, h * 0.11, tall) * (1 - smooth(h * 0.86, h * 1.14, tall));
       if (alpha <= 0.01) return;
-      const shape = OUTLINES[rung.id];
-      const wide = tall * shape.aspect;
+      const wide = tall * OUTLINES[rung.id].aspect;
       const x = Math.max(stackRight + Math.min(wide / 2 + 12, room * 0.5), stackRight + room * (slots[i % 3] - 0.3) / 0.7);
+      const labelX = clamp(x, 80, w - 80);
+      const labelY = clamp(base - tall - 22, 20, h - 30);
+      const half = widthOf(ctx, words.name(rung.id), 12, 700) / 2;
+      placed.push({ rung, x, tall, wide, alpha, labelX, labelY, box: { left: labelX - half - 4, right: labelX + half + 4, top: labelY - 9, bottom: labelY + 22 } });
+    });
+    return placed;
+  }
+
+  function drawStanding(ctx, f, scale, view, base, placed) {
+    const { words } = f;
+    const shade = mix([44, 60, 76], [140, 166, 190], smooth(3.8, 4.8, view));
+    for (const { rung, x, tall, wide, alpha } of placed) {
+      const shape = OUTLINES[rung.id];
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.translate(x - wide / 2, base - tall);
@@ -372,14 +402,13 @@ export function createBooksScene() {
         ctx.fill(pathOf(shape.snow));
       }
       ctx.restore();
-      labels.push({ rung, x: clamp(x, 80, w - 80), y: clamp(base - tall - 22, 20, h - 30), alpha });
-    });
+    }
     const dark = view > 4.4;
     const fill = dark ? '#eef3fa' : '#1c2733';
     const halo = dark ? 'rgba(4,8,20,.8)' : 'rgba(255,255,255,.85)';
-    for (const { rung, x, y, alpha } of labels) {
-      write(ctx, words.name(rung.id), x, y, { size: 12, weight: 700, fill, halo, align: 'center', alpha });
-      write(ctx, words.length(rung.size, 4), x, y + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86 });
+    for (const { rung, alpha, labelX, labelY } of placed) {
+      write(ctx, words.name(rung.id), labelX, labelY, { size: 12, weight: 700, fill, halo, align: 'center', alpha });
+      write(ctx, words.length(rung.size, 4), labelX, labelY + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86 });
     }
   }
 
@@ -501,10 +530,14 @@ export function createBooksScene() {
       const stackX = Math.round(Math.max(w * 0.3, 124));
       const stackWidth = Math.max(16, BOOK_WIDTH_M * scale);
       const stackRight = stackX + stackWidth;
-      drawOverview(ctx, f, scale, view, base, stackX, stackRight);
+      const placed = placeStanding(ctx, f, scale, base, stackRight);
+      const taken = placed.filter(item => item.alpha > 0.35).map(item => item.box);
+      const overview = drawOverview(ctx, f, scale, view, base, stackX, stackRight, taken);
       drawClouds(ctx, f, scale, view, base);
-      drawStanding(ctx, f, scale, view, base, stackRight);
+      drawStanding(ctx, f, scale, view, base, placed);
       drawGround(ctx, f, scale, view, base, stackX + stackWidth / 2);
+      writeOverviewLabels(ctx, f, view, overview, taken);
+      drawRuler(ctx, f, scale, view, base);
       if (!zero) {
         drawStack(ctx, f, scale, view, base, stackX, stackWidth);
         // Small enough to hide behind the stack, the observable universe is drawn in
@@ -541,7 +574,6 @@ export function createBooksScene() {
           chip(ctx, words.before(previous), stackX - 14, Math.min(y, base - 14), { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.3)' : 'rgba(255,255,255,.3)', within: w, room: stackX - 20 });
         }
       }
-      drawRuler(ctx, f, scale, view, base);
       return { dark: smooth(4.2, 4.9, view) };
     }
   };

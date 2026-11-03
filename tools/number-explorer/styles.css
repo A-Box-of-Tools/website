@@ -1,8 +1,8 @@
 #main { --world: #b4552d; }
-#main[data-world="water"] { --world: #0b6fae; }
-#main[data-world="stars"] { --world: #5a4fcf; }
-#main[data-world="sand"] { --world: #94620f; }
-#main[data-world="time"] { --world: #c2415d; }
+#main[data-scene="water"] { --world: #0b6fae; }
+#main[data-scene="stars"] { --world: #5a4fcf; }
+#main[data-scene="sand"] { --world: #94620f; }
+#main[data-scene="time"] { --world: #c2415d; }
 .ne-card { overflow: hidden; border-top: 4px solid var(--world); transition: border-color .3s ease; }
 .ne-heading { display: flex; justify-content: space-between; gap: .6rem; flex-wrap: wrap; align-items: center; margin-bottom: .55rem; }
 .eyebrow { color: var(--text-dim); font-size: .75rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
@@ -28,8 +28,8 @@
 #dial:hover::-webkit-slider-thumb { transform: scale(1.1); }
 #dial:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
 .ne-ticks { position: absolute; inset-inline: 0; bottom: 0; height: 1.3rem; }
-.ne-ticks button { position: absolute; top: 0; left: calc(13px + (100% - 26px) * var(--at)); transform: translateX(-50%); padding: .1rem .15rem; border: 0; border-radius: 4px; background: none; color: var(--text-dim); font-size: .7rem; font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; cursor: pointer; box-shadow: none; min-height: 0; }
-.ne-ticks button:hover { color: var(--world); }
+.ne-ticks span { position: absolute; top: 0; left: calc(13px + (100% - 26px) * var(--at)); transform: translateX(-50%); padding: .1rem .15rem; color: var(--text-dim); font-size: .7rem; font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; cursor: pointer; }
+.ne-ticks span:hover { color: var(--world); }
 
 .ne-worlds { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .35rem; margin-top: .25rem; }
 .ne-worlds button { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: .4rem; align-items: center; justify-items: start; padding: .5rem .55rem; text-align: start; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px 10px 0 0; border-bottom-width: 0; color: var(--text); min-width: 0; cursor: pointer; transition: background .15s ease, color .15s ease; }
@@ -43,7 +43,8 @@
 .ne-stage { position: relative; border-radius: 0 0 12px 12px; overflow: hidden; background: #0b1226; box-shadow: 0 0 0 1px var(--border); }
 #stage { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 64vh; min-height: 280px; touch-action: pan-y; }
 .ne-stage-controls { position: absolute; top: .55rem; inset-inline-end: .55rem; display: flex; gap: .3rem; }
-.ne-stage-controls button { display: inline-flex; align-items: center; gap: .3rem; padding: .28rem .6rem; border: 1px solid rgb(255 255 255 / 28%); border-radius: 16px; background: rgb(12 18 28 / 66%); color: #fff; font-size: .74rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(3px); min-height: 0; box-shadow: none; }
+.ne-stage-controls[hidden] { display: none; }
+.ne-stage-controls button { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; padding: .28rem .6rem; border: 1px solid rgb(255 255 255 / 28%); border-radius: 16px; background: rgb(12 18 28 / 66%); color: #fff; font-size: .74rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(3px); box-shadow: none; }
 .ne-stage-controls button:hover { background: rgb(12 18 28 / 86%); }
 .ne-stage-controls svg { width: 11px; height: 11px; fill: currentColor; }
 #play[aria-pressed="true"] svg { display: none; }
@@ -84,10 +85,10 @@
 .ne-guess[hidden] { display: none; }
 .ne-guess strong { font-size: .92rem; line-height: 1.35; }
 .ne-guess-actions { display: flex; gap: .4rem; }
-.ne-guess-actions button { min-width: 3.5rem; min-height: 40px; }
+.ne-guess-actions button { min-width: 3.5rem; min-height: 44px; }
 #guess-answer { margin: 0; font-size: .86rem; color: var(--ok); }
 #followups { display: grid; gap: .4rem; }
-#followups button { padding: .55rem .7rem; color: var(--accent); background: var(--surface-2); font-size: .82rem; text-align: start; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; min-height: 40px; cursor: pointer; box-shadow: none; }
+#followups button { padding: .55rem .7rem; color: var(--accent); background: var(--surface-2); font-size: .82rem; text-align: start; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; min-height: 44px; cursor: pointer; box-shadow: none; }
 #followups button:hover { border-color: var(--accent); }
 .ne-example-row { display: flex; flex-wrap: wrap; gap: .35rem; }
 .ne-example-row button { padding: .32rem .62rem; font-size: .78rem; border-radius: 16px; }
@@ -102,10 +103,10 @@
 
 @media (prefers-color-scheme: dark) {
   #main { --world: #e08257; }
-  #main[data-world="water"] { --world: #4db0ea; }
-  #main[data-world="stars"] { --world: #958cf0; }
-  #main[data-world="sand"] { --world: #dba83f; }
-  #main[data-world="time"] { --world: #ec7a92; }
+  #main[data-scene="water"] { --world: #4db0ea; }
+  #main[data-scene="stars"] { --world: #958cf0; }
+  #main[data-scene="sand"] { --world: #dba83f; }
+  #main[data-scene="time"] { --world: #ec7a92; }
   .ne-worlds button[aria-pressed="true"], .ne-here, .ne-magnify { color: #10141b; }
   .ne-worlds button[aria-pressed="true"] .ne-world-value { color: rgb(16 20 27 / 82%); }
 }
@@ -128,6 +129,9 @@
   .ne-world-name { font-size: .72rem; }
   .ne-world-value { display: none; }
   #stage { aspect-ratio: 4 / 5; max-height: none; }
-  .ne-ticks button.ne-tick-minor { display: none; }
-  #still { display: none; }
+  .ne-ticks span.ne-tick-minor { display: none; }
+  /* Under the picture rather than on it: two buttons a thumb can hit would cover
+     the readout on a stage this narrow. */
+  .ne-stage-controls { position: static; gap: .4rem; padding: .4rem; }
+  .ne-stage-controls button { flex: 1; }
 }

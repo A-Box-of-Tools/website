@@ -198,7 +198,7 @@ export function describe(world, count, settings, perUnit, rungs) {
       answer = {
         kicker: phrase(key, { count: said, books: pretty(books), words: pretty(books * settings.wordsPerBook) }),
         number: words.number,
-        unit: phrase('tall', { unit: words.unit })
+        unit: phrase('unit.tall', { unit: words.unit })
       };
       tab = length(amount);
       break;

@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
 import { CONTAINERS, containerIndex, levelForShare } from '../../tools/number-explorer/src/containers.js';
 import { circleGroup, starLevel } from '../../tools/number-explorer/src/scene-stars.js';
@@ -250,6 +251,14 @@ test('number explorer writes back only what its own parser reads', () => {
   assert.equal(countText(12n * 10n ** 17n), '1.2e18');
 });
 
+test('number explorer marks a world only on the buttons that choose one', () => {
+  // main.js finds a tab by this attribute, so anything else carrying it, ahead of the
+  // tabs in the page, would take the pressed state that belongs to the tab.
+  const body = readFileSync(new URL('../../tools/number-explorer/body.html', import.meta.url), 'utf8');
+  const marked = [...body.matchAll(/<(\w+)[^>]*\bdata-world="(\w+)"/g)];
+  assert.deepEqual(marked.map(match => match[1]), ['button', 'button', 'button', 'button', 'button']);
+  assert.deepEqual(marked.map(match => match[2]).sort(), ['books', 'sand', 'stars', 'time', 'water']);
+});
 test('number explorer has a container shape for every volume on its ladder', () => {
   for (const rung of VOLUME_LADDER) assert.ok(CONTAINERS[rung.id], rung.id);
 });
