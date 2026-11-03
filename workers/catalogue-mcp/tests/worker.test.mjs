@@ -46,6 +46,7 @@ function workerFixture(options = {}) {
     viewHtml,
     allowedHosts: ['mcp.abox.tools', 'localhost', '127.0.0.1'],
     allowedOrigins: [allowedOrigin, 'http://localhost:8123'],
+    serviceOrigin: 'https://mcp.abox.tools',
     ...options,
   });
 }
@@ -371,7 +372,7 @@ test('public discovery cards support cross-origin reads and conditional requests
 });
 
 test('the public landing page identifies development status and where keywords go', async (t) => {
-  const worker = workerFixture({ allowedHosts: ['mcp-dev.abox.tools'] });
+  const worker = workerFixture({ allowedHosts: ['mcp-dev.abox.tools'], serviceOrigin: 'https://mcp-dev.abox.tools' });
   t.after(() => worker.close());
   const response = await worker.fetch(request(undefined, {
     url: 'https://mcp-dev.abox.tools/', method: 'GET', headers: { Origin: 'https://independent-agent.example' },
@@ -549,21 +550,76 @@ test('MCP and unknown paths skip public discovery document construction', () => 
   const unreadCatalogue = { get build() { assert.fail('Unrelated paths must not read public document data'); } };
   for (const path of ['/mcp', '/mcp/', '/unknown', '/mcp/server-card/', '/mcp/server-card?query=public', '/?query=public']) {
     const incoming = new Request(new URL(path, endpoint));
-    assert.equal(discoveryResponse(incoming, unreadCatalogue), null, path);
+    assert.equal(discoveryResponse(incoming, unreadCatalogue, 'https://mcp.abox.tools'), null, path);
   }
 });
 
-test('public discovery reuses parsed request URLs while preserving scheme, host and port', async () => {
+test('public discovery reuses parsed request URLs and names only the configured origin', async () => {
   const incoming = { method: 'GET', headers: new Headers(),
     get url() { assert.fail('The Worker already parsed this request URL'); } };
-  for (const origin of ['https://mcp.abox.tools:8443', 'http://127.0.0.1:8787']) {
-    const url = new URL('/mcp/server-card', origin);
-    const response = discoveryResponse(incoming, catalogue, url);
+  for (const origin of ['https://mcp.abox.tools', 'http://127.0.0.1:8787']) {
+    const url = new URL('/mcp/server-card', 'https://mcp.abox.tools:8443');
+    const response = discoveryResponse(incoming, catalogue, origin, url);
     assert.equal(response.status, 200);
     assert.deepEqual((await response.json()).remotes, [{ type: 'streamable-http', url: `${origin}/mcp` }]);
-    const index = discoveryResponse(incoming, catalogue, new URL('/.well-known/ai-catalog.json', origin));
+    const index = discoveryResponse(incoming, catalogue, origin, new URL('/.well-known/ai-catalog.json', 'https://mcp.abox.tools:8443'));
     assert.equal((await index.json()).entries[0].url, `${origin}/mcp/server-card`);
   }
+});
+
+test('every discovery document answers on any proxied port and names the same address', async (t) => {
+  const worker = workerFixture();
+  t.after(() => worker.close());
+  for (const port of ['', ':8443', ':2053']) {
+    for (const path of ['/', '/mcp/server-card', '/.well-known/mcp.json', '/.well-known/mcp/server-card.json',
+      '/.well-known/agent-card.json', '/.well-known/ai-catalog.json']) {
+      const url = `https://mcp.abox.tools${port}${path}`;
+      const response = await worker.fetch(request(undefined, { url, method: 'GET', headers: { Host: `mcp.abox.tools${port}` } }), {}, {});
+      assert.equal(response.status, 200, url);
+      assert.equal((await response.text()).includes('8443'), false, url);
+    }
+    const url = `https://mcp.abox.tools${port}/.well-known/agent-card.json`;
+    const card = await (await worker.fetch(request(undefined, { url, method: 'GET', headers: { Host: `mcp.abox.tools${port}` } }), {}, {})).json();
+    assert.equal(card.supportedInterfaces[0].url, 'https://mcp.abox.tools/a2a');
+  }
+});
+
+test('a service with no usable origin of its own refuses to start', () => {
+  for (const serviceOrigin of [undefined, '', 'https://attacker.example', 'https://mcp.abox.tools:8443',
+    'https://mcp.abox.tools/mcp', 'http://mcp.abox.tools']) {
+    assert.throws(() => workerFixture({ serviceOrigin }), TypeError, String(serviceOrigin));
+  }
+  assert.throws(() => workerFixture({ allowedHosts: ['mcp-dev.abox.tools'] }), TypeError, 'it must be one of the hosts it serves');
+});
+
+test('subscriptions/listen is refused in one JSON reply rather than held open as a stream', async (t) => {
+  const worker = workerFixture();
+  t.after(() => worker.close());
+  const _meta = { 'io.modelcontextprotocol/protocolVersion': '2026-07-28',
+    'io.modelcontextprotocol/clientInfo': { name: 'catalogue-contract-tests', version: '1.0.0' },
+    'io.modelcontextprotocol/clientCapabilities': {} };
+  for (const notifications of [{ toolsListChanged: true }, {}]) {
+    for (const accept of ['application/json, text/event-stream', 'application/json', 'text/event-stream']) {
+      const response = await worker.fetch(request({ jsonrpc: '2.0', id: 9, method: 'subscriptions/listen', params: { _meta, notifications } },
+        { headers: { Accept: accept, 'Mcp-Method': 'subscriptions/listen' } }), {}, {});
+      assert.equal(response.headers.get('Content-Type')?.split(';')[0], 'application/json', accept);
+      // A stream that stayed open would hang here rather than fail the assertion.
+      const reply = await response.json();
+      assert.equal(reply.id, 9);
+      assert.equal(reply.error.code, -32603);
+    }
+  }
+});
+
+test('one IPv6 /64 is one budget however many addresses it rotates through', async (t) => {
+  const keys = [];
+  const worker = workerFixture({ rateLimiter: { limit: async ({ key }) => { keys.push(key); return { success: true }; } } });
+  t.after(() => worker.close());
+  for (const address of ['2606:4700:4700:ab::1', '2606:4700:4700:ab:9876:5432:abcd:ef01', '2606:4700:4700:ac::1', '192.0.2.1']) {
+    await worker.fetch(request(undefined, { url: 'https://mcp.abox.tools/', method: 'GET', headers: { 'CF-Connecting-IP': address } }), {}, {});
+  }
+  await worker.fetch(request(undefined, { url: 'https://mcp.abox.tools/', method: 'GET' }), {}, {});
+  assert.deepEqual(keys, ['2606:4700:4700:ab::/64', '2606:4700:4700:ab::/64', '2606:4700:4700:ac::/64', '192.0.2.1', 'local']);
 });
 
 test('production configuration serves its real identity and restricts browser origins', async (t) => {

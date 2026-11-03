@@ -2,7 +2,8 @@ import { createMcpHandler, hostHeaderValidationResponse, originValidationRespons
 import { createCatalogueServer } from './server.mjs';
 import { validateCatalogue } from './search.mjs';
 import { discoveryResponse, apexDiscoveryResponse } from './discovery.mjs';
-import { A2A_PATH, A2A_VERSION, a2aResponse } from './a2a.mjs';
+import { A2A_PATH, A2A_VERSION, a2aResponse, buildAgentCard } from './a2a.mjs';
+import { requestNetwork } from '../../shared/address.js';
 
 const BODY_LIMIT = 16384;
 
@@ -34,15 +35,25 @@ async function boundedBody(request) {
   return bytes;
 }
 
-export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins, rateLimiter, requireRateLimiter = false }) {
+export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins, serviceOrigin, rateLimiter, requireRateLimiter = false }) {
   validateCatalogue(catalogue);
+  // Building the card once turns a mistyped origin into a failed deployment
+  // rather than a 500 on every later discovery request.
+  buildAgentCard(catalogue, serviceOrigin);
+  if (!allowedHosts?.includes(new URL(serviceOrigin).hostname)) {
+    throw new TypeError('The service origin must be one of the service hosts');
+  }
   if (!Array.isArray(allowedHosts) || !allowedHosts.length
       || !Array.isArray(allowedOrigins) || allowedOrigins.some(value => new URL(value).origin !== value)) {
     throw new TypeError('Explicit service hosts and client origins are required');
   }
   const origins = new Set(allowedOrigins);
   const originHosts = allowedOrigins.map(value => new URL(value).hostname);
-  const handler = createMcpHandler(() => createCatalogueServer(catalogue, viewHtml), { responseMode: 'json' });
+  // JSON mode does not cover subscriptions/listen: the SDK always answers it with
+  // a held-open event stream. This catalogue never changes while deployed, so
+  // there is nothing to subscribe to, and no reason to let a public client keep
+  // a stream on a Worker priced by the request. Zero refuses it in-band.
+  const handler = createMcpHandler(() => createCatalogueServer(catalogue, viewHtml), { responseMode: 'json', maxSubscriptions: 0 });
   return {
     async fetch(request, env = {}) {
       const url = new URL(request.url);
@@ -54,7 +65,7 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
       }
       if (limiter) {
         try {
-          const result = await limiter.limit({ key: request.headers.get('CF-Connecting-IP') || 'local' });
+          const result = await limiter.limit({ key: requestNetwork(request, 'local') });
           const success = result?.success;
           if (success !== true) return success === false
             ? error(429, 'Catalogue request limit reached', { 'Retry-After': '60' })
@@ -65,7 +76,7 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
       }
       const apex = apexDiscoveryResponse(request, url);
       if (apex) return apex;
-      const discovery = discoveryResponse(request, catalogue, url);
+      const discovery = discoveryResponse(request, catalogue, serviceOrigin, url);
       if (discovery) return discovery;
       const origin = request.headers.get('Origin');
       if (origin !== null && (!origins.has(origin) || originValidationResponse(request, originHosts))) {
