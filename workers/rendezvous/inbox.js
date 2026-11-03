@@ -1,8 +1,9 @@
 // Incoming voice uses a separate room authority from outgoing broadcasts.
 // Socket attachments retain only admission and moderation metadata, including
 // an anchor while the host reconnects; audio and room history are never stored.
-import { admitPending, broadcastCode, pendingSource, validBroadcastSignal } from "./broadcast.js";
+import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { admitPending, pendingSource } from "./pending.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, forgetApproval, clearApprovals } from "./voice-approval.js";
 
