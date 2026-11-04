@@ -11,8 +11,8 @@ glyph = "table"
 category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 css_parts = ["form", "checks", "notes", "panes"]
-js_parts = ["download", "clipboard-feedback", "table-data"]
-lastmod = "2026-10-27"
+js_parts = ["download", "clipboard-feedback", "table-data", "text-import"]
+lastmod = "2026-11-03"
 title = "Stitch Two Tables &mdash; Match, Pair or Merge CSV &mdash; No Upload"
 description = "Join two CSV or pasted spreadsheet tables by matching values or patterns, pair rows manually, stack rows or merge side by side. Preview and export CSV or TSV in your browser. Nothing is uploaded for processing."
 og_title = "Two tables, stitched together in your browser"
@@ -62,7 +62,7 @@ body = "The page's advertising, measurement and feedback features are described 
 
 [[howto]]
 title = "Add table A and table B."
-body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose a text file for each side. Check the delimiter and automatic heading guess. Without a clear heading row, all rows are kept and column names are suggested from value patterns. You can choose the heading-row setting manually. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
+body = "Paste CSV or tab-separated cells copied from a spreadsheet, or choose or drop a text file for each side. Check the delimiter and automatic heading guess. Without a clear heading row, all rows are kept and column names are suggested from value patterns. You can choose the heading-row setting manually. Values stay as text, so an identifier such as 00123 keeps its leading zeroes."
 [[howto]]
 title = "Choose how the rows meet."
 body = "Match rows by columns and an exact value or extraction pattern, pair individual rows manually, or use Simple merge to add rows, columns, or both. The combined direction matches a selected key, retains every unmatched row, and combines shared fields when their values agree or one is empty. Conflicting fields keep separate A/B columns. For matching and manual pairing, choose whether to keep every row, all of table A, or only paired rows."
@@ -75,7 +75,7 @@ body = "Choose CSV or TSV and check formula protection. Protection adds an apost
 
 [[faq]]
 q = "Can I use tables copied from Excel or Google Sheets?"
-a = "Yes. Copy a rectangular range and paste it into a table box; spreadsheet cells usually arrive separated by tabs. You can also save a sheet as CSV or TSV and choose that file. This tool reads delimited text, not an XLSX workbook, its formulas, cell styles or multiple sheets."
+a = "Yes. Copy a rectangular range and paste it into a table box; spreadsheet cells usually arrive separated by tabs. You can also save a sheet as CSV UTF-8 or TSV and choose or drop that file. This tool reads delimited text, not an XLSX workbook, its formulas, cell styles or multiple sheets."
 [[faq]]
 q = "What if my table has no header row?"
 a = "Automatic detection keeps the first row as data unless it looks like headings. Headerless columns receive suggested names such as Email, Date, ID, Number or Text based on up to 50 rows. Repeated suggested names become Email 1, Email 2 and so on. Guesses do not change cell values. Review the notice and choose First row is headings or No heading row if needed; ambiguous all-text tables cannot always be distinguished automatically. Stacking still aligns headerless tables by column position."
@@ -90,10 +90,10 @@ q = "Can I merge more rows, more columns, or both?"
 a = "Yes. Add rows stacks B below A and aligns headed columns, keeping extra columns; without headings it aligns by position. Add columns places tables side by side and retains the longer table's rows. Add rows and columns matches records by your chosen key and keeps unmatched records from both sides. Shared headings combine equal values or fill exactly empty cells. If a shared field has any conflicting nonempty values, its full A/B columns remain separate. Headerless fields stay separate because inferred names do not establish that they mean the same thing."
 [[faq]]
 q = "How large can the tables be?"
-a = "Each source is limited to 2,097,152 text characters, 5,000 data rows, 100 columns and 100,000 data cells. Selected files are also limited to 2 MiB. The stitched result is limited to 20,000 rows and 500,000 cells. These bounds keep the browser responsive and stop duplicate keys from expanding into an unexpectedly large result. A preview shows part of the result; export includes every prepared row."
+a = "Each source is limited to 2,097,152 text characters, 5,000 data rows, 100 columns and 100,000 data cells. Selected files are also limited to 2 MiB. The stitched result is limited to 20,000 rows, 500,000 cells and 16 MiB of text. These bounds keep the browser responsive and stop duplicate keys from expanding into an unexpectedly large result. A preview shows part of the result; export includes every prepared row."
 [[faq]]
 q = "Does export change my values?"
-a = "Cells remain text without number or date conversion. Quoting and delimiters may change when written. Formula protection is enabled by default and prefixes potentially active spreadsheet cells with an apostrophe; turn it off for unchanged-text export. Your spreadsheet may still infer dates or numbers when opening CSV, so import columns as text when preserving identifiers matters."
+a = "Cells remain text without number or date conversion. Quoting and delimiters may change when written. Formula protection is enabled by default and prefixes potentially active spreadsheet cells with an apostrophe, while a cell holding only a number, such as -12.50, stays as it is; turn it off for unchanged-text export. Your spreadsheet may still infer dates or numbers when opening CSV, so import columns as text when preserving identifiers matters."
 [[faq]]
 q = "Are either of my tables uploaded?"
 a = "The table-processing code does not upload source files, pasted cells, match keys or results. It runs in this browser and works offline after the page is loaded. Copy intentionally places the result on your clipboard, and Download saves a file through your browser."

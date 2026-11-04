@@ -393,6 +393,7 @@ error_broke = "問題が起きました：{detail}。最初からやり直すに
 # 他の言語で変わるからで、ここで書き忘れているわけではありません。
 reading_one = "{count}個のファイルを読み込み中&hellip;"
 reading_many = "{count}個のファイルを読み込み中&hellip;"
+text_encoding = "UTF-8テキストとして保存されていません。UTF-8で保存し直してもう一度試すか、テキストを直接貼り付けてください。"
 
 check_yourself = """
       <strong>自分で確かめてください。</strong>以上のどれも、鵜呑みにする必要は\
