@@ -1,15 +1,92 @@
 export const MAX_COUNT = 10n ** 30n;
-const SUFFIX_POWERS = Object.freeze({ k: 3, thousand: 3, m: 6, million: 6, b: 9, billion: 9, t: 12, trillion: 12 });
+const SUFFIX_POWERS = Object.freeze({ k: 3, thousand: 3, m: 6, million: 6, b: 9, billion: 9, t: 12, trillion: 12, quadrillion: 15, quintillion: 18, sextillion: 21, septillion: 24, octillion: 27, nonillion: 30 });
 const SECONDS_PER_YEAR = 365.25 * 24 * 60 * 60;
+const LIGHT_YEAR_M = 9.4607e15;
+const WORDS_PER_TOKEN = 0.75;
 
-export const VOLUME_REFERENCES = Object.freeze([
-  Object.freeze({ id: 'spoon', volumeM3: 0.000015 }),
-  Object.freeze({ id: 'cup', volumeM3: 0.00025 }),
-  Object.freeze({ id: 'bucket', volumeM3: 0.01 }),
-  Object.freeze({ id: 'bath', volumeM3: 0.2 }),
-  Object.freeze({ id: 'room', volumeM3: 30 }),
-  Object.freeze({ id: 'pool', volumeM3: 2500 }),
-  Object.freeze({ id: 'mountain', volumeM3: Math.PI * 1e9 / 3 })
+// Each ladder runs smallest to largest and holds rounded published figures or
+// examples the page names as chosen. The assumptions panel lists them with their
+// sources, so a number here that changes has a sentence to change with it.
+const ladder = items => Object.freeze(items.map(item => Object.freeze(item)));
+
+export const VOLUME_REFERENCES = ladder([
+  { id: 'spoon', size: 0.000015 },
+  { id: 'cup', size: 0.00025 },
+  { id: 'bucket', size: 0.01 },
+  { id: 'bath', size: 0.2 },
+  { id: 'room', size: 30 },
+  { id: 'pool', size: 2500 },
+  { id: 'tanker', size: 320000 },
+  { id: 'pyramid', size: 2.6e6 },
+  { id: 'mountain', size: Math.PI * 1e9 / 3 },
+  { id: 'loch', size: 7.4e9 },
+  { id: 'superior', size: 1.21e13 },
+  { id: 'water', size: 1.386e18 }
+]);
+
+// Worth comparing against, but the default grain or drop cannot always fill them
+// within 10^30, so the references a count can be worked back from stop above.
+export const PLANET_REFERENCES = ladder([
+  { id: 'moon', size: 2.1968e19 },
+  { id: 'earth', size: 1.08321e21 },
+  { id: 'neptune', size: 6.254e22 }
+]);
+
+export const VOLUME_LADDER = Object.freeze([...VOLUME_REFERENCES, ...PLANET_REFERENCES]);
+
+// `books` marks a landmark that is a number of books rather than a height: where
+// it sits on the ruler depends on how thick a book is taken to be. `standing`
+// marks one that stands on the ground and is drawn at its true height.
+const HEIGHT_REFERENCES = ladder([
+  { id: 'table', size: 0.75, standing: true },
+  { id: 'person', size: 1.7, standing: true },
+  { id: 'house', size: 8, standing: true },
+  { id: 'liberty', size: 93, standing: true },
+  { id: 'eiffel', size: 330, standing: true },
+  { id: 'burj', size: 828, standing: true },
+  { id: 'everest', size: 8849, standing: true },
+  { id: 'airliner', size: 11000 },
+  { id: 'congress', books: 25.77e6 },
+  { id: 'everybook', books: 129864880 },
+  { id: 'iss', size: 400000 },
+  { id: 'around', size: 40075000 },
+  { id: 'moon', size: 3.844e8 },
+  { id: 'mars', size: 5.46e10 },
+  { id: 'sun', size: 1.496e11 },
+  { id: 'neptune', size: 4.515e12 },
+  { id: 'voyager', size: 2.59e13 },
+  { id: 'lightyear', size: LIGHT_YEAR_M },
+  { id: 'proxima', size: 4.24 * LIGHT_YEAR_M },
+  { id: 'orion', size: 1500 * LIGHT_YEAR_M },
+  { id: 'milkyway', size: 100000 * LIGHT_YEAR_M },
+  { id: 'andromeda', size: 2.5e6 * LIGHT_YEAR_M },
+  { id: 'virgo', size: 54e6 * LIGHT_YEAR_M },
+  { id: 'quasar', size: 2.5e9 * LIGHT_YEAR_M },
+  { id: 'edge', size: 46.5e9 * LIGHT_YEAR_M }
+]);
+
+export const STAR_REFERENCES = ladder([
+  { id: 'dipper', size: 7 },
+  { id: 'sky', size: 9100 },
+  { id: 'omega', size: 1e7 },
+  { id: 'milkyway', size: 1e11 },
+  { id: 'andromeda', size: 1e12 },
+  { id: 'universe', size: 1e23 }
+]);
+
+export const TIME_REFERENCES = ladder([
+  { id: 'minute', size: 60 },
+  { id: 'hour', size: 3600 },
+  { id: 'day', size: 86400 },
+  { id: 'week', size: 604800 },
+  { id: 'year', size: SECONDS_PER_YEAR },
+  { id: 'decade', size: 10 * SECONDS_PER_YEAR },
+  { id: 'lifetime', size: 80 * SECONDS_PER_YEAR },
+  { id: 'pyramid', size: 4500 * SECONDS_PER_YEAR },
+  { id: 'sapiens', size: 300000 * SECONDS_PER_YEAR },
+  { id: 'dinosaurs', size: 66e6 * SECONDS_PER_YEAR },
+  { id: 'earth', size: 4.54e9 * SECONDS_PER_YEAR },
+  { id: 'universe', size: 13.8e9 * SECONDS_PER_YEAR }
 ]);
 
 function invalid(key) { return { ok: false, key }; }
@@ -17,11 +94,11 @@ function invalid(key) { return { ok: false, key }; }
 export function parseCount(raw) {
   if (raw === null || raw === undefined || raw === '') return invalid('amount-required');
   if (typeof raw !== 'string') return invalid('amount-invalid');
-  let value = raw.replace(/[\u00a0\u202f]/g, ' ').trim();
+  let value = raw.replace(/[  ]/g, ' ').trim();
   if (!value) return invalid('amount-required');
   if (value.length > 256) return invalid('amount-invalid');
   let suffixPower = 0;
-  const suffix = /^(.*?)\s*(thousand|million|billion|trillion|[kmbt])$/i.exec(value);
+  const suffix = /^(.*?)\s*(thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonillion|[kmbt])$/i.exec(value);
   if (suffix) {
     value = suffix[1].trim();
     suffixPower = SUFFIX_POWERS[suffix[2].toLowerCase()];
@@ -69,7 +146,7 @@ function volume(value) {
 }
 
 function referenceById(id) {
-  const reference = VOLUME_REFERENCES.find(item => item.id === id);
+  const reference = VOLUME_LADDER.find(item => item.id === id);
   if (!reference) throw new RangeError('reference-invalid');
   return reference;
 }
@@ -88,12 +165,35 @@ export function sandModel(count, diameterMm = 0.5, packing = 0.6) {
   return { volumeM3, liters, cubeSideM: Math.cbrt(volumeM3) };
 }
 
+export function waterModel(count, dropMl = 0.05) {
+  const drops = countNumber(count);
+  positive(dropMl, 'water-invalid-model');
+  const liters = drops * dropMl / 1000;
+  const volumeM3 = liters / 1000;
+  return { volumeM3, liters, cubeSideM: Math.cbrt(volumeM3) };
+}
+
 export function textModel(count, wordsPerBook = 75000) {
-  const words = countNumber(count) * 0.75;
+  const words = countNumber(count) * WORDS_PER_TOKEN;
   positive(wordsPerBook, 'book-invalid-model');
   const books = words / wordsPerBook;
   if (!Number.isFinite(books)) throw new RangeError('book-invalid-model');
   return { words, books };
+}
+
+// What one counted thing becomes in a stack of books. A word or a token is only a
+// share of a book, which is what lets a million tokens stand ten books high.
+export function booksPerUnit(unit = 'book', wordsPerBook = 75000) {
+  positive(wordsPerBook, 'book-invalid-model');
+  if (unit === 'word') return 1 / wordsPerBook;
+  if (unit === 'token') return WORDS_PER_TOKEN / wordsPerBook;
+  return 1;
+}
+
+export function bookModel(count, { unit = 'book', thicknessM = 0.03, wordsPerBook = 75000 } = {}) {
+  positive(thicknessM, 'book-invalid-model');
+  const books = countNumber(count) * booksPerUnit(unit, wordsPerBook);
+  return { books, words: books * wordsPerBook, heightM: books * thicknessM };
 }
 
 export function countingModel(count, rate = 1) {
@@ -104,31 +204,105 @@ export function countingModel(count, rate = 1) {
   return { seconds, years: seconds / SECONDS_PER_YEAR };
 }
 
-export function chooseReference(volumeM3) {
-  volume(volumeM3);
-  if (volumeM3 === 0) return VOLUME_REFERENCES[0];
-  let best = VOLUME_REFERENCES[0];
-  let bestDistance = Infinity;
-  for (const reference of VOLUME_REFERENCES) {
-    const distance = Math.abs(Math.log10(volumeM3) - Math.log10(reference.volumeM3) - 1);
-    if (distance < bestDistance) { best = reference; bestDistance = distance; }
-  }
-  return best;
-}
-
 export function compareVolume(volumeM3, referenceId) {
   volume(volumeM3);
   const reference = referenceById(referenceId);
-  return { ratio: volumeM3 / reference.volumeM3, inverse: volumeM3 === 0 ? null : reference.volumeM3 / volumeM3 };
+  return { ratio: volumeM3 / reference.size, inverse: volumeM3 === 0 ? null : reference.size / volumeM3 };
 }
 
 export function countForVolume(referenceId, diameterMm = 0.5, packing = 0.6) {
   const reference = referenceById(referenceId);
   const grainVolumeM3 = sandModel(1n, diameterMm, packing).volumeM3;
-  const estimate = reference.volumeM3 / grainVolumeM3;
+  const estimate = reference.size / grainVolumeM3;
   if (!Number.isFinite(estimate)) throw new RangeError('amount-too-large');
   // Reverse estimates are rounded whole counts, not exact physical measurements.
   const count = BigInt(Math.round(estimate));
   countNumber(count);
   return count;
+}
+
+export function heightLadder(thicknessM = 0.03) {
+  positive(thicknessM, 'book-invalid-model');
+  return HEIGHT_REFERENCES
+    .map(item => (item.books ? { ...item, size: item.books * thicknessM } : item))
+    .sort((a, b) => a.size - b.size);
+}
+
+// The physical size of one counted thing in a world, in that world's own measure:
+// meters of stack, cubic meters of water or sand, single stars, seconds of counting.
+export function sizePerUnit(world, settings = {}) {
+  const { unit, thicknessM = 0.03, wordsPerBook = 75000, dropMl = 0.05, diameterMm = 0.5, rate = 1 } = settings;
+  switch (world) {
+    case 'books': return booksPerUnit(unit, wordsPerBook) * thicknessM;
+    case 'water': return waterModel(1n, dropMl).volumeM3;
+    case 'sand': return sandModel(1n, diameterMm).volumeM3;
+    case 'stars': return 1;
+    case 'time': return 1 / rate;
+    default: throw new RangeError('world-invalid');
+  }
+}
+
+export function ladderFor(world, settings = {}) {
+  switch (world) {
+    case 'books': return heightLadder(settings.thicknessM);
+    case 'water': case 'sand': return VOLUME_LADDER;
+    case 'stars': return STAR_REFERENCES;
+    case 'time': return TIME_REFERENCES;
+    default: throw new RangeError('world-invalid');
+  }
+}
+
+export function placeOnLadder(value, rungs) {
+  // One part in 10^12 stops a count worked back from a landmark from reading as
+  // falling just short of that landmark.
+  let index = -1;
+  for (let i = 0; i < rungs.length; i++) if (rungs[i].size <= value * (1 + 1e-12)) index = i;
+  const below = rungs[index] ?? null;
+  const above = rungs[index + 1] ?? null;
+  return { index, below, above, times: below ? value / below.size : null, share: above ? value / above.size : null };
+}
+
+// Rounding up keeps a landmark reached, where rounding to nearest could stop just
+// short of it and report 99.9% of the thing the visitor asked to reach.
+export function roundUpCount(count, digits = 3) {
+  const text = count.toString();
+  if (text.length <= digits) return count;
+  const unit = 10n ** BigInt(text.length - digits);
+  const rounded = count % unit === 0n ? count : (count / unit + 1n) * unit;
+  return rounded > MAX_COUNT ? MAX_COUNT : rounded;
+}
+
+// The whole count that reaches a landmark, or null when the explorer stops short.
+export function countForSize(size, perUnit) {
+  const estimate = size / perUnit;
+  if (!Number.isFinite(estimate) || estimate > Number(MAX_COUNT)) return null;
+  return roundUpCount(BigInt(Math.max(1, Math.ceil(estimate))));
+}
+
+export function log10Count(count) {
+  if (count <= 0n) return 0;
+  const digits = count.toString();
+  return Math.log10(Number(digits.slice(0, 15))) + digits.length - Math.min(digits.length, 15);
+}
+
+// The dial is a power of ten, so one exact count per position would make most
+// positions an unreadable number. It lands on two significant digits, and sticks
+// to the whole powers a visitor is most likely to be reaching for.
+export function dialCount(position) {
+  if (position >= 30) return MAX_COUNT;
+  const place = Math.max(0, position);
+  const nearest = Math.round(place);
+  if (Math.abs(place - nearest) < 0.03) return 10n ** BigInt(nearest);
+  const power = Math.floor(place);
+  if (power === 0) return BigInt(Math.round(10 ** place));
+  return BigInt(Math.round(10 ** (place - power + 1))) * 10n ** BigInt(power - 1);
+}
+
+// What goes back in the input box. parseCount accepts every form written here.
+export function countText(count) {
+  const text = count.toString();
+  if (text.length <= 15) return text.replace(/\B(?=(\d{3})+$)/g, ',');
+  const significant = text.replace(/0+$/, '');
+  if (significant.length > 4) return text;
+  return `${significant[0]}${significant.length > 1 ? `.${significant.slice(1)}` : ''}e${text.length - 1}`;
 }

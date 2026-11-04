@@ -100,6 +100,10 @@ LABEL = re.compile(r'<label[^>]*>(?P<text>(?:(?!</label>).)*)</label>', re.S)
 
 TAGS = re.compile(r'<[^>]+>')
 
+# What a control holds rather than what its label says. A label wrapping a menu
+# would otherwise be named after every option in it, run together.
+CONTROL_TEXT = re.compile(r'<(select|textarea)\b.*?</\1>', re.S)
+
 # The small print under a checkbox, and the label it belongs to. Both are
 # captured so the fold can say which control the note is about.
 CHECK_NOTE = re.compile(
@@ -155,7 +159,7 @@ def _named(inner, match):
     # page. The note keeps its markup exactly: several of them contain a <code>
     # the tool writes into - password-generator prints the symbol set into one -
     # and a note stripped to text would break the tool rather than tidy it.
-    name = TAGS.sub('', label.group('text')).strip() if label else ''
+    name = TAGS.sub('', CONTROL_TEXT.sub('', label.group('text'))).strip() if label else ''
     if not name:
         return match.group(0).strip()
     # The opening tag is kept exactly as it was, id and all: four of these are

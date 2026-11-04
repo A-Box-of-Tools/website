@@ -13,7 +13,7 @@ const settle = () => new Promise(resolve => setImmediate(resolve));
 function memoryIDB() {
   const records = new Map(), waiting = [];
   let active = false, created = false;
-  const state = { records, hold: false, held: [], fail: false, failPut: false, beforeComplete: null };
+  const state = { records, hold: false, held: [], fail: false, failPut: false, abortCommit: false, beforeComplete: null };
   function pump() {
     if (active || !waiting.length) return;
     active = true;
@@ -25,6 +25,11 @@ function memoryIDB() {
         catch (error) { tx.error = error; active = false; tx.onerror?.(); queueMicrotask(pump); return; }
         queueMicrotask(step);
         return;
+      }
+      // Failing to commit fires abort and never error, as a full disk does.
+      if (state.abortCommit) {
+        state.abortCommit = false; tx.error = new Error('quota-on-commit'); active = false;
+        tx.onabort?.(); queueMicrotask(pump); return;
       }
       const hook = state.beforeComplete;
       state.beforeComplete = null;
@@ -198,6 +203,15 @@ test('an expired source pair is consumed without delivery', async () => {
   await receiver.ready();
   assert.equal(receiver.deliveries.length, 0);
   assert.equal(db.records.has('stitch-tables'), false);
+});
+
+test('a commit that aborts rejects instead of leaving the transfer waiting forever', async () => {
+  const db = memoryIDB(), env = harness(db);
+  await env.ready();
+  db.abortCommit = true;
+  await assert.rejects(env.window.aboxHandoffFiles('stitch-tables', pair('source'), () => true), /quota-on-commit/);
+  assert.equal(db.records.has('stitch-tables'), false);
+  assert.deepEqual(env.effects, { fetch: 0, navigation: 0 });
 });
 
 test('a rejected storage write does not park partial data or navigate', async () => {

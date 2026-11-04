@@ -11,6 +11,10 @@
   <section class="card">
     <h2><span class="step">1</span> Elige las tomas</h2>
 
+    <p>
+      Añade al menos dos fotos de la misma escena, o prueba el ejemplo para comparar una toma con ruido con su apilado. Mantén la exposición y el encuadre uniformes en tu propia serie.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -48,13 +52,19 @@
   <section class="card">
     <h2><span class="step">2</span> Cómo combinarlas</h2>
 
+    <ul class="note">
+      <li><strong>Reducir el ruido:</strong> empieza con Media y alineación Auto para una ráfaga estable.</li>
+      <li><strong>Quitar personas en movimiento:</strong> usa Mediana, con el fondo visible en más de la mitad de las tomas.</li>
+      <li><strong>Crear estelas de estrellas:</strong> usa Aclarar y pon la alineación en No para conservar el movimiento del cielo.</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">Método de apilado</label>
         <select id="mode">
           <option value="mean" selected>Media &mdash; reducir el ruido</option>
           <option value="median">Mediana &mdash; quitar gente y coches que pasan</option>
-          <option value="sigma">Recorte sigma &mdash; las dos cosas a la vez</option>
+          <option value="sigma">Recorte sigma &mdash; reducir el ruido y descartar valores atípicos</option>
           <option value="max">Aclarar &mdash; estelas de estrellas, fuegos artificiales, pintura con luz</option>
           <option value="min">Oscurecer &mdash; quitar lo brillante que se movió</option>
           <option value="sum">Sumar &mdash; mezcla aditiva</option>
@@ -206,6 +216,9 @@
           <summary>Detalles de alineación</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          Comprueba los bordes finos y las zonas lisas al 100&nbsp;% antes de guardar. Si el apilado se ve blando, revisa los Detalles de alineación, quita una toma dudosa y vuelve a apilar. Los enlaces junto a la descarga pueden llevar este resultado directamente al redimensionador o al compresor en este navegador.
+        </p>
         <a id="download" class="primary as-button" download>Descargar la imagen</a>
       </div>
     </div>

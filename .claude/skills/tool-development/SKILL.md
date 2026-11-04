@@ -236,16 +236,20 @@ English. Two standing constraints:
 
 ## Locales: what a code change owes them
 
-The site is built in English, Simplified Chinese and German; the other twelve
-languages are frozen in A-Box-of-Tools/translations and owe nothing - see
-"Languages" in CLAUDE.md. So "the locales" means `locales/zh/` and
-`locales/de/`. Which tools exist and what they do is not language, so a new
-tool gets a Chinese and a German page the
-same day, in English until translated and unadvertised until then. What a
-change does owe it:
+The site is built in English, Simplified Chinese, German, Spanish, Brazilian
+Portuguese, French and Japanese; the other eight languages are frozen in
+A-Box-of-Tools/translations and owe nothing - see "Languages" in CLAUDE.md. So
+"the locales" means the six folders under `locales/`. Which tools exist and what
+they do is not language, so a new tool gets a page in each of them the same day,
+in English until translated and unadvertised until then. What a change does owe
+them:
 
+- a change to a legal page - Privacy, Terms, Contact - lands in all six in the
+  same pull request: `tests/python/test_legal_parity.py` fails on a section, a
+  heading or a link that reached English alone, and a sentence changed in place
+  is yours to carry across because no test can see it;
 - a line removed from `config/planned.toml` comes out of
-  `locales/zh/planned.toml` at the same index (see step 4 above). Lists whose
+  every `locales/*/planned.toml` at the same index (see step 4 above). Lists whose
   English entries carry an `id` merge by id and need no such care;
 - a `zh` phrase stays on one line — Chinese has no spaces between words, so a
   wrapped phrase ships a visible hole mid-sentence;

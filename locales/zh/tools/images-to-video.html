@@ -18,6 +18,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>渲染序列或照片延时：</strong>保持每张图一帧。<strong>照片幻灯片：</strong>加好图片后选秒，再点“全部套用”。选自己的文件之前，可以先试个例子看看这些控件。
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -168,6 +172,15 @@
         <a id="download" class="primary as-button" download>下载视频</a>
       </div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>为你的素材选下一步</h2>
+    <ul>
+      <li>已经有一段长视频？用<a href="../timelapse-video/" data-workflow-target="timelapse-video">延时视频</a>给它加速。</li>
+      <li>手上是动图 GIF？<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">GIF 转 MP4</a> 会把播放时的帧时间带进视频。</li>
+      <li>想用静态图做动图 GIF？用 <a href="../gif-maker/" data-workflow-target="gif-maker">GIF 制作</a>。</li>
+    </ul>
   </section>
 
   <!--

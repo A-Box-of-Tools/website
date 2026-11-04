@@ -1,15 +1,15 @@
 name = "Images en vidéo"
 heading = "Images&nbsp;en&nbsp;vidéo <span class=\"h1-kw\">&mdash; faire un diaporama MP4</span>"
-tagline = "Transformer un dossier d'images en vidéo."
+tagline = "Créez un MP4 à partir d’une séquence de rendu, de photos de timelapse ou d’un diaporama."
 title = "Séquence d'images en MP4 &mdash; gratuit, sans envoi, hors ligne"
-description = "Transformez des images JPG, PNG, WebP ou AVIF en un diaporama vidéo MP4, gratuitement et entièrement dans votre navigateur. Rien n'est envoyé, aucune inscription, et cela fonctionne hors ligne."
+description = "Convertissez une séquence d’images en MP4 dans le navigateur. Une image par fichier pour les rendus et les timelapses, ou des secondes par photo pour un diaporama. Sans envoi ni compte."
 og_title = "Séquence d'images en MP4 &mdash; gratuit, dans votre navigateur"
 og_description = "Transformez une séquence de rendu, un timelapse ou un dossier de photos en MP4. L'encodage tourne sur votre propre machine&nbsp;; rien n'est envoyé."
 og_image_alt = "Images en vidéo - transformer un dossier d'images en diaporama MP4"
 pledge = "Chaque image est encodée par votre propre navigateur et la vidéo est construite en mémoire sur cette machine. L'encodeur ne touche jamais au réseau et, quand bien même il y toucherait, il n'y a à l'autre bout de cette page aucun serveur à qui remettre une image."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement, surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et fabriquez une vidéo. Pas une seule requête ne transporte d'image, de vignette ni de nom de fichier. Vous pouvez aussi couper la connexion et en fabriquer une quand même."
 read_first = ", ainsi que <code>src/encoder.js</code> pour la boucle d'encodage, qui ne touche jamais au réseau."
-howto_heading = "Comment transformer des images en vidéo"
+howto_heading = "Comment convertir une séquence d’images ou un diaporama en MP4"
 card = "Transformez un dossier d'images en diaporama MP4. L'encodage tourne sur votre propre machine, avec votre propre matériel."
 
 [words]
@@ -60,12 +60,12 @@ title = "Choisissez vos images."
 body = "Déposez un dossier sur la zone prévue, ou sélectionnez les fichiers à la main. Le navigateur les lit directement sur votre disque, sans que rien parte où que ce soit pendant ce temps."
 
 [[howto]]
-title = "Mettez-les en ordre et dites combien de temps chacune est tenue."
-body = "Faites glisser pour réordonner. La durée d'affichage peut être donnée en images ou en secondes, pour toutes les images d'un coup ou une par une."
+title = "Choisissez des images pour une séquence, ou des secondes pour un diaporama."
+body = " Utilisez &laquo;&nbsp;Trier par nom&nbsp;&raquo; pour des images de rendu numérotées et vérifiez la première et la dernière vignette. Gardez une image par fichier pour une séquence de rendu ou un timelapse photo ; adaptez la cadence à votre source. Pour un diaporama, passez en secondes, saisissez une durée comme trois et appuyez sur &laquo;&nbsp;Appliquer à toutes&nbsp;&raquo;. Faites glisser pour réordonner ou modifiez la durée d’une image précise."
 
 [[howto]]
 title = "Choisissez une résolution et une cadence."
-body = "&laquo;&nbsp;Suivre la plus haute résolution&nbsp;&raquo; se règle sur votre plus grande image&nbsp;; les préréglages couvrent la 4K, le 1080p, le 720p, le carré et le vertical, et il y a un format personnalisé si aucun ne convient."
+body = " Choisissez 1080p pour un premier export, ou la forme carrée ou verticale de la destination. &laquo;&nbsp;Suivre la plus haute résolution&nbsp;&raquo; prend la plus grande largeur et la plus grande hauteur parmi les images. &laquo;&nbsp;Tenir dedans&nbsp;&raquo; garde l’image entière ; &laquo;&nbsp;Remplir l’image&nbsp;&raquo; rogne les bords. Vérifiez le résumé de durée et de taille de sortie avant l’encodage."
 
 [[howto]]
 title = "Créez la vidéo et téléchargez-la."
@@ -81,7 +81,7 @@ a = "Tout format d'image fixe que votre navigateur sait décoder, ce qui en prat
 
 [[faq]]
 q = "Quel format vidéo produit-il&nbsp;?"
-a = "Du MP4 avec de la vidéo H.264, qui se lit sur à peu près n'importe quoi. Dans un navigateur sans WebCodecs, l'outil se rabat sur un enregistrement WebM, soit les mêmes images dans un conteneur que moins d'éditeurs acceptent."
+a = " La sortie privilégiée est le MP4 avec vidéo H.264. La solution de repli enregistre en temps réel, généralement en WebM, que moins de logiciels de montage acceptent. Gardez l’onglet visible pendant cet enregistrement ; le minutage est approximatif et des images peuvent être sautées si le décodage prend du retard. Utilisez l’encodeur MP4 pour les séquences numérotées exactes lorsque votre navigateur le prend en charge."
 
 [[faq]]
 q = "Puis-je m'en servir pour une séquence de rendu Blender ou After Effects&nbsp;?"
@@ -89,11 +89,11 @@ a = "Oui, une séquence de rendu numérotée est exactement ce à quoi cela sert
 
 [[faq]]
 q = "Puis-je faire un timelapse à partir de photos&nbsp;?"
-a = "Oui, et c'est le même travail qu'une séquence de rendu&nbsp;: tenez chaque photo une seule image et choisissez une cadence. À 30 images par seconde, chaque trentaine de photos devient une seconde de vidéo&nbsp;; à 12, ces mêmes photos durent deux secondes et demie. <br><br> &laquo;&nbsp;Trier par date&nbsp;&raquo; remet une pellicule dans l'ordre où elle a été prise, ce qui compte quand les noms de fichiers sont repartis à 0001. Des photos de tailles différentes ne posent aucun problème, puisque &laquo;&nbsp;Suivre la plus haute résolution&nbsp;&raquo; dimensionne la vidéo pour qu'aucune ne soit réduite."
+a = "Oui, et c'est le même travail qu'une séquence de rendu&nbsp;: tenez chaque photo une seule image et choisissez une cadence. À 30 images par seconde, chaque trentaine de photos devient une seconde de vidéo&nbsp;; à 12, ces mêmes photos durent deux secondes et demie. <br><br> &laquo;&nbsp;Trier par date&nbsp;&raquo; utilise les dates de modification des fichiers, qui peuvent changer quand les photos sont copiées ou modifiées. Vérifiez l’ordre quand les noms de fichiers sont repartis à 0001. Des photos de tailles différentes ne posent aucun problème, puisque &laquo;&nbsp;Suivre la plus haute résolution&nbsp;&raquo; part de la plus grande largeur et de la plus grande hauteur, limite ensuite le plus grand côté à 7680 pixels et arrondit à des dimensions paires. Vérifiez le résumé de la taille de sortie ; de très grands originaux peuvent tout de même être réduits."
 
 [[faq]]
 q = "Y a-t-il une limite au nombre d'images ou à la durée de la vidéo&nbsp;?"
-a = "Aucune limite n'est intégrée à l'outil. Le plafond pratique est la mémoire de votre propre machine, parce que la vidéo finie y est assemblée avant que vous la téléchargiez. Les très grands diaporamas en 4K commencent à s'y faire sentir les premiers."
+a = " Il n’y a pas de limite fixe au nombre d’images, mais les exports MP4 doivent rester sous 4 Gio (environ 4,3 Go). La vidéo terminée est assemblée en mémoire avant le téléchargement, votre appareil peut donc manquer de mémoire bien avant ce plafond. L’encodeur du navigateur limite aussi les dimensions de sortie. Si un gros export échoue, réduisez la résolution, raccourcissez la séquence ou divisez-la en parties."
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
@@ -110,7 +110,7 @@ a = "Pas encore. L'outil ne produit que de la vidéo&nbsp;: le MP4 qu'il écrit 
 [schema]
 browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs&nbsp;; les autres se rabattent sur le WebM."
 description = "Transformez un dossier d'images en un diaporama vidéo MP4. Chaque étape tourne dans votre navigateur, si bien qu'aucune image n'est jamais envoyée."
-features = ["Convertit des images JPG, PNG, WebP, GIF et AVIF en vidéo", "Sortie MP4 (H.264), avec le WebM comme repli", "Résolutions jusqu'à &#x2066;3840 × 2160&#x2069;, cadences de 12 à 60 images par seconde", "Durée d'affichage par image, en images ou en secondes", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
+features = ["Convertit des images JPG, PNG, WebP, GIF et AVIF en vidéo", "Sortie MP4 (H.264), avec le WebM comme repli", "Résolutions prédéfinies jusqu’à la 4K, dimensions personnalisées dans les limites du navigateur et cadences entières personnalisées de 1 à 120 ips", "Durée d'affichage par image, en images ou en secondes", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]
 title = "Déposez vos images ici"

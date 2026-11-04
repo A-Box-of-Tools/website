@@ -15,7 +15,10 @@ what a single translation owes. The report directory defaults to
 
 It is a report, not a gate: it always exits 0, and it says nothing a test
 already says. What it adds is the half of translation that no test can judge
-from the English side.
+from the English side. The one exception is the legal pages, where the comparison
+below is also what tests/python/test_legal_parity.py fails on: a data flow
+disclosed in English and missing from a translation is a false statement rather
+than a chore, so that drift stops the build instead of waiting to be read here.
 
 WHAT IT CHECKS, AND WHY EACH CHECK EXISTS
 
@@ -23,7 +26,9 @@ Structure. A locale's body.html has to carry the same elements as the
 English body it replaces: the same ids, because the JavaScript looks them up;
 the same `data-phrase` keys with the same `{blank}` placeholders, because
 `shared/js/phrases.js` fills them in by name; the same `<code>` contents,
-links and image sources, because those are not words. A locale's toml has to
+links and image sources, because those are not words. A link to another page
+of the site is compared by the page it reaches, since most languages rename
+the address. A locale's toml has to
 carry the same array lengths and the same `{{ names }}`. The build's tests
 catch the phrase keys; the rest of this list is what has slipped past them
 before - a button added upstream and missing in fourteen languages, a
@@ -59,6 +64,7 @@ the rule here rather than the sentence.
 
 import argparse
 import html
+import posixpath
 import re
 import tomllib
 from collections import Counter, defaultdict
@@ -247,6 +253,9 @@ RULES = {
         ('DE_STRAIGHT_QUOTE', re.compile(r'"')),
         ('DE_ENGLISH_QUOTE', re.compile('“[^”„]*”')),
         ('DE_DU', re.compile(r'\b(du|dein|deine|deinen|deinem|deiner|dich|dir)\b', re.I)),
+        # the same register with no pronoun to find: a du imperative opening a
+        # sentence, which is how most of them reached the German pages
+        ('DE_DU', re.compile(r'(?:^|[.!?] )(Beende|Starte|Öffne|Wähle|Gib|Prüfe|Erlaube|Versuche|Lass|Warte|Nutze|Bitte den)\b')),
     ],
     'es': [
         # dieciséis and its kin end in -éis without being a verb
@@ -347,11 +356,77 @@ STRUCT_TAGS = ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'a', 'code', 'strong', 'em', '
                'legend', 'form']
 
 
-def html_structure(locale, file, en, lo):
-    diff = []
-    for t in STRUCT_TAGS:
-        if en.tags[t] != lo.tags[t]:
-            diff.append(f'{t}:{en.tags[t]}->{lo.tags[t]}')
+#: English addresses that moved and now redirect, old to new.
+MOVED = tomllib.loads((ROOT / 'config/site.toml').read_text(encoding='utf-8'))['redirects']
+
+
+def tag_differences(en, lo, tags=STRUCT_TAGS):
+    """Each of `tags` two bodies hold a different number of, as tag:en->lo."""
+    return [f'{t}:{en.tags[t]}->{lo.tags[t]}' for t in tags if en.tags[t] != lo.tags[t]]
+
+
+def link_target(href, page, slugs):
+    """Where a link goes, in terms the English and a translation can share.
+
+    An address outside the site is already that. A link to another page is
+    written relative to the page it sits on, or from the language's own folder
+    in a few bodies, and German calls `../trim-video/` something else. So it is
+    resolved against `page` - this language's address for the page - and turned
+    back into the English slug of whatever it reaches, through any redirect an
+    English body still links by.
+    """
+    in_folder = re.match(r'/[a-z]{2}/', href)
+    if href.startswith(('http', '#', 'mailto')) or '{' in href or (href.startswith('/') and not in_folder):
+        return href
+    cut = min((i for i in (href.find('#'), href.find('?')) if i >= 0), default=len(href))
+    path, tail = href[:cut], href[cut:]
+    if in_folder:
+        path, page = path[in_folder.end():], ''
+    resolved = posixpath.normpath(posixpath.join(page, path))
+    english = {v: k for k, v in slugs.items()}
+    resolved = english.get(resolved, resolved)
+    return MOVED.get(resolved, resolved) + tail
+
+
+def href_differences(en, lo, page, slugs):
+    """(missing, extra): what `lo`'s links lack against `en`'s, and add to them.
+
+    `page` is the English slug of the page the two bodies are, and `slugs` the
+    locale's [slugs] table.
+    """
+    theirs = {link_target(h, slugs.get(page, page), slugs) for h in lo.hrefs}
+    ours = {link_target(h, page, {}) for h in en.hrefs}
+    return sorted(ours - theirs), sorted(theirs - ours)
+
+
+#: The pages a reader takes at their word, and which of their parts say what
+#: there is to disclose: a section or a heading is a subject, and a link is the
+#: service or the tool the subject is about. Paragraphs are left out on purpose,
+#: because a translation may fairly split or join them.
+LEGAL_PAGES = ('privacy', 'terms', 'contact')
+LEGAL_TAGS = ('section', 'h2', 'h3')
+
+
+def legal_differences(en, lo, page, slugs):
+    """What a translated legal page does not share with its English, as text.
+    Empty means it covers the same subjects and links to the same places."""
+    found = tag_differences(en, lo, LEGAL_TAGS)
+    missing, extra = href_differences(en, lo, page, slugs)
+    if missing:
+        found.append(f'links missing={missing}')
+    if extra:
+        found.append(f'links extra={extra}')
+    return found
+
+
+def page_slug(rel):
+    """The English slug of a locale body: tools/x.html is x, pages/guides/x.html
+    is guides/x."""
+    return re.sub(r'^(tools|pages)/|\.html$', '', rel)
+
+
+def html_structure(locale, file, en, lo, slugs):
+    diff = tag_differences(en, lo)
     if diff:
         add('HTML_TAG_COUNTS', locale, file, '', ' '.join(diff))
     if en.ids != lo.ids:
@@ -363,10 +438,9 @@ def html_structure(locale, file, en, lo):
         pl = set(PLACEHOLDER.findall(lo.phrases[k]))
         if pe != pl:
             add('PHRASE_PLACEHOLDERS', locale, file, k, f'en={sorted(pe)} lo={sorted(pl)} :: {lo.phrases[k]}')
-    abs_en = {h for h in en.hrefs if h.startswith(('http', '#', 'mailto'))}
-    abs_lo = {h for h in lo.hrefs if h.startswith(('http', '#', 'mailto'))}
-    if abs_en != abs_lo:
-        add('HTML_HREFS', locale, file, '', f'missing={sorted(abs_en - abs_lo)} extra={sorted(abs_lo - abs_en)}')
+    missing, extra = href_differences(en, lo, page_slug(file), slugs)
+    if missing or extra:
+        add('HTML_HREFS', locale, file, '', f'missing={missing} extra={extra}')
     if en.srcs != lo.srcs:
         add('HTML_IMG_SRC', locale, file, '', f'missing={sorted(en.srcs - lo.srcs)} extra={sorted(lo.srcs - en.srcs)}')
     pe = Counter(PLACEHOLDER.findall(' '.join(s[1] for s in en.segs if s[2] == 'text')))
@@ -458,6 +532,11 @@ def expected_files():
     return expected
 
 
+def locale_slugs(base):
+    """The [slugs] table of the locale in folder `base`, empty where it has none."""
+    return tomllib.loads((base / 'locale.toml').read_text(encoding='utf-8')).get('slugs', {})
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[1])
     ap.add_argument('report_dir', nargs='?', default=str(ROOT / '_checks' / 'locales'))
@@ -481,6 +560,7 @@ def main():
     expected = expected_files()
     for locale in locales:
         base = ROOT / 'locales' / locale
+        slugs = locale_slugs(base)
         have = set()
         for path in sorted(base.rglob('*')):
             if not path.is_file():
@@ -496,7 +576,7 @@ def main():
             if rel.endswith('.html'):
                 lo = parse_html(path)
                 en = cached(enp, parse_html)
-                html_structure(locale, rel, en, lo)
+                html_structure(locale, rel, en, lo, slugs)
                 for line, text, kind in lo.segs:
                     prose_checks(locale, rel, line, text)
             else:

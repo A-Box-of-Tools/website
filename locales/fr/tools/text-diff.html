@@ -108,7 +108,7 @@
     <div id="csv-pipeline" class="csv-pipeline" hidden>
       <p>Continuez avec les deux tables sources : original → A, version modifiée → B. Choisissez une correspondance, un appariement manuel ou une fusion simple dans Stitch Tables.</p>
 {% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">Assembler ces tables</a>
-{% endfor %}      <p class="field-note">Le transfert reste dans ce navigateur et expire après dix minutes.</p>
+{% endfor %}      <p class="transfer-note">Le transfert reste dans ce navigateur et expire après dix minutes.</p>
       <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
     </div>
   </section>
@@ -129,7 +129,7 @@
     <span data-phrase="csv-pipeline.failed">Impossible de transférer ces tables. Vos textes sont toujours ici. Autorisez le stockage du navigateur et réessayez, ou enregistrez les deux fichiers et ouvrez-les dans Stitch Tables.</span>
 
     <span data-phrase="result.waiting">Collez quelque chose dans les deux zones.</span>
-    <span data-phrase="result.identical">Les deux sont identiques, octet pour octet.</span>
+    <span data-phrase="result.identical">Les deux sont identiques, caractère par caractère.</span>
     <span data-phrase="result.ignored">Identiques, une fois écartées les différences que vous avez demandé d&rsquo;ignorer.</span>
     <span data-phrase="result.counts">{added} ajoutées, {removed} supprimées</span>
     <span data-phrase="result.summary">{changes} — le contenu correspond sur {percent} % des lignes. {note}</span>
