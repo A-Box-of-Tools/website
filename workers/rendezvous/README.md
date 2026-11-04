@@ -501,11 +501,15 @@ network discovery or only `group=<public identifier>` for a private group.
   and their live attachments preserve that state for subsequent checks.
   Nothing preserves an ended history after the final socket has left.
 - A host socket disappearing sends `waiting` and keeps listener sockets open.
-  A waiting page sends `{type: "check"}` once a second; the worker replies
-  `waiting`, `ready`, or `ended`. A host returning with the same capability
-  receives a fresh generation and reintroduces valid listeners. A replacement
-  host retires the prior host with `replaced` and close code 4409, so a late
-  old-host callback cannot disturb the new generation.
+  A host returning with the same capability receives a fresh generation and
+  reintroduces valid listeners, sending each one `ready` without being asked;
+  an approval decision and `ended` reach a waiting listener the same way. A
+  replacement host retires the prior host with `replaced` and close code 4409,
+  so a late old-host callback cannot disturb the new generation.
+- `{type: "check"}` asks for the same answer, `waiting`, `ready`, or `ended`,
+  and only covers a message that never arrived. A waiting page sends it about
+  once a minute. Pages cached from before that change send it once a second, so
+  the worker has to keep answering it.
 - `{type: "leave"}` removes that listener and closes its socket normally.
   A current host receives `{type: "leave", id, generation}`. Socket close,
   error, and failed sends perform the same cleanup without duplicate events.
@@ -612,6 +616,7 @@ forwards the accepted SDP unchanged and still allows only one audio section.
   credentials and participant identities never enter directory snapshots.
 - Up to ten participants can be admitted. Wrong passwords and kicked sessions
   are terminal for that attempt. Authorized senders can remain parked during
-  host absence, probing at the one-second foreground target. End and Leave
-  stop retries; raw ping/pong maintains idle signaling. Socket messages,
-  pending authentication, negotiation and rate bookkeeping remain bounded.
+  host absence: the host's return reaches them as `ready`, and `check` works as in
+  the voice protocol above. End and Leave stop retries; raw ping/pong maintains
+  idle signaling. Socket messages, pending authentication, negotiation and rate
+  bookkeeping remain bounded.

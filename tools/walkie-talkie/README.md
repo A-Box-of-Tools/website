@@ -76,8 +76,10 @@ are inaccessible to other scripts.
 
 Listeners never request a microphone and do not create audio senders. Playback
 is attempted automatically; Unmute is the fallback when a browser blocks it.
-Mute survives reconnection. Waiting listeners check the parked socket every
-second in the foreground rather than repeatedly opening rate-limited sockets.
+Mute survives reconnection. Waiting listeners stay on the parked socket rather
+than repeatedly opening rate-limited sockets: the worker sends `ready` when the
+host returns, and a page asks for itself about once a minute only in case that
+message never arrived.
 Healthy direct audio can survive a brief signaling outage. New generations
 retire stale peers, and failed media is negotiated again. Background timers,
 sleep and connection limits can delay retries.

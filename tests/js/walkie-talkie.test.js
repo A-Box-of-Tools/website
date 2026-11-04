@@ -23,6 +23,19 @@ const deferred = () => {
   const promise = new Promise(yes => { resolve = yes; });
   return { promise, resolve };
 };
+// The room answers a heartbeat without waking, and a page rightly gives up on a socket
+// that does not, so a case about a long wait has to answer it too.
+const answerPings = ws => {
+  const send = ws.send.bind(ws);
+  ws.send = text => { send(text); if (text === 'ping') ws.message('pong'); };
+};
+const checks = ws => ws.sent.filter(frame => frame.type === 'check').length;
+// Nothing runs while a device sleeps or a hidden page is held back, and the first
+// timer afterwards sees all the time that passed.
+const heldBack = (clock, ms) => {
+  clock.time += ms;
+  for (const task of clock.tasks.values()) task.at += ms;
+};
 const ready = (id = ID_A, generation = GEN_A) => ({ type: 'ready', id, generation, talking: false });
 const offer = (id = ID_A, connection = CONN_A, generation = GEN_A) =>
   ({ type: 'offer', from: 'host', to: id, generation, connection, sdp: SDP });
@@ -231,9 +244,10 @@ test('receiver auth is outside its URL, waiting checks stay on one socket, and c
   assert.equal(ws.url, `wss://rendezvous.abox.tools/broadcast/${CODE}`);
   assert.ok(!ws.url.includes(LISTEN_KEY));
   assert.deepEqual(ws.sent[0], { type: 'auth', role: 'listener', key: LISTEN_KEY });
-  await h.clock.advance(3000);
+  answerPings(ws);
+  await h.clock.advance(60000);
   assert.equal(h.sockets.length, 1);
-  assert.equal(ws.sent.filter(frame => frame.type === 'check').length, 3);
+  assert.equal(checks(ws), 1);
   ws.message(ready());
   ws.message(offer());
   await flush();
@@ -381,10 +395,11 @@ test('waiting preserves healthy audio, while deliberate End stops all retries', 
   h.peers[0].connect();
   ws.message({ type: 'waiting' });
   await flush();
-  await h.clock.advance(3000);
+  answerPings(ws);
+  await h.clock.advance(60000);
   assert.equal(h.peers[0].closed, false);
   assert.equal(h.sockets.length, 1);
-  assert.equal(ws.sent.filter(frame => frame.type === 'check').length, 3);
+  assert.equal(checks(ws), 1);
   assert.equal(h.states.at(-1).key, 'listener-reconnecting');
   assert.equal(h.states.at(-1).detail.directReady, true);
   assert.equal(h.streams.at(-1).name, 'direct voice');
@@ -394,6 +409,149 @@ test('waiting preserves healthy audio, while deliberate End stops all retries', 
   assert.equal(h.states.at(-1).key, 'broadcast-ended');
   await h.clock.advance(5000);
   assert.equal(h.sockets.length, 1);
+});
+
+test('a waiting listener asks once a minute, and anything the room says restarts that minute', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  answerPings(ws);
+  await h.clock.advance(59000);
+  assert.equal(checks(ws), 0);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 1);
+  assert.deepEqual(ws.sent.findLast(frame => frame.type === 'check'), { type: 'check' });
+  ws.message({ type: 'waiting' });
+  await flush();
+  await h.clock.advance(30000);
+  ws.message({ type: 'waiting' });
+  await flush();
+  await h.clock.advance(59000);
+  assert.equal(checks(ws), 1);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 2);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.states.at(-1).key, 'listener-reconnecting');
+});
+
+test('a host returning reaches a waiting listener with no question asked', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  answerPings(ws);
+  await h.clock.advance(20000);
+  ws.message(ready());
+  ws.message(offer());
+  await flush();
+  assert.ok(ws.sent.some(frame => frame.type === 'answer'));
+  h.peers[0].receive({ name: 'direct voice' });
+  h.peers[0].connect();
+  assert.equal(h.states.at(-1).key, 'listener-listening');
+  assert.equal(h.streams.at(-1).name, 'direct voice');
+  assert.equal(checks(ws), 0);
+  await h.clock.advance(120000);
+  assert.equal(checks(ws), 0);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('a listener waiting for approval is admitted, refused or ended by the room, not by asking', async t => {
+  const pending = { type: 'approval-pending', id: ID_A, generation: GEN_A, approval: true };
+  const admitted = harness(t);
+  const ws = await admitted.begin(pending);
+  answerPings(ws);
+  assert.equal(admitted.states.at(-1).key, 'listener-approval');
+  await admitted.clock.advance(60000);
+  assert.equal(checks(ws), 1);
+  ws.message(pending);
+  await flush();
+  assert.equal(admitted.states.at(-1).key, 'listener-approval');
+  await admitted.clock.advance(5000);
+  ws.message({ ...ready(), approval: true });
+  ws.message(offer());
+  await flush();
+  assert.equal(admitted.peers.length, 1);
+  assert.equal(checks(ws), 1);
+  for (const [frame, state] of [[{ type: 'denied' }, 'listener-denied'], [{ type: 'ended' }, 'broadcast-ended']]) {
+    const h = harness(t);
+    const parked = await h.begin(pending);
+    await h.clock.advance(5000);
+    parked.message(frame);
+    await flush();
+    assert.equal(h.states.at(-1).key, state);
+    await h.clock.advance(120000);
+    assert.equal(checks(parked), 0);
+    assert.equal(h.sockets.length, 1);
+  }
+});
+
+test('a reconnect is answered by its own auth, so the new socket has nothing to ask yet', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  answerPings(ws);
+  await h.clock.advance(59000);
+  ws.serverClose(1006);
+  await h.clock.advance(1000);
+  const next = h.sockets.at(-1);
+  assert.notEqual(next, ws);
+  next.open();
+  await h.clock.advance(5000);
+  assert.deepEqual(next.sent.map(frame => frame.type), ['auth']);
+  next.message({ type: 'waiting' });
+  await flush();
+  answerPings(next);
+  await h.clock.advance(59000);
+  assert.equal(checks(next), 0);
+  next.message(ready(ID_B, GEN_B));
+  next.message(offer(ID_B, CONN_A, GEN_B));
+  await flush();
+  assert.equal(h.peers.length, 1);
+  assert.equal(checks(next), 0);
+});
+
+test('a stale reply still asks at once, whenever the page last asked', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.message(offer());
+  await flush();
+  assert.equal(checks(ws), 0);
+  ws.message({ type: 'error', error: 'stale' });
+  await flush();
+  assert.equal(checks(ws), 1);
+  ws.message(ready(ID_A, GEN_B));
+  ws.message(offer(ID_A, CONN_B, GEN_B));
+  await flush();
+  assert.equal(h.peers.length, 2);
+  assert.equal(h.peers[0].closed, true);
+  ws.message({ type: 'waiting' });
+  await flush();
+  ws.message({ type: 'error', error: 'stale' });
+  await flush();
+  assert.equal(checks(ws), 2);
+});
+
+test('a page whose timers were held back asks on its first tick, and then waits again', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  answerPings(ws);
+  heldBack(h.clock, 600000);
+  assert.equal(checks(ws), 0);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 1);
+  await h.clock.advance(59000);
+  assert.equal(checks(ws), 1);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 2);
+});
+
+test('a check the full send buffer refused is tried again on the next tick', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  answerPings(ws);
+  await h.clock.advance(59000);
+  ws.bufferedAmount = 70000;
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 0);
+  ws.bufferedAmount = 0;
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 1);
 });
 
 test('capacity and unknown network failures back off without overlapping handshakes', async t => {

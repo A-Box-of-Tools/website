@@ -7,6 +7,11 @@ import { groupUrl } from './discovery-group.js';
 const INTERVAL = 1000;
 const DEADLINE = 10000;
 const KEEPALIVE = 30000;
+// A waiting page does not need to ask. The room says `ready`, `approval-pending`,
+// `waiting` or `ended` the moment it becomes true, and the heartbeat finds a socket
+// that has died, so this only covers a message that never came. Each frame is billed
+// and wakes the room, which is why it is rare, and why the room's every word restarts it.
+const RECHECK = 60000;
 const MAX_ICE = 128;
 const captureAudioSessions = new WeakMap();
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -418,7 +423,7 @@ class VoiceSession {
     try { ws = new this._Socket(this._endpoint); }
     catch { this._voiceState(); this._retry(epoch, 1006); return; }
     const ctx = { ws, epoch, auth: false, pending: 0, chain: Promise.resolve(),
-      pairing: null, unsentPing: false, lastPing: 0 };
+      pairing: null, unsentPing: false, lastPing: 0, lastCheck: 0 };
     this._socket = ctx;
     ctx.pairing = new PairingSocket(ws, {
       current: () => this._live(epoch) && this._socket === ctx,
@@ -507,6 +512,7 @@ class VoiceSession {
   _authenticated(ctx) {
     if (!ctx.auth) ctx.lastPing = this._clock.now();
     ctx.auth = true;
+    ctx.lastCheck = this._clock.now();
     this._failures = 0;
     ctx.pairing.clear('auth');
   }
@@ -694,8 +700,9 @@ class VoiceSession {
       }
       for (const peer of this._connected()) if (peer.route === 'unknown') this._observeRoute(peer);
       if (this._client && this._socket?.auth) {
-        if (this._waiting) this._send({ type: 'check' });
-        else if (!this._peers.has(this._id) && this._clock.now() - this._offerAt >= DEADLINE) this._lost(this._socket, 1000);
+        if (this._waiting) {
+          if (this._clock.now() - ctx.lastCheck >= RECHECK && this._send({ type: 'check' })) ctx.lastCheck = this._clock.now();
+        } else if (!this._peers.has(this._id) && this._clock.now() - this._offerAt >= DEADLINE) this._lost(this._socket, 1000);
       } else if (this.role === 'host') {
         if (this._canSignal()) {
           for (const id of this._hostIds) if (!this._peers.has(id)) void this._offer(id, epoch);

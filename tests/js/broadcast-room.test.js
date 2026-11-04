@@ -395,6 +395,55 @@ test('host loss parks authenticated listeners and anchors survive hibernation', 
   assert.equal(resumed.messages.filter((message) => message.type === 'join').length, 2);
 });
 
+test('a parked listener hears everything it waits for without asking, even from a hibernated room', async () => {
+  const s = await system(), host = await s.host(), listener = await s.listener();
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  assert.equal(last(listener).type, 'waiting');
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  const returned = await s.host();
+  assert.deepEqual(last(listener), { type: 'ready', id: id(listener), generation: generation(returned), talking: false });
+  assert.deepEqual(returned.messages.filter((message) => message.type === 'join'),
+    [{ type: 'join', id: id(listener), generation: generation(returned) }]);
+
+  const approvals = await system();
+  const owner = await approvals.open();
+  await approvals.send(owner, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval: true });
+  const [admitted, refused, ended] = [await approvals.listener(), await approvals.listener(), await approvals.listener()];
+  for (const ws of [admitted, refused, ended]) assert.equal(last(ws).type, 'approval-pending');
+  await approvals.send(owner, { type: 'approve', generation: generation(owner), to: id(admitted) });
+  assert.equal(last(admitted).type, 'ready');
+  await approvals.send(owner, { type: 'deny', generation: generation(owner), to: id(refused) });
+  assert.equal(last(refused).type, 'denied');
+  assert.equal(refused.closed.code, 4403);
+  await approvals.send(owner, { type: 'end', generation: generation(owner) });
+  assert.equal(last(ended).type, 'ended');
+});
+
+test('a cached page still asking every second gets the same answers and no second join', async () => {
+  const s = await system(), listener = await s.listener();
+  const ask = async (type, times = 5) => {
+    for (let i = 0; i < times; i += 1) {
+      await s.send(listener, { type: 'check' });
+      assert.equal(last(listener).type, type);
+    }
+  };
+  await ask('waiting');
+  const host = await s.host();
+  await ask('ready');
+  assert.equal(host.messages.filter((message) => message.type === 'join').length, 1);
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  await ask('waiting');
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  await ask('waiting');
+  const returned = await s.host();
+  await ask('ready');
+  assert.equal(returned.messages.filter((message) => message.type === 'join').length, 1);
+  await s.send(returned, { type: 'end', generation: generation(returned) });
+  await ask('ended', 1);
+});
+
 test('a replacement host retires the old socket before its late close callback', async () => {
   const s = await system(), old = await s.host(), listener = await s.listener();
   const previous = generation(old), replacement = await s.host();
