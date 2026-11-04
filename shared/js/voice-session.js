@@ -934,7 +934,13 @@ class VoiceSession {
     if (!peer || !this._current(peer)) return;
     const current = this._peers.get(peer.id) === peer;
     this._drop(peer.id, peer);
-    if (this._client && current && peer.id === this._id && this._socket) this._lost(this._socket, 1000);
+    if (this._client && current && peer.id === this._id && this._socket) {
+      // A new socket is how a client earns a fresh offer from a host that is there. While
+      // it waits there is no host to offer one, and a host returning introduces the socket
+      // it already has, so letting go would only risk missing that moment.
+      if (!this._waiting) this._lost(this._socket, 1000);
+      else if (this._source && !this._connected().length) this.setTalking(false);
+    }
     this._voiceState();
   }
   _drop(id, expected = null) {

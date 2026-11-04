@@ -1189,6 +1189,38 @@ test('a sender waiting for approval or for its microphone is told by the room, n
   assert.equal(slow.states.at(-1).detail.waiting, false);
 });
 
+test('a waiting sender keeps its socket when its old audio connection fails, with talking off', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin();
+  answerPings(ws);
+  ws.message(offer());
+  await flush();
+  const old = h.peers[0];
+  old.connect();
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, true);
+  ws.message({ type: 'waiting' });
+  await flush();
+  assert.equal(h.mic.track.enabled, true);
+  old.fail();
+  assert.equal(old.closed, true);
+  assert.equal(ws.closed, false);
+  assert.equal(h.mic.track.enabled, false);
+  assert.equal(h.states.at(-1).key, 'sender-reconnecting');
+  assert.equal(h.states.at(-1).detail.directReady, false);
+  await h.clock.advance(30000);
+  assert.equal(h.sockets.length, 1);
+  ws.message(ready(GEN_B));
+  ws.message(offer(CONN_B, GEN_B));
+  await flush();
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.captures(), 1);
+  assert.equal(h.peers.length, 2);
+  h.peers[1].connect();
+  assert.equal(h.states.at(-1).key, 'sender-ready');
+  assert.equal(h.mic.track.enabled, false);
+});
+
 test('a sender whose timers were held back asks on its first tick', async t => {
   const h = harness(t, { role: 'sender' });
   const ws = await h.begin({ type: 'waiting' });

@@ -81,8 +81,10 @@ than repeatedly opening rate-limited sockets: the worker sends `ready` when the
 host returns, and a page asks for itself about once a minute only in case that
 message never arrived.
 Healthy direct audio can survive a brief signaling outage. New generations
-retire stale peers, and failed media is negotiated again. Background timers,
-sleep and connection limits can delay retries.
+retire stale peers. Failed media is negotiated again over a new socket while the
+host is there; a waiting listener keeps the socket it has, because the host's
+return reaches it there. Background timers, sleep and connection limits can delay
+retries.
 
 Host capture begins disabled. Holding Talk or enabling hands-free speech starts
 transmission, and microphone mute overrides both. A physical hold releases when

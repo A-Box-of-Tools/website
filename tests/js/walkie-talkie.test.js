@@ -541,6 +541,81 @@ test('a page whose timers were held back asks on its first tick, and then waits 
   assert.equal(checks(ws), 2);
 });
 
+test('a waiting listener keeps its socket when its old audio connection fails, however it fails', async t => {
+  const failures = {
+    failed: async peer => peer.fail(),
+    'past its deadline': async (peer, h) => {
+      peer.connectionState = 'disconnected';
+      peer.onconnectionstatechange();
+      await h.clock.advance(10000);
+    },
+  };
+  for (const fail of Object.values(failures)) {
+    const h = harness(t);
+    const ws = await h.begin(ready());
+    answerPings(ws);
+    ws.message(offer());
+    await flush();
+    const old = h.peers[0];
+    old.receive({ name: 'old voice' });
+    old.connect();
+    ws.message({ type: 'waiting' });
+    await flush();
+    await fail(old, h);
+    assert.equal(old.closed, true);
+    assert.equal(ws.closed, false);
+    assert.equal(h.streams.at(-1), null);
+    assert.equal(h.states.at(-1).key, 'listener-reconnecting');
+    assert.equal(h.states.at(-1).detail.directReady, false);
+    await h.clock.advance(30000);
+    assert.equal(h.sockets.length, 1);
+    ws.message(ready(ID_A, GEN_B));
+    ws.message(offer(ID_A, CONN_B, GEN_B));
+    await flush();
+    assert.equal(h.sockets.length, 1);
+    assert.equal(h.peers.length, 2);
+    assert.ok(ws.sent.some(frame => frame.type === 'answer' && frame.generation === GEN_B));
+    h.peers[1].receive({ name: 'new voice' });
+    h.peers[1].connect();
+    assert.equal(h.states.at(-1).key, 'listener-listening');
+    assert.equal(h.streams.at(-1).name, 'new voice');
+  }
+});
+
+test('a listener whose host is there still takes a new socket to earn a fresh offer', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.message(offer());
+  await flush();
+  h.peers[0].connect();
+  h.peers[0].fail();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(ws.closed, true);
+  await h.clock.advance(1000);
+  assert.equal(h.sockets.length, 2);
+  assert.deepEqual(h.sockets[1].sent, []);
+});
+
+test('audio failing during a reconnect leaves the attempt already under way alone', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.message(offer());
+  await flush();
+  h.peers[0].connect();
+  ws.serverClose();
+  await h.clock.advance(1000);
+  const next = h.sockets.at(-1);
+  assert.notEqual(next, ws);
+  next.open();
+  h.peers[0].fail();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(next.closed, false);
+  next.message({ type: 'waiting' });
+  await flush();
+  await h.clock.advance(5000);
+  assert.equal(h.sockets.length, 2);
+});
+
 test('a check the full send buffer refused is tried again on the next tick', async t => {
   const h = harness(t);
   const ws = await h.begin();
