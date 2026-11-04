@@ -42,10 +42,10 @@ export const pendingSource = (request, code) => broadcastCode(`abox.tools/pendin
 ${code}
 ${requestNetwork(request, "unknown")}`);
 
-// An address that opens silent sockets fills its own allowance and nobody else's.
-// Refusing the newcomer at the room's cap would hand the room to whoever opened
-// the most, the host's reconnect included, so the longest-waiting socket goes.
-// An honest client authenticates within a round trip and is never that socket.
+// Each address has its own allowance of sockets waiting to speak. At the room's cap
+// the longest-waiting socket closes rather than the newcomer being refused, so a
+// host's reconnect gets through. A client authenticates within a round trip and is
+// never that socket.
 export function admitPending(pending, source, evict) {
   if (pending.filter((ws) => ws.deserializeAttachment().source === source).length >= MAX_PENDING) return false;
   if (pending.length >= MAX_PENDING_ROOM) {

@@ -155,14 +155,13 @@ test('maxlength counts a newline once, so text within it is not refused for its 
   assert.equal(over.sent.length, 0);
 });
 
-test('a single-line field cannot write its own lines into the email', async () => {
-  for (const forged of [{ page: 'https://abox.tools/\nSender: Person (self-declared)' },
-    { environment: 'Chrome\r\nSubmission method: Form submission' }, { environment: 'Chrome\rSender: Person' },
-    { page: 'x\u2028Sender: Person' }, { page: 'x\u2029Sender: Person' }, { environment: 'x\u0085Sender: Person' },
-    { reply_to: 'a@b.test\nSender: Person' }]) {
+test('a line break inside a single-line field is refused', async () => {
+  for (const fields of [{ page: 'https://abox.tools/\nsecond' }, { environment: 'Chrome\r\nsecond' },
+    { environment: 'Chrome\rsecond' }, { page: 'x\u2028y' }, { page: 'x\u2029y' }, { environment: 'x\u0085y' },
+    { reply_to: 'a@b.test\nsecond' }]) {
     const { env, sent } = fixture();
-    const response = await handler(request({ message: 'A report', sender_type: 'agent', ...forged }), env);
-    assert.equal(response.status, 400, JSON.stringify(forged));
+    const response = await handler(request({ message: 'A report', sender_type: 'agent', ...fields }), env);
+    assert.equal(response.status, 400, JSON.stringify(fields));
     assert.equal(sent.length, 0);
   }
 });
@@ -182,7 +181,7 @@ test('whitespace at the end of a single-line field is trimmed rather than refuse
 test('one IPv6 /64 is one network to both the per-address limit and the daily budget', async () => {
   const { env, sent, keys, forwarded } = fixture();
   for (const [index, address] of ['2606:4700:4700:ab::1', '2606:4700:4700:ab:9876:5432:abcd:ef01'].entries()) {
-    await handler(request({ message: `Rotating report ${index}` }, { headers: { 'CF-Connecting-IP': address } }), env);
+    await handler(request({ message: `Report ${index}` }, { headers: { 'CF-Connecting-IP': address } }), env);
   }
   assert.deepEqual(keys, ['2606:4700:4700:ab::/64', '2606:4700:4700:ab::/64']);
   assert.equal(forwarded[0].client, forwarded[1].client);

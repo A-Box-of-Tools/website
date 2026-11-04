@@ -767,7 +767,7 @@ test('discovery bounds observers, listed shares, messages, and updates per socke
   assert.equal(watching.deserializeAttachment(), null);
 });
 
-test('a socket looping frames discovery would ignore is closed by its window', async (t) => {
+test('a discovery socket over its frame window is closed, whatever it sent', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
   for (const frame of ['{}', '{"unknown":true}', 'not json', '[]', 'null', 'x'.repeat(513), new ArrayBuffer(1),

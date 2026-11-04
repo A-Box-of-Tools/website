@@ -132,11 +132,10 @@ Current MCP 2026-07-28 clients and the SDK's default stateless compatibility
 for 2025-era clients share `/mcp`. Unsupported GET and DELETE requests return
 405. Native and server clients can omit `Origin`; browser origins must match
 the explicit allowlist. Host validation runs before protocol dispatch.
-`subscriptions/listen` is refused with `-32603` in an ordinary JSON response:
-the SDK's JSON mode does not cover it and would otherwise hold a `text/event-stream`
-open, and a catalogue fixed at deployment has nothing to announce. `maxSubscriptions`
-is zero for that reason. A 2025-era client still gets its reply framed as one
-event-stream message, which ends with that message, so nothing here stays open.
+`subscriptions/listen` is refused with `-32603` in an ordinary JSON response, because
+a catalogue fixed at deployment has nothing to announce. `maxSubscriptions` is zero for
+that reason. A 2025-era client gets its reply framed as one event-stream message, which
+ends with that message.
 
 The single public tool, `find_browser_tools`, requires `query` with at most
 200 Unicode code points. `limit` is an integer from 1 to 20, default 10;

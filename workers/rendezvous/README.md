@@ -154,8 +154,8 @@ Text, camera and tab hosts now name a digest and prove it when replacing their o
 stale socket; the protocol below says how. It adds no class, binding, migration,
 secret or storage. Deploy this worker first, as usual, though either order works:
 an older worker ignores the `holder` parameter and never asks for proof, and a
-cached page names no digest and goes on hosting first come. Until the pages that
-send a digest are live, the worker can protect nobody's name.
+cached page names no digest and goes on hosting first come. Hosts are covered once
+the pages that send a digest are live.
 
 ### The discovery migration
 
@@ -342,7 +342,7 @@ transport, host approval, password or microphone consent.
   stop a script, which is what the next line is for.
 - One IPv4 address or IPv6 /64 may open thirty sockets a minute, counted per
   Cloudflare location; the thirty-first is refused with 429. A /64 counts as one
-  because a single customer can choose any address inside it. The start page
+  because a single customer normally holds all of it. The start page
   opens a discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
 - A socket that sends more than 120 frames in a rolling ten seconds is closed with
