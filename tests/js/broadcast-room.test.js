@@ -522,6 +522,42 @@ test('listener and pending limits reserve room for a genuine host and expire sil
   assert.equal((await s.listener()).messages.at(-1).type, 'ready');
 });
 
+test('pending sockets are capped per address, and another address still gets in', async () => {
+  const s = await system();
+  const from = async (address) => (await worker.fetch(s.request(undefined, { 'CF-Connecting-IP': address }), s.env)).webSocket.peer;
+  for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
+  const refused = await from('198.51.100.1');
+  assert.equal(refused.closed.code, 4429);
+  assert.deepEqual(last(refused), { type: 'error', error: 'full' });
+  // All of a /64 is one address, and the neighbouring /64 is not.
+  for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
+  assert.equal((await from('2606:4700:4700:ab:9876:5432:abcd:ef01')).closed.code, 4429);
+  assert.equal((await from('2606:4700:4700:ac::1')).readyState, 1);
+  const host = await from('203.0.113.9');
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY });
+  assert.equal(host.messages[0].type, 'host-ready', "the host's reconnect still gets through");
+  assert.equal(JSON.stringify(host.deserializeAttachment()).includes('source'), false, 'nothing about the address outlives the handshake');
+  const attachments = JSON.stringify(s.room().ctx.sockets.map((ws) => ws.deserializeAttachment()));
+  for (const address of ['198.51.100.1', '2606:4700', '203.0.113.9']) assert.equal(attachments.includes(address), false, address);
+});
+
+test('at the room-wide ceiling the longest wait closes rather than the newcomer', async (t) => {
+  let now = 1000;
+  t.mock.method(Date, 'now', () => now);
+  const s = await system(), waiting = [];
+  const from = async (address) => (await worker.fetch(s.request(undefined, { 'CF-Connecting-IP': address }), s.env)).webSocket.peer;
+  for (let address = 1; address <= 8; address += 1) {
+    for (let i = 0; i < 4; i += 1) { waiting.push(await from(`198.51.100.${address}`)); now += 1; }
+  }
+  assert.ok(waiting.every((ws) => ws.readyState === 1));
+  const host = await from('203.0.113.9');
+  assert.equal(waiting[0].closed.code, 4429);
+  assert.deepEqual(last(waiting[0]), { type: 'error', error: 'full' });
+  assert.ok(waiting.slice(1).every((ws) => ws.readyState === 1));
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY });
+  assert.equal(host.messages[0].type, 'host-ready');
+});
+
 test('auth cannot revive a retired socket after its asynchronous digest finishes', async (t) => {
   const s = await system(), ws = await s.open();
   const digest = crypto.subtle.digest.bind(crypto.subtle);

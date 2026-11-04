@@ -39,13 +39,17 @@ function publicResponse(request, body, type) {
   return new Response(request.method === 'HEAD' ? null : body, { headers });
 }
 
-export function discoveryResponse(request, catalogue, url = new URL(request.url)) {
+// A document names the service's configured address, never the one it was asked
+// for: Cloudflare proxies this Worker on several ports, and a card describes where
+// to connect rather than echoing how a particular client happened to arrive.
+export function discoveryResponse(request, catalogue, serviceOrigin, url = new URL(request.url)) {
   // MCP requests share this router but need none of the public document data.
   if (url.search || !DISCOVERY_PATHS.has(url.pathname)) return null;
   if (url.pathname === '/.well-known/agent-card.json') {
-    return publicResponse(request, JSON.stringify(buildAgentCard(catalogue, url.origin)), 'application/json');
+    return publicResponse(request, JSON.stringify(buildAgentCard(catalogue, serviceOrigin)), 'application/json');
   }
-  const endpoint = new URL('/mcp', url.origin).href;
+  const service = new URL(serviceOrigin);
+  const endpoint = new URL('/mcp', service).href;
   const card = {
     $schema: 'https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json',
     ...SERVER_BRANDING,
@@ -60,14 +64,14 @@ export function discoveryResponse(request, catalogue, url = new URL(request.url)
   }
   if (url.pathname === '/.well-known/ai-catalog.json') {
     return publicResponse(request, JSON.stringify({ specVersion: '1.0', entries: [{
-      identifier: `urn:air:${url.hostname}:mcp:catalogue`,
-      type: 'application/mcp-server-card+json', url: new URL('/mcp/server-card', url.origin).href
-    }, { identifier: `urn:air:${url.hostname}:a2a:catalogue`,
-      type: 'application/a2a-agent-card+json', url: new URL('/.well-known/agent-card.json', url.origin).href
+      identifier: `urn:air:${service.hostname}:mcp:catalogue`,
+      type: 'application/mcp-server-card+json', url: new URL('/mcp/server-card', service).href
+    }, { identifier: `urn:air:${service.hostname}:a2a:catalogue`,
+      type: 'application/a2a-agent-card+json', url: new URL('/.well-known/agent-card.json', service).href
     }] }), 'application/ai-catalog+json');
   }
   if (url.pathname !== '/') return null;
-  const production = url.origin === 'https://mcp.abox.tools';
+  const production = serviceOrigin === 'https://mcp.abox.tools';
   const title = production ? 'abox.tools catalogue MCP' : 'abox.tools catalogue MCP — development';
   const sourceRef = production ? catalogue.build.revision : 'dev';
   const serviceNotice = production ? 'Public catalogue discovery service.'

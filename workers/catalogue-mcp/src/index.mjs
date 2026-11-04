@@ -12,7 +12,7 @@ prepareCatalogueSchemas(catalogue);
 // and transports are still created separately for each request.
 const service = createWorker({ catalogue, viewHtml,
   allowedHosts: JSON.parse(env.ALLOWED_HOSTS),
-  allowedOrigins: JSON.parse(env.ALLOWED_ORIGINS), requireRateLimiter: true });
+  allowedOrigins: JSON.parse(env.ALLOWED_ORIGINS), serviceOrigin: env.SERVICE_ORIGIN, requireRateLimiter: true });
 export default {
   fetch(request, env) {
     return service.fetch(request, env);

@@ -33,10 +33,16 @@ evidence of a person, and a JSON request is not evidence of an agent.
 
 Only `message` is required by older JSON clients. Optional `reply_to` can provide an email address.
 Message, page, environment and reply limits are 4,000, 512, 500 and 254 UTF-16
-code units. The complete UTF-8 request is limited to 16 KiB, including streamed
-bodies without Content-Length. Unknown fields and non-string values are
-rejected. The HTML form submits URL-encoded text and a hidden empty `company`
-field; multipart bodies and file attachments are not accepted.
+code units, counted after CRLF becomes LF: a browser submits each textarea
+newline as two units and `maxlength` counts it as one. Everything except
+`message` is a single line of the email, so a line break inside one is rejected;
+one at either end is trimmed. The complete request is limited to 48 KiB,
+including streamed bodies without Content-Length. That is the form's longest
+possible body, since percent-encoding turns one unit of CJK into nine bytes. An
+oversized form comes back with what fitted under the limit still in its fields.
+Unknown fields and non-string values are rejected. The HTML form submits
+URL-encoded text and a hidden empty `company` field; multipart bodies and file
+attachments are not accepted.
 
 `201` with `ok: true` and a receipt confirms provider acceptance, not inbox
 arrival or reading. `200` with `duplicate: true` returns an already accepted
@@ -64,7 +70,8 @@ hosts for Wrangler's local preview. No cross-origin credentials are used.
 ## Abuse and privacy boundaries
 
 Both fast rate bindings are required for a submission. Namespace 1005 allows three
-requests per source address per minute; namespace 1006 allows thirty requests
+requests per source network per minute, meaning an IPv4 address or an IPv6 /64,
+since one customer normally holds a whole /64; namespace 1006 allows thirty requests
 per minute per platform location with a shared service key. These are not a
 worldwide atomic quota. They are separate from rendezvous and catalogue budgets.
 
@@ -91,7 +98,7 @@ before returning 201. Failed or unconfirmed attempts still count and are not
 automatically resent. Concurrent and repeated submissions reuse the original
 reservation, including after a Worker restart.
 
-The source address is used as a platform rate-limit key and to derive a keyed
+The source network is used as a platform rate-limit key and to derive a keyed
 HMAC network identifier. A separate HMAC identifies normalized message/page
 pairs. The SQLite-backed object stores only keyed identifiers, attempt times,
 receipts and status, never message text, page addresses, reply addresses,

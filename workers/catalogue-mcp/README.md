@@ -132,6 +132,10 @@ Current MCP 2026-07-28 clients and the SDK's default stateless compatibility
 for 2025-era clients share `/mcp`. Unsupported GET and DELETE requests return
 405. Native and server clients can omit `Origin`; browser origins must match
 the explicit allowlist. Host validation runs before protocol dispatch.
+`subscriptions/listen` is refused with `-32603` in an ordinary JSON response, because
+a catalogue fixed at deployment has nothing to announce. `maxSubscriptions` is zero for
+that reason. A 2025-era client gets its reply framed as one event-stream message, which
+ends with that message.
 
 The single public tool, `find_browser_tools`, requires `query` with at most
 200 Unicode code points. `limit` is an integer from 1 to 20, default 10;
@@ -143,8 +147,8 @@ for hosts without Apps support.
 Requests must be JSON and are limited to 16 KiB, including streamed bodies.
 JSON-RPC batch arrays are rejected before dispatch, so one request cannot
 multiply the large app resource into many responses.
-Each deployment's rate binding permits 60 requests per address per minute in
-Cloudflare's rate-limiter model. Development uses namespace 1004 and production
+Each deployment's rate binding permits 60 requests per IPv4 address or IPv6 /64
+per minute in Cloudflare's rate-limiter model. Development uses namespace 1004 and production
 uses namespace 1003; neither shares the rendezvous namespaces. The deployed
 entry point requires the binding and returns 503 before discovery or protocol
 handling if it is missing or unusable. Tests and direct utility callers can
@@ -166,7 +170,10 @@ at `/mcp/server-card`, linked from its own `/.well-known/ai-catalog.json`.
 than a claim that this location is required by the current specification.
 Cards advertise identity and connection details; tools, resources and Apps
 support are discovered through the real MCP runtime, not duplicated into a
-static capabilities claim. Public discovery has read-only CORS, cache
+static capabilities claim. Every address in them comes from `SERVICE_ORIGIN` in
+the Wrangler configuration rather than from the request, so asking on another
+port Cloudflare proxies gets the same documents; `npm run dev` overrides it with
+its own local address. Public discovery has read-only CORS, cache
 validators and HEAD support. Protected-resource/OAuth discovery is absent
 because this catalogue is public and requires no login.
 
