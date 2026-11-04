@@ -15,6 +15,7 @@ const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
 const RATE_WINDOW = 10000;
+const RECHECK_INTERVAL = 10000;
 const AUTH_TIMEOUT = 8000;
 
 const DEFAULT_TOOL = "share-text";
@@ -139,6 +140,7 @@ export class Discovery {
   constructor(ctx, env) {
     this.ctx = ctx;
     this.env = env;
+    this.nextRecheck = 0;
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
   }
 
@@ -174,7 +176,7 @@ export class Discovery {
     const pending = this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false);
     if (group === undefined) this.freeSeat();
     else if (!admitPending(pending, source, (ws) => this.evict(ws))) {
-      server.accept();
+      this.ctx.acceptWebSocket(server, ["refused"]);
       server.close(4429, "full");
       return new Response(null, { status: 101, webSocket: client });
     }
@@ -305,7 +307,16 @@ export class Discovery {
     }
   }
 
-  async refresh() {
+  // A withdrawal removes a listing as it happens, so a recheck only repairs one that
+  // never arrived. One per interval does that, and a page asking in between gets the
+  // list as it stands. The time is kept in memory: forgetting it costs one early recheck.
+  async refresh(ws) {
+    if (Date.now() < this.nextRecheck) {
+      try { ws.send(this.snapshot()); }
+      catch { this.drop(ws); try { ws.close(1011, "send-failed"); } catch {} }
+      return;
+    }
+    this.nextRecheck = Date.now() + RECHECK_INTERVAL;
     const entries = this.observers().map((ws) => ({ ws, who: ws.deserializeAttachment() }))
       .filter(({ who }) => who.publication?.verified);
     const checks = new Map();
@@ -387,7 +398,7 @@ export class Discovery {
     if (who.updates >= MAX_UPDATES) { this.drop(ws); ws.close(4429, "too-many-updates"); return; }
     if (!publishing) {
       ws.serializeAttachment({ ...who, updates: who.updates + 1 });
-      return this.refresh();
+      return this.refresh(ws);
     }
     const generation = who.generation + 1;
     const publication = parsed.publish === null ? null : {

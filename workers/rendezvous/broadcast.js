@@ -172,7 +172,7 @@ export class Broadcast {
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
     if (!admitPending(this.sockets("pending"), source, (ws) => this.refuse(ws, 4429, "full"))) {
-      server.accept();
+      this.ctx.acceptWebSocket(server, ["refused"]);
       server.send(JSON.stringify({ type: "error", error: "full" }));
       server.close(4429, "full");
     } else {

@@ -303,10 +303,11 @@ export class Room {
 
     // A refused handshake reaches the browser as a bare error with nothing
     // attached, so rejections complete the upgrade and then close with a
-    // 4xxx code the page can read.
+    // 4xxx code the page can read. It is accepted the way an admission is, under
+    // a tag no count looks for, and with no attachment every handler passes over it.
     const refuse = (code, reason) => {
       logRefusal(code, reason);
-      server.accept();
+      this.ctx.acceptWebSocket(server, ["refused"]);
       server.close(code, reason);
       return new Response(null, { status: 101, webSocket: client });
     };
