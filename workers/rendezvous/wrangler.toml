@@ -67,7 +67,7 @@ tag = "v4"
 new_sqlite_classes = ["Inbox"]
 
 # One IPv4 address or IPv6 /64 may open thirty sockets a minute, counted as one
-# because a single customer can choose any address in a /64. The start page opens one for
+# because a single customer normally holds all of it. The start page opens one for
 # discovery, a host adds one for its room, and each reader opens one. It is
 # the difference between a script
 # spending the free plan's daily quota in an hour and spending its own patience.

@@ -335,9 +335,8 @@ export class Discovery {
     this.cleanup();
     let who = ws.deserializeAttachment();
     if (who === null || ws.readyState !== 1 || message === "ping") return;
-    // Every frame wakes this object, so the window comes before anything about
-    // the frame is believed: an empty or malformed one costs the same as a
-    // publication. `updates` remains the separate per-connection allowance.
+    // The window comes before anything about the frame is believed, so every
+    // kind of frame counts. `updates` remains the separate per-connection allowance.
     const now = Date.now(), restart = now - (who.window ?? 0) >= RATE_WINDOW, frames = restart ? 1 : who.frames + 1;
     if (frames > MAX_UPDATES) { this.drop(ws); try { ws.close(4429, "too-many-frames"); } catch {} return; }
     who = { ...who, window: restart ? now : who.window, frames };

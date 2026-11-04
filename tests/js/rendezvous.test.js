@@ -153,7 +153,7 @@ test('the limit is counted per address, not per room', async () => {
   assert.deepEqual(e.asked.rooms, ['id:one', 'id:two']);
 });
 
-test('one IPv6 /64 is one budget at every door, however many addresses it rotates through', async () => {
+test('one IPv6 /64 is one budget at every door', async () => {
   const e = env();
   const stub = { idFromName: (name) => name, get: () => ({ fetch: async () => new Response('room', { status: 200 }) }) };
   e.BROADCASTS = stub; e.INBOXES = stub;

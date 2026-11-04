@@ -87,8 +87,7 @@ function fieldsFrom(raw, json) {
     const text = value.replace(/\r\n?/g, '\n');
     if (text.length > FIELDS[key] || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(value)) invalid();
     clean[key] = text.trim();
-    // Everything but the message prints as one line of the email, among labels
-    // its reader relies on. A line break there would let a report write its own.
+    // Everything but the message prints as one line of the email.
     if (key !== 'message' && /[\n\u0085\u2028\u2029]/.test(clean[key])) invalid();
   }
   if (!clean.message || clean.company) invalid();

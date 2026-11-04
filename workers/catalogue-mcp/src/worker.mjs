@@ -49,10 +49,8 @@ export function createWorker({ catalogue, viewHtml, allowedHosts, allowedOrigins
   }
   const origins = new Set(allowedOrigins);
   const originHosts = allowedOrigins.map(value => new URL(value).hostname);
-  // JSON mode does not cover subscriptions/listen: the SDK always answers it with
-  // a held-open event stream. This catalogue never changes while deployed, so
-  // there is nothing to subscribe to, and no reason to let a public client keep
-  // a stream on a Worker priced by the request. Zero refuses it in-band.
+  // This catalogue never changes while deployed, so there is nothing to subscribe
+  // to. JSON mode does not cover subscriptions/listen, and zero refuses it in-band.
   const handler = createMcpHandler(() => createCatalogueServer(catalogue, viewHtml), { responseMode: 'json', maxSubscriptions: 0 });
   return {
     async fetch(request, env = {}) {

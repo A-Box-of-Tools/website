@@ -769,17 +769,17 @@ test('admitted and pending limits, auth deadlines, malformed frames and update b
   }
 });
 
-test('silent sockets from elsewhere can neither lock the pager nor outlast its host', async (t) => {
+test('pending sockets are capped per address, and the host still gets in', async (t) => {
   let now = 1000;
   t.mock.method(Date, 'now', () => now);
-  const s = await system(), silent = [];
+  const s = await system(), waiting = [];
   const from = async (address) => (await worker.fetch(s.request(undefined, { 'CF-Connecting-IP': address }), s.env)).webSocket.peer;
   for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
   const refused = await from('2606:4700:4700:ab:9876:5432:abcd:ef01');
   assert.equal(refused.closed.code, 4429);
   assert.deepEqual(last(refused), { type: 'error', error: 'full' });
   for (let address = 1; address <= 7; address += 1) {
-    for (let i = 0; i < 4; i += 1) { silent.push(await from(`198.51.100.${address}`)); now += 1; }
+    for (let i = 0; i < 4; i += 1) { waiting.push(await from(`198.51.100.${address}`)); now += 1; }
   }
   const host = await from('203.0.113.9');
   await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null });

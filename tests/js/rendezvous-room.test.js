@@ -104,7 +104,7 @@ const clock = (t, start = 1000000) => {
 const hosting = (ws) => ws.deserializeAttachment()?.role === 'host';
 const prove = (s, ws, key = KEY) => s.send(ws, { type: 'host-proof', key });
 
-test('a reader looping any kind of frame is closed once its window is spent', async (t) => {
+test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {
   const time = clock(t);
   for (const frame of ['{}', 'not json', '[]', 'null', new ArrayBuffer(1), 'x'.repeat(65537)]) {
     const s = await system(), host = await s.host(null), reader = await s.viewer();
@@ -168,12 +168,12 @@ test('keepalives never spend the window, and a socket from before it existed sta
   assert.equal(host.messages.at(-1).type, 'signal');
 });
 
-test('a connected holder cannot be displaced by a stranger, with or without a digest of their own', async () => {
+test('a connected holder keeps the room against another claim, with or without a digest', async () => {
   const s = await system(), host = await s.host();
   assert.equal(host.deserializeAttachment().holder, s.digest);
-  for (const stranger of [await s.host(null), await s.host(s.otherDigest)]) {
-    assert.equal(stranger.closed?.code, 4409);
-    assert.deepEqual(stranger.messages, [], 'a stranger is told nothing about proof');
+  for (const other of [await s.host(null), await s.host(s.otherDigest)]) {
+    assert.equal(other.closed?.code, 4409);
+    assert.deepEqual(other.messages, [], 'another claimant is told nothing about proof');
   }
   assert.ok(hosting(host) && host.readyState === 1);
 });
@@ -251,13 +251,13 @@ test('the host survives a claimant who hashes its way past a retirement', async 
   assert.equal(hosting(retry), false);
 });
 
-test('a connection lost without closing holds the name against a script polling for it', async (t) => {
+test('a connection lost without closing keeps the name for its holder', async (t) => {
   const time = clock(t);
   const s = await system(), host = await s.host();
   s.lose(host);
   assert.equal(host.deserializeAttachment(), null);
   for (let elapsed = 0; elapsed < GRACE - 10000; elapsed += 5000) {
-    for (const poll of [await s.host(null), await s.host(s.otherDigest)]) assert.equal(poll.closed?.code, 4409);
+    for (const other of [await s.host(null), await s.host(s.otherDigest)]) assert.equal(other.closed?.code, 4409);
     time.now += 5000;
   }
   assert.equal((await s.viewer()).closed?.code, 4404, 'nobody is hosting, and readers are told so');
@@ -287,19 +287,19 @@ test('every way of losing a socket holds the name, and only a clean close releas
   assert.ok(hosting(await cached.host(null)));
 });
 
-test('the hold lapses on its own and the name goes back to first come', async (t) => {
+test('the hold lapses on its own', async (t) => {
   const time = clock(t);
   const s = await system(), host = await s.host();
   s.lose(host);
   time.now += GRACE;
-  const stranger = await s.host(s.otherDigest);
-  assert.ok(hosting(stranger));
+  const next = await s.host(s.otherDigest);
+  assert.ok(hosting(next));
   // Their name is now as protected as anybody's, including from the first holder.
   const late = await s.host();
   assert.equal(late.closed?.code, 4409);
 });
 
-test('the hold is memory and a live host is not: only one of them survives waking up', async () => {
+test('waking up keeps a live host through its attachment, and the hold never reaches storage', async () => {
   const s = await system(), host = await s.host();
   s.wake();
   assert.equal((await s.host(null)).closed?.code, 4409, 'the attachment survives hibernation');
@@ -307,7 +307,7 @@ test('the hold is memory and a live host is not: only one of them survives wakin
   s.lose(host);
   assert.equal((await s.host(null)).closed?.code, 4409);
   s.wake();
-  assert.ok(hosting(await s.host(null)), 'an evicted object has no memory, and storage is never used');
+  assert.ok(hosting(await s.host(null)), 'storage is never used');
 });
 
 test('a host replaced mid-share withdraws its listing and gets a new lease', async () => {

@@ -174,8 +174,7 @@ const logRefusal = (code, reason) => console.log(JSON.stringify({ refused: code,
 // recognise that host after every socket has gone. A text or camera room is
 // named by people and has no such memory, which is why `vacancy` exists: the
 // digest of a host whose connection was lost, held only in this object's
-// memory. Eviction forgets it and the name reverts to first come, the same as
-// any name nobody holds, which is the most a room can promise without storage.
+// memory and never written to storage.
 export class Room {
   constructor(ctx, env) {
     this.ctx = ctx;
@@ -363,8 +362,8 @@ export class Room {
     if (message === "ping") return;
     let who = ws.deserializeAttachment();
     if (who === null) return;
-    // Every frame wakes this object, so the window comes before anything about
-    // the frame is believed: an empty or malformed one costs the same as an offer.
+    // The window comes before anything about the frame is believed, so every
+    // kind of frame counts.
     const now = Date.now(), restart = now - (who.window ?? 0) >= RATE_WINDOW, updates = restart ? 1 : who.updates + 1;
     if (updates > this.allowance(who)) {
       logRefusal(4429, "busy");
@@ -408,8 +407,7 @@ export class Room {
   }
 
   // A page that stops, navigates or closes sends a close frame and means it. A
-  // connection that merely died may be back in seconds, and a script polling the
-  // name must not be able to take it in between.
+  // connection that merely died may be back in seconds, so its name stays held.
   webSocketClose(ws, code, reason, wasClean) {
     this.drop(ws, wasClean !== true);
   }

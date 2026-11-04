@@ -71,7 +71,7 @@ hosts for Wrangler's local preview. No cross-origin credentials are used.
 
 Both fast rate bindings are required for a submission. Namespace 1005 allows three
 requests per source network per minute, meaning an IPv4 address or an IPv6 /64,
-since one customer can choose any address inside a /64; namespace 1006 allows thirty requests
+since one customer normally holds a whole /64; namespace 1006 allows thirty requests
 per minute per platform location with a shared service key. These are not a
 worldwide atomic quota. They are separate from rendezvous and catalogue budgets.
 

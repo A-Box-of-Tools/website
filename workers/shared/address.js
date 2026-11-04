@@ -1,6 +1,5 @@
 // Which network a request spends its budget against. One IPv6 customer normally
-// holds a whole /64 and can pick any address inside it, so counting the full
-// address would hand a rotating script a fresh allowance for every request.
+// holds a whole /64, so the budget belongs to the /64 rather than to each address.
 //
 // Rendezvous, feedback and the catalogue each bundle this file when they are
 // deployed by hand. Changing it changes a limit only on the Workers deployed
@@ -42,8 +41,8 @@ function ipv6Budget(value) {
 export function requestNetwork(request, fallback = "") {
   const edgeAddress = request.headers.get("CF-Connecting-IP");
   // Pseudo IPv4's overwrite mode hashes each full IPv6 address into a Class E
-  // marker and keeps the real one in this edge header. Its marker is required,
-  // so an ordinary source cannot spend somebody else's budget by sending it.
+  // marker and keeps the real one in this edge header. Its marker is required:
+  // the header is ignored for an ordinary source.
   const octets = ipv4Octets(edgeAddress);
   if (octets !== null && octets[0] >= 240) {
     const preserved = ipv6Budget(request.headers.get("CF-Connecting-IPv6"));

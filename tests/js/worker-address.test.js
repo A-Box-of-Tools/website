@@ -33,7 +33,7 @@ test('pseudo IPv4 counts the real address it stands in for, and only its marker 
   const pseudo = (marker, real) => requestNetwork(request({ 'CF-Connecting-IP': marker, 'CF-Connecting-IPv6': real }));
   assert.equal(pseudo('240.12.34.56', '2606:4700:4700:ab::1'), '2606:4700:4700:ab::/64');
   assert.equal(pseudo('255.1.2.3', '2606:4700:4700:ab::2'), '2606:4700:4700:ab::/64');
-  assert.equal(pseudo('192.0.2.1', '2606:4700:4700:ab::1'), '192.0.2.1', 'an ordinary source cannot choose whose budget to spend');
+  assert.equal(pseudo('192.0.2.1', '2606:4700:4700:ab::1'), '192.0.2.1', 'an ordinary source is counted as itself');
   assert.equal(pseudo('240.12.34.56', 'not an address'), '240.12.34.56', 'something is still counted');
 });
 

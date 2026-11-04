@@ -592,7 +592,7 @@ test('a service with no usable origin of its own refuses to start', () => {
   assert.throws(() => workerFixture({ allowedHosts: ['mcp-dev.abox.tools'] }), TypeError, 'it must be one of the hosts it serves');
 });
 
-test('subscriptions/listen is refused in one JSON reply rather than held open as a stream', async (t) => {
+test('subscriptions/listen is refused in one JSON reply', async (t) => {
   const worker = workerFixture();
   t.after(() => worker.close());
   const _meta = { 'io.modelcontextprotocol/protocolVersion': '2026-07-28',
@@ -603,7 +603,6 @@ test('subscriptions/listen is refused in one JSON reply rather than held open as
       const response = await worker.fetch(request({ jsonrpc: '2.0', id: 9, method: 'subscriptions/listen', params: { _meta, notifications } },
         { headers: { Accept: accept, 'Mcp-Method': 'subscriptions/listen' } }), {}, {});
       assert.equal(response.headers.get('Content-Type')?.split(';')[0], 'application/json', accept);
-      // A stream that stayed open would hang here rather than fail the assertion.
       const reply = await response.json();
       assert.equal(reply.id, 9);
       assert.equal(reply.error.code, -32603);
@@ -611,7 +610,7 @@ test('subscriptions/listen is refused in one JSON reply rather than held open as
   }
 });
 
-test('one IPv6 /64 is one budget however many addresses it rotates through', async (t) => {
+test('one IPv6 /64 is one budget', async (t) => {
   const keys = [];
   const worker = workerFixture({ rateLimiter: { limit: async ({ key }) => { keys.push(key); return { success: true }; } } });
   t.after(() => worker.close());
