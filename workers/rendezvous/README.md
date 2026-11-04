@@ -215,13 +215,11 @@ seconds, checked on the next request or message without a periodic alarm. A
 directory holds four per IPv4 address or IPv6 /64, recognised by a digest salted
 with the directory's scope that is dropped once the socket proves itself, and at
 32 in all the longest-waiting closes with 4429 `full`, rather than the newcomer
-being refused. The public identifier can be read from any URL that carries it,
-so holding it buys a place in that queue and nothing more: a pending socket
-never receives directory broadcasts, takes none of the 64 seats described under
-the protocol below, and cannot cost a member theirs. The existing 32-entry cap,
-update limits, live-lease verification, refresh checks and authoritative host
-withdrawals also apply to private groups, including stale asynchronous checks
-after Stop or disconnect.
+being refused. A pending socket never receives directory broadcasts and takes
+none of the 64 seats described under the protocol below. The existing 32-entry
+cap, update limits, live-lease verification, refresh checks and authoritative
+host withdrawals also apply to private groups, including stale asynchronous
+checks after Stop or disconnect.
 
 ### The voice migration
 
@@ -413,10 +411,10 @@ transport, host approval, password or microphone consent.
   codes. Snapshots contain `{code, local: true}` entries and no addresses. Voice
   namespaces additionally carry the verified room metadata described below.
 - A full directory still seats a newcomer, after its proof if the directory is
-  private. The observer seated longest closes with 4429 `full`, and its page
-  retries in thirty seconds as it does after any lost socket. An observer holding
-  a listing keeps its seat, one per listed code, so listings can occupy at most
-  half of them. The next section says why.
+  private, so a host arriving late can list. The observer seated longest closes
+  with 4429 `full`, and its page retries in thirty seconds as it does after any
+  lost socket. An observer holding a listing keeps its seat, one per listed code,
+  so listings can occupy at most half of them.
 - A local host that wants listing opens
   `/ws/<code>?role=host&local=1&discover=1`. Its room issues a random lease
   in `{type: "host-ready", discovery: {code, lease}}`. Ordinary hosts keep
@@ -439,31 +437,6 @@ transport, host approval, password or microphone consent.
   connection, and 120 frames of any kind, valid or not, per rolling ten seconds.
   The usual origin checks, address connection limit and automatic ping/pong
   responses also apply. The page does not send text or files to this socket.
-
-### Who can fill a directory
-
-A network directory is reachable by anyone sharing its address, which behind a
-carrier-grade NAT or a VPN includes strangers. Every socket in it has that address
-by construction, so the per-address allowance that protects pending proofs could
-tell none of them apart. Refusing newcomers at 64 would let any one of them keep
-the directory for nothing: 64 idle sockets take about two minutes at the
-connection limit and then cost only a keepalive, and a host arriving after them
-could not list. So seats turn over instead, even though an observer is a
-long-lived page and the one given up is usually an honest one. That page loses
-its list for one retry, and keeping the directory from anybody now costs the
-address's own thirty sockets a minute for as long as it goes on. Giving up the
-newest would leave the first 63 seated for good.
-
-A private directory's seats take the code, so only a member can fill them, and a
-group whose member misbehaves can make a new code. They turn over the same way.
-
-This keeps a directory open. It does not make anybody on an address safe from
-anybody else on it. Someone sharing the address can still spend its thirty sockets
-a minute, which refuses every socket from it, rooms included, for as long as they
-keep that up. They can also fill the 32 listings with live rooms of their own, at
-two sockets each and free once open, which stops anyone else being listed. Nothing
-takes a listing away, because that would hand the same script every honest one. A
-share link and a private group do not pass through that directory.
 
 ## The voice protocol
 

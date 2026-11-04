@@ -166,8 +166,8 @@ export class Discovery {
     const group = requestedGroup(url);
     if (!validScope(scope) || tool === null || group === null) return new Response(null, { status: 403 });
     // Digesting yields to other sockets, so the count and the accept below stay
-    // in one synchronous step after it. Only a private directory has addresses to
-    // tell apart: a network directory's scope is its address.
+    // in one synchronous step after it. A network directory needs no digest: its
+    // scope is already its address.
     const source = group === undefined ? null : await pendingSource(request, scope);
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
@@ -195,18 +195,12 @@ export class Discovery {
     try { ws.close(4429, "full"); } catch {}
   }
 
-  // An observer is long-lived, so unlike a pending socket the one that has waited
-  // longest is usually somebody's open page, and it goes only because refusing the
-  // newcomer is worse. Every socket in a network directory shares its address by
-  // construction, so nothing in a request can tell a neighbour from a stranger
-  // behind the same gateway, and refusing newcomers would let either keep all 64
-  // seats for nothing once they were open, shutting out a host trying to list as
-  // well. Taking turns costs a page one retry thirty seconds away, and holding seats
-  // then means spending the address's own connection limit without end. Giving up
-  // the newest would leave the first 63 seated for good. A listing stays because it
-  // is what the directory is for, but one per code: MAX_SHARES then leaves at least
-  // half the seats to take turns, whatever a script publishes from however many
-  // sockets.
+  // A full directory still seats a newcomer, who may be a host about to list. An
+  // observer is long-lived, so unlike a pending socket the one seated longest is
+  // usually somebody's open page: it loses its list for one retry thirty seconds
+  // away, and taking the longest-seated means every seat takes its turn. A listing
+  // stays because it is what the directory is for, but one per code: MAX_SHARES then
+  // leaves at least half the seats to take turns.
   freeSeat() {
     const seated = this.observers().filter((ws) => this.authorized(ws.deserializeAttachment()));
     if (seated.length < MAX_OBSERVERS) return;
@@ -377,8 +371,7 @@ export class Discovery {
       // Attachments survive hibernation. Only the public identifier and proof
       // result belong there; the entered code is never retained or echoed, and the
       // address digest was only ever for admission. A seat is freed here and not at
-      // the handshake because the identifier can be read from a URL: holding it
-      // must never cost a member theirs.
+      // the handshake because only a proof earns one.
       const { deadline, authenticating, source, ...accepted } = current;
       this.freeSeat();
       ws.serializeAttachment({ ...accepted, authenticated: true });

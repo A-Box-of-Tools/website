@@ -1061,7 +1061,7 @@ test('closing a private observer or repeating its proof cancels an in-flight aut
   assert.deepEqual(second.ws.messages, []);
 });
 
-test('silent sockets from one address cannot keep another out of a private directory', async () => {
+test('a private directory gives each address its own pending allowance', async () => {
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   const from = (address) => edgeSocket(s, `/discover?group=${id}`, address);
   for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
@@ -1087,7 +1087,7 @@ test('the address digest changes with the directory, so nobody is recognisable a
   assert.equal(one, again);
 });
 
-test('a private directory crowded by many addresses gives up its longest wait, never the newcomer', async (t) => {
+test('a private directory at its pending ceiling closes its longest wait, never the newcomer', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
   const s = system(), silent = [];
@@ -1105,7 +1105,7 @@ test('a private directory crowded by many addresses gives up its longest wait, n
   assert.deepEqual(shares(member.ws).list, []);
 });
 
-test('holding the public identifier takes no seat and costs nobody theirs, and only proof can', async (t) => {
+test('a pending socket takes no seat, and only a proof can free one', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
   const s = system(), members = [];
@@ -1166,31 +1166,30 @@ test('a full directory seats the newcomer and gives up its longest watcher, neve
   assert.equal(s.discovery().instance.observers().length, 64);
 });
 
-test('a stranger sharing the address cannot keep a network directory from a neighbour', async (t) => {
+test('seats in a full network directory turn over, and a late host is listed', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
-  const s = system(), address = '1.2.3.4', stranger = [];
+  const s = system(), address = '1.2.3.4', earlier = [];
   const open = () => { now += 1; return edgeSocket(s, '/discover', address); };
-  for (let i = 0; i < 64; i += 1) stranger.push(await open());
-  const neighbour = await open();
-  const scope = neighbour.deserializeAttachment().scope;
-  assert.deepEqual(shares(neighbour).list, []);
-  assert.equal(stranger[0].closed.code, 4429);
-  const offered = await edgeSocket(s, '/ws/neighbour-room?role=host&local=1&discover=1', address);
+  for (let i = 0; i < 64; i += 1) earlier.push(await open());
+  const later = await open();
+  const scope = later.deserializeAttachment().scope;
+  assert.deepEqual(shares(later).list, []);
+  assert.equal(earlier[0].closed.code, 4429);
+  const offered = await edgeSocket(s, '/ws/late-room?role=host&local=1&discover=1', address);
   const sharing = await open();
   await publish(s, sharing, publication(offered), scope);
-  assert.deepEqual(shares(neighbour).list, [{ code: 'neighbour-room', local: true }], 'a host arriving at a full directory is listed');
-  // Reaching the neighbour takes every older watcher going first, which at the
-  // address's own connection limit is two minutes of nothing else getting through.
+  assert.deepEqual(shares(later).list, [{ code: 'late-room', local: true }], 'a host arriving at a full directory is listed');
+  // Every older watcher goes first.
   for (let i = 0; i < 62; i += 1) await open();
-  assert.equal(neighbour.readyState, 1);
+  assert.equal(later.readyState, 1);
   const next = await open();
-  assert.equal(neighbour.closed.code, 4429);
+  assert.equal(later.closed.code, 4429);
   assert.equal(sharing.readyState, 1);
-  assert.deepEqual(shares(next).list, [{ code: 'neighbour-room', local: true }]);
+  assert.deepEqual(shares(next).list, [{ code: 'late-room', local: true }]);
 });
 
-test('publishing one lease from every socket keeps only one of them seated', async (t) => {
+test('a listed code keeps one seat however many sockets publish it', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
   const s = system(), claim = publication(await host(s)), sockets = [];
