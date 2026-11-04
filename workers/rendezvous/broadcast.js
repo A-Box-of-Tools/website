@@ -4,13 +4,11 @@
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, clearApprovals } from "./voice-approval.js";
-import { requestNetwork } from "../shared/address.js";
+import { admitPending, pendingSource } from "./pending.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 const MAX_LISTENERS = 10;
-const MAX_PENDING = 4;
-const MAX_PENDING_ROOM = 32;
 const AUTH_TIMEOUT = 8000;
 const MAX_MESSAGE = 64 * 1024;
 const RATE_WINDOW = 10000;
@@ -33,25 +31,6 @@ function roomName(value) {
 export async function broadcastCode(key) {
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(key)));
   return [...digest].map((n) => n.toString(16).padStart(2, "0")).join("");
-}
-
-// Which address opened a socket that has not spoken yet, for this room only and
-// only until it does. The digest keeps the address itself out of the attachment
-// and the code keeps one visitor from being recognisable across rooms.
-export const pendingSource = (request, code) => broadcastCode(`abox.tools/pending-source/v1
-${code}
-${requestNetwork(request, "unknown")}`);
-
-// Each address has its own allowance of sockets waiting to speak. At the room's cap
-// the longest-waiting socket closes rather than the newcomer being refused, so a
-// host's reconnect gets through. A client authenticates within a round trip and is
-// never that socket.
-export function admitPending(pending, source, evict) {
-  if (pending.filter((ws) => ws.deserializeAttachment().source === source).length >= MAX_PENDING) return false;
-  if (pending.length >= MAX_PENDING_ROOM) {
-    evict(pending.reduce((oldest, ws) => (ws.deserializeAttachment().deadline < oldest.deserializeAttachment().deadline ? ws : oldest)));
-  }
-  return true;
 }
 
 function hostAddress(value) {

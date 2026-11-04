@@ -4,6 +4,7 @@
 // Nothing here decides whether their eventual WebRTC connection is local.
 import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
 import { ipv4Octets, ipv6Network } from "../shared/address.js";
+import { admitPending, pendingSource } from "./pending.js";
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
 export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
@@ -14,7 +15,6 @@ const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
 const RATE_WINDOW = 10000;
-const MAX_PENDING = 8;
 const AUTH_TIMEOUT = 8000;
 
 const DEFAULT_TOOL = "share-text";
@@ -165,23 +165,54 @@ export class Discovery {
     const tool = rendezvousTool(url.searchParams.get("tool"));
     const group = requestedGroup(url);
     if (!validScope(scope) || tool === null || group === null) return new Response(null, { status: 403 });
+    // Digesting yields to other sockets, so the count and the accept below stay
+    // in one synchronous step after it. A network directory needs no digest: its
+    // scope is already its address.
+    const source = group === undefined ? null : await pendingSource(request, scope);
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
-    if (this.observers().length >= MAX_OBSERVERS || group !== undefined
-        && this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false).length >= MAX_PENDING) {
+    const pending = this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false);
+    if (group === undefined) this.freeSeat();
+    else if (!admitPending(pending, source, (ws) => this.evict(ws))) {
       server.accept();
       server.close(4429, "full");
       return new Response(null, { status: 101, webSocket: client });
     }
     this.ctx.acceptWebSocket(server, ["observer"]);
-    server.serializeAttachment({ scope, tool, generation: 0, updates: 0, publication: null,
-      ...(group === undefined ? {} : { group, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
+    server.serializeAttachment({ scope, tool, since: Date.now(), generation: 0, updates: 0, publication: null,
+      ...(group === undefined ? {} : { group, source, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
     if (group === undefined) server.send(this.snapshot());
     return new Response(null, { status: 101, webSocket: client });
   }
 
   observers() {
     return this.ctx.getWebSockets("observer").filter((ws) => ws.readyState === 1 && ws.deserializeAttachment() !== null);
+  }
+
+  // Nobody else needs telling: a socket given up holds nothing the list would miss.
+  evict(ws) {
+    ws.serializeAttachment(null);
+    try { ws.close(4429, "full"); } catch {}
+  }
+
+  // A full directory still seats a newcomer, who may be a host about to list. An
+  // observer is long-lived, so unlike a pending socket the one seated longest is
+  // usually somebody's open page: it loses its list for one retry thirty seconds
+  // away, and taking the longest-seated means every seat takes its turn. A listing
+  // stays because it is what the directory is for, but one per code: MAX_SHARES then
+  // leaves at least half the seats to take turns.
+  freeSeat() {
+    const seated = this.observers().filter((ws) => this.authorized(ws.deserializeAttachment()));
+    if (seated.length < MAX_OBSERVERS) return;
+    const listed = new Set();
+    const watching = seated.filter((ws) => {
+      const { publication } = ws.deserializeAttachment();
+      if (!publication?.verified || listed.has(publication.code)) return true;
+      listed.add(publication.code);
+      return false;
+    });
+    const since = (ws) => ws.deserializeAttachment().since ?? 0;
+    this.evict(watching.reduce((oldest, ws) => (since(ws) < since(oldest) ? ws : oldest)));
   }
 
   cleanup() {
@@ -337,8 +368,11 @@ export class Discovery {
       }
       if (identifier !== current.group) return refuse();
       // Attachments survive hibernation. Only the public identifier and proof
-      // result belong there; the entered code is never retained or echoed.
-      const { deadline, authenticating, ...accepted } = current;
+      // result belong there; the entered code is never retained or echoed, and the
+      // address digest was only ever for admission. A seat is freed here and not at
+      // the handshake because only a proof earns one.
+      const { deadline, authenticating, source, ...accepted } = current;
+      this.freeSeat();
       ws.serializeAttachment({ ...accepted, authenticated: true });
       try { ws.send(this.snapshot()); }
       catch { this.drop(ws); try { ws.close(1011, "send-failed"); } catch {} }

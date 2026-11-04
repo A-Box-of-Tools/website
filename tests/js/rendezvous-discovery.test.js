@@ -736,10 +736,12 @@ test('a stale refresh result cannot remove a newly verified lease', async () => 
 test('discovery bounds observers, listed shares, messages, and updates per socket', async (t) => {
   let now = 1000000;
   t.mock.method(Date, 'now', () => now);
-  const s = system();
-  for (let i = 0; i < 64; i += 1) await observer(s);
+  const s = system(), seated = [];
+  for (let i = 0; i < 64; i += 1) seated.push(await observer(s));
   const excess = await observer(s);
-  assert.equal(excess.closed.code, 4429);
+  assert.equal(excess.readyState, 1);
+  assert.equal(seated[0].closed.code, 4429);
+  assert.equal(s.discovery().instance.observers().length, 64);
   const listSystem = system();
   const watching = await observer(listSystem);
   for (let i = 0; i < 33; i += 1) {
@@ -1021,7 +1023,7 @@ test('private group authorization survives hibernation without persisting the co
 test('private directories bound pending proofs and expire them before admitting more observers', async t => {
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   let deadline;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 4; i++) {
     const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
     deadline = pending.ws.deserializeAttachment().deadline;
   }
@@ -1057,4 +1059,204 @@ test('closing a private observer or repeating its proof cancels an in-flight aut
   assert.equal(second.ws.deserializeAttachment(), null);
   assert.deepEqual(first.ws.messages, []);
   assert.deepEqual(second.ws.messages, []);
+});
+
+test('a private directory gives each address its own pending allowance', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const from = (address) => edgeSocket(s, `/discover?group=${id}`, address);
+  for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
+  assert.equal((await from('198.51.100.1')).closed.code, 4429);
+  // Rotating inside a /64 is still one address, and the neighbouring /64 is not.
+  for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
+  assert.equal((await from('2606:4700:4700:ab:9876:5432:abcd:ef01')).closed.code, 4429);
+  assert.equal((await from('2606:4700:4700:ac::1')).readyState, 1);
+  const member = await privateObserver(s, GROUP_CODE, { address: '203.0.113.9' });
+  assert.equal(shares(member.ws).group, id, 'a member elsewhere is seated and reads the list');
+  assert.equal(JSON.stringify(member.ws.deserializeAttachment()).includes('source'), false, 'nothing about the address outlives the proof');
+  const attachments = JSON.stringify(s.discovery(member.scope).ctx.sockets.map((ws) => ws.deserializeAttachment()));
+  for (const address of ['198.51.100.1', '2606:4700', '203.0.113.9']) assert.equal(attachments.includes(address), false, address);
+});
+
+test('the address digest changes with the directory, so nobody is recognisable across groups', async () => {
+  const s = system(), address = '198.51.100.7';
+  const one = (await privateObserver(s, GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  const other = (await privateObserver(s, OTHER_GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  const again = (await privateObserver(s, GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  assert.match(one, /^[a-f0-9]{64}$/);
+  assert.notEqual(one, other);
+  assert.equal(one, again);
+});
+
+test('a private directory at its pending ceiling closes its longest wait, never the newcomer', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), silent = [];
+  for (let address = 1; address <= 8; address += 1) {
+    for (let i = 0; i < 4; i += 1) {
+      now += 1;
+      silent.push((await privateObserver(s, GROUP_CODE, { address: `198.51.100.${address}`, authenticate: false })).ws);
+    }
+  }
+  assert.ok(silent.every((ws) => ws.readyState === 1));
+  const member = await privateObserver(s, GROUP_CODE, { address: '203.0.113.9' });
+  assert.deepEqual(silent[0].closed, { code: 4429, reason: 'full' });
+  assert.equal(silent[0].deserializeAttachment(), null);
+  assert.ok(silent.slice(1).every((ws) => ws.readyState === 1));
+  assert.deepEqual(shares(member.ws).list, []);
+});
+
+test('a pending socket takes no seat, and only a proof can free one', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), members = [];
+  for (let i = 0; i < 64; i += 1) { now += 1; members.push((await privateObserver(s, GROUP_CODE)).ws); }
+  now += 1;
+  const { ws: silent, scope } = await privateObserver(s, GROUP_CODE, { address: '198.51.100.1', authenticate: false });
+  assert.equal(silent.readyState, 1, 'a full directory still hears a proof');
+  const { ws: wrong } = await privateObserver(s, GROUP_CODE, { address: '198.51.100.2', authenticate: false });
+  await s.discovery(scope).instance.webSocketMessage(wrong, JSON.stringify({ group: OTHER_GROUP_CODE }));
+  assert.equal(wrong.closed.code, 4403);
+  assert.ok(members.every((ws) => ws.readyState === 1), 'neither waiting nor failing costs a member anything');
+  await s.discovery(scope).instance.webSocketMessage(silent, JSON.stringify({ group: GROUP_CODE }));
+  assert.equal(silent.deserializeAttachment().authenticated, true);
+  assert.deepEqual(members[0].closed, { code: 4429, reason: 'full' });
+  assert.ok(members.slice(1).every((ws) => ws.readyState === 1));
+});
+
+test('a proof still digesting cannot seat a socket the queue has given up', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const first = await privateObserver(s, GROUP_CODE, { address: '198.51.100.1', authenticate: false });
+  const digest = crypto.subtle.digest.bind(crypto.subtle);
+  let reached, release;
+  const started = new Promise((resolve) => { reached = resolve; });
+  const held = new Promise((resolve) => { release = resolve; });
+  t.mock.method(crypto.subtle, 'digest', async (algorithm, input) => {
+    if (new TextDecoder().decode(input).includes(GROUP_CODE)) { reached(); await held; }
+    return digest(algorithm, input);
+  });
+  const proving = s.discovery(first.scope).instance.webSocketMessage(first.ws, JSON.stringify({ group: GROUP_CODE }));
+  await started;
+  for (let address = 2; address <= 9; address += 1) {
+    for (let i = 0; i < 4; i += 1) { now += 1; await edgeSocket(s, `/discover?group=${id}`, `198.51.100.${address}`); }
+  }
+  assert.equal(first.ws.closed?.code, 4429);
+  release();
+  await proving;
+  assert.equal(first.ws.deserializeAttachment(), null);
+  assert.deepEqual(first.ws.messages, []);
+});
+
+test('a full directory seats the newcomer and gives up its longest watcher, never a listing', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), live = await host(s), publisher = await observer(s), watching = [];
+  await publish(s, publisher, publication(live));
+  for (let i = 0; i < 63; i += 1) { now += 1; watching.push(await observer(s)); }
+  const heard = watching[1].messages.length;
+  now += 1;
+  const newcomer = await observer(s);
+  assert.deepEqual(shares(newcomer).list, [{ code: 'brave-otter-42', local: true }], 'a newcomer reads the list at once');
+  assert.equal(publisher.readyState, 1, 'the oldest socket of all holds the listing');
+  assert.deepEqual(watching[0].closed, { code: 4429, reason: 'full' });
+  assert.equal(watching[0].deserializeAttachment(), null);
+  assert.ok(watching.slice(1).every((ws) => ws.readyState === 1));
+  assert.equal(watching[1].messages.length, heard, 'the list did not change, so nobody hears about it');
+  assert.equal(s.discovery().instance.observers().length, 64);
+});
+
+test('seats in a full network directory turn over, and a late host is listed', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), address = '1.2.3.4', earlier = [];
+  const open = () => { now += 1; return edgeSocket(s, '/discover', address); };
+  for (let i = 0; i < 64; i += 1) earlier.push(await open());
+  const later = await open();
+  const scope = later.deserializeAttachment().scope;
+  assert.deepEqual(shares(later).list, []);
+  assert.equal(earlier[0].closed.code, 4429);
+  const offered = await edgeSocket(s, '/ws/late-room?role=host&local=1&discover=1', address);
+  const sharing = await open();
+  await publish(s, sharing, publication(offered), scope);
+  assert.deepEqual(shares(later).list, [{ code: 'late-room', local: true }], 'a host arriving at a full directory is listed');
+  // Every older watcher goes first.
+  for (let i = 0; i < 62; i += 1) await open();
+  assert.equal(later.readyState, 1);
+  const next = await open();
+  assert.equal(later.closed.code, 4429);
+  assert.equal(sharing.readyState, 1);
+  assert.deepEqual(shares(next).list, [{ code: 'late-room', local: true }]);
+});
+
+test('a listed code keeps one seat however many sockets publish it', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), claim = publication(await host(s)), sockets = [];
+  for (let i = 0; i < 64; i += 1) {
+    now += 1;
+    const ws = await observer(s);
+    await publish(s, ws, claim);
+    sockets.push(ws);
+  }
+  for (let i = 0; i < 63; i += 1) { now += 1; await observer(s); }
+  const left = sockets.filter((ws) => ws.readyState === 1);
+  assert.equal(left.length, 1);
+  assert.deepEqual(shares(left[0]).list, [{ code: 'brave-otter-42', local: true }]);
+});
+
+test('listings can hold no more than half the seats', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), listed = [], watching = [];
+  for (let i = 0; i < 32; i += 1) {
+    now += 1;
+    const ws = await observer(s);
+    await publish(s, ws, publication(await host(s, `room-${i}`)));
+    listed.push(ws);
+  }
+  for (let i = 0; i < 32; i += 1) { now += 1; watching.push(await observer(s)); }
+  let newest;
+  for (let i = 0; i < 40; i += 1) { now += 1; newest = await observer(s); }
+  assert.ok(listed.every((ws) => ws.readyState === 1));
+  assert.ok(watching.every((ws) => ws.closed?.code === 4429));
+  assert.equal(shares(newest).list.length, 32);
+  assert.equal(s.discovery().instance.observers().length, 64);
+});
+
+test('who has watched longest comes from the attachments, so hibernation cannot lose it', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), seated = [];
+  for (let i = 0; i < 64; i += 1) { now += 1; seated.push(await observer(s)); }
+  const state = s.discovery();
+  state.instance = new Discovery(state.ctx, s.env);
+  state.ctx.sockets.reverse();
+  now += 1;
+  await observer(s);
+  assert.equal(seated[0].closed?.code, 4429);
+  assert.ok(seated.slice(1).every((ws) => ws.readyState === 1));
+  // An attachment written by the previous deployment has no such field.
+  const { since: unusedSince, ...older } = seated[40].deserializeAttachment();
+  seated[40].serializeAttachment(older);
+  now += 1;
+  await observer(s);
+  assert.equal(seated[40].closed?.code, 4429);
+  assert.equal(seated[1].readyState, 1);
+});
+
+test('giving up a watcher cancels the publication it had in flight', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), live = await host(s), publisher = await observer(s);
+  for (let i = 0; i < 63; i += 1) { now += 1; await observer(s); }
+  const held = holdRoomCheck(s);
+  const pending = publish(s, publisher, publication(live));
+  await held.checked;
+  const newcomer = await observer(s);
+  assert.equal(publisher.closed?.code, 4429);
+  held.release();
+  await pending;
+  assert.equal(publisher.deserializeAttachment(), null);
+  assert.deepEqual(shares(newcomer).list, []);
 });

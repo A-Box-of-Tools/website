@@ -211,9 +211,12 @@ existing local-only requirement, and the other tools retain their local flag.
 Malformed and duplicate group parameters fail before a room is forwarded.
 Malformed, wrong or repeated proof frames close the discovery socket rather
 than fall back to network discovery. Pending proofs expire after eight
-seconds, checked on the next request or message without a periodic alarm;
-there are at most eight pending proofs and 64 observers per directory. A
-pending socket never receives directory broadcasts. The existing 32-entry
+seconds, checked on the next request or message without a periodic alarm. A
+directory holds four per IPv4 address or IPv6 /64, recognised by a digest salted
+with the directory's scope that is dropped once the socket proves itself, and at
+32 in all the longest-waiting closes with 4429 `full`, rather than the newcomer
+being refused. A pending socket never receives directory broadcasts and takes
+none of the 64 seats described under the protocol below. The existing 32-entry
 cap, update limits, live-lease verification, refresh checks and authoritative
 host withdrawals also apply to private groups, including stale asynchronous
 checks after Stop or disconnect.
@@ -399,10 +402,14 @@ transport, host approval, password or microphone consent.
 ## The discovery protocol
 
 - The start page opens `/discover` with a WebSocket upgrade, scoped by the
-  worker as described above. A directory group permits 64 observer sockets
-  and 32 listed share codes. Snapshots contain `{code, local: true}` entries
-  and no addresses. Voice namespaces additionally carry the verified room
-  metadata described below.
+  worker as described above. A directory seats 64 observers and lists 32 share
+  codes. Snapshots contain `{code, local: true}` entries and no addresses. Voice
+  namespaces additionally carry the verified room metadata described below.
+- A full directory still seats a newcomer, after its proof if the directory is
+  private, so a host arriving late can list. The observer seated longest closes
+  with 4429 `full`, and its page retries in thirty seconds as it does after any
+  lost socket. An observer holding a listing keeps its seat, one per listed code,
+  so listings can occupy at most half of them.
 - A local host that wants listing opens
   `/ws/<code>?role=host&local=1&discover=1`. Its room issues a random lease
   in `{type: "host-ready", discovery: {code, lease}}`. Ordinary hosts keep
