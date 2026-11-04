@@ -119,9 +119,9 @@ BASELINE = {
     'images-to-video': 1,
     'json-formatter': 3,
     'merge-pdf': 2,
-    # Five phrase-key templates and one SVG transform expression resemble
-    # prose to the heuristic. Every displayed word still comes from markup.
-    'number-explorer': 6,
+    # A canvas font shorthand and a colour template, both in paint.js. Neither
+    # is a word: everything the scenes draw is handed in from #phrases.
+    'number-explorer': 2,
     'password-generator': 8,
     'png-to-webp': 0,
     # Both layouts join translated fact fragments; neither carries an English
