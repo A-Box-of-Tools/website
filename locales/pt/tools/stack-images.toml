@@ -10,11 +10,11 @@
 #
 
 name = "Empilhador de imagens"
-heading = "Empilhar&nbsp;imagens <span class=\"h1-kw\">&mdash; junte uma sequência, arquivos RAW inclusive</span>"
-tagline = "Vinte quadros em um, sem vinte envios e sem um conversor RAW."
+heading = """Empilhar&nbsp;imagens <span class="h1-kw">&mdash; reduza ruído, remova pessoas, faça rastros de estrelas</span>"""
+tagline = "Tire a média de uma sequência estável, use a mediana para limpar o fundo ou clareie uma sequência do céu noturno."
 
-title = "Empilhar imagens &mdash; média, mediana e focus stacking no navegador"
-description = "Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador."
+title = "Empilhador de imagens &mdash; Reduza ruído e remova pessoas em movimento"
+description = "Empilhe fotos para reduzir ruído, remover pessoas em movimento ou fazer rastros de estrelas. Alinhe os quadros e salve em PNG ou JPEG no navegador. Arquivos RAW usam as prévias JPEG incorporadas."
 og_title = "Empilhe uma sequência de fotografias, arquivos RAW inclusive"
 og_description = "Média, mediana, sigma clipping, clarear, escurecer, somar ou focus stacking, com os quadros alinhados primeiro. Arquivos RAW são abertos pela prévia JPEG incorporada pela câmera, quando existe, sem decodificar os dados do sensor. Nada é enviado."
 og_image_alt = "Empilhador de imagens - vários quadros juntos num só, no navegador"
@@ -71,15 +71,8 @@ title = "O trabalho acontece num Worker neste computador, não num servidor."
 body = "Empilhar pode levar minutos; um Worker calcula enquanto a página responde, mostra progresso e permite cancelar. É outra linha do navegador: <code>src/worker.js</code>. Referências locais são entregues sem enviar bytes. O código do Worker lê e combina arquivos no dispositivo. Confira esse código, sem tratar a política de destinos da página como prova dos seus caminhos."
 
 [[privacy]]
-title = "Sobre o conjunto não se relata nada em lugar nenhum."
-body = """
- Quantos quadros você
-      empilhou, que câmera os escreveu, quanto cada um tinha se deslocado, que
-      método você escolheu e quanto tempo levou ficam na memória desta página até
-      você fechá-la. Não existe neste repositório um evento de analytics próprio que
-      carregue qualquer parte disso, e a única pergunta que este site faz depois de
-      um download manda um polegar para cima ou para baixo e o nome da ferramenta,
-      mais nada."""
+title = "Os eventos de percurso contam etapas fixas."
+body = " Os eventos de percurso do site podem contar etapas fixas, como adicionar entradas, iniciar um empilhamento, um resultado ficar pronto, um problema, um cancelamento ou salvar. Eles usam o nome da ferramenta e rótulos fixos das etapas; os eventos de navegação usam nomes fixos das páginas de origem e destino. Não levam fotos, nomes de arquivo, dados da câmera, quantidade de quadros, dimensões, métodos escolhidos, ajustes, tempos de processamento nem conteúdo do resultado. A pergunta opcional após um download envia um polegar para cima ou para baixo e um motivo fixo."
 
 [[privacy]]
 title = "Funciona offline."
@@ -103,7 +96,7 @@ body = "Comece com Automático: ele mede deslocamento, rotação e escala e depo
 
 [[howto]]
 title = "Leia os quatro números, e então aperte o botão."
-body = "Antes de começar, a página mostra o tamanho planejado do resultado, a memória estimada da pilha, as decodificações planejadas para empilhar e os bytes lidos na inspeção. Processos internos do navegador e liberação de memória podem consumir mais que os buffers modelados; esses números são um plano, não uma garantia do uso total. Se forem necessárias faixas, a página sugere uma resolução de trabalho menor. Depois, compare a referência com o resultado no tamanho real dos pixels e confira os detalhes de alinhamento antes de baixar."
+body = " Antes de começar, a página mostra o tamanho planejado do resultado, a memória estimada da pilha, as decodificações planejadas para empilhar e os bytes lidos na inspeção. Processos internos do navegador e liberação de memória podem consumir mais que os buffers modelados; esses números são um plano, não uma garantia do uso total. Se forem necessárias faixas, a página sugere uma resolução de trabalho menor. Depois, compare a referência com o resultado no tamanho real dos pixels e confira os detalhes de alinhamento antes de baixar. Use os links ao lado do download para redimensionar ou comprimir a imagem pronta sem escolher o arquivo de novo."
 
 [[faq]]
 q = "As minhas fotografias são enviadas para algum lugar?"
@@ -152,17 +145,8 @@ q = "Ele diz que a execução vai ser em faixas. O que isso quer dizer?"
 a = "A memória de trabalho necessária supera o que a ferramenta quer reservar de uma vez. A imagem é dividida em faixas horizontais, empilhadas uma por uma. A geometria de alinhamento e o método são os mesmos; a reamostragem do navegador pode variar levemente no último bit. Os quadros são lidos de novo para cada faixa, então demora mais. A página mostra quantas decodificações serão necessárias. Reduzir a resolução de trabalho um nível divide a memória por quatro e quase sempre permite uma passagem só. A nota indica o ajuste adequado."
 
 [[faq]]
-q = "Por que esta ferramenta usa um Worker e nenhuma das outras usa?"
-a = """
-        Porque é a única cujo trabalho se mede em minutos. Toda outra ferramenta aqui
-        faz algo que leva um segundo ou dois, onde tirar o trabalho da linha principal
-        seria cerimônia. Empilhar vinte quadros grandes é aritmética densa sobre
-        centenas de megabytes, e na linha principal isso significa uma página
-        congelada: nenhuma barra de progresso andando, um botão Cancelar que não
-        responde, e no fim um navegador se oferecendo para fechar a aba. O Worker é
-        uma segunda linha de execução neste mesmo navegador, rodando um arquivo desta
-        mesma pasta, sob esta mesma política. Não é um servidor e não é uma função de
-        rede."""
+q = "Por que o empilhamento roda em um Worker?"
+a = " Combinar quadros grandes pode levar minutos. Um Worker cuida dos cálculos enquanto a página continua respondendo o suficiente para atualizar o progresso e atender a Cancelar. Ele é outra thread neste navegador, executando um arquivo local sob a política da página. Suas fotos ficam neste dispositivo enquanto ele trabalha."
 
 [[faq]]
 q = "É grátis, e eu preciso de conta?"

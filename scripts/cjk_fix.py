@@ -10,9 +10,8 @@ are rewritten. `--only` takes paths relative to `locales/<locale>/` -
 whole locale. It is idempotent: a second run over what the first wrote
 changes nothing, which is what makes it safe to run after every edit.
 
-`zh` is the one CJK locale still built here. `ja` and `zh-TW` are frozen in
-A-Box-of-Tools/translations - see "Languages" in CLAUDE.md - and the `ja`
-rules are kept for the day one of them comes back.
+`zh` and `ja` are the CJK locales built here. `zh-TW` is frozen in
+A-Box-of-Tools/translations - see "Languages" in CLAUDE.md.
 
 WHAT IT CHANGES
 
@@ -42,7 +41,10 @@ to prose and never inside a tag, a comment, `<pre>` or a `<code>` element:
 
 WHAT IT LEAVES ALONE
 
-A bold label followed by a word - `<strong>注意</strong> 这里` - keeps its
+A blank is spaced like the digits it usually holds - `已保留前 {n} 帧` - except
+one named in `WORD_BLANKS`, which a build fills with Chinese words, so that a
+space beside it would land mid-sentence on every page the template writes. A
+bold label followed by a word - `<strong>注意</strong> 这里` - keeps its
 gap: the strong is a heading, not a word of the sentence. `placeholder`
 attributes are untouched, because they imitate a document (an address, a
 case number) whose conventions are not the page's. And two Japanese files
@@ -75,6 +77,12 @@ LATB = LAT + '%/'             # what counts as Latin at a boundary
 JA_SPACED = {'tools/hash-checksum.toml', 'tools/hash-checksum.html',
              'pages/guides/verify-a-file-checksum.toml',
              'pages/guides/verify-a-file-checksum.html'}
+
+# Blanks a build fills with words rather than numbers: the id-photo landing pages
+# ask for "{country}{document}照片尺寸与要求" and a space there ships on all of them.
+WORD_BLANKS = ('country', 'document', 'background')
+NOT_WORD_BLANK_AHEAD = ''.join(rf'(?!{name}\}})' for name in WORD_BLANKS)
+NOT_WORD_BLANK_BEHIND = ''.join(rf'(?<!\{{{name}\}})' for name in WORD_BLANKS)
 
 TOKEN = re.compile(r'(<!--.*?-->|<pre\b.*?</pre>|<script\b.*?</script>|<style\b.*?</style>|<code\b[^>]*>.*?</code>|<[^<>]+>)', re.S)
 INLINE_OPEN = re.compile(r'<(a|strong|em|kbd|b|i)\b[^>]*>$|<span class="optional">$')
@@ -145,8 +153,8 @@ def prose(text, is_toml):
         t = sub('space.lat-han', rf'(?<=[A-Za-z%])(?=[{HAN}])', ' ', t)
         t = sub('space.han-dig', rf'(?<=[{HAN}])(?<![年月第])(?=[0-9])', ' ', t)
         t = sub('space.dig-han', rf'(?<=[0-9])(?=[{HAN}])(?![年月日时分秒点])', ' ', t)
-        t = sub('space.blank', rf'(?<=[{HAN}])(?=\{{(?!\{{))', ' ', t)
-        t = sub('space.blank', rf'(?<=(?<!\}})\}})(?=[{HAN}])', ' ', t)
+        t = sub('space.blank', rf'(?<=[{HAN}])(?=\{{(?!\{{){NOT_WORD_BLANK_AHEAD})', ' ', t)
+        t = sub('space.blank', rf'(?<=(?<!\}})\}}){NOT_WORD_BLANK_BEHIND}(?=[{HAN}])', ' ', t)
         if is_toml:
             # a continuation backslash joins the lines with nothing between,
             # so Han meeting Latin across one needs its space before the slash
