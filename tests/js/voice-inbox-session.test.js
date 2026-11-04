@@ -1221,6 +1221,24 @@ test('a waiting sender keeps its socket when its old audio connection fails, wit
   assert.equal(h.mic.track.enabled, false);
 });
 
+test('a waiting Cloud relay sender still takes a new socket, because its credentials belong to that one', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' });
+  const ws = await h.begin();
+  ws.message(offer());
+  await flush();
+  relayReply(ws);
+  await flush();
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  ws.message({ type: 'waiting' });
+  await flush();
+  h.peers[0].fail();
+  assert.equal(ws.closed, true);
+  assert.equal(h.mic.track.enabled, false);
+  await h.clock.advance(1000);
+  assert.equal(h.sockets.length, 2);
+});
+
 test('a sender whose timers were held back asks on its first tick', async t => {
   const h = harness(t, { role: 'sender' });
   const ws = await h.begin({ type: 'waiting' });

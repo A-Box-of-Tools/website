@@ -582,6 +582,26 @@ test('a waiting listener keeps its socket when its old audio connection fails, h
   }
 });
 
+test('a waiting Cloud relay listener still takes a new socket, because its credentials belong to that one', async t => {
+  const h = harness(t, { transport: 'relay' });
+  const ws = await h.begin();
+  ws.message({ ...ready(), transport: 'relay' });
+  ws.message(offer());
+  await flush();
+  const request = ws.sent.find(frame => frame.type === 'relay-request');
+  ws.message({ type: 'relay-credentials', id: request.id, expiresAt: 3600000,
+    iceServers: [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }] });
+  await flush();
+  h.peers[0].connect();
+  ws.message({ type: 'waiting' });
+  await flush();
+  h.peers[0].fail();
+  assert.equal(ws.closed, true);
+  await h.clock.advance(1000);
+  assert.equal(h.sockets.length, 2);
+  assert.notEqual(h.states.at(-1).key, 'transport.forbidden');
+});
+
 test('a listener whose host is there still takes a new socket to earn a fresh offer', async t => {
   const h = harness(t);
   const ws = await h.begin(ready());

@@ -82,9 +82,10 @@ host returns, and a page asks for itself about once a minute only in case that
 message never arrived.
 Healthy direct audio can survive a brief signaling outage. New generations
 retire stale peers. Failed media is negotiated again over a new socket while the
-host is there; a waiting listener keeps the socket it has, because the host's
-return reaches it there. Background timers, sleep and connection limits can delay
-retries.
+host is there; a waiting Direct listener keeps the socket it has, because the host's
+return reaches it there, and a waiting Cloud relay listener still takes a new one,
+because its credentials belong to the socket and renewing them needs a host.
+Background timers, sleep and connection limits can delay retries.
 
 Host capture begins disabled. Holding Talk or enabling hands-free speech starts
 transmission, and microphone mute overrides both. A physical hold releases when
