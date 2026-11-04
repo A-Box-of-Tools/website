@@ -104,6 +104,26 @@ const clock = (t, start = 1000000) => {
 const hosting = (ws) => ws.deserializeAttachment()?.role === 'host';
 const prove = (s, ws, key = KEY) => s.send(ws, { type: 'host-proof', key });
 
+test('a refusal is held under a tag of its own, and no count sees it', async () => {
+  const s = await system();
+  const refused = await s.viewer();
+  assert.equal(refused.closed?.code, 4404);
+  assert.deepEqual(refused.tags, ['refused']);
+  assert.equal(refused.deserializeAttachment(), null);
+  // Its peer may not have answered the close yet.
+  refused.readyState = 1;
+  assert.equal(s.ctx.getWebSockets('viewer').length, 0);
+  assert.equal(s.ctx.getWebSockets('host').length, 0);
+  const host = await s.host(null);
+  assert.equal(hosting(host), true);
+  assert.equal(s.room.hosts().length, 1);
+  await s.send(refused, '{}');
+  await s.send(refused, { data: {} });
+  assert.deepEqual(host.messages, [], 'a frame from it reaches nobody');
+  s.leave(refused);
+  assert.equal(host.readyState, 1, 'and its close disturbs nobody');
+});
+
 test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {
   const time = clock(t);
   for (const frame of ['{}', 'not json', '[]', 'null', new ArrayBuffer(1), 'x'.repeat(65537)]) {

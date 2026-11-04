@@ -778,6 +778,8 @@ test('pending sockets are capped per address, and the host still gets in', async
   const refused = await from('2606:4700:4700:ab:9876:5432:abcd:ef01');
   assert.equal(refused.closed.code, 4429);
   assert.deepEqual(last(refused), { type: 'error', error: 'full' });
+  assert.deepEqual(refused.tags, ['refused']);
+  assert.equal(refused.deserializeAttachment(), null);
   for (let address = 1; address <= 7; address += 1) {
     for (let i = 0; i < 4; i += 1) { waiting.push(await from(`198.51.100.${address}`)); now += 1; }
   }

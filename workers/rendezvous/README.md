@@ -425,8 +425,9 @@ transport, host approval, password or microphone consent.
   Discovery through its private binding at `POST /_discovery/withdraw` with
   `{code, lease}`. That cancels matching pending or verified listings and
   broadcasts the change; an earlier host's lease cannot remove a newer one.
-- `{refresh: true}` revalidates the listed rooms' leases and broadcasts a
-  fresh snapshot, so refreshing cannot preserve a vanished host's listing.
+- `{refresh: true}` is answered with a snapshot. At most once per ten seconds per
+  directory it first revalidates the listed rooms' leases and broadcasts the result,
+  which repairs a withdrawal that never arrived.
 - Incoming discovery messages are limited to 512 UTF-16 code units and an
   observer may send 120 publication, withdrawal or refresh updates per
   connection. More than 120 frames of any kind, valid or not, in a rolling ten

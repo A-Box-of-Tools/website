@@ -692,7 +692,9 @@ test('withdrawal of an old lease cannot remove a newly hosted instance of the sa
   assert.deepEqual(shares(publisher).list, [{ code: oldClaim.code, local: true }]);
 });
 
-test('manual refresh revalidates unique leases and repairs a missed host withdrawal', async () => {
+test('manual refresh revalidates unique leases and repairs a missed host withdrawal', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
   const s = system();
   const live = await host(s);
   const publisher = await observer(s);
@@ -707,10 +709,73 @@ test('manual refresh revalidates unique leases and repairs a missed host withdra
   // A binding failure could lose Room's withdrawal; refresh must consult
   // the live socket again rather than trusting its old verified attachment.
   live.close(1000, 'gone');
+  now += 10000;
   await s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
   assert.deepEqual(shares(watching).list, []);
   assert.equal(publisher.deserializeAttachment().publication, null);
   assert.equal(duplicate.deserializeAttachment().publication, null);
+});
+
+test('a directory rechecks its leases once per interval and answers the rest from its list', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system();
+  const live = await host(s);
+  const publisher = await observer(s);
+  const watching = await observer(s);
+  await publish(s, publisher, publication(live));
+  const refresh = () => s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+  const before = s.calls.length;
+  await refresh();
+  assert.equal(s.calls.length - before, 1);
+  const heard = watching.messages.length, others = publisher.messages.length;
+  live.close(1000, 'gone');
+  for (let i = 0; i < 5; i += 1) { now += 1000; await refresh(); }
+  assert.equal(s.calls.length - before, 1, 'no further check inside the interval');
+  assert.equal(watching.messages.length, heard + 5, 'whoever asks still hears the list');
+  assert.equal(publisher.messages.length, others, 'and nobody else is sent it again');
+  assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }]);
+  now += 5000;
+  await refresh();
+  assert.equal(s.calls.length - before, 2);
+  assert.deepEqual(shares(watching).list, []);
+});
+
+test('a refresh while a recheck is in flight starts no other, and both askers hear the list', async () => {
+  const s = system();
+  const live = await host(s);
+  const publisher = await observer(s);
+  const first = await observer(s);
+  const second = await observer(s);
+  await publish(s, publisher, publication(live));
+  const originalGet = s.env.ROOMS.get;
+  const held = holdRoomCheck(s);
+  const before = s.calls.length;
+  const pending = s.discovery().instance.webSocketMessage(first, JSON.stringify({ refresh: true }));
+  await held.checked;
+  await s.discovery().instance.webSocketMessage(second, JSON.stringify({ refresh: true }));
+  assert.equal(s.calls.length - before, 1);
+  assert.deepEqual(shares(second).list, [{ code: 'brave-otter-42', local: true }]);
+  s.env.ROOMS.get = originalGet;
+  held.release();
+  await pending;
+  assert.deepEqual(shares(first).list, [{ code: 'brave-otter-42', local: true }]);
+});
+
+test('the interval governs rechecks, not a new publication or another directory', async () => {
+  const s = system();
+  const watching = await observer(s);
+  await s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+  const live = await host(s);
+  const publisher = await observer(s);
+  await publish(s, publisher, publication(live));
+  assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }], 'a new listing is checked and shown at once');
+  const elsewhere = await host(s, 'other-room', OTHER_SCOPE);
+  const neighbour = await observer(s, OTHER_SCOPE);
+  await publish(s, neighbour, publication(elsewhere), OTHER_SCOPE);
+  elsewhere.close(1000, 'gone');
+  await s.discovery(OTHER_SCOPE).instance.webSocketMessage(neighbour, JSON.stringify({ refresh: true }));
+  assert.deepEqual(shares(neighbour).list, [], 'each directory keeps its own time');
 });
 
 test('a stale refresh result cannot remove a newly verified lease', async () => {
@@ -1065,7 +1130,10 @@ test('a private directory gives each address its own pending allowance', async (
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   const from = (address) => edgeSocket(s, `/discover?group=${id}`, address);
   for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
-  assert.equal((await from('198.51.100.1')).closed.code, 4429);
+  const refused = await from('198.51.100.1');
+  assert.equal(refused.closed.code, 4429);
+  assert.deepEqual(refused.tags, ['refused']);
+  assert.equal(refused.deserializeAttachment(), null);
   // Rotating inside a /64 is still one address, and the neighbouring /64 is not.
   for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
   assert.equal((await from('2606:4700:4700:ab:9876:5432:abcd:ef01')).closed.code, 4429);
