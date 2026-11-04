@@ -345,13 +345,11 @@ transport, host approval, password or microphone consent.
   because a single customer can choose any address inside it. The start page
   opens a discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
-- Each socket may send 120 frames per rolling ten seconds, counted before the
-  frame is parsed, so malformed and empty ones spend the same allowance. The next
-  closes the socket with 4429 `busy`. A host may send that many per connected
-  viewer, because every reader negotiates through its one socket. This bounds one
-  socket's rate, not an address's total: at the limit a socket is still worth
-  about 52,000 of the free plan's 100,000 daily requests, and opening more sockets
-  multiplies that. `ping` is answered by the runtime and is not counted.
+- A socket that sends more than 120 frames in a rolling ten seconds is closed with
+  4429 `busy`. Frames are counted before they are parsed, so malformed and empty
+  ones count too. A host's allowance is that many per connected viewer, because
+  every reader negotiates through its one socket. `ping` is answered by the runtime
+  and is not counted.
 - A host connects to `/ws/<code>?role=host&transport=direct` or `transport=relay`;
   its mode is pinned for that generation. Current pages add `holder=<digest>`, the
   lowercase hex SHA-256 of a random 43-character key that stays in the page. A
@@ -367,11 +365,8 @@ transport, host approval, password or microphone consent.
   digest loses its connection without a close frame, the object keeps that digest in
   memory for two minutes and refuses anyone else 4409 while its retry is on the way.
   A clean close (Stop, navigation, a closed tab) frees the name at once. This is
-  deliberately memory, never storage: eviction forgets it and the name reverts to
-  first come. A script polling every few seconds keeps the object awake and so
-  cannot outrun it; one polling more slowly can still win a name whose host stays
-  away longer than the object stays in memory, which can be as little as ten seconds
-  idle. Closing that entirely would mean writing rooms to storage.
+  deliberately memory, never storage. What is known about the reach of this and the
+  frame limit is kept in the [lab](https://github.com/A-Box-of-Tools/etoolbox-lab).
 - A viewer connects with `?role=viewer` and the matching `transport`; with no host present it is refused
   4404, past the room cap 4429. Otherwise the viewer gets `{ready}` and the host
   hears nothing: a reader's page opens this socket to ask whether anyone is
@@ -427,7 +422,8 @@ transport, host approval, password or microphone consent.
   fresh snapshot, so refreshing cannot preserve a vanished host's listing.
 - Incoming discovery messages are limited to 512 UTF-16 code units and an
   observer may send 120 publication, withdrawal or refresh updates per
-  connection, and 120 frames of any kind, valid or not, per rolling ten seconds.
+  connection. More than 120 frames of any kind, valid or not, in a rolling ten
+  seconds closes the socket.
   The usual origin checks, address connection limit and automatic ping/pong
   responses also apply. The page does not send text or files to this socket.
 
@@ -516,7 +512,7 @@ network discovery or only `group=<public identifier>` for a private group.
 - A room permits ten listener sockets, including waiting ones, and four
   pending handshakes per IPv4 address or IPv6 /64, recognised by a digest salted
   with the room's code that is dropped once the socket authenticates. Another
-  address is unaffected, so silent sockets cannot lock a host out of its own room.
+  address is unaffected.
   At 32 pending in all the longest-waiting closes with 4429 `full`, rather than
   the newcomer being refused. Silent pending authentication expires after eight
   seconds, checked at the next request or message without a periodic alarm.

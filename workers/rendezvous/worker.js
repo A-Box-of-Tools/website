@@ -174,8 +174,7 @@ const logRefusal = (code, reason) => console.log(JSON.stringify({ refused: code,
 // recognise that host after every socket has gone. A text or camera room is
 // named by people and has no such memory, which is why `vacancy` exists: the
 // digest of a host whose connection was lost, held only in this object's
-// memory. Eviction forgets it and the name reverts to first come, the same as
-// any name nobody holds, which is the most a room can promise without storage.
+// memory and never written to storage.
 export class Room {
   constructor(ctx, env) {
     this.ctx = ctx;
