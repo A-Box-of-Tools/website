@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> 选一个 GIF</h2>
 
+    <p class="card-lede">
+      可以存一张静帧放进说明，提取 PNG 帧去编辑，或者做一张精灵图。要完整的画面，就把<strong>每张 PNG 里放</strong>保持在<strong>看上去的那一帧</strong>。<a href="../guides/split-a-gif-into-frames/" data-workflow-target="guides/split-a-gif-into-frames">GIF 拆帧指南</a>解释了这些选择。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +109,16 @@
     <ul class="frames" id="frames"></ul>
   </section>
 
+  <section class="card">
+    <h2>把这些帧用到下一步</h2>
+    <p>
+      要重建编辑过的动画，把完整的 PNG 帧加到 <a href="../gif-maker/" data-workflow-target="gif-maker">GIF 制作</a>里，按名字排序，再参考 <code>frames.txt</code> 设置每帧的停留时间。时间清单不会自动导入。完整流程见<a href="../guides/edit-a-gif-frame-by-frame/" data-workflow-target="guides/edit-a-gif-frame-by-frame">逐帧编辑指南</a>。
+    </p>
+    <p>
+      如果只需要视频，<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">把原始 GIF 直接转成 MP4</a>，可以保留长短不一的帧延时。时间或文件大小不对劲时，编辑前先用 <a href="../gif-analyzer/" data-workflow-target="gif-analyzer">GIF 分析</a>查一下。
+    </p>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -115,19 +129,19 @@
     <span data-phrase="frame.download">下载</span>
     <span data-phrase="read.reading">正在读取 GIF&hellip;</span>
     <span data-phrase="read.failed">那个文件读不了：{why}</span>
-    <span data-phrase="read.unreadable">此浏览器无法打开这个GIF。</span>
+    <span data-phrase="read.unreadable">此浏览器无法打开这个 GIF。</span>
     <span data-phrase="save.unfinished">此浏览器无法完成下载。</span>
-    <span data-phrase="gif.workinglimit">这些缓冲区超过本工具512 MiB的规划预算。请尝试更小的GIF、减少帧数，或用ZIP代替精灵图。源图仍需要完整尺寸的缓冲区；浏览器内部的分配可能使用更多内存。</span>
+    <span data-phrase="gif.workinglimit">这些缓冲区超过本工具 512 MiB 的规划预算。请尝试更小的 GIF、减少帧数，或用 ZIP 代替精灵图。源图仍需要完整尺寸的缓冲区；浏览器内部的分配可能使用更多内存。</span>
     <span data-phrase="gif.workinginvalid">图片尺寸或缓冲区大小无法安全分配。</span>
-    <span data-phrase="zip.entries">此ZIP将有{n}个条目。本工具最多支持{limit}个，包括时间列表。请减少所选帧数。</span>
+    <span data-phrase="zip.entries">此 ZIP 将有 {n} 个条目。本工具最多支持 {limit} 个，包括时间列表。请减少所选帧数。</span>
     <span data-phrase="gif.tooshort">那个文件短得不可能是 GIF。</span>
     <span data-phrase="gif.notagif">那不是 GIF。文件开头既不是 GIF87a 也不是 GIF89a。</span>
-    <span data-phrase="gif.enormous">读取已在下一帧将超过已解码像素上限之前停止。已保留前{n}帧。</span>
+    <span data-phrase="gif.enormous">读取已在下一帧将超过已解码像素上限之前停止。已保留前 {n} 帧。</span>
     <span data-phrase="gif.midframe">这个 GIF 在一帧的中间就结束了，所以最后一帧可能是残缺的。</span>
     <span data-phrase="gif.damaged">这个 GIF 坏了：第一帧还没完整它就结束了。</span>
     <span data-phrase="gif.noframes">那个 GIF 里没有这个读取器打得开的帧。</span>
-    <span data-phrase="note.partial.one">文件中的1帧未写完整。缺失区域使用调色板的第一种颜色，除非该颜色被标为透明。</span>
-    <span data-phrase="note.partial.many">文件中的{n}帧未写完整。缺失区域使用调色板的第一种颜色，除非该颜色被标为透明。</span>
+    <span data-phrase="note.partial.one">文件中的 1 帧未写完整。缺失区域使用调色板的第一种颜色，除非该颜色被标为透明。</span>
+    <span data-phrase="note.partial.many">文件中的 {n} 帧未写完整。缺失区域使用调色板的第一种颜色，除非该颜色被标为透明。</span>
     <span data-phrase="note.local">有 {n} 帧带着自己的调色板，这就是这个 GIF 比它的尺寸看起来更大的原因。</span>
     <span data-phrase="note.comment">文件里带着一段注释：「{comment}」</span>
     <span data-phrase="join.sentences">{a}{b}</span>

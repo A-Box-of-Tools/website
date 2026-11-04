@@ -13,10 +13,10 @@
 
 name = "Bilder in Video"
 heading = "Bilder&nbsp;in&nbsp;Video <span class=\"h1-kw\">&mdash; eine MP4-Diashow erstellen</span>"
-tagline = "Aus einem Ordner voller Bilder ein Video machen."
+tagline = "Aus einer Render-Sequenz, Zeitrafferfotos oder einer Diashow ein MP4 machen."
 
 title = "Bildsequenz zu MP4 &mdash; kostenlos, ohne Upload, auch offline"
-description = "JPG-, PNG-, WebP- oder AVIF-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und offline geht es auch."
+description = "Eine Bildsequenz im Browser in MP4 umwandeln. Ein Einzelbild pro Bild für Renderings und Zeitraffer oder Sekunden pro Foto für eine Diashow. Kein Upload, kein Konto."
 og_title = "Bildsequenz zu MP4 &mdash; kostenlos, in Ihrem Browser"
 og_description = "Eine Render-Sequenz, einen Zeitraffer oder einen Ordner voller Fotos in ein MP4 verwandeln. Die Kodierung läuft auf Ihrem eigenen Gerät, nichts wird hochgeladen."
 og_image_alt = "Bilder in Video - aus einem Ordner voller Bilder eine MP4-Diashow machen"
@@ -37,7 +37,7 @@ read_first = """
 , sowie <code>src/encoder.js</code> für die
       Kodierschleife, die nie ans Netz geht."""
 
-howto_heading = "So machen Sie aus Bildern ein Video"
+howto_heading = "So wandeln Sie eine Bildsequenz oder Diashow in MP4 um"
 
 card = """
             Aus einem Ordner voller Bilder eine MP4-Diashow machen. Die
@@ -120,20 +120,12 @@ body = """
       sie direkt von Ihrer Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
-title = "Bringen Sie sie in die Reihenfolge und legen Sie die Standzeit fest."
-body = """
- Umsortiert
-      wird durch Ziehen. Die Standzeit lässt sich in Einzelbildern oder in
-      Sekunden angeben, entweder für alle Bilder auf einmal oder Bild für
-      Bild."""
+title = "Einzelbilder für eine Sequenz wählen, Sekunden für eine Diashow."
+body = " Verwenden Sie &bdquo;Nach Name sortieren&ldquo; für nummerierte Render-Einzelbilder und prüfen Sie die erste und die letzte Kachel. Behalten Sie für eine Render-Sequenz oder einen Foto-Zeitraffer ein Einzelbild pro Bild bei und passen Sie die Bildrate an Ihre Quelle an. Für eine Diashow wechseln Sie zu Sekunden, geben eine Standzeit wie drei ein und drücken &bdquo;Auf alle anwenden&ldquo;. Durch Ziehen sortieren Sie um, und die Standzeit eines einzelnen Bildes lässt sich überschreiben."
 
 [[howto]]
 title = "Wählen Sie Auflösung und Bildrate."
-body = """
- &bdquo;An höchste Auflösung
-      anpassen&ldquo; richtet sich nach Ihrem größten Bild. Die Voreinstellungen
-      decken 4K, 1080p, 720p, quadratisch und hochkant ab, und für den Fall, dass
-      nichts davon passt, gibt es eine eigene Größe."""
+body = " Wählen Sie 1080p für einen ersten Export oder die quadratische oder hochkante Form des Ziels. &bdquo;An höchste Auflösung anpassen&ldquo; nimmt die größte Breite und die größte Höhe aller Bilder. &bdquo;Hineinpassen&ldquo; behält das ganze Bild, &bdquo;Bild ausfüllen&ldquo; schneidet die Ränder ab. Prüfen Sie vor dem Kodieren die Übersicht zu Dauer und Ausgabegröße."
 
 [[howto]]
 title = "Video erzeugen und herunterladen."
@@ -164,11 +156,7 @@ a = """
 
 [[faq]]
 q = "Welches Videoformat kommt heraus?"
-a = """
-        MP4 mit H.264-Video, das praktisch überall läuft. In einem Browser ohne
-        WebCodecs weicht das Werkzeug darauf aus, stattdessen WebM aufzuzeichnen,
-        also dasselbe Material in einem Container, den weniger Schnittprogramme
-        annehmen."""
+a = " MP4 mit H.264-Video ist das bevorzugte Ausgabeformat. Die Ausweichlösung zeichnet in Echtzeit auf, meist als WebM, das weniger Schnittprogramme annehmen. Lassen Sie den Tab während dieser Aufzeichnung sichtbar; das Timing ist nur ungefähr, und Bilder können ausfallen, wenn das Dekodieren nicht nachkommt. Nutzen Sie für exakte nummerierte Sequenzen den MP4-Encoder, wenn Ihr Browser ihn unterstützt."
 
 [[faq]]
 q = "Kann ich das für eine Render-Sequenz aus Blender oder After Effects nutzen?"
@@ -187,26 +175,11 @@ a = """
 
 [[faq]]
 q = "Kann ich aus Fotos einen Zeitraffer machen?"
-a = """
-        Ja, und es ist dieselbe Aufgabe wie eine Render-Sequenz. Halten Sie jedes
-        Foto ein einzelnes Einzelbild lang und wählen Sie eine Bildrate. Bei
-        30 fps ergeben je dreißig Fotos eine Sekunde Video, bei 12 fps laufen
-        dieselben Fotos zweieinhalb Sekunden.
-        <br><br>
-        &bdquo;Nach Datum sortieren&ldquo; bringt eine Kamerarolle zurück in die
-        Reihenfolge, in der sie aufgenommen wurde, und darauf kommt es an, wenn
-        die Dateinamen zwischendurch wieder bei 0001 angefangen haben. Fotos
-        unterschiedlicher Größe sind kein Problem, denn &bdquo;An höchste
-        Auflösung anpassen&ldquo; legt das Video so aus, dass keines von ihnen
-        verkleinert wird."""
+a = " Ja, und es ist dieselbe Aufgabe wie eine Render-Sequenz. Halten Sie jedes Foto ein einzelnes Einzelbild lang und wählen Sie eine Bildrate. Bei 30 fps ergeben je dreißig Fotos eine Sekunde Video, bei 12 fps laufen dieselben Fotos zweieinhalb Sekunden. <br><br> &bdquo;Nach Datum sortieren&ldquo; verwendet das Änderungsdatum der Dateien, das sich beim Kopieren oder Bearbeiten von Fotos ändern kann. Prüfen Sie die Reihenfolge, wenn die Dateinamen wieder bei 0001 begonnen haben. Fotos unterschiedlicher Größe sind kein Problem, denn &bdquo;An höchste Auflösung anpassen&ldquo; beginnt mit der größten Breite und der größten Höhe, begrenzt dann die längste Kante auf 7680 Pixel und rundet auf gerade Abmessungen. Prüfen Sie die Übersicht zur Ausgabegröße; sehr große Originale können trotzdem verkleinert werden."
 
 [[faq]]
 q = "Gibt es eine Grenze für die Zahl der Bilder oder die Länge des Videos?"
-a = """
-        Im Werkzeug ist keine Grenze eingebaut. Die praktische Obergrenze setzt
-        der Arbeitsspeicher Ihres Geräts, denn das fertige Video wird dort
-        zusammengesetzt, bevor Sie es herunterladen. Als Erstes bekommen das sehr
-        große 4K-Diashows zu spüren."""
+a = " Eine feste Obergrenze für die Bildanzahl gibt es nicht, aber MP4-Exporte müssen unter 4 GiB (etwa 4,3 GB) bleiben. Das fertige Video wird vor dem Download im Arbeitsspeicher zusammengesetzt, daher kann Ihrem Gerät der Speicher lange vor dieser Grenze ausgehen. Auch der Encoder des Browsers begrenzt die Ausgabeabmessungen. Wenn ein großer Export fehlschlägt, verringern Sie die Auflösung, kürzen Sie die Sequenz oder teilen Sie sie auf."
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
@@ -237,7 +210,7 @@ description = "Aus einem Ordner voller Bilder ein MP4-Diashow-Video machen. Jede
 features = [
   "Wandelt JPG-, PNG-, WebP-, GIF- und AVIF-Bilder in Video um",
   "MP4-Ausgabe (H.264), mit WebM als Rückfalloption",
-  "Auflösungen bis 3840x2160, Bildraten von 12 bis 60 fps",
+  "Auflösungsvoreinstellungen bis 4K, eigene Abmessungen im Rahmen der Browsergrenzen und frei wählbare ganzzahlige Bildraten von 1 bis 120 fps",
   "Standzeit je Bild, in Einzelbildern oder Sekunden",
   "Läuft offline; kein Upload, kein Konto",
 ]

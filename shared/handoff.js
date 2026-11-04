@@ -82,6 +82,11 @@
         var req = use(tx.objectStore(STORE));
         tx.oncomplete = function () { db.close(); resolve(req && req.result); };
         tx.onerror = function () { db.close(); reject(tx.error); };
+        // A failure while committing, which is where a full disk usually shows
+        // up, fires abort and never error. Without this the promise never
+        // settles: the link stays busy, and the plain visit this file promises
+        // as its fallback never happens.
+        tx.onabort = function () { db.close(); reject(tx.error); };
       });
     });
   }

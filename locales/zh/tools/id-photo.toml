@@ -143,8 +143,7 @@ a = """
         说法：每一条都抄录自公布它的那个机构，而且每一条都把机构和读取日期印在数字\
         底下。选择器本身就是那份清单——在它里面打个国家名，一秒钟就知道在不\
         在。不在的走“其他国家和地区”，那里每个数字都由你自己填；而由于世界上大多数\
-        地方都按 ICAO 的几何要求签发，那一项一开始就用的是它。
-
+        地方都按 ICAO 的几何要求签发，那一项一开始就用的是它。\
         没人公布数字的国家也在单子上，并且在自己那一条里说清楚：画幅用的是\
         世界上大多数地方签发所用的 &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;毫米，区间用 ICAO 的且从不标红，注释里写明\
         那个机构实际上说了什么——很多时候是“照片在窗口当场拍”。这里从来不做的，是\
@@ -261,11 +260,11 @@ hint = "也可以点击选择——一张照片，JPEG、PNG、WebP、AVIF，或
 # 每条规定自己的页面：/zh/id-photo/us-passport/。只有框架写在这里，数值、备注和出处
 # 都来自 body 里的 #phrases，和工具本身读的是同一份。见 tools/id-photo/tool.toml。
 [landing]
-title = "{country}{document} 照片尺寸与要求"
+title = "{country}{document}照片尺寸与要求"
 heading = "照片要求：{country}{document}"
 nav = "{country}{document}"
-description = "{country} 的{document}：{size}，{background}背景。要求引用自{authority}，于{checked}核对，附免费浏览器裁切工具。不上传。"
-lede = "{authority} 对这种证件的照片有什么要求，以 {checked} 读到的为准；以及一个不用把脸交给任何人、就能做出合格照片的办法。"
+description = "{country}的{document}：{size}，{background}背景。出处：{authority}，{checked} 核对。附免费浏览器裁切工具，不上传。"
+lede = "发布机构：{authority}。这种证件的照片有什么要求，以 {checked} 读到的为准；这里还有一个不用把脸交给任何人、就能做出合格照片的办法。"
 updated = "{checked}"
 facts_heading = "具体数值"
 facts_term = "测量的项目"
@@ -281,7 +280,7 @@ how = [
   "读取背景的颜色，以及光线是否均匀；有问题的时候，说明是两者中的哪一个。",
   "按精确的毫米写出打印文件，分辨率写在文件里；再生成一张带裁切标记的拼版，以及符合这条规定的像素和体积的上传文件。",
 ]
-siblings_heading = "{country} 的其他证件"
+siblings_heading = "{country}的其他证件"
 all_link = "在证件照工具里查看所有国家和证件"
 index_heading = "各国照片规定"
 index_lede = "每条公布了具体数值的规定都有自己的页面，写明这些数值、公布它的机构，以及核对的日期。"

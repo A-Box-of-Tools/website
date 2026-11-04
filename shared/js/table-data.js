@@ -1,26 +1,31 @@
 // Fixed extraction rules keep matching linear in the input, without running a visitor's regex.
-export const LIMITS = Object.freeze({ inputChars: 2 * 1024 * 1024, rows: 5000, columns: 100, cells: 100000, outputRows: 20000, outputCells: 500000 });
+export const LIMITS = Object.freeze({ inputChars: 2 * 1024 * 1024, rows: 5000, columns: 100, cells: 100000, outputRows: 20000, outputCells: 500000, outputChars: 16 * 1024 * 1024 });
 const DELIMITERS = [',', '\t', ';', '|'];
 function fail(key) { const error = new Error(key); error.key = key; throw error; }
 function checkDelimiter(delimiter) { if (!DELIMITERS.includes(delimiter)) fail('table.delimiter'); return delimiter; }
 
 function detectDelimiter(text) {
   const records = [];
-  let counts = [0, 0, 0, 0], quoted = false, touched = false;
+  let counts = [0, 0, 0, 0], quoted = false, touched = false, atStart = true;
   for (let i = 0; i < text.length && records.length < 20; i++) {
     const char = text[i];
-    if (char === '"') {
-      touched = true;
-      if (quoted && text[i + 1] === '"') i++;
-      else quoted = !quoted;
-    } else if (!quoted && (char === '\r' || char === '\n')) {
+    if (quoted) {
+      if (char === '"') {
+        if (text[i + 1] === '"') i++;
+        else quoted = false;
+      }
+    } else if (char === '\r' || char === '\n') {
       if (touched) records.push(counts);
-      counts = [0, 0, 0, 0]; touched = false;
+      counts = [0, 0, 0, 0]; touched = false; atStart = true;
       if (char === '\r' && text[i + 1] === '\n') i++;
-    } else if (!quoted) {
+    } else {
       touched = true;
+      // Only a quote opening a cell hides what follows it. The one in
+      // `5" screen` is a character, and must not swallow the next separators.
+      if (char === '"' && atStart) { quoted = true; atStart = false; continue; }
       const index = DELIMITERS.indexOf(char);
       if (index >= 0) counts[index]++;
+      atStart = index >= 0;
     }
   }
   if (touched && records.length < 20) records.push(counts);
@@ -35,6 +40,19 @@ function detectDelimiter(text) {
     if (score > bestScore) { bestScore = score; best = DELIMITERS[index]; }
   }
   return best;
+}
+
+// A spreadsheet puts a cell on the clipboard raw unless it holds a tab or a line
+// break, so in tab-separated text a leading quote only opens a quoted cell when
+// a closing quote really does end that cell.
+function closesQuotedCell(source, start) {
+  for (let i = start + 1; i < source.length; i++) {
+    if (source[i] !== '"') continue;
+    if (source[i + 1] === '"') { i++; continue; }
+    const next = source[i + 1];
+    return next === undefined || next === '\t' || next === '\r' || next === '\n';
+  }
+  return false;
 }
 
 export function parseTable(text, { delimiter = 'auto', header = true } = {}) {
@@ -71,8 +89,12 @@ export function parseTable(text, { delimiter = 'auto', header = true } = {}) {
     }
     if (char === separator) { touched = true; endField(); }
     else if (char === '\r' || char === '\n') { endRecord(); if (char === '\r' && source[i + 1] === '\n') i++; }
-    else if (char === '"' && state === 0) { touched = true; state = 2; }
-    else { if (state === 3 || char === '"') fail('table.quotes'); touched = true; field += char; state = 1; }
+    else if (char === '"' && state === 0 && (separator !== '\t' || closesQuotedCell(source, i))) { touched = true; state = 2; }
+    // A quote inside an unquoted cell is that cell's text: nothing is lost by
+    // keeping it, and refusing the table over `5" screen` helps nobody. Text
+    // after a closing quote stays an error, because it means the quoting and
+    // the cell disagree about where the cell ends.
+    else { if (state === 3) fail('table.quotes'); touched = true; field += char; state = 1; }
   }
   if (state === 2) fail('table.quotes');
   if (touched) endRecord();
@@ -82,8 +104,9 @@ export function parseTable(text, { delimiter = 'auto', header = true } = {}) {
   if (records.some(row => row.length > headers.length)) fail('table.ragged');
   if (records.length > LIMITS.rows) fail('table.row-limit');
   if (records.length * headers.length > LIMITS.cells) fail('table.cell-limit');
+  const shortRows = records.filter(row => row.length < headers.length).length;
   const rows = records.map(row => row.concat(Array(headers.length - row.length).fill('')));
-  return { headers, rows, header: hasHeader, delimiter: separator };
+  return { headers, rows, header: hasHeader, delimiter: separator, shortRows };
 }
 
 function calendarDate(year, month, day) {
@@ -102,6 +125,9 @@ function datePattern(value) {
 function valueKind(value) {
   const text = String(value ?? '').trim();
   if (!text) return 'column';
+  // The longest address a mail system allows. A typed value is short, and the
+  // email pattern below backtracks quadratically on a long cell it nearly fits.
+  if (text.length > 320) return 'text';
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) return 'email';
   if (/^https?:\/\/[^/\s]+(?:[/?#]\S*)?$/i.test(text)) return 'url';
   const stamp = /^(\d{4}-\d{2}-\d{2})[T ]((?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?)(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)?$/.exec(text);
@@ -133,29 +159,105 @@ function columnKind(rows, column) {
   return 'text';
 }
 
-const HEADER_LABELS = new Set(['id', 'identifier', 'name', 'first name', 'last name', 'email', 'email address',
-  'phone', 'telephone', 'url', 'website', 'date', 'time', 'timestamp', 'amount', 'price', 'total', 'quantity',
-  'number', 'text', 'boolean', 'column', 'date and time', 'count', 'status', 'team', 'reference', 'ref', 'note', 'notes', 'description', 'city', 'country', 'address',
-  'code', 'sku', 'product', 'customer', 'invoice', 'paid', 'budget']);
+// How many columns hold one recognisable kind of value, read from the data rows.
+export function typedColumns(table) {
+  return table.headers.filter((_, column) => !['text', 'column'].includes(columnKind(table.rows, column))).length;
+}
+
+// Names a heading row uses, in the languages this site is maintained in. When
+// every value is text, recognising these is the only evidence a first row can
+// offer, so the list holds names of fields and leaves out words that could as
+// easily be a value: "Department" is here and "Sales" is not. Accents stay, and
+// `familiarLabel` has already lowered the case and turned - and _ into spaces.
+const HEADER_LABELS = new Set([
+  'id', 'identifier', 'uuid', 'key', 'name', 'first name', 'firstname', 'last name', 'lastname', 'surname', 'full name', 'fullname',
+  'username', 'user', 'email', 'e mail', 'email address', 'e mail address', 'mail', 'phone', 'phone number', 'telephone', 'mobile',
+  'url', 'link', 'website', 'date', 'time', 'timestamp', 'date and time', 'created', 'updated', 'start', 'end', 'year', 'month', 'day',
+  'amount', 'price', 'cost', 'total', 'subtotal', 'tax', 'balance', 'currency', 'quantity', 'qty', 'count', 'unit', 'number', 'text',
+  'boolean', 'column', 'status', 'state', 'type', 'kind', 'category', 'group', 'label', 'tag', 'team', 'department', 'role', 'title',
+  'company', 'organization', 'organisation', 'vendor', 'supplier', 'customer', 'client', 'owner', 'contact', 'account', 'reference',
+  'ref', 'note', 'description', 'comment', 'remark', 'subject', 'message', 'city', 'region', 'province', 'country', 'address', 'street',
+  'zip', 'zip code', 'postcode', 'postal code', 'location', 'code', 'sku', 'product', 'item', 'order', 'invoice', 'paid', 'budget',
+  'age', 'gender', 'value', 'score', 'rank', 'source',
+  // German
+  'vorname', 'nachname', 'e mail adresse', 'telefon', 'telefonnummer', 'handy', 'stadt', 'ort', 'plz', 'postleitzahl', 'straße', 'strasse',
+  'adresse', 'land', 'datum', 'uhrzeit', 'zeit', 'betrag', 'preis', 'summe', 'gesamt', 'menge', 'anzahl', 'abteilung', 'kunde', 'lieferant',
+  'firma', 'produkt', 'artikel', 'beschreibung', 'bemerkung', 'notiz', 'rechnung', 'nummer', 'kundennummer', 'rechnungsnummer',
+  'bestellnummer', 'artikelnummer', 'wert', 'typ', 'kategorie',
+  // Spanish
+  'nombre', 'apellido', 'apellidos', 'correo', 'correo electrónico', 'teléfono', 'móvil', 'ciudad', 'dirección', 'país', 'provincia',
+  'fecha', 'hora', 'importe', 'precio', 'cantidad', 'departamento', 'cliente', 'proveedor', 'empresa', 'producto', 'artículo',
+  'descripción', 'nota', 'estado', 'factura', 'número', 'código', 'valor', 'tipo', 'categoría',
+  // French
+  'nom', 'prénom', 'courriel', 'adresse e mail', 'téléphone', 'ville', 'pays', 'heure', 'montant', 'prix', 'quantité', 'service',
+  'fournisseur', 'entreprise', 'société', 'produit', 'article', 'remarque', 'statut', 'facture', 'numéro', 'valeur', 'catégorie',
+  // Portuguese
+  'nome', 'sobrenome', 'telefone', 'celular', 'cidade', 'endereço', 'data', 'preço', 'quantidade', 'fornecedor', 'produto', 'descrição',
+  'observação', 'observações', 'fatura', 'categoria',
+  // Chinese and Japanese, where a whole cell has to match: a company name ends in
+  // 公司 and a city in 城市, so these cannot be recognised by how a cell ends.
+  '城市', '国家', '省份', '公司', '部门', '客户', '供应商', '产品', '商品', '发票', '手机', '合计', '总计', '账号', '邮件', '电子邮件',
+  '都市', '国', '会社', '部署', '顧客', '製品', '合計', '請求書', 'メールアドレス',
+]);
+// A longer heading says what its column holds in its last word: "Order ID",
+// "Customer Name", "Invoice Date", or 客户姓名 and 請求番号 without the spaces.
+const HEADER_NOUNS = new Set(['id', 'name', 'number', 'code', 'date', 'time', 'address', 'amount', 'price', 'total', 'count',
+  'description', 'type', 'status', 'email', 'phone', 'url', 'quantity', 'reference', 'title', 'value']);
+const HEADER_ENDINGS = ['姓名', '名称', '编号', '号码', '日期', '时间', '金额', '价格', '单价', '数量', '备注', '状态', '类型', '说明', '描述',
+  '代码', '地址', '电话', '邮箱', '名前', '氏名', '番号', '日付', '時間', '時刻', '金額', '価格', '単価', '数量', '備考', '状態', '種類', '説明',
+  '住所', '電話', 'メール', 'コード'];
+
+function familiarLabel(value) {
+  const name = String(value).normalize('NFKC').trim().toLowerCase()
+    .replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').replace(/\s*\d+$/, '');
+  if (!name) return false;
+  if (HEADER_LABELS.has(name) || HEADER_LABELS.has(name.replace(/s$/, ''))) return true;
+  if (HEADER_ENDINGS.some(ending => name.endsWith(ending))) return true;
+  const words = name.split(' ');
+  const last = words.at(-1);
+  return words.length > 1 && words.length <= 4 && (HEADER_NOUNS.has(last) || HEADER_NOUNS.has(last.replace(/s$/, '')));
+}
 
 function detectHeader(records) {
   if (records.length < 2) return false;
   const first = records[0];
   const width = Math.max(...records.map(row => row.length));
-  // Typed or incomplete first rows stay data. Text-only data is ambiguous,
-  // so removing it requires either typed contrasts or familiar field labels.
-  if (first.length !== width || first.some(value => valueKind(value) !== 'text'
-      || /^(?:n\/?a|null|none|unknown|missing|[-—])$/i.test(value.trim()))) return false;
+  if (first.length !== width) return false;
+  const body = records.slice(1, 51);
   let contrasts = 0, labels = 0;
   for (let column = 0; column < width; column++) {
-    const kind = columnKind(records.slice(1, 51), column);
-    if (kind !== 'text' && kind !== 'column'
-        && records.slice(1, 51).filter(row => String(row[column] ?? '').trim()).length >= 2) contrasts++;
-    if (HEADER_LABELS.has(first[column].trim().toLowerCase().replace(/[_-]+/g, ' ').replace(/\s+\d+$/, ''))) labels++;
+    const kind = valueKind(first[column]);
+    const label = familiarLabel(first[column]);
+    const below = columnKind(body, column);
+    const typed = below !== 'text' && below !== 'column'
+      && body.filter(row => String(row[column] ?? '').trim()).length >= 2;
+    // Typed or incomplete first rows stay data, unless the value names its column
+    // (Address1) or is plainly a different kind of thing from it (Q1 over numbers).
+    if (/^(?:n\/?a|null|none|unknown|missing|[-—])$/i.test(first[column].trim())
+        || (kind !== 'text' && !label && !(kind === 'id' && typed && below !== 'id'))) return false;
+    if (typed) contrasts++;
+    if (label) labels++;
   }
-  return (width > 1 && contrasts >= 2)
-    || (labels >= Math.ceil(width * .6) && (labels >= 2 || (width === 1
-      && columnKind(records.slice(1, 51), 0) !== 'text')));
+  // Text over a typed column is a contrast a data row rarely makes. Text-only
+  // data is ambiguous, so removing it requires familiar field labels.
+  return (width > 1 && contrasts >= 1)
+    || (labels >= Math.ceil(width * .6) && (labels >= 2 || (width === 1 && columnKind(body, 0) !== 'text')));
+}
+
+const KEY_NAME = /(?:^|[\s_-])(?:id|identifier|uuid|key|code|sku|ref|reference|number|email)$/;
+
+// The columns to offer as the match first. A heading both tables use is the
+// likeliest key, and one that reads like an identifier beats one that merely
+// repeats. Without one the first columns are as good a guess as any.
+export function suggestKeys(a, b) {
+  if (a.header === false || b.header === false) return [0, 0];
+  const name = header => String(header).normalize('NFKC').trim().toLowerCase();
+  const inB = new Map();
+  b.headers.forEach((header, index) => {
+    if (name(header) && !inB.has(name(header))) inB.set(name(header), index);
+  });
+  const shared = a.headers.flatMap((header, index) => (inB.has(name(header)) ? [[index, inB.get(name(header))]] : []));
+  return shared.find(([left]) => KEY_NAME.test(name(a.headers[left]))) ?? shared[0] ?? [0, 0];
 }
 
 export function inferHeaders(table, labels = {}) {
@@ -201,10 +303,13 @@ function joinedHeaders(a, b, labels) {
 export function extractKey(value, { match = 'exact', separator = '-', trim = true, ignoreCase = true } = {}) {
   if (!['exact', 'digits', 'letters-digits', 'before', 'after'].includes(match)) fail('table.key');
   if (['before', 'after'].includes(match) && (typeof separator !== 'string' || !separator.length)) fail('table.separator');
-  let key = String(value ?? '');
+  // One composed form, so "José" matches itself however each file stored the
+  // accent. Marks stay with their letters: in Hindi and Thai they are the vowels,
+  // and removing them made different words equal.
+  let key = String(value ?? '').normalize('NFC');
   if (trim) key = key.trim();
   if (match === 'digits') key = key.match(/[0-9]+/)?.[0] || '';
-  else if (match === 'letters-digits') key = key.replace(/[^\p{L}\p{N}]/gu, '');
+  else if (match === 'letters-digits') key = key.replace(/[^\p{L}\p{M}\p{N}]/gu, '');
   else if (match === 'before' || match === 'after') {
     const index = key.indexOf(separator);
     if (index < 0) return null;
@@ -299,8 +404,13 @@ export function stitchTables(a, b, options = {}) {
   const join = mode === 'both' ? 'full' : settings.join;
   let headers;
   const rows = [];
+  let characters = 0;
   const add = row => {
-    if (rows.length + 1 > LIMITS.outputRows || (rows.length + 1) * headers.length > LIMITS.outputCells) fail('table.output-limit');
+    // Rows and cells alone would pass one long cell repeated by a duplicate key,
+    // which arrives in the page as a frozen tab rather than an error.
+    for (const cell of row) characters += cell.length;
+    if (rows.length + 1 > LIMITS.outputRows || (rows.length + 1) * headers.length > LIMITS.outputCells
+        || characters > LIMITS.outputChars) fail('table.output-limit');
     rows.push(row);
   };
   let matched = 0, unmatchedA = 0, unmatchedB = 0, duplicateKeys = 0, conflicts = 0;
@@ -390,6 +500,13 @@ export function stitchTables(a, b, options = {}) {
   return { headers, rows, matched, unmatchedA, unmatchedB, duplicateKeys, conflicts };
 }
 
+const ACTIVE_CELL = /^(?:[\t\r\n]|[\s\uFEFF]*[=+\-@])/u;
+// A leading sign only matters when what follows it can call something. Digits,
+// spaces and number punctuation cannot name a function or a cell, so -12.50 and
+// +1 555 010 1234 reach the spreadsheet as the values they are, not as text with
+// an apostrophe that stops them adding up.
+const PLAIN_SIGNED = /^[ \u00A0\uFEFF]*[+-][\d .,()/%+-]*$/u;
+
 export function serializeTable(headers, rows, { delimiter = ',', protectFormulas = true, includeHeader = true } = {}) {
   checkDelimiter(delimiter);
   const width = headers.length || rows[0]?.length || 0;
@@ -397,9 +514,11 @@ export function serializeTable(headers, rows, { delimiter = ',', protectFormulas
   if (rows.length > LIMITS.outputRows || rows.length * width > LIMITS.outputCells) fail('table.output-limit');
   const encode = value => {
     let text = String(value ?? '');
-    if (protectFormulas && /^(?:[\t\r\n]|[\s\uFEFF]*[=+\-@])/u.test(text)) text = `'${text}`;
+    if (protectFormulas && ACTIVE_CELL.test(text) && !PLAIN_SIGNED.test(text)) text = `'${text}`;
     return text.includes(delimiter) || /["\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
   };
   const records = includeHeader && headers.length ? [headers, ...rows] : rows;
-  return records.map(row => row.map(encode).join(delimiter)).join('\r\n');
+  // A record whose only cell is empty would otherwise be a blank line, and a
+  // blank line is not a record to whatever reads this next.
+  return records.map(row => row.map(encode).join(delimiter) || '""').join('\r\n');
 }
