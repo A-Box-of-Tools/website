@@ -118,7 +118,7 @@ body = """
 
 [[howto]]
 title = """Format und Kanäle wählen."""
-body = """16-Bit-PCM ist die kompatible Voreinstellung. 32-Bit-Float erhält dekodierte Samples ohne Rundung oder Begrenzung. Lass dafür die Kanäle unverändert; Mono mittelt sie und halbiert Stereo-Audiodaten."""
+body = """16-Bit-PCM ist die kompatible Voreinstellung. 32-Bit-Float erhält dekodierte Samples ohne Rundung oder Begrenzung. Lassen Sie dafür die Kanäle unverändert; Mono mittelt sie und halbiert Stereo-Audiodaten."""
 
 [[howto]]
 title = "Hören Sie es ab, bevor Sie es speichern."
@@ -146,7 +146,7 @@ a = """
 
 [[faq]]
 q = "Bekomme ich auch ein MP3?"
-a = """Diese Seite schreibt WAV statt MP3. Für MP3 wäre ein Encoder nötig, den dieses Werkzeug nicht mitbringt. Wähle kompatibles 16-Bit-PCM oder 32-Bit-Float; keines braucht einen Upload. WAV ist wegen der unkomprimierten Audiodaten größer und kann später in einem Editor komprimiert werden."""
+a = """Diese Seite schreibt WAV statt MP3. Für MP3 wäre ein Encoder nötig, den dieses Werkzeug nicht mitbringt. Wählen Sie kompatibles 16-Bit-PCM oder 32-Bit-Float; keines braucht einen Upload. WAV ist wegen der unkomprimierten Audiodaten größer und kann später in einem Editor komprimiert werden."""
 
 [[faq]]
 q = "Wird das Bild jemals angesehen?"
@@ -181,7 +181,7 @@ a = """
 
 [[faq]]
 q = "Geht dabei Qualität verloren?"
-a = """16-Bit-PCM rundet dekodierte Samples und begrenzt Werte außerhalb des vollen Pegelbereichs. Wähle 32-Bit-Float und unveränderte Kanäle, um die Samples des Decoders einschließlich höherer Pegel zu erhalten. Mono mittelt die Kanäle. Float macht vorhandene Verluste im Video nicht rückgängig. Die erkannte Abtastrate der Datei wird verwendet; sonst nennt die Seite die angenommene Rate."""
+a = """16-Bit-PCM rundet dekodierte Samples und begrenzt Werte außerhalb des vollen Pegelbereichs. Wählen Sie 32-Bit-Float und unveränderte Kanäle, um die Samples des Decoders einschließlich höherer Pegel zu erhalten. Mono mittelt die Kanäle. Float macht vorhandene Verluste im Video nicht rückgängig. Die erkannte Abtastrate der Datei wird verwendet; sonst nennt die Seite die angenommene Rate."""
 
 [[faq]]
 q = "Warum ist das WAV so viel größer als das Video?"

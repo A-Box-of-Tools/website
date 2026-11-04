@@ -1,7 +1,8 @@
-import { parseTable, inferHeaders, stitchTables, serializeTable, extractKey, LIMITS } from './shared/table-data.js';
+import { parseTable, inferHeaders, stitchTables, serializeTable, extractKey, suggestKeys, LIMITS } from './shared/table-data.js';
 import { phrase } from './shared/phrases.js';
 import { downloadLink } from './shared/download.js';
 import { clipboardFeedback } from './shared/clipboard-feedback.js';
+import { readText } from './shared/text-import.js';
 
 const $ = id => document.getElementById(id);
 const sources = ['a', 'b'];
@@ -17,7 +18,10 @@ const copy = clipboardFeedback({
   read: () => exportValue,
   current: value => value !== null && value === exportValue,
   write: text => navigator.clipboard.writeText(text),
-  done: () => { $('copy-status').textContent = phrase('stitch.copied'); },
+  done: () => {
+    $('copy-status').textContent = phrase('stitch.copied');
+    globalThis.aboxToolComplete?.();
+  },
   selected: () => {
     $('output').focus();
     $('output').select();
@@ -45,10 +49,17 @@ function discardResult() {
   sayError('stitch-error');
 }
 
+// A box can hold text nobody has read yet, and "No table loaded" under a full box
+// reads as though the text had been lost.
+function sourceStatus(side) {
+  return phrase($('input-' + side).value.trim() ? 'stitch.not-read' : 'stitch.empty');
+}
+
 function invalidateInputs() {
   tables = null;
   pairs = [];
   discardResult();
+  $('key-preview').textContent = '';
   $('stitch').disabled = true;
   for (const id of ['key-a', 'key-b', 'row-a', 'row-b']) {
     const option = document.createElement('option');
@@ -61,7 +72,7 @@ function invalidateInputs() {
   $('pairs').replaceChildren();
   $('pair-status').textContent = phrase('stitch.pairs-count', { count: 0 });
   sources.forEach(side => {
-    $('status-' + side).textContent = phrase('stitch.empty');
+    $('status-' + side).textContent = sourceStatus(side);
     $('header-note-' + side).textContent = '';
   });
   sayError('input-error');
@@ -123,6 +134,7 @@ function readTables() {
   }
   tables = next;
   next.forEach((table, index) => fillKeys(sources[index], table));
+  [$('key-a').value, $('key-b').value] = suggestKeys(...next);
   $('stitch').disabled = false;
   updateManual();
   updateMode();
@@ -209,6 +221,10 @@ function updateManual() {
       pairs.splice(index, 1);
       discardResult();
       updateManual();
+      // The button that had focus has just gone, which would drop a keyboard
+      // user back at the top of the page.
+      const rest = $('pairs').querySelectorAll('button');
+      (rest[index] ?? rest[index - 1] ?? $('add-pair')).focus();
     });
     item.append(remove);
     return item;
@@ -277,8 +293,14 @@ function stitch() {
 }
 
 for (const side of sources) {
-  $('input-' + side).addEventListener('input', () => {
-    sourceTexts[side] = null;
+  // A textarea normalizes CRLF, so a language switch hands over the exact source.
+  $('input-' + side).addEventListener('abox:language-text', event => {
+    const saved = sourceTexts[side];
+    if (saved?.shown === $('input-' + side).value) event.detail.value = saved.text;
+  });
+  $('input-' + side).addEventListener('input', event => {
+    const restored = event.detail?.languageText;
+    sourceTexts[side] = typeof restored === 'string' ? { text: restored, shown: $('input-' + side).value } : null;
     fileVersions[side] += 1;
     pendingFiles.delete(side);
     $('load').disabled = pendingFiles.size > 0;
@@ -290,16 +312,22 @@ for (const side of sources) {
     fileVersions[side] += 1;
     pendingFiles.delete(side);
     $('load').disabled = pendingFiles.size > 0;
-    $('file-' + side).value = '';
     $('input-' + side).value = '';
     invalidateInputs();
   });
-  $('file-' + side).addEventListener('change', () => loadFile(side, $('file-' + side).files[0]));
+  $('file-' + side).addEventListener('change', () => {
+    const file = $('file-' + side).files[0];
+    // A browser fires no change for the path an input already holds, so without
+    // this the file somebody has just fixed and picked again would do nothing.
+    $('file-' + side).value = '';
+    loadFile(side, file);
+  });
 }
 
 async function loadFile(side, file) {
   if (!file) return;
   const owner = ++fileVersions[side];
+  let failed = false;
   sourceTexts[side] = null;
   pendingFiles.add(side);
   $('load').disabled = true;
@@ -308,39 +336,71 @@ async function loadFile(side, file) {
   $('status-' + side).textContent = phrase('stitch.reading');
   try {
     if (file.size > LIMITS.inputChars) throw { key: 'table.input-limit' };
-    const text = new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer());
+    const text = await readText(file);
     if (owner !== fileVersions[side]) return;
     if (text.includes('\0')) throw { key: 'stitch.read-error' };
     $('input-' + side).value = text;
     sourceTexts[side] = { text, shown: $('input-' + side).value };
   } catch (error) {
     if (owner !== fileVersions[side]) return;
+    failed = true;
     sayError('input-error', phrase('stitch.side-error', { side: side.toUpperCase(), reason: error?.key ? errorText(error) : phrase('stitch.read-error') }));
   } finally {
     if (owner === fileVersions[side]) {
       pendingFiles.delete(side);
       $('load').disabled = pendingFiles.size > 0;
-      $('status-' + side).textContent = phrase('stitch.empty');
+      $('status-' + side).textContent = sourceStatus(side);
+      // A file carries no half-typed text, so once both boxes are full there is
+      // nothing left to wait for, and a carried pair arrives already read.
+      if (!failed && !pendingFiles.size && sources.every(name => $('input-' + name).value.trim())) readTables();
     }
   }
 }
 
-// The frame delivers handoffs through this input. Feed the ordered pair into
-// the same per-side reader as a manual pick, preserving its edit ownership.
-$('file-input').addEventListener('change', () => {
-  const files = Array.from($('file-input').files);
-  $('file-input').value = '';
+// An ordered pair goes through the same per-side reader as a manual pick,
+// preserving its edit ownership.
+function loadPair(files) {
   if (!files.length || files.length > 2) {
     sayError('input-error', phrase('stitch.file-count'));
     return;
   }
   files.forEach((file, index) => {
     const side = sources[index];
-    $('file-' + side).value = '';
     $('delimiter-' + side).value = 'auto';
     $('header-' + side).value = 'auto';
     loadFile(side, file);
   });
+}
+
+// The frame delivers handoffs through this input.
+$('file-input').addEventListener('change', () => {
+  const files = Array.from($('file-input').files);
+  $('file-input').value = '';
+  loadPair(files);
+});
+
+// Text dragged between the boxes is the browser's to handle, so only files are
+// caught. A file dropped anywhere else would otherwise be opened by the browser,
+// replacing the page and both tables with it.
+const carriesFiles = event => Array.from(event.dataTransfer?.types ?? []).includes('Files');
+const dropSide = target => target.closest?.('.table-source')?.dataset.side;
+function markDrop(side) {
+  document.querySelectorAll('.table-source').forEach(source => source.classList.toggle('dragover', source.dataset.side === side));
+}
+window.addEventListener('dragover', event => {
+  if (!carriesFiles(event)) return;
+  event.preventDefault();
+  markDrop(dropSide(event.target));
+});
+window.addEventListener('dragleave', event => { if (!event.relatedTarget) markDrop(); });
+window.addEventListener('drop', event => {
+  if (!carriesFiles(event)) return;
+  event.preventDefault();
+  markDrop();
+  const files = Array.from(event.dataTransfer.files);
+  if (files.length !== 1) { loadPair(files); return; }
+  // One file belongs to the table it landed on, or else to the first empty one.
+  loadFile(dropSide(event.target) ?? sources.find(side => !$('input-' + side).value.trim()) ?? 'a', files[0]);
 });
 
 $('load').addEventListener('click', readTables);
@@ -350,7 +410,6 @@ $('example').addEventListener('click', () => {
   sources.forEach(side => {
     sourceTexts[side] = null;
     fileVersions[side] += 1;
-    $('file-' + side).value = '';
     $('input-' + side).value = $('example-' + side).textContent.trim();
     $('delimiter-' + side).value = 'auto';
     $('header-' + side).value = 'present';

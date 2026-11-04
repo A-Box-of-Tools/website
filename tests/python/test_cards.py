@@ -96,6 +96,19 @@ class Summaries(unittest.TestCase):
         html = cards.fold_ledes(card('  <p class="field-summary">Words.</p>'))
         self.assertIn('<summary><h2>A step</h2></summary>', html)
 
+    def test_a_note_under_a_menu_takes_the_label_and_not_its_options(self):
+        # A label wrapping its <select> holds the option text too, and removing
+        # the tags alone ran it all into the name: "Rows to keepAll rowsMatching
+        # pairs" is what Stitch Tables showed.
+        html = cards.fold_ledes(card(
+            '  <label class="field">Rows to keep<select id="join">'
+            '<option>All rows</option><option>Matching pairs</option></select></label>\n'
+            '  <p class="field-note">Blank values never match.</p>'))
+        inside, outside = folded(html)
+        self.assertIn('<strong>Rows to keep</strong> Blank values never match.', inside)
+        self.assertNotIn('All rows', inside)
+        self.assertIn('All rows', outside, 'the menu itself must stay put')
+
 
 class EveryTool(unittest.TestCase):
     def test_no_tool_leaves_a_written_summary_on_the_page(self):

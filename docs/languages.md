@@ -260,7 +260,10 @@ checks are structure — the same ids, `data-phrase` keys and `{blank}`
 placeholders as the English body, the same array lengths and `<code>`
 contents in the toml — and those are faults: a page with one of them shows a
 raw key or a broken control in that language, and a phrase key it reports is
-the same one CI's tests will refuse. The other half are each language's house
+the same one CI's tests will refuse. On the legal pages the structure half is
+a gate as well: `tests/python/test_legal_parity.py` runs the same comparison over
+Privacy, Terms and Contact and fails on a section, a heading or a link that
+English has and a translation lacks. The other half are each language's house
 style as regular expressions, taken from the top of its `locale.toml`, and
 those are places to look rather than orders. `--built` points it at a build's
 output and adds the one check that cannot be made from the source: a space

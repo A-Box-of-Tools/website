@@ -13,10 +13,10 @@
 
 name = "Imagens para vídeo"
 heading = "Imagens&nbsp;para&nbsp;vídeo <span class=\"h1-kw\">&mdash; fazer uma apresentação em MP4</span>"
-tagline = "Transforme uma pasta de imagens em um vídeo."
+tagline = "Crie um MP4 a partir de uma sequência renderizada, fotos de timelapse ou uma apresentação."
 
 title = "Sequência de imagens para MP4 &mdash; grátis, sem envio, funciona offline"
-description = "Transforme imagens JPG, PNG, WebP ou AVIF num vídeo MP4 de apresentação, de graça e inteiramente no seu navegador. Nada é enviado, não pede cadastro e funciona offline."
+description = "Converta uma sequência de imagens para MP4 no navegador. Use um quadro por imagem para renderizações e timelapses, ou segundos por foto para uma apresentação. Sem upload nem conta."
 og_title = "Sequência de imagens para MP4 &mdash; grátis, no seu navegador"
 og_description = "Transforme uma sequência renderizada, um timelapse ou uma pasta de fotos num MP4. A codificação roda no seu próprio computador e nada é enviado."
 og_image_alt = "Imagens para vídeo - transforme uma pasta de imagens numa apresentação em MP4"
@@ -37,7 +37,7 @@ read_first = """
 , e <code>src/encoder.js</code> para o laço de
       codificação, que nunca encosta na rede."""
 
-howto_heading = "Como transformar imagens em um vídeo"
+howto_heading = "Como converter uma sequência de imagens ou uma apresentação para MP4"
 
 card = """
             Transforme uma pasta de imagens numa apresentação em MP4. A
@@ -117,19 +117,12 @@ body = """
       mandado para lugar nenhum enquanto você faz isso."""
 
 [[howto]]
-title = "Ponha em ordem e defina quanto tempo cada uma fica."
-body = """
- Arraste
-      para reordenar. O tempo de permanência pode ser dado em quadros ou em
-      segundos, para todas as imagens de uma vez ou uma imagem por vez."""
+title = "Escolha quadros para uma sequência ou segundos para uma apresentação."
+body = " Use &ldquo;Ordenar por nome&rdquo; para quadros numerados de renderização e confira a primeira e a última miniatura. Mantenha um quadro por imagem para uma sequência renderizada ou um timelapse de fotos, e ajuste a taxa de quadros à sua fonte. Para uma apresentação, mude para segundos, digite um tempo como três e clique em &ldquo;Aplicar a todas&rdquo;. Arraste para reordenar ou altere o tempo de uma imagem específica."
 
 [[howto]]
 title = "Escolha uma resolução e uma taxa de quadros."
-body = """
- O &ldquo;Acompanhar
-      a maior resolução&rdquo; segue a sua maior imagem. As predefinições cobrem
-      4K, 1080p, 720p, quadrado e vertical, e ainda tem um tamanho personalizado se
-      nenhum deles servir."""
+body = " Escolha 1080p para uma primeira exportação, ou use o formato quadrado ou vertical do destino. &ldquo;Acompanhar a maior resolução&rdquo; usa a maior largura e a maior altura entre as imagens. &ldquo;Caber dentro&rdquo; mantém a imagem inteira; &ldquo;Preencher o quadro&rdquo; corta as bordas. Confira o resumo de duração e tamanho de saída antes de codificar."
 
 [[howto]]
 title = "Crie o vídeo e baixe."
@@ -158,10 +151,7 @@ a = """
 
 [[faq]]
 q = "Que formato de vídeo ele produz?"
-a = """
-        MP4 com vídeo H.264, que toca em basicamente qualquer coisa. Num navegador
-        sem WebCodecs, a ferramenta usa WebM como alternativa: são as mesmas imagens
-        num contêiner que menos editores aceitam."""
+a = " O formato preferido é MP4 com vídeo H.264. A alternativa grava em tempo real, geralmente como WebM, que menos editores aceitam. Mantenha a aba visível durante essa gravação; os tempos são aproximados e imagens podem ser puladas se a decodificação atrasar. Use o codificador MP4 para sequências numeradas exatas quando o navegador oferecer suporte."
 
 [[faq]]
 q = "Posso usar isto para uma sequência renderizada do Blender ou do After Effects?"
@@ -179,24 +169,11 @@ a = """
 
 [[faq]]
 q = "Posso fazer um timelapse com fotos?"
-a = """
-        Pode, e é o mesmo trabalho de uma sequência renderizada: mantenha cada foto
-        por um único quadro e escolha uma taxa de quadros. A 30 fps, cada trinta
-        fotos viram um segundo de vídeo; a 12 fps, essas mesmas fotos duram dois
-        segundos e meio.
-        <br><br>
-        O &ldquo;Ordenar por data&rdquo; devolve um rolo de câmera à ordem em que foi
-        fotografado, o que importa quando os nomes de arquivo recomeçaram em 0001.
-        Fotos de tamanhos diferentes não são problema, porque o &ldquo;Acompanhar a
-        maior resolução&rdquo; dimensiona o vídeo de modo que nenhuma delas seja
-        reduzida."""
+a = " Pode, e é o mesmo trabalho de uma sequência renderizada: mantenha cada foto por um único quadro e escolha uma taxa de quadros. A 30 fps, cada trinta fotos viram um segundo de vídeo; a 12 fps, essas mesmas fotos duram dois segundos e meio. <br><br> &ldquo;Ordenar por data&rdquo; usa as datas de modificação dos arquivos, que podem mudar quando as fotos são copiadas ou editadas. Confira a ordem quando os nomes dos arquivos tiverem recomeçado em 0001. Fotos de tamanhos diferentes não são problema, porque &ldquo;Acompanhar a maior resolução&rdquo; começa com a maior largura e a maior altura, depois limita a borda mais longa a 7680 pixels e arredonda para dimensões pares. Confira o resumo do tamanho de saída; originais muito grandes ainda podem ser reduzidos."
 
 [[faq]]
 q = "Existe limite de quantas imagens, ou de quanto o vídeo pode durar?"
-a = """
-        A ferramenta não tem limite embutido. O teto prático é a memória do seu
-        próprio computador, porque o vídeo pronto é montado ali antes de você baixar.
-        Apresentações muito grandes em 4K são a primeira coisa a sentir isso."""
+a = " Não há limite fixo de imagens, mas as exportações MP4 precisam ficar abaixo de 4 GiB (cerca de 4,3 GB). O vídeo pronto é montado na memória antes do download, então seu dispositivo pode ficar sem memória bem antes desse limite. O codificador do navegador também limita as dimensões de saída. Se uma exportação grande falhar, reduza a resolução, encurte a sequência ou divida-a em partes."
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
@@ -226,7 +203,7 @@ description = "Transforme uma pasta de imagens numa apresentação em vídeo MP4
 features = [
   "Converte imagens JPG, PNG, WebP, GIF e AVIF em vídeo",
   "Saída em MP4 (H.264), com WebM como alternativa",
-  "Resoluções até 3840x2160, taxas de quadros de 12 a 60 fps",
+  "Resoluções predefinidas até 4K, dimensões personalizadas dentro dos limites do navegador e taxas de quadros inteiras personalizadas de 1 a 120 fps",
   "Tempo de permanência por imagem, em quadros ou em segundos",
   "Roda offline; sem envio, sem conta",
 ]

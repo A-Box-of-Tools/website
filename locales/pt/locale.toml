@@ -564,6 +564,7 @@ error_broke = "Algo deu errado: {detail}. Recarregue a página para começar de 
 
 reading_one = "Lendo {count} arquivo&hellip;"
 reading_many = "Lendo {count} arquivos&hellip;"
+text_encoding = "Ele não está salvo como texto UTF-8. Salve-o como UTF-8 e tente novamente, ou cole o texto diretamente."
 
 check_yourself = """
       <strong>Confira você mesmo.</strong> Nada do que está acima precisa ser aceito

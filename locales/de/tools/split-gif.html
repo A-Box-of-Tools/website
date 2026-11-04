@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> Ein GIF auswählen</h2>
 
+    <p class="card-lede">
+      Speichern Sie ein Standbild für eine Anleitung, extrahieren Sie PNG-Einzelbilder zum Bearbeiten oder erstellen Sie ein Spritesheet. Lassen Sie <strong>Jedes PNG enthält</strong> auf <strong>Das Einzelbild, wie es erscheint</strong>, um vollständige Bilder zu erhalten. Der <a href="../ratgeber/gif-in-einzelbilder-zerlegen/" data-workflow-target="guides/split-a-gif-into-frames">Ratgeber zum Extrahieren von GIF-Einzelbildern</a> erklärt die Möglichkeiten.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +109,16 @@
          somebody is about to save, and a checkbox is the one control everybody
          already knows is safe to press. -->
     <ul class="frames" id="frames"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Die Einzelbilder im nächsten Schritt verwenden</h2>
+    <p>
+      Um eine bearbeitete Animation neu aufzubauen, fügen Sie die vollständigen PNG-Einzelbilder zum <a href="../gif-erstellen/" data-workflow-target="gif-maker">GIF-Ersteller</a> hinzu, sortieren sie nach Name und legen jede Standzeit mit <code>frames.txt</code> als Referenz fest. Die Zeitliste wird nicht automatisch importiert. Der <a href="../ratgeber/gif-bild-fuer-bild-bearbeiten/" data-workflow-target="guides/edit-a-gif-frame-by-frame">Ratgeber zum Bearbeiten Bild für Bild</a> beschreibt den ganzen Ablauf.
+    </p>
+    <p>
+      Wenn Sie nur ein Video brauchen, <a href="../gif-in-mp4-umwandeln/" data-workflow-target="gif-to-mp4">wandeln Sie das ursprüngliche GIF direkt in MP4 um</a>, damit die wechselnden Anzeigedauern erhalten bleiben. Prüfen Sie unerwartetes Timing oder eine unerwartete Dateigröße vor dem Bearbeiten in der <a href="../gif-analysieren/" data-workflow-target="gif-analyzer">GIF-Analyse</a>.
+    </p>
   </section>
 
   <!--

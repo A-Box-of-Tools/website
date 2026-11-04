@@ -44,7 +44,7 @@ css_parts = ["form", "panes", "checks", "notes"]
 # and copy - twice.
 js_parts = ["file-picker", "text-import", "message-box", "download", "table-data"]
 source_handoff = ["stitch-tables"]
-lastmod = "2026-10-27"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 

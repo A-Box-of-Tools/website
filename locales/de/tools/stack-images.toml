@@ -15,11 +15,11 @@
 #
 
 name = "Bild-Stacker"
-heading = "Bild-Stacker <span class=\"h1-kw\">&mdash; eine Serie zusammenrechnen, RAW eingeschlossen</span>"
-tagline = "Zwanzig Aufnahmen werden eine, ohne zwanzig Uploads und ohne RAW-Konverter."
+heading = """Bild-Stacker <span class="h1-kw">&mdash; Rauschen senken, Personen entfernen, Sternspuren erzeugen</span>"""
+tagline = "Eine ruhige Serie mitteln, mit dem Median den Hintergrund freistellen oder eine Nachthimmel-Serie aufhellen."
 
-title = "Bild-Stacker &mdash; Mittelwert, Median und Focus Stacking im Browser"
-description = "Eine Serie von Fotos zu einem Bild zusammenrechnen: mitteln gegen das Rauschen, den Median nehmen, um Passanten aus einer Szene zu entfernen, aufhellen für Sternspuren oder eine Makroaufnahme fokusstacken. Liest CR2, NEF, ARW, DNG, RAF und CR3, indem es die Vorschau der Kamera selbst herausholt. Läuft komplett im Browser."
+title = "Bild-Stacker &mdash; Rauschen senken und bewegte Personen entfernen"
+description = "Fotos stacken, um Rauschen zu senken, bewegte Personen zu entfernen oder Sternspuren zu erzeugen. Aufnahmen ausrichten und im Browser als PNG oder JPEG speichern. RAW-Dateien nutzen eingebettete JPEG-Vorschauen."
 og_title = "Eine Fotoserie stacken, RAW-Dateien eingeschlossen"
 og_description = "Mittelwert, Median, Sigma-Clipping, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher ausgerichteten Aufnahmen. RAW-Dateien werden über die eingebettete JPEG-Vorschau der Kamera geöffnet, sofern eine vorhanden ist, ohne die Sensordaten zu dekodieren. Nichts wird hochgeladen."
 og_image_alt = "Bild-Stacker - mehrere Aufnahmen zu einer zusammengerechnet, im Browser"
@@ -77,15 +77,8 @@ title = "Die Arbeit passiert in einem Worker auf diesem Gerät, nicht auf einem 
 body = "Stacken kann Minuten dauern; ein Worker rechnet, während die Seite reagiert, Fortschritt zeigt und Abbruch erlaubt. Es ist ein weiterer Thread dieses Browsers, siehe <code>src/worker.js</code>. Dateireferenzen werden lokal ohne Upload übergeben. Der Verarbeitungscode liest und kombiniert Dateien auf diesem Gerät. Prüfen Sie ihn, statt die Zielrichtlinie der Seite als Beweis für Datenwege des Workers zu behandeln."
 
 [[privacy]]
-title = "Über die Serie wird nirgendwohin etwas gemeldet."
-body = """
- Wie viele Aufnahmen Sie
-      gestackt haben, welche Kamera sie geschrieben hat, wie weit jede sich bewegt
-      hatte, welche Methode Sie gewählt haben und wie lange es gedauert hat,
-      liegen im Speicher dieser Seite, bis Sie sie schließen. In diesem Repository
-      gibt es kein Analytics-Ereignis, das irgendetwas davon trüge, und die eine
-      Frage, die diese Seite nach einem Download stellt, sendet einen Daumen hoch
-      oder runter und den Namen des Werkzeugs, sonst nichts."""
+title = "Ablauf-Ereignisse zählen feste Schritte."
+body = " Die Ablauf-Ereignisse der Website können feste Schritte zählen, etwa das Hinzufügen von Eingaben, den Start eines Stacks, ein fertiges Ergebnis, ein Problem, einen Abbruch oder das Speichern. Sie verwenden den Namen des Werkzeugs und feste Schrittbezeichnungen; Navigationsereignisse verwenden feste Namen für Ausgangs- und Zielseite. Sie enthalten keine Fotos, Dateinamen, Kameradaten, Anzahl der Aufnahmen, Abmessungen, gewählten Methoden, Einstellungen, Verarbeitungszeiten oder Ergebnisinhalte. Die freiwillige Frage nach einem Download sendet einen Daumen hoch oder runter und einen festen Grund."
 
 [[privacy]]
 title = "Läuft offline."
@@ -110,7 +103,7 @@ body = "Beginnen Sie mit Automatisch: Es misst Verschiebung, Drehung und Maßsta
 
 [[howto]]
 title = "Lesen Sie die vier Zahlen und drücken Sie dann den Knopf."
-body = "Vor dem Start zeigt die Seite die geplante Ergebnisgröße, den geschätzten Speicher für den Stack, die geplanten Dekodiervorgänge beim Stacken und die beim Prüfen gelesenen Bytes. Browserinternes und Speicherbereinigung können mehr Speicher brauchen als die modellierten Puffer; die Zahlen sind ein Plan und keine Garantie für den Gesamtverbrauch. Bei einem Stack in Bändern schlägt die Seite eine kleinere Arbeitsauflösung vor. Vergleichen Sie danach Bezug und Ergebnis in tatsächlicher Pixelgröße und prüfen Sie die Ausrichtungsdetails vor dem Download."
+body = " Vor dem Start zeigt die Seite die geplante Ergebnisgröße, den geschätzten Speicher für den Stack, die geplanten Dekodiervorgänge beim Stacken und die beim Prüfen gelesenen Bytes. Browserinternes und Speicherbereinigung können mehr Speicher brauchen als die modellierten Puffer; die Zahlen sind ein Plan und keine Garantie für den Gesamtverbrauch. Bei einem Stack in Bändern schlägt die Seite eine kleinere Arbeitsauflösung vor. Vergleichen Sie danach Bezug und Ergebnis in tatsächlicher Pixelgröße und prüfen Sie die Ausrichtungsdetails vor dem Download. Mit den Weitergabe-Links neben dem Download können Sie das fertige Bild skalieren oder komprimieren, ohne die Datei erneut zu wählen."
 
 [[faq]]
 q = "Werden meine Fotos irgendwohin hochgeladen?"
@@ -159,18 +152,8 @@ q = "Er sagt, der Durchlauf werde in Bänder geteilt. Was heißt das?"
 a = "Die Methode braucht mehr Arbeitsspeicher, als das Werkzeug auf einmal belegen will. Das Bild wird deshalb in waagerechte Streifen geteilt und streifenweise gestackt. Ausrichtungsgeometrie und Stacking-Methode bleiben gleich; die Neuberechnung der Pixel im Browser kann sich im letzten Bit leicht unterscheiden. Für jeden Streifen werden die Aufnahmen erneut gelesen, was länger dauert. Die Seite zeigt die Anzahl der Dekodiervorgänge. Die Arbeitsauflösung eine Stufe zu senken viertelt den Speicher und macht aus einem Durchlauf in Bändern fast immer einen einzigen. Der Hinweis nennt die passende Einstellung."
 
 [[faq]]
-q = "Warum verwendet dieses Werkzeug einen Worker und keines der anderen?"
-a = """
-        Weil es das einzige ist, dessen Arbeit in Minuten gemessen wird. Jedes
-        andere Werkzeug hier tut etwas, das ein bis zwei Sekunden dauert, und
-        dabei wäre es Zeremonie, die Arbeit vom Hauptstrang zu holen. Zwanzig
-        große Aufnahmen zu stacken ist solide Rechnerei über hunderte Megabyte,
-        und auf dem Hauptstrang heißt das eine eingefrorene Seite: ein
-        Fortschrittsbalken, der sich nicht bewegt, ein Abbrechen-Knopf, der nicht
-        antwortet, und irgendwann ein Browser, der anbietet, den Tab zu beenden.
-        Der Worker ist ein zweiter Strang in genau diesem Browser, der eine Datei
-        aus genau diesem Ordner unter genau dieser Policy ausführt. Er ist kein
-        Server und keine Netzfunktion."""
+q = "Warum läuft das Stacken in einem Worker?"
+a = " Große Aufnahmen zu kombinieren kann Minuten dauern. Ein Worker übernimmt die Rechnerei, während die Seite reaktionsfähig genug bleibt, um den Fortschritt anzuzeigen und auf Abbrechen zu antworten. Er ist ein weiterer Strang in diesem Browser, der eine lokale Datei unter der Richtlinie der Seite ausführt. Ihre Fotos bleiben währenddessen auf diesem Gerät."
 
 [[faq]]
 q = "Ist das kostenlos, und brauche ich ein Konto?"

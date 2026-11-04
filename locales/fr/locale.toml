@@ -395,6 +395,7 @@ net_platform_many = "Les scripts de publicité, de mesure et du bouton de don pr
 error_broke = "Quelque chose a échoué&nbsp;: {detail}. Rechargez la page pour repartir de zéro."
 reading_one = "Lecture de {count} fichier&hellip;"
 reading_many = "Lecture de {count} fichiers&hellip;"
+text_encoding = "Il n’est pas enregistré en texte UTF-8. Enregistrez-le en UTF-8 puis réessayez, ou collez directement son texte."
 check_yourself = "<strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur parole. Cette page est produite à partir des gabarits et de la configuration du dépôt par un script de compilation que vous pouvez lire et exécuter vous-même, et le résultat est publié sur la branche <code>dist</code>, ce qui vous permet de comparer ce qui est servi avec ce que produit une compilation des sources&nbsp;:"
 read_first_lead = "Les fichiers à lire en premier sont <code>config/site.toml</code> pour la Content-Security-Policy"
 dlp_note = "<strong>Si le logiciel de sécurité de votre employeur signale un envoi.</strong> Une alerte lors du choix d’un fichier ne prouve pas son transfert. Pour une opération locale, examinez les adresses et les données des requêtes dans l’onglet Réseau et comparez-les au code de cette page. Les récupérations facultatives et les partages volontaires sont expliqués séparément. Votre service informatique peut effectuer la même vérification."

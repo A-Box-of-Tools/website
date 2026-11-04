@@ -32,7 +32,7 @@ test('short table records pad to headers and no-header tables derive their width
 });
 
 test('malformed quoting fails instead of silently changing cells', () => {
-  for (const text of ['a\n"unterminated', 'a\n"closed"tail', 'a\nunquoted"quote']) {
+  for (const text of ['a\n"unterminated', 'a\n"closed"tail']) {
     assert.throws(() => parseTable(text), errorKey('table.quotes'));
   }
   assert.throws(() => parseTable('x', { delimiter: '\n' }), errorKey('table.delimiter'));
@@ -158,10 +158,55 @@ test('CSV and TSV serialization round-trip strings including markup and signific
 });
 
 test('formula protection covers headings, leading whitespace, operators and control characters', () => {
-  const rows = [['=1'], [' +2'], ['-3'], ['@SUM(A1)'], ['\tvalue'], ['\nvalue'], ['text']];
+  const rows = [['=1'], [' +A1'], ['-SUM(A1)'], ['-2+3+cmd|calc'], ['@SUM(A1)'], ['\tvalue'], ['\t-3'], ['\nvalue'], ['text']];
   const encoded = serializeTable(['=heading'], rows);
   const decoded = parseTable(encoded, { delimiter: ',' });
   assert.deepEqual(decoded.headers, ["'=heading"]);
   assert.deepEqual(decoded.rows, rows.map(([value]) => [value === 'text' ? value : "'" + value]));
   assert.deepEqual(parseTable(serializeTable(['id'], rows, { protectFormulas: false }), { delimiter: ',' }).rows, rows);
+});
+
+test('formula protection leaves cells alone that hold only a number', () => {
+  const rows = [['-12.50'], ['+1 555 010 1234'], ['-1,234.50'], ['+1 (555) 010-1234'], ['-5%'], ['-'], [' -3'], ['12']];
+  assert.deepEqual(parseTable(serializeTable(['value'], rows), { delimiter: ',' }).rows, rows);
+});
+
+test('a quote inside an unquoted cell is that cell\'s text', () => {
+  assert.deepEqual(parseTable('sku,name\nA1,the "big" one\nA2,5" screen').rows,
+    [['A1', 'the "big" one'], ['A2', '5" screen']]);
+});
+
+test('tab-separated cells only quote when a closing quote really ends the cell', () => {
+  const text = 'SKU\tName\nA1\t5" screen\nA2\t"big" one\nA3\t"open\nA4\t"first\nsecond"\nA5\t"say ""hi"""';
+  const expected = [['A1', '5" screen'], ['A2', '"big" one'], ['A3', '"open'], ['A4', 'first\nsecond'], ['A5', 'say "hi"']];
+  assert.equal(parseTable(text).delimiter, '\t');
+  assert.deepEqual(parseTable(text).rows, expected);
+  assert.deepEqual(parseTable(text, { delimiter: '\t' }).rows, expected);
+});
+
+test('a stray quote does not hide the separators after it from detection', () => {
+  assert.equal(parseTable('a\tb\n5" x\t1\n6" y\t2\n7" z\t3').delimiter, '\t');
+  assert.equal(parseTable('a;b\n5" x;1\n6" y;2').delimiter, ';');
+});
+
+test('matching keeps marks with their letters and one form of each accent', () => {
+  const key = (value, match) => extractKey(value, { match });
+  assert.notEqual(key('किताब', 'letters-digits'), key('कताब', 'letters-digits'));
+  assert.notEqual(key('กี', 'letters-digits'), key('กู', 'letters-digits'));
+  for (const match of ['exact', 'letters-digits']) {
+    assert.equal(key('José', match), key('José', match));
+    assert.notEqual(key('José', match), key('Jose', match));
+  }
+});
+
+test('one long cell repeated by a duplicate key stops at the text bound', () => {
+  const a = table(['id', 'note'], [['x', 'y'.repeat(1_900_000)]]);
+  const b = table(['id', 'other'], Array.from({ length: 100 }, (_, index) => ['x', String(index)]));
+  assert.throws(() => stitchTables(a, b, { labels }), errorKey('table.output-limit'));
+  assert.equal(stitchTables(a, table(['id', 'other'], [['x', '1']]), { labels }).matched, 1);
+});
+
+test('a one-column row holding nothing survives export and reading back', () => {
+  const rows = [['1'], [''], ['2']];
+  assert.deepEqual(parseTable(serializeTable(['id'], rows), { delimiter: ',' }).rows, rows);
 });
