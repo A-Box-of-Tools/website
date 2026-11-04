@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> Choisissez un GIF</h2>
 
+    <p class="card-lede">
+      Enregistrez une image fixe pour des instructions, extrayez des images PNG à modifier ou créez une planche de sprites. Laissez <strong>Chaque PNG contient</strong> sur <strong>L’image telle qu’elle apparaît</strong> pour obtenir des images complètes. Le <a href="../guides/decouper-un-gif-en-images/" data-workflow-target="guides/split-a-gif-into-frames">guide d’extraction des images d’un GIF</a> explique les choix.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +109,16 @@
          somebody is about to save, and a checkbox is the one control everybody
          already knows is safe to press. -->
     <ul class="frames" id="frames"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Utilisez les images à l’étape suivante</h2>
+    <p>
+      Pour reconstruire une animation modifiée, ajoutez les images PNG complètes au <a href="../creer-un-gif/" data-workflow-target="gif-maker">Créateur de GIF</a>, triez par nom et réglez chaque durée avec <code>frames.txt</code> comme référence. La liste des durées n’est pas importée automatiquement. Suivez le <a href="../guides/modifier-un-gif-image-par-image/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guide de modification image par image</a> pour le processus complet.
+    </p>
+    <p>
+      Si vous n’avez besoin que d’une vidéo, <a href="../gif-en-mp4/" data-workflow-target="gif-to-mp4">convertissez directement le GIF d’origine en MP4</a> pour garder ses délais variables. Vérifiez un minutage ou une taille inattendus dans l’<a href="../analyser-un-gif/" data-workflow-target="gif-analyzer">Analyseur de GIF</a> avant de modifier.
+    </p>
   </section>
 
   <!--

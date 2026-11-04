@@ -7,12 +7,12 @@
 
 name = "Separador de GIF"
 heading = "Separador&nbsp;de&nbsp;GIF <span class=\"h1-kw\">&mdash; cada fotograma en su propio PNG</span>"
-tagline = "Cada fotograma fuera, en su propio PNG."
+tagline = "Extrae fotogramas PNG, un ZIP o una hoja de sprites, con los tiempos anotados."
 
 title = "Separar un GIF en fotogramas &mdash; gratis y sin subir nada"
-description = "Separa un GIF animado en sus fotogramas y guarda cada uno como PNG, gratis y enteramente en el navegador. Conserva la transparencia y los tiempos. No se sube nada y funciona sin conexión."
+description = "Extrae fotogramas de un GIF como PNG, en un ZIP o en una hoja de sprites desde el navegador. Conserva la transparencia y guarda los retardos en una lista de tiempos aparte. Sin subidas."
 og_title = "Separador de GIF &mdash; desmonta una animación en el navegador"
-og_description = "Cada fotograma de un GIF en su propio PNG, con los tiempos y la transparencia intactos. El archivo se lee en tu propio dispositivo y no se sube nunca."
+og_description = "Descarga fotogramas PNG uno a uno, en un ZIP o como una hoja de sprites. Conserva la transparencia y guarda los retardos en una lista de tiempos aparte. No se sube nada."
 og_image_alt = "Separador de GIF - cada fotograma de un GIF en su propio PNG"
 
 pledge = """
@@ -193,13 +193,7 @@ a = """
 
 [[faq]]
 q = "¿Puedo volver a montar los fotogramas?"
-a = """
-        Sí, con el <a href="../crear-gif/">Creador de GIF</a> de este sitio o con
-        cualquier otra cosa que acepte una carpeta de imágenes. Para eso está el
-        <code>frames.txt</code> del ZIP: separar una animación tira los tiempos a
-        la basura, porque un PNG no tiene dónde anotar cuánto se mantuvo en
-        pantalla, así que la lista se lleva fuera la duración y la posición de
-        cada fotograma."""
+a = """ Sí. Extrae <strong>El fotograma tal como aparece</strong>, añade esos PNG completos al <a href="../crear-gif/" data-workflow-target="gif-maker">Creador de GIF</a> y ordénalos por nombre. Usa <code>frames.txt</code> del ZIP como referencia al fijar la duración de cada fotograma; el Creador de GIF no importa la lista automáticamente. Un PNG no puede llevar por sí solo su retardo de reproducción. La <a href="../guias/editar-un-gif-fotograma-a-fotograma/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guía para editar fotograma a fotograma</a> explica cómo reconstruir la animación."""
 
 [[faq]]
 q = "¿En qué formatos se pueden guardar los fotogramas?"
@@ -245,7 +239,7 @@ features = [
   "El fotograma tal como aparece, o solo los píxeles que ese fotograma guarda",
   "Duración, posición, tamaño y descarte de cada fotograma, uno a uno",
   "Quedarte con uno de cada dos o de cada cinco, o marcar los que quieras",
-  "Un solo ZIP para todo, con lista de tiempos opcional para rehacer la animación",
+  "Un ZIP con lista de tiempos opcional, o fotogramas completos seleccionados en una hoja de sprites PNG",
   "Funciona sin conexión; sin subidas, sin cuenta, sin marca de agua",
 ]
 

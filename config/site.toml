@@ -999,6 +999,8 @@ error_broke = "Something broke: {detail}. Reload the page to start over."
 # for the same reason `guide_one` and `guide_many` are two keys.
 reading_one = "Reading {count} file&hellip;"
 reading_many = "Reading {count} files&hellip;"
+# Why a file was refused, for the tools that begin "That file could not be read:".
+text_encoding = "It is not saved as UTF-8 text. Save it as UTF-8 and try again, or paste its text instead."
 
 check_yourself = """
       <strong>Check it yourself.</strong> None of the above has to be taken on trust.

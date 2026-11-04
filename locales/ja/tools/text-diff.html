@@ -108,7 +108,7 @@
     <div id="csv-pipeline" class="csv-pipeline" hidden>
       <p>両方の元テーブルを引き継ぎます。元のテキスト → A、変更後のテキスト → B。Stitch Tablesで値やパターンによる照合、手動の対応付け、単純な結合を選べます。</p>
 {% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">この2つのテーブルを結合</a>
-{% endfor %}      <p class="field-note">データの受け渡しはこのブラウザ内で行われ、10分後に期限切れになります。</p>
+{% endfor %}      <p class="transfer-note">データの受け渡しはこのブラウザ内で行われ、10分後に期限切れになります。</p>
       <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
     </div>
   </section>
@@ -129,7 +129,7 @@
     <span data-phrase="csv-pipeline.failed">テーブルを引き継げませんでした。テキストはこのページに残っています。ブラウザの保存機能を許可して再試行するか、両方のファイルを保存してStitch Tablesで開いてください。</span>
 
     <span data-phrase="result.waiting">両方の欄に何か貼り付けてください。</span>
-    <span data-phrase="result.identical">この2つはバイト単位で同一です。</span>
+    <span data-phrase="result.identical">この2つは文字単位で同一です。</span>
     <span data-phrase="result.ignored">無視するよう指定した違いを無視すれば、同じです。</span>
     <span data-phrase="result.counts">{added}行追加、{removed}行削除</span>
     <span data-phrase="result.summary">{changes}。内容が一致する行は{percent}%です。{note}</span>

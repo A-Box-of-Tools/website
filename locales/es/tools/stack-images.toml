@@ -15,11 +15,11 @@
 #
 
 name = "Apilador de imágenes"
-heading = "Apilador&nbsp;de&nbsp;imágenes <span class=\"h1-kw\">&mdash; combina una ráfaga, con RAW incluido</span>"
-tagline = "Veinte tomas se convierten en una, sin veinte subidas y sin revelador RAW."
+heading = """Apilador&nbsp;de&nbsp;imágenes <span class="h1-kw">&mdash; reduce el ruido, quita personas, crea estelas de estrellas</span>"""
+tagline = "Promedia una ráfaga estable, usa la mediana para despejar el fondo o aclara una secuencia de cielo nocturno."
 
-title = "Apilador de imágenes &mdash; media, mediana y apilado de enfoque en el navegador"
-description = "Combina una ráfaga de fotografías en una sola: promédialas para matar el ruido, toma la mediana para quitar a la gente de una escena, aclara para dejar estelas de estrellas o apila el enfoque de una macro. Lee CR2, NEF, ARW, DNG, RAF y CR3 sacando la propia vista previa de la cámara. Funciona entero en el navegador."
+title = "Apilador de imágenes &mdash; Reduce el ruido y quita personas en movimiento"
+description = "Apila fotos para reducir el ruido, quitar personas en movimiento o crear estelas de estrellas. Alinea las tomas y guarda en PNG o JPEG en el navegador. Los archivos RAW usan sus vistas previas JPEG incrustadas."
 og_title = "Apila una ráfaga de fotografías, con archivos RAW incluidos"
 og_description = "Media, mediana, recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas primero. Los archivos RAW se abren desde la vista previa JPEG que incluye la cámara, si está disponible, sin decodificar los datos del sensor. No se sube nada."
 og_image_alt = "Apilador de imágenes - varias tomas combinadas en una, en el navegador"
@@ -76,14 +76,8 @@ title = "El trabajo ocurre en un Worker de este equipo, no en un servidor."
 body = "Apilar puede durar minutos; un Worker calcula mientras la página responde, muestra progreso y permite cancelar. Es otro hilo del navegador: <code>src/worker.js</code>. Recibe referencias locales sin subir los bytes. El código del Worker lee y combina archivos en el dispositivo. Revisa ese código, sin tratar la política de destinos de la página como prueba de sus rutas."
 
 [[privacy]]
-title = "No se informa a ninguna parte de nada sobre el conjunto."
-body = """
- Cuántas tomas has apilado,
-      qué cámara las escribió, cuánto se había movido cada una, qué método has
-      elegido y cuánto ha tardado se quedan en la memoria de esta página hasta que
-      la cierras. En este repositorio no hay ningún evento de analítica que lleve
-      nada de eso, y la única pregunta que hace este sitio después de una descarga
-      manda un pulgar arriba o abajo y el nombre de la herramienta, nada más."""
+title = "Los eventos del recorrido cuentan pasos fijos."
+body = " Los eventos del recorrido del sitio pueden contar pasos fijos, como añadir entradas, iniciar un apilado, tener listo un resultado, un problema, una cancelación o guardar. Usan el nombre de la herramienta y etiquetas fijas de cada paso; los eventos de navegación usan nombres fijos de las páginas de origen y destino. No llevan fotos, nombres de archivo, datos de la cámara, número de tomas, dimensiones, métodos elegidos, ajustes, tiempos de proceso ni contenido del resultado. La pregunta opcional tras una descarga envía un pulgar arriba o abajo y un motivo fijo."
 
 [[privacy]]
 title = "Funciona sin conexión."
@@ -107,7 +101,7 @@ body = "Empieza con Auto: mide desplazamiento, rotación y escala y luego corrig
 
 [[howto]]
 title = "Lee las cuatro cifras y después pulsa el botón."
-body = "Antes de empezar, la página muestra el tamaño previsto del resultado, la memoria estimada del apilado, las decodificaciones previstas para apilar y los bytes leídos durante la inspección. El funcionamiento interno del navegador y la liberación de memoria pueden consumir más que los búferes modelados; estas cifras son un plan y no garantizan el uso total. Si hacen falta bandas, se sugiere una resolución de trabajo menor. Al terminar, compara la referencia con el resultado a tamaño real de píxel y revisa los detalles de alineación antes de descargar."
+body = " Antes de empezar, la página muestra el tamaño previsto del resultado, la memoria estimada del apilado, las decodificaciones previstas para apilar y los bytes leídos durante la inspección. El funcionamiento interno del navegador y la liberación de memoria pueden consumir más que los búferes modelados; estas cifras son un plan y no garantizan el uso total. Si hacen falta bandas, se sugiere una resolución de trabajo menor. Al terminar, compara la referencia con el resultado a tamaño real de píxel y revisa los detalles de alineación antes de descargar. Usa los enlaces junto a la descarga para redimensionar o comprimir la imagen terminada sin volver a elegir el archivo."
 
 [[faq]]
 q = "¿Se suben mis fotografías a alguna parte?"
@@ -156,17 +150,8 @@ q = "Dice que la pasada irá por bandas. ¿Qué significa?"
 a = "La memoria de trabajo que necesita el método supera lo que la herramienta quiere reservar de una vez. La imagen se divide en franjas horizontales y se apila una por una. Se usan la misma geometría de alineación y el mismo método; el remuestreo del navegador puede variar ligeramente en el último bit. Las tomas se leen de nuevo para cada franja, así que tarda más; la página indica cuántas decodificaciones serán. Bajar un nivel la resolución de trabajo divide la memoria entre cuatro y casi siempre permite una sola pasada. La nota indica qué ajuste usar."
 
 [[faq]]
-q = "¿Por qué esta herramienta usa un Worker y ninguna de las otras?"
-a = """
-        Porque es la única cuyo trabajo se mide en minutos. Cualquier otra
-        herramienta de aquí hace algo que tarda uno o dos segundos, y ahí sacar el
-        trabajo del hilo principal sería ceremonia. Apilar veinte tomas grandes es
-        aritmética sólida sobre cientos de megabytes, y en el hilo principal eso
-        significa una página congelada: ninguna barra de progreso moviéndose, un
-        botón de Cancelar que no responde y, al final, un navegador que ofrece
-        matar la pestaña. El Worker es un segundo hilo dentro de este mismo
-        navegador, ejecutando un archivo de esta misma carpeta, bajo esta misma
-        política. No es un servidor y no es una función de red."""
+q = "¿Por qué el apilado se ejecuta en un Worker?"
+a = " Combinar fotogramas grandes puede llevar minutos. Un Worker se encarga de los cálculos mientras la página sigue respondiendo lo bastante para actualizar el progreso y atender Cancelar. Es otro hilo de este navegador, que ejecuta un archivo local bajo la política de la página. Tus fotos permanecen en este dispositivo mientras trabaja."
 
 [[faq]]
 q = "¿Es gratis y hace falta cuenta?"

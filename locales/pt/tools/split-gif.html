@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> Escolha um GIF</h2>
 
+    <p class="card-lede">
+      Salve uma imagem estática para instruções, extraia quadros PNG para editar ou crie uma folha de sprites. Deixe <strong>Cada PNG guarda</strong> em <strong>O quadro como ele aparece</strong> para obter imagens completas. O <a href="../guias/separar-um-gif-em-quadros/" data-workflow-target="guides/split-a-gif-into-frames">guia de extração de quadros de GIF</a> explica as opções.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +109,16 @@
          somebody is about to save, and a checkbox is the one control everybody
          already knows is safe to press. -->
     <ul class="frames" id="frames"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Use os quadros na sua próxima etapa</h2>
+    <p>
+      Para reconstruir uma animação editada, adicione os quadros PNG completos ao <a href="../criar-gif/" data-workflow-target="gif-maker">Criador de GIF</a>, ordene por nome e defina cada tempo usando <code>frames.txt</code> como referência. A lista de tempos não é importada automaticamente. Siga o <a href="../guias/editar-um-gif-quadro-a-quadro/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guia de edição quadro a quadro</a> para ver o processo completo.
+    </p>
+    <p>
+      Se você só precisa de um vídeo, <a href="../gif-para-mp4/" data-workflow-target="gif-to-mp4">converta diretamente o GIF original para MP4</a> para manter os atrasos variáveis dos quadros. Verifique tempos ou tamanhos inesperados no <a href="../analisar-gif/" data-workflow-target="gif-analyzer">Analisador de GIF</a> antes de editar.
+    </p>
   </section>
 
   <!--

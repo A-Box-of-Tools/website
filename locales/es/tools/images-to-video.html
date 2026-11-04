@@ -11,6 +11,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>Secuencia de render o timelapse de fotos:</strong> deja un fotograma por imagen. <strong>Presentación de fotos:</strong> elige segundos y Aplicar a todas después de añadir las imágenes. Prueba un ejemplo para ver los controles antes de elegir tus propios archivos.
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -162,6 +166,15 @@
         <a id="download" class="primary as-button" download>Descargar vídeo</a>
       </div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>Elige el siguiente paso para tu material</h2>
+    <ul>
+      <li>¿Ya tienes un vídeo largo? Usa el <a href="../crear-timelapse/" data-workflow-target="timelapse-video">Creador de timelapse</a> para acelerar ese clip.</li>
+      <li>¿Empiezas con un GIF animado? <a href="../convertir-gif-a-mp4/" data-workflow-target="gif-to-mp4">GIF a MP4</a> lleva a un vídeo los tiempos de reproducción de sus fotogramas.</li>
+      <li>¿Necesitas un GIF animado a partir de tus imágenes fijas? Usa el <a href="../crear-gif/" data-workflow-target="gif-maker">Creador de GIF</a>.</li>
+    </ul>
   </section>
 
   <!--

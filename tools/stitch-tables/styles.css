@@ -21,6 +21,8 @@
 .source-settings { display: grid; gap: .7rem; margin-top: .7rem; }
 .source-settings select { display: block; margin-top: .35rem; max-width: 100%; }
 .table-source input[type=file] { width: 100%; font: inherit; }
+.table-source.dragover textarea { outline: 2px dashed var(--accent); outline-offset: 2px; }
+#separator-field { max-width: 30rem; margin: 1rem 0; }
 .settings-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1rem 0; }
 .workflow { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; border: 0; padding: 0; margin: 1rem 0 1.5rem; }
 .workflow legend { font-weight: 600; margin-bottom: .6rem; }

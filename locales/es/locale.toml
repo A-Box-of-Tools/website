@@ -562,6 +562,7 @@ error_broke = "Algo ha fallado: {detail}. Recarga la página para empezar de nue
 
 reading_one = "Leyendo {count} archivo&hellip;"
 reading_many = "Leyendo {count} archivos&hellip;"
+text_encoding = "No está guardado como texto UTF-8. Guárdalo como UTF-8 e inténtalo de nuevo, o pega su texto directamente."
 
 check_yourself = """
       <strong>Compruébalo tú.</strong> Nada de lo anterior hay que aceptarlo por

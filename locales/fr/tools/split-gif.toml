@@ -1,10 +1,10 @@
 name = "Découpeur de GIF"
 heading = "Découper&nbsp;un&nbsp;GIF <span class=\"h1-kw\">&mdash; chaque image dans son propre PNG</span>"
-tagline = "Chaque image du GIF ressort en PNG."
+tagline = "Extrayez des images PNG, un ZIP ou une planche de sprites, avec les durées notées."
 title = "Découper un GIF en images &mdash; gratuit, sans envoi de fichier"
-description = "Découpez un GIF animé en ses images et enregistrez chacune en PNG, gratuitement et entièrement dans le navigateur. La transparence et les durées sont conservées. Rien n'est envoyé, et cela marche hors ligne."
+description = "Extrayez les images d’un GIF en PNG, en ZIP ou en une planche de sprites dans le navigateur. Gardez la transparence et enregistrez les délais dans une liste de durées séparée. Sans envoi."
 og_title = "Découpeur de GIF &mdash; démonter une animation dans votre navigateur"
-og_description = "Chaque image d'un GIF dans son propre PNG, avec les durées et la transparence intactes. Le fichier est lu sur votre machine et n'est jamais envoyé."
+og_description = "Téléchargez les images PNG une à une, en ZIP ou en une planche de sprites. Gardez la transparence et enregistrez les délais dans une liste de durées séparée. Rien n’est envoyé."
 og_image_alt = "Découpeur de GIF - chaque image d'un GIF dans son propre PNG"
 pledge = "Le GIF est lu, décompressé et dessiné par votre propre navigateur, et chaque PNG est encodé en mémoire sur cette machine. Il n'y a, à l'autre bout de cette page, aucun serveur à qui envoyer une animation, quand bien même quelque chose ici le voudrait."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement, surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et découpez un GIF. Pas une seule requête ne transporte d'image, de vignette ni de nom de fichier. Vous pouvez aussi couper la connexion et en découper un quand même."
@@ -89,7 +89,7 @@ a = "Un GIF stocke chaque durée en centièmes de seconde, et les navigateurs re
 
 [[faq]]
 q = "Puis-je remonter les images ensuite&nbsp;?"
-a = "Oui, avec le <a href=\"../creer-un-gif/\">Créateur de GIF</a> de ce site ou avec n'importe quoi d'autre qui accepte un dossier d'images. C'est à cela que sert le <code>frames.txt</code> du ZIP&nbsp;: découper une animation jette les durées, puisqu'un PNG n'a nulle part où noter combien de temps il est resté affiché, et la liste emporte donc avec elle la durée et la position de chaque image."
+a = """ Oui. Extrayez <strong>L’image telle qu’elle apparaît</strong>, ajoutez ces PNG complets au <a href="../creer-un-gif/" data-workflow-target="gif-maker">Créateur de GIF</a> et triez-les par nom. Servez-vous de <code>frames.txt</code> dans le ZIP comme référence pour régler la durée de chaque image ; le Créateur de GIF n’importe pas la liste automatiquement. Un PNG ne peut pas porter seul son délai de lecture. Le <a href="../guides/modifier-un-gif-image-par-image/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guide de modification image par image</a> détaille la reconstruction de l’animation."""
 
 [[faq]]
 q = "Dans quels formats les images peuvent-elles être enregistrées&nbsp;?"
@@ -115,7 +115,7 @@ a = "Oui. Chargez la page une fois, coupez ensuite votre connexion et elle conti
 
 [schema]
 description = "Découpez un GIF animé en ses images et enregistrez chacune en PNG. Le fichier est décompressé dans votre navigateur, aucune animation n'est donc jamais envoyée."
-features = ["Chaque image d'un GIF dans son propre PNG, transparence conservée", "L'image telle qu'elle apparaît, ou seulement les pixels qu'elle stocke", "Durée, position, taille et mode d'effacement affichés pour chaque image", "Garder une image sur deux ou sur cinq, ou cocher celles que vous voulez", "Un seul ZIP pour le lot, avec une liste de durées pour remonter l'animation", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane"]
+features = ["Chaque image d'un GIF dans son propre PNG, transparence conservée", "L'image telle qu'elle apparaît, ou seulement les pixels qu'elle stocke", "Durée, position, taille et mode d'effacement affichés pour chaque image", "Garder une image sur deux ou sur cinq, ou cocher celles que vous voulez", "Un ZIP avec liste de durées facultative, ou des images complètes choisies dans une planche de sprites PNG", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane"]
 
 [picker]
 title = "Déposez un GIF ici"

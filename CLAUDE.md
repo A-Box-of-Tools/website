@@ -87,7 +87,7 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
 
 **Scope the build while you are working on one tool.** The third line above is
-the loop: a full build writes every page in the five maintained languages
+the loop: a full build writes every page in the seven built languages
 and takes a couple of minutes, and `--only` cuts that to seconds by not writing
 any tool but the one named. The pages it writes are byte for byte the pages a
 full build writes — that is tested — so what you look at is what ships. What it
@@ -278,15 +278,19 @@ three are generated.
 
 ## Languages
 
-**The site is maintained in English, Simplified Chinese, German, Spanish and
-Brazilian Portuguese.** Their translations are built from `locales/zh/`,
-`locales/de/`, `locales/es/` and `locales/pt/`. German, Spanish and Portuguese
-were restored from the archived translations and brought up to date with the
-current tools. A new or changed page needs its translation updated in these
-languages; publishing is still judged per page, so an unfinished page remains
-readable in English and is kept out of the sitemap until it is translated.
+**The site is maintained in English, Simplified Chinese, German, Spanish,
+Brazilian Portuguese, French and Japanese.** Their translations are built from
+`locales/zh/`, `locales/de/`, `locales/es/`, `locales/pt/`, `locales/fr/` and
+`locales/ja/`. German, Spanish, Portuguese, French and Japanese were restored
+from the archived translations and brought up to date with the current tools. A
+new or changed page needs its translation updated in these languages; publishing
+is still judged per page, so an unfinished page remains readable in English and
+is kept out of the sitemap until it is translated. The legal pages are the one
+place that is not left to judgement: `tests/python/test_legal_parity.py` fails
+when a translated Privacy, Terms or Contact page lacks a section, a heading or a
+link the English has, so a new data flow has to land in all seven at once.
 
-**The other ten languages are frozen, not missing.** They were deployed
+**The other eight languages are frozen, not missing.** They were deployed
 in 1.4.2 and are kept exactly as deployed in
 [A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
 which the deploy copies into the site at the commit `frozen_archive` in
@@ -295,7 +299,7 @@ address; nothing written after the freeze reaches them, and nothing you change
 here has to be made again in them. `frozen_languages` names them, and three
 things read it: the build refuses a `locales/` folder for one, `--check` leaves
 their folders out, and the deploy refuses an archive that does not hold
-exactly them. Previews carry the five maintained languages, and no built page links into
+exactly them. Previews carry the seven built languages, and no built page links into
 a frozen folder, which `test_build.py` holds. The
 reasons are in the comment on that list, and bringing a language back is in
 the archive's README.

@@ -7,10 +7,10 @@
 
 name = "Imágenes a vídeo"
 heading = "Imágenes&nbsp;a&nbsp;vídeo <span class=\"h1-kw\">&mdash; hacer un pase de diapositivas en MP4</span>"
-tagline = "Convierte una carpeta de imágenes en un vídeo."
+tagline = "Crea un MP4 a partir de una secuencia de render, fotos de timelapse o una presentación."
 
 title = "Secuencia de imágenes a MP4 &mdash; gratis, sin subir nada y sin conexión"
-description = "Convierte imágenes JPG, PNG, WebP o AVIF en un vídeo MP4 de pase de diapositivas, gratis y sin salir del navegador. No se sube nada, no hay que registrarse y funciona sin conexión."
+description = "Convierte una secuencia de imágenes a MP4 en el navegador. Usa un fotograma por imagen para renders y timelapses, o segundos por foto para una presentación. Sin subidas ni cuenta."
 og_title = "Secuencia de imágenes a MP4 &mdash; gratis y en tu navegador"
 og_description = "Convierte una secuencia de render, un timelapse o una carpeta de fotos en un MP4. La codificación ocurre en tu dispositivo y no se sube nada."
 og_image_alt = "Imágenes a vídeo - convierte una carpeta de imágenes en un pase de diapositivas MP4"
@@ -31,7 +31,7 @@ read_first = """
 , y <code>src/encoder.js</code> para el bucle de
       codificación, que no toca la red en ningún momento."""
 
-howto_heading = "Cómo convertir imágenes en un vídeo"
+howto_heading = "Cómo convertir una secuencia de imágenes o una presentación a MP4"
 
 card = """
             Convierte una carpeta de imágenes en un pase de diapositivas en MP4.
@@ -110,19 +110,12 @@ body = """
       del disco, y mientras lo haces no sale nada hacia ninguna parte."""
 
 [[howto]]
-title = "Ponlas en orden y decide cuánto dura cada una."
-body = """
- Arrastra
-      para reordenarlas. La duración se puede dar en fotogramas o en segundos,
-      para todas las imágenes a la vez o de una en una."""
+title = "Elige fotogramas para una secuencia o segundos para una presentación."
+body = " Usa «Ordenar por nombre» para fotogramas de render numerados y comprueba la primera y la última miniatura. Deja un fotograma por imagen para una secuencia de render o un timelapse de fotos, y ajusta la frecuencia de fotogramas a tu fuente. Para una presentación, cambia a segundos, escribe una duración como tres y pulsa «Aplicar a todas». Arrastra para reordenar o cambia la duración de una imagen concreta."
 
 [[howto]]
 title = "Elige una resolución y una cadencia."
-body = """
- «Igualar la
-      resolución más alta» sigue a tu imagen más grande. Los preajustes cubren
-      4K, 1080p, 720p, cuadrado y vertical, y tienes un tamaño a medida si
-      ninguno te encaja."""
+body = " Elige 1080p para una primera exportación, o usa la forma cuadrada o vertical del destino. «Igualar la resolución más alta» toma la mayor anchura y la mayor altura de todas las imágenes. «Encajar dentro» conserva la imagen entera; «Llenar el fotograma» recorta los bordes. Comprueba el resumen de duración y tamaño de salida antes de codificar."
 
 [[howto]]
 title = "Crea el vídeo y descárgalo."
@@ -152,10 +145,7 @@ a = """
 
 [[faq]]
 q = "¿Qué formato de vídeo produce?"
-a = """
-        MP4 con vídeo H.264, que se reproduce prácticamente en cualquier cosa. En
-        un navegador sin WebCodecs, la herramienta recurre a grabar en WebM, que
-        es el mismo material en un contenedor que aceptan menos editores."""
+a = " El formato preferido es MP4 con vídeo H.264. La alternativa graba en tiempo real, normalmente como WebM, que aceptan menos editores. Mantén la pestaña visible durante esa grabación; los tiempos son aproximados y pueden saltarse imágenes si la decodificación se retrasa. Usa el codificador MP4 para secuencias numeradas exactas cuando tu navegador lo admita."
 
 [[faq]]
 q = "¿Puedo usar esto para una secuencia de render de Blender o After Effects?"
@@ -173,25 +163,11 @@ a = """
 
 [[faq]]
 q = "¿Puedo hacer un timelapse con fotos?"
-a = """
-        Sí, y es el mismo trabajo que una secuencia de render: deja cada foto en
-        un solo fotograma y elige una cadencia. A 30 fps, cada treinta fotos son
-        un segundo de vídeo; a 12 fps, esas mismas fotos duran dos segundos y
-        medio.
-        <br><br>
-        «Ordenar por fecha» devuelve un carrete al orden en que se disparó, cosa
-        que importa cuando los nombres de archivo han vuelto a empezar en 0001.
-        Y que las fotos tengan tamaños distintos no es problema, porque «Igualar
-        la resolución más alta» dimensiona el vídeo de modo que no se reduzca
-        ninguna."""
+a = " Sí, y es el mismo trabajo que una secuencia de render: deja cada foto en un solo fotograma y elige una cadencia. A 30 fps, cada treinta fotos son un segundo de vídeo; a 12 fps, esas mismas fotos duran dos segundos y medio. <br><br> «Ordenar por fecha» usa las fechas de modificación de los archivos, que pueden cambiar al copiar o editar las fotos. Comprueba el orden cuando los nombres de archivo hayan vuelto a empezar en 0001. Las fotos de distintos tamaños no son un problema, porque «Igualar la resolución más alta» parte de la mayor anchura y la mayor altura, luego limita el lado más largo a 7680 píxeles y redondea a dimensiones pares. Comprueba el resumen del tamaño de salida; los originales muy grandes aún pueden reducirse."
 
 [[faq]]
 q = "¿Hay algún límite de cuántas imágenes o de cuánto puede durar el vídeo?"
-a = """
-        La herramienta no lleva ningún límite dentro. El techo de verdad es la
-        memoria de tu propio dispositivo, porque el vídeo terminado se monta ahí
-        antes de que lo descargues. Lo primero que lo nota son los pases de
-        diapositivas en 4K muy largos."""
+a = " No hay un límite fijo de imágenes, pero las exportaciones MP4 deben quedar por debajo de 4 GiB (unos 4,3 GB). El vídeo terminado se monta en la memoria antes de la descarga, así que tu dispositivo puede quedarse sin memoria mucho antes de ese tope. El codificador del navegador también limita las dimensiones de salida. Si falla una exportación grande, reduce la resolución, acorta la secuencia o divídela en partes."
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
@@ -221,7 +197,7 @@ description = "Convierte una carpeta de imágenes en un vídeo MP4 de pase de di
 features = [
   "Convierte imágenes JPG, PNG, WebP, GIF y AVIF en vídeo",
   "Salida en MP4 (H.264), con WebM como alternativa",
-  "Resoluciones de hasta 3840x2160 y cadencias de 12 a 60 fps",
+  "Resoluciones predefinidas hasta 4K, dimensiones personalizadas dentro de los límites del navegador y frecuencias enteras personalizadas de 1 a 120 fps",
   "Duración por imagen en fotogramas o en segundos",
   "Funciona sin conexión, sin subidas y sin cuenta",
 ]

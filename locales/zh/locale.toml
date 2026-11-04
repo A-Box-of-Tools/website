@@ -399,6 +399,7 @@ error_broke = "出错了：{detail}。重新加载页面即可从头开始。"
 # 语言里它们不一样，不是这里漏了什么。
 reading_one = "正在读取 {count} 个文件&hellip;"
 reading_many = "正在读取 {count} 个文件&hellip;"
+text_encoding = "它不是以 UTF-8 保存的文本。请另存为 UTF-8 后重试，或直接粘贴其中的文本。"
 
 check_yourself = """
       <strong>你可以自己核对。</strong>上面这些不用你信。这个页面是仓库里的\

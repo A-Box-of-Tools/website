@@ -11,6 +11,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>レンダリング連番や写真のタイムラプス：</strong>画像1枚につき1フレームのままにします。<strong>写真のスライドショー：</strong>画像を追加してから秒を選び、「全部に適用」を押します。自分のファイルを選ぶ前に、例を試して操作を確認できます。
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -161,6 +165,15 @@
         <a id="download" class="primary as-button" download>動画をダウンロード</a>
       </div>
     </div>
+  </section>
+
+  <section class="card">
+    <h2>素材の次の作業を選ぶ</h2>
+    <ul>
+      <li>長い動画がすでにありますか。<a href="../timelapse-video/" data-workflow-target="timelapse-video">タイムラプス作成ツール</a>でそのクリップを速められます。</li>
+      <li>アニメーションGIFから始めますか。<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">GIFをMP4に</a>は再生時のコマのタイミングを動画に引き継ぎます。</li>
+      <li>静止画からアニメーションGIFを作りたいですか。<a href="../gif-maker/" data-workflow-target="gif-maker">GIF作成</a>を使ってください。</li>
+    </ul>
   </section>
 
   <!--

@@ -429,7 +429,7 @@ lede = """
 #
 
 [footer]
-blurb = "Tools, die Dateien auf deinem Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto nötig."
+blurb = "Tools, die Dateien auf Ihrem Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto nötig."
 base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben."
 licence = """
     Texte unter
@@ -495,7 +495,7 @@ hub_view_all = "Alle anzeigen"
 hub_show_fewer = "Weniger anzeigen"
 hub_privacy_details = "So bleiben Ihre Dateien privat"
 hub_filter_label = "Werkzeug suchen"
-hub_filter_none = "Kein Werkzeug passt dazu. Versuche weniger Wörter oder ein Dateiformat wie PDF oder PNG."
+hub_filter_none = "Kein Werkzeug passt dazu. Versuchen Sie es mit weniger Wörtern oder einem Dateiformat wie PDF oder PNG."
 hub_agent_title = "Browserwerkzeug finden"
 hub_agent_description = "Durchsucht die auf dieser Seite aufgeführten Werkzeuge nach Aufgabe, Name oder Dateiformat. Gibt öffentliche Werkzeugnamen, Beschreibungen und Links zurück; öffnet keine Werkzeuge und verarbeitet keine Dateien. Sucht nach kurzen Stichwörtern in der Sprache dieser Seite."
 hub_agent_query_description = "Stichwörter wie PNG zu WebP oder JSON. Eine leere Suche listet Werkzeuge auf."
@@ -519,8 +519,8 @@ approval_approve = "Genehmigen"
 approval_deny = "Ablehnen"
 approval_later = "Später prüfen"
 approval_pending = "Beitrittsanfragen"
-approval_session = "Genehmige Personen, die du kennst. Sie können sich erneut verbinden, bis du diese Host-Sitzung beendest."
-approval_limit = "Diese Sitzung kann keine weitere Genehmigung speichern. Beende sie und starte eine neue Sitzung, um ein weiteres Gerät zu genehmigen."
+approval_session = "Genehmigen Sie Personen, die Sie kennen. Diese können sich erneut verbinden, bis Sie diese Host-Sitzung beenden."
+approval_limit = "Diese Sitzung kann keine weitere Genehmigung speichern. Beenden Sie sie und starten Sie eine neue Sitzung, um ein weiteres Gerät zu genehmigen."
 approval_required = "Genehmigung erforderlich"
 transport_label = "Verbindung"
 transport_direct = "Direkt"
@@ -569,7 +569,7 @@ pairing_cached = "Seite gespeichert. Zum Koppeln oder erneuten Verbinden der Ger
 pairing_hotspot_heading = "WLAN oder einen Handy-Hotspot verwenden"
 pairing_hotspot_enable = "Aktivieren Sie in den Einstellungen des Handys den persönlichen Hotspot auf einem iPhone oder den WLAN-Hotspot auf einem Android-Handy."
 pairing_hotspot_join = "Verbinden Sie das andere Gerät über seine WLAN-Einstellungen mit diesem Hotspot. Lassen Sie auf beiden Geräten Internet für die Suche in der Nähe und die Kopplung verfügbar."
-pairing_hotspot_connect = "Öffne dieses Tool auf beiden Geräten und wähle Join neben der gewünschten Verbindung. Gib bei Bedarf das Passwort ein oder warte auf die Genehmigung des Hosts. Fehlt der Eintrag, nutze den Link oder Code des Hosts."
+pairing_hotspot_connect = "Öffnen Sie dieses Tool auf beiden Geräten und wählen Sie Join neben der gewünschten Verbindung. Geben Sie bei Bedarf das Passwort ein oder warten Sie auf die Genehmigung des Hosts. Fehlt der Eintrag, nutzen Sie den Link oder Code des Hosts."
 pairing_hotspot_limits = "Das Netzwerk muss direkte Verbindungen zwischen Geräten erlauben. Manche Hotspots, Gastnetze, VPNs und verwalteten Geräte blockieren sie. Ein Eintrag in der Nähe beweist weder Erreichbarkeit noch Vertrauenswürdigkeit. Diese Seite kann keinen Hotspot einschalten."
 pairing_version_help = "Über die Werkzeugversion"
 pairing_version_hint = "Vergleichen Sie diesen Wert auf beiden Geräten. Wenn er unterschiedlich ist, laden Sie beide Seiten neu, bevor Sie eine neue Freigabe starten."
@@ -618,6 +618,7 @@ error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um v
 
 reading_one = "{count} Datei wird gelesen&hellip;"
 reading_many = "{count} Dateien werden gelesen&hellip;"
+text_encoding = "Sie ist nicht als UTF-8-Text gespeichert. Speichern Sie sie als UTF-8 und versuchen Sie es erneut, oder fügen Sie den Text direkt ein."
 
 check_yourself = """
       <strong>Prüfen Sie es selbst.</strong> Nichts davon müssen Sie uns glauben.

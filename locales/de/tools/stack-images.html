@@ -11,6 +11,10 @@
   <section class="card">
     <h2><span class="step">1</span> Aufnahmen wählen</h2>
 
+    <p>
+      Fügen Sie mindestens zwei Fotos derselben Szene hinzu oder probieren Sie das Beispiel aus, um eine verrauschte Aufnahme mit ihrem Stack zu vergleichen. Halten Sie Belichtung und Bildausschnitt in Ihrer eigenen Serie gleich.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -48,13 +52,19 @@
   <section class="card">
     <h2><span class="step">2</span> Wie sie zusammenkommen</h2>
 
+    <ul class="note">
+      <li><strong>Rauschen senken:</strong> Beginnen Sie bei einer ruhigen Serie mit Mittelwert und automatischer Ausrichtung.</li>
+      <li><strong>Bewegte Personen entfernen:</strong> Verwenden Sie den Median, wobei der Hintergrund in mehr als der Hälfte der Aufnahmen sichtbar sein muss.</li>
+      <li><strong>Sternspuren erzeugen:</strong> Verwenden Sie Aufhellen und stellen Sie die Ausrichtung auf Nein, damit die Bewegung des Himmels erhalten bleibt.</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">Methode</label>
         <select id="mode">
           <option value="mean" selected>Mittelwert &mdash; Rauschen senken</option>
           <option value="median">Median &mdash; Leute und vorbeifahrende Autos entfernen</option>
-          <option value="sigma">Sigma-Clipping &mdash; beides auf einmal</option>
+          <option value="sigma">Sigma-Clipping &mdash; Rauschen senken und Ausreißer verwerfen</option>
           <option value="max">Aufhellen &mdash; Sternspuren, Feuerwerk, Lichtmalerei</option>
           <option value="min">Abdunkeln &mdash; alles Helle entfernen, das sich bewegt hat</option>
           <option value="sum">Addieren &mdash; additiv mischen</option>
@@ -207,6 +217,9 @@
           <summary>Ausrichtungsdetails</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          Prüfen Sie feine Kanten und glatte Flächen vor dem Speichern bei 100&nbsp;%. Wirkt der Stack weich, sehen Sie in den Ausrichtungsdetails nach, entfernen Sie eine unsichere Aufnahme und stacken Sie erneut. Die Links neben dem Download können dieses Ergebnis direkt in diesem Browser zum Bildskalierer oder Bildkompressor bringen.
+        </p>
         <a id="download" class="primary as-button" download>Bild herunterladen</a>
       </div>
     </div>

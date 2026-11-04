@@ -86,6 +86,11 @@ discovery rather than granting access. The current page holds the code in memory
 only. Normal page scripts can read its fields; a private group is not a script
 isolation mechanism.
 
+A new disclosure lands in every built language in the same pull request.
+`tests/python/test_legal_parity.py` fails on a section, a heading or a link on
+Privacy, Terms or Contact that reached English alone, because a data flow the
+translations do not mention is a data flow their readers were told is not there.
+
 Two things it does **not** claim, deliberately:
 
 - **There is no cookie consent banner.** The page is honest about the cookies

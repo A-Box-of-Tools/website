@@ -11,6 +11,10 @@
   <section class="card">
     <h2>选一个 GIF</h2>
 
+    <p class="card-lede">
+      检查动图的帧时间、处置方式、调色板和文件大小，不改动文件。<a href="../guides/whats-inside-a-gif/" data-workflow-target="guides/whats-inside-a-gif">GIF 分析指南</a>说明 GIF 又大、又慢或留下拖影时怎么读这些结果。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -152,6 +156,16 @@
       不带画面的块。查看器全都跳过，而文件的每一份副本还是照样把它们带着。
     </p>
     <ul class="extras" id="extras"></ul>
+  </section>
+
+  <section class="card">
+    <h2>分析之后</h2>
+    <p>
+      需要单独的图片？<a href="../split-gif/" data-workflow-target="split-gif">把帧提取成 PNG 或精灵图</a>。要修改动画，请按<a href="../guides/edit-a-gif-frame-by-frame/" data-workflow-target="guides/edit-a-gif-frame-by-frame">拆分重建指南</a>操作，并用时间清单作参考。
+    </p>
+    <p>
+      需要视频？<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">把原始 GIF 直接转成 MP4</a>，可以保留长短不一的帧延时，不用从 PNG 重建。透明区域会填上颜色，是否循环取决于视频播放器。
+    </p>
   </section>
 
   <!--

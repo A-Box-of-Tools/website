@@ -11,6 +11,10 @@
   <section class="card">
     <h2><span class="step">1</span> Escolha os quadros</h2>
 
+    <p>
+      Adicione pelo menos duas fotos da mesma cena, ou experimente o exemplo para comparar um quadro com ruído e o empilhamento dele. Mantenha a exposição e o enquadramento iguais no seu próprio conjunto.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -48,13 +52,19 @@
   <section class="card">
     <h2><span class="step">2</span> Como eles se juntam</h2>
 
+    <ul class="note">
+      <li><strong>Reduzir ruído:</strong> comece com Média e alinhamento Auto para uma sequência estável.</li>
+      <li><strong>Remover pessoas em movimento:</strong> use Mediana, com o fundo visível em mais da metade dos quadros.</li>
+      <li><strong>Fazer rastros de estrelas:</strong> use Clarear e defina o alinhamento como Não para preservar o movimento do céu.</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">Método</label>
         <select id="mode">
           <option value="mean" selected>Média &mdash; baixar o ruído</option>
           <option value="median">Mediana &mdash; tirar pessoas e carros passando</option>
-          <option value="sigma">Sigma clipping &mdash; as duas coisas de uma vez</option>
+          <option value="sigma">Sigma clipping &mdash; baixar o ruído e rejeitar valores discrepantes</option>
           <option value="max">Clarear &mdash; rastros de estrelas, fogos, light painting</option>
           <option value="min">Escurecer &mdash; tirar tudo o que é claro e se mexeu</option>
           <option value="sum">Somar &mdash; mistura aditiva</option>
@@ -206,6 +216,9 @@
           <summary>Detalhes de alinhamento</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          Confira bordas finas e áreas lisas a 100% antes de salvar. Se o empilhamento parecer suave demais, veja os Detalhes de alinhamento, remova um quadro duvidoso e empilhe de novo. Os links ao lado do download podem levar este resultado direto para o redimensionador ou o compressor neste navegador.
+        </p>
         <a id="download" class="primary as-button" download>Baixar a imagem</a>
       </div>
     </div>
