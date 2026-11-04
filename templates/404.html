@@ -70,7 +70,7 @@
 
 {% include "partials/lang-notice.html" %}
 
-<header class="hub-head">
+<header class="hub-head not-found-head">
   <div class="head-row">
     <p class="brand">
       <a class="brand-home" href="{{ base }}">
@@ -80,7 +80,18 @@
     </p>
     {% include "partials/lang-pick.html" %}
   </div>
-  <h1>{{ site.not_found.heading }}</h1>
+  <!--
+    The number is shown, and large, because it is the one word on this page that
+    every visitor can read: this is a single English file answering for every
+    language the site speaks. Without it the grid of tools below makes the page
+    look like one more index of them, and somebody who followed a broken link
+    never learns that it failed. Hiding it would protect nobody, since the server
+    sends the status either way.
+
+    Inside the heading rather than above it, so a screen reader that jumps to the
+    heading hears it too.
+  -->
+  <h1><span class="not-found-code">404</span> {{ site.not_found.heading }}</h1>
   <p class="lede">
 {{ site.not_found.lede }}
   </p>

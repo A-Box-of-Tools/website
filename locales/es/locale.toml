@@ -364,7 +364,7 @@ og_image_alt = "abox.tools - herramientas de navegador para procesar archivos lo
 #
 
 [not_found]
-title = "Página no encontrada &mdash; abox.tools"
+title = "404: Página no encontrada &mdash; abox.tools"
 description = "Esta dirección no existe en abox.tools. Aquí están las herramientas gratuitas de navegador para procesar archivos en tu dispositivo."
 heading = "Esta página no está aquí"
 tools_heading = "Todas las herramientas, en un mismo sitio"

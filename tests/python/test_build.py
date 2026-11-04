@@ -1952,6 +1952,17 @@ class BuildTheSite(unittest.TestCase):
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
         self.assertNotIn('404', sitemap)
 
+    def test_the_404_page_says_404_where_it_will_be_read(self):
+        """The number is the one word there that every visitor can read.
+
+        This is one English file answering for every language, so a reader of
+        none of its sentences has only this to say the address failed. The
+        heading is where a screen reader lands, and the title is what a tab
+        shows."""
+        page = (self.out / '404.html').read_text(encoding='utf-8')
+        self.assertRegex(page, r'<title>404\b')
+        self.assertRegex(page, r'(?s)<h1>\s*<span class="not-found-code">404</span>')
+
     def test_the_404_page_asks_not_to_be_indexed(self):
         page = (self.out / '404.html').read_text(encoding='utf-8')
         self.assertIn('noindex', page)
