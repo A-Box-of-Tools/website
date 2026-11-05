@@ -404,9 +404,12 @@ transport, host approval, password or microphone consent.
   New Direct rooms cannot obtain them. Cached non-local Share Text pages retain
   the old viewer-only `{relay: true}` request once per socket only when their
   host did not pin a transport. Other tools and local text shares refuse it.
-- When the host's socket drops, every viewer is closed with 4410
-  "host-gone" - the instant, authoritative end-of-share signal, long before
-  WebRTC's own ~30s consent expiry would notice.
+- When the host's socket drops, every viewer gets `{type: "host-gone"}` and is
+  closed with 4410 "host-gone" - the instant, authoritative end-of-share signal,
+  long before WebRTC's own ~30s consent expiry would notice. The frame is what makes
+  it instant in Chromium, which holds a page's `close` event until the connection
+  ends or two seconds pass, and an object cannot end it any sooner. A page from
+  before the frame passes over it and hears the close.
 - `ping` is answered `pong` by the runtime without waking the object.
 - A page that closes its own socket gets a Close frame back at once, with no code in
   it, so its `close` event is immediate and clean. The runtime does not send one for a

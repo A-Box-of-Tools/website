@@ -224,7 +224,9 @@ from both physical devices are needed to investigate those boundaries.
   consent click (before it, the sharer has not learned the reader exists),
   and the switchboard forwards offers, answers and candidates. Rejections
   arrive as 4xxx close codes: 4404 nobody sharing, 4409 name taken, 4429
-  full, 4410 sharer gone.
+  full, 4410 sharer gone. A `{type: 'host-gone'}` frame comes just ahead of
+  4410 and means the same, because Chromium holds a page's close event for up
+  to two seconds after the sharer has gone.
 - **End of share.** Stop sharing sends an ordered `{type: 'ended'}` on each
   current encrypted control channel before closing it. That explicit control
   is terminal. A 4410 introduction-socket close alone can also mean temporary

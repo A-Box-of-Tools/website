@@ -213,6 +213,12 @@ export class CameraSession {
       const dispatch = (message) => {
         try { this.message(message); } catch { fail('connection.invalid'); }
       };
+      const introductionClosed = (code) => {
+        this.openingTrace?.socket('closed', code);
+        for (const entry of this.peers.values()) entry.trace?.socket('closed', code);
+        const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
+        fail(reasons[code] ?? 'connection.server-failed', 'socket-closed');
+      };
       if (!configured) this.relay = new RelayCredentials({
         send: (frame) => pairing.send(frame), current,
         onRenew: (servers) => this.renewRelay(servers),
@@ -249,12 +255,7 @@ export class CameraSession {
           for (const entry of this.peers.values()) entry.trace?.error('websocket', { name: 'NetworkError' });
           fail('connection.server-failed', 'socket-error');
         },
-        close: (event) => {
-          this.openingTrace?.socket('closed', event.code);
-          for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
-          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
-          fail(reasons[event.code] ?? 'connection.server-failed', 'socket-closed');
-        },
+        close: (event) => introductionClosed(event.code),
         message: (event) => {
           if (event.data === 'pong') { confirmed = opened; if (recovering) finish(); return; }
           if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
@@ -263,6 +264,8 @@ export class CameraSession {
           if (this.relay?.receive(message)) return;
           // Never queued behind relay setup: the credentials wait on this proof.
           if (answerHostProve(message, this.role === 'camera' ? this.hostClaim : null, (frame) => pairing.send(frame))) return;
+          // Just ahead of the close with 4410, which Chromium holds for up to two seconds.
+          if (message?.type === 'host-gone') return introductionClosed(4410);
           if (!configured) {
             if (waiting.length >= 64) return fail('connection.invalid');
             waiting.push(message);

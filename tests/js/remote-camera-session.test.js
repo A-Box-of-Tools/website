@@ -1184,6 +1184,20 @@ test('a lost viewer socket and worker host-gone close preserve only established 
   assert.equal(video.stops, 1); assert.equal(audio.stops, 1);
 });
 
+test('a viewer told host-gone in a frame acts as the close would, without waiting for it', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  peer.connectionState = 'connected'; channel.receive('approved'); await settle();
+  peer.emit('track', { track: new Track('video') }); peer.emit('track', { track: new Track('audio') });
+  f.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(f.session.role, 'viewer'); assert.equal(peer.closed, false);
+  assert.equal(f.states.at(-1), 'viewer.signaling-lost');
+  const early = fixture(t), unfinished = await readyViewer(early);
+  unfinished.peer.connectionState = 'connected'; unfinished.channel.receive('approved'); await settle();
+  early.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(early.session.role, null); assert.equal(unfinished.peer.closed, true);
+  assert.equal(early.states.at(-1), 'connection.ended');
+});
+
 test('a viewer losing only its introduction socket does not let worker leave close its healthy peer', async (t) => {
   const f = fixture(t), { stream, peer, entry } = await streamingHost(f);
   const socket = f.sockets[0];
