@@ -1,7 +1,7 @@
 import { phrase } from './shared/phrases.js';
 import { saveBlob } from './shared/download.js';
 import { MAX_COUNT, countForSize, countText, dialCount, ladderFor, log10Count, parseCount, placeOnLadder, sizePerUnit } from './scale.js';
-import { chip, fontFor, useFont, wrapLines, write } from './paint.js';
+import { chip, chipBox, fittedSize, fontFor, useFont, widthOf, wrapLines, write } from './paint.js';
 import { createStage } from './stage.js';
 import { createBooksScene } from './scene-books.js';
 import { createFillScene } from './scene-fill.js';
@@ -74,12 +74,14 @@ function paint(ctx, frame) {
   const zero = count === 0n;
   const measure = zero ? 0 : 10 ** frame.log * perUnit;
   if (!frame.still) clockNow = frame.t;
+  const corner = zero ? null : readoutCorner(ctx, frame, hud(world, frame.log, current, perUnit), measure, rungs);
   const drawn = scenes[world].draw(ctx, {
     ...frame,
     amount: measure,
     perUnit,
     zero,
     rungs,
+    readout: corner?.box ?? null,
     thickness: current.thicknessM,
     words: stageWords(),
     previous: previous === null || stage.playing ? null : Number(previous) * perUnit,
@@ -89,15 +91,25 @@ function paint(ctx, frame) {
   const pale = drawn.dark <= 0.5;
   const fill = pale ? '#121a24' : '#f5f8fd';
   const halo = pale ? 'rgba(255,255,255,.8)' : 'rgba(3,6,16,.78)';
-  const line = hud(world, frame.log, current, perUnit);
-  write(ctx, line.big, 14, 24, { size: frame.w < 480 ? 16 : 19, weight: 800, fill, halo, within: frame.w });
+  const { line, size, next, nextAt, nextChip } = corner;
+  write(ctx, line.big, 14, 24, { size, weight: 800, fill, halo, within: frame.w });
   if (line.small) write(ctx, line.small, 14, 46, { size: 13, weight: 600, fill, halo, within: frame.w });
+  if (next) chip(ctx, next, 14, nextAt, { ...nextChip, fill: pale ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.14)', ink: pale ? '#121a24' : '#f5f8fd', stroke: pale ? 'rgba(18,26,36,.18)' : 'rgba(255,255,255,.24)' });
+}
+
+// The readout is written last, over the scene, so the scene has to be told where it will be.
+function readoutCorner(ctx, frame, line, measure, rungs) {
+  const size = fittedSize(ctx, line.big, frame.w < 480 ? 16 : 19, 800, frame.w - 22);
   // What the number is climbing toward, always in view: most of the sky between two
   // landmarks is otherwise empty, and the next one is the reason to keep going.
-  if (world !== 'water' && world !== 'sand') {
-    const { above, share } = placeOnLadder(measure, rungs);
-    if (above) chip(ctx, phrase('stage.next', { name: rungName(world, above.id), share: percent(share) }), 14, line.small ? 72 : 50, { size: 12, weight: 600, fill: pale ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.14)', ink: pale ? '#121a24' : '#f5f8fd', stroke: pale ? 'rgba(18,26,36,.18)' : 'rgba(255,255,255,.24)', within: frame.w });
-  }
+  const { above, share } = world === 'water' || world === 'sand' ? {} : placeOnLadder(measure, rungs);
+  const next = above ? phrase('stage.next', { name: rungName(world, above.id), share: percent(share) }) : '';
+  const nextAt = line.small ? 72 : 50;
+  const nextChip = { size: 12, weight: 600, within: frame.w };
+  const nextBox = next ? chipBox(ctx, next, 14, nextAt, nextChip) : null;
+  const words = Math.max(widthOf(ctx, line.big, size, 800), line.small ? widthOf(ctx, line.small, 13, 600) : 0);
+  const box = { left: 0, right: Math.min(frame.w, Math.max(words + 18, nextBox?.right ?? 0)), top: 0, bottom: nextBox?.bottom ?? (line.small ? 54 : 36) };
+  return { line, size, next, nextAt, nextChip, box };
 }
 
 const stage = createStage($('stage'), paint);
