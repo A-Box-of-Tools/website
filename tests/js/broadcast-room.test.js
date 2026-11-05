@@ -124,6 +124,13 @@ const offer = (host, listener, connection = CONNECTION) => ({
   type: 'offer', generation: generation(host), connection, to: id(listener), sdp: SDP,
 });
 
+test('a page that closes first is answered', async () => {
+  const s = await system(), host = await s.host(), listener = await s.listener();
+  s.room().instance.webSocketClose(listener);
+  assert.deepEqual(listener.closed, { code: undefined, reason: undefined });
+  assert.equal(host.readyState, 1);
+});
+
 test('broadcast approval gates every relay and signaling path before the host admits a listener', async t => {
   const s = await system();
   s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';

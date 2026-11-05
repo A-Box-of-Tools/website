@@ -6,6 +6,13 @@
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 
+test('a page that closes first is answered', async () => {
+  const s = await system(), host = await s.host(), caller = await s.sender(0);
+  s.room().instance.webSocketClose(caller);
+  assert.deepEqual(caller.closed, { code: undefined, reason: undefined });
+  assert.equal(host.readyState, 1);
+});
+
 test('unnamed callers retain password admission and session moderation across reconnection', async () => {
   const s = await system(), host = await s.host(PASSWORD);
   const connect = async (passwordProof = PASSWORD) => {

@@ -41,6 +41,7 @@
 import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, requestedGroup, roomName, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { Broadcast, broadcastCode } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
+import { answerClose } from "./closing.js";
 import { answerRelayRequest, relayEnabled, relayPolicy, relayServers, validRelayRequest } from "./relay.js";
 import { completeRefusal, refusal } from "./refusal.js";
 import { requestNetwork } from "../shared/address.js";
@@ -398,7 +399,11 @@ export class Room {
       // The viewer's id doubles as its socket tag, so addressing a reply is
       // a lookup, not a scan.
       for (const peer of this.ctx.getWebSockets(parsed.to)) {
-        peer.send(JSON.stringify({ type: "signal", data: parsed.data }));
+        // A reader that has just closed stays listed for a moment after it has been
+        // answered, and sending to it then throws. The frame has nobody to go to.
+        try {
+          peer.send(JSON.stringify({ type: "signal", data: parsed.data }));
+        } catch {}
       }
     }
   }
@@ -407,6 +412,7 @@ export class Room {
   // connection that merely died may be back in seconds, so its name stays held.
   webSocketClose(ws, code, reason, wasClean) {
     this.drop(ws, wasClean !== true);
+    answerClose(ws);
   }
 
   webSocketError(ws) {

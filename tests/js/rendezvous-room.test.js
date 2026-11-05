@@ -146,6 +146,26 @@ test('the front of the Worker completes a refusal, and its private answer stops 
   assert.equal(s.ctx.sockets.length, 0);
 });
 
+test('a page that closes first is answered, and the answer changes nothing about its name', async () => {
+  const s = await system(), host = await s.host(), reader = await s.viewer();
+  s.leave(reader);
+  assert.deepEqual(reader.closed, { code: undefined, reason: undefined }, 'a Close frame with no code goes back');
+  assert.equal(host.readyState, 1);
+  s.lose(host);
+  assert.equal((await s.host(s.otherDigest)).closed?.code, 4409, 'a lost host keeps its name');
+  const clean = await system(), left = await clean.host();
+  clean.leave(left);
+  assert.equal(hosting(await clean.host(clean.otherDigest)), true, 'a clean close frees it at once');
+});
+
+test('a reply to a reader who has just closed goes nowhere and costs the host nothing', async () => {
+  const s = await system(), host = await s.host(null), reader = await s.viewer();
+  reader.send = () => { throw new TypeError("Can't call WebSocket send() after close()."); };
+  await s.send(host, { to: reader.deserializeAttachment().id, data: { sdp: 'answer' } });
+  assert.equal(host.readyState, 1);
+  assert.equal(hosting(host), true);
+});
+
 test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {
   const time = clock(t);
   for (const frame of ['{}', 'not json', '[]', 'null', new ArrayBuffer(1), 'x'.repeat(65537)]) {

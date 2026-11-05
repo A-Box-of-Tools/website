@@ -4,6 +4,7 @@
 // Nothing here decides whether their eventual WebRTC connection is local.
 import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
 import { ipv4Octets, ipv6Network } from "../shared/address.js";
+import { answerClose } from "./closing.js";
 import { admitPending, pendingSource } from "./pending.js";
 import { refusal } from "./refusal.js";
 
@@ -418,7 +419,7 @@ export class Discovery {
     this.broadcast();
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

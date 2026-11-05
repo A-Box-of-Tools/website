@@ -162,6 +162,13 @@ async function edgeSocket(s, path, address, extra) {
   return response.webSocket.peer;
 }
 
+test('a page that closes first is answered', async () => {
+  const s = system(), leaving = await observer(s), watching = await observer(s);
+  s.discovery().instance.webSocketClose(leaving);
+  assert.deepEqual(leaving.closed, { code: undefined, reason: undefined });
+  assert.equal(watching.readyState, 1);
+});
+
 test('different IPv6 devices on one /64 find a live lease through the public Worker', async () => {
   const s = system();
   const address = '2606:4700:4700:ab::1111';
