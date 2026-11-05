@@ -41,7 +41,9 @@ password and media boundaries remain separate requirements.
 
 Tools declare `supports_relay = true`, include `partials/paired-transport.html`
 beside their host Start action and ship `peer-transport` and `peer-transport-ui`.
-The host control locks while a session or recoverable identity is active and
+What each choice means sits behind an
+[information mark](adding-a-tool.md#an-information-mark) beside the switch, which
+`peer-transport-ui` rewrites as the choice changes. The host control locks while a session or recoverable identity is active and
 shows the chosen type as a read-only badge in place of its toggle. Ending the
 session restores the toggle. The badge describes the choice, while the separate
 route output reports the observed connection. Changing a choice must not trigger
