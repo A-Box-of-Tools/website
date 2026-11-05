@@ -124,6 +124,15 @@ test('a refusal is held under a tag of its own, and no count sees it', async () 
   assert.equal(host.readyState, 1, 'and its close disturbs nobody');
 });
 
+test('readers hear host-gone in a frame just ahead of the close', async () => {
+  const s = await system(), host = await s.host(), reader = await s.viewer(), stuck = await s.viewer();
+  stuck.send = () => { throw new TypeError("Can't call WebSocket send() after close()."); };
+  s.leave(host);
+  assert.deepEqual(reader.messages, [{ type: 'ready' }, { type: 'host-gone' }]);
+  assert.deepEqual(reader.closed, { code: 4410, reason: 'host-gone' });
+  assert.deepEqual(stuck.closed, { code: 4410, reason: 'host-gone' }, 'a frame that cannot be sent does not cost the close');
+});
+
 test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {
   const time = clock(t);
   for (const frame of ['{}', 'not json', '[]', 'null', new ArrayBuffer(1), 'x'.repeat(65537)]) {

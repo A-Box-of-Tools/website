@@ -437,10 +437,12 @@ export class Room {
           },
         ).catch(() => {}));
       }
+      // The frame goes first for Chromium, which holds a page's close event until the
+      // connection ends or two seconds pass, and an object cannot end it any sooner. A
+      // page that does not know the frame passes over it and hears the close.
       for (const viewer of this.ctx.getWebSockets("viewer")) {
-        try {
-          viewer.close(4410, "host-gone");
-        } catch {}
+        try { viewer.send(JSON.stringify({ type: "host-gone" })); } catch {}
+        try { viewer.close(4410, "host-gone"); } catch {}
       }
     } else if (who.introduced) {
       this.toHost({ type: "leave", id: who.id });

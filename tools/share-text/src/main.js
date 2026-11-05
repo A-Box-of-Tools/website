@@ -1574,6 +1574,36 @@ function view(code, recovered = null) {
     location.href = transportUrl(makeShareUrl(location.href, code, retryLocal), mode);
   });
 
+  // The frame and the close say the same thing. Chromium holds the close event for up to
+  // two seconds after the sharer has gone, so the frame is what it hears first.
+  const introductionEnded = (code) => {
+    credentials.close();
+    pairing.close();
+    trace.socket('closed', code);
+    // Losing introductions does not retire a working encrypted peer. An
+    // explicit host-ended control is terminal; transport loss can recover.
+    if (done) return;
+    if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
+        !['failed', 'closed'].includes(pc?.connectionState)) {
+      resumeViewer();
+      return;
+    }
+    if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
+      // Stop travels on the reliable peer channel while the room closes.
+      // Give that terminal frame time to arrive before replacing the peer
+      // for renewed credentials; an ordinary outage still recovers promptly.
+      clearTimeout(relayRecoveryTimer);
+      relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
+      return;
+    }
+    if (code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
+    if (code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
+    if (code === 4410 || (connected && session.consent)) { sharerGone(); return; }
+    if (code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
+    else if (code === 4429) stopAttempt('view.full', false, 'socket-closed');
+    else if (!connected) stopAttempt('view.error', false, 'socket-closed');
+  };
+
   pairing.listen({
     open() {
       trace.socket('open'); trace.mark('server-open');
@@ -1588,6 +1618,7 @@ function view(code, recovered = null) {
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
       if (credentials.receive(m)) return;
+      if (m.type === 'host-gone') { introductionEnded(4410); return; }
       signals = signals.then(async () => {
         if (done || session.generation !== generation) return;
         if (m.type === 'ready') {
@@ -1642,33 +1673,7 @@ function view(code, recovered = null) {
       });
     },
 
-    close(e) {
-      credentials.close();
-      pairing.close();
-      trace.socket('closed', e.code);
-      // Losing introductions does not retire a working encrypted peer. An
-      // explicit host-ended control is terminal; transport loss can recover.
-      if (done) return;
-      if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
-          !['failed', 'closed'].includes(pc?.connectionState)) {
-        resumeViewer();
-        return;
-      }
-      if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
-        // Stop travels on the reliable peer channel while the room closes.
-        // Give that terminal frame time to arrive before replacing the peer
-        // for renewed credentials; an ordinary outage still recovers promptly.
-        clearTimeout(relayRecoveryTimer);
-        relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
-        return;
-      }
-      if (e.code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
-      if (e.code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
-      if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
-      if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
-      else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
-      else if (!connected) stopAttempt('view.error', false, 'socket-closed');
-    },
+    close(e) { introductionEnded(e.code); },
   });
 }
 
