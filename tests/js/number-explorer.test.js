@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { ENGLISH, MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countReading, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
+import { ENGLISH, MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countReading, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, namedAmount, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
 import { CONTAINERS, containerIndex, levelForShare } from '../../tools/number-explorer/src/containers.js';
 import { circleGroup, starLevel } from '../../tools/number-explorer/src/scene-stars.js';
 import { wrapLines } from '../../tools/number-explorer/src/paint.js';
@@ -19,7 +19,7 @@ const LANGUAGES = readdirSync(LOCALES).filter(lang => existsSync(bodyPath(lang))
 const ENGLISH_BODY = readFileSync(new URL('../../tools/number-explorer/body.html', import.meta.url), 'utf8');
 const bodyOf = lang => (lang === 'en' ? ENGLISH_BODY : readFileSync(bodyPath(lang), 'utf8'));
 const phraseIn = (body, key) => new RegExp(`data-phrase="${key.replace(/\./g, '\\.')}">([^<]*)<`).exec(body)[1].replace(/&nbsp;/g, '\u00a0');
-const readingOf = lang => countReading(phraseIn(bodyOf(lang), 'count.words'), lang);
+const readingOf = lang => countReading(phraseIn(bodyOf(lang), 'count.words'), lang, phraseIn(bodyOf(lang), 'count.names'));
 
 test('number explorer preserves exact counts across accepted input forms', () => {
   for (const input of ['1000000000', '1,000,000,000', '1 000 000 000', '1b', '1 billion', '1e9']) assert.deepEqual(parseCount(input), { ok: true, count: 1000000000n });
@@ -129,7 +129,45 @@ test('number explorer writes back what each language reads', () => {
   assert.equal(countText(10n ** 9n, readingOf('de')), '1.000.000.000');
   assert.equal(countText(10n ** 9n, readingOf('fr')), '1 000 000 000');
   assert.equal(countText(10n ** 9n, readingOf('zh')), '1,000,000,000');
-  assert.equal(countText(12n * 10n ** 17n, readingOf('de')), '1,2e18');
+  assert.equal(countText(12n * 10n ** 17n, readingOf('de')), '1,2 Trillionen');
+});
+test('number explorer writes a big count in the words of the page it is on', () => {
+  const written = {
+    en: [[10n ** 15n, '1 quadrillion'], [12n * 10n ** 17n, '1.2 quintillion'], [1234n * 10n ** 20n, '123.4 sextillion'], [MAX_COUNT, '1 nonillion']],
+    de: [[10n ** 15n, '1 Billiarde'], [12n * 10n ** 17n, '1,2 Trillionen'], [2n * 10n ** 21n, '2 Trilliarden'], [MAX_COUNT, '1 Quintillion']],
+    es: [[10n ** 15n, '1000 billones'], [12n * 10n ** 16n, '120.000 billones'], [12n * 10n ** 17n, '1,2 trillones'], [10n ** 18n, '1 trillón'], [MAX_COUNT, '1 quintillón']],
+    // 1,5 takes the singular here, as "1,5 milhão" and "1,5 million" do.
+    fr: [[10n ** 15n, '1 billiard'], [12n * 10n ** 17n, '1,2 trillion'], [2n * 10n ** 18n, '2 trillions'], [MAX_COUNT, '1 quintillion']],
+    pt: [[10n ** 15n, '1 quatrilhão'], [12n * 10n ** 17n, '1,2 quintilhão'], [2n * 10n ** 18n, '2 quintilhões'], [MAX_COUNT, '1 nonilhão']],
+    zh: [[10n ** 15n, '1000万亿'], [12n * 10n ** 17n, '120亿亿'], [10n ** 24n, '1亿亿亿'], [MAX_COUNT, '100万亿亿亿']],
+    ja: [[10n ** 15n, '1000兆'], [12n * 10n ** 17n, '120京'], [10n ** 24n, '1秭'], [MAX_COUNT, '100穣']]
+  };
+  for (const [lang, cases] of Object.entries(written)) {
+    for (const [count, text] of cases) assert.equal(countText(count, readingOf(lang)), text, lang);
+  }
+});
+test('number explorer can read back every name it writes, and has one for every big count', () => {
+  for (const lang of ['en', ...LANGUAGES]) {
+    const reading = readingOf(lang);
+    for (const { one, other, power } of reading.names) {
+      assert.ok(power <= 30, `${lang}: ${one} is past the largest count`);
+      for (const word of [one, other]) assert.deepEqual(parseCount(`1${reading.joint}${word}`, reading), { ok: true, count: 10n ** BigInt(power) }, `${lang}: ${word}`);
+    }
+    // Intl's words run out at about 10^15. Past that a name has to be in reach, or the
+    // number comes out as a million of something, which is the digits all over again.
+    for (let power = 15; power <= 30; power++) {
+      const named = namedAmount(Number(`1e${power}`), 3, reading);
+      assert.ok(named && named.amount < 1e6, `${lang}: 10^${power}`);
+    }
+  }
+});
+test('number explorer states no power of ten in superscript, in any language', () => {
+  const toml = lang => new URL(lang === 'en' ? '../../tools/number-explorer/tool.toml' : `${lang}/tools/number-explorer.toml`, lang === 'en' ? import.meta.url : LOCALES);
+  for (const lang of ['en', ...LANGUAGES]) {
+    assert.doesNotMatch(bodyOf(lang), /10[⁰¹²³⁴⁵⁶⁷⁸⁹]/, `${lang} body`);
+    assert.doesNotMatch(readFileSync(toml(lang), 'utf8'), /10[⁰¹²³⁴⁵⁶⁷⁸⁹]/, `${lang} tool.toml`);
+  }
+  for (const module of ['say', 'main']) assert.doesNotMatch(readFileSync(new URL(`../../tools/number-explorer/src/${module}.js`, import.meta.url), 'utf8').replace(/^\s*\/\/.*$/gm, ''), /[⁰¹²⁴⁵⁶⁷⁸⁹]/, module);
 });
 test('number explorer reads back the numbers the page itself prints', () => {
   for (const lang of LANGUAGES) {
@@ -159,19 +197,21 @@ test('number explorer opens and runs its examples on the same numbers in every l
 });
 test('number explorer promises only numbers its box can read', () => {
   const promised = {
-    en: { help: ['1,000,000', '1.5b', '3 trillion', '1e12'], invalid: ['1,000,000', '1 billion', '1.5b', '1e12'] },
-    de: { help: ['1.000.000', '1,5 Mrd.', '3 Billionen', '1e12'], invalid: ['1.000.000', '1 Milliarde', '1,5 Mrd.', '1e12'] },
-    es: { help: ['1.000.000', '1,5 M', '3 billones', '1e12'], invalid: ['1.000.000', 'mil millones', '1,5 M', '1e12'] },
-    fr: { help: ['1\u00a0000\u00a0000', '1,5\u00a0Md', '3\u00a0billions', '1e12'], invalid: ['1\u00a0000\u00a0000', '1\u00a0milliard', '1,5\u00a0Md', '1e12'] },
-    pt: { help: ['1.000.000', '1,5 bi', '3 trilhões', '1e12'], invalid: ['1.000.000', '1 bilhão', '1,5 bi', '1e12'] },
-    zh: { help: ['1,000,000', '1.5 亿', '3 万亿', '1e12'], invalid: ['1,000,000', '10 亿', '1.5 亿', '1e12'] },
-    ja: { help: ['1,000,000', '1.5億', '3兆', '1e12'], invalid: ['1,000,000', '10億', '1.5億', '1e12'] }
+    en: { help: ['1,000,000', '1.5b', '3 trillion'], invalid: ['1,000,000', '1 billion', '1.5b'], largest: '1 nonillion' },
+    de: { help: ['1.000.000', '1,5 Mrd.', '3 Billionen'], invalid: ['1.000.000', '1 Milliarde', '1,5 Mrd.'], largest: '1 Quintillion' },
+    es: { help: ['1.000.000', '1,5 M', '3 billones'], invalid: ['1.000.000', 'mil millones', '1,5 M'], largest: '1 quintillón' },
+    fr: { help: ['1\u00a0000\u00a0000', '1,5\u00a0Md', '3\u00a0billions'], invalid: ['1\u00a0000\u00a0000', '1\u00a0milliard', '1,5\u00a0Md'], largest: '1\u00a0quintillion' },
+    pt: { help: ['1.000.000', '1,5 bi', '3 trilhões'], invalid: ['1.000.000', '1 bilhão', '1,5 bi'], largest: '1 nonilhão' },
+    zh: { help: ['1,000,000', '1.5 亿', '3 万亿'], invalid: ['1,000,000', '10 亿', '1.5 亿'], largest: '100 万亿亿亿' },
+    ja: { help: ['1,000,000', '1.5億', '3兆'], invalid: ['1,000,000', '10億', '1.5億'], largest: '100穣' }
   };
-  for (const [lang, { help, invalid }] of Object.entries(promised)) {
+  for (const [lang, { help, invalid, largest }] of Object.entries(promised)) {
     const body = bodyOf(lang);
     const reading = readingOf(lang);
     const helpText = /id="amount-help"[^>]*>([^<]*)</.exec(body)[1].replace(/&nbsp;/g, '\u00a0');
     const invalidText = phraseIn(body, 'amount-invalid');
+    assert.deepEqual(parseCount(largest, reading), { ok: true, count: MAX_COUNT }, `${lang} calls ${largest} its largest number`);
+    for (const said of [helpText, phraseIn(body, 'amount-too-large'), phraseIn(body, 'step.limit')]) assert.ok(said.includes(largest), `${lang} does not say ${largest}: ${said}`);
     for (const form of help) {
       assert.ok(helpText.includes(form), `${lang} help no longer says ${form}: ${helpText}`);
       assert.equal(parseCount(form, reading).ok, true, `${lang} help promises ${form}`);
@@ -185,6 +225,7 @@ test('number explorer promises only numbers its box can read', () => {
 test('number explorer keeps the words it reads by default in step with the English markup', () => {
   const sorted = ({ words }) => [...words].sort(([a], [b]) => a.localeCompare(b));
   assert.deepEqual(sorted(readingOf('en')), sorted(ENGLISH));
+  assert.deepEqual(readingOf('en').names, ENGLISH.names);
 });
 test('number explorer drops a landmark into a sentence without needing it declined', () => {
   // A rung name is written once, in the form it has standing alone. A preposition in
@@ -433,8 +474,8 @@ test('number explorer writes back only what its own parser reads', () => {
   const counts = [0n, 1n, 999n, 1000n, 1234567n, 999999999999999n, 10n ** 15n, 12n * 10n ** 17n, 1234n * 10n ** 20n, 12345n * 10n ** 20n, 9007199254740993n, MAX_COUNT];
   for (const count of counts) assert.deepEqual(parseCount(countText(count)), { ok: true, count }, count.toString());
   assert.equal(countText(1000000000n), '1,000,000,000');
-  assert.equal(countText(MAX_COUNT), '1e30');
-  assert.equal(countText(12n * 10n ** 17n), '1.2e18');
+  assert.equal(countText(MAX_COUNT), '1 nonillion');
+  assert.equal(countText(12n * 10n ** 17n), '1.2 quintillion');
 });
 
 test('number explorer marks a world only on the buttons that choose one', () => {

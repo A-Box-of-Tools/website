@@ -55,7 +55,7 @@ body = "A estrutura da página pode carregar scripts de anúncios, medição e d
 
 [[howto]]
 title = "Digite um número ou arraste o controle."
-body = "Experimente um bilhão, 1,5 bi ou 1e12. São aceitos números inteiros de zero a 10³⁰. O controle se move por potências de dez, e a imagem acompanha enquanto você arrasta."
+body = "Experimente um bilhão, 1,5 bi ou 3 trilhões. São aceitos números inteiros de zero a 1 nonilhão. O controle se move por potências de dez, e a imagem acompanha enquanto você arrasta."
 [[howto]]
 title = "Escolha livros, água, estrelas, areia ou tempo."
 body = "Cada um representa o mesmo número de outra forma e diz o que é cada unidade. Em livros, cada um também pode ser uma palavra ou um token de texto de IA, e aí a quantidade vira uma extensão de texto."

@@ -8,7 +8,7 @@
       <div class="field ne-amount"><label for="amount">あなたの数字</label><input id="amount" type="text" value="10億" maxlength="160" spellcheck="false" autocomplete="off" inputmode="text" aria-describedby="amount-help amount-error"></div>
       <div class="ne-steps" role="group" aria-label="数を変える"><button type="button" class="ghost" id="less" aria-label="10分の1にする">÷ 10</button><button type="button" class="primary" id="more" aria-label="10倍にする">× 10</button></div>
     </div>
-    <p id="amount-help" class="field-note">1,000,000、1.5億、3兆、1e12などを入力できます。0から10³⁰までの整数です。</p>
+    <p id="amount-help" class="field-note">1,000,000、1.5億、3兆などを入力できます。0から100穣（1のあとに0が30個）までの整数です。</p>
     <p id="amount-error" class="error" role="alert" hidden></p>
     <p id="read-number" class="ne-readback"></p>
 
@@ -58,7 +58,7 @@
         <button type="button" class="ghost" data-example="stars:1000億">天の川銀河</button>
         <button type="button" class="ghost" data-example="sand:10億">砂粒10億個</button>
         <button type="button" class="ghost" data-example="time:10億">10億まで数える</button>
-        <button type="button" class="ghost" data-example="books:1e30">ここで一番大きな数</button>
+        <button type="button" class="ghost" data-example="books:100穣">ここで一番大きな数</button>
       </div></div>
       <div class="ne-save"><button type="button" id="download-picture" class="ghost">この絵を保存</button><span id="save-note" class="field-note" role="status"></span></div>
     </div>
@@ -78,15 +78,16 @@
     <p><strong>本：</strong>高さは丸めています。人1.7m、テーブル0.75m、家8m、自由の女神は地面からたいまつまで93m、エッフェル塔330m、ブルジュ・ハリファ828m、エベレスト8,849mです。距離は地面から真上に測っています。旅客機の巡航高度11km、宇宙ステーション約400km、月384,400km、最接近時の火星約5460万km、太陽1億4960万km、海王星45億km、探査機ボイジャー1号は約259億kmでなお遠ざかっています。プロキシマ・ケンタウリ4.24光年、オリオン大星雲約1,500光年、アンドロメダ銀河250万光年、おとめ座銀河団5400万光年、クエーサー3C 273約25億光年、観測可能な宇宙の果て約465億光年です。天の川銀河の向こう側はその幅、約10万光年としています。銀河をその大きさで本の山のふもとに描いているためです。図書館の目印は本の冊数なので、厚さに応じて動きます。2023年の米国議会図書館の目録掲載図書は約2580万冊、Googleの2010年の推定では世界の異なる本は約1億3000万冊です。</p>
     <p><strong>水と砂：</strong>色の付いた面積は、描かれた容器の形に占める実際の割合です。容器そのものはイラストで、共通の物差しではありません。容量は選んだ例です。15mLのスプーン、250mLのカップ、10Lのバケツ、200Lの浴槽、5 × 3 × 2mの部屋、50 × 25 × 2mのプール、約32万m³の大型タンカーです。大ピラミッドは約260万m³、例の山は高さ1km、底面の半径1kmの円錐としています。これは選んだ形で、実在の山の測定値ではありません。ネス湖は約7.4km³、スペリオル湖は約1万2100km³、地球上のすべての水は約13億8600万km³です。月、地球、海王星は天体全体の体積です。</p>
     <p>ここには「地球上のすべての砂」の正確な数はありません。根拠のある見積もりには、まず浜辺や砂漠といった範囲を決め、粒径と深さを仮定する必要があります。</p>
-    <p><strong>星：</strong>星の数はもともと大まかなものです。ここで使うのは公表されている切りのよい数で、星を1つずつ測ったものではありません。暗い空で望遠鏡なしに見えるほど明るい星は全天で約9,100個、オメガ星団に約1000万個、天の川銀河に約1000億個（実際はその数倍かもしれません）、アンドロメダ銀河に約1兆個、観測可能な宇宙に10²³個です。10²³は、10²²から10²⁴という大まかな範囲の中央です。多すぎて描ききれなくなると、点1つが明示された数の星を表し、光っている割合はその形の点の割合で、中心から外へ広がります。</p>
+    <p><strong>星：</strong>星の数はもともと大まかなものです。ここで使うのは公表されている切りのよい数で、星を1つずつ測ったものではありません。暗い空で望遠鏡なしに見えるほど明るい星は全天で約9,100個、オメガ星団に約1000万個、天の川銀河に約1000億個（実際はその数倍かもしれません）、アンドロメダ銀河に約1兆個、観測可能な宇宙に1000垓個です。1000垓は、100垓から1秭という大まかな範囲の中央です。多すぎて描ききれなくなると、点1つが明示された数の星を表し、光っている割合はその形の点の割合で、中心から外へ広がります。</p>
     <p><strong>時間：</strong>期間は丸めています。人の一生80年、大ピラミッドの建設から約4,500年、ホモ・サピエンスの登場から約30万年、恐竜の絶滅から約6600万年、地球の年齢約45億4000万年、宇宙の年齢約138億年です。</p>
     <p class="source-links">参考資料：<a href="https://help.openai.com/en/articles/4936856-understanding-and-counting-tokens" target="_blank" rel="noopener noreferrer">OpenAIによる英語トークンの目安</a> · <a href="https://pubs.usgs.gov/of/1991/0375a/report.pdf" target="_blank" rel="noopener noreferrer">USGSの粒径分類</a> · <a href="https://www.usgs.gov/special-topics/water-science-school/science/how-much-water-there-earth" target="_blank" rel="noopener noreferrer">地球上のすべての水についてのUSGSの解説</a> · <a href="https://www.epa.gov/greatlakes/physical-features-great-lakes" target="_blank" rel="noopener noreferrer">五大湖についてのEPAの解説</a> · <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASAの惑星ファクトシート</a> · <a href="https://www.esa.int/Science_Exploration/Space_Science/Herschel/How_many_stars_are_there_in_the_Universe" target="_blank" rel="noopener noreferrer">星の数についてのESAの解説</a> · <a href="https://www.loc.gov/about/general-information/" target="_blank" rel="noopener noreferrer">米国議会図書館の蔵書数</a>。これらのリンクは任意の読み物で、計算機が接続することはありません。</p>
   </details>
 
   <div id="phrases" hidden aria-hidden="true">
     <span data-phrase="count.words">十=1百=2千=3万=4萬=4億=8亿=8兆=12京=16垓=20秭=24穣=28 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30</span>
-    <span data-phrase="amount-required">数字を入力すると始まります。</span><span data-phrase="amount-invalid">1,000,000、10億、1.5億、1e12のような整数を試してください。桁区切りは3桁ごとです。</span><span data-phrase="amount-whole">端数のない整数にしてください。</span><span data-phrase="amount-too-large">ここで扱えるのは10³⁰までです。もっと小さい数を試してください。</span>
-    <span data-phrase="said.aloud">{kicker}{number}{unit}。{story}</span><span data-phrase="result.empty">まだ満たすものがありません</span><span data-phrase="zero.story">まず1から始めて、次に10倍を試してください。</span><span data-phrase="ratio.times">{number}倍</span><span data-phrase="unit.tall">{unit}の高さ</span>
+    <span data-phrase="count.names">兆=12京=16垓=20秭=24穣=28</span>
+    <span data-phrase="amount-required">数字を入力すると始まります。</span><span data-phrase="amount-invalid">1,000,000、10億、1.5億のような整数を試してください。桁区切りは3桁ごとです。</span><span data-phrase="amount-whole">端数のない整数にしてください。</span><span data-phrase="amount-too-large">ここで扱えるのは100穣（1のあとに0が30個）までです。もっと小さい数を試してください。</span>
+    <span data-phrase="said.aloud">{kicker}{number}{unit}。{story}</span><span data-phrase="result.empty">まだ満たすものがありません</span><span data-phrase="zero.story">まず1から始めて、次に10倍を試してください。</span><span data-phrase="ratio.times">{number}倍</span><span data-phrase="unit.tall">{unit}の高さ</span><span data-phrase="unit.of">{unit}</span><span data-phrase="unit.of.vowel">{unit}</span>
     <span data-phrase="unit.lightyears">光年</span><span data-phrase="unit.lightyear">光年</span><span data-phrase="unit.m3">立方メートル</span><span data-phrase="unit.km3">立方キロメートル</span><span data-phrase="unit.km3.single">立方キロメートル</span>
     <span data-phrase="kicker.books">{count}冊の本を積み上げると、およそ</span><span data-phrase="kicker.books.single">本1冊の厚さはおよそ</span><span data-phrase="kicker.words">{count}語は例の本およそ{books}冊分で、積み上げるとおよそ</span><span data-phrase="kicker.tokens">AIのテキストトークン{count}個は英語でおよそ{words}語、例の本でおよそ{books}冊分で、積み上げるとおよそ</span><span data-phrase="kicker.water">水滴{count}個を集めるとおよそ</span><span data-phrase="kicker.water.single">水滴1個はおよそ</span><span data-phrase="kicker.sand">砂粒{count}個を集めるとおよそ</span><span data-phrase="kicker.sand.single">砂粒1個が占めるのはおよそ</span><span data-phrase="kicker.stars">星{count}個は</span><span data-phrase="kicker.stars.single">星1個は</span><span data-phrase="kicker.time">{count}まで数えるとおよそ</span>
     <span data-phrase="stars.of">（基準：{name}）</span><span data-phrase="stars.tab">天の川銀河の{share}</span><span data-phrase="stars.milkyways">個の天の川銀河</span><span data-phrase="stars.milkyway.single">個の天の川銀河</span><span data-phrase="stars.universes">個の観測可能な宇宙</span><span data-phrase="stars.universe.single">個の観測可能な宇宙</span>
@@ -106,7 +107,7 @@
     <span data-phrase="guess.books">10倍にすると、積んだ本は{name}に届くでしょうか？</span><span data-phrase="guess.fill">10倍にすると、{name}を満たせるでしょうか？</span><span data-phrase="guess.stars">10倍にすると、{name}と同じ数になるでしょうか？</span><span data-phrase="guess.time">10倍にすると、{name}と同じくらい時間がかかるでしょうか？</span><span data-phrase="guess.right">正解です！{fact}</span><span data-phrase="guess.wrong">今回は外れです。{fact}</span><span data-phrase="guess.yes">10倍で届きます。</span><span data-phrase="guess.no">10倍でもまだ届きません。</span>
     <span data-phrase="follow.stars">1つずつが星だったら？</span><span data-phrase="follow.water">1つずつが水滴だったら？</span><span data-phrase="follow.time">数えるのにどれくらいかかる？</span><span data-phrase="follow.books">1つずつが本だったら？</span><span data-phrase="follow.tokens">これがAIのテキストトークンだったら？</span><span data-phrase="follow.grain">砂粒がもっと大きかったら？</span><span data-phrase="follow.thousand">1,000倍だとどう見える？</span>
     <span data-phrase="play.start">1から育てる</span><span data-phrase="play.stop">停止</span><span data-phrase="still.pause">動きを止める</span><span data-phrase="still.resume">動きを再開</span>
-    <span data-phrase="step.whole">もう一度10で割るには、少なくとも1つ分が必要です。</span><span data-phrase="step.rounded">10で割って、整数に切り捨てました。</span><span data-phrase="step.limit">このツールで扱える最大の数、10³⁰に達しました。</span>
+    <span data-phrase="step.whole">もう一度10で割るには、少なくとも1つ分が必要です。</span><span data-phrase="step.rounded">10で割って、整数に切り捨てました。</span><span data-phrase="step.limit">このツールで扱える最大の数、100穣に達しました。</span>
     <span data-phrase="model.summary">砂の体積 = 個数 × 球形の砂粒1個の体積 ÷ 0.60。いまの粒径は{diameter}mmです。粒径を2倍にすると砂は8倍になり、個数を1,000倍にすると立方体の幅は10倍になります。</span><span data-phrase="settings.invalid">本の長さは100から1,000,000語までの整数で選んでください。</span><span data-phrase="save.done">比較と前提を添えて保存しました。</span><span data-phrase="save.assumptions">モデル：本は{thickness}cm・{length}語、水滴は{drop}mL、球形の砂粒は{diameter}mm（砂粒60%・空気40%）、毎秒{rate}を休みなく数えます。英語の文章は1トークンあたり0.75語です。目印は丸めた数字と選んだ例です。</span>
     <span data-phrase="net.clean">あなたの数字はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span><span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span><span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span><span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span>
   </div>

@@ -104,21 +104,36 @@ function escaped(mark) { return mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 // its `count.words` phrase and the marks from Intl, where the page's own numbers get
 // theirs. A word that language could mean two ways, like 兆 in Chinese, is left out of
 // its list, so it is refused rather than guessed.
-export function countReading(words, locale) {
+//
+// `count.names` runs the other way: the words the page writes once Intl has run out of
+// its own, at about a trillion in every language here. They are a list apart because
+// `count.words` holds everything a visitor might type, and only one spelling of each is
+// fit to print. A word with two forms gives the singular first, and which of them an
+// amount takes is the language's to say: 1,5 Trillionen in German, 1,5 quintilhão in
+// Portuguese.
+export function countReading(words, locale, names = '') {
   const parts = new Intl.NumberFormat(locale).formatToParts(1234567.5);
   const mark = type => parts.find(part => part.type === type).value.replace(/[\u00a0\u202f]/g, ' ');
   const decimal = mark('decimal');
   const group = mark('group');
+  // The gap Intl leaves before a word of its own, which in Chinese and Japanese is none.
+  const worded = new Intl.NumberFormat(locale, { notation: 'compact', compactDisplay: 'long' }).formatToParts(2e6);
   return {
     decimal,
     group,
+    joint: worded.find(part => part.type === 'literal')?.value ?? '',
+    plurals: new Intl.PluralRules(locale),
     words: [...words.matchAll(/([^\s=\d]+)=(\d+)/g)].map(([, word, power]) => [word.toLowerCase(), Number(power)]),
+    names: [...names.matchAll(/([^\s=\d]+)=(\d+)/g)].map(([, word, power]) => {
+      const [one, other = one] = word.split('/');
+      return { one, other, power: Number(power), size: Number(`1e${power}`) };
+    }).sort((a, b) => b.power - a.power),
     number: new RegExp(`^(\\d[\\d${escaped(group)} ]*)?(?:${escaped(decimal)}(\\d+))?$`),
     grouped: new RegExp(`^\\d{1,3}(?:${escaped(group)}\\d{3})+$`)
   };
 }
 
-export const ENGLISH = countReading('a=0 an=0 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30', 'en');
+export const ENGLISH = countReading('a=0 an=0 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30', 'en', 'quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30');
 
 // The words off the end of a count, largest first: "mil millones" and 万亿 are both one
 // power of ten times another. A Latin word has to start a word, or the kilometers of
@@ -352,11 +367,26 @@ export function dialCount(position) {
   return BigInt(Math.round(10 ** (place - power + 1))) * 10n ** BigInt(power - 1);
 }
 
-// What goes back in the input box. parseCount accepts every form written here.
-export function countText(count, { decimal, group } = ENGLISH) {
+// The largest name a language has at or below a value, and how many of it the value is.
+// Null below the first name on its list, which is where Intl's own words are still good.
+export function namedAmount(value, digits, { names, plurals }) {
+  const name = names.find(({ size }) => value >= size);
+  if (!name) return null;
+  const amount = Number((value / name.size).toPrecision(digits));
+  return { amount, power: name.power, word: plurals.select(amount) === 'one' ? name.one : name.other };
+}
+
+// What goes back in the input box. parseCount accepts every form written here, and all
+// of them are exact: the amount is cut out of the digits rather than divided, and a count
+// with too many digits to say that way is left as digits.
+export function countText(count, reading = ENGLISH) {
+  const { decimal, group, joint } = reading;
   const text = count.toString();
-  if (text.length <= 15) return text.replace(/\B(?=(\d{3})+$)/g, group);
-  const significant = text.replace(/0+$/, '');
-  if (significant.length > 4) return text;
-  return `${significant[0]}${significant.length > 1 ? `${decimal}${significant.slice(1)}` : ''}e${text.length - 1}`;
+  const grouped = digits => digits.replace(/\B(?=(\d{3})+$)/g, group);
+  if (text.length <= 15) return grouped(text);
+  const named = namedAmount(Number(count), 4, reading);
+  if (!named || text.replace(/0+$/, '').length > 4) return text;
+  const whole = text.slice(0, -named.power);
+  const part = text.slice(-named.power).replace(/0+$/, '');
+  return `${whole.length > 4 ? grouped(whole) : whole}${part ? `${decimal}${part}` : ''}${joint}${named.word}`;
 }

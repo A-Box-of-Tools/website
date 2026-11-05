@@ -55,7 +55,7 @@ body = "El marco puede cargar scripts de publicidad, medición y donaciones. La 
 
 [[howto]]
 title = "Escribe un número o arrastra el dial."
-body = "Prueba con mil millones, 1,5 M o 1e12. Se aceptan números enteros de cero a 10³⁰. El dial se mueve por potencias de diez, y la imagen te sigue mientras arrastras."
+body = "Prueba con mil millones, 1,5 M o 3 billones. Se aceptan números enteros de cero a 1 quintillón. El dial se mueve por potencias de diez, y la imagen te sigue mientras arrastras."
 [[howto]]
 title = "Elige libros, agua, estrellas, arena o tiempo."
 body = "Cada uno representa el mismo número de otra manera y dice qué es cada unidad. En libros, cada uno puede ser también una palabra o un token de texto de IA, y entonces la cantidad se convierte en una extensión de texto."
