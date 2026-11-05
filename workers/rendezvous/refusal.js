@@ -4,11 +4,12 @@
 //
 // The object decides and the stateless front of the Worker takes the socket, because
 // which side holds it decides when the page hears. A socket an object accepted with
-// acceptWebSocket keeps its connection after both ends have sent Close, until that
-// object next goes idle about ten seconds later, and nothing the object can call
-// shortens that. Chromium holds a page's close event until the connection ends or two
-// seconds pass, so a dead link would read as a slow one. Here the connection ends as
-// soon as the page answers. An object still holds only the sockets it has admitted.
+// acceptWebSocket and then closed first keeps its connection after both ends have sent
+// Close, until that object next goes idle about ten seconds later, and nothing the
+// object can call shortens that. Chromium holds a page's close event until the
+// connection ends or two seconds pass, so a dead link would read as a slow one. Here
+// the connection ends as soon as the page answers. An object still holds only the
+// sockets it has admitted.
 const HEADER = "x-rendezvous-refusal";
 
 // What an object answers in place of a socket. It only ever reaches the front of this

@@ -352,12 +352,12 @@ transport, host approval, password or microphone consent.
   4xxx code, because a page cannot read the status of a failed upgrade. The object
   only decides: it answers with a private header and takes no socket, and the
   stateless front of the Worker does the closing (`refusal.js`). That is what makes
-  the answer quick. A socket an object accepted with `acceptWebSocket` keeps its
-  connection after both ends have sent Close, until the object next goes idle about
-  ten seconds later, and Chromium holds a page's `close` event until the connection
-  ends or two seconds pass. An admitted socket cannot be handed over like this, so a
-  close the object starts later, such as `host-gone`, still reaches Chromium about
-  two seconds after its frame; WebKit and Firefox have it straight away.
+  the answer quick. A socket an object accepted with `acceptWebSocket` and then closed
+  first keeps its connection after both ends have sent Close, until the object next
+  goes idle about ten seconds later, and Chromium holds a page's `close` event until
+  the connection ends or two seconds pass. An admitted socket cannot be handed over
+  like this, so a close the object starts later, such as `host-gone`, still reaches
+  Chromium about two seconds after its frame; WebKit and Firefox have it straight away.
 - A socket that sends more than 120 frames in a rolling ten seconds is closed with
   4429 `busy`. Frames are counted before they are parsed, so malformed and empty
   ones count too. A host's allowance is that many per connected viewer, because
