@@ -78,7 +78,7 @@ js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "wav-async", "co
 # out of a video is very often wanted shorter, or louder, which is the next two
 # tools exactly.
 handoff = ["trim-audio", "edit-audio"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -190,8 +190,8 @@ body = """16-bit PCM rounds and clamps decoded samples for compatibility. 32-bit
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your video: not a file, not
+      measurement scripts come from Google. None of them is handed anything
+      about your video: not a file, not
       a sample, not a name, a size or a length."""
 
 [[privacy]]

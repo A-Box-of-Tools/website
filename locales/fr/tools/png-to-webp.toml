@@ -49,7 +49,7 @@ body = "Le canevas ne contient que les pixels&nbsp;: blocs de texte, profils ICC
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu’il ne reçoit pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, le bouton de don de Buy Me a Coffee. Aucun ne reçoit vos images. Tout le code qui lit, décode ou écrit un fichier vient de ce site et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun ne reçoit vos images. Tout le code qui lit, décode ou écrit un fichier vient de ce site et figure dans le dépôt."
 
 [[privacy]]
 title = "Fonctionne hors ligne."

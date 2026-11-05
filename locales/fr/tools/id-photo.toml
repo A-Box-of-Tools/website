@@ -45,7 +45,7 @@ body = "Aucun poids à télécharger, aucun moteur d&rsquo;inférence pour les e
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre photographie, votre visage ou le pays dont vous avez choisi la règle. Chaque ligne qui lit, recadre, mesure ou écrit un fichier est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur votre photographie, votre visage ou le pays dont vous avez choisi la règle. Chaque ligne qui lit, recadre, mesure ou écrit un fichier est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Cela fonctionne hors ligne."

@@ -69,7 +69,7 @@ css_parts = ["progress", "form", "checks", "modes", "notes", "results"]
 # an ordinary two-page statement with nothing on it, which is what somebody
 # arriving here is holding.
 js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-crypt", "aes", "rc4", "pdf-permissions", "md5", "hash-blocks", "message-box", "format", "example-pdf", "pdf-page-writer", "example-statement"]
-lastmod = "2026-09-11"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -269,11 +269,11 @@ body = """
       repository."""
 
 [[privacy]]
-title = "What the donate button loads, and what it is not given."
+title = "The donate button loads nothing, and is given nothing."
 body = """
 
-      The \"Buy me a coffee\" button in the header is drawn by a script from
-      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      The \"Buy me a coffee\" button in the header is drawn by this page and
+      loads nothing from anywhere. It is a link
       and nothing more: it reports no visit, and it is handed nothing about
       you or your documents. Nothing happens unless you click it, and what you
       would be clicking through to is somebody else's site."""

@@ -97,8 +97,8 @@ body = "JSON elimina los comentarios. Este analizador admite deliberadamente un 
 title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y de medición vienen de Google, y el botón de donación de Buy Me
-      a Coffee. A ninguno se le entrega un carácter de tu texto. Cada línea que
+      publicidad y de medición vienen de Google. A ninguno se le entrega un
+      carácter de tu texto. Cada línea que
       lo lee, lo analiza o lo escribe se sirve desde este origen y está en el
       repositorio."""
 

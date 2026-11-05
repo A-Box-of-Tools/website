@@ -163,7 +163,7 @@ body = """
 [[privacy]]
 title = "O que os outros scripts da página recebem."
 body = """
-      Os scripts de publicidade, medição e do botão de doação do site carregam
+      Os scripts de publicidade e medição do site carregam
       como nas outras ferramentas. Eles não recebem fotos, texto do OCR, nomes
       de arquivo, nomes de estabelecimentos, valores nem quantidades de
       documentos. O código que lê as fotos e monta o relatório é servido por

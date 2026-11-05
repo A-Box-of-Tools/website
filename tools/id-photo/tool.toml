@@ -30,7 +30,7 @@ css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -157,8 +157,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your photograph, your face,
+      measurement scripts come from Google. None of them is handed anything
+      about your photograph, your face,
       or which country's rule you picked. Every line that reads, crops, measures
       or writes a file is served from this origin and listed in the
       repository."""

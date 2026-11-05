@@ -13,7 +13,7 @@ css_parts = ["form", "notes", "paired-tools"]
 js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "peer-approval-ui", "voice-session", "voice-identity", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 supports_relay = true
-lastmod = "2026-10-17"
+lastmod = "2026-11-03"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice to up to ten receive-only browsers. Direct local connections or optional Cloud relay, with push to talk, hands-free speech and private group discovery."
@@ -66,7 +66,7 @@ title = "Temporary loss reconnects; End and Leave stop retries."
 body = " A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Healthy hidden connections and explicitly enabled hands-free speech continue while the browser allows. A physical hold releases on blur or hiding. A microphone interruption stops talking while preserving the channel; an ended microphone can be replaced on returning to the page or with Resume microphone. Recovery stays silent until you deliberately talk again. If the browser suspends the page, returning attempts to restore the same channel and invitation, with Resume channel available when an action is required. End broadcast prevents automatic resumption and creates a new invitation on the next Start. Leave closes one listener and its retries. Background timers, connection limits and sleeping devices can delay recovery."
 [[privacy]]
 title = "The website's regular scripts still run on this page."
-body = " The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
+body = " The page uses the site's usual advertising and measurement scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
 
 [[howto]]
 title = "Start directly on this website."

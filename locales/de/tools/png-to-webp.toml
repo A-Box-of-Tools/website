@@ -49,7 +49,7 @@ body = "Das Bild wird dekodiert und auf ein Canvas gezeichnet, das nur Pixel ent
 
 [[privacy]]
 title = "Was Google lädt und welche Informationen es nicht erhält."
-body = " Werbe- und Messskripte kommen von Google, die Spendenschaltfläche von Buy Me a Coffee. Keines davon erhält Informationen über Ihre Bilder. Jede Zeile, die eine Datei liest, dekodiert oder schreibt, wird von dieser Herkunft ausgeliefert und steht im Repository."
+body = " Werbe- und Messskripte kommen von Google. Keines davon erhält Informationen über Ihre Bilder. Jede Zeile, die eine Datei liest, dekodiert oder schreibt, wird von dieser Herkunft ausgeliefert und steht im Repository."
 
 [[privacy]]
 title = "Es funktioniert offline."

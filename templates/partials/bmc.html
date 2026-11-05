@@ -1,17 +1,16 @@
 <!--
-  Buy Me a Coffee's own snippet, unchanged, and deliberately neither async nor
-  deferred: it ends in document.writeln, which appends here only while the
-  parser is still at this point in the page. Deferred, it would run after
-  parsing and document.write would blank the document instead. The cost of that
-  is honest and worth stating - this tag blocks the parser until the script
-  arrives, so what follows it waits on a third party.
-
-  The two origins it reaches, cdnjs.buymeacoffee.com and fonts.googleapis.com
-  (then fonts.gstatic.com for the face itself), are named in the
-  Content-Security-Policy above, so a live check counts them as part of the page
-  rather than as an unexplained request. The cup is an inline SVG, so no image
-  is fetched, and nothing about your files goes out with any of it: the button
-  is a link, followed only if somebody clicks it. Offline the request fails and
-  nothing is written - the tool is unaffected.
+  An ordinary link, and it should stay one. This used to be Buy Me a Coffee's own
+  snippet: a classic script that drew the button with document.writeln, which
+  cannot be deferred, so everything after this point in the page - the tool
+  included - waited for a third party to answer, and a web font came with it. A
+  link costs none of that and does the same job. The cup is drawn here and the
+  lettering is the page's own, so nothing is fetched from anybody until somebody
+  follows the link. The look is in shared/css/tool-frame.css.
 -->
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="{{ site.bmc.slug }}" data-color="{{ site.bmc.color }}" data-emoji="" data-font="{{ site.bmc.font }}" data-text="{{ site.bmc.text }}" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+<a class="bmc-link" href="https://www.buymeacoffee.com/{{ site.bmc.slug }}" target="_blank" rel="noopener noreferrer">
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+    <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          d="M5 7h14M6.2 7l1.3 14h9l1.3-14M8 7l.7-4h6.6l.7 4M6.8 12h10.4"/>
+  </svg>
+  {{ site.bmc.text }}
+</a>

@@ -49,7 +49,7 @@ body = "Un data URI copie le fichier exactement&nbsp;: la position GPS d'une pho
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur vos images. Chaque ligne qui lit ou encode un fichier est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur vos images. Chaque ligne qui lit ou encode un fichier est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."
