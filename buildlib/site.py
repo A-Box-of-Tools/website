@@ -557,6 +557,7 @@ def load_tool(path, site):
     if relay and 'peer-transport' not in tool.get('js_parts', []):
         raise ConfigError(f'{path}: supports_relay requires peer-transport in js_parts')
     tool['supports_relay'] = relay
+    tool['info_tips'] = wants_info_tips(tool)
 
     for key in ('plural', 'choose'):
         if key not in tool['words']:
@@ -723,6 +724,15 @@ def version_imports(text, version):
 
 URL_IMPORT_PART = 'url-import'
 
+# The information mark's module, which the frame loads rather than the tool. A
+# paired tool does not get to choose: the frame draws a mark beside its version.
+# Without the module a mark still opens on a click, being a <details>, and does
+# nothing else a popup should, which is quiet enough that four of the five paired
+# tools shipped that way. So a body that draws one has to ask - see
+# refuse_unwired_info_tips.
+INFO_TIP_PART = 'info-tip'
+INFO_TIP_MARKUP = re.compile(r'<details\b[^>]*\bclass="(?:[^"]*\s)?info-tip[\s"]')
+
 # The shared modules no tool asks for, because every tool page needs them:
 # shared/js/phrases.js reads the words off the page, and every tool page has
 # words on it that JavaScript puts there; shared/js/trust.js fills in the live
@@ -739,11 +749,25 @@ def wants_urls(tool):
     return bool(tool.get('picker', {}).get('urls'))
 
 
+def wants_info_tips(tool):
+    return (tool.get('requires_pairing', False)
+            or INFO_TIP_PART in tool.get('js_parts', []))
+
+
+def refuse_unwired_info_tips(tool, body):
+    if INFO_TIP_MARKUP.search(body) and not wants_info_tips(tool):
+        raise ConfigError(
+            f'{tool["slug"]}: its body draws an information mark, so "{INFO_TIP_PART}" '
+            'has to be in js_parts. See "Shared parts" in docs/adding-a-tool.md.')
+
+
 def js_parts(tool):
     parts = list(FRAME_PARTS)
     parts += [part for part in tool.get('js_parts', []) if part not in FRAME_PARTS]
     if wants_urls(tool) and URL_IMPORT_PART not in parts:
         parts.append(URL_IMPORT_PART)
+    if wants_info_tips(tool) and INFO_TIP_PART not in parts:
+        parts.append(INFO_TIP_PART)
     return parts
 
 

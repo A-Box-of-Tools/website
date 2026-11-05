@@ -1,7 +1,6 @@
 /** UI wiring and the two roles: the sharer's tab, and a reader's. */
 
 import { phrase } from './shared/phrases.js';
-import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 import { makeShareUrl, isLocalLink } from './network.js';
@@ -449,8 +448,6 @@ $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 $('local').addEventListener('change', () => {
   $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
 });
-wireHelpTooltip($('discoverable-help'));
-wireHelpTooltip($('tool-version-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 
