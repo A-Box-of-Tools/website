@@ -529,7 +529,7 @@ test('pending sockets are capped per address, and another address still gets in'
   const refused = await from('198.51.100.1');
   assert.equal(refused.closed.code, 4429);
   assert.deepEqual(last(refused), { type: 'error', error: 'full' });
-  assert.deepEqual(refused.tags, ['refused']);
+  assert.deepEqual(refused.tags, [], 'no object holds it');
   assert.equal(refused.deserializeAttachment(), null);
   // All of a /64 is one address, and the neighbouring /64 is not.
   for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);

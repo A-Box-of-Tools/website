@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import worker, { Room } from '../../workers/rendezvous/worker.js';
 import { broadcastCode } from '../../workers/rendezvous/broadcast.js';
 import { DISCOVERY_SCOPE_HEADER } from '../../workers/rendezvous/discovery.js';
+import { completeRefusal } from '../../workers/rendezvous/refusal.js';
 
 const NativeResponse = globalThis.Response;
 const nativePair = globalThis.WebSocketPair;
@@ -83,7 +84,7 @@ async function system(extraEnv = {}) {
   }, ...extraEnv };
   const s = { ctx, env, withdrawals, room: new Room(ctx, env), digest: await broadcastCode(KEY), otherDigest: await broadcastCode(OTHER_KEY) };
   s.open = async (query, headers = {}) => {
-    const response = await s.room.fetch(new Request(`https://room.internal/ws/${CODE}?${query}`, { headers: { Upgrade: 'websocket', ...headers } }));
+    const response = completeRefusal(await s.room.fetch(new Request(`https://room.internal/ws/${CODE}?${query}`, { headers: { Upgrade: 'websocket', ...headers } })));
     assert.equal(response.status, 101);
     return response.webSocket.peer;
   };
@@ -104,24 +105,45 @@ const clock = (t, start = 1000000) => {
 const hosting = (ws) => ws.deserializeAttachment()?.role === 'host';
 const prove = (s, ws, key = KEY) => s.send(ws, { type: 'host-proof', key });
 
-test('a refusal is held under a tag of its own, and no count sees it', async () => {
-  const s = await system();
-  const refused = await s.viewer();
-  assert.equal(refused.closed?.code, 4404);
-  assert.deepEqual(refused.tags, ['refused']);
-  assert.equal(refused.deserializeAttachment(), null);
-  // Its peer may not have answered the close yet.
-  refused.readyState = 1;
-  assert.equal(s.ctx.getWebSockets('viewer').length, 0);
-  assert.equal(s.ctx.getWebSockets('host').length, 0);
+// How soon a page hears a refusal depends on which side closes it, and only a real
+// runtime can show the timing (see refusal.js). What this holds is the shape that
+// produces it: the object answers without taking a socket, for every door refusal.
+test('a refusal at the door is decided by the object and closed outside it', async () => {
+  const s = await system({ RELAY_TOOLS: '' });
+  const knock = async (query, code, reason) => {
+    const held = s.ctx.sockets.length;
+    const answer = await s.room.fetch(new Request(`https://room.internal/ws/${CODE}?${query}`, { headers: { Upgrade: 'websocket' } }));
+    assert.equal(answer.webSocket, undefined, query);
+    assert.equal(s.ctx.sockets.length, held, query);
+    const refused = completeRefusal(answer).webSocket.peer;
+    assert.deepEqual(refused.closed, { code, reason }, query);
+    assert.deepEqual(refused.tags, [], query);
+  };
+  await knock('role=viewer', 4404, 'no-host');
+  await knock('role=watcher', 4400, 'bad-role');
+  await knock('role=host&transport=relay', 4413, 'relay-unavailable');
   const host = await s.host(null);
-  assert.equal(hosting(host), true);
-  assert.equal(s.room.hosts().length, 1);
-  await s.send(refused, '{}');
-  await s.send(refused, { data: {} });
-  assert.deepEqual(host.messages, [], 'a frame from it reaches nobody');
-  s.leave(refused);
-  assert.equal(host.readyState, 1, 'and its close disturbs nobody');
+  await knock('role=host', 4409, 'taken');
+  await knock('role=viewer&transport=relay', 4412, 'transport-mismatch');
+  for (let i = 0; i < 16; i += 1) await s.viewer();
+  await knock('role=viewer', 4429, 'full');
+  assert.equal(host.readyState, 1, 'the room goes on');
+  assert.deepEqual(host.messages, [], 'having heard nothing of them');
+});
+
+test('the front of the Worker completes a refusal, and its private answer stops there', async () => {
+  const s = await system();
+  const env = {
+    ROOMS: { idFromName: (name) => name, get: () => ({ fetch: (request) => s.room.fetch(request) }) },
+    LIMIT: { limit: async () => ({ success: true }) },
+  };
+  const response = await worker.fetch(new Request(`https://rendezvous.example/ws/${CODE}?role=viewer`, {
+    headers: { Upgrade: 'websocket', Origin: 'https://abox.tools', 'CF-Connecting-IP': '1.2.3.4' },
+  }), env);
+  assert.equal(response.status, 101);
+  assert.deepEqual([...response.headers.keys()].filter((name) => name.startsWith('x-')), []);
+  assert.deepEqual(response.webSocket.peer.closed, { code: 4404, reason: 'no-host' });
+  assert.equal(s.ctx.sockets.length, 0);
 });
 
 test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {

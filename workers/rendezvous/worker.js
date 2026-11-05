@@ -42,6 +42,7 @@ import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvo
 import { Broadcast, broadcastCode } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
 import { answerRelayRequest, relayEnabled, relayPolicy, relayServers, validRelayRequest } from "./relay.js";
+import { completeRefusal, refusal } from "./refusal.js";
 import { requestNetwork } from "../shared/address.js";
 
 export { Broadcast, Discovery, Inbox, relayServers };
@@ -91,7 +92,7 @@ export default {
       const headers = new Headers(request.headers);
       headers.delete(DISCOVERY_SCOPE_HEADER);
       if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
-      return env.BROADCASTS.get(env.BROADCASTS.idFromName(broadcast[1])).fetch(new Request(request, { headers }));
+      return completeRefusal(await env.BROADCASTS.get(env.BROADCASTS.idFromName(broadcast[1])).fetch(new Request(request, { headers })));
     }
     const inbox = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/);
     if (inbox) {
@@ -104,7 +105,7 @@ export default {
       const headers = new Headers(request.headers);
       headers.delete(DISCOVERY_SCOPE_HEADER);
       if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
-      return env.INBOXES.get(env.INBOXES.idFromName(inbox[1])).fetch(new Request(request, { headers }));
+      return completeRefusal(await env.INBOXES.get(env.INBOXES.idFromName(inbox[1])).fetch(new Request(request, { headers })));
     }
     const room = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/);
     if (room || url.pathname === "/discover") {
@@ -143,8 +144,8 @@ export default {
       headers.delete(DISCOVERY_SCOPE_HEADER);
       if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
       const forwarded = new Request(request, { headers });
-      if (discover) return env.DISCOVERY.get(env.DISCOVERY.idFromName(scope)).fetch(forwarded);
-      return env.ROOMS.get(env.ROOMS.idFromName(roomName(room[1], tool))).fetch(forwarded);
+      if (discover) return completeRefusal(await env.DISCOVERY.get(env.DISCOVERY.idFromName(scope)).fetch(forwarded));
+      return completeRefusal(await env.ROOMS.get(env.ROOMS.idFromName(roomName(room[1], tool))).fetch(forwarded));
     }
     return new Response("not found", { status: 404 });
   },
@@ -163,9 +164,9 @@ const PROOF_TIMEOUT = 8000;
 const HOST_GRACE = 120000;
 
 // The one line this worker prints. A refusal completes the upgrade with 101
-// exactly like an admission, so the invocation log cannot tell the two apart;
-// this can, and it carries the code alone - no name, no address, nothing a
-// person typed.
+// exactly like an admission, so the visitor's request reads the same in the
+// invocation log; this says which it was, and it carries the code alone - no
+// name, no address, nothing a person typed.
 const logRefusal = (code, reason) => console.log(JSON.stringify({ refused: code, reason }));
 
 // One room. Sockets are tagged with their role - viewers also with a random
@@ -299,17 +300,9 @@ export class Room {
     const local = url.searchParams.get("local") === "1";
     const offered = role === "host" && (local || tool === "share-text" && group !== undefined)
       && url.searchParams.get("discover") === "1" && validScope(scope);
-    const { 0: client, 1: server } = new WebSocketPair();
-
-    // A refused handshake reaches the browser as a bare error with nothing
-    // attached, so rejections complete the upgrade and then close with a
-    // 4xxx code the page can read. It is accepted the way an admission is, under
-    // a tag no count looks for, and with no attachment every handler passes over it.
     const refuse = (code, reason) => {
       logRefusal(code, reason);
-      this.ctx.acceptWebSocket(server, ["refused"]);
-      server.close(code, reason);
-      return new Response(null, { status: 101, webSocket: client });
+      return refusal(code, reason);
     };
 
     for (const ws of this.ctx.getWebSockets("host")) {
@@ -324,13 +317,16 @@ export class Room {
       const claimed = hosts[0]?.deserializeAttachment() ?? this.vacated();
       if (claimed && (holder === undefined || claimed.holder !== holder)) return refuse(4409, "taken");
       if (transport === 'relay' && !relayEnabled(this.env, tool)) return refuse(4413, 'relay-unavailable');
+      const { 0: client, 1: server } = new WebSocketPair();
       this.ctx.acceptWebSocket(server, ["host"]);
       const claim = { code, tool, scope, local, offered, transport, transportPinned, holder };
       if (claimed) {
         server.serializeAttachment({ role: "pending", claim, deadline: Date.now() + PROOF_TIMEOUT, window: Date.now(), updates: 0 });
         server.send(JSON.stringify({ type: "host-prove" }));
       } else this.seat(server, claim);
-    } else if (role === "viewer") {
+      return new Response(null, { status: 101, webSocket: client });
+    }
+    if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
       const owner = hosts[0].deserializeAttachment();
       if ((owner?.transport ?? 'direct') !== transport) return refuse(4412, 'transport-mismatch');
@@ -340,16 +336,16 @@ export class Room {
       // prefixed to be unmistakable for a role, and a host's `to` is honoured
       // only in that shape. Without both, `to: "viewer"` would reach the room.
       const id = "v:" + crypto.randomUUID();
+      const { 0: client, 1: server } = new WebSocketPair();
       this.ctx.acceptWebSocket(server, ["viewer", id]);
       server.serializeAttachment({ role: "viewer", id, transport, generation: owner?.generation, window: Date.now(), updates: 0 });
       // Nothing tells the host yet. A reader's page opens this socket to ask
       // whether anyone is sharing, and promises the host hears nothing of them
       // until they choose to connect.
       server.send(JSON.stringify({ type: "ready", ...(transport === 'relay' ? { transport } : {}) }));
-    } else {
-      return refuse(4400, "bad-role");
+      return new Response(null, { status: 101, webSocket: client });
     }
-    return new Response(null, { status: 101, webSocket: client });
+    return refuse(4400, "bad-role");
   }
 
   // A host answers every reader through this one socket, so a room filling at
