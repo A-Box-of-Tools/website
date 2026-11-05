@@ -93,6 +93,27 @@ body {
   font-size: 1.02rem;
 }
 
+/* The number on the 404 page, big enough to outweigh the grid of tools under it:
+   that grid is what makes the page look like an index rather than an error.
+   Its own line, so the sentence beside it stays the size of any other heading.
+   Why it is shown at all is in templates/404.html.
+
+   The heading's own bold, and nothing heavier. Segoe UI Variable stops at 700,
+   so asking Windows for more gets a smeared imitation that all but closes the
+   holes in the 4s, and at this size that is the first thing anybody sees. */
+.not-found-code {
+  display: block;
+  margin-bottom: 0.15em;
+  color: var(--accent);
+  font-size: clamp(5rem, 3.5rem + 7vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* The error, then the way out of it. Left at the usual gap, the explanation
+   runs straight into the heading of the list and the two read as one thing. */
+.not-found-head { padding-bottom: 1.75rem; }
+
 /* Three previews per category let a visitor scan the whole box before opening
    one group. These rules belong to the homepage, leaving article pages
    at the widths they were written for. */

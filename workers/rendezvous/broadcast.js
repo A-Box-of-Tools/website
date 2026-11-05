@@ -4,11 +4,11 @@
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, clearApprovals } from "./voice-approval.js";
+import { admitPending, pendingSource } from "./pending.js";
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 const MAX_LISTENERS = 10;
-const MAX_PENDING = 4;
 const AUTH_TIMEOUT = 8000;
 const MAX_MESSAGE = 64 * 1024;
 const RATE_WINDOW = 10000;
@@ -166,16 +166,19 @@ export class Broadcast {
     }
     const code = url.pathname.match(/^\/broadcast\/([a-f0-9]{64})$/)?.[1];
     if (!code || !validVoiceQuery(url) || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
+    // Digesting yields to other sockets, so the count and the accept below stay
+    // in one synchronous step after it.
+    const source = await pendingSource(request, code);
     this.cleanup();
     const { 0: client, 1: server } = new WebSocketPair();
-    if (this.sockets("pending").length >= MAX_PENDING) {
-      server.accept();
+    if (!admitPending(this.sockets("pending"), source, (ws) => this.refuse(ws, 4429, "full"))) {
+      this.ctx.acceptWebSocket(server, ["refused"]);
       server.send(JSON.stringify({ type: "error", error: "full" }));
       server.close(4429, "full");
     } else {
       const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
       this.ctx.acceptWebSocket(server, ["broadcast"]);
-      server.serializeAttachment({ role: "pending", code, scope: validScope(scope) ? scope : null,
+      server.serializeAttachment({ role: "pending", code, source, scope: validScope(scope) ? scope : null,
         deadline: Date.now() + AUTH_TIMEOUT,
         window: Date.now(), updates: 0 });
     }

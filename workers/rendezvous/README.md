@@ -16,7 +16,9 @@ One Room Durable Object per text/camera tool and code word, a Discovery Durable
 Object per tool, origin and network or private group, and separate Broadcast and
 Inbox Durable Objects per voice invitation. No application storage is ever written;
 room authority and directory entries live in socket attachments. Text/camera
-rooms end when their sharer disconnects. Voice listeners can remain parked
+rooms end when their sharer disconnects, though a host whose connection was lost
+rather than closed leaves its digest in the object's memory for two minutes, as
+described under the protocol below. Voice listeners can remain parked
 while their host reconnects; their room disappears when its last socket leaves.
 What it can see: that an invitation or code word is in use, when peers come
 and go, their IP addresses, and negotiation metadata. The voice object also
@@ -34,7 +36,7 @@ That is what it sees. What it stores is a shorter list, and no longer an
 empty one: `observability.logs` in `wrangler.toml` asks Cloudflare to keep
 its own record of every invocation for seven days, readable in the Workers
 dashboard. That record is the request and its outcome - the URL, which for
-text/camera carries the code word and role, and the metadata Cloudflare attaches to
+text/camera carries the code word, role and a host's opaque digest, and the metadata Cloudflare attaches to
 it - and never a payload. Voice URLs carry an opaque digest of the host secret;
 both voice capabilities enter the first WSS message, never the URL. The worker
 adds one line of its own on a text/camera refusal,
@@ -146,6 +148,15 @@ Direct uses host-only ICE without public STUN or TURN; Cloud relay requests
 credentials through the shared protocol below. Approval and acknowledgement stay
 on the encrypted control channel; the worker carries neither them nor video.
 
+### The host digest
+
+Text, camera and tab hosts now name a digest and prove it when replacing their own
+stale socket; the protocol below says how. It adds no class, binding, migration,
+secret or storage. Deploy this worker first, as usual, though either order works:
+an older worker ignores the `holder` parameter and never asks for proof, and a
+cached page names no digest and goes on hosting first come. Hosts are covered once
+the pages that send a digest are live.
+
 ### The discovery migration
 
 The local discovery page needs this worker deployed; the static site build
@@ -200,9 +211,12 @@ existing local-only requirement, and the other tools retain their local flag.
 Malformed and duplicate group parameters fail before a room is forwarded.
 Malformed, wrong or repeated proof frames close the discovery socket rather
 than fall back to network discovery. Pending proofs expire after eight
-seconds, checked on the next request or message without a periodic alarm;
-there are at most eight pending proofs and 64 observers per directory. A
-pending socket never receives directory broadcasts. The existing 32-entry
+seconds, checked on the next request or message without a periodic alarm. A
+directory holds four per IPv4 address or IPv6 /64, recognised by a digest salted
+with the directory's scope that is dropped once the socket proves itself, and at
+32 in all the longest-waiting closes with 4429 `full`, rather than the newcomer
+being refused. A pending socket never receives directory broadcasts and takes
+none of the 64 seats described under the protocol below. The existing 32-entry
 cap, update limits, live-lease verification, refresh checks and authoritative
 host withdrawals also apply to private groups, including stale asynchronous
 checks after Stop or disconnect.
@@ -323,22 +337,46 @@ transport, host approval, password or microphone consent.
 ## The protocol, in full
 
 - The handshake is answered only for the site's own pages: the browser's
-  `Origin` must be `https://abox.tools`, or localhost on any port for a build
-  being tried on a developer's machine. Anything else is refused with 403
-  before a room is touched. Origin is the one header a page cannot forge, so
-  this stops another site borrowing the switchboard; it does not stop a
-  script, which is what the next line is for.
-- One address may open thirty sockets a minute, counted per Cloudflare
-  location; the thirty-first is refused with 429. The start page opens a
-  discovery socket and a host adds one room socket; each reader opens one
+  `Origin` must be `https://abox.tools`, `https://<anything>.abox-preview.pages.dev`
+  for a pull request's preview, or `localhost` or `127.0.0.1` on any port, over
+  HTTP or HTTPS, for a build being tried on a developer's machine. Anything else
+  is refused with 403 before a room is touched. Origin is the one header a page
+  cannot forge, so this stops another site borrowing the switchboard; it does not
+  stop a script, which is what the next line is for.
+- One IPv4 address or IPv6 /64 may open thirty sockets a minute, counted per
+  Cloudflare location; the thirty-first is refused with 429. A /64 counts as one
+  because a single customer normally holds all of it. The start page
+  opens a discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
+- A socket that sends more than 120 frames in a rolling ten seconds is closed with
+  4429 `busy`. Frames are counted before they are parsed, so malformed and empty
+  ones count too. A host's allowance is that many per connected viewer, because
+  every reader negotiates through its one socket. `ping` is answered by the runtime
+  and is not counted.
 - A host connects to `/ws/<code>?role=host&transport=direct` or `transport=relay`;
-  its mode is pinned for that generation. A second host on a live code is
-  refused with close code 4409.
+  its mode is pinned for that generation. Current pages add `holder=<digest>`, the
+  lowercase hex SHA-256 of a random 43-character key that stays in the page. A
+  second host on a live code is refused with close code 4409, unless it names the
+  same digest. Then it gets `{type: "host-prove"}` and sends
+  `{type: "host-proof", key}`; the digest alone can be read from a log, so only the
+  key replaces the existing socket, which is closed 4409 "replaced". Its viewers
+  get 4410 as they would have had it closed first. A wrong key closes with 4409 and
+  silence closes with 4408 after eight seconds. Cached pages name no digest, keep
+  first-come hosting, and can neither displace a holder nor be displaced by one.
+- A voice room can recognise its host after every socket has gone because its code
+  is the digest. A text or camera room is named by people, so when a host naming a
+  digest loses its connection without a close frame, the object keeps that digest in
+  memory for two minutes and refuses anyone else 4409 while its retry is on the way.
+  A clean close (Stop, navigation, a closed tab) frees the name at once. This is
+  deliberately memory, never storage. What is known about the reach of this and the
+  frame limit is kept in the [lab](https://github.com/A-Box-of-Tools/etoolbox-lab).
 - A viewer connects with `?role=viewer` and the matching `transport`; with no host present it is refused
-  4404, past the room cap 4429. Otherwise the host learns `{join, id}` and
-  the viewer gets `{ready}`. The id is opaque to the page and begins `v:`,
-  so that it can never spell a role.
+  4404, past the room cap 4429. Otherwise the viewer gets `{ready}` and the host
+  hears nothing: a reader's page opens this socket to ask whether anyone is
+  sharing, before its visitor has agreed to connect. The host first learns of a
+  reader from its first signal, and only a reader who has sent one produces a
+  `{leave, id}` when it goes. The id is opaque to the page and begins `v:`, so
+  that it can never spell a role.
   Mismatched transport closes with 4412; a disabled relay service closes with
   4413. Duplicate or unknown transport query values are refused. Omitted mode
   means Direct for old clients; new clients always send an explicit mode.
@@ -364,10 +402,14 @@ transport, host approval, password or microphone consent.
 ## The discovery protocol
 
 - The start page opens `/discover` with a WebSocket upgrade, scoped by the
-  worker as described above. A directory group permits 64 observer sockets
-  and 32 listed share codes. Snapshots contain `{code, local: true}` entries
-  and no addresses. Voice namespaces additionally carry the verified room
-  metadata described below.
+  worker as described above. A directory seats 64 observers and lists 32 share
+  codes. Snapshots contain `{code, local: true}` entries and no addresses. Voice
+  namespaces additionally carry the verified room metadata described below.
+- A full directory still seats a newcomer, after its proof if the directory is
+  private, so a host arriving late can list. The observer seated longest closes
+  with 4429 `full`, and its page retries in thirty seconds as it does after any
+  lost socket. An observer holding a listing keeps its seat, one per listed code,
+  so listings can occupy at most half of them.
 - A local host that wants listing opens
   `/ws/<code>?role=host&local=1&discover=1`. Its room issues a random lease
   in `{type: "host-ready", discovery: {code, lease}}`. Ordinary hosts keep
@@ -383,11 +425,13 @@ transport, host approval, password or microphone consent.
   Discovery through its private binding at `POST /_discovery/withdraw` with
   `{code, lease}`. That cancels matching pending or verified listings and
   broadcasts the change; an earlier host's lease cannot remove a newer one.
-- `{refresh: true}` revalidates the listed rooms' leases and broadcasts a
-  fresh snapshot, so refreshing cannot preserve a vanished host's listing.
+- `{refresh: true}` is answered with a snapshot. At most once per ten seconds per
+  directory it first revalidates the listed rooms' leases and broadcasts the result,
+  which repairs a withdrawal that never arrived.
 - Incoming discovery messages are limited to 512 UTF-16 code units and an
   observer may send 120 publication, withdrawal or refresh updates per
-  connection.
+  connection. More than 120 frames of any kind, valid or not, in a rolling ten
+  seconds closes the socket.
   The usual origin checks, address connection limit and automatic ping/pong
   responses also apply. The page does not send text or files to this socket.
 
@@ -474,7 +518,11 @@ network discovery or only `group=<public identifier>` for a private group.
   A current host receives `{type: "leave", id, generation}`. Socket close,
   error, and failed sends perform the same cleanup without duplicate events.
 - A room permits ten listener sockets, including waiting ones, and four
-  pending handshakes. Silent pending authentication expires after eight
+  pending handshakes per IPv4 address or IPv6 /64, recognised by a digest salted
+  with the room's code that is dropped once the socket authenticates. Another
+  address is unaffected.
+  At 32 pending in all the longest-waiting closes with 4429 `full`, rather than
+  the newcomer being refused. Silent pending authentication expires after eight
   seconds, checked at the next request or message without a periodic alarm.
   Frames are limited to 64 Ki UTF-16 units, SDP to 32 Ki, and ICE strings to
   4096 characters. Each socket may send 120 updates per ten-second window.

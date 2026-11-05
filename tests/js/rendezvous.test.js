@@ -153,6 +153,22 @@ test('the limit is counted per address, not per room', async () => {
   assert.deepEqual(e.asked.rooms, ['id:one', 'id:two']);
 });
 
+test('one IPv6 /64 is one budget at every door', async () => {
+  const e = env();
+  const stub = { idFromName: (name) => name, get: () => ({ fetch: async () => new Response('room', { status: 200 }) }) };
+  e.BROADCASTS = stub; e.INBOXES = stub;
+  const voice = 'a'.repeat(64);
+  for (const path of ['/ws/one', '/discover', `/broadcast/${voice}`, `/inbox/${voice}`]) {
+    e.asked.keys.length = 0;
+    for (const address of ['2606:4700:4700:ab::1', '2606:4700:4700:ab::2', '2606:4700:4700:AB:9876:5432:abcd:ef01']) {
+      assert.equal((await worker.fetch(upgrade(path, { Origin: OURS, 'CF-Connecting-IP': address }), e)).status, 200, path);
+    }
+    assert.deepEqual(e.asked.keys, Array(3).fill('2606:4700:4700:ab::/64'), path);
+    await worker.fetch(upgrade(path, { Origin: OURS, 'CF-Connecting-IP': '2606:4700:4700:ac::1' }), e);
+    assert.equal(e.asked.keys.at(-1), '2606:4700:4700:ac::/64', path);
+  }
+});
+
 test('discovery requires an upgrade, the page origin, and the existing address limit', async () => {
   const e = env();
   assert.equal((await worker.fetch(new Request(HOST + '/discover', { headers: { Origin: OURS } }), e)).status, 426);

@@ -196,7 +196,7 @@ og_image_alt = "abox.tools - ブラウザー内でファイルをローカル処
 #
 
 [not_found]
-title = "ページが見つかりません｜abox.tools"
+title = "404：ページが見つかりません｜abox.tools"
 description = "このアドレスはabox.toolsにありません。端末上でファイルを処理できる無料のブラウザーツールはこちらです。"
 heading = "このページはここにはありません"
 tools_heading = "すべてのツールを一か所に"

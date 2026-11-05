@@ -247,7 +247,7 @@ og_description = "Les outils terminés et ceux à venir. Traitement local ; les 
 og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
 
 [not_found]
-title = "Page introuvable &mdash; abox.tools"
+title = "404&nbsp;: Page introuvable &mdash; abox.tools"
 description = "Cette adresse n’existe pas sur abox.tools. Voici les outils gratuits de navigateur pour traiter les fichiers sur votre appareil."
 heading = "Cette page n'est pas ici"
 tools_heading = "Tous les outils, au même endroit"

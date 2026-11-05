@@ -769,6 +769,27 @@ test('admitted and pending limits, auth deadlines, malformed frames and update b
   }
 });
 
+test('pending sockets are capped per address, and the host still gets in', async (t) => {
+  let now = 1000;
+  t.mock.method(Date, 'now', () => now);
+  const s = await system(), waiting = [];
+  const from = async (address) => (await worker.fetch(s.request(undefined, { 'CF-Connecting-IP': address }), s.env)).webSocket.peer;
+  for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
+  const refused = await from('2606:4700:4700:ab:9876:5432:abcd:ef01');
+  assert.equal(refused.closed.code, 4429);
+  assert.deepEqual(last(refused), { type: 'error', error: 'full' });
+  assert.deepEqual(refused.tags, ['refused']);
+  assert.equal(refused.deserializeAttachment(), null);
+  for (let address = 1; address <= 7; address += 1) {
+    for (let i = 0; i < 4; i += 1) { waiting.push(await from(`198.51.100.${address}`)); now += 1; }
+  }
+  const host = await from('203.0.113.9');
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null });
+  assert.equal(last(host).type, 'host-ready');
+  assert.equal(JSON.stringify(state(host)).includes('source'), false, 'nothing about the address outlives the handshake');
+  assert.equal(JSON.stringify(s.room().ctx.sockets.map(state)).includes('198.51.100'), false);
+});
+
 test('asynchronous auth cannot revive a retired socket and failed delivery releases admitted capacity', async (t) => {
   const s = await system(), ws = await s.open(), digest = crypto.subtle.digest.bind(crypto.subtle);
   let release, reached;

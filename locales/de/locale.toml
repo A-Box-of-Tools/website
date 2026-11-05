@@ -410,7 +410,7 @@ og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
 #
 
 [not_found]
-title = "Seite nicht gefunden &mdash; abox.tools"
+title = "404: Seite nicht gefunden &mdash; abox.tools"
 description = "Diese Adresse gibt es auf abox.tools nicht. Hier sind die kostenlosen Browser-Werkzeuge zur Dateiverarbeitung auf Ihrem Gerät."
 heading = "Diese Seite gibt es hier nicht"
 tools_heading = "Alle Werkzeuge auf einen Blick"

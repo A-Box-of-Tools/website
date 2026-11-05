@@ -327,7 +327,7 @@ purpose = "maskable"
 #
 
 [not_found]
-title = "Page not found &mdash; abox.tools"
+title = "404: Page not found &mdash; abox.tools"
 description = "That address does not exist on abox.tools. Here are the free browser tools for processing files on your device."
 heading = "That page is not here"
 tools_heading = "Every tool, in one place"

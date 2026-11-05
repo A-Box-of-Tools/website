@@ -83,7 +83,7 @@ body = """
       junta a quien tecleó un nombre de enlace con quien comparte bajo ese
       nombre, les pasa unos kilobytes de negociación y no retiene nada:
       nunca escribe almacenamiento, y una sala deja de existir en cuanto
-      quien comparte se desconecta. Puede ver que un nombre está en uso,
+      quien comparte se desconecta. Si la conexión de quien comparte se pierde en lugar de cerrarse, solo reserva su nombre en memoria, dos minutos como máximo, para que su reintento lo recupere. Puede ver que un nombre está en uso,
       cuándo llega y se va cada uno, y sus direcciones IP. No puede ver el
       texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta
       la llamada a una compartición privada viaja por el canal directo

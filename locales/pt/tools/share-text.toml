@@ -79,7 +79,7 @@ body = """
       Ele junta quem digitou um
       nome de link com quem compartilha sob esse nome, repassa alguns
       kilobytes de negociação e não retém nada: nunca grava armazenamento, e
-      uma sala deixa de existir assim que quem compartilha se desconecta.
+      uma sala deixa de existir assim que quem compartilha se desconecta. Se a conexão de quem compartilha cair em vez de ser encerrada, ele só reserva o nome na memória, por no máximo dois minutos, para que a nova tentativa o recupere.
       Ele pode ver que um nome está em uso, quando cada um chega e sai, e os
       endereços IP. Não pode ver o texto, os arquivos, quem foi admitido nem
       o que alguém escreveu: até a batida numa porta privada viaja pelo
