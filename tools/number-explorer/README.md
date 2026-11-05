@@ -8,9 +8,36 @@ from silently acquiring a physical volume. Each says what one counted thing is.
 `src/scale.js` is the arithmetic and nothing else. It parses counts exactly as
 BigInt through 10^30, including grouped digits, named powers up to a nonillion,
 decimal suffixes and scientific notation that resolve to whole counts. Approximate
-physical calculations use Number only after the exact count has been validated. It
-also holds the landmark ladders, `placeOnLadder`, which finds what a value has
-passed and what it is climbing toward, and `dialCount`, which lands the dial on two
+physical calculations use Number only after the exact count has been validated.
+
+A count is read against the page's language, because the same characters are a
+different number in another one. "1.000" is a thousand in German and one in English,
+and "1 Billion" is 10^12 in German where "1 billion" is 10^9 in English. The marks come
+from `Intl`, which is where the page's own numbers get theirs, and the words come from
+the `count.words` phrase, a list of `word=power of ten` that each language writes for
+itself: a new language needs no change here, and only needs its list checked against
+the numbers `Intl` prints for it, which the tests do. Words multiply, so "mil millones"
+and 万亿 need no entries of their own. A word its language could mean two ways stays off
+the list and is refused rather than guessed: 兆 in Chinese, where it is a million as
+often as a trillion, and the "bilião" of European Portuguese on a Brazilian page. Han
+numerals are read only ahead of the words, so 三亿 works and 三千五百万 is refused rather
+than multiplied through into a wrong answer. A language switch carries the box as plain
+digits, the one spelling every language reads alike, and leaves the dial behind so its
+two significant digits cannot replace an exact count.
+
+The page writes a big number as a word and never as a power of ten, in the box as well
+as beside it, because somebody who needs a picture to feel a quintillion will not get it
+from 10¹⁸. Scientific notation is still read when somebody types it, just not written.
+`Intl` has words up to about a trillion, and the `count.names` phrase has the rest: the
+one spelling of each that is fit to print, singular first where a language has two
+forms, and every one of them on that language's `count.words` list so the box can read
+back what it wrote. The names are not one list translated. German 10¹² is "Billion" and
+English 10⁹ is "billion", Spanish names only every sixth power, so 10¹⁵ is "1000
+billones", and Chinese composes 亿亿 and 万亿亿 from the words its readers know rather
+than reach for 京 and 垓, which few of them could use.
+
+The module also holds the landmark ladders, `placeOnLadder`, which finds what a value
+has passed and what it is climbing toward, and `dialCount`, which lands the dial on two
 significant digits, because one exact count per position would make most positions
 unreadable. `tests/js/number-explorer.test.js` covers all of it; CI runs those checks.
 
@@ -68,6 +95,17 @@ so a drag across the whole range stays cheap at sixteen thousand dots.
 Scenes get every word they draw from `main.js`, which reads them from `#phrases`. `say.js`
 leaves units to `Intl`, so kilometers and years are already right in every language this
 page is built in, and the phrases hold only what `Intl` has no word for.
+
+A landmark's name is written once, in the form it has standing alone, and is dropped into
+sentences it cannot be declined for. So where a language would need a case or a contracted
+article in front of it, "von die Sterne" or "de el Sol", the sentence is written around a
+colon or an "as" and the name stands in its own form. The same goes for a count, where
+"mil millones de libros" and "100 libros" want different words after the blank.
+
+A translated name can be far longer than the English one, and a phone's stage is under
+300 pixels wide, so nothing here may assume a length. `wrapLines` breaks Chinese and Japanese
+between characters and anything else at spaces and hyphens, a chip shrinks and then takes a
+second line, and `write` and `chip` slide along to stay on the stage when given its width.
 
 The saved picture repaints the current scene off screen and writes the readback, result,
 caption and model assumptions beneath it, so they travel together. All processing is
