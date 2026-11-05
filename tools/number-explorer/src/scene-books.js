@@ -1,4 +1,4 @@
-import { backdrop, chip, clamp, hash, keyed, mix, nebula, nightSky, paintEarth, paintGalaxy, rgba, rounded, scatter, smooth, widthOf, wrapLines, write } from './paint.js';
+import { backdrop, chip, chipBox, clamp, hash, keyed, meets, mix, nebula, nightSky, paintEarth, paintGalaxy, rgba, rounded, scatter, smooth, widthOf, wrapLines, write } from './paint.js';
 
 // A stack of books on one true ruler, from a single book on the floor to a line
 // that crosses the observable universe. The camera is the whole animation: it pulls
@@ -74,15 +74,42 @@ function rulerStep(span) {
   return (lead < 1.6 ? 1 : lead < 3.6 ? 2 : 5) * power * unit;
 }
 
+// The side of its icon a landmark's name goes on: the side with room for one, which takes
+// more than one short word in most languages.
+const namesOnRight = (w, iconX) => w - iconX - 24 >= 72;
+
+// How far a name stands from its icon before it has stopped being that icon's name: its
+// first line can come down level with the icon and no further.
+const NAME_REACH = 8;
+
+// A landmark's name this faint is only just coming into view or just leaving it, so it holds
+// no place in the sky. It takes what room the names that can be read have left.
+const FAINT = 0.35;
+
+// Where a landmark's name goes in the sky, given what has already claimed a place there.
+// It is level with its icon if it can be. If something is over it, it comes down clear of
+// that. And if that would part it from its icon, or there is something under it instead,
+// it goes without, which the answer is null for.
+export function clearedLabelY(y, { left, right }, above, below, claimed) {
+  let at = y;
+  for (let tries = 0; tries <= claimed.length; tries++) {
+    const box = { left, right, top: at - above, bottom: at + below };
+    const hit = claimed.find(other => meets(box, other));
+    if (!hit) return at;
+    at = hit.bottom + 1 + above;
+    if (at - above > y + NAME_REACH) return null;
+  }
+  return null;
+}
+
 export function createBooksScene() {
   const falling = [];
   let settledBooks = 0;
 
-  function drawOverview(ctx, f, scale, view, base, stackX, stackRight, taken) {
-    const { w, h, t, rungs } = f;
+  function drawOverview(ctx, f, scale, view, base, stackX, stackRight, iconX, taken) {
+    const { h, t, rungs } = f;
     const inkDark = smooth(4.2, 4.9, view);
     const lineInk = mix([48, 62, 78], [224, 233, 245], inkDark);
-    const iconX = Math.min(w - 26, Math.max(stackRight + 56, w * 0.64));
     const labels = [];
 
     // Far things are drawn first, at true size, so the stack crosses in front of them.
@@ -113,30 +140,42 @@ export function createBooksScene() {
 
   // Written after everything standing on the ground, because a mountain's name has
   // first claim on the sky above it: the mountain is what the picture is showing there.
-  function writeOverviewLabels(ctx, f, view, { labels, iconX }, taken) {
-    const { w, rungs, words } = f;
+  // What it writes joins `claimed`, because the ruler comes after it and gives way to it.
+  function writeOverviewLabels(ctx, f, view, { labels, iconX }, taken, claimed) {
+    const { w, rungs, words, readout } = f;
     const inkDark = smooth(4.2, 4.9, view);
     // Largest first, so when two labels want one line the one nearer the top of
     // the stack, the next thing to be reached, is the one that keeps it.
     labels.sort((a, b) => b.size - a.size);
     const kept = [];
-    const rightSide = iconX < w * 0.7;
+    const rightSide = namesOnRight(w, iconX);
     const x = rightSide ? iconX + 16 : iconX - 16;
     const align = rightSide ? 'left' : 'right';
     const room = rightSide ? w - x - 8 : x - 8;
     const fill = rgba(mix([24, 34, 46], [240, 245, 252], inkDark));
     const halo = rgba(mix([255, 255, 255], [4, 8, 20], inkDark), 0.78);
+    const skyStarts = readout ? readout.bottom : 84;
     for (const label of labels) {
+      // On a narrow stage the top of the sky is the readout's. What reaches it there is
+      // the next landmark, which the readout is already naming.
+      const alpha = w < 560 ? label.alpha * smooth(skyStarts, skyStarts + 16, label.y) : label.alpha;
+      if (alpha <= 0.01) continue;
       const lines = wrapLines(ctx, words.name(label.id), room, 12, 700);
-      const tall = 32 + (lines.length - 1) * 14;
-      if (kept.some(other => Math.abs(other.y - label.y) < Math.max(tall, other.tall))) continue;
-      const wide = Math.max(...lines.map(line => widthOf(ctx, line, 12, 700)));
+      const sizes = wrapLines(ctx, words.length(rungs.find(r => r.id === label.id).size, 4), room, 11, 500);
+      const tall = 32 + (lines.length - 1) * 14 + (sizes.length - 1) * 13;
+      const wide = Math.max(...lines.map(line => widthOf(ctx, line, 12, 700)), ...sizes.map(line => widthOf(ctx, line, 11, 500)));
       const left = rightSide ? x : x - wide;
-      const top = label.y - 14 - (lines.length - 1) * 14;
-      if (taken.some(box => left < box.right && left + wide > box.left && top < box.bottom && label.y + 16 > box.top)) continue;
-      kept.push({ y: label.y, tall });
-      lines.forEach((line, i) => write(ctx, line, x, label.y - 7 - (lines.length - 1 - i) * 14, { size: 12, weight: 700, fill, halo, align, alpha: label.alpha }));
-      write(ctx, words.length(rungs.find(r => r.id === label.id).size, 4), x, label.y + 8, { size: 11, weight: 500, fill, halo, align, alpha: label.alpha * 0.86 });
+      const above = 14 + (lines.length - 1) * 14;
+      const below = 16 + (sizes.length - 1) * 13;
+      const y = clearedLabelY(label.y, { left, right: left + wide }, above, below, claimed);
+      if (y === null) continue;
+      if (kept.some(other => Math.abs(other.y - y) < Math.max(tall, other.tall))) continue;
+      const box = { left, right: left + wide, top: y - above, bottom: y + below };
+      if (taken.some(other => meets(box, other))) continue;
+      kept.push({ y, tall });
+      claimed.push(box);
+      lines.forEach((line, i) => write(ctx, line, x, y - 7 - (lines.length - 1 - i) * 14, { size: 12, weight: 700, fill, halo, align, alpha }));
+      sizes.forEach((line, i) => write(ctx, line, x, y + 8 + i * 13, { size: 11, weight: 500, fill, halo, align, alpha: alpha * 0.86 }));
     }
   }
 
@@ -380,14 +419,33 @@ export function createBooksScene() {
       const x = Math.max(stackRight + Math.min(wide / 2 + 12, room * 0.5), stackRight + room * (slots[i % 3] - 0.3) / 0.7);
       const labelX = clamp(x, 80, w - 80);
       const labelY = clamp(base - tall - 22, 20, h - 30);
-      const half = widthOf(ctx, words.name(rung.id), 12, 700) / 2;
-      placed.push({ rung, x, tall, wide, alpha, labelX, labelY, box: { left: labelX - half - 4, right: labelX + half + 4, top: labelY - 9, bottom: labelY + 22 } });
+      const half = Math.max(widthOf(ctx, words.name(rung.id), 12, 700), widthOf(ctx, words.length(rung.size, 4), 11, 500)) / 2;
+      placed.push({ rung, x, tall, wide, alpha, labelX, labelY, written: true, box: { left: labelX - half - 4, right: labelX + half + 4, top: labelY - 9, bottom: labelY + 22 } });
     });
     return placed;
   }
 
+  // A landmark's name goes above its top, unless the readout or a chip is there. Then it
+  // comes down over the landmark just far enough, and is still plainly that landmark's
+  // name. It goes without only if that would take it down past the ground. The tallest
+  // goes first, so where two names want one place the lower one, which has further to
+  // come down over its own landmark before it is lost, is the one that moves.
+  function settleStanding(placed, claimed, base) {
+    const held = [...claimed];
+    for (const item of [...placed].reverse()) {
+      for (let tries = 0; tries < held.length; tries++) {
+        const hit = held.find(box => meets(item.box, box));
+        if (!hit) break;
+        const by = hit.bottom + 1 - item.box.top;
+        item.labelY += by;
+        item.box = { ...item.box, top: item.box.top + by, bottom: item.box.bottom + by };
+      }
+      item.written = item.box.bottom <= base && !held.some(box => meets(item.box, box));
+      if (item.written && item.alpha > FAINT) held.push(item.box);
+    }
+  }
+
   function drawStanding(ctx, f, scale, view, base, placed) {
-    const { words } = f;
     const shade = mix([44, 60, 76], [140, 166, 190], smooth(3.8, 4.8, view));
     for (const { rung, x, tall, wide, alpha } of placed) {
       const shape = OUTLINES[rung.id];
@@ -403,16 +461,22 @@ export function createBooksScene() {
       }
       ctx.restore();
     }
+  }
+
+  function writeStandingNames(ctx, f, view, placed) {
+    const { w, words } = f;
     const dark = view > 4.4;
     const fill = dark ? '#eef3fa' : '#1c2733';
     const halo = dark ? 'rgba(4,8,20,.8)' : 'rgba(255,255,255,.85)';
     for (const { rung, alpha, labelX, labelY } of placed) {
-      write(ctx, words.name(rung.id), labelX, labelY, { size: 12, weight: 700, fill, halo, align: 'center', alpha });
-      write(ctx, words.length(rung.size, 4), labelX, labelY + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86 });
+      write(ctx, words.name(rung.id), labelX, labelY, { size: 12, weight: 700, fill, halo, align: 'center', alpha, within: w });
+      write(ctx, words.length(rung.size, 4), labelX, labelY + 14, { size: 11, weight: 500, fill, halo, align: 'center', alpha: alpha * 0.86, within: w });
     }
   }
 
-  function drawRuler(ctx, f, scale, view, base) {
+  // The ruler is the one thing here nobody came to read, so a tick whose number would meet
+  // anything else goes without it. The mark stays, and the next number along says the scale.
+  function drawRuler(ctx, f, scale, view, base, claimed) {
     const metres = (base - 30) / scale;
     const step = rulerStep(metres);
     const dark = smooth(4.2, 4.9, view);
@@ -431,7 +495,9 @@ export function createBooksScene() {
       ctx.moveTo(10.5, y);
       ctx.lineTo(17, y);
       ctx.stroke();
-      write(ctx, f.words.length(value, 3), 21, y, { size: 11, weight: 500, fill: rgba(ink), halo });
+      const label = f.words.length(value, 3);
+      const box = { left: 21, right: 21 + widthOf(ctx, label, 11, 500), top: y - 7, bottom: y + 7 };
+      if (!claimed.some(other => meets(box, other))) write(ctx, label, 21, y, { size: 11, weight: 500, fill: rgba(ink), halo });
     }
     ctx.restore();
   }
@@ -513,9 +579,51 @@ export function createBooksScene() {
     ctx.restore();
   }
 
+  // The chips say the most, so they choose first: how high the stack is, where it stood,
+  // and what it has left behind. They are painted last, over everything, but where they
+  // will be has to be known before anything else is written.
+  function placeChips(ctx, f, scale, view, base, stackX, stackRight, iconX) {
+    const { w, h, amount, words, previous, rungs, readout } = f;
+    const pale = view < 4.4;
+    // On a narrow stage a chip beside the stack on the names' side reaches their column,
+    // whichever landmark the stack is passing, so it goes on the other side of the stack.
+    const opposite = w < 560 && namesOnRight(w, iconX);
+    const height = {
+      line: words.top(amount),
+      x: opposite ? stackX - 8 : stackRight + 8,
+      y: base - amount * scale - 2,
+      options: { size: 12, align: opposite ? 'right' : 'left', fill: pale ? '#16202a' : '#ffffff', ink: pale ? '#ffffff' : '#10161e', within: w, clear: readout, downward: true }
+    };
+    height.box = chipBox(ctx, height.line, height.x, height.y, height.options);
+
+    let before = null;
+    if (previous !== null && previous > 0 && Math.abs(previous - amount) > amount * 1e-6) {
+      const lineY = Math.min(base - 3, base - previous * scale);
+      const line = words.before(previous);
+      const x = stackX - 14;
+      const y = Math.min(lineY, base - 14);
+      const options = { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.3)' : 'rgba(255,255,255,.3)', within: w, clear: height.box, downward: true };
+      const box = chipBox(ctx, line, x, y, options);
+      // A step down from a higher stack leaves the marker in the readout's corner, or off
+      // the top of the stage, and there it has no place to stand.
+      if (lineY > 0 && !(readout && meets(box, readout))) before = { line, x, y, lineY, options, box };
+    }
+
+    // Whatever the stack has outgrown has shrunk to nothing at its foot, and how
+    // far it has been left behind is the whole of the magnification.
+    let left = null;
+    const passed = rungs.filter(rung => rung.size <= amount).pop();
+    if (passed && passed.size * scale < h * 0.06 && amount > passed.size * 1.05) {
+      const line = words.passed(passed.id, amount / passed.size);
+      const options = { size: 11, weight: 600, fill: pale ? 'rgba(255,255,255,.9)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#f5f8fd', stroke: pale ? 'rgba(16,24,34,.2)' : 'rgba(255,255,255,.3)', within: w, clear: before?.box ?? null };
+      left = { line, x: stackRight + 10, y: base - 13, options, box: chipBox(ctx, line, stackRight + 10, base - 13, options) };
+    }
+    return { height, before, left };
+  }
+
   return {
     draw(ctx, f) {
-      const { w, h, amount, words, previous, zero } = f;
+      const { w, h, amount, zero, readout } = f;
       const base = Math.round(h * 0.9);
       // The top of the stack stays clear of the readout in the corner, which takes
       // a larger share of the height the shorter the stage is.
@@ -530,14 +638,17 @@ export function createBooksScene() {
       const stackX = Math.round(Math.max(w * 0.3, 124));
       const stackWidth = Math.max(16, BOOK_WIDTH_M * scale);
       const stackRight = stackX + stackWidth;
+      const iconX = Math.min(w - 26, Math.max(stackRight + 40, w * 0.64));
+      const chips = zero ? null : placeChips(ctx, f, scale, view, base, stackX, stackRight, iconX);
+      const claimed = [readout, chips?.height.box, chips?.before?.box, chips?.left?.box].filter(Boolean);
       const placed = placeStanding(ctx, f, scale, base, stackRight);
-      const taken = placed.filter(item => item.alpha > 0.35).map(item => item.box);
-      const overview = drawOverview(ctx, f, scale, view, base, stackX, stackRight, taken);
+      settleStanding(placed, claimed, base);
+      const solid = placed.filter(item => item.written && item.alpha > FAINT);
+      const taken = solid.map(item => item.box);
+      const overview = drawOverview(ctx, f, scale, view, base, stackX, stackRight, iconX, taken);
       drawClouds(ctx, f, scale, view, base);
       drawStanding(ctx, f, scale, view, base, placed);
       drawGround(ctx, f, scale, view, base, stackX + stackWidth / 2);
-      writeOverviewLabels(ctx, f, view, overview, taken);
-      drawRuler(ctx, f, scale, view, base);
       if (!zero) {
         drawStack(ctx, f, scale, view, base, stackX, stackWidth);
         // Small enough to hide behind the stack, the observable universe is drawn in
@@ -550,29 +661,33 @@ export function createBooksScene() {
           ctx.arc(stackX + stackWidth / 2, base, Math.max(universe, 3), 0, Math.PI * 2);
           ctx.stroke();
         }
-        // Whatever the stack has outgrown has shrunk to nothing at its foot, and how
-        // far it has been left behind is the whole of the magnification.
-        const passed = f.rungs.filter(rung => rung.size <= amount).pop();
-        if (passed && passed.size * scale < h * 0.06 && amount > passed.size * 1.05) {
-          const dim = view < 4.4;
-          chip(ctx, words.passed(passed.id, amount / passed.size), stackRight + 10, base - 13, { size: 11, weight: 600, fill: dim ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,.12)', ink: dim ? '#16202a' : '#f5f8fd', stroke: dim ? 'rgba(16,24,34,.2)' : 'rgba(255,255,255,.22)', within: w, room: w - stackRight - 16 });
-        }
-        const top = base - amount * scale;
-        const pale = view < 4.4;
-        chip(ctx, words.top(amount), stackRight + 8, top - 2, { size: 12, fill: pale ? '#16202a' : '#ffffff', ink: pale ? '#ffffff' : '#10161e', within: w });
-        if (previous !== null && previous > 0 && Math.abs(previous - amount) > amount * 1e-6) {
-          const y = Math.min(base - 3, base - previous * scale);
+      }
+      // Names go on after the stack, because on a narrow stage a long one reaches across
+      // it, and a name behind a stack is half a name.
+      writeStandingNames(ctx, f, view, solid);
+      writeOverviewLabels(ctx, f, view, overview, taken, claimed);
+      for (const item of placed) {
+        if (!item.written || item.alpha > FAINT || [...claimed, ...taken].some(box => meets(item.box, box))) continue;
+        writeStandingNames(ctx, f, view, [item]);
+        claimed.push(item.box);
+      }
+      drawRuler(ctx, f, scale, view, base, [...claimed, ...taken]);
+      if (chips) {
+        const { height, before, left } = chips;
+        chip(ctx, height.line, height.x, height.y, height.options);
+        if (before) {
           ctx.save();
-          ctx.strokeStyle = pale ? 'rgba(16,24,34,.85)' : 'rgba(255,255,255,.85)';
+          ctx.strokeStyle = view < 4.4 ? 'rgba(16,24,34,.85)' : 'rgba(255,255,255,.85)';
           ctx.lineWidth = 1.5;
           ctx.setLineDash([4, 3]);
           ctx.beginPath();
-          ctx.moveTo(stackX - 12, y);
-          ctx.lineTo(stackRight + 6, y);
+          ctx.moveTo(stackX - 12, before.lineY);
+          ctx.lineTo(stackRight + 6, before.lineY);
           ctx.stroke();
           ctx.restore();
-          chip(ctx, words.before(previous), stackX - 14, Math.min(y, base - 14), { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.88)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.3)' : 'rgba(255,255,255,.3)', within: w, room: stackX - 20 });
+          chip(ctx, before.line, before.x, before.y, before.options);
         }
+        if (left) chip(ctx, left.line, left.x, left.y, left.options);
       }
       return { dark: smooth(4.2, 4.9, view) };
     }

@@ -63,7 +63,7 @@ body = "The frame may load advertising, measurement and donation scripts. The ca
 
 [[howto]]
 title = "Type a number or drag the dial."
-body = "Try a billion, 1.5b or 1e12. Whole numbers from zero to 10³⁰ are accepted. The dial moves through powers of ten, and the picture follows as you drag."
+body = "Try a billion, 1.5b or 3 trillion. Whole numbers from zero to 1 nonillion are accepted. The dial moves through powers of ten, and the picture follows as you drag."
 [[howto]]
 title = "Choose books, water, stars, sand or time."
 body = "Each pictures the same number in a different way and says what one of them is. In books, each one can also be a word or an AI text token, which turns the count into a length of writing."

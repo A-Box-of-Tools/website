@@ -131,6 +131,7 @@ complete = true
 # "Comparar alturas" e o que se digita; o grafico e o resultado e fica no
 # titulo.
 "compare-heights" = "comparar-alturas"
+"number-explorer" = "visualizar-numeros"
 # DICOM continua DICOM: e a sigla que vem escrita no disco que o hospital
 # entrega, e ninguem a procura traduzida.
 "dicom-viewer" = "visualizador-dicom"
@@ -191,6 +192,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "guias/criar-um-codigo-qr-e-provar-que-escaneia"
 "guides/clean-up-a-voice-memo" = "guias/limpar-uma-nota-de-voz"
 "guides/make-a-height-comparison-chart" = "guias/fazer-um-grafico-de-alturas"
+"guides/understand-big-numbers" = "guias/entender-numeros-grandes"
 "guides/is-it-safe-to-scan-a-qr-code" = "guias/e-seguro-escanear-um-qr-code"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "guias/e-seguro-enviar-foto-do-documento"
 "guides/can-blacked-out-text-be-recovered" = "guias/da-para-recuperar-texto-tarjado"
