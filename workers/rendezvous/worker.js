@@ -38,7 +38,7 @@
 // somebody else's site. A script can send any Origin it likes; the rate limit
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
-import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, requestedGroup, roomName, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, networkPage, otherVersion, pageOrigin, rendezvousTool, requestedGroup, roomName, validNetwork, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { Broadcast, broadcastCode } from "./broadcast.js";
 import { Inbox } from "./inbox.js";
 import { answerClose } from "./closing.js";
@@ -202,13 +202,14 @@ export class Room {
     try { ws.close(code, reason); } catch {}
   }
 
-  seat(ws, { code, tool, scope, local, offered, transport, transportPinned, holder }) {
+  seat(ws, { code, tool, scope, local, offered, transport, transportPinned, holder, network }) {
     this.vacancy = null;
     const policy = { transport, transportPinned, generation: crypto.randomUUID(), window: Date.now(), updates: 0,
       ...(holder === undefined ? {} : { holder }) };
     if (offered) {
       const lease = crypto.randomUUID();
-      ws.serializeAttachment({ role: "host", code, scope, tool, local, discover: true, lease, ...policy });
+      ws.serializeAttachment({ role: "host", code, scope, tool, local, discover: true, lease,
+        ...(network === undefined ? {} : { network }), ...policy });
       ws.send(JSON.stringify({ type: "host-ready", ...(transport === 'relay' ? { transport } : {}), discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }), ...(transport === 'relay' ? { transport } : {}) } }));
     } else {
       ws.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }), local, ...policy });
@@ -268,14 +269,23 @@ export class Room {
         claim = JSON.parse(text);
       } catch { return new Response(null, { status: 400 }); }
       const tool = rendezvousTool(claim?.tool);
-      if (!validPublication(claim) || !validScope(claim.scope) || tool === null) return new Response(null, { status: 400 });
+      if (!validPublication(claim) || !validScope(claim.scope) || tool === null
+          || claim.network !== undefined && !validNetwork(claim.network)) return new Response(null, { status: 400 });
       const live = this.ctx.getWebSockets("host").find((host) => {
         const who = host.deserializeAttachment();
         return host.readyState === 1 && who?.role === "host" && who.discover === true
-          && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope
+          && who.code === claim.code && who.lease === claim.lease
+          && (who.scope === claim.scope || otherVersion(who, claim))
           && (who.tool ?? "share-text") === tool;
       });
       const owner = live?.deserializeAttachment();
+      // The directory over the other IP version is remembered so that the room can
+      // withdraw the lease from it as well. A page watches one directory at a time,
+      // so a newer one takes the place of the last.
+      if (owner && owner.scope !== claim.scope && owner.elsewhere !== claim.scope) {
+        if (validScope(owner.elsewhere)) this.withdraw(owner, owner.elsewhere);
+        live.serializeAttachment({ ...owner, elsewhere: claim.scope });
+      }
       if (owner && (owner.transport === 'relay' || owner.local === false)) {
         return Response.json({ ...(owner.transport === 'relay' ? { transport: 'relay' } : {}),
           ...(owner.local === false ? { local: false } : {}) });
@@ -320,7 +330,9 @@ export class Room {
       if (transport === 'relay' && !relayEnabled(this.env, tool)) return refuse(4413, 'relay-unavailable');
       const { 0: client, 1: server } = new WebSocketPair();
       this.ctx.acceptWebSocket(server, ["host"]);
-      const claim = { code, tool, scope, local, offered, transport, transportPinned, holder };
+      const network = offered && group === undefined ? networkPage(request) : null;
+      const claim = { code, tool, scope, local, offered, transport, transportPinned, holder,
+        ...(network === null ? {} : { network }) };
       if (claimed) {
         server.serializeAttachment({ role: "pending", claim, deadline: Date.now() + PROOF_TIMEOUT, window: Date.now(), updates: 0 });
         server.send(JSON.stringify({ type: "host-prove" }));
@@ -430,14 +442,10 @@ export class Room {
       if (who.discover === true && validScope(who.scope) && validPublication(who)) {
         // A closing browser may never deliver its fast unpublish hint. Room
         // owns the live-host lease and authoritatively removes both verified
-        // advertisements and checks still waiting on its reply.
-        this.ctx.waitUntil(this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(who.scope)).fetch(
-          "https://discovery.internal/_discovery/withdraw", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ code: who.code, lease: who.lease, tool: who.tool ?? "share-text" }),
-          },
-        ).catch(() => {}));
+        // advertisements and checks still waiting on its reply, in each
+        // directory that has listed it.
+        this.withdraw(who, who.scope);
+        if (validScope(who.elsewhere)) this.withdraw(who, who.elsewhere);
       }
       // The frame goes first for Chromium, which holds a page's close event until the
       // connection ends or two seconds pass, and an object cannot end it any sooner. A
@@ -449,6 +457,16 @@ export class Room {
     } else if (who.introduced) {
       this.toHost({ type: "leave", id: who.id });
     }
+  }
+
+  withdraw(who, scope) {
+    this.ctx.waitUntil(this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(scope)).fetch(
+      "https://discovery.internal/_discovery/withdraw", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ code: who.code, lease: who.lease, tool: who.tool ?? "share-text" }),
+      },
+    ).catch(() => {}));
   }
 
   async relay(ws) {

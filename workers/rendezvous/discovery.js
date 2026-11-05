@@ -121,6 +121,32 @@ export const validPublication = (value) => value !== null && typeof value === "o
   && typeof value.code === "string" && CODE_PATTERN.test(value.code)
   && typeof value.lease === "string" && LEASE_PATTERN.test(value.lease);
 
+// A browser on a network with both IPv4 and IPv6 chooses the version for each
+// connection, and falls back to IPv4 when an IPv6 attempt is slow. One page's room
+// socket and its directory can then reach the edge over different versions, and so
+// derive different network scopes. What a network scope is made of besides the
+// address - the page's origin, and which version reached the edge - is kept with the
+// socket, so that a room can also accept its lease from the page's directory over
+// the other version. No parameter or message chooses either: the origin is the
+// handshake's own, which the scope digests too, and the version is the edge's. A
+// private group's scope has no network part.
+export function networkPage(request) {
+  if (request.headers.has("CF-Worker") || requestedGroup(new URL(request.url)) !== undefined) return null;
+  const origin = pageOrigin(request.headers.get("Origin"));
+  const address = origin === null ? null : networkAddress(request);
+  return address === null ? null : { origin, family: address.includes(":") ? 6 : 4 };
+}
+
+export const validNetwork = (value) => value !== null && typeof value === "object" && !Array.isArray(value)
+  && Object.keys(value).length === 2 && (value.family === 4 || value.family === 6)
+  && typeof value.origin === "string" && pageOrigin(value.origin) === value.origin;
+
+// Besides the directory of its own room socket's scope, a live lease is accepted by a
+// network directory of the same origin reached over the other IP version. The caller
+// still matches the code, lease and tool.
+export const otherVersion = (owner, claim) => validNetwork(owner?.network) && validNetwork(claim?.network)
+  && owner.network.origin === claim.network.origin && owner.network.family !== claim.network.family;
+
 function validVoicePublication(value, tool) {
   if (!/^[a-f0-9]{64}$/.test(value.code)) return false;
   return tool !== "walkie-talkie" || Object.keys(value).length === 3
@@ -178,8 +204,10 @@ export class Discovery {
     if (group === undefined) this.freeSeat();
     else if (!admitPending(pending, source, (ws) => this.evict(ws))) return refusal(4429, "full");
     const { 0: client, 1: server } = new WebSocketPair();
+    const network = group === undefined ? networkPage(request) : null;
     this.ctx.acceptWebSocket(server, ["observer"]);
     server.serializeAttachment({ scope, tool, since: Date.now(), generation: 0, updates: 0, publication: null,
+      ...(network === null ? {} : { network }),
       ...(group === undefined ? {} : { group, source, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
     if (group === undefined) server.send(this.snapshot());
     return new Response(null, { status: 101, webSocket: client });
@@ -262,7 +290,7 @@ export class Discovery {
     if (lostShare) this.broadcast();
   }
 
-  async verify(publication, scope, tool = DEFAULT_TOOL, privateGroup = false) {
+  async verify(publication, scope, tool = DEFAULT_TOOL, privateGroup = false, network = undefined) {
     try {
       const binding = tool === "voice-oncall" ? this.env.INBOXES
         : tool === "walkie-talkie" ? this.env.BROADCASTS : this.env.ROOMS;
@@ -271,7 +299,8 @@ export class Discovery {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool,
-          ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}) }),
+          ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}),
+          ...(network === undefined ? {} : { network }) }),
       });
       if (!metadataTool(tool) && result.status === 204) return true;
       if (result.status !== 200) return false;
@@ -321,7 +350,7 @@ export class Discovery {
     for (const { who } of entries) {
       const tool = who.tool ?? DEFAULT_TOOL;
       const key = verificationKey(who);
-      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool, who.group !== undefined));
+      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool, who.group !== undefined, who.network));
     }
     // Rechecking a manual refresh repairs a missed withdrawal without a
     // polling loop. Deduplicating leases bounds the binding calls to the list.
@@ -408,7 +437,7 @@ export class Discovery {
     ws.serializeAttachment({ ...who, generation, updates: who.updates + 1, publication });
     if (who.publication?.verified || publication === null) this.broadcast();
     if (publication === null) return;
-    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL, who.group !== undefined);
+    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL, who.group !== undefined, who.network);
     const current = ws.deserializeAttachment();
     if (ws.readyState !== 1 || current === null || current.generation !== generation
         || current.publication?.code !== publication.code || current.publication.lease !== publication.lease) return;
