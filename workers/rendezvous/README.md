@@ -41,8 +41,8 @@ it - and never a payload. Voice URLs carry an opaque digest of the host secret;
 both voice capabilities enter the first WSS message, never the URL. The worker
 adds one line of its own on a text/camera refusal,
 because a refused handshake completes the upgrade exactly like an admission
-and the record alone cannot tell them apart; the line carries the close code
-and nothing else. It is a view of the switchboard working, not of anything
+and the record of that request cannot tell them apart; the line carries the close
+code and nothing else. It is a view of the switchboard working, not of anything
 passing through it. Tracing is written off in the same file rather than left
 to its default, so there is no second stream to account for.
 
@@ -348,6 +348,16 @@ transport, host approval, password or microphone consent.
   because a single customer normally holds all of it. The start page
   opens a discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
+- A socket turned away at the door completes the upgrade and closes at once with a
+  4xxx code, because a page cannot read the status of a failed upgrade. The object
+  only decides: it answers with a private header and takes no socket, and the
+  stateless front of the Worker does the closing (`refusal.js`). That is what makes
+  the answer quick. A socket an object accepted with `acceptWebSocket` keeps its
+  connection after both ends have sent Close, until the object next goes idle about
+  ten seconds later, and Chromium holds a page's `close` event until the connection
+  ends or two seconds pass. An admitted socket cannot be handed over like this, so a
+  close the object starts later, such as `host-gone`, still reaches Chromium about
+  two seconds after its frame; WebKit and Firefox have it straight away.
 - A socket that sends more than 120 frames in a rolling ten seconds is closed with
   4429 `busy`. Frames are counted before they are parsed, so malformed and empty
   ones count too. A host's allowance is that many per connected viewer, because
