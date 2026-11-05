@@ -335,17 +335,18 @@ const stageWords = {
   times: ratio => `${ratio.toPrecision(3)} ×`
 };
 
-// Every count in quarters of a power of ten, come to from a tenth of it, from the step below
-// and from the step above, which between them put "Before" anywhere it can stand.
+// Every count in sixteenths of a power of ten, come to from a tenth of it, from the step below
+// and from the step above, which between them put "Before" anywhere it can stand. It has to be
+// that close: quarters of a power of ten stepped straight past "Before" on a container's name.
 function labelMeetings(world, createScene, perUnit, readoutBottom, words = stageWords) {
   const meetings = [];
   const rungs = ladderFor(world);
   const scene = createScene();
   for (const [w, h] of [[242, 302], [297, 371], [680, 382], [894, 503]]) {
     const readout = { left: 0, right: w * 0.72, top: 0, bottom: readoutBottom };
-    for (let quarter = 0; quarter <= 120; quarter += 1) {
-      const amount = 10 ** (quarter / 4) * perUnit;
-      for (const from of [amount / 10, amount / 10 ** 0.25, amount * 10 ** 0.25]) {
+    for (let sixteenth = 0; sixteenth <= 480; sixteenth += 1) {
+      const amount = 10 ** (sixteenth / 16) * perUnit;
+      for (const from of [amount / 10, amount / 10 ** (1 / 16), amount * 10 ** (1 / 16)]) {
         const { canvas, written } = recordingCanvas();
         scene.draw(canvas, { w, h, t: 2.5, dt: 0, velocity: 0, moving: false, motion: false, still: true, amount, perUnit, zero: false, rungs, readout, thickness: perUnit, words, previous: from, sinceOpened: 0 });
         const placed = [{ line: 'the readout', ...readout }, ...written];

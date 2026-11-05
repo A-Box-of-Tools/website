@@ -1,5 +1,5 @@
 import { CONTAINERS, containerIndex, levelForShare } from './containers.js';
-import { backdrop, chip, chipBox, clamp, hash, lerp, meets, mix, nightSky, paintEarth, rgba, scatter, smooth, write } from './paint.js';
+import { backdrop, chip, chipBox, clamp, hash, lerp, meets, mix, nightSky, paintEarth, rgba, scatter, smooth, widthOf, write } from './paint.js';
 
 // Water or sand pouring into one named container after another. When a container
 // overflows the camera pulls back to the next one and the old one shrinks into the
@@ -614,12 +614,19 @@ export function createFillScene(kind) {
         ctx.lineTo(drawn.x + drawn.w * 0.28, beforeLevel);
         ctx.stroke();
         ctx.restore();
-        // A long one reaches across the stage to the level's chip when the two are close,
-        // and steps off toward the side it came from.
+        // A level near the brim puts this under the container's name, and it comes down off
+        // that. A long one reaches across the stage to the level's chip when the two are close,
+        // and steps off toward the side it came from. If that leaves it nowhere, it goes without.
         const line = words.before(previous);
-        const options = { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w, clear: [levelBox, corner?.box], downward: previous < amount };
         const x = Math.max(drawn.x - 12, 92);
-        if (!(readout && meets(chipBox(ctx, line, x, beforeLevel, options), readout))) chip(ctx, line, x, beforeLevel, options);
+        const nameHalf = widthOf(ctx, words.name(id), 13, 700) / 2 + 2;
+        const nameBox = { left: w / 2 - nameHalf, right: w / 2 + nameHalf, top: nameY - 9, bottom: nameY + 9 };
+        const look = { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w };
+        const y = chipBox(ctx, line, x, beforeLevel, { ...look, clear: nameBox, downward: true }).y;
+        // Nearest first, in the direction it steps, because the level's chip can be waiting under the corner.
+        const options = { ...look, clear: previous < amount ? [corner?.box, levelBox] : [levelBox, corner?.box], downward: previous < amount };
+        const placed = chipBox(ctx, line, x, y, options);
+        if (![readout, nameBox].some(other => other && meets(placed, other))) chip(ctx, line, x, y, options);
       }
       return { dark: darkness };
     }
