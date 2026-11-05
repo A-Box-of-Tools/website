@@ -124,6 +124,26 @@ test('a refusal is held under a tag of its own, and no count sees it', async () 
   assert.equal(host.readyState, 1, 'and its close disturbs nobody');
 });
 
+test('a page that closes first is answered, and the answer changes nothing about its name', async () => {
+  const s = await system(), host = await s.host(), reader = await s.viewer();
+  s.leave(reader);
+  assert.deepEqual(reader.closed, { code: undefined, reason: undefined }, 'a Close frame with no code goes back');
+  assert.equal(host.readyState, 1);
+  s.lose(host);
+  assert.equal((await s.host(s.otherDigest)).closed?.code, 4409, 'a lost host keeps its name');
+  const clean = await system(), left = await clean.host();
+  clean.leave(left);
+  assert.equal(hosting(await clean.host(clean.otherDigest)), true, 'a clean close frees it at once');
+});
+
+test('a reply to a reader who has just closed goes nowhere and costs the host nothing', async () => {
+  const s = await system(), host = await s.host(null), reader = await s.viewer();
+  reader.send = () => { throw new TypeError("Can't call WebSocket send() after close()."); };
+  await s.send(host, { to: reader.deserializeAttachment().id, data: { sdp: 'answer' } });
+  assert.equal(host.readyState, 1);
+  assert.equal(hosting(host), true);
+});
+
 test('a reader over its frame window is closed, whatever kind of frame it sent', async (t) => {
   const time = clock(t);
   for (const frame of ['{}', 'not json', '[]', 'null', new ArrayBuffer(1), 'x'.repeat(65537)]) {

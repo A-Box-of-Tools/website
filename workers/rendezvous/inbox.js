@@ -3,6 +3,7 @@
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { answerClose } from "./closing.js";
 import { admitPending, pendingSource } from "./pending.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, forgetApproval, clearApprovals } from "./voice-approval.js";
@@ -399,7 +400,7 @@ export class Inbox {
     )).catch(() => {}));
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

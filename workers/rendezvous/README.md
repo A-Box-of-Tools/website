@@ -398,6 +398,10 @@ transport, host approval, password or microphone consent.
   "host-gone" - the instant, authoritative end-of-share signal, long before
   WebRTC's own ~30s consent expiry would notice.
 - `ping` is answered `pong` by the runtime without waking the object.
+- A page that closes its own socket gets a Close frame back at once, with no code in
+  it, so its `close` event is immediate and clean. The runtime does not send one for a
+  socket accepted with `acceptWebSocket`: unanswered, the connection stays up until the
+  object next goes idle about ten seconds later, and the event reports 1006.
 
 ## The discovery protocol
 

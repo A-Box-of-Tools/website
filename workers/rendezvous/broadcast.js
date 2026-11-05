@@ -2,6 +2,7 @@
 // current generation live in socket attachments, so hibernation cannot forget
 // them and the last socket leaving removes the room's complete state.
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { answerClose } from "./closing.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, clearApprovals } from "./voice-approval.js";
 import { admitPending, pendingSource } from "./pending.js";
@@ -400,7 +401,7 @@ export class Broadcast {
     }
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   withdraw(owner) {
