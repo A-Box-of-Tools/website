@@ -472,6 +472,7 @@ class LoadTool(TempTree):
         self.assertEqual(tool['csp_note'], '')
         self.assertEqual(tool['csp'], {})
         self.assertFalse(tool['requires_pairing'])
+        self.assertFalse(tool['info_tips'])
 
     def test_the_shared_pairing_transport_always_gets_a_version_display(self):
         body = 'js_parts = ["peer-network"]\nrequires_pairing = false\n' + TOOL_TOML
@@ -481,6 +482,7 @@ class LoadTool(TempTree):
     def test_another_pairing_transport_can_ask_for_the_version_display(self):
         tool = sitelib.load_tool(self.tool_at('widget', 'requires_pairing = true\n' + TOOL_TOML), SITE)
         self.assertTrue(tool['requires_pairing'])
+        self.assertTrue(tool['info_tips'], 'the frame draws a mark beside the version')
         with self.assertRaisesRegex(sitelib.ConfigError, 'requires_pairing'):
             sitelib.load_tool(self.tool_at('widget', 'requires_pairing = "true"\n' + TOOL_TOML), SITE)
 
@@ -639,6 +641,41 @@ class SharedParts(unittest.TestCase):
         tool = {'picker': {'urls': True}, 'js_parts': ['url-import', 'file-picker']}
         self.assertEqual(sitelib.js_parts(tool),
                          ['phrases', 'trust', 'url-import', 'file-picker'])
+
+    def test_a_paired_tool_is_given_the_information_mark(self):
+        # The frame draws one beside its version, so it is not the tool's choice,
+        # and four of the five paired tools once left it unwired by not choosing.
+        tool = {'requires_pairing': True, 'js_parts': ['peer-pairing']}
+        self.assertTrue(sitelib.wants_info_tips(tool))
+        self.assertEqual(sitelib.js_parts(tool),
+                         ['phrases', 'trust', 'peer-pairing', 'info-tip'])
+
+    def test_any_other_tool_asks_for_the_mark_and_gets_it_once(self):
+        tool = {'js_parts': ['info-tip', 'file-picker']}
+        self.assertTrue(sitelib.wants_info_tips(tool))
+        self.assertEqual(sitelib.js_parts(tool),
+                         ['phrases', 'trust', 'info-tip', 'file-picker'])
+
+    def test_a_tool_that_does_neither_does_not_ship_the_mark(self):
+        tool = {'js_parts': ['file-picker']}
+        self.assertFalse(sitelib.wants_info_tips(tool))
+        self.assertNotIn('info-tip', sitelib.js_parts(tool))
+
+    def test_a_body_that_draws_a_mark_has_to_ask_for_it(self):
+        for body in ('<details class="info-tip">', '<details id="x" class="wide info-tip">'):
+            with self.subTest(body=body):
+                with self.assertRaisesRegex(sitelib.ConfigError, 'widget.*info-tip'):
+                    sitelib.refuse_unwired_info_tips({'slug': 'widget', 'js_parts': []}, body)
+                sitelib.refuse_unwired_info_tips(
+                    {'slug': 'widget', 'js_parts': ['info-tip']}, body)
+                sitelib.refuse_unwired_info_tips(
+                    {'slug': 'widget', 'requires_pairing': True}, body)
+
+    def test_only_a_mark_counts_as_drawing_one(self):
+        for body in ('<details class="info-fold">', '<p class="info-tip">',
+                     '<details class="info-tip-list">', '<details>the info-tip part</details>'):
+            with self.subTest(body=body):
+                sitelib.refuse_unwired_info_tips({'slug': 'widget', 'js_parts': []}, body)
 
     def test_explicit_parts_are_kept_in_order(self):
         tool = {'picker': {'urls': True}, 'js_parts': ['file-picker']}

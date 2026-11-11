@@ -126,8 +126,9 @@ separate from reader counts or connection warnings.
 Keep Private on on shared networks: without it, anyone who sees the name
 can connect and read without an admission decision.
 The information icon beside Discoverable opens that explanation on hover,
-keyboard focus or tap. Its tooltip behavior is shared with the receipt tool
-through `shared/js/help-tooltip.js`; Escape or clicking elsewhere dismisses it.
+keyboard focus or tap. It is the site's shared
+[information mark](../../docs/adding-a-tool.md#an-information-mark); Escape or
+clicking elsewhere dismisses it.
 
 The network directory is derived by the worker from the canonical Cloudflare public
 IPv4 address or IPv6 /64 subnet, together with the allowed page origin,
@@ -224,7 +225,9 @@ from both physical devices are needed to investigate those boundaries.
   consent click (before it, the sharer has not learned the reader exists),
   and the switchboard forwards offers, answers and candidates. Rejections
   arrive as 4xxx close codes: 4404 nobody sharing, 4409 name taken, 4429
-  full, 4410 sharer gone.
+  full, 4410 sharer gone. A `{type: 'host-gone'}` frame comes just ahead of
+  4410 and means the same, because Chromium holds a page's close event for up
+  to two seconds after the sharer has gone.
 - **End of share.** Stop sharing sends an ordered `{type: 'ended'}` on each
   current encrypted control channel before closing it. That explicit control
   is terminal. A 4410 introduction-socket close alone can also mean temporary

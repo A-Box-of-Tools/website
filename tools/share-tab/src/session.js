@@ -4,6 +4,7 @@ import { createChannelGreeting } from './shared/peer-greeting.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
+import { answerHostProve, createHostClaim, holderUrl } from './shared/peer-host-claim.js';
 import { TOOL, PROTOCOL, CHANNEL, CODE_PATTERN, controlMessage } from './protocol.js';
 
 const RENDEZVOUS = rendezvousEndpoint();
@@ -14,10 +15,14 @@ export class TabSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket, MediaStream = globalThis.MediaStream,
     onState = () => {}, onRequests = () => {}, onViewers = () => {}, onStream = () => {}, onDiscovery = () => {}, diagnostics = null,
-    admissions = createAdmissionCache(),
+    admissions = createAdmissionCache(), hostClaim = createHostClaim(),
   } = {}) {
     Object.assign(this, { PeerConnection, Socket, MediaStream, onState, onRequests, onViewers, onStream, onDiscovery, diagnostics });
     this.admissions = admissions;
+    // Settled long before anybody can press Start. Without WebCrypto the room is
+    // hosted as an older page hosts it, with nothing to prove its name is its own.
+    this.hostClaim = null;
+    Promise.resolve(hostClaim).then((claim) => { this.hostClaim = claim; }, () => {});
     this.grants = new AdmissionGrants();
     this.revision = 0;
     this.role = null;
@@ -90,7 +95,7 @@ export class TabSession {
       let settled = false, ready = false, confirmed = false, configured = this.transport === 'direct', socket;
       const waiting = [];
       const offered = this.role === 'host' && this.discoverable;
-      try { socket = this.socket = new this.Socket(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`, this.transport), offered ? this.discoveryGroup : null)); }
+      try { socket = this.socket = new this.Socket(holderUrl(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role}&tool=${TOOL}${offered ? '&local=1&discover=1' : ''}`, this.transport), offered ? this.discoveryGroup : null), this.role === 'host' ? this.hostClaim : null)); }
       catch { this.stop('connection.server-failed'); reject(new Error('connection.server-failed')); return; }
       const current = () => this.revision === revision && this.socket === socket;
       const pairing = this.pairing = new PairingSocket(socket, { current });
@@ -150,6 +155,10 @@ export class TabSession {
           try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
           if (!message || typeof message !== 'object' || Array.isArray(message)) return fail('connection.invalid');
           if (this.relay?.receive(message)) return;
+          // Never queued behind relay setup: the credentials wait on this proof.
+          if (answerHostProve(message, this.role === 'host' ? this.hostClaim : null, (frame) => pairing.send(frame))) return;
+          // Just ahead of the close with 4410, which Chromium holds for up to two seconds.
+          if (message.type === 'host-gone') return fail('connection.ended');
           if (!configured) {
             if (waiting.length >= 64) return fail('connection.invalid');
             waiting.push(message);

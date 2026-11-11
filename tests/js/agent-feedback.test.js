@@ -88,8 +88,8 @@ test('an already limited address cannot spend other reporters shared capacity', 
 test('streamed requests cannot evade the byte limit by omitting Content-Length', async () => {
   const { env, sent } = fixture();
   const stream = new ReadableStream({ start(controller) {
-    controller.enqueue(new Uint8Array(9000));
-    controller.enqueue(new Uint8Array(9000));
+    controller.enqueue(new Uint8Array(30000));
+    controller.enqueue(new Uint8Array(30000));
     controller.close();
   } });
   const oversized = new Request('https://feedback.abox.tools/feedback', {
@@ -97,6 +97,96 @@ test('streamed requests cannot evade the byte limit by omitting Content-Length',
   });
   assert.equal((await handler(oversized, env)).status, 413);
   assert.equal(sent.length, 0);
+});
+
+const form = (fields, headers = {}) => new Request('https://feedback.abox.tools/feedback', {
+  method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', ...headers }, body: new URLSearchParams(fields),
+});
+
+test('the longest form a browser can produce fits, whatever script it is written in', async () => {
+  const { env, sent } = fixture();
+  // Each of these is the most a field's maxlength allows, in the characters that
+  // percent-encode longest: three UTF-8 bytes, nine bytes on the wire, per unit.
+  const request = form({ sender_type: 'agent', message: '\u6f22'.repeat(4000), page: '\u6f22'.repeat(512),
+    environment: '\u6f22'.repeat(500), reply_to: `${'\u6f22'.repeat(100)}@${'\u6f22'.repeat(100)}.test`, company: '' });
+  const bytes = (await request.clone().arrayBuffer()).byteLength;
+  assert.ok(bytes > 16384 * 2, `exercises what used to be refused, at ${bytes} bytes`);
+  const response = await handler(request, env);
+  assert.equal(response.status, 201);
+  assert.equal(sent.length, 1);
+  assert.ok(sent[0].text.includes('\u6f22'.repeat(4000)));
+});
+
+test('an oversized form hands back what the visitor wrote', async () => {
+  for (const text of ['Long report <with markup> '.repeat(4000), '\u6f22'.repeat(9000), '\u{1f600}'.repeat(7000)]) {
+    const { env, sent } = fixture();
+    const response = await handler(form({ sender_type: 'agent', message: text, page: 'lost-when-cut' }), env);
+    assert.equal(response.status, 413);
+    assert.match(response.headers.get('Content-Type'), /text\/html/);
+    const html = await response.text();
+    assert.equal(sent.length, 0);
+    assert.match(html, /under 48 KiB/);
+    const kept = html.match(/<textarea>([^]*)<\/textarea>/)[1].replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+    assert.ok(kept.length > 4000, `kept ${kept.length} units of it`);
+    assert.ok(text.startsWith(kept), 'kept the beginning, ending on a whole character');
+    assert.equal(kept.includes('\ufffd'), false);
+  }
+});
+
+test('an oversized JSON request is refused without pretending to be a form', async () => {
+  const { env, sent } = fixture();
+  const response = await handler(request({ message: 'x'.repeat(60000) }), env);
+  assert.equal(response.status, 413);
+  const body = await response.json();
+  assert.equal(body.ok, false);
+  assert.match(body.message, /48 KiB/);
+  assert.equal(sent.length, 0);
+});
+
+test('maxlength counts a newline once, so text within it is not refused for its CRLFs', async () => {
+  const { env, sent } = fixture();
+  // Exactly 4,000 in the textarea; a browser submits 4,800 UTF-16 units.
+  const text = `${'line\r\n'.repeat(799)}lines`;
+  assert.equal(text.replaceAll('\r\n', '\n').length, 4000);
+  assert.equal((await handler(form({ sender_type: 'agent', message: text }), env)).status, 201);
+  assert.ok(sent[0].text.endsWith(text.replaceAll('\r\n', '\n')));
+  const over = fixture();
+  assert.equal((await handler(form({ sender_type: 'agent', message: `${text}x` }), over.env)).status, 400);
+  assert.equal(over.sent.length, 0);
+});
+
+test('a line break inside a single-line field is refused', async () => {
+  for (const fields of [{ page: 'https://abox.tools/\nsecond' }, { environment: 'Chrome\r\nsecond' },
+    { environment: 'Chrome\rsecond' }, { page: 'x\u2028y' }, { page: 'x\u2029y' }, { environment: 'x\u0085y' },
+    { reply_to: 'a@b.test\nsecond' }]) {
+    const { env, sent } = fixture();
+    const response = await handler(request({ message: 'A report', sender_type: 'agent', ...fields }), env);
+    assert.equal(response.status, 400, JSON.stringify(fields));
+    assert.equal(sent.length, 0);
+  }
+});
+
+test('whitespace at the end of a single-line field is trimmed rather than refused, and the message keeps its lines', async () => {
+  const { env, sent } = fixture();
+  const response = await handler(request({ message: 'First\nSecond\r\n\r\nThird', sender_type: 'agent',
+    page: 'https://abox.tools/\n', environment: '\r\nChrome' }), env);
+  assert.equal(response.status, 201);
+  const lines = sent[0].text.split('\n');
+  assert.ok(lines.includes('Page: https://abox.tools/'));
+  assert.ok(lines.includes('Agent / browser: Chrome'));
+  assert.equal(lines.filter((line) => line.startsWith('Sender:')).length, 1);
+  assert.ok(sent[0].text.endsWith('First\nSecond\n\nThird'));
+});
+
+test('one IPv6 /64 is one network to both the per-address limit and the daily budget', async () => {
+  const { env, sent, keys, forwarded } = fixture();
+  for (const [index, address] of ['2606:4700:4700:ab::1', '2606:4700:4700:ab:9876:5432:abcd:ef01'].entries()) {
+    await handler(request({ message: `Report ${index}` }, { headers: { 'CF-Connecting-IP': address } }), env);
+  }
+  assert.deepEqual(keys, ['2606:4700:4700:ab::/64', '2606:4700:4700:ab::/64']);
+  assert.equal(forwarded[0].client, forwarded[1].client);
+  assert.equal(sent.length, 1, 'the second is inside the first network\'s cooldown');
+  assert.equal(sent[0].text.includes('2606:4700'), false, 'the address stays out of the email');
 });
 
 test('browser origins are explicit and native clients need no Origin', async () => {

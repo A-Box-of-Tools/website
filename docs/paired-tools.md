@@ -41,7 +41,9 @@ password and media boundaries remain separate requirements.
 
 Tools declare `supports_relay = true`, include `partials/paired-transport.html`
 beside their host Start action and ship `peer-transport` and `peer-transport-ui`.
-The host control locks while a session or recoverable identity is active and
+What each choice means sits behind an
+[information mark](adding-a-tool.md#an-information-mark) beside the switch, which
+`peer-transport-ui` rewrites as the choice changes. The host control locks while a session or recoverable identity is active and
 shows the chosen type as a read-only badge in place of its toggle. Ending the
 session restores the toggle. The badge describes the choice, while the separate
 route output reports the observed connection. Changing a choice must not trigger
@@ -163,6 +165,16 @@ outage remains a development outage: there is no fallback to production.
 Consequently local builds and preview deployments need the development
 worker and pair only with pages selecting that same service. This separates
 rooms, discovery and runtime bindings from the live worker.
+
+## Holding a room's name
+
+Share Text, Share a Browser Tab and Remote Camera name their rooms in words people
+can say aloud, so unlike a voice room's address the name cannot carry a credential.
+Add `"peer-host-claim"` to `js_parts`, create one claim when the page loads, pass the
+host's socket URL through `holderUrl()` and hand each frame to `answerHostProve()`
+before anything that can queue it. The URL carries only a digest. The key behind it
+stays in the page unless the rendezvous asks for it, which it does only when that
+digest already holds the room and this socket is its replacement.
 
 ## Owning an introduction
 

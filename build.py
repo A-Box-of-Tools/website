@@ -1355,6 +1355,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
          'links': links, 'js_v': js_v,
          'source_handoff': source_handoff}).rstrip('\n')
+    sitelib.refuse_unwired_info_tips(tool, body)
 
     # The explanation each step opens with, folded behind that step's heading.
     # Done here rather than in five hundred bodies, one per tool per language,

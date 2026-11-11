@@ -1,7 +1,6 @@
 /** UI wiring and the two roles: the sharer's tab, and a reader's. */
 
 import { phrase } from './shared/phrases.js';
-import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 import { makeShareUrl, isLocalLink } from './network.js';
@@ -17,6 +16,7 @@ import { readTransport, transportUrl, selectedTransport, RelayCredentials } from
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
+import { answerHostProve, createHostClaim, holderUrl } from './shared/peer-host-claim.js';
 import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
 import { createApprovalPrompt } from './shared/peer-approval-ui.js';
 import { AdmissionGrants, createAdmissionCache, validAdmissionToken } from './shared/peer-admission.js';
@@ -34,9 +34,14 @@ const RENDEZVOUS = rendezvousEndpoint();
 // A host chooses the route before publishing. Both browsers use that route
 // for the lifetime of the share; failure never widens a Direct session.
 
-const wsUrl = (code, role, advertise = false, mode = 'direct') => groupUrl(
+// Settled long before anybody can press Share. Without WebCrypto the page still
+// shares, as an older page does, with nothing to prove its name is its own.
+let hostClaim = null;
+createHostClaim().then(claim => { hostClaim = claim; }).catch(() => {});
+
+const wsUrl = (code, role, advertise = false, mode = 'direct') => holderUrl(groupUrl(
   transportUrl(`${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? `&discover=1${isLocal || mode === 'relay' ? '&local=1' : ''}` : ''}`, mode),
-  role === 'host' ? hostGroup : null);
+  role === 'host' ? hostGroup : null), role === 'host' ? hostClaim : null);
 const shareUrl = (code) => transportUrl(makeShareUrl(location.href, code, isLocal), hostTransport);
 const transportError = error => /^transport\.(invalid|unavailable|limited|forbidden|timeout|mismatch|stopped|failed)$/.test(error?.message)
   ? error.message : 'transport.failed';
@@ -443,8 +448,6 @@ $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 $('local').addEventListener('change', () => {
   $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
 });
-wireHelpTooltip($('discoverable-help'));
-wireHelpTooltip($('tool-version-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 
@@ -518,6 +521,7 @@ function hostSocket(code) {
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); revealDiagnostics(); return; }
       if (credentials.receive(m)) return;
+      if (answerHostProve(m, hostClaim, frame => pairing.send(frame))) return;
       if (m.type === 'host-ready' && isDiscoverable && m.discovery?.code === code) {
         void ready.then(() => {
           if (sock !== ws || !sharing) return;
@@ -1567,6 +1571,36 @@ function view(code, recovered = null) {
     location.href = transportUrl(makeShareUrl(location.href, code, retryLocal), mode);
   });
 
+  // The frame and the close say the same thing. Chromium holds the close event for up to
+  // two seconds after the sharer has gone, so the frame is what it hears first.
+  const introductionEnded = (code) => {
+    credentials.close();
+    pairing.close();
+    trace.socket('closed', code);
+    // Losing introductions does not retire a working encrypted peer. An
+    // explicit host-ended control is terminal; transport loss can recover.
+    if (done) return;
+    if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
+        !['failed', 'closed'].includes(pc?.connectionState)) {
+      resumeViewer();
+      return;
+    }
+    if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
+      // Stop travels on the reliable peer channel while the room closes.
+      // Give that terminal frame time to arrive before replacing the peer
+      // for renewed credentials; an ordinary outage still recovers promptly.
+      clearTimeout(relayRecoveryTimer);
+      relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
+      return;
+    }
+    if (code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
+    if (code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
+    if (code === 4410 || (connected && session.consent)) { sharerGone(); return; }
+    if (code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
+    else if (code === 4429) stopAttempt('view.full', false, 'socket-closed');
+    else if (!connected) stopAttempt('view.error', false, 'socket-closed');
+  };
+
   pairing.listen({
     open() {
       trace.socket('open'); trace.mark('server-open');
@@ -1581,6 +1615,7 @@ function view(code, recovered = null) {
       try { m = JSON.parse(e.data); }
       catch (error) { trace.error('signaling', error); stopAttempt('view.error'); return; }
       if (credentials.receive(m)) return;
+      if (m.type === 'host-gone') { introductionEnded(4410); return; }
       signals = signals.then(async () => {
         if (done || session.generation !== generation) return;
         if (m.type === 'ready') {
@@ -1635,33 +1670,7 @@ function view(code, recovered = null) {
       });
     },
 
-    close(e) {
-      credentials.close();
-      pairing.close();
-      trace.socket('closed', e.code);
-      // Losing introductions does not retire a working encrypted peer. An
-      // explicit host-ended control is terminal; transport loss can recover.
-      if (done) return;
-      if (mode === 'direct' && connected && dcRef?.readyState === 'open' &&
-          !['failed', 'closed'].includes(pc?.connectionState)) {
-        resumeViewer();
-        return;
-      }
-      if (mode === 'relay' && connected && dcRef?.readyState === 'open') {
-        // Stop travels on the reliable peer channel while the room closes.
-        // Give that terminal frame time to arrive before replacing the peer
-        // for renewed credentials; an ordinary outage still recovers promptly.
-        clearTimeout(relayRecoveryTimer);
-        relayRecoveryTimer = setTimeout(() => sharerGone(), 1500);
-        return;
-      }
-      if (e.code === 4412) { stopAttempt('transport.mismatch', false, 'mode-mismatch'); return; }
-      if (e.code === 4413) { stopAttempt('transport.unavailable', false, 'relay-unavailable'); return; }
-      if (e.code === 4410 || (connected && session.consent)) { sharerGone(); return; }
-      if (e.code === 4404) stopAttempt('view.nobody', false, 'socket-closed');
-      else if (e.code === 4429) stopAttempt('view.full', false, 'socket-closed');
-      else if (!connected) stopAttempt('view.error', false, 'socket-closed');
-    },
+    close(e) { introductionEnded(e.code); },
   });
 }
 

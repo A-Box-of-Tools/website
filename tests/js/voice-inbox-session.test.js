@@ -63,6 +63,20 @@ const deferred = () => {
   return { promise, resolve };
 };
 
+// The room answers a heartbeat without waking, and a page rightly gives up on a socket
+// that does not, so a case about a long wait has to answer it too.
+const answerPings = ws => {
+  const send = ws.send.bind(ws);
+  ws.send = text => { send(text); if (text === 'ping') ws.message('pong'); };
+};
+const checks = ws => ws.sent.filter(frame => frame.type === 'check').length;
+// Nothing runs while a device sleeps or a hidden page is held back, and the first
+// timer afterwards sees all the time that passed.
+const heldBack = (clock, ms) => {
+  clock.time += ms;
+  for (const task of clock.tasks.values()) task.at += ms;
+};
+
 const RELAY_SERVERS = [{ urls: ['turns:turn.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
 function relayReply(ws, expiresAt = 3600000) {
   const request = ws.sent.findLast(frame => frame.type === 'relay-request');
@@ -451,9 +465,10 @@ test('waiting checks preserve direct sender audio and moderation never automatic
   h.session.setTalking(true);
   ws.message({ type: 'waiting' });
   await flush();
-  await h.clock.advance(3000);
+  answerPings(ws);
+  await h.clock.advance(60000);
   assert.equal(h.sockets.length, 1);
-  assert.equal(ws.sent.filter(frame => frame.type === 'check').length, 3);
+  assert.equal(checks(ws), 1);
   assert.equal(h.mic.track.enabled, true);
   assert.equal(h.states.at(-1).key, 'sender-reconnecting');
   assert.equal(h.states.at(-1).detail.waiting, true);
@@ -1099,6 +1114,158 @@ test('already-muted and ended microphone grants are refused and later hardware r
     assert.equal(mic.track.stops, 1);
     assert.equal(h.sockets.length, 1);
   }
+});
+
+test('a waiting sender asks once a minute and a returning host reaches it with no question asked', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin({ type: 'waiting' });
+  answerPings(ws);
+  assert.equal(h.states.at(-1).key, 'sender-reconnecting');
+  assert.equal(h.captures(), 0);
+  await h.clock.advance(59000);
+  assert.equal(checks(ws), 0);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 1);
+  ws.message({ type: 'waiting' });
+  await flush();
+  await h.clock.advance(30000);
+  ws.message(ready());
+  ws.message(offer());
+  await flush();
+  assert.equal(h.captures(), 1);
+  assert.equal(h.mic.track.enabled, false);
+  assert.ok(ws.sent.some(frame => frame.type === 'answer'));
+  h.peers[0].connect();
+  assert.equal(h.states.at(-1).key, 'sender-ready');
+  await h.clock.advance(120000);
+  assert.equal(checks(ws), 1);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('a sender waiting for approval or for its microphone is told by the room, not by asking', async t => {
+  const pending = { type: 'approval-pending', id: ID_A, generation: GEN_A, approval: true };
+  const admitted = harness(t, { role: 'sender' });
+  const ws = await admitted.begin(pending);
+  answerPings(ws);
+  assert.equal(admitted.states.at(-1).key, 'sender-approval');
+  await admitted.clock.advance(60000);
+  assert.equal(checks(ws), 1);
+  ws.message(pending);
+  await flush();
+  await admitted.clock.advance(5000);
+  assert.equal(admitted.captures(), 0);
+  ws.message({ ...ready(), approval: true });
+  ws.message(offer());
+  await flush();
+  assert.equal(admitted.captures(), 1);
+  assert.equal(admitted.peers.length, 1);
+  assert.equal(checks(ws), 1);
+
+  // The prompt keeps a page waiting after the room has said yes, and each answer to a
+  // check queues behind the `ready` that is still at the prompt. Asking every second
+  // used to fill that queue and lose the socket to a person who had not chosen yet.
+  const prompt = deferred();
+  const mic = microphone();
+  const slow = harness(t, { role: 'sender', mediaDevices: { getUserMedia: () => prompt.promise } });
+  const starting = slow.session.start();
+  await flush();
+  const asking = slow.sockets.at(-1);
+  asking.open();
+  answerPings(asking);
+  const send = asking.send.bind(asking);
+  asking.send = text => {
+    send(text);
+    if (text !== 'ping' && JSON.parse(text).type === 'check') asking.message(ready());
+  };
+  asking.message(ready());
+  await flush();
+  await slow.clock.advance(300000);
+  assert.equal(checks(asking), 5);
+  assert.equal(slow.sockets.length, 1);
+  assert.equal(asking.closed, false);
+  prompt.resolve(mic.stream);
+  await flush();
+  assert.equal(await starting, true);
+  assert.equal(slow.states.at(-1).detail.waiting, false);
+});
+
+test('a waiting sender keeps its socket when its old audio connection fails, with talking off', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin();
+  answerPings(ws);
+  ws.message(offer());
+  await flush();
+  const old = h.peers[0];
+  old.connect();
+  h.session.setTalking(true);
+  assert.equal(h.mic.track.enabled, true);
+  ws.message({ type: 'waiting' });
+  await flush();
+  assert.equal(h.mic.track.enabled, true);
+  old.fail();
+  assert.equal(old.closed, true);
+  assert.equal(ws.closed, false);
+  assert.equal(h.mic.track.enabled, false);
+  assert.equal(h.states.at(-1).key, 'sender-reconnecting');
+  assert.equal(h.states.at(-1).detail.directReady, false);
+  await h.clock.advance(30000);
+  assert.equal(h.sockets.length, 1);
+  ws.message(ready(GEN_B));
+  ws.message(offer(CONN_B, GEN_B));
+  await flush();
+  assert.equal(h.sockets.length, 1);
+  assert.equal(h.captures(), 1);
+  assert.equal(h.peers.length, 2);
+  h.peers[1].connect();
+  assert.equal(h.states.at(-1).key, 'sender-ready');
+  assert.equal(h.mic.track.enabled, false);
+});
+
+test('a waiting Cloud relay sender still takes a new socket, because its credentials belong to that one', async t => {
+  const h = harness(t, { role: 'sender', transport: 'relay' });
+  const ws = await h.begin();
+  ws.message(offer());
+  await flush();
+  relayReply(ws);
+  await flush();
+  h.peers[0].connect();
+  h.session.setTalking(true);
+  ws.message({ type: 'waiting' });
+  await flush();
+  h.peers[0].fail();
+  assert.equal(ws.closed, true);
+  assert.equal(h.mic.track.enabled, false);
+  await h.clock.advance(1000);
+  assert.equal(h.sockets.length, 2);
+});
+
+test('a sender whose timers were held back asks on its first tick', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin({ type: 'waiting' });
+  answerPings(ws);
+  heldBack(h.clock, 600000);
+  await h.clock.advance(1000);
+  assert.equal(checks(ws), 1);
+});
+
+test('a stale reply makes a sender ask at once and its reconnect has nothing to ask yet', async t => {
+  const h = harness(t, { role: 'sender' });
+  const ws = await h.begin();
+  ws.message({ type: 'error', error: 'stale' });
+  await flush();
+  assert.equal(checks(ws), 1);
+  ws.message({ type: 'waiting' });
+  await flush();
+  ws.serverClose(1006);
+  await h.clock.advance(1000);
+  const next = h.sockets.at(-1);
+  assert.notEqual(next, ws);
+  next.open();
+  next.message({ type: 'waiting' });
+  await flush();
+  answerPings(next);
+  await h.clock.advance(59000);
+  assert.deepEqual(next.sent.filter(frame => frame !== 'ping').map(frame => frame.type), ['auth']);
 });
 
 test('approval wait does not capture, create peers or mint relay credentials until admission', async t => {

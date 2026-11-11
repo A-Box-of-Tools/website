@@ -6,6 +6,13 @@
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 
+test('a page that closes first is answered', async () => {
+  const s = await system(), host = await s.host(), caller = await s.sender(0);
+  s.room().instance.webSocketClose(caller);
+  assert.deepEqual(caller.closed, { code: undefined, reason: undefined });
+  assert.equal(host.readyState, 1);
+});
+
 test('unnamed callers retain password admission and session moderation across reconnection', async () => {
   const s = await system(), host = await s.host(PASSWORD);
   const connect = async (passwordProof = PASSWORD) => {
@@ -601,6 +608,55 @@ test('password, mute and kick anchors survive host loss and hibernation without 
   assert.deepEqual(last(muted), { type: 'error', error: 'stale' });
 });
 
+test('a parked sender hears everything it waits for without asking, even from a hibernated room', async () => {
+  const s = await system(), host = await s.host(), sender = await s.sender(0);
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  assert.equal(last(sender).type, 'waiting');
+  s.room().instance = new Inbox(s.room().ctx, s.env);
+  const returned = await s.host();
+  assert.equal(last(sender).type, 'ready');
+  assert.equal(last(sender).generation, state(returned).generation);
+  assert.equal(returned.messages.filter(frame => frame.type === 'join').length, 1);
+
+  const approvals = await system();
+  const owner = await approvals.open();
+  await approvals.send(owner, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null, approval: true });
+  const [admitted, refused, ended] = [await approvals.sender(0), await approvals.sender(1), await approvals.sender(2)];
+  for (const ws of [admitted, refused, ended]) assert.equal(last(ws).type, 'approval-pending');
+  const generation = state(owner).generation;
+  await approvals.send(owner, { type: 'approve', generation, to: state(admitted).id });
+  assert.equal(last(admitted).type, 'ready');
+  await approvals.send(owner, { type: 'deny', generation, to: state(refused).id });
+  assert.equal(last(refused).type, 'denied');
+  await approvals.send(owner, { type: 'end', generation });
+  assert.equal(last(ended).type, 'ended');
+});
+
+test('a cached page still asking every second gets the same answers and no second join', async () => {
+  const s = await system(), sender = await s.sender(0);
+  const ask = async (type, times = 5) => {
+    for (let i = 0; i < times; i += 1) {
+      await s.send(sender, { type: 'check' });
+      assert.equal(last(sender).type, type);
+    }
+  };
+  await ask('waiting');
+  const host = await s.host();
+  await ask('ready');
+  assert.equal(host.messages.filter(frame => frame.type === 'join').length, 1);
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  await ask('waiting');
+  s.room().instance = new Inbox(s.room().ctx, s.env);
+  await ask('waiting');
+  const returned = await s.host();
+  await ask('ready');
+  assert.equal(returned.messages.filter(frame => frame.type === 'join').length, 1);
+  await s.send(returned, { type: 'end', generation: state(returned).generation });
+  await ask('ended', 1);
+});
+
 test('live host replacement retires the old lease before its eventual close callback', async () => {
   const s = await system(), old = await s.host(PASSWORD, 'Original'), sender = await s.sender(0, PASSWORD);
   const oldGeneration = state(old).generation, replacement = await s.host(null, 'Changed');
@@ -767,6 +823,27 @@ test('admitted and pending limits, auth deadlines, malformed frames and update b
     await s.room().instance.webSocketMessage(ws, value);
     assert.equal(ws.closed.code, 4400);
   }
+});
+
+test('pending sockets are capped per address, and the host still gets in', async (t) => {
+  let now = 1000;
+  t.mock.method(Date, 'now', () => now);
+  const s = await system(), waiting = [];
+  const from = async (address) => (await worker.fetch(s.request(undefined, { 'CF-Connecting-IP': address }), s.env)).webSocket.peer;
+  for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
+  const refused = await from('2606:4700:4700:ab:9876:5432:abcd:ef01');
+  assert.equal(refused.closed.code, 4429);
+  assert.deepEqual(last(refused), { type: 'error', error: 'full' });
+  assert.deepEqual(refused.tags, [], 'no object holds it');
+  assert.equal(refused.deserializeAttachment(), null);
+  for (let address = 1; address <= 7; address += 1) {
+    for (let i = 0; i < 4; i += 1) { waiting.push(await from(`198.51.100.${address}`)); now += 1; }
+  }
+  const host = await from('203.0.113.9');
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: null });
+  assert.equal(last(host).type, 'host-ready');
+  assert.equal(JSON.stringify(state(host)).includes('source'), false, 'nothing about the address outlives the handshake');
+  assert.equal(JSON.stringify(s.room().ctx.sockets.map(state)).includes('198.51.100'), false);
 });
 
 test('asynchronous auth cannot revive a retired socket and failed delivery releases admitted capacity', async (t) => {

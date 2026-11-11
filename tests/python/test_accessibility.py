@@ -50,6 +50,7 @@ LABEL_FOR = re.compile(r'<label[^>]*\bfor\s*=\s*"([^"]+)"')
 COMMENT = re.compile(r'<!--.*?-->', re.S)
 MAIN_OPENING = re.compile(r'''<main(?=[\s/>])(?:[^>"']|"[^"]*"|'[^']*')*>''')
 ATTRIBUTE = re.compile(r'''[^\s=/>]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?''')
+INFO_TIP = re.compile(r'<details\b[^>]*\bclass="(?:[^"]*\s)?info-tip[\s"][^>]*>(.*?)</details>', re.S)
 
 
 def tool_bodies():
@@ -81,6 +82,22 @@ def attr(tag, name):
 
 def has_attr(tag, name):
     return re.search(rf'\b{name}\b', tag) is not None
+
+
+def info_tip_issues(text):
+    """A mark has no words of its own: its summary is named by hidden text and
+    points at the note it opens, and the note says it is a tooltip, which is also
+    what the stylesheet floats it by."""
+    for match in INFO_TIP.finditer(text):
+        summary = re.search(r'<summary\b[^>]*>(.*?)</summary>', match.group(1), re.S)
+        note = re.search(r'<[a-z]+\b[^>]*\brole="tooltip"[^>]*>', match.group(1))
+        where = match.group(0)[:70]
+        if not summary or 'visually-hidden' not in summary.group(1):
+            yield f'an information mark with no name: {where}'
+        elif not note:
+            yield f'an information mark with no role="tooltip" note: {where}'
+        elif attr(summary.group(0), 'aria-describedby') != attr(note.group(0), 'id'):
+            yield f'an information mark not described by its own note: {where}'
 
 
 def main_skip_target_issues(text):
@@ -152,6 +169,21 @@ class BodyRules(unittest.TestCase):
                     continue
                 yield f'unnamed control: {tag[:70]}'
         self.check(rule)
+
+    def test_an_information_mark_names_itself_and_its_note(self):
+        self.check(info_tip_issues, over=tool_bodies)
+
+    def test_the_information_mark_rule_finds_what_it_is_for(self):
+        good = ('<details class="info-tip"><summary aria-describedby="n">'
+                '<span class="visually-hidden">About</span></summary>'
+                '<p id="n" role="tooltip">Words.</p></details>')
+        self.assertEqual([], list(info_tip_issues(good)))
+        for bad in (good.replace('class="visually-hidden"', ''),
+                    good.replace(' role="tooltip"', ''),
+                    good.replace('aria-describedby="n"', ''),
+                    good.replace('id="n"', 'id="m"')):
+            with self.subTest(body=bad):
+                self.assertTrue(list(info_tip_issues(bad)))
 
     def test_every_visible_button_has_a_name(self):
         def rule(text):
@@ -226,6 +258,11 @@ class FrameRules(unittest.TestCase):
             text = (ROOT / 'templates' / name).read_text(encoding='utf-8')
             self.assertIn('<main id="main"', text,
                           f'templates/{name}: <main> lacks the id the skip link targets')
+
+    def test_the_frames_information_mark_names_itself_and_its_note(self):
+        text = (ROOT / 'templates' / 'tool.html').read_text(encoding='utf-8')
+        self.assertIn('class="info-tip"', text)
+        self.assertEqual([], list(info_tip_issues(text)))
 
     def test_the_skip_link_is_styled_in_both_sheets(self):
         for sheet in ('shared/site.css', 'shared/css/tool-frame.css'):
