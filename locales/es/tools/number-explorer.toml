@@ -51,7 +51,7 @@ title = "Lo que escribes se queda en la página."
 body = "La calculadora no escribe ninguna entrada en el almacenamiento ni en la barra de direcciones. Al recargar, la exploración vuelve a empezar. Una imagen guardada es un archivo que conservas a propósito en tu dispositivo."
 [[privacy]]
 title = "Los demás scripts del sitio tienen sus propios límites."
-body = "El marco puede cargar scripts de publicidad, medición y donaciones. La calculadora no les envía tus entradas ni tus resultados. El panel de red en vivo informa de las conexiones de la página."
+body = "El marco puede cargar scripts de publicidad y medición. La calculadora no les envía tus entradas ni tus resultados. El panel de red en vivo informa de las conexiones de la página."
 
 [[howto]]
 title = "Escribe un número o arrastra el dial."

@@ -51,7 +51,7 @@ title = "Vos saisies restent dans la page."
 body = "La calculatrice n'écrit aucune saisie dans le stockage ni dans la barre d'adresse. Recharger remet l'exploration à zéro. Une image enregistrée est un fichier que vous gardez volontairement sur votre appareil."
 [[privacy]]
 title = "Les autres scripts du site ont leurs propres limites."
-body = "Le cadre peut charger des scripts de publicité, de mesure et de dons. La calculatrice ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
+body = "Le cadre peut charger des scripts de publicité et de mesure. La calculatrice ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
 
 [[howto]]
 title = "Tapez un nombre ou faites glisser le curseur."
