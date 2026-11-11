@@ -3,6 +3,9 @@
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { answerClose } from "./closing.js";
+import { admitPending, pendingSource } from "./pending.js";
+import { refusal } from "./refusal.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, forgetApproval, clearApprovals } from "./voice-approval.js";
 
@@ -11,7 +14,6 @@ const ID = /^[a-f0-9]{64}$/;
 const SIGNAL_TARGET = "00000000-0000-4000-8000-000000000001";
 const MAX_SENDERS = 10;
 const MAX_PROBES = 4;
-const MAX_PENDING = 4;
 const AUTH_TIMEOUT = 8000;
 const MAX_MESSAGE = 64 * 1024;
 const MAX_BUFFER = 128 * 1024;
@@ -118,18 +120,18 @@ export class Inbox {
     }
     const code = url.pathname.match(/^\/inbox\/([a-f0-9]{64})$/)?.[1];
     if (!code || !validVoiceQuery(url) || request.headers.get("Upgrade") !== "websocket") return new Response(null, { status: 404 });
+    // Digesting yields to other sockets, so the count and the accept below stay
+    // in one synchronous step after it.
+    const source = await pendingSource(request, code);
     this.cleanup();
-    const { 0: client, 1: server } = new WebSocketPair();
-    if (this.sockets("pending").length >= MAX_PENDING) {
-      server.accept();
-      server.send(JSON.stringify({ type: "error", error: "full" }));
-      server.close(4429, "full");
-    } else {
-      const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
-      this.ctx.acceptWebSocket(server, ["inbox"]);
-      this.attach(server, { role: "pending", code, scope: validScope(scope) ? scope : null,
-        deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
+    if (!admitPending(this.sockets("pending"), source, (ws) => this.refuse(ws, 4429, "full"))) {
+      return refusal(4429, "full", { type: "error", error: "full" });
     }
+    const { 0: client, 1: server } = new WebSocketPair();
+    const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
+    this.ctx.acceptWebSocket(server, ["inbox"]);
+    this.attach(server, { role: "pending", code, source, scope: validScope(scope) ? scope : null,
+      deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
     return new Response(null, { status: 101, webSocket: client });
   }
 
@@ -396,7 +398,7 @@ export class Inbox {
     )).catch(() => {}));
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

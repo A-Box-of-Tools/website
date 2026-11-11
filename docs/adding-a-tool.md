@@ -164,6 +164,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/download.js` | `js_parts = ["download"]` | a download that starts now, or a link that follows the latest result |
 | `shared/js/media.js` | `js_parts = ["media"]` | what the browser makes of a file: a video's size and length, a picture's size |
 | `shared/js/cropper.js` | `js_parts = ["cropper"]` | the crop box dragged over a preview, in the picture's own pixels; the tool names its smallest crop and whether sides must be even |
+| `shared/js/info-tip.js` | `js_parts = ["info-tip"]`; a paired tool has it already | the information mark, an i that opens a sentence or two in a bubble over the page; see [An information mark](#an-information-mark) |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 
@@ -290,6 +291,37 @@ cleanly and 404 in the browser.
 Only *choosing* the files is shared. What a tool does with them afterwards — the
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
 tool that sharing it would cost more than it saved.
+
+### An information mark
+
+An i beside a control, opening a sentence or two about it in a bubble over the
+page. Write this where the mark should sit, and put `"info-tip"` in `js_parts`:
+
+```html
+<details class="info-tip">
+  <summary aria-describedby="x-note"><span class="visually-hidden">About x</span></summary>
+  <p id="x-note" role="tooltip">What x does.</p>
+</details>
+```
+
+That is all of it: there is nothing to import, nothing to call and no CSS to
+write. `.info-tip` in `shared/css/tool-frame.css` draws the mark and the bubble,
+and `templates/tool.html` loads the module beside `src/main.js`, so a mark works
+even if the tool's own script fails to boot, and one added after the page has
+loaded needs nothing either. It opens under a mouse and on keyboard focus, a click
+or a tap keeps it open, and Escape, a press elsewhere or focus moving on closes it.
+The bubble hangs from the mark, so the row around it needs no `position`, and it
+moves along or turns above the mark to stay on screen.
+
+The build refuses a body that draws a mark without asking for the part. A tool
+that pairs devices has the part already, because the frame draws a mark beside
+its version. The note's words go in the markup like any other visible string, and
+the note can be a `<div>` of paragraphs when one will not do.
+
+It is for a sentence or two about the control beside it. Anything longer belongs
+in `<details class="info-fold">`, which draws the same mark and opens in the page
+rather than over it. Neither is for a fold that opens controls or data, and a
+status the reader has to see belongs on the page, where nobody has to ask for it.
 
 ## Carrying a result into the next tool
 

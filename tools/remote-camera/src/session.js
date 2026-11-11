@@ -4,6 +4,7 @@ import { createChannelGreeting } from './shared/peer-greeting.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
 import { groupUrl } from './shared/discovery-group.js';
 import { AdmissionGrants, createAdmissionCache } from './shared/peer-admission.js';
+import { answerHostProve, createHostClaim, holderUrl } from './shared/peer-host-claim.js';
 import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 import { DEFAULT_VIDEO_BUDGET, normalizeVideoBudget, viewerLimit, videoBitrate, VideoBandwidth } from './bandwidth.js';
 
@@ -18,8 +19,13 @@ export class CameraSession {
     onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
     onViewers = () => {}, onBandwidth = () => {},
     onSignaling = () => {}, visible = () => globalThis.document?.hidden !== true,
-    diagnostics = null, admissions = createAdmissionCache(),
+    diagnostics = null, admissions = createAdmissionCache(), hostClaim = createHostClaim(),
   } = {}) {
+    // Settled long before anybody can press Start. Without WebCrypto the room is
+    // hosted as an older page hosts it, with nothing to prove its name is its own.
+    this.settledClaim = null;
+    Promise.resolve(hostClaim).then((claim) => { this.settledClaim = claim; }, () => {});
+    this.hostClaim = null;
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
     this.MediaStream = MediaStream;
@@ -116,6 +122,8 @@ export class CameraSession {
     this.stream = stream;
     this.transport = transportMode(transport);
     this.discoveryGroup = discoveryGroup;
+    // One claim for the whole share, so every reconnect names the same holder.
+    this.hostClaim = this.settledClaim;
     if (!this.transport) { this.stop('transport.invalid'); throw new Error('transport.invalid'); }
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
@@ -148,7 +156,7 @@ export class CameraSession {
       const waiting = [];
       let socket;
       try {
-        socket = this.socket = new this.Socket(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`, this.transport), this.role === 'camera' && discoverable ? this.discoveryGroup : null));
+        socket = this.socket = new this.Socket(holderUrl(groupUrl(transportUrl(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`, this.transport), this.role === 'camera' && discoverable ? this.discoveryGroup : null), this.role === 'camera' ? this.hostClaim : null));
       } catch (error) {
         this.openingTrace?.error('websocket', error);
         this.openingTrace?.socket('closed');
@@ -205,6 +213,12 @@ export class CameraSession {
       const dispatch = (message) => {
         try { this.message(message); } catch { fail('connection.invalid'); }
       };
+      const introductionClosed = (code) => {
+        this.openingTrace?.socket('closed', code);
+        for (const entry of this.peers.values()) entry.trace?.socket('closed', code);
+        const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
+        fail(reasons[code] ?? 'connection.server-failed', 'socket-closed');
+      };
       if (!configured) this.relay = new RelayCredentials({
         send: (frame) => pairing.send(frame), current,
         onRenew: (servers) => this.renewRelay(servers),
@@ -241,18 +255,17 @@ export class CameraSession {
           for (const entry of this.peers.values()) entry.trace?.error('websocket', { name: 'NetworkError' });
           fail('connection.server-failed', 'socket-error');
         },
-        close: (event) => {
-          this.openingTrace?.socket('closed', event.code);
-          for (const entry of this.peers.values()) entry.trace?.socket('closed', event.code);
-          const reasons = { 4404: 'connection.not-found', 4409: 'connection.taken', 4429: 'connection.busy', 4410: 'connection.ended', 4412: 'transport.mismatch', 4413: 'transport.unavailable' };
-          fail(reasons[event.code] ?? 'connection.server-failed', 'socket-closed');
-        },
+        close: (event) => introductionClosed(event.code),
         message: (event) => {
           if (event.data === 'pong') { confirmed = opened; if (recovering) finish(); return; }
           if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
           let message;
           try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
           if (this.relay?.receive(message)) return;
+          // Never queued behind relay setup: the credentials wait on this proof.
+          if (answerHostProve(message, this.role === 'camera' ? this.hostClaim : null, (frame) => pairing.send(frame))) return;
+          // Just ahead of the close with 4410, which Chromium holds for up to two seconds.
+          if (message?.type === 'host-gone') return introductionClosed(4410);
           if (!configured) {
             if (waiting.length >= 64) return fail('connection.invalid');
             waiting.push(message);

@@ -10,6 +10,7 @@ routes = [
 ]
 
 [vars]
+SERVICE_ORIGIN = "https://mcp-dev.abox.tools"
 ALLOWED_HOSTS = '["mcp-dev.abox.tools","127.0.0.1","localhost"]'
 ALLOWED_ORIGINS = '["https://abox.tools","https://dev.abox-preview.pages.dev","http://127.0.0.1:8788","http://localhost:8788"]'
 

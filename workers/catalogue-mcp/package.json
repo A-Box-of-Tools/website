@@ -8,7 +8,7 @@
     "build:ui": "node scripts/build.mjs",
     "build": "node scripts/package-build.mjs",
     "test": "node --test \"tests/*.test.mjs\"",
-    "dev": "wrangler dev --ip 127.0.0.1 --port 8787",
+    "dev": "wrangler dev --ip 127.0.0.1 --port 8787 --var SERVICE_ORIGIN:http://127.0.0.1:8787",
     "deploy:dev": "wrangler deploy",
     "deploy:production": "wrangler deploy --config wrangler.production.toml"
   },

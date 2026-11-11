@@ -107,7 +107,7 @@
     <p>An internet service introduces the browsers using connection metadata. Direct sends encrypted voice between them without a relay. If both devices choose Cloud relay, Cloudflare forwards encrypted audio and sees connection metadata and traffic volume, but cannot decrypt the audio. There is no recording feature.</p>
     <p>Direct needs a network where the devices can reach one another. Guest Wi-Fi, device isolation and some VPNs or firewalls can block it. Cloud relay is an explicit alternative that needs internet throughout; a failed connection never switches routes automatically.</p>
     <p>The host needs microphone permission and a secure page. Start with a small group, because each receiver uses its own connection from the host.</p>
-    <p>Receivers wait for a missing host and check once a second while their pairing connection is open. Background tabs, sleeping devices, and an interrupted internet connection may reconnect more slowly.</p>
+    <p>Receivers wait for a missing host while their pairing connection is open, and are told as soon as it returns. Background tabs, sleeping devices, and an interrupted internet connection may reconnect more slowly.</p>
   </details>
 </section>
 

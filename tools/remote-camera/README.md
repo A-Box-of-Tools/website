@@ -302,7 +302,8 @@ attempt reached, not a proven cause such as Wi-Fi isolation.
 ## Checking a change
 
 Host setup descriptions use inline help beside the link name, approval choice
-and microphone choice. They reuse Share Text's `wireHelpTooltip` controller for
+and microphone choice. They are the site's shared
+[information mark](../../docs/adding-a-tool.md#an-information-mark), which brings
 hover, keyboard focus, touch pinning, Escape and outside-click dismissal. The
 approval explanation still updates with the chosen policy inside its tooltip.
 Check viewer tooltips with keyboard, hover and taps too. With an accepted live

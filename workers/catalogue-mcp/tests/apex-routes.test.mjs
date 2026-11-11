@@ -23,6 +23,8 @@ test('production exposes only the two exact apex discovery routes while developm
   assert.deepEqual(JSON.parse(production.vars.ALLOWED_HOSTS), ['mcp.abox.tools', 'abox.tools']);
   assert.deepEqual(development.routes, [{ pattern: 'mcp-dev.abox.tools', custom_domain: true }]);
   assert.ok(!JSON.parse(development.vars.ALLOWED_HOSTS).includes('abox.tools'));
+  assert.equal(production.vars.SERVICE_ORIGIN, 'https://mcp.abox.tools');
+  assert.equal(development.vars.SERVICE_ORIGIN, 'https://mcp-dev.abox.tools');
   assert.equal(production.ratelimits[0].namespace_id, '1003');
   assert.equal(development.ratelimits[0].namespace_id, '1004');
 });

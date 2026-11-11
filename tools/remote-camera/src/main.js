@@ -2,7 +2,6 @@ import { phrase, ltr } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
 import { rendezvousEndpoint } from './shared/peer-endpoint.js';
-import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { observeForeground } from './shared/foreground-recovery.js';
 import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { CameraCapture } from './capture.js';
@@ -31,7 +30,6 @@ const diagnostics = createDiagnostics({
   version: new URL(import.meta.url).searchParams.get('v'),
   userAgent: navigator.userAgent,
 });
-document.querySelectorAll('.camera-help').forEach(wireHelpTooltip);
 let mode = 'camera';
 let activeRole = null;
 let epoch = 0;

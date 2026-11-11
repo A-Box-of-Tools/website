@@ -391,8 +391,13 @@ that folder, 404 in its turn, and the error page would arrive unstyled — a wor
 first impression than the error. The build passes `base = "/"` for this page
 alone, which is what makes the shared footer's links absolute too.
 
-Two more things it does differently, both on purpose:
+Three more things it does differently, all on purpose:
 
+- **The number is on the page.** A large "404" opens the heading and the tab's
+  title. This is one English file answering for every language, and the number
+  is the one word on it that a visitor who reads no English can still read.
+  Without it the grid of tools makes the page look like one more index of them.
+  Hiding it would protect nobody, because the server sends the status either way.
 - **No advertising.** Google asks that ads not be placed on error pages, and an
   advert on top of "we could not find that" is a poor way to meet somebody. The
   measurement tag stays, because knowing which addresses people arrive at and
