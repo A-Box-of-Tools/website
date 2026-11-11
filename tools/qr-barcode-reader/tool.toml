@@ -33,7 +33,7 @@ glyph = "scan-line"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
-lastmod = "2026-10-12"
+lastmod = "2026-11-11"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.

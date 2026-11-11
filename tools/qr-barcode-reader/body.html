@@ -47,6 +47,24 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="Preview"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        What was just read, said on the picture somebody is watching.
+
+        The answer is in step 2, under this card, and on a phone that is below
+        the bottom of the screen. So the read is named here and the whole strip
+        is the button that goes to it. It names the kind of thing and never the
+        string: an address cut short to fit a strip is exactly the half-read
+        address this page exists to stop people trusting.
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">See what it says</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -62,6 +80,17 @@
           <span class="check-note">
             Only some cameras have one, and only some browsers will let a page
             ask for it. Where it is not offered, it is not there.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>Beep when a code is read</strong>
+          <span class="check-note">
+            A short tone this page makes itself, and a buzz on phones that
+            allow one. Nothing is downloaded to play it.
           </span>
         </span>
       </label>
@@ -269,6 +298,8 @@
     <span data-phrase="status.looking">Looking&hellip; hold the code still and
       fill about half the frame with it.</span>
     <span data-phrase="status.on">Camera on. Nothing is being recorded.</span>
+    <span data-phrase="status.read">Read: {kind} ({symbol}). What it says is
+      below, and the camera is still looking.</span>
 
     <span data-phrase="camera.denied">The browser refused the camera for this
       page. That is a permission you can change: look for the camera icon in

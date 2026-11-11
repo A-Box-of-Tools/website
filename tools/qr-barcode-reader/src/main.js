@@ -2,6 +2,8 @@
 
 import * as camera from './camera.js';
 import { scan } from './scan.js';
+import { createChime } from './chime.js';
+import { sightings } from './sightings.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { phrase } from './shared/phrases.js';
 import { acceptsImageFile } from './shared/image-input.js';
@@ -16,11 +18,14 @@ const el = {
   stopCamera: $('stop-camera'),
   pickError: $('pick-error'),
   cameraCard: $('camera-card'),
+  viewfinder: document.querySelector('.viewfinder'),
   video: $('video'),
+  found: $('camera-found'),
   cameraPickRow: $('camera-pick-row'),
   cameraPick: $('camera-pick'),
   torchRow: $('torch-row'),
   torch: $('torch'),
+  signal: $('camera-signal'),
   cameraStatus: $('camera-status'),
   resultsCard: $('results-card'),
   results: $('results'),
@@ -164,6 +169,9 @@ async function readFile(file) {
 const shown = [];
 const MOST_KEPT = 20;
 
+/** What makes two reads the same code: the symbol it is written in, and what it says. */
+const keyOf = (found) => `${found.symbology}:${found.text}`;
+
 /**
  * The symbol's own name.
  *
@@ -250,6 +258,10 @@ function render(found) {
   node.querySelector('.result-symbology').textContent = symbologyName(found.symbology);
   node.querySelector('.result-text').textContent = found.text;
   node.dataset.kind = payload.kind;
+  // Focusable from script and not from Tab: the strip on the viewfinder sends
+  // the keyboard here along with the scroll position, so that the next Tab is
+  // this result's Copy button rather than whatever came after the camera.
+  node.tabIndex = -1;
 
   const rows = node.querySelector('.result-rows');
   for (const entry of payload.rows) {
@@ -308,14 +320,39 @@ function render(found) {
 /** Put a result on the page, unless it is one that is already there. */
 function report(found, measure = true) {
   if (measure) globalThis.aboxToolComplete?.();
-  if (shown.some((seen) => seen === `${found.symbology}:${found.text}`)) return false;
-  shown.unshift(`${found.symbology}:${found.text}`);
+  const key = keyOf(found);
+  if (shown.includes(key)) return false;
+
+  // Drawn before it is recorded, so that a result which could not be drawn is
+  // not remembered as one that was. `shown` and the list are read side by
+  // side, by position, when the camera meets a code again: see raise().
+  const node = render(found);
+  shown.unshift(key);
   shown.length = Math.min(shown.length, MOST_KEPT);
 
   el.resultStatus.textContent = '';
-  el.results.prepend(render(found));
+  el.results.prepend(node);
   while (el.results.children.length > MOST_KEPT) el.results.lastElementChild.remove();
   return true;
+}
+
+/**
+ * The result on the page for a code, moved to the top if it was lower down.
+ *
+ * A code the camera meets again gets no second copy, and leaving the first
+ * where it was would put the thing just scanned eleventh in a list that is
+ * otherwise newest first. `shown` and the list hold the same codes in the
+ * same order - report() and Clear are the only things that write either - so
+ * a position in one is the position in the other.
+ */
+function raise(key) {
+  const at = shown.indexOf(key);
+  const node = el.results.children[at] ?? null;
+  if (node && at > 0) {
+    shown.unshift(...shown.splice(at, 1));
+    el.results.prepend(node);
+  }
+  return node;
 }
 
 function fail(key) {
@@ -440,6 +477,11 @@ window.addEventListener('paste', (event) => {
     .filter((file) => acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'svg']));
   if (files.length) {
     event.preventDefault();
+    // A pasted picture never passes through the picker, which is the only
+    // thing that wakes step 2 by itself. Without this the answer was written
+    // into a card that stayed dimmed and unclickable, under a line saying it
+    // would open as soon as a file was chosen.
+    picker.arrived();
     void readFiles(files);
   }
 });
@@ -447,6 +489,8 @@ window.addEventListener('paste', (event) => {
 /* -------------------------------------------------------------- the camera */
 
 const cameraSession = camera.session();
+const chime = createChime();
+const seen = sightings();
 let stream = null;
 let looking = false;
 let lastLook = 0;
@@ -455,6 +499,103 @@ let cameraStatusTimer = null;
 
 /** How often a frame is examined. */
 const EVERY_MS = 120;
+
+/**
+ * How close together two reads may light the viewfinder and sound.
+ *
+ * A camera swept across a sheet of codes can read a new one on every frame.
+ * Eight flashes a second is past the three a second the accessibility
+ * guidelines draw as the line for a seizure risk, and eight beeps a second is
+ * a buzzer. A read that lands sooner than this still reaches the list, the
+ * strip and the status line; it borrows the flash that is already running.
+ */
+const SIGNAL_GAP_MS = 400;
+
+/** How long the viewfinder stays lit, and how long a result stays marked as the new one. */
+const HIT_MS = 1000;
+const FRESH_MS = 2400;
+
+let lastSignal = -Infinity;
+let hitTimer = null;
+let freshTimer = null;
+/** The result the strip on the viewfinder goes to. */
+let latest = null;
+/** Which of its two spellings the status line used last: see announce(). */
+let spelled = false;
+/** Built from its number, so that the source has no character in it nobody can see. */
+const ZERO_WIDTH_SPACE = String.fromCharCode(0x200b);
+
+/** Scrolling that follows the visitor's own setting for how much may move. */
+const glide = () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
+
+/** Put a class on so that its animation starts from the beginning, even when it is already there. */
+function restart(element, name) {
+  element.classList.remove(name);
+  // Reading a layout property is what makes the browser notice the class
+  // went away. Off and on again inside one task is otherwise no change at all.
+  void element.offsetWidth;
+  element.classList.add(name);
+}
+
+/**
+ * Bring a result into view, for somebody who is watching the camera.
+ *
+ * Only as far as it takes to show the string and the buttons under it, so
+ * that as much of the viewfinder as will fit stays on screen for the next
+ * code. And only while the viewfinder is on screen at all: a visitor who has
+ * scrolled away to read the page is not pulled back by a camera they left
+ * pointing at the desk.
+ */
+function reveal(node) {
+  const finder = el.viewfinder.getBoundingClientRect();
+  if (finder.bottom <= 0 || finder.top >= window.innerHeight) return;
+  (node.querySelector('.run-row') ?? node).scrollIntoView({ block: 'nearest', behavior: glide() });
+}
+
+/**
+ * Say that a code was read, everywhere somebody might be attending.
+ *
+ * Their eyes are on the viewfinder, so it lights up and names what was read.
+ * Their ears may be all that is free - a phone held at arm's length over a
+ * label - so it sounds. A screen reader is listening to the status line. And
+ * the answer is in the list underneath, so the list is brought into view.
+ *
+ * It used to be a two-pixel border that turned green for 0.7 seconds, above a
+ * status line that went on saying it was looking.
+ */
+function announce(found, node, now) {
+  const kind = phrase(found.payload.kindKey);
+  const symbol = symbologyName(found.symbology);
+
+  el.found.querySelector('.found-kind').textContent = kind;
+  el.found.querySelector('.found-symbology').textContent = symbol;
+  el.found.hidden = false;
+  latest = node;
+
+  clearTimeout(cameraStatusTimer);
+  cameraStatusTimer = null;
+  // A live region speaks when its text changes, and two web addresses in a
+  // row make the same sentence twice. The zero-width space turns the second
+  // into a change without making it look like one.
+  spelled = !spelled;
+  el.cameraStatus.textContent = phrase('status.read', { kind, symbol }) + (spelled ? ZERO_WIDTH_SPACE : '');
+  el.cameraStatus.classList.add('read');
+
+  if (now - lastSignal >= SIGNAL_GAP_MS) {
+    lastSignal = now;
+    restart(el.cameraCard, 'hit');
+    clearTimeout(hitTimer);
+    hitTimer = setTimeout(() => el.cameraCard.classList.remove('hit'), HIT_MS);
+    if (el.signal.checked) chime.play();
+  }
+
+  if (!node) return;
+  for (const other of el.results.querySelectorAll('.fresh')) other.classList.remove('fresh');
+  restart(node, 'fresh');
+  clearTimeout(freshTimer);
+  freshTimer = setTimeout(() => node.classList.remove('fresh'), FRESH_MS);
+  reveal(node);
+}
 
 function look() {
   if (!looking) return;
@@ -468,14 +609,25 @@ function look() {
   if (!frame) return;
 
   const found = scan(frame, { thorough: false });
-  if (found && report(found)) {
-    el.cameraCard.classList.add('hit');
-    setTimeout(() => el.cameraCard.classList.remove('hit'), 700);
-  }
+  if (!found) return;
+
+  // A code that has not left the frame is read again on every pass, and has
+  // already been announced: see sightings.js.
+  const key = keyOf(found);
+  if (seen.note(key, now) === 'still') return;
+
+  // False for a code that is on the page already - read from a file earlier,
+  // or shown to the camera a second time. Either way it is the one that was
+  // just scanned, so it goes to the top and is announced like any other.
+  report(found);
+  announce(found, raise(key), now);
 }
 
 async function startCamera(deviceId) {
   stopCamera();
+  // Here, inside the tap and before anything is awaited, or not at all: see
+  // chime.js for why a sound has to be asked for this early.
+  if (el.signal.checked) chime.arm();
   el.pickError.hidden = true;
   el.startCamera.hidden = true;
   el.stopCamera.hidden = false;
@@ -492,7 +644,13 @@ async function startCamera(deviceId) {
   stream = active;
   el.video.srcObject = active;
   el.cameraCard.hidden = false;
+  // The camera is a way in like any other, and step 2 is where its answers
+  // go. Nothing woke that card on this route, so a code read here landed in
+  // one that was dimmed, unclickable and still asking for a file.
+  picker.arrived();
+  seen.forget();
   el.cameraStatus.textContent = phrase('status.on');
+  el.cameraStatus.classList.remove('read');
   await el.video.play().catch(() => {});
   if (!cameraSession.isCurrent(active)) return;
 
@@ -509,6 +667,12 @@ async function startCamera(deviceId) {
 
   el.torchRow.hidden = !camera.torchable(active);
   el.torch.checked = false;
+
+  // The button that opened this card is above it, and on a phone the card
+  // opens below the bottom of the screen: somebody pressed "Use the camera"
+  // and was shown no camera. Done last, once the card has every row it is
+  // going to have, and only as far as it takes to show the whole of it.
+  el.cameraCard.scrollIntoView({ block: 'nearest', behavior: glide() });
 
   looking = true;
   lastLook = 0;
@@ -527,9 +691,16 @@ function stopCamera() {
   cameraFrame = 0;
   clearTimeout(cameraStatusTimer);
   cameraStatusTimer = null;
+  clearTimeout(hitTimer);
+  hitTimer = null;
+  lastSignal = -Infinity;
+  latest = null;
+  chime.release();
   stream = null;
   el.video.srcObject = null;
   el.cameraCard.hidden = true;
+  el.cameraCard.classList.remove('hit');
+  el.found.hidden = true;
   el.startCamera.hidden = false;
   el.stopCamera.hidden = true;
 }
@@ -540,6 +711,49 @@ el.cameraPick.addEventListener('change', () => { void startCamera(el.cameraPick.
 el.torch.addEventListener('change', () => {
   void camera.setTorch(stream, el.torch.checked);
 });
+
+// The strip on the viewfinder is the way down to what it names.
+el.found.addEventListener('click', () => {
+  if (!latest?.isConnected) return;
+  latest.scrollIntoView({ block: 'start', behavior: glide() });
+  latest.focus({ preventScroll: true });
+});
+
+/*
+ * Whether a read makes a sound is the visitor's to decide, once.
+ *
+ * Only "off" is ever written down. The markup's own answer is on, so a
+ * visitor who never touches the box leaves nothing behind, and one who turns
+ * it off is not beeped at on the next visit by a page that forgot.
+ */
+const SIGNAL_STORE = 'qr-barcode-reader-signal';
+
+try {
+  if (localStorage.getItem(SIGNAL_STORE) === 'off') el.signal.checked = false;
+} catch {
+  // Storage is refused in some private windows. The box keeps the markup's
+  // answer and the choice lasts as long as the page does.
+}
+
+el.signal.addEventListener('change', () => {
+  try {
+    if (el.signal.checked) localStorage.removeItem(SIGNAL_STORE);
+    else localStorage.setItem(SIGNAL_STORE, 'off');
+  } catch {
+    // As above: remembered until the page is closed, and no longer.
+  }
+  // Ticking the box is itself a tap, which is the moment a sound may be
+  // asked for.
+  if (el.signal.checked) chime.arm();
+  else chime.release();
+});
+
+// A context can be suspended again after it was armed - by a permission sheet
+// over the page, by a phone call - and is only let back from a gesture. The
+// tap that started the camera has been spent by then; any later one will do.
+document.addEventListener('pointerdown', () => {
+  if (stream && el.signal.checked) chime.arm();
+}, { passive: true });
 
 // A tab put into the background keeps the camera light on and the frames
 // coming, which is both a waste and a thing nobody asked for.

@@ -43,6 +43,23 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="Pré-visualização"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        O que acabou de ser lido, dito sobre a imagem que alguém está olhando.
+        A resposta fica no passo 2, embaixo deste cartão, e num celular isso é
+        abaixo da borda da tela. Por isso a leitura é nomeada aqui e a faixa
+        inteira é o botão que leva até ela. Ela diz o tipo de coisa e nunca o
+        texto: um endereço cortado para caber numa faixa é exatamente o
+        endereço lido pela metade do qual esta página quer proteger.
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">Ver o que está escrito</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -58,6 +75,17 @@
           <span class="check-note">
             Só algumas câmeras têm, e só alguns navegadores deixam uma página
             pedir. Onde não é oferecida, não existe.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>Bipe quando um código é lido</strong>
+          <span class="check-note">
+            Um tom curto que a própria página gera, e uma vibração nos
+            celulares que permitem. Nada é baixado para tocá-lo.
           </span>
         </span>
       </label>
@@ -267,6 +295,8 @@
     <span data-phrase="status.looking">Procurando&hellip; segure o código parado e
       encha com ele mais ou menos metade do quadro.</span>
     <span data-phrase="status.on">Câmera ligada. Nada está sendo gravado.</span>
+    <span data-phrase="status.read">Lido: {kind} ({symbol}). O que está escrito
+      aparece abaixo, e a câmera continua procurando.</span>
 
     <span data-phrase="camera.denied">O navegador negou a câmera para esta página.
       É uma permissão que você pode mudar: procure o ícone de câmera na barra de

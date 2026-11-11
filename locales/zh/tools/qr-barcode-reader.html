@@ -44,6 +44,21 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="预览"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        刚读到的东西，就说在人正盯着看的画面上。答案在这张卡片下面的第 2 步里，
+        在手机上那已经落到屏幕底边以下了。所以读到了什么在这里说一声，整条提示就是通往答案的按钮。
+        它只说这是哪一类东西，从不显示那串字符：为了塞进一条提示而截短的地址，
+        正是这一页想让人别去相信的那种只读了一半的地址。
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">看看里面写了什么</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -58,6 +73,16 @@
           <strong>把灯打开</strong>
           <span class="check-note">
             只有一部分摄像头带灯，也只有一部分浏览器允许网页去要它。这里没给你这个选项，就是没有。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>读到码时响一声</strong>
+          <span class="check-note">
+            一小声提示音，由这一页自己发出，在允许的手机上还会震动一下。播放它不需要下载任何东西。
           </span>
         </span>
       </label>
@@ -175,7 +200,7 @@
 
     <span data-phrase="status.cleared">结果和图片预览已清除。</span>
     <span data-phrase="status.reading">正在读这张图&hellip;</span>
-    <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span><span data-phrase="status.broken">这个文件打不开成图片。</span><span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span><span data-phrase="status.on">摄像头开着。什么都没有在录。</span>
+    <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span><span data-phrase="status.broken">这个文件打不开成图片。</span><span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span><span data-phrase="status.on">摄像头开着。什么都没有在录。</span><span data-phrase="status.read">读到了：{kind}（{symbol}）。内容在下面，摄像头还在继续找。</span>
 
     <span data-phrase="camera.denied">浏览器拒绝把摄像头给这一页。这是一个你可以改的权限：看看地址栏里那个摄像头图标。改成挑一张图片的话，什么权限都不需要。</span><span data-phrase="camera.none">这台机器上没找到摄像头。往上面丢一张照片或者截图，读法是一样的。</span><span data-phrase="camera.busy">摄像头是有的，但被别的东西占着。把占着它的那个关掉——一般是视频通话——再试一次。</span><span data-phrase="camera.insecure">浏览器只把摄像头交给用 https 提供的页面，而这一页眼下不是。</span><span data-phrase="camera.unsupported">这个浏览器里没有网页可以去要的摄像头接口。这里其余的东西照样能用。</span><span data-phrase="camera.failed">摄像头没能启动，浏览器也没说为什么。</span>
 

@@ -44,6 +44,24 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="Vorschau"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        Was gerade gelesen wurde, auf dem Bild gesagt, auf das jemand schaut.
+        Die Antwort steht in Schritt 2, unter dieser Karte, und auf einem
+        Telefon unterhalb des Bildschirmrands. Deshalb wird der Fund hier
+        genannt, und der ganze Streifen ist die Schaltfläche, die dorthin
+        führt. Er nennt die Art und nie die Zeichenfolge: eine Adresse, die für
+        einen Streifen gekürzt wurde, ist genau die halb gelesene Adresse, vor
+        der diese Seite schützen soll.
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">Ansehen, was darin steht</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -59,6 +77,17 @@
           <span class="check-note">
             Nur manche Kameras haben eines, und nur manche Browser lassen eine
             Seite danach fragen. Wo es nicht angeboten wird, ist keines da.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>Signalton, wenn ein Code gelesen wird</strong>
+          <span class="check-note">
+            Ein kurzer Ton, den diese Seite selbst erzeugt, und eine Vibration
+            auf Telefonen, die das zulassen. Dafür wird nichts heruntergeladen.
           </span>
         </span>
       </label>
@@ -270,6 +299,8 @@
     <span data-phrase="status.looking">Wird gesucht&hellip; halten Sie den Code
       ruhig und füllen Sie damit etwa die Hälfte des Bildes.</span>
     <span data-phrase="status.on">Kamera an. Es wird nichts aufgezeichnet.</span>
+    <span data-phrase="status.read">Gelesen: {kind} ({symbol}). Was darin
+      steht, finden Sie unten, und die Kamera sucht weiter.</span>
 
     <span data-phrase="camera.denied">Der Browser hat dieser Seite die Kamera
       verweigert. Das ist eine Berechtigung, die Sie ändern können: achten Sie

@@ -32,6 +32,8 @@ So this folder is two thirds computer vision and one third specification.
 | `payload.js` | what the string *is*: a link, a network, a contact card — and what is worth warning about |
 | `scan.js` | the order all of that is tried in |
 | `camera.js` | the live camera, and every way it can refuse |
+| `sightings.js` | which of the camera's reads are worth announcing: a code held in view is read eight times a second |
+| `chime.js` | the two notes and the buzz a read makes |
 | `main.js` | the page |
 
 ## The three decisions worth knowing about
@@ -141,6 +143,67 @@ CSP directive governs it and none was widened for it. Frames arrive as pixels
 in this tab, are drawn onto a canvas the page owns, are examined, and are
 overwritten by the next frame. Nothing is recorded and nothing is kept.
 
+## Saying that a code was read
+
+The camera's answer goes in step 2, under the camera card, and on a phone that
+is below the bottom of the screen. For a long time the only sign of a read was
+the reticle's border turning green for 0.7 seconds - two pixels, in the page's
+dark green, over a photograph - above a status line that went on saying it was
+looking. The result itself arrived in a card that was still dimmed and
+`inert`, under a line saying it would open as soon as a file was chosen: the
+shared picker wakes step 2 when a file passes through it, and neither the
+camera nor a pasted picture does. Both now call `picker.arrived()`.
+
+A read is said in every place somebody might be attending, by `announce()` in
+`main.js`:
+
+- **on the viewfinder**, where the eyes are: a green wash for a second, the
+  reticle heavy and green, and a strip along the bottom that stays. The strip
+  names the kind of thing and the symbology and never the string, because an
+  address cut short to fit a strip is the half-read address this page exists
+  to stop people trusting. It is a button: it scrolls to the result and hands
+  it the keyboard;
+- **in the status line**, which is a live region, so a screen reader hears it;
+- **as two notes and a buzz**, for a phone held at arm's length over a label;
+- **in the list**, which is scrolled just far enough to show the string and
+  the buttons under it, with the new result ringed for a moment. Only while
+  the viewfinder is on screen: a visitor who scrolled away to read is not
+  pulled back by a camera left pointing at the desk.
+
+The decisions behind that:
+
+**The sound is made, not played.** An audio file would be a request this tool
+made while it was being used, and the page's argument is that the tool makes
+none. Two notes from an oscillator are no request, need no `media-src` in the
+Content-Security-Policy, and sound the same with the network unplugged. The audio context is created inside the tap that starts
+the camera, because no browser will start one from a frame callback, and is
+closed when the camera stops. It is output only: the camera is still opened
+with `audio: false`.
+
+**The sound is never the only signal.** A phone with its sound off stays
+silent, Safari gives a page no way to vibrate, and the visitor can untick
+"Beep when a code is read". That box is the one thing this tool keeps between
+visits: `qr-barcode-reader-signal` in `localStorage`, written only when the
+answer is `off`.
+
+**One announcement per sighting**, decided in `sightings.js`. A read is
+announced when the code is new to this camera session; when it has been out of
+sight for two seconds; or when it has been out of sight for 0.8 seconds and the
+camera announced a *different* code in between. The last is somebody going back
+to an earlier code, and until it was added the page went on naming the wrong
+one. Two codes in one frame are read turn and turn about, a fraction of a
+second apart, which is why that shorter gap is not zero.
+
+**A code met again moves to the top** of the list, rather than being listed
+twice or left eleventh in a list that is otherwise newest first.
+
+**Reads closer together than 0.4 seconds share one flash and one sound.** A
+camera swept over a sheet of codes can read a new one on every frame, and three
+flashes a second is where WCAG 2.3.1 draws its line.
+
+**Starting the camera brings its card into view.** The button that opens it is
+above it, so on a phone the card opened below the bottom of the screen.
+
 ## No English in the modules
 
 `payload.js` returns keys — `field.host`, `warn.shortener` — and never
@@ -175,11 +238,16 @@ The pictures are drawn in the test — flat, rotated, warped, inverted, noisy �
 rather than checked in as binary fixtures, the same way `tests/js/helpers.js`
 builds its images.
 
+`tests/js/qr-reader-signal.test.js` holds the two modules that decide what a
+camera read says: `sightings.js`, with a number for a clock, and `chime.js`,
+with an object for an audio context.
+
 ## Repeated results, malformed fields, and stopping work
 
 The newest twenty codes are kept without duplicates. Reading a code already on
 the page is still a successful scan: the new picture gets its own preview,
-without a false no-code warning or another copy of the result. Clear results
+without a false no-code warning or another copy of the result. From the camera
+it is announced like any other read and its result moves to the top. Clear results
 removes those codes and the picture previews, stops the camera, and retires
 pending picture reads and camera transitions. The same code can then be read
 again as a new result.
