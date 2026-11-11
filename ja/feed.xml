@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title type="html">abox.tools</title>
+  <subtitle type="html">abox.tools（A Box of Tools）の無料ツールで、画像圧縮やPDF、動画、音声、テキストの処理をブラウザー内で行えます。処理のためのアップロードは不要です。</subtitle>
+  <id>https://abox.tools/ja/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
+  <updated>2026-11-04T00:00:00Z</updated>
+  <author>
+    <name>abox.tools</name>
+    <uri>https://abox.tools/ja/</uri>
+  </author>
+  <entry>
+    <title type="html">ローカルネットワークで音声を配信する方法</title>
+    <id>https://abox.tools/ja/guides/broadcast-voice-on-a-local-network/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/broadcast-voice-on-a-local-network/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">ブラウザで音声チャンネルを開始し、リンクや近くの検索で招待します。標準は直接接続です。Cloudflare経由の暗号化されたクラウド中継は、明示的に確認してから使えます。</summary>
+  </entry>
+  <entry>
+    <title type="html">近くの人からライブ音声を受信する方法</title>
+    <id>https://abox.tools/ja/guides/receive-voice-from-nearby-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/receive-voice-from-nearby-devices/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">パスワードによる参加制御と個別の発話者操作を備えたブラウザの音声ページャーです。ホスト開始前にDirectか任意の暗号化Cloud relayを選びます。</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIFをJPGに</title>
+    <id>https://abox.tools/ja/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/avif-to-jpg/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でAVIF画像をJPGに変換します。デコーダーはブラウザに備わっているので、アップロードもアカウントも不要で、オフラインでも動きます。透明な部分の背景色も選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64エンコーダー・デコーダー</title>
+    <id>https://abox.tools/ja/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/base64/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOMビューア</title>
+    <id>https://abox.tools/ja/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/dicom-viewer/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">.dcmの検査画像をブラウザで開く無料のDCMファイルビューアです。CT、MRI、レントゲン、超音波に対応し、インストールは不要です。ウィンドウと中心値を調整し、シリーズ全体を送り、ミリ単位で測り、すべてのDICOMタグと患者の特定につながる情報を確認できます。何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIFビューアー・削除ツール</title>
+    <id>https://abox.tools/ja/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/exif-editor/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">EXIFやGPSを確認、編集、削除。JPEG、PNG、WebPは画像の符号化を保持し、AVIFの削除時は新しいPNGに変換します。アップロード不要。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをMP4に</title>
+    <id>https://abox.tools/ja/gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-to-mp4/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザでGIFアニメーションを小さなMP4に変換します。各フレームの表示時間を保ち、間隔は変更しません。広く使えるH.264のMP4で、アップロードは不要です。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF作成</title>
+    <id>https://abox.tools/ja/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebP・AVIFの画像からアニメーションGIFを作ります。無料で、処理はすべてブラウザの中。順番も速さも大きさも自分で決められます。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF分解</title>
+    <id>https://abox.tools/ja/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/split-gif/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">GIFのコマをPNG、ZIP、またはスプライトシート1枚としてブラウザーで取り出します。透明を保ち、コマの遅延は別のタイミング一覧に保存します。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF解析</title>
+    <id>https://abox.tools/ja/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">GIFのコマ、遅延、パレット、バイト単位のサイズ内訳をブラウザーで調べます。大きいアニメーションや遅いアニメーションを、アップロードも変更もせずに確認できます。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC→JPG変換ツール</title>
+    <id>https://abox.tools/ja/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/heic-to-jpg/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">iPhoneのHEICとAVIF写真をブラウザの中でJPGに変換します。デコーダーが動くのは手元の端末です。アップロードなし、登録なし、オフラインでも動作。撮影日時やカメラ情報も引き継げます。 メタデータのチェックボックスとプレビューはHEICだけに適用されます。AVIFのメタデータは常に除外します。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSONフォーマッター</title>
+    <id>https://abox.tools/ja/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/json-formatter/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">MP4変換ツール</title>
+    <id>https://abox.tools/ja/convert-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/convert-to-mp4/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">WebM、MKV、MOV、MP4を、電話やブラウザやフォームで広く使えるH.264とAACのMP4にします。すでにH.264やAACならそのままコピーし、それ以外だけ端末で再エンコードします。アップロード不要です。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFの黒塗り</title>
+    <id>https://abox.tools/ja/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">PDFの文字の上に黒い四角を描くのではなく、文字そのものを取り除きます。文字はページを描く命令から消され、できあがったファイルをもう一度開いて検索し、本当に消えたことを確かめます。何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFをCSVに</title>
+    <id>https://abox.tools/ja/pdf-to-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/pdf-to-csv/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">テキストを含むPDFの表をブラウザでCSVに抽出します。明細書、請求書、価格表、報告書に対応。読めるテキストの位置から検出するため、特殊なレイアウトを見逃す場合があります。スキャンには先にOCRが必要です。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF保護ツール</title>
+    <id>https://abox.tools/ja/protect-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/protect-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザでPDFにパスワードを設定し、印刷やコピーを制限できます。標準はAES-256で、アップロードは不要です。ダウンロード前に完成したファイルを開き直し、保護を確かめます。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF保護解除ツール</title>
+    <id>https://abox.tools/ja/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/unlock-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">PDFの権限制限をローカルで解除し、入力した閲覧パスワードも削除できます。パスワードを求める前に保護の種類を判別します。アップロードせず、パスワードを推測しません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF圧縮ツール</title>
+    <id>https://abox.tools/ja/compress-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compress-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">PDFをアップロードせずに小さくします。読み込みも再圧縮も書き直しも、お使いのブラウザが行います。手をつける前に、そのPDFの容量が実際どこにあるのかを見せます。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF結合・分割</title>
+    <id>https://abox.tools/ja/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/merge-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">PDFをまとめる、1つを複数に分ける、ページをドラッグして好きな順にします。すべてお使いのブラウザの中で行われます。アップロードもアカウントも不要で、仕上がったファイルは渡す前にもう一度開いてページ数を数え直します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF透かしツール</title>
+    <id>https://abox.tools/ja/watermark-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/watermark-pdf/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザでPDFの各ページに送り先、日付、名前の透かしを入れます。角度、不透明度、言語を自由に選べます。アップロードせず、元のページは保ち、ダウンロード前に結果を確認します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PNGをWebPに</title>
+    <id>https://abox.tools/ja/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/png-to-webp/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でPNGとAVIF画像を可逆圧縮のWebP、またはさらに小さなWebPに変換します。どちらも透明度を保ちます。アップロードもアカウントも不要で、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコード・バーコード作成ツール</title>
+    <id>https://abox.tools/ja/qr-barcode/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">リンク、Wi-Fi、連絡先カードのQRコードや、EAN-13・UPC-A・Code 128・Code 39のバーコードを作れます。SVGでもPNGでもダウンロードできます。すべてブラウザの中で完結します。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコード・バーコード読み取りツール</title>
+    <id>https://abox.tools/ja/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode-reader/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">写真、スクリーンショット、カメラからQRコードを読み取り、開く前にリンクの行き先をそのまま確かめられます。EAN、UPC、Code 128、Code 39、ITFのバーコードにも対応。何もアップロードされません。</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG→画像変換ツール</title>
+    <id>https://abox.tools/ja/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/svg-to-image/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">SVGを好きなサイズのPNG・JPEG・WebPにブラウザの中で変換します。幅、倍率、枠のいずれかを指定でき、@2xと@3xも一緒に作れます。透過はそのまま、アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">WebPをJPGに</title>
+    <id>https://abox.tools/ja/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/webp-to-jpg/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でWebPとAVIF画像をJPGに変換します。デコーダーはブラウザに備わっているので、アップロードもアカウントも不要で、オフラインでも動きます。透明な部分の背景色も選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">XMLフォーマッター</title>
+    <id>https://abox.tools/ja/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/xml-formatter/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">XMLの整形・インデント・圧縮と、XMLからJSON、JSONからXMLへの変換。パーサーはあなたのブラウザで動き、何もアップロードされないので、フィードも請求書も設定ファイルも端末を離れません。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML・JSON変換</title>
+    <id>https://abox.tools/ja/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/yaml-to-json/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">対応するYAML 1.2のサブセットをブラウザでJSONに変換し、JSONをYAMLに戻します。アンカー、エイリアス、タグ、複数文書は拒否します。JSONではコメントを保持しません。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">タイムラプス作成ツール</title>
+    <id>https://abox.tools/ja/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/timelapse-video/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">長い動画をタイムラプスに変換します。10倍、60倍、入力した任意の倍率まで。処理はブラウザの中だけ。アップロードなし、透かしなし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキストとファイルの共有</title>
+    <id>https://abox.tools/ja/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">開いたブラウザーからテキストとファイルを暗号化して共有します。標準は直接接続で、クラウド中継も選べます。読者ごとに承認できます。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキスト差分</title>
+    <id>https://abox.tools/ja/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/text-diff/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
+  </entry>
+</feed>

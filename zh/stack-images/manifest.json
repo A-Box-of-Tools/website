@@ -1,0 +1,26 @@
+{
+  "id": "/zh/stack-images/",
+  "name": "\u56fe\u7247\u5806\u6808",
+  "short_name": "\u56fe\u7247\u5806\u6808",
+  "description": "\u7a33\u5b9a\u7684\u8fde\u62cd\u53d6\u5e73\u5747\uff0c\u53d6\u4e2d\u4f4d\u6570\u5f97\u5230\u5e72\u51c0\u80cc\u666f\uff0c\u591c\u7a7a\u5e8f\u5217\u53d6\u6700\u4eae\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

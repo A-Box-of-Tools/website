@@ -1,0 +1,26 @@
+{
+  "id": "/zh/share-text/",
+  "name": "\u6587\u672c\u4e0e\u6587\u4ef6\u5206\u4eab",
+  "short_name": "\u6587\u672c\u4e0e\u6587\u4ef6\u5206\u4eab",
+  "description": "\u4ece\u6253\u5f00\u7684\u6d4f\u89c8\u5668\u52a0\u5bc6\u5206\u4eab\u6587\u672c\u4e0e\u6587\u4ef6\u3002\u9ed8\u8ba4\u76f4\u8fde\uff0c\u4e5f\u53ef\u9009\u62e9\u4e91\u4e2d\u8f6c\u3002\u4f60\u53ef\u4ee5\u9010\u4e00\u6279\u51c6\u8bfb\u8005\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

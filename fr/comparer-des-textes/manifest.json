@@ -1,0 +1,26 @@
+{
+  "id": "/fr/comparer-des-textes/",
+  "name": "Comparateur de textes",
+  "short_name": "Comparateur de textes",
+  "description": "Deux textes en entr\u00e9e, chaque diff\u00e9rence marqu\u00e9e, ligne \u00e0 ligne et mot \u00e0 mot. Rien n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/ko/pdf-\uac00\ub9ac\uae30/",
+  "name": "PDF \uac00\ub9ac\uae30",
+  "short_name": "PDF \uac00\ub9ac\uae30",
+  "description": "\uae00\uc790\ub97c \ud30c\uc77c\uc5d0\uc11c \uc9c0\uc6b0\uace0, \uc9c0\uc6b4 \ub4a4\uc5d0 \ud30c\uc77c\uc744 \uac80\uc0c9\ud574\uc11c \uc99d\uba85\ud569\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

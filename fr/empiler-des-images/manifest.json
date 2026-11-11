@@ -1,0 +1,26 @@
+{
+  "id": "/fr/empiler-des-images/",
+  "name": "Empileur d'images",
+  "short_name": "Empileur d'images",
+  "description": "Faites la moyenne d'une rafale stable, prenez la m\u00e9diane pour un arri\u00e8re-plan d\u00e9gag\u00e9 ou \u00e9claircissez une s\u00e9quence de ciel nocturne.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

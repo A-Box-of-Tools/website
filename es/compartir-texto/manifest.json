@@ -1,0 +1,26 @@
+{
+  "id": "/es/compartir-texto/",
+  "name": "Compartir texto y archivos",
+  "short_name": "Compartir texto y archivos",
+  "description": "Comparte texto y archivos cifrados desde tu navegador abierto. La conexi\u00f3n directa es la predeterminada; la retransmisi\u00f3n en la nube es opcional. T\u00fa apruebas a cada lector.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/ja/unlock-pdf/",
+  "name": "PDF\u4fdd\u8b77\u89e3\u9664\u30c4\u30fc\u30eb",
+  "short_name": "PDF\u4fdd\u8b77\u89e3\u9664\u30c4\u30fc\u30eb",
+  "description": "\u6a29\u9650\u5236\u9650\u3068\u95b2\u89a7\u30d1\u30b9\u30ef\u30fc\u30c9\u306f\u5225\u306e\u3082\u306e\u3067\u3059\u3002\u3053\u306e\u30da\u30fc\u30b8\u3067PDF\u306e\u4fdd\u8b77\u306e\u7a2e\u985e\u3092\u78ba\u8a8d\u3067\u304d\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/protect-pdf/",
+  "name": "PDF Protector",
+  "short_name": "PDF Protector",
+  "description": "Lock a document you would rather not hand to a website in order to lock it.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

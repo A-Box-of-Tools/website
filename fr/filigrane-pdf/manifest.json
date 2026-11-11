@@ -1,0 +1,26 @@
+{
+  "id": "/fr/filigrane-pdf/",
+  "name": "Filigrane PDF",
+  "short_name": "Filigrane PDF",
+  "description": "Un scan qui indique sa destination ne peut pas \u00eatre r\u00e9utilis\u00e9 ailleurs discr\u00e8tement.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

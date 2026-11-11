@@ -1,0 +1,26 @@
+{
+  "id": "/pt/previa-perfil-empresa/",
+  "name": "Pr\u00e9via do Perfil da Empresa",
+  "short_name": "Pr\u00e9via do Perfil da Empresa",
+  "description": "Digite os dados e veja uma simula\u00e7\u00e3o do cart\u00e3o do Google. Nada \u00e9 enviado para desenh\u00e1-la.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

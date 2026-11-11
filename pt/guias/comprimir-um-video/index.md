@@ -1,0 +1,58 @@
+# Como comprimir um vídeo até o tamanho que você consegue enviar
+
+Um vídeo que não pode ser enviado está acima de um limite. Veja para onde vão os megabytes, o que se perde ao reduzi-los e como ficar abaixo desse limite sem enviar primeiro o arquivo que era grande demais.
+
+[Abrir Compressor de vídeo](https://abox.tools/pt/comprimir-video/): Diga o tamanho máximo. A ferramenta calcula os ajustes e mede o resultado antes de entregar.
+
+Última atualização 13 de outubro de 2026
+
+## A resposta curta
+
+Abra o [Compressor de vídeo](https://abox.tools/pt/comprimir-video/), arraste o arquivo e escolha o limite pedido: 8 MB, 16, 25, 50 ou 100. Você também pode digitar outro número. A linha abaixo do campo mostra o que cabe nesse espaço: a resolução e a taxa de bits possíveis para a duração do vídeo. Aperte o botão. O computador codifica o vídeo, mede o resultado e abre o arquivo de novo para conferir a duração. Nada é enviado.
+
+O restante desta página explica o que você acabou de trocar. Comprimir um arquivo zip não descarta conteúdo; com vídeo, a história é outra.
+
+## Um anexo, um envio ou um relato de erro
+
+Para um e-mail, confira o limite da mensagem inteira, desconte os outros anexos e deixe uma margem. Atualmente, o Gmail pessoal aceita 25 MB de anexos; em contas de trabalho e escola, o administrador define o limite. As [instruções do Gmail](https://support.google.com/mail/answer/6584?hl=en) explicam a diferença. Uma predefinição é uma meta de tamanho, não uma garantia de aceitação pelo destinatário.
+
+Para um relato de erro ou uma demonstração curta, corte as esperas antes de comprimir. Mantenha os cliques que explicam o problema, o som se ele ajudar e resolução suficiente para ler o menor texto importante. Reproduza o arquivo baixado no aplicativo de destino, confira o tamanho real e o último segundo. Se o texto ficar ilegível, aumente a meta ou encurte o vídeo.
+
+## Para onde vão os megabytes
+
+Quase todo o tamanho de um vídeo está na imagem. Um minuto em 1080p gravado no celular costuma ocupar entre 60 e 150 MB; o som ocupa cerca de um. O resto são trinta imagens por segundo, descritas pelas mudanças em relação à anterior. Por isso, o tamanho se aproxima de uma multiplicação: os bits por segundo reservados à imagem, a *taxa de bits*, vezes a duração.
+
+É assim que um limite vira uma taxa de bits. Do tamanho máximo, subtraem-se o som, que é copiado como está, e uma pequena margem para o contêiner. O que sobra é dividido pela duração. Um limite de 25 MB em um vídeo de dois minutos deixa cerca de 1,6 megabit por segundo para a imagem. Esse é todo o espaço disponível; o resto depende dele.
+
+## Por que a resolução diminui antes de a imagem piorar
+
+Uma taxa de bits só faz sentido em relação à quantidade de pixels que precisa descrever. Distribuir 1,6 megabit por segundo por dois milhões de pixels em 1080p, trinta vezes por segundo, deixa quase nada para cada um. O codificador suaviza a imagem: bordas ficam borradas, áreas lisas viram blocos e o movimento perde definição. A mesma taxa em 720p dá uma imagem perfeitamente assistível; em 480p, uma boa imagem.
+
+Por isso a ferramenta reduz a resolução em etapas —1080p, 720p, 480p, 360p— até haver bits suficientes por quadro. Ela calcula e informa isso antes de começar. Uma imagem menor e nítida é melhor que uma maior e borrada em qualquer tela. Serviços que recebem vídeos fazem algo parecido sem avisar. A ferramenta nunca aumenta a resolução além da original.
+
+Você pode mudar essa escolha. Uma gravação de tela cujo texto precisa continuar legível talvez deva manter 1080p mesmo perdendo um pouco de nitidez. Um vídeo que só será visto no celular pode usar 480p e reservar mais bits para o movimento.
+
+## O que se perde e como perder menos
+
+Comprimir um vídeo significa codificá-lo de novo. A imagem é decodificada, desenhada menor e gravada na nova taxa de bits: fica uma geração mais distante da câmera. O som não é alterado; as amostras são copiadas exatamente. A perda depende do limite: reduzir um vídeo à metade costuma custar pouco; transformar 900 MB em 25 MB descarta quase todos os bits, e isso aparece na imagem.
+
+- **Peça o tamanho necessário, não um menor.** Se o limite é 25 MB, use 25 MB. Escolher 8 MB joga fora dois terços da informação da imagem sem necessidade.
+- **Corte primeiro.** Remover tempo desnecessário deixa mais espaço para cada segundo restante. O [Cortador de vídeo](https://abox.tools/pt/guias/aparar-um-video/) copia seleções compatíveis sem recodificar; cortes exatos recodificam a imagem. O resultado pode conter ajustes de reprodução, inclusive de áudio após um corte exato de imagem. Se o compressor rejeitar essa linha do tempo, salve um novo vídeo com os ajustes aplicados em um editor local antes de continuar. Escolha conscientemente o método indicado.
+- **Remova o som se ele não fizer falta.** Um minuto de áudio estéreo ocupa cerca de um megabyte. Em um vídeo curto com limite apertado, esse espaço pode separar uma imagem nítida de outra borrada.
+- **Guarde o original.** Não dá para recuperar a informação descartada pela compressão. Comprima uma cópia, envie essa cópia e mantenha o arquivo da câmera.
+
+## O estranho é precisar enviar o arquivo
+
+Pense no que um compressor on-line pede: enviar o arquivo que era grande demais para enviar. Os 900 MB sobem pela conexão para que 25 MB voltem. Em muitas conexões domésticas, o envio demora mais que a codificação. Depois ainda há as perguntas das outras guias deste site: o que guardam, por quanto tempo e quem pode ver. Se o vídeo mostra seus filhos ou a sua casa, essas perguntas importam.
+
+Nada disso é necessário. Os navegadores recentes incluem os mesmos codecs de vídeo de um celular, e [esta ferramenta](https://abox.tools/pt/comprimir-video/) os usa. O arquivo é lido do disco em partes, decodificado, reduzido e codificado de novo no seu computador. O resultado fica na memória até ser salvo. A política de segurança da página lista os endereços que ela pode acessar, e nenhum pertence a este site. Ela continua funcionando sem rede. Para conferir, desconecte a internet e comprima o vídeo.
+
+O guia [é seguro enviar arquivos?](https://abox.tools/pt/guias/e-seguro-enviar-arquivos/) explica essa questão de forma mais geral.
+
+## O que a ferramenta confere antes de entregar o arquivo
+
+Um codificador se aproxima da taxa pedida sem acertá-la exatamente. Por isso se pede um pouco menos e se mede o resultado. Se passar, a taxa é recalculada conforme a diferença e o clipe é codificado de novo; a página informa isso. Depois, o arquivo é aberto no seu computador e sua duração é comparada à fonte. Perder o último segundo ou o som também reduziria o tamanho: só conferir o resultado permite distinguir isso. Você pode reproduzi-lo abaixo da download. Se a verificação disser que ainda passou da meta, escolha menos resolução, um clipe mais curto ou um limite maior e tente novamente.
+
+## O que ela grava e o que consegue ler
+
+Grava MP4 com vídeo H.264 e áudio original copiado. H.264 em MP4 tem amplo suporte, mas o destino também precisa aceitar o codec de áudio e o perfil de vídeo. Teste o arquivo no aplicativo de destino. Lê MP4 e MOV com codecs que o navegador decodifique; não lê WebM, MKV nem AVI. Não grava WebM, HEVC nem AV1.

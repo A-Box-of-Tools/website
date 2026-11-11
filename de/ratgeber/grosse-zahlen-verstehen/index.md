@@ -1,0 +1,57 @@
+# Wie sich eine große Zahl vertraut anfühlt
+
+Eine Milliarde Bücher ragen höher als zwei Erden, während eine Milliarde Tropfen kaum den Boden eines Beckens bedecken. Geben Sie der Zahl eine Bedeutung, sehen Sie ihr neben etwas Vertrautem beim Wachsen zu und behalten Sie die Annahmen dort, wo Sie sie sehen können.
+
+[Zahlenentdecker öffnen](https://abox.tools/de/zahlen-veranschaulichen/): Tippen Sie eine beliebige Zahl ein und sehen Sie ihr beim Wachsen zu: ein Bücherstapel, ein Wasserguss, ein Sternenhimmel, ein Sandhaufen, ein sehr langes Zählen.
+
+Zuletzt aktualisiert 3. November 2026
+
+## Mit einer Zahl anfangen und ihr beim Wachsen zusehen
+
+Tippen Sie eine Zahl ein oder ziehen Sie den Regler, der sich in Zehnerpotenzen bewegt. Das Bild beginnt klein, und die Kamera fährt zurück, während die Zahl steigt, sodass Sie die Größe ankommen sehen, statt sie nur zu lesen. Dieselbe Zahl lässt sich dann als Bücher, Wasser, Sterne, Sand oder Zeit darstellen. Jede Ansicht sagt, was eines davon ist, denn die Bedeutung entscheidet, welche Vergleiche nützen.
+
+## Eine Milliarde Bücher ragen höher als zwei Erden
+
+Flach gestapelt, zu je 3 cm, werden eine Milliarde Bücher etwa 30.000 km hoch. Das ist mehr als die doppelte Breite der Erde und etwa 8 % des Wegs zum Mond. Der Stapel und seine Wegmarken stehen auf einem einzigen, echten Maßstab, von einem Tisch bis zum Rand des beobachtbaren Universums, sodass Eiffelturm und Mount Everest beim Zurückfahren der Kamera zusammenschrumpfen. Die einzige Ausnahme ist die Breite des Stapels, die breiter als in Wirklichkeit gezeichnet wird, sobald er sonst verschwinden würde.
+
+## Eine Milliarde Tropfen bedecken kaum den Boden eines Beckens
+
+Zu je 0,05 ml, der Größe aus einer Pipette, ergeben eine Milliarde Tropfen 50.000 Liter. Das sind etwa 250 Badewannen, aber nur 2 % eines olympischen Beckens, etwa 4 cm tief. Das Wasser fließt in einen benannten Behälter nach dem anderen, und wenn einer überläuft, kommt der nächste. Die farbige Fläche ist der wahre Anteil an der Form des Behälters, eine zu einem Zehntel volle Pyramide ist also nicht bis zu einem Zehntel ihrer Höhe gefüllt. Die Behälter selbst sind Illustrationen und kein gemeinsamer physischer Maßstab.
+
+## Eine Milliarde Sterne sind ein kleiner Teil einer Galaxie
+
+Am ganzen Himmel sind etwa 9.100 Sterne hell genug, um sie ohne Teleskop zu sehen, und bis zu dieser Zahl ist jeder Punkt ein Stern. Danach steht jeder Punkt für eine angegebene Anzahl von Sternen, in einer Form, in der man sie wirklich finden könnte. Eine Milliarde sind etwa 1 % der Milchstraße, gemessen am [runden ESA-Wert von 100 Milliarden](https://www.esa.int/Science_Exploration/Space_Science/Herschel/How_many_stars_are_there_in_the_Universe), und gerade der Teil, der dunkel bleibt, ist das Entscheidende: Er ist alles, was die Zahl noch nicht erreicht hat. Sternzahlen sind von Natur aus grob, und der wahre Wert für die Galaxie kann ein Mehrfaches betragen.
+
+## Eine Milliarde Körner passen in elf Eimer
+
+Bei kugelförmigen Körnern von 0,5 mm Durchmesser und einem Behälter aus 60 % Körnern und 40 % Luft nehmen eine Milliarde Körner etwa 109 Liter ein. Das sind rund elf Eimer zu je 10 Litern. Die Körner sind winzig, und deshalb passt eine riesige Anzahl in einen bescheidenen Raum.
+
+Das sind gewählte Annahmen. Sand enthält gemischte Größen und Formen. Die [USGS-Einteilung der Korngrößen](https://pubs.usgs.gov/of/1991/0375a/report.pdf) zeigt, wie stark Sandgrößen schwanken. Ändern Sie den Korndurchmesser im Bereich der Annahmen, um diesen Unterschied zu erkunden.
+
+## Immer nur eine Sache ändern
+
+Der doppelte Korndurchmesser macht jedes kugelförmige Korn im Volumen achtmal größer. Die tausendfache Anzahl macht einen Sandwürfel zehnmal breiter. Volumen und Länge wachsen nicht im gleichen Tempo, und deshalb sieht tausendmal mehr Wasser so anders aus als tausendmal mehr Bücher.
+
+Drücken Sie × 10, und die alte Größe bleibt im Bild markiert und mit „Vorher“ beschriftet, sodass der gerade gemachte Schritt zu sehen ist. Die Wegmarken neben Ihrer Zahl sagen, wie viel Mal größer oder kleiner jede ist, und wenn Sie eine wählen, springt die Zahl auf die Anzahl, die sie erreicht.
+
+## Token können Text sein
+
+Bei den Büchern kann jedes auch ein Wort oder ein KI-Text-Token sein. Das beruht auf der groben Schätzung für Englisch von 0,75 Wörtern pro Token, eine Million Token entsprechen also etwa 750.000 Wörtern: zehn Beispielbücher, wenn jedes Buch 75.000 Wörter hat, in einem Stapel von etwa 30 cm Höhe. Passen Sie die Länge des Beispielbuchs an die Art von Text an, die Sie im Sinn haben. Andere Sprachen und Tokenizer weichen ab; siehe [die Erklärung von OpenAI zu Token](https://help.openai.com/en/articles/4936856-understanding-and-counting-tokens).
+
+Token haben kein eigenes physisches Volumen, und sie als Wasser oder Sterne darzustellen, stellt sich also nur einen Tropfen oder Stern für jedes vor. Auch sagt eine Textmenge nichts darüber aus, wie viele Bücher ein Modell gelesen oder wie viel eigenständigen Text es erzeugt hat.
+
+## Zeit ausprobieren, wenn der Raum überrascht
+
+Bei einem Stück pro Sekunde dauert das Zählen einer Milliarde etwa 31,7 Jahre, und ein Zähler läuft mit, sobald das Bild offen ist, sodass Sie sehen, wie wenig Weg die erste Minute schafft. Der Zeitstrahl geht von ununterbrochenem Zählen aus, ohne Schlaf und Pausen, und rechnet mit 365,25 Tagen pro Jahr. Ändern Sie das Tempo, um eins, zehn oder hundert Stück pro Sekunde zu vergleichen.
+
+## Den Berg als festgelegtes Beispiel nehmen
+
+Der Beispielberg ist ein Kegel von 1.000 Metern Höhe mit 1.000 Metern Grundradius. Das ist eine gewählte Form und keine Messung eines echten Berges. Wählen Sie ihn bei den Wegmarken, um zu sehen, wie viele Körner oder Tropfen ihn füllen würden.
+
+Eine exakte weltweite Sandzahl gibt es in diesem Werkzeug nicht. Eine solche Schätzung braucht zuerst einen Geltungsbereich, etwa Strände oder Wüsten, und Belege für Fläche, Tiefe und Korngröße. Eine große, genau aussehende Zahl kann diese Entscheidungen nicht ersetzen.
+
+## Gemeinsam entdecken und die Erklärung behalten
+
+Fragen Sie ein Kind, ob zehnmal mehr die nächste Wegmarke erreicht, drücken Sie Ja oder Nein und sehen Sie die Antwort kommen. Erfolg heißt, die Menge mit etwas Vertrautem beschreiben zu können, und nicht, sich alle Nullen zu merken.
+
+Speichern Sie das Bild als PNG, um es zusammen mit seinen Annahmen zu behalten. Wenn die Bewegung stört, lässt Bewegung anhalten das fertige Bild stehen, und ein Gerät mit reduzierter Bewegung zeigt es von Anfang an. Rechner, Vergleiche und Zeichnung laufen alle in Ihrem Browser, ohne KI-Dienst und ohne Live-Abfrage. Nach dem Laden der Seite funktionieren sie offline.

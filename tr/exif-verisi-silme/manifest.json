@@ -1,0 +1,26 @@
+{
+  "id": "/tr/exif-verisi-silme/",
+  "name": "EXIF G\u00f6r\u00fcnt\u00fcleyici ve Silici",
+  "short_name": "EXIF G\u00f6r\u00fcnt\u00fcleyici ve Silici",
+  "description": "Bir foto\u011fraf\u0131n sizin hakk\u0131n\u0131zda ne s\u00f6yledi\u011fini g\u00f6r\u00fcn. Sonra onu \u00e7\u0131kar\u0131n.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

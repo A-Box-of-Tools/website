@@ -1,0 +1,26 @@
+{
+  "id": "/de/text-vergleichen/",
+  "name": "Textvergleich",
+  "short_name": "Textvergleich",
+  "description": "Zwei Texte hinein, jeder Unterschied markiert, Zeile f\u00fcr Zeile und Wort f\u00fcr Wort. Nichts davon wird in den Server eines anderen eingef\u00fcgt.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

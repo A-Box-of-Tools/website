@@ -1,0 +1,26 @@
+{
+  "id": "/ko/dicom-\ubdf0\uc5b4/",
+  "name": "DICOM \ubdf0\uc5b4",
+  "short_name": "DICOM \ubdf0\uc5b4",
+  "description": "CT, MRI, \uc5d1\uc2a4\ub808\uc774, \ucd08\uc74c\ud30c\ub97c \ucc3d\uacfc \ud5e4\ub354\uc640 \uacc4\uce21\uae4c\uc9c0.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

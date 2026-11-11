@@ -1,0 +1,26 @@
+{
+  "id": "/ko/json-\ud3ec\ub9f7\ud130/",
+  "name": "JSON \ud3ec\ub9e4\ud130",
+  "short_name": "JSON \ud3ec\ub9e4\ud130",
+  "description": "JSON, XML, HTML, CSS, YAML\uc744 \uc815\ub82c\ud558\uac70\ub098 \ubcc0\ud658\ud569\ub2c8\ub2e4. \ub0a8\uc758 \uc11c\ubc84\uc5d0 \ubd99\uc5ec \ub123\ub294 \uac83\uc740 \uc5c6\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

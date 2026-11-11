@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">abox.tools</title>
+  <subtitle type="html">Free image compression, PDF, video, audio and text tools from abox.tools (A Box of Tools). Process files in your browser without processing uploads.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-11-04T00:00:00Z</updated>
+  <author>
+    <name>abox.tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">How to broadcast voice on a local network</title>
+    <id>https://abox.tools/guides/broadcast-voice-on-a-local-network/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/broadcast-voice-on-a-local-network/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">Start a browser voice channel and invite listeners by link or nearby discovery. Direct is the default; an encrypted Cloud relay is available with explicit confirmation.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to receive live voice from nearby people</title>
+    <id>https://abox.tools/guides/receive-voice-from-nearby-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/receive-voice-from-nearby-devices/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">Open a browser voice pager with password admission and individual speaker controls. Choose Direct or an optional encrypted Cloud relay before hosting.</summary>
+  </entry>
+  <entry>
+    <title type="html">Local Walkie-Talkie</title>
+    <id>https://abox.tools/walkie-talkie/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/walkie-talkie/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">Broadcast voice to up to ten receive-only browsers. Direct local connections or optional Cloud relay, with push to talk, hands-free speech and private group discovery.</summary>
+  </entry>
+  <entry>
+    <title type="html">Voice Oncall</title>
+    <id>https://abox.tools/voice-oncall/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/voice-oncall/"/>
+    <updated>2026-11-04T00:00:00Z</updated>
+    <summary type="html">Let up to ten people send live voice to one host browser. Direct local connections or optional Cloud relay, with a pager password, push to talk and moderation.</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIF to JPG</title>
+    <id>https://abox.tools/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/avif-to-jpg/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Convert AVIF images to JPG in your browser. Your browser already decodes AVIF, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Editor</title>
+    <id>https://abox.tools/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Trimmer</title>
+    <id>https://abox.tools/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/trim-audio/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64 Encoder &amp; Decoder</title>
+    <id>https://abox.tools/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Business Profile Preview</title>
+    <id>https://abox.tools/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/business-profile-preview/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">See how your Google Business Profile will look before it goes live: the knowledge panel, the phone card and the search result, drawn from the name, category, hours, rating and photo you type. Import an existing listing by pasting it. Download as PNG or SVG. It all happens in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM Viewer</title>
+    <id>https://abox.tools/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">A free DCM file opener: open .dcm scans &amp;mdash; CT, MR, X-ray and ultrasound &amp;mdash; in your browser, with nothing to install. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF Viewer &amp; Remover</title>
+    <id>https://abox.tools/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. JPEG, PNG and WebP stay unencoded; AVIF cleaning converts to a new PNG. Nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract Audio from Video</title>
+    <id>https://abox.tools/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/extract-audio-from-video/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Analyzer</title>
+    <id>https://abox.tools/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Inspect GIF frames, delays, palettes and a byte-by-byte size breakdown in your browser. Check large or slow animations without uploading or changing the file.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Maker</title>
+    <id>https://abox.tools/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG, WebP or AVIF images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Splitter</title>
+    <id>https://abox.tools/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Extract GIF frames as PNGs, a ZIP or one sprite sheet in your browser. Keep transparency and save frame delays in a separate timing list. No upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF to MP4</title>
+    <id>https://abox.tools/gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-to-mp4/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Turn an animated GIF into an MP4 in your browser, at a fraction of the size. Every frame keeps the GIF's own timing; nothing is resampled. H.264 in an MP4, the file every platform takes. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC to JPG</title>
+    <id>https://abox.tools/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/heic-to-jpg/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Convert iPhone HEIC and AVIF photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along. The metadata checkbox and metadata preview apply only to HEIC; AVIF metadata is always left out.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hash &amp; Checksum</title>
+    <id>https://abox.tools/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
+  </entry>
+  <entry>
+    <title type="html">Height Comparison Chart</title>
+    <id>https://abox.tools/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compare-heights/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Compare heights side by side. Add a man, a woman, a boy, a girl and objects &amp;mdash; a door, a window, a whiteboard, a vending machine &amp;mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to make a big number feel familiar</title>
+    <id>https://abox.tools/guides/understand-big-numbers/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/understand-big-numbers/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Make a huge number understandable with books, water, stars, sand and counting time. Choose familiar landmarks, keep the assumptions in view and watch the number grow.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to share a browser tab live without an extension</title>
+    <id>https://abox.tools/guides/share-a-browser-tab/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-a-browser-tab/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Show a browser tab to an approved viewer. Choose Direct on a reachable local network or an optional encrypted Cloud relay. No extension or remote control.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to stitch two tables without losing the rows that do not match</title>
+    <id>https://abox.tools/guides/stitch-two-tables/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/stitch-two-tables/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Choose a match key, pair rows manually, stack records or merge columns by row order. How to keep unmatched rows, check duplicate matches and export without losing identifiers.</summary>
+  </entry>
+  <entry>
+    <title type="html">ID Photo Maker</title>
+    <id>https://abox.tools/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Prepare passport or visa photos for supported countries: published sizes, marked crop guidance, head and eye overlays, background checks, printable sheets and JPEG upload presets. Your photo stays in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Compressor</title>
+    <id>https://abox.tools/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Compress a JPEG, PNG, WebP or AVIF to fit a file-size limit, such as 100 KB or 2 MB. The result aims at or below your target, not an exact byte count. No upload, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Layout</title>
+    <id>https://abox.tools/image-layout/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-layout/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Arrange images in a grid or strip with ready-to-use presets. Adjust each picture with pan and zoom, then save one PNG, JPEG or WebP. Free, offline and no upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Redactor</title>
+    <id>https://abox.tools/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Resizer</title>
+    <id>https://abox.tools/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/resize-image/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Resize, crop and convert JPEG, PNG, WebP and AVIF images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Stacker</title>
+    <id>https://abox.tools/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Stack photos to reduce noise, remove moving people or make star trails. Align frames and save PNG or JPEG in your browser. RAW files use embedded JPEG previews.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to Data URI</title>
+    <id>https://abox.tools/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-data-uri/"/>
+    <updated>2026-11-03T00:00:00Z</updated>
+    <summary type="html">Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. UTF-8 SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded.</summary>
+  </entry>
+</feed>

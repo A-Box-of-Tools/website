@@ -1,0 +1,26 @@
+{
+  "id": "/fr/pdf-en-csv/",
+  "name": "PDF en CSV",
+  "short_name": "PDF en CSV",
+  "description": "Transformez les tableaux d\u00e9tect\u00e9s de PDF contenant du texte en lignes pour un tableur.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

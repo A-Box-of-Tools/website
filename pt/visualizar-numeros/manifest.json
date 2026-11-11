@@ -1,0 +1,26 @@
+{
+  "id": "/pt/visualizar-numeros/",
+  "name": "Explorador de n\u00fameros",
+  "short_name": "Explorador de n\u00fameros",
+  "description": "Digite qualquer n\u00famero e veja-o crescer: uma pilha de livros, um jorro de \u00e1gua, um c\u00e9u de estrelas, um monte de areia, uma contagem muito longa.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

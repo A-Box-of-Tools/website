@@ -1,0 +1,105 @@
+# Come aprire un file DICOM, e che cosa c'è dentro
+
+Un disco dell'ospedale è una cartella di file senza estensione e un visualizzatore scritto per Windows XP. I file sono DICOM, e non hanno niente di esotico: una scansione è un header pieno di campi e un blocco di pixel. Ecco come guardarne una, che cosa vogliono dire i comandi, e che altro il file si porta dietro oltre all'immagine.
+
+[Apri Visualizzatore DICOM](https://abox.tools/it/visualizzatore-dicom/): TC, RM, radiografie ed ecografie, con la finestra, l'header e le misure.
+
+Ultimo aggiornamento 26 agosto 2026
+
+## La risposta breve
+
+Apri il [Visualizzatore DICOM](https://abox.tools/it/visualizzatore-dicom/) e trascinaci sopra tutta la cartella di file. Vengono letti sulla tua macchina, rimessi nelle serie da cui venivano, e impilati nell'ordine in cui l'apparecchio li ha presi. Non viene caricato niente, e nei tuoi file non viene riscritto niente.
+
+Se ti hanno dato un disco e ti stai chiedendo quale dei file aprire: tutti, insieme. Una TC o una RM non è un file. È un file per slice, e uno studio del torace sono trecento file.
+
+## Che cosa c'è su un disco dell'ospedale
+
+Di solito quattro cose, e una sola conta.
+
+- **Una cartella di scansioni**, spesso chiamata `DICOM`, `IMAGES` o `ST0001`, che contiene file chiamati `IM000001`, `I0000001` o un lungo numero puntato. Spesso senza nessuna estensione. Queste sono la scansione.
+- **Un file chiamato `DICOMDIR`**. Un indice del resto, scritto perché un visualizzatore possa elencare gli studi che stanno sul disco senza aprire ogni file. Non ti serve.
+- **Un visualizzatore**, sotto forma di eseguibile Windows, di voce di autorun o ogni tanto di applet Java. È stato compilato per quello che era attuale quando il disco è stato masterizzato, ed è per questo che così tanti non partono più.
+- **Una pagina HTML o un PDF** con sopra il logo dell'ospedale, che spiega come avviare il visualizzatore.
+
+Le scansioni non hanno bisogno di quel visualizzatore. Il formato è uno standard pubblicato e i file si leggono da soli; l'eseguibile sul disco è un programma che potrebbe leggerli, non l'unico.
+
+## Perché i file non hanno estensione
+
+Perché al DICOM non serve. Ogni file si porta dietro il suo marcatore: 128 byte di niente, poi le quattro lettere `DICM`, poi un piccolo blocco di campi che descrive come è scritto il resto del file. Un lettore cerca quelle quattro lettere, e non un nome che finisce per `.dcm`.
+
+Ed è anche per questo che rinominare un file in `.dcm` non cambia niente, e che un visualizzatore che pretende l'estensione è inutilmente rigido. I file scritti direttamente dalla rete di un ospedale non hanno nemmeno i 128 byte e il marcatore — sono i dati nudi senza niente davanti, e un lettore deve ricavare da sé la loro codifica dal primo campo. È un file normale, non uno rotto.
+
+## Finestra e livello, che è il comando che conta
+
+È l'unica cosa che rende un'immagine medica diversa da una fotografia, ed è il motivo per cui un editor di immagini non va bene per guardarne una.
+
+Una slice TC contiene circa quattromila valori distinti. Il tuo schermo mostra duecentocinquantasei grigi. Qualcosa deve decidere quali quattromila finiscono su quali duecentocinquantasei, e quella decisione è la **finestra**: tutto quello che sta sotto è nero, tutto quello che sta sopra è bianco, e l'intervallo in mezzo viene distribuito sui grigi.
+
+Sposta la finestra e lo stesso file sembra una scansione diversa. Non è un artefatto di rendering, è proprio il punto. Il polmone e l'osso stanno tutti e due nella slice e non si possono vedere insieme: una finestra che mostra la trama di un polmone gonfio mette ogni osso al bianco puro, e una che mostra il dettaglio trabecolare di una costola mette tutto il polmone al nero puro.
+
+Su una TC i numeri sono **unità Hounsfield**, e sono definite in assoluto e non apparecchio per apparecchio: l'acqua è 0 e l'aria è −1000, per definizione, su ogni TC del mondo. È per questo che un visualizzatore può offrire finestre con un nome — polmone, osso, cervello, tessuti molli — e fare in modo che vogliano dire la stessa cosa sul tuo file e sulla postazione dove la scansione è stata refertata. Le solite:
+
+- **Tessuti molli** — centro 40, ampiezza 400.
+- **Polmone** — centro −600, ampiezza 1500.
+- **Osso** — centro 300, ampiezza 1500.
+- **Cervello** — centro 40, ampiezza 80. Una finestra stretta, perché sostanza grigia e sostanza bianca differiscono solo di qualche unità.
+
+Su una RM una scala così non c'è. I valori dipendono dalla sequenza, dalla bobina e dall'apparecchio, quindi non c'è niente a cui intitolare un preset e la finestra da cui partire è quella che chiede il file stesso. Ogni scansione porta con sé un suggerimento.
+
+![Il visualizzatore: una sezione in scala di grigi con accanto i comandi di finestra e livello, preimpostazioni per gli intervalli di tessuto più comuni, e i dati dello studio negli angoli.](https://abox.tools/screens/open-a-dicom-file/viewer.webp)
+
+Finestra e livello sono i due comandi che contano. Una scansione contiene più sfumature di quante uno schermo ne possa mostrare, e sono questi a decidere quali stai guardando.
+
+## Perché a volte le slice scorrono al contrario
+
+Un visualizzatore deve decidere in che ordine mettere i file, e nel file ci sono due cose che potrebbe usare.
+
+**Instance Number** è un contatore. È la scelta ovvia e lo assegna qualunque cosa abbia scritto i file, che non è tenuta a numerarli nella direzione in cui corre il paziente. Uno studio ricostruito dai piedi in su e numerato dalla testa in giù scorre all'indietro, e una serie assemblata da due ricostruzioni può ripetere i numeri di netto.
+
+**Image Position (Patient)** è dove la slice si trova fisicamente, in millimetri, in un sistema di coordinate fissato al paziente e non all'apparecchio. Ordinare su quello è giusto qualunque cosa abbia fatto la numerazione, e ha un effetto collaterale utile: una volta che le slice sono in ordine fisico, la distanza tra loro è misurabile, quindi un visualizzatore può dirti che le slice distano 5 mm — e accorgersi quando ne manca una, cosa che il file non dice mai.
+
+## Misurare qualcosa
+
+Una scansione è un dato misurato, quindi una lunghezza su di essa è una lunghezza vera — se il file dice quanto sono distanti i suoi pixel. Quello è un campo solo, Pixel Spacing, in millimetri, ed è presente praticamente su ogni TC e su ogni RM.
+
+Spesso manca sulle immagini ecografiche, sui documenti scansionati e sulle catture di schermo salvate come DICOM. Dove manca non c'è una risposta onesta in millimetri, e un visualizzatore che la dà lo stesso si è inventato una scala. Un conteggio di pixel è la risposta corretta a una domanda a cui il file non può rispondere.
+
+Occhio anche ai pixel che non sono quadrati, che fuori dalla TC sono la norma. Misurare in pixel e moltiplicare per una sola cifra di spaziatura è giusto solo dove le due coincidono; ogni asse va misurato con la sua.
+
+## Che cosa si porta dietro una scansione oltre all'immagine
+
+È la parte su cui la gente si sbaglia, ed è il motivo per cui con questi file bisogna stare attenti.
+
+Un file DICOM non è un'immagine con attaccati dei metadati. È una cartella clinica con dentro un'immagine. L'header è un elenco di campi, e su una tipica scansione clinica contiene:
+
+- il nome del paziente, il numero di cartella, la data di nascita e il sesso;
+- il numero di accettazione, che è la chiave della richiesta nel sistema dell'ospedale;
+- il medico richiedente, il tecnico che ha eseguito l'esame, il radiologo che l'ha refertato;
+- la struttura, il suo indirizzo e il reparto;
+- il produttore dell'apparecchio, il modello e il numero di serie;
+- la data e l'ora dell'esame al secondo;
+- e una serie di identificatori unici — studio, serie, istanza — che sono chiavi perfette per tornare all'archivio da cui il file viene.
+
+Qualunque file ti sia stato dato si porta dietro tutto questo, e tutto questo viaggia con il file ovunque il file vada. Cancellare il nome non basta: una data di nascita, una struttura grande come un codice postale e l'ora di un esame identificano una persona più o meno bene quanto un nome, e l'UID dello studio la identifica esattamente per chiunque abbia accesso all'archivio.
+
+Certi apparecchi tengono anche una seconda copia del nome del paziente in un campo privato, cioè un campo il cui significato non è pubblicato da nessuna parte e che quasi tutti gli anonimizzatori lasciano stare, perché non possono sapere che cosa ci sia dentro.
+
+![Una scheda che elenca cosa nel file identifica il paziente: il nome, l'identificativo, la data di nascita e la descrizione dello studio.](https://abox.tools/screens/open-a-dicom-file/identity.webp)
+
+Cosa porta con sé una scansione oltre all'immagine. È la scheda che spiega perché non conviene mandarne una per email.
+
+## Non caricare la scansione per guardarla
+
+Il modo solito in cui questo problema viene risolto è una ricerca di «dicom viewer online» e una casella di caricamento. Quello che è appena successo è che uno sconosciuto ha una copia di una cartella clinica: i pixel, il nome, la data di nascita, il numero di cartella e la chiave per rientrare nell'archivio.
+
+Non c'è nessun motivo per farlo. Leggere un file DICOM vuol dire analizzare un header e spacchettare degli interi, e un browser lo fa benissimo, ed è per questo che il [visualizzatore che sta qui](https://abox.tools/it/visualizzatore-dicom/) non ha nessuna funzione di rete: nessun `fetch`, nessun `XMLHttpRequest`, niente che potrebbe mandare un file anche se qualcosa ci provasse. Carica la pagina una volta, stacca la rete, e continua ad aprire scansioni.
+
+[È sicuro caricare i propri file sui convertitori online?](https://abox.tools/it/guide/e-sicuro-caricare-i-propri-file/) spiega come verificare questa affermazione su questo sito o su qualsiasi altro. Questo è il tipo di file su cui vale più la pena verificarla.
+
+## Che cosa un browser non può fare
+
+Due cose, e su tutte e due vale la pena essere chiari.
+
+**Non è un visualizzatore diagnostico.** Il tuo schermo non è calibrato, il browser non è una catena di rendering validata, e nessuna pagina web è passata per una valutazione regolatoria. Leggere una scansione per prendere una decisione clinica è un lavoro per la postazione su cui è stata refertata. Guardare che cosa c'è su un disco, tirare fuori una slice per una lezione, leggere un header o capire perché un altro programma rifiuta il file sono tutti ottimi motivi per aprirne una in un browser.
+
+**Certe scansioni compresse non si decodificano.** Il DICOM ammette diversi schemi di compressione e i browser ne implementano uno. I file semplici, quelli codificati run-length, il JPEG baseline e il JPEG Lossless — che è quello che usa la maggior parte delle esportazioni ospedaliere — si aprono tutti. JPEG 2000, JPEG-LS e i formati video richiedono codec che sono megabyte di libreria compilata. Dove l'immagine non si può decodificare, l'header resta interamente leggibile, che di solito è comunque la metà per cui sei venuto.

@@ -1,0 +1,26 @@
+{
+  "id": "/es/visualizar-numeros/",
+  "name": "Explorador de n\u00fameros",
+  "short_name": "Explorador de n\u00fameros",
+  "description": "Escribe cualquier n\u00famero y m\u00edralo crecer: una pila de libros, un chorro de agua, un cielo de estrellas, un mont\u00f3n de arena, una cuenta muy larga.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

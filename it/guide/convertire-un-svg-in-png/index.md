@@ -1,0 +1,89 @@
+# Come convertire un SVG in PNG alla dimensione giusta
+
+Convertire è la metà facile. La domanda che decide se il risultato serve a qualcosa è quella a cui nessuno ti dà una risposta: quanti pixel? Vediamo da dove viene quel numero, e cosa perde un disegno mentre diventa pixel.
+
+[Apri Da SVG a immagine](https://abox.tools/it/svg-in-png/): La dimensione la dici tu. Un vettoriale non ne ha una sua da perdere.
+
+Ultimo aggiornamento 26 agosto 2026
+
+## La risposta corta
+
+Apri [Da SVG a immagine](https://abox.tools/it/svg-in-png/), trascinaci dentro il file e indica una dimensione. Se nessuno ti ha detto che dimensione usare, **1024 pixel sul lato più lungo** è un buon valore predefinito: abbastanza grande per quasi tutto e abbastanza piccolo da mandare via mail. Lascia il formato su PNG, lascia lo sfondo su trasparente, e prendi il file.
+
+Tutto quello che segue riguarda cosa fare quando quel valore non basta: quando un numero te l'hanno indicato, quando la cosa va in stampa, o quando torna indietro con un aspetto sbagliato.
+
+![La scheda di anteprima: il disegno reso alla dimensione richiesta, con sotto le sue misure in pixel.](https://abox.tools/screens/convert-an-svg-to-png/preview.webp)
+
+Lo strumento lo disegna prima di salvarlo, e alla dimensione con cui lo salverà. Quello che non va nell'esportazione si vede prima qui.
+
+## Perché la dimensione è una tua decisione e non del file
+
+Un JPEG è una griglia di pixel misurati, quindi chiedere quanto è grande ha una risposta. Un SVG invece non è affatto un'immagine, è un insieme di istruzioni, del tipo disegna un cerchio qui, questo tracciato di quel colore, e le istruzioni una dimensione non ce l'hanno. Un browser può eseguirle a 16 pixel o a 4000 e il risultato è ugualmente nitido in tutti e due i casi, perché non sta scalando niente: sta ridisegnando.
+
+È per questo che la conversione non può scegliere un numero al posto tuo, e perché sceglierne uno grande non ti costa niente. È l'unico lavoro sulle immagini in cui «fallo più grande» è gratis.
+
+Quasi tutti i file SVG portano con sé un attributo `width` e `height`, e uno strumento te lo mostrerà, ma è un valore di partenza e non un limite. Un'icona che dice `width="24"` dice soltanto che chi l'ha disegnata aveva in mente una barra degli strumenti da 24 pixel.
+
+## Da dove viene davvero il numero
+
+**Per un sito web.** Prendi la dimensione che l'immagine occupa sulla pagina in pixel CSS e moltiplicala per la densità di pixel degli schermi che ti interessano. Un logo in uno spazio largo 200 pixel ha bisogno di un file da 400 pixel per un portatile Retina e da 600 per un telefono recente. È tutto lì il senso di `@2x` e `@3x`, ed è il motivo per cui uno strumento che te le scrive ti risparmia di fare il conto tre volte.
+
+**Per l'icona di un'app, per una scheda su uno store o per una favicon.** Il numero è pubblicato e non c'è niente da calcolare: è esattamente quello che dice la pagina dello store. Per una favicon non rasterizzare affatto, ma [fai un .ico](https://abox.tools/it/guide/creare-una-favicon/), che contiene parecchie dimensioni in un file solo, perché la scheda di un browser, un segnalibro e un collegamento di Windows ne chiedono di diverse.
+
+**Per la stampa.** Moltiplica la dimensione fisica in pollici per la risoluzione della stampante. Un logo che va su un biglietto da visita largo due pollici a 300 DPI sono 600 pixel; lo stesso logo steso su una pagina A4, cioè 8,3 pollici, sono circa 2500. Le tipografie chiedono 300 DPI per abitudine, mentre per uno striscione di grande formato guardato dall'altra parte di una stanza 150 abbondano.
+
+**Per un'anteprima social o un'immagine OG.** La piattaforma indica un riquadro, di solito ⁦1200 × 630⁩ per le anteprime dei link, e quel riquadro ha una forma diversa dal tuo logo. È a questo che serve l'impostazione «riempi con lo sfondo»: il disegno centrato nelle sue proporzioni, con un colore di sfondo a riempire il resto, invece di un logo stirato che dice a tutti che non hai controllato.
+
+Quando ne valgono due, usa la più grande. Un PNG più grande del necessario è uno scaricamento leggermente più pesante; uno troppo piccolo non si può sistemare dopo, per il motivo della sezione successiva.
+
+![La scheda della dimensione: un menu dei modi per dire quanto grande, impostato su larghezza, con 1024 inserito e larghezze predefinite accanto.](https://abox.tools/screens/convert-an-svg-to-png/size.webp)
+
+Cinque modi di dire la stessa cosa. Quale sia quello giusto dipende da se ti hanno dato un numero o un posto in cui metterlo.
+
+## Non si torna indietro
+
+Rasterizzare è a senso unico. Una volta che il disegno è un PNG sono pixel come in qualunque altra immagine, e ingrandirlo dopo deve inventare dettaglio che non è mai stato misurato: lo stesso risultato morbido e spalmato che ottieni ingrandendo una fotografia.
+
+Quindi tieni l'SVG. È la copia madre, è quasi sempre il file più leggero, e ogni dimensione futura ne esce perfetta. Il PNG è un'esportazione per un uso particolare, e quando ti serve un'altra dimensione la mossa giusta è riesportare invece di ridimensionare quello che hai esportato.
+
+C'è del software che dice di riconvertire un PNG in un SVG. Quello che fa è ricalcare, cioè indovinare quali curve potrebbero spiegare una griglia di pixel. Funziona passabilmente su disegni piatti a due colori e produce sciocchezze costose su tutto il resto, e non recupera mai quello che aveva il disegno originale.
+
+## Tre cose cambiano nel momento in cui diventa pixel
+
+Un SVG rasterizzato che viene male viene male quasi sempre per uno di questi tre motivi, e vale la pena conoscerli tutti e tre prima di esportare invece che dopo.
+
+**Il testo viene disegnato con il carattere che si trova sul computer.** Un SVG che contiene del testo non contiene il carattere: ne nomina uno e lascia che sia chi disegna a trovarlo. Se il carattere non è installato ne viene usato un sostituto, e il sostituto ha forme delle lettere e larghezze diverse, quindi il testo può andare a capo altrove o traboccare. Un file che si tira il carattere da un indirizzo web se la passa anche peggio: a un SVG rasterizzato attraverso un `<img>` non è concesso recuperare proprio niente, quindi non arriva nulla.
+
+La soluzione ogni grafico la conosce già: **converti il testo in tracciati** prima di esportare l'SVG (Illustrator lo chiama Crea contorni, Figma lo chiama Flatten, Inkscape lo chiama Da oggetto a tracciato). Le lettere diventano geometria, il carattere smette di contare, e l'immagine viene uguale su ogni computer. Fallo su una copia, però, perché il testo trasformato in tracciati come testo non è più modificabile.
+
+**I tratti da un capello diventano grigi o spariscono.** Un tratto che alla dimensione che hai scelto risulta più sottile di un pixel non si può disegnare come una linea piena, quindi viene disegnato come una linea sbiadita. È per questo che un logo delicato rasterizzato a 64 pixel si vede slavato mentre lo stesso file a 512 viene perfetto. Se una dimensione piccola è un obbligo, la risposta è un disegno semplificato con tratti più spessi e non un'impostazione di esportazione diversa, che è poi lo stesso motivo per cui una favicon è un simbolo e non un logotipo.
+
+**L'animazione si ferma.** Un SVG animato si rasterizza in un unico fermo immagine, cioè il suo primo fotogramma, e non c'è un'impostazione di esportazione che cambi la cosa. Se ti serve il movimento, ti serve una GIF o un video, fatti in un altro modo.
+
+## La trasparenza, e quale formato scegliere
+
+**PNG**, a meno che tu non abbia un motivo. È senza perdita, tiene la trasparenza, e le tinte piatte con i bordi netti, che sono quasi tutto quello di cui è fatto un disegno, ci si comprimono bene. Un logo rasterizzato di solito è un PNG *più leggero* di quanto sarebbe un JPEG, oltre che più pulito.
+
+Il **JPEG** di trasparenza non ne ha. Ogni pixel trasparente deve diventare un qualche colore, e se nessuno ne sceglie uno per te diventa nero: da lì viene il risultato logo-su-rettangolo-nero che la gente scambia per un difetto. È anche con perdita nel modo che si vede peggio proprio su questo tipo di immagine, cioè un anello di puntini attorno a ogni bordo netto. Usalo quando qualcosa ci insiste.
+
+Il **WebP** fa tutto quello che fa il PNG in un file più leggero, e lo legge ogni browser attuale. Il motivo per non usarlo è quello che succede dopo il browser: il software più vecchio, certe tipografie e un bel po' di moduli di caricamento ancora non ne aprono uno.
+
+Anche scegliere un colore di sfondo con il PNG è una cosa perfettamente normale da volere. La trasparenza serve solo quando la cosa su cui l'immagine finisce è di un colore che non puoi prevedere; quando sai già che è una pagina bianca, appiattire sul bianco ti evita tutta una categoria di sorprese.
+
+## Quando l'esportazione esce vuota o sbagliata
+
+**Solo spazio vuoto.** Di solito manca l'attributo `xmlns` sull'elemento radice. Per quanto riguarda un tag immagine, un file senza non è SVG, e si disegna come niente. La prova rapida è aprire il file in un browser: se anche il browser non mostra niente, il problema è il file e non il convertitore.
+
+**Il disegno è piccolo, nell'angolo in alto a sinistra.** Il file ha un `width` e un `height` ma nessun `viewBox`, quindi non c'è un sistema di coordinate da scalare e il disegno si tiene le proprie unità originali su un canvas più grande. Un buon convertitore ce lo mette lui un viewBox; se il tuo non l'ha fatto, aggiungere a mano `viewBox="0 0 *larghezza* *altezza*"` all'elemento radice sistema la cosa, e il file è testo semplice, quindi puoi farlo.
+
+**Manca una parte dell'immagine.** Qualcosa nel file puntava a un indirizzo invece di contenere il disegno: una fotografia incorporata conservata come link, un foglio di stile, un carattere. Un rasterizzatore che si rifiuta di recuperarli sta facendo la cosa giusta, ed è lo stesso rifiuto che impedisce a un SVG scaricato chissà dove di riferire a chi l'ha fatto. Riesporta dal programma di disegno con le immagini incorporate.
+
+**Rifiuta una dimensione molto grande.** I browser mettono un tetto a quanto può essere grande un canvas, e su dove metterlo non sono d'accordo: oltre i 16.000 pixel per lato circa non torna indietro niente, e Safari su iPhone o iPad si arrende molto prima, attorno ai ⁦4096 × 4096⁩. Uno strumento che ti avverte ti sta salvando da un file vuoto, perché è quello che un browser produce quando è a corto, invece di un messaggio d'errore.
+
+## Niente di tutto questo ha bisogno di un caricamento
+
+Rasterizzare un SVG è una cosa che ogni browser fa migliaia di volte al giorno: è lo stesso meccanismo che disegna un'icona su una pagina web. Non c'è nessun motivo tecnico per cui il tuo disegno debba andare fino a un server e tornare per uscirne come PNG, e lo strumento di qui non lo manda da nessuna parte, perché la `Content-Security-Policy` della pagina elenca tutti gli indirizzi che può contattare, e nessuno di quelli appartiene a questo sito.
+
+Con l'SVG conta più del solito, perché un SVG è un documento e non un'immagine. Può contenere uno script e un indirizzo remoto, e un logo che ti ha mandato un'agenzia è un file che non hai scritto tu. Disegnato attraverso un tag immagine si trova in quella che la specifica chiama *secure static mode*: lo script non può girare e l'indirizzo non viene mai contattato. A farlo rispettare è il browser, non il sito.
+
+Se preferisci verificare invece che crederci, carica la pagina, stacca la connessione e converti qualcosa lo stesso. [È sicuro caricare i propri file sui convertitori online?](https://abox.tools/it/guide/e-sicuro-caricare-i-propri-file/) propone altre tre verifiche che puoi fare su qualunque strumento.

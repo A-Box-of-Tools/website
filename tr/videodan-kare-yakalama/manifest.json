@@ -1,0 +1,26 @@
+{
+  "id": "/tr/videodan-kare-yakalama/",
+  "name": "Video Kare Yakalay\u0131c\u0131",
+  "short_name": "Video Kare Yakalay\u0131c\u0131",
+  "description": "Herhangi bir andan tam kaliteli bir kare.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-png-en-webp/",
+  "name": "PNG en WebP",
+  "short_name": "PNG en WebP",
+  "description": "La m\u00eame image, souvent un tiers plus l\u00e9g\u00e8re, avec sa transparence intacte.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

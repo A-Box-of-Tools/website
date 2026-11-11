@@ -1,0 +1,26 @@
+{
+  "id": "/tr/video-kirpma/",
+  "name": "Video K\u0131rp\u0131c\u0131",
+  "short_name": "Video K\u0131rp\u0131c\u0131",
+  "description": "Bir klibi as\u0131l \u00f6nemli olan k\u0131sma indirin.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

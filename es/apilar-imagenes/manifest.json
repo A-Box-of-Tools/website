@@ -1,0 +1,26 @@
+{
+  "id": "/es/apilar-imagenes/",
+  "name": "Apilador de im\u00e1genes",
+  "short_name": "Apilador de im\u00e1genes",
+  "description": "Promedia una r\u00e1faga estable, usa la mediana para despejar el fondo o aclara una secuencia de cielo nocturno.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

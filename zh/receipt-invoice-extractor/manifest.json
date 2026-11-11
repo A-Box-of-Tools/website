@@ -1,0 +1,26 @@
+{
+  "id": "/zh/receipt-invoice-extractor/",
+  "name": "\u6536\u636e\u4e0e\u53d1\u7968\u8bc6\u522b",
+  "short_name": "\u6536\u636e\u4e0e\u53d1\u7968\u8bc6\u522b",
+  "description": "\u8bfb\u53d6\u7167\u7247\uff0c\u68c0\u67e5\u5b57\u6bb5\u548c\u88c1\u526a\u7ed3\u679c\uff0c\u51c6\u5907\u4f9b\u90ae\u4ef6\u5e94\u7528\u4f7f\u7528\u7684\u538b\u7f29\u9644\u4ef6\u548c\u5408\u8ba1\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

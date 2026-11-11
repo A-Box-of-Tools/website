@@ -1,0 +1,26 @@
+{
+  "id": "/ko/\ud0a4-\ube44\uad50/",
+  "name": "\ud0a4 \ube44\uad50 \ucc28\ud2b8",
+  "short_name": "\ud0a4 \ube44\uad50 \ucc28\ud2b8",
+  "description": "\ud0a4\ub97c \uc801\uc73c\uba74 \uadf8\ub9bc\uc744 \uac00\uc838\uac11\ub2c8\ub2e4. \uadf8\ub9ac\ub824\uace0 \uc5b4\ub514\ub85c\ub3c4 \ubcf4\ub0b4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

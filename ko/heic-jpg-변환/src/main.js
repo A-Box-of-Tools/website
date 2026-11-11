@@ -1,0 +1,430 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js?v=8efc58ba61';
+import{saveBlob}from'./shared/download.js?v=8efc58ba61';
+import{messageBox}from'./shared/message-box.js?v=8efc58ba61';
+import{encodePixels,encodableTypes,FORMATS,JPEG,PNG,WEBP}from'./codecs.js?v=8efc58ba61';
+import{heifBrand,isAvif,readExif}from'./boxes.js?v=8efc58ba61';
+import{describeExif,fitsInJpeg,uprightExif,withExif}from'./exif.js?v=8efc58ba61';
+import{decodeHeic,engine,warmEngine}from'./heif.js?v=8efc58ba61';
+import{
+bytes as humanBytes,change,dimensions,metadataText,outName,uniqueNames,
+}from'./files.js?v=8efc58ba61';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=8efc58ba61';
+import{makeZip}from'./shared/zip.js?v=8efc58ba61';
+import{makeExample}from'./example.js?v=8efc58ba61';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+formatSelect:$('format-select'),
+qualityRow:$('quality-row'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+formatNote:$('format-note'),
+keepExif:$('keep-exif'),
+convertAll:$('convert-all'),
+cancel:$('cancel'),
+engineStatus:$('engine-status'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+results:$('results'),
+resultList:$('result-list'),
+downloadZip:$('download-zip'),
+resultsSummary:$('results-summary'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+};
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
+const HEAD_BYTES=256*1024;
+let items=[];
+let nextId=1;
+let busy=false;
+let stopping=false;
+let results=[];
+let resultUrls=[];
+let writable=new Set([JPEG,PNG]);
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+example:makeExample,
+});
+async function addFiles(files){
+if(!files?.length||busy)return;
+picker.busy(readingLabel(files.length));
+const failures=[];
+try{
+for(const file of files){
+const head=new Uint8Array(await file.slice(0,HEAD_BYTES).arrayBuffer());
+const brand=heifBrand(head);
+if(!brand){
+failures.push(phrase('load.refused',
+{name:file.name,why:refusal(head,file)}));
+continue;
+}
+items.push({
+id:nextId,
+file,
+brand,
+exif:describeExif(readExif(head)),
+});
+nextId+=1;
+}
+}finally{
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+if(items.length){
+warmEngine();
+watchEngine();
+}
+clearResults();
+render();
+}
+function refusal(head,file){
+if(isAvif(head))return phrase('refuse.avif');
+if(head[0]===0xff&&head[1]===0xd8)return phrase('refuse.jpeg');
+if(head[0]===0x89&&head[1]===0x50)return phrase('refuse.png');
+return phrase('refuse.other',{name:file.name});
+}
+function removeItem(id){
+const at=items.findIndex((i)=>i.id===id);
+if(at<0)return;
+items.splice(at,1);
+clearResults();
+render();
+}
+el.clearAll.addEventListener('click',()=>{
+items=[];
+clearResults();
+clearLoadError();
+render();
+});
+function render(){
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.clearAll.disabled=busy;
+el.countLabel.textContent=any
+?phrase(items.length===1?'list.count.one':'list.count.many',
+{n:items.length,size:humanBytes(totalBytes(),phrase)})
+:'';
+el.convertAll.disabled=!any||busy;
+renderList();
+renderFormatNote();
+}
+const totalBytes=()=>items.reduce((n,i)=>n+i.file.size,0);
+function renderList(){
+el.fileList.replaceChildren();
+for(const item of items){
+const li=document.createElement('li');
+li.className='file-row';
+const main=document.createElement('div');
+main.className='file-main-wrap';
+const text=document.createElement('div');
+text.className='file-main';
+const name=document.createElement('p');
+name.className='file-name';
+name.textContent=item.file.name;
+text.appendChild(name);
+const sub=document.createElement('p');
+sub.className='file-sub';
+sub.textContent=phrase('row.sub',
+{brand:item.brand,size:humanBytes(item.file.size,phrase)});
+text.appendChild(sub);
+const note=document.createElement('p');
+note.className=item.exif.gps?'file-note file-note-gps':'file-note';
+note.textContent=metadataText(item.exif,phrase);
+text.appendChild(note);
+main.appendChild(text);
+li.appendChild(main);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.title=phrase('row.remove',{name:item.file.name});
+remove.setAttribute('aria-label',remove.title);
+remove.textContent='×';
+remove.disabled=busy;
+remove.addEventListener('click',()=>removeItem(item.id));
+li.appendChild(remove);
+el.fileList.appendChild(li);
+}
+}
+function renderFormatNote(){
+const mime=el.formatSelect.value;
+const lossy=FORMATS[mime]?.lossy;
+el.qualityRow.hidden=!lossy;
+const format={[JPEG]:'format.jpeg',[PNG]:'format.png',[WEBP]:'format.webp'}[mime];
+const details=!el.keepExif.checked
+?phrase('exif.dropped')
+:mime===JPEG
+?phrase('exif.kept')
+:phrase('exif.cannot',{format:FORMATS[mime]?.label??phrase('format.file')});
+el.formatNote.textContent=format
+?phrase('join.sentences',{a:phrase(format),b:details})
+:details;
+}
+for(const control of[el.formatSelect,el.keepExif]){
+control.addEventListener('change',()=>{
+clearResults();
+renderFormatNote();
+});
+}
+el.quality.addEventListener('input',()=>{
+el.qualityValue.textContent=el.quality.value;
+clearResults();
+});
+el.convertAll.addEventListener('click',async()=>{
+if(!items.length||busy)return;
+busy=true;
+stopping=false;
+clearResults();
+clearLoadError();
+render();
+el.progress.hidden=false;
+el.cancel.hidden=false;
+const collected=[];
+const failures=[];
+let stopped=false;
+try{
+showProgress(0,items.length,'',phrase('step.waiting'));
+await engine();
+for(const[index,item]of items.entries()){
+if(stopping){stopped=true;break;}
+showProgress(index,items.length,item.file.name,phrase('step.reading'));
+try{
+for(const result of await convertOne(item,(note)=>{
+if(stopping)throw new DOMException('Cancelled','AbortError');
+showProgress(index,items.length,item.file.name,note);
+})){
+collected.push(result);
+}
+}catch(error){
+if(error?.name==='AbortError'){stopped=true;break;}
+failures.push(phrase('load.refused',{
+name:item.file.name,why:phrase(error.message,error.values),
+}));
+}
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+}catch(error){
+failures.push(phrase(error.message,error.values));
+}finally{
+busy=false;
+stopping=false;
+el.cancel.hidden=true;
+el.progress.hidden=!stopped;
+render();
+}
+if(stopped){
+el.progressLabel.textContent=collected.length
+?phrase('progress.stopped',{done:collected.length,total:items.length})
+:phrase('progress.stopped.none');
+}
+if(failures.length)showLoadError(failures.join('\n'));
+results=collected;
+showResults();
+});
+el.cancel.addEventListener('click',()=>{stopping=true;});
+function showProgress(index,total,name,note){
+el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
+el.progressLabel.textContent=name
+?phrase('progress.line',{index:index+1,total,name,note})
+:note;
+}
+async function convertOne(item,onStep){
+const mime=el.formatSelect.value;
+const quality=Number(el.quality.value)/100;
+const keepExif=el.keepExif.checked;
+const bytes=new Uint8Array(await item.file.arrayBuffer());
+onStep(phrase('step.decoding'));
+const pictures=await decodeHeic(bytes);
+const tiff=keepExif&&mime===JPEG?readExif(bytes):null;
+const out=[];
+for(const[index,picture]of pictures.entries()){
+onStep(pictures.length>1
+?phrase('step.writing.picture',{index:index+1,total:pictures.length})
+:phrase('step.writing.file',
+{format:FORMATS[mime]?.label??phrase('format.file')}));
+let blob=await encodePixels(picture,{mime,quality});
+let metadata='none';
+if(tiff&&picture.primary){
+if(fitsInJpeg(tiff)){
+const patched=withExif(new Uint8Array(await blob.arrayBuffer()),uprightExif(tiff));
+blob=new Blob([patched],{type:JPEG});
+metadata='kept';
+}else{
+metadata='too large';
+}
+}
+out.push({
+name:item.file.name,
+before:item.file.size,
+after:blob.size,
+blob,
+mime,
+quality,
+width:picture.width,
+height:picture.height,
+metadata,
+exif:item.exif,
+part:pictures.length>1?index+1:0,
+parts:pictures.length,
+outName:outName(item.file.name,mime,index),
+});
+}
+return out;
+}
+function clearResults(){
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+results=[];
+el.resultList.replaceChildren();
+el.results.hidden=true;
+}
+function showResults(){
+if(!results.length)return;
+const names=uniqueNames(results.map((r)=>r.outName));
+results.forEach((result,at)=>{result.outName=names[at];});
+el.results.hidden=false;
+for(const result of results)el.resultList.appendChild(resultRow(result));
+const before=new Set(results.map((r)=>r.name)).size;
+const beforeBytes=[...new Map(results.map((r)=>[r.name,r.before])).values()]
+.reduce((n,size)=>n+size,0);
+const afterBytes=results.reduce((n,r)=>n+r.after,0);
+const label=FORMATS[results[0].mime]?.label??phrase('format.new');
+el.resultsSummary.textContent=phrase('results.summary',{
+files:phrase(before===1?'n.heic.one':'n.heic.many',{n:before}),
+pictures:phrase(results.length===1?'n.picture.one':'n.picture.many',
+{n:results.length,format:label}),
+before:humanBytes(beforeBytes,phrase),
+after:humanBytes(afterBytes,phrase),
+change:change(beforeBytes,afterBytes,phrase),
+});
+el.downloadZip.hidden=results.length<2;
+el.downloadZip.onclick=async()=>{
+el.downloadZip.disabled=true;
+try{
+const files=await Promise.all(results.map(async(r)=>({
+name:r.outName,
+data:new Uint8Array(await r.blob.arrayBuffer()),
+})));
+saveBlob(makeZip(files),'converted-photos.zip');
+}finally{
+el.downloadZip.disabled=false;
+}
+};
+}
+function resultRow(result){
+const li=document.createElement('li');
+li.className='result-row';
+const url=URL.createObjectURL(result.blob);
+resultUrls.push(url);
+const thumb=document.createElement('img');
+thumb.className='result-thumb';
+thumb.src=url;
+thumb.alt=phrase('result.alt',{name:result.outName});
+thumb.loading='lazy';
+li.appendChild(thumb);
+const text=document.createElement('div');
+text.className='result-text';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=result.outName;
+text.appendChild(name);
+const headline=document.createElement('p');
+headline.className='result-headline';
+headline.textContent=result.parts>1
+?humanBytes(result.after,phrase)
+:phrase('result.headline',{
+before:humanBytes(result.before,phrase),
+after:humanBytes(result.after,phrase),
+change:change(result.before,result.after,phrase),
+});
+text.appendChild(headline);
+const detail=document.createElement('p');
+detail.className='result-detail';
+detail.textContent=describe(result);
+text.appendChild(detail);
+li.appendChild(text);
+const actions=document.createElement('div');
+actions.className='result-actions';
+const link=document.createElement('a');
+link.className='primary as-button';
+link.href=url;
+link.download=result.outName;
+link.textContent=phrase('result.download');
+actions.appendChild(link);
+li.appendChild(actions);
+return li;
+}
+function describe(result){
+const parts=[phrase('out.format',{
+format:FORMATS[result.mime]?.label??result.mime,
+size:dimensions(result.width,result.height),
+})];
+if(FORMATS[result.mime]?.lossy){
+parts.push(phrase('out.quality',{n:Math.round(result.quality*100)}));
+}
+if(result.part){
+parts.push(phrase('out.part',{n:result.part,total:result.parts}));
+}
+parts.push({
+kept:phrase(result.exif.gps?'out.exif.keptgps':'out.exif.kept'),
+none:phrase('out.exif.none'),
+'too large':phrase('out.exif.toolarge'),
+}[result.metadata]);
+return phrase('out.line',{list:parts.reduce((a,b)=>phrase('join.dot',{a,b}))});
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+function sayEngine(text,state=''){
+el.engineStatus.textContent=text;
+el.engineStatus.className=`engine-status ${state}`.trim();
+}
+let watching=false;
+function watchEngine(){
+if(watching)return;
+watching=true;
+sayEngine(phrase('engine.loading'));
+engine().then(()=>{
+sayEngine(phrase('engine.ready'),'good');
+}).catch((error)=>{
+sayEngine(phrase('engine.failed',
+{why:phrase(error.message,error.values)}),'warn');
+});
+}
+async function checkEncoders(){
+writable=await encodableTypes();
+if(writable.has(WEBP))return;
+for(const option of el.formatSelect.options){
+if(option.value===WEBP){
+option.disabled=true;
+option.textContent=phrase('webp.unsupported');
+}
+}
+if(el.formatSelect.value===WEBP)el.formatSelect.value=JPEG;
+renderFormatNote();
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+el.qualityValue.textContent=el.quality.value;
+sayEngine(phrase('engine.first'));
+render();
+checkEncoders();
+document.getElementById('boot-warning')?.remove();

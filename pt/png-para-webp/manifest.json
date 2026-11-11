@@ -1,0 +1,26 @@
+{
+  "id": "/pt/png-para-webp/",
+  "name": "PNG para WebP",
+  "short_name": "PNG para WebP",
+  "description": "A mesma imagem, muitas vezes um ter\u00e7o menor, com as \u00e1reas transparentes intactas.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

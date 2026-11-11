@@ -1,0 +1,26 @@
+{
+  "id": "/tr/resim-karartma/",
+  "name": "G\u00f6rsel Karart\u0131c\u0131",
+  "short_name": "G\u00f6rsel Karart\u0131c\u0131",
+  "description": "Kapatt\u0131\u011f\u0131n\u0131z \u015fey dosyan\u0131n i\u00e7inde \u00f6rt\u00fclmez, dosyadan silinir.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

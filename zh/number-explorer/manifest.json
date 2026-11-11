@@ -1,0 +1,26 @@
+{
+  "id": "/zh/number-explorer/",
+  "name": "\u6570\u5b57\u63a2\u7d22\u5668",
+  "short_name": "\u6570\u5b57\u63a2\u7d22\u5668",
+  "description": "\u8f93\u5165\u4efb\u610f\u4e00\u4e2a\u6570\u5b57\uff0c\u770b\u7740\u5b83\u957f\u5927\uff1a\u4e00\u645e\u4e66\u3001\u4e00\u6c6a\u6c34\u3001\u6ee1\u5929\u661f\u661f\u3001\u4e00\u5806\u6c99\u5b50\u3001\u4e00\u6b21\u5f88\u957f\u7684\u8ba1\u6570\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

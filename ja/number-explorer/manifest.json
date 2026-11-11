@@ -1,0 +1,26 @@
+{
+  "id": "/ja/number-explorer/",
+  "name": "\u6570\u5b57\u30a8\u30af\u30b9\u30d7\u30ed\u30fc\u30e9\u30fc",
+  "short_name": "\u6570\u5b57\u30a8\u30af\u30b9\u30d7\u30ed\u30fc\u30e9\u30fc",
+  "description": "\u597d\u304d\u306a\u6570\u5b57\u3092\u5165\u529b\u3057\u3066\u3001\u80b2\u3063\u3066\u3044\u304f\u69d8\u5b50\u3092\u898b\u3066\u304f\u3060\u3055\u3044\u3002\u7a4d\u307f\u4e0a\u3052\u305f\u672c\u3001\u6ce8\u304c\u308c\u308b\u6c34\u3001\u6e80\u5929\u306e\u661f\u3001\u7802\u306e\u5c71\u3001\u3068\u3066\u3082\u9577\u3044\u30ab\u30a6\u30f3\u30c8\u306b\u306a\u308a\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

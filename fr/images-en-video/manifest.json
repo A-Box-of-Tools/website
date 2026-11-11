@@ -1,0 +1,26 @@
+{
+  "id": "/fr/images-en-video/",
+  "name": "Images en vid\u00e9o",
+  "short_name": "Images en vid\u00e9o",
+  "description": "Cr\u00e9ez un MP4 \u00e0 partir d'une s\u00e9quence de rendu, de photos de timelapse ou d'un diaporama.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

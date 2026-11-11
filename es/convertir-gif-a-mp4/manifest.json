@@ -1,0 +1,26 @@
+{
+  "id": "/es/convertir-gif-a-mp4/",
+  "name": "GIF a MP4",
+  "short_name": "GIF a MP4",
+  "description": "Cada fotograma conserva su duraci\u00f3n, en H.264 dentro de un MP4. Se convierte en tu dispositivo, sin subidas.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

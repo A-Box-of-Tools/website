@@ -1,0 +1,26 @@
+{
+  "id": "/zh/id-photo/",
+  "name": "\u8bc1\u4ef6\u7167\u5236\u4f5c",
+  "short_name": "\u8bc1\u4ef6\u7167\u5236\u4f5c",
+  "description": "\u9009\u62e9\u652f\u6301\u7684\u56fd\u5bb6\u548c\u8bc1\u4ef6\u3002\u516c\u5e03\u7684\u8981\u6c42\u4e0e\u6307\u5bfc\u503c\u5747\u6709\u6807\u6ce8\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

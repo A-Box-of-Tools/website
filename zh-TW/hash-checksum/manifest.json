@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/hash-checksum/",
+  "name": "\u96dc\u6e4a\u8207\u6821\u9a57\u548c",
+  "short_name": "\u96dc\u6e4a\u8207\u6821\u9a57\u548c",
+  "description": "\u628a\u4e0b\u8f09\u4f86\u7684\u6a94\u6848\u548c\u91cb\u51fa\u65b9\u516c\u4f48\u7684\u90a3\u4e32\u6578\u5b57\u5c0d\u4e00\u4e0b\uff0c\u4e0d\u7528\u628a\u5b83\u767c\u7d66\u4efb\u4f55\u4eba\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+converter,reported_upload,reported_timing,reported_bytes,measurement_label,endpoint_pattern,reported_retention,current_reference_url,reference_link_checked
+Squoosh,False,none,0,0,—,nothing to keep,https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md,2026-10-12
+TinyPNG,True,selection,542566,"542,566",tinypng.com/backend/opt/store,48 hours,https://tinypng.com/terms,2026-10-12
+iLoveIMG,True,selection,542816,"542,816",api9.iloveimg.com/v1/upload,2 hours,https://www.iloveimg.com/help/terms,2026-10-12
+iLovePDF,True,selection,542801,"542,801",api4.ilovepdf.com/v1/upload,2 hours,https://www.ilovepdf.com/help/privacy,2026-10-12
+Sejda,True,selection,542537,"542,537",sejda.com/api/files/upload,after processing; shared links 7 days,https://www.sejda.com/privacy,2026-10-12
+PDF24,True,selection,542531,"542,531",filetools24.pdf24.org/client.php,“usually” 1 hour,https://www.pdf24.org/en/privacy-policy,2026-10-12
+PDF Candy,True,selection,542522,"542,522",s35.api.pdfcandy.com/uploadcbc/…,2 hours,https://pdfcandy.com/help.html,2026-10-12
+jpg2pdf.com,True,selection,542570,"542,570",jpg2pdf.com/api/upload,"1 hour, stated in Terms",https://jpg2pdf.com/terms,2026-10-12
+Img2Go,True,selection,542589,"542,589",www21.img2go.com/v2/dl/web7/…,72 hours,https://www.img2go.com/privacy,2026-10-12
+Online-Convert,True,selection,542423,"542,423",www8.online-convert.com/v2/dl/web7/…,72 hours,https://www.online-convert.com/privacy,2026-10-12
+PDF2Go,True,selection,542542,"542,542",www15.pdf2go.com/v2/dl/web7/…,72 hours,https://www.pdf2go.com/privacy,2026-10-12
+Compress2Go,True,selection,542492,"542,492",www6.compress2go.com/v2/dl/web7/…,72 hours,https://www.compress2go.com/privacy,2026-10-12
+PicResize,True,selection,542568,"542,568","picresize.com/en/edit, form post",20 minutes,https://picresize.com/en/privacypolicy,2026-10-12
+ResizePixel,True,selection,,form post,resizepixel.com/,within 1 hour,https://www.resizepixel.com/en/privacy,2026-10-12
+CloudConvert,True,conversion,543218,"543,218",eu-central.storage.cloudconvert.com/…,24 hours,https://cloudconvert.com/privacy,2026-10-12
+Convertio,True,conversion,,not captured,convertio.co/process/…,24 hours,https://convertio.co/privacy/,2026-10-12
+Ezgif,True,conversion,542483,"542,483","ezgif.com/optimize, form post",1 hour after last use,https://ezgif.com/privacy,2026-10-12
+Aconvert,True,conversion,,form post,aconvert.com/results.php,2 hours,https://www.aconvert.com/privacy.html,2026-10-12
+Online2PDF,True,conversion,547330,"547,330",online2pdf.com/conversion/frame,“immediately”,https://online2pdf.com/privacy,2026-10-12
+IMGonline,True,conversion,542633,"542,633",imgonline.com.ua/eng/…-result.php,no policy found,,

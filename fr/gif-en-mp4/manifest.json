@@ -1,0 +1,26 @@
+{
+  "id": "/fr/gif-en-mp4/",
+  "name": "GIF en MP4",
+  "short_name": "GIF en MP4",
+  "description": "Chaque image, avec la dur\u00e9e que le GIF lui donne, en H.264 dans un MP4. Converti sur votre machine ; le fichier n'est jamais envoy\u00e9.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

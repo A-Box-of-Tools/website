@@ -1,0 +1,47 @@
+# Stimme im lokalen Netzwerk übertragen
+
+Eine Person spricht, die anderen hören im Browser zu. Starten Sie den Kanal auf dieser Website und teilen Sie den Link oder zeigen Sie ihn in der Umgebungssuche an. Direkt nutzt ein erreichbares lokales Netz. Wählt der Host Cloud-Relay, bestätigen die Zuhörer zuerst die verschlüsselte Übertragung über Cloudflare.
+
+[Local Walkie-Talkie öffnen](https://abox.tools/de/walkie-talkie/): Start a named channel, then hold to talk or speak hands-free. Connect directly on your local network, or choose Cloud relay for listeners over the internet.
+
+Zuletzt aktualisiert 3. November 2026
+
+## Auf dem sendenden Gerät starten
+
+Öffnen Sie Local Walkie-Talkie auf dieser Website und geben Sie unter Channel name einen Namen ein, den Ihre Zuhörer erkennen. Lassen Sie Make this channel discoverable aktiviert, um den Kanal aufzulisten, oder deaktivieren Sie die Option, um nur per Link einzuladen. Lassen Sie Connection auf Direct eingestellt oder wählen Sie vor dem Start Cloud relay, wenn die Geräte einander nicht direkt erreichen können. Wählen Sie Start channel und erlauben Sie den Mikrofonzugriff. Ein unterstütztes Smartphone oder ein Computer kann den Kanal über die HTTPS-Seite bereitstellen. Dafür sind weder ein Python-Helfer noch ein Download oder ein Konto erforderlich. Für eine zuverlässige Verbindung lassen Sie die Sendeseite möglichst sichtbar und das Gerät wach.
+
+## Zuhörer freigeben
+
+Require approval ist bei neuen Kanälen eingeschaltet. Jeder neue Zuhörer wartet, bevor er Audio empfängt. Wählen Sie Approve oder Deny im Anfragefenster oder in der Liste; Review later schließt das Fenster und lässt die Anfrage offen. Sie können die Freigabepflicht vor dem Start ausschalten. Eine zuvor genehmigte Identität kann die Verbindung im selben Raum wiederherstellen; das Beenden der Übertragung verhindert diese Wiederherstellung.
+
+## Einen Kanal finden oder Zuhörer einladen
+
+Zuhörer öffnen Local Walkie-Talkie, prüfen das Symbol für den Verbindungsweg eines Kanals unter Available connections und wählen dann Join in seiner Zeile. Die Liste wird automatisch aktualisiert. Bloßes Durchsehen stellt keine Verbindung her; der Beitritt dient nur zum Empfang und fordert niemals Mikrofonzugriff an. Wird der Kanal nicht angezeigt, teilen Sie stattdessen den Zuhörerlink oder QR-Code. Das Öffnen einer Direct-Einladung startet den Verbindungsaufbau automatisch. Eine Cloud-relay-Einladung zeigt zuerst die Verbindungsart und wartet auf Join. Falls der Browser den Ton blockiert, schaltet Unmute ihn ein. Nach dem Verbinden verwenden Zuhörer Mute/Unmute und Leave.
+
+Beide Seiten benötigen Internetzugang für Suche und Vermittlung. Der Dienst überträgt Kanalnamen, Zuhörereinladungen, Verbindungsdetails und Statusmeldungen; die Live-Stimme nimmt einen separaten verschlüsselten Weg vom sendenden Gerät zu jedem Zuhörer. Direct ist voreingestellt und wechselt niemals automatisch den Verbindungsweg. Cloud relay ist eine ausdrücklich gewählte Alternative, die verschlüsseltes Audio über Cloudflare weiterleitet. Dabei sieht Cloudflare Adressen, Zeitpunkte und Datenvolumen, und Internetzugang ist durchgehend erforderlich. Beide Seiten verwenden den vom Host gewählten Verbindungsweg.
+
+Die Umgebungssuche gruppiert Browser nach ihrer öffentlichen IPv4-Adresse oder ihrem IPv6-/64-Präfix und dem Origin dieser Website. Sie durchsucht kein WLAN und beweist nicht, dass sich ein gelisteter Kanal in Ihrem physischen Netzwerk befindet. Gemeinsame Internetzugänge können Fremde einschließen; VPNs und andere Internetwege können Geräte direkt neben Ihnen verbergen. Verwenden Sie den Zuhörerlink, wenn die Suche einen Kanal nicht findet.
+
+## Zum Sprechen gedrückt halten
+
+Halten Sie die Schaltfläche Talk mit dem Finger oder der Maus gedrückt, oder fokussieren Sie sie und halten Sie die Leertaste gedrückt. Lassen Sie los, um die Sprachübertragung zu stoppen. Für freihändiges Sprechen wählen Sie Start talking: Die Stimme wird weiter übertragen, bis Sie Stop talking wählen. Prüfen Sie vor dem Ablegen des Geräts den angezeigten Übertragungsstatus. Die Mikrofon-Stummschaltung hat Vorrang vor beiden Möglichkeiten. Bis zu zehn Zuhörer können verbunden sein, wobei wartende Verbindungen mitzählen. Beginnen Sie mit einer kleinen Gruppe und prüfen Sie die Geräte und das Netzwerk, die Sie verwenden möchten.
+
+## Die Verbindung zum sendenden Gerät wiederherstellen
+
+Wartende Empfänger bleiben auf derselben Seite und erfahren sofort, wenn das sendende Gerät wieder verfügbar ist; die gewählte Stummschaltung bleibt erhalten. Eine funktionierende direkte Sprachverbindung kann während eines kurzen Ausfalls des Vermittlungsdienstes bestehen bleiben. Browser im Hintergrund, Verbindungslimits des Dienstes und Geräte im Ruhezustand können die Wiederherstellung verzögern.
+
+Beim Ausblenden der Seite bleibt eine funktionierende Verbindung bestehen. Eine gehaltene Sprechtaste wird losgelassen; mit Start talking gestartetes freihändiges Sprechen kann weiterlaufen, solange der Browser es erlaubt. Das Telefon kann Mikrofon, Ton oder Netzwerk bei gesperrtem Bildschirm trotzdem anhalten. Eine tatsächliche Mikrofonunterbrechung schaltet das Sprechen aus und lässt den Kanal offen. Nach der Rückkehr versucht die Seite ein beendetes Mikrofon zu ersetzen; falls nötig, wählen Sie Resume microphone. Nach einer Seitensuspendierung versucht sie, denselben Kanal und dieselbe Einladung wiederherzustellen; Resume channel hilft, wenn der Browser eine Aktion verlangt. Nach einer Unterbrechung bleibt das Sprechen aus, bis Sie es erneut starten.
+
+Ein temporärer Browserspeicher pro Tab erhält den Kanal auch beim Neuladen. Ist dieser Speicher nicht verfügbar, erzeugt das Neuladen der Sendeseite eine neue Einladung. End broadcast entfernt den Listeneintrag, beendet die Sitzung und verhindert eine automatische Wiederaufnahme. Beim nächsten Start entsteht eine neue Einladung. Leave beendet die Verbindung und die Wiederholungsversuche eines einzelnen Zuhörers.
+
+## Einladungen mit Bedacht teilen
+
+Eine Zuhörereinladung erlaubt ihrem Besitzer, über den vom Host gewählten Verbindungsweg Zugang anzufordern. Ist Require approval eingeschaltet, muss der Host zustimmen, bevor Audio empfangen wird. Beim Start mit aktiviertem Make this channel discoverable werden Kanalname und Einladungsschlüssel für Zuhörer bewusst mit der Suchgruppe geteilt. Wer den Kanal findet, kann den Beitritt anfordern; die Freigabepflicht gilt weiterhin. Deaktivieren Sie die Option vor dem Start, wenn Sie Einladungen nur per Link teilen möchten. Der separate Schlüssel des sendenden Geräts bleibt in dessen Browser-Tab und wird nicht geteilt. Bei kopierten Links werden Zuhörerschlüssel im Fragment nach dem Zeichen # und anschließend in sicheren Vermittlungsnachrichten übertragen. Der Dienst hält den vorübergehenden Raumzustand in offenen Verbindungen; Cloudflare bewahrt Protokolle mit Metadaten zu Aufrufen sieben Tage lang auf, niemals jedoch Mikrofonaudio.
+
+Die üblichen Skripte der Website für Werbung und Messungen laufen auch auf dieser Seite. Das Werkzeug übergibt ihnen keine Audiodaten, doch Seitenskripte können die Adresse und den Browserspeicher lesen. Wenn Speicher verfügbar ist, verringert das Entfernen des Einladungsfragments dessen spätere Offenlegung; es schirmt diese Skripte jedoch nicht ab. Vertrauen Sie der Seite, bevor Sie den Mikrofonzugriff erlauben. Empfänger können unabhängig davon aufzeichnen, was sie hören.
+
+## Die Erreichbarkeit prüfen
+
+Ein Smartphone-Hotspot kann funktionieren, wenn die beteiligten Geräte einander direkt erreichen dürfen. Verbinden Sie die Geräte mit demselben Hotspot und behalten Sie den Internetzugang für Suche und Vermittlung bei. Wenn der Kanal nicht in der Liste erscheint, verwenden Sie den Zuhörerlink oder QR-Code. Manche Hotspots und verwaltete Geräte blockieren direkte Verbindungen. Testen Sie deshalb die Geräte, die Sie tatsächlich verwenden möchten.
+
+Ein Gäste-WLAN kann Geräte voneinander isolieren. Firewalls, Browserberechtigungen für das lokale Netzwerk, VPNs und die Routen des Betriebssystems können direkte Verbindungen beeinflussen, selbst wenn zwei Geräte scheinbar dasselbe WLAN nutzen. Direct verwendet ausschließlich Host-Kandidaten und keinen STUN- oder TURN-Server. Das schränkt die möglichen Verbindungswege ein, beweist aber keine physische Netzwerkgrenze. Testen Sie die tatsächlich verwendeten Smartphones und Computer, bevor Sie sich auf den Kanal verlassen.

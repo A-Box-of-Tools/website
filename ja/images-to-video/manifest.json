@@ -1,0 +1,26 @@
+{
+  "id": "/ja/images-to-video/",
+  "name": "\u753b\u50cf\u2192\u52d5\u753b\u5909\u63db\u30c4\u30fc\u30eb",
+  "short_name": "\u753b\u50cf\u2192\u52d5\u753b\u5909\u63db\u30c4\u30fc\u30eb",
+  "description": "\u30ec\u30f3\u30c0\u30ea\u30f3\u30b0\u9023\u756a\u3001\u30bf\u30a4\u30e0\u30e9\u30d7\u30b9\u5199\u771f\u3001\u30b9\u30e9\u30a4\u30c9\u30b7\u30e7\u30fc\u304b\u3089MP4\u3092\u4f5c\u308a\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/pt/empilhar-imagens/",
+  "name": "Empilhador de imagens",
+  "short_name": "Empilhador de imagens",
+  "description": "Tire a m\u00e9dia de uma sequ\u00eancia est\u00e1vel, use a mediana para limpar o fundo ou clareie uma sequ\u00eancia do c\u00e9u noturno.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
