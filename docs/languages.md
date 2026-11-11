@@ -331,6 +331,13 @@ and whoever has the DOM resolves it — `qr-barcode-reader/src/camera.js` is the
 worked example. That also keeps the module unit-testable: a key is a value to
 assert on, and a translated sentence is not.
 
+The words a page has to *read* belong there as well. `number-explorer`'s
+`count.words` phrase lists the number words its box accepts, language by
+language, because "1 Billion" is a thousand times larger in German than
+"1 billion" is in English and a list in the JavaScript would have had to pick.
+Its tests read the list out of each locale's markup, so a word that stops
+parsing is a failure rather than something a visitor finds.
+
 **Done:** the frame's seven, in every language — the four "Offline:" lines,
 what the window's error handlers say, and the drop zone's "Reading 3 files…".
 They used to be written out twenty-nine times, once per `main.js`.

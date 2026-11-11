@@ -1,0 +1,113 @@
+<main id="main" data-scene="books">
+  <section class="card ne-card" aria-labelledby="start-title">
+    <div class="ne-heading"><span class="eyebrow">数字のちいさな驚き</span><span class="local-badge">オフラインで動作・AI不要</span></div>
+    <h2 id="start-title">あなたの数字はどれくらい大きい？</h2>
+    <p class="card-lede">好きな数字を入力して、育っていく様子を見てください。同じ数字が、積み上げた本、注がれる水、満天の星、砂の山、とても長いカウントに姿を変え、大きくなるほどカメラが引いていきます。</p>
+
+    <div class="ne-entry">
+      <div class="field ne-amount"><label for="amount">あなたの数字</label><input id="amount" type="text" value="10億" maxlength="160" spellcheck="false" autocomplete="off" inputmode="text" aria-describedby="amount-help amount-error"></div>
+      <div class="ne-steps" role="group" aria-label="数を変える"><button type="button" class="ghost" id="less" aria-label="10分の1にする">÷ 10</button><button type="button" class="primary" id="more" aria-label="10倍にする">× 10</button></div>
+    </div>
+    <p id="amount-help" class="field-note">1,000,000、1.5億、3兆、1e12などを入力できます。0から10³⁰までの整数です。</p>
+    <p id="amount-error" class="error" role="alert" hidden></p>
+    <p id="read-number" class="ne-readback"></p>
+
+    <div class="ne-dial">
+      <input type="range" id="dial" min="0" max="30" step="0.01" value="9" aria-label="数字の大きさ（10の累乗）">
+      <div class="ne-ticks" id="dial-ticks" aria-hidden="true"></div>
+    </div>
+
+    <div class="ne-worlds" role="group" aria-label="数字の見せ方">
+      <button type="button" data-world="books" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5C6 5 9 5 12 6.8 15 5 18 5 21 6.5V19c-3-1.5-6-1.5-9 .3-3-1.8-6-1.8-9-.3zM12 6.8v12.5"/></svg><span class="ne-world-name">本</span><span class="ne-world-value" id="tab-books"></span></button>
+      <button type="button" data-world="water" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.6 4.6 6.5 8 6.5 11.5a6.5 6.5 0 0 1-13 0C5.500 11 8.400 7.600 12 3z"/></svg><span class="ne-world-name">水</span><span class="ne-world-value" id="tab-water"></span></button>
+      <button type="button" data-world="stars" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.700 5.800 6.300.8-4.600 4.300 1.200 6.200L12 17l-5.600 3.100 1.200-6.200L3 9.600l6.300-.8z"/></svg><span class="ne-world-name">星</span><span class="ne-world-value" id="tab-stars"></span></button>
+      <button type="button" data-world="sand" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7.500 3c0 5 9 6.500 9 9s-9 4-9 9M16.500 3c0 5-9 6.500-9 9s9 4 9 9"/></svg><span class="ne-world-name">砂</span><span class="ne-world-value" id="tab-sand"></span></button>
+      <button type="button" data-world="time" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.300l3.500 2"/></svg><span class="ne-world-name">時間</span><span class="ne-world-value" id="tab-time"></span></button>
+    </div>
+
+    <div class="ne-stage">
+      <canvas id="stage" role="img" aria-label="数字の大きさを表すアニメーション"></canvas>
+      <p id="magnify" class="ne-magnify" aria-hidden="true" hidden></p>
+      <div class="ne-stage-controls" id="stage-controls">
+        <button type="button" id="play" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.500v11l9-5.500z"/></svg><span id="play-label">1から育てる</span></button>
+        <button type="button" id="still" aria-pressed="false"><span id="still-label">動きを止める</span></button>
+      </div>
+    </div>
+    <p id="stage-caption" class="ne-caption"></p>
+
+    <div class="ne-unit chips" id="unit-row" role="group" aria-labelledby="unit-label"><span class="chips-label" id="unit-label">1つは</span><button type="button" class="chip" data-unit="book" aria-pressed="true">本1冊</button><button type="button" class="chip" data-unit="word" aria-pressed="false">1語</button><button type="button" class="chip" data-unit="token" aria-pressed="false">AIのテキストトークン1個</button></div>
+
+    <div class="ne-answer"><p id="answer-kicker" class="ne-kicker"></p><p class="ne-big"><strong id="answer-number">—</strong> <span id="answer-unit"></span></p><p id="answer-story" class="ne-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+    <p id="step-note" class="field-note" role="status"></p>
+  </section>
+
+  <section class="card ne-more" aria-labelledby="ladder-title">
+    <div class="ne-ladder-side">
+      <h3 id="ladder-title">何倍の大きさ？</h3>
+      <p class="field-note">あなたの数字の近くにある目印です。選ぶと、そこに届く数へ移動します。</p>
+      <ol class="ne-ladder" id="ladder"></ol>
+      <button type="button" class="ghost" id="ladder-all" aria-expanded="false">すべての目印を表示</button>
+    </div>
+    <div class="ne-side">
+      <div class="ne-guess" id="guess-box"><strong id="guess-question"></strong><div class="ne-guess-actions"><button type="button" class="ghost" id="guess-yes">はい</button><button type="button" class="ghost" id="guess-no">いいえ</button></div><p id="guess-answer" role="status" hidden></p></div>
+      <div class="ne-followups"><h3>好奇心のままに</h3><div id="followups"></div></div>
+      <div class="ne-examples"><h3>ほかにも試す</h3><div class="ne-example-row">
+        <button type="button" class="ghost" data-example="books:100万:token">AIトークン100万個</button>
+        <button type="button" class="ghost" data-example="water:1兆">水滴1兆個</button>
+        <button type="button" class="ghost" data-example="stars:1000億">天の川銀河</button>
+        <button type="button" class="ghost" data-example="sand:10億">砂粒10億個</button>
+        <button type="button" class="ghost" data-example="time:10億">10億まで数える</button>
+        <button type="button" class="ghost" data-example="books:1e30">ここで一番大きな数</button>
+      </div></div>
+      <div class="ne-save"><button type="button" id="download-picture" class="ghost">この絵を保存</button><span id="save-note" class="field-note" role="status"></span></div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>どうやって計算したのですか？</summary>
+    <p>入力した数は正確です。それ以外はすべて下の数値からの見積もりで、変更や確認ができます。</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="book-thickness">本の厚さは？</label><select id="book-thickness"><option value="0.02">薄い・2cm</option><option value="0.03" selected>ふつう・3cm</option><option value="0.05">分厚い・5cm</option></select><p class="field-note">平らに積み、幅は15cmです。積んだ本は実際の高さで描き、細すぎて見えなくなるときは実物より太く描きます。</p></div>
+      <div class="field"><label for="book-length">例の本の語数</label><input id="book-length" type="number" min="100" max="1000000" step="1" value="75000" aria-describedby="settings-error"><p class="field-note">英語の文章では、1トークンあたりおよそ0.75語です。これは文章量の目安で、実際に読まれたり書かれたりした本についての主張ではありません。</p></div>
+      <div class="field"><label for="drop-size">水滴の大きさは？</label><select id="drop-size"><option value="0.05" selected>スポイト・0.05mL</option><option value="0.25">水漏れの蛇口・0.25mL</option></select><p class="field-note">標準的なスポイトは1mLあたり約20滴です。蛇口から漏れる水滴はもっと大きく、約0.25mLとされることがよくあります。</p></div>
+      <div class="field"><label for="grain-size">砂粒の直径</label><select id="grain-size"><option value="0.25">小さめ・0.25mm</option><option value="0.5" selected>中くらい・0.5mm</option><option value="1">大きめ・1mm</option></select><p class="field-note">球形の砂粒を選び、砂粒60%、空気40%としています。本物の砂は形も大きさもさまざまです。</p></div>
+      <div class="field"><label for="count-rate">1秒に数える数</label><select id="count-rate"><option value="1">1・1つずつ</option><option value="10">10</option><option value="100">100</option></select><p class="field-note">眠らず休まず、数え続けるとしています。1年は365.25日です。</p></div>
+    </div>
+    <p id="settings-error" class="error" role="alert" hidden></p>
+    <p id="model-summary"></p>
+    <p><strong>本：</strong>高さは丸めています。人1.7m、テーブル0.75m、家8m、自由の女神は地面からたいまつまで93m、エッフェル塔330m、ブルジュ・ハリファ828m、エベレスト8,849mです。距離は地面から真上に測っています。旅客機の巡航高度11km、宇宙ステーション約400km、月384,400km、最接近時の火星約5460万km、太陽1億4960万km、海王星45億km、探査機ボイジャー1号は約259億kmでなお遠ざかっています。プロキシマ・ケンタウリ4.24光年、オリオン大星雲約1,500光年、アンドロメダ銀河250万光年、おとめ座銀河団5400万光年、クエーサー3C 273約25億光年、観測可能な宇宙の果て約465億光年です。天の川銀河の向こう側はその幅、約10万光年としています。銀河をその大きさで本の山のふもとに描いているためです。図書館の目印は本の冊数なので、厚さに応じて動きます。2023年の米国議会図書館の目録掲載図書は約2580万冊、Googleの2010年の推定では世界の異なる本は約1億3000万冊です。</p>
+    <p><strong>水と砂：</strong>色の付いた面積は、描かれた容器の形に占める実際の割合です。容器そのものはイラストで、共通の物差しではありません。容量は選んだ例です。15mLのスプーン、250mLのカップ、10Lのバケツ、200Lの浴槽、5 × 3 × 2mの部屋、50 × 25 × 2mのプール、約32万m³の大型タンカーです。大ピラミッドは約260万m³、例の山は高さ1km、底面の半径1kmの円錐としています。これは選んだ形で、実在の山の測定値ではありません。ネス湖は約7.4km³、スペリオル湖は約1万2100km³、地球上のすべての水は約13億8600万km³です。月、地球、海王星は天体全体の体積です。</p>
+    <p>ここには「地球上のすべての砂」の正確な数はありません。根拠のある見積もりには、まず浜辺や砂漠といった範囲を決め、粒径と深さを仮定する必要があります。</p>
+    <p><strong>星：</strong>星の数はもともと大まかなものです。ここで使うのは公表されている切りのよい数で、星を1つずつ測ったものではありません。暗い空で望遠鏡なしに見えるほど明るい星は全天で約9,100個、オメガ星団に約1000万個、天の川銀河に約1000億個（実際はその数倍かもしれません）、アンドロメダ銀河に約1兆個、観測可能な宇宙に10²³個です。10²³は、10²²から10²⁴という大まかな範囲の中央です。多すぎて描ききれなくなると、点1つが明示された数の星を表し、光っている割合はその形の点の割合で、中心から外へ広がります。</p>
+    <p><strong>時間：</strong>期間は丸めています。人の一生80年、大ピラミッドの建設から約4,500年、ホモ・サピエンスの登場から約30万年、恐竜の絶滅から約6600万年、地球の年齢約45億4000万年、宇宙の年齢約138億年です。</p>
+    <p class="source-links">参考資料：<a href="https://help.openai.com/en/articles/4936856-understanding-and-counting-tokens" target="_blank" rel="noopener noreferrer">OpenAIによる英語トークンの目安</a> · <a href="https://pubs.usgs.gov/of/1991/0375a/report.pdf" target="_blank" rel="noopener noreferrer">USGSの粒径分類</a> · <a href="https://www.usgs.gov/special-topics/water-science-school/science/how-much-water-there-earth" target="_blank" rel="noopener noreferrer">地球上のすべての水についてのUSGSの解説</a> · <a href="https://www.epa.gov/greatlakes/physical-features-great-lakes" target="_blank" rel="noopener noreferrer">五大湖についてのEPAの解説</a> · <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASAの惑星ファクトシート</a> · <a href="https://www.esa.int/Science_Exploration/Space_Science/Herschel/How_many_stars_are_there_in_the_Universe" target="_blank" rel="noopener noreferrer">星の数についてのESAの解説</a> · <a href="https://www.loc.gov/about/general-information/" target="_blank" rel="noopener noreferrer">米国議会図書館の蔵書数</a>。これらのリンクは任意の読み物で、計算機が接続することはありません。</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.words">十=1百=2千=3万=4萬=4億=8亿=8兆=12京=16垓=20秭=24穣=28 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30</span>
+    <span data-phrase="amount-required">数字を入力すると始まります。</span><span data-phrase="amount-invalid">1,000,000、10億、1.5億、1e12のような整数を試してください。桁区切りは3桁ごとです。</span><span data-phrase="amount-whole">端数のない整数にしてください。</span><span data-phrase="amount-too-large">ここで扱えるのは10³⁰までです。もっと小さい数を試してください。</span>
+    <span data-phrase="said.aloud">{kicker}{number}{unit}。{story}</span><span data-phrase="result.empty">まだ満たすものがありません</span><span data-phrase="zero.story">まず1から始めて、次に10倍を試してください。</span><span data-phrase="ratio.times">{number}倍</span><span data-phrase="unit.tall">{unit}の高さ</span>
+    <span data-phrase="unit.lightyears">光年</span><span data-phrase="unit.lightyear">光年</span><span data-phrase="unit.m3">立方メートル</span><span data-phrase="unit.km3">立方キロメートル</span><span data-phrase="unit.km3.single">立方キロメートル</span>
+    <span data-phrase="kicker.books">{count}冊の本を積み上げると、およそ</span><span data-phrase="kicker.books.single">本1冊の厚さはおよそ</span><span data-phrase="kicker.words">{count}語は例の本およそ{books}冊分で、積み上げるとおよそ</span><span data-phrase="kicker.tokens">AIのテキストトークン{count}個は英語でおよそ{words}語、例の本でおよそ{books}冊分で、積み上げるとおよそ</span><span data-phrase="kicker.water">水滴{count}個を集めるとおよそ</span><span data-phrase="kicker.water.single">水滴1個はおよそ</span><span data-phrase="kicker.sand">砂粒{count}個を集めるとおよそ</span><span data-phrase="kicker.sand.single">砂粒1個が占めるのはおよそ</span><span data-phrase="kicker.stars">星{count}個は</span><span data-phrase="kicker.stars.single">星1個は</span><span data-phrase="kicker.time">{count}まで数えるとおよそ</span>
+    <span data-phrase="stars.of">（基準：{name}）</span><span data-phrase="stars.tab">天の川銀河の{share}</span><span data-phrase="stars.milkyways">個の天の川銀河</span><span data-phrase="stars.milkyway.single">個の天の川銀河</span><span data-phrase="stars.universes">個の観測可能な宇宙</span><span data-phrase="stars.universe.single">個の観測可能な宇宙</span>
+    <span data-phrase="past.books">すでに{name}の{times}倍です。</span><span data-phrase="near.books">{name}とほぼ同じ高さです。</span><span data-phrase="next.books">次の目標は{name}で、{share}まで来ています。</span><span data-phrase="past.fill">{name}を{times}回満たせます。</span><span data-phrase="near.fill">{name}をほぼ満たせます。</span><span data-phrase="next.fill">次に満たすのは{name}で、いま{share}です。</span><span data-phrase="past.stars">{name}の{times}倍です。</span><span data-phrase="near.stars">{name}とほぼ同じ数です。</span><span data-phrase="next.stars">次は{name}で、その{share}です。</span><span data-phrase="past.time">すでに{name}の{times}倍の長さです。</span><span data-phrase="near.time">{name}とほぼ同じ長さです。</span><span data-phrase="next.time">次は{name}で、{share}まで来ています。</span>
+    <span data-phrase="finish.date">今から休まず数え続けると、{date}に終わります。</span><span data-phrase="finish.year">今から休まず数え続けると、{year}ごろに終わります。</span>
+    <span data-phrase="height.table">テーブル</span><span data-phrase="height.person">人</span><span data-phrase="height.house">2階建ての家</span><span data-phrase="height.liberty">自由の女神</span><span data-phrase="height.eiffel">エッフェル塔</span><span data-phrase="height.burj">ブルジュ・ハリファ</span><span data-phrase="height.everest">エベレスト</span><span data-phrase="height.airliner">巡航中の旅客機</span><span data-phrase="height.congress">米国議会図書館の本の山</span><span data-phrase="height.everybook">世界中の異なる本の山</span><span data-phrase="height.iss">宇宙ステーション</span><span data-phrase="height.around">地球一周</span><span data-phrase="height.moon">月</span><span data-phrase="height.mars">最接近時の火星</span><span data-phrase="height.sun">太陽</span><span data-phrase="height.neptune">海王星</span><span data-phrase="height.voyager">探査機ボイジャー1号</span><span data-phrase="height.lightyear">1光年</span><span data-phrase="height.proxima">太陽の次に近い恒星</span><span data-phrase="height.orion">オリオン大星雲</span><span data-phrase="height.milkyway">天の川銀河の向こう側</span><span data-phrase="height.andromeda">アンドロメダ銀河</span><span data-phrase="height.virgo">おとめ座銀河団</span><span data-phrase="height.quasar">クエーサー3C 273</span><span data-phrase="height.edge">観測可能な宇宙の果て</span>
+    <span data-phrase="volume.spoon">15mLのスプーン</span><span data-phrase="volume.cup">250mLのカップ</span><span data-phrase="volume.bucket">10リットルのバケツ</span><span data-phrase="volume.bath">200リットルの浴槽</span><span data-phrase="volume.room">部屋まるごと</span><span data-phrase="volume.pool">オリンピックプール</span><span data-phrase="volume.tanker">大型タンカー</span><span data-phrase="volume.pyramid">大ピラミッド</span><span data-phrase="volume.mountain">例の山</span><span data-phrase="volume.loch">ネス湖</span><span data-phrase="volume.superior">スペリオル湖</span><span data-phrase="volume.water">地球上のすべての水</span><span data-phrase="volume.moon">月</span><span data-phrase="volume.earth">地球全体</span><span data-phrase="volume.neptune">海王星</span>
+    <span data-phrase="stars.dipper">北斗七星の7つの星</span><span data-phrase="stars.sky">望遠鏡なしで見えるすべての星</span><span data-phrase="stars.omega">オメガ星団の星</span><span data-phrase="stars.milkyway">天の川銀河の星</span><span data-phrase="stars.andromeda">アンドロメダ銀河の星</span><span data-phrase="stars.universe">観測可能な宇宙の星</span>
+    <span data-phrase="time.minute">1分</span><span data-phrase="time.hour">1時間</span><span data-phrase="time.day">1日</span><span data-phrase="time.week">1週間</span><span data-phrase="time.year">1年</span><span data-phrase="time.decade">10年</span><span data-phrase="time.lifetime">人の一生</span><span data-phrase="time.pyramid">大ピラミッドからの時間</span><span data-phrase="time.sapiens">ホモ・サピエンスからの時間</span><span data-phrase="time.dinosaurs">恐竜の絶滅からの時間</span><span data-phrase="time.earth">地球の年齢</span><span data-phrase="time.universe">宇宙の年齢</span>
+    <span data-phrase="hud.books">{count}冊</span><span data-phrase="hud.books.single">1冊</span><span data-phrase="hud.words">{count}語</span><span data-phrase="hud.tokens">{count}トークン</span><span data-phrase="hud.water">{count}滴</span><span data-phrase="hud.water.single">1滴</span><span data-phrase="hud.sand">{count}粒</span><span data-phrase="hud.sand.single">1粒</span><span data-phrase="hud.stars">{count}個の星</span><span data-phrase="hud.stars.single">1個の星</span><span data-phrase="hud.time">{count}まで数えました</span>
+    <span data-phrase="stage.next">次：{name}、{share}</span><span data-phrase="stage.passed">下：{name}、{times}</span><span data-phrase="stage.before">前：{value}</span><span data-phrase="stage.full">{share}まで</span><span data-phrase="stage.share">あなた：この円の{share}</span><span data-phrase="stage.tally">ここまで：{count}（{share}）</span>
+    <span data-phrase="level.sky">望遠鏡なしの夜空</span><span data-phrase="level.ball">オメガ星団</span><span data-phrase="level.spiral">天の川銀河</span><span data-phrase="level.galaxies">たくさんの天の川銀河</span><span data-phrase="level.web">観測可能な宇宙</span><span data-phrase="level.multi">複数の観測可能な宇宙</span>
+    <span data-phrase="caption.books">高さはすべて同じ本物の物差しの上にあります。積んだ本は見えるように実物より太く描いています。</span><span data-phrase="caption.fill">色の付いた面積が、その容器に占める実際の割合です。容器はイラストで、同じ縮尺ではありません。</span><span data-phrase="caption.time">バーと旗は同じ本物の時間軸の上にあります。カウントは本物で、この絵を開いたときから進んでいます。</span>
+    <span data-phrase="caption.stars.sky">点1つが星1個です。</span><span data-phrase="caption.stars.ball">点1つが約{number}個の星を表します。明るい点があなたの数で、薄い点は星団の残りです。</span><span data-phrase="caption.stars.spiral">点1つが約{number}個の星を表します。明るい点があなたの数で、薄い点は銀河の残りです。</span><span data-phrase="caption.stars.galaxies">銀河1つが、約{number}個の星を持つ天の川銀河1つです。</span><span data-phrase="caption.stars.web">円は観測可能な宇宙で、点1つが約{number}個の星を表します。明るい部分の面積の割合があなたの数です。</span><span data-phrase="caption.stars.multi">円1つが{number}個の観測可能な宇宙です。観測できる範囲のどの推定よりも多くの星です。</span>
+    <span data-phrase="meaning.word">選んだ語数で本として積んでいます。文章の長さであって、実在の本についての主張ではありません。</span><span data-phrase="meaning.token">英語の文章での目安で、1トークンあたり0.75語です。トークンはテキストの断片で、本の長さもさまざまです。</span>
+    <span data-phrase="ladder.here">あなたの数</span><span data-phrase="ladder.all">すべての目印を表示</span><span data-phrase="ladder.fewer">目印を減らす</span><span data-phrase="jump.note">約{number}に設定しました。{name}に届く数です。整数に切り上げています。</span>
+    <span data-phrase="guess.books">10倍にすると、積んだ本は{name}に届くでしょうか？</span><span data-phrase="guess.fill">10倍にすると、{name}を満たせるでしょうか？</span><span data-phrase="guess.stars">10倍にすると、{name}と同じ数になるでしょうか？</span><span data-phrase="guess.time">10倍にすると、{name}と同じくらい時間がかかるでしょうか？</span><span data-phrase="guess.right">正解です！{fact}</span><span data-phrase="guess.wrong">今回は外れです。{fact}</span><span data-phrase="guess.yes">10倍で届きます。</span><span data-phrase="guess.no">10倍でもまだ届きません。</span>
+    <span data-phrase="follow.stars">1つずつが星だったら？</span><span data-phrase="follow.water">1つずつが水滴だったら？</span><span data-phrase="follow.time">数えるのにどれくらいかかる？</span><span data-phrase="follow.books">1つずつが本だったら？</span><span data-phrase="follow.tokens">これがAIのテキストトークンだったら？</span><span data-phrase="follow.grain">砂粒がもっと大きかったら？</span><span data-phrase="follow.thousand">1,000倍だとどう見える？</span>
+    <span data-phrase="play.start">1から育てる</span><span data-phrase="play.stop">停止</span><span data-phrase="still.pause">動きを止める</span><span data-phrase="still.resume">動きを再開</span>
+    <span data-phrase="step.whole">もう一度10で割るには、少なくとも1つ分が必要です。</span><span data-phrase="step.rounded">10で割って、整数に切り捨てました。</span><span data-phrase="step.limit">このツールで扱える最大の数、10³⁰に達しました。</span>
+    <span data-phrase="model.summary">砂の体積 = 個数 × 球形の砂粒1個の体積 ÷ 0.60。いまの粒径は{diameter}mmです。粒径を2倍にすると砂は8倍になり、個数を1,000倍にすると立方体の幅は10倍になります。</span><span data-phrase="settings.invalid">本の長さは100から1,000,000語までの整数で選んでください。</span><span data-phrase="save.done">比較と前提を添えて保存しました。</span><span data-phrase="save.assumptions">モデル：本は{thickness}cm・{length}語、水滴は{drop}mL、球形の砂粒は{diameter}mm（砂粒60%・空気40%）、毎秒{rate}を休みなく数えます。英語の文章は1トークンあたり0.75語です。目印は丸めた数字と選んだ例です。</span>
+    <span data-phrase="net.clean">あなたの数字はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span><span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span><span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span><span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span>
+  </div>
+</main>
