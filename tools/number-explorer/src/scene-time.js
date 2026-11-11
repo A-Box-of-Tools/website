@@ -1,4 +1,4 @@
-import { backdrop, chip, clamp, hash, keyed, mix, nightSky, rgba, rounded, smooth, widthOf, wrapLines, write } from './paint.js';
+import { backdrop, chip, clamp, fittedSize, hash, keyed, meets, mix, nightSky, rgba, rounded, smooth, widthOf, wrapLines, write } from './paint.js';
 
 // Time as one true timeline: the bar is how long the count takes, and every flag on
 // it is at its real distance from the start. The clock above it ticks at the rate
@@ -176,8 +176,35 @@ export function createTimeScene() {
       }
 
       if (!zero) {
-        const big = Math.min(58, w * 0.075);
-        write(ctx, words.long(seconds), left, Math.min(axis - 108, h * 0.42), { size: big, weight: 800, fill: ink, halo: null });
+        // Flags at their true place, tall and short in turn so neighbours can both
+        // be read. A flag too close to the start to tell apart waits until it is not.
+        const flags = rungs.filter(rung => {
+          const x = left + rung.size * scale;
+          return x <= w - 6 && rung.size * scale > span * 0.045;
+        }).map((rung, i, all) => {
+          const x = left + rung.size * scale;
+          const top = axis - 44 - (all.length - i - 1) % 2 * 34;
+          // Whichever side of the pole has more room, wrapped to fit it.
+          const leftSide = x > w / 2;
+          const lines = wrapLines(ctx, words.name(rung.id), leftSide ? x - 14 : w - x - 22, 11.5, 700);
+          const wide = Math.max(...lines.map(line => widthOf(ctx, line, 11.5, 700)));
+          return { rung, x, top, leftSide, lines, name: { left: leftSide ? x - 6 - wide : x + 14, right: leftSide ? x - 6 : x + 14 + wide, top: top - 5 - (lines.length - 1) * 13, bottom: top + 9 } };
+        });
+        // Tall and short in turn keeps most names apart. The furthest along is what the bar
+        // is reaching for, so it keeps its name, and one that would still meet it goes without.
+        const named = [];
+        for (const flag of [...flags].reverse()) {
+          if (named.some(other => meets(flag.name, other.name))) flag.lines = [];
+          else named.push(flag);
+        }
+
+        // The big line stays over any flag's name it would reach, as far as the readout lets it.
+        const longLine = words.long(seconds);
+        const big = fittedSize(ctx, longLine, Math.min(58, w * 0.075), 800, w - left - 8);
+        const longRight = left + widthOf(ctx, longLine, big, 800);
+        const under = named.filter(flag => flag.name.left < longRight && flag.name.right > left).map(flag => flag.name.top);
+        const longY = Math.max(Math.min(axis - 108, h * 0.42, ...under.map(top => top - big * 0.5 - 2)), (f.readout?.bottom ?? 0) + big * 0.5 + 2);
+        write(ctx, longLine, left, longY, { size: big, weight: 800, fill: ink, halo: null });
         // The bar, with the count itself running along it.
         const barW = seconds * scale;
         const bar = ctx.createLinearGradient(left, 0, left + barW, 0);
@@ -200,16 +227,8 @@ export function createTimeScene() {
         }
         ctx.restore();
 
-        // Flags at their true place, tall and short in turn so neighbours can both
-        // be read. A flag too close to the start to tell apart waits until it is not.
-        const flags = rungs.filter(rung => {
-          const x = left + rung.size * scale;
-          return x <= w - 6 && rung.size * scale > span * 0.045;
-        });
-        flags.forEach((rung, i) => {
-          const x = left + rung.size * scale;
+        flags.forEach(({ rung, x, top, leftSide, lines }) => {
           const reached = rung.size <= seconds * (1 + 1e-12);
-          const top = axis - 44 - (flags.length - i - 1) % 2 * 34;
           ctx.strokeStyle = ink;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -223,9 +242,6 @@ export function createTimeScene() {
           ctx.lineTo(x, top + 9);
           ctx.closePath();
           ctx.fill();
-          // Whichever side of the pole has more room, wrapped to fit it.
-          const leftSide = x > w / 2;
-          const lines = wrapLines(ctx, words.name(rung.id), leftSide ? x - 14 : w - x - 22, 11.5, 700);
           lines.forEach((line, n) => write(ctx, line, leftSide ? x - 6 : x + 14, top + 2 - (lines.length - 1 - n) * 13, { size: 11.5, weight: 700, fill: ink, halo, align: leftSide ? 'right' : 'left', within: w }));
         });
 

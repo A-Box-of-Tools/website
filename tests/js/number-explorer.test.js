@@ -4,7 +4,10 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { ENGLISH, MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countReading, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, namedAmount, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
 import { CONTAINERS, containerIndex, levelForShare } from '../../tools/number-explorer/src/containers.js';
 import { circleGroup, starLevel } from '../../tools/number-explorer/src/scene-stars.js';
-import { wrapLines } from '../../tools/number-explorer/src/paint.js';
+import { chipBox, fittedSize, meets, wrapLines } from '../../tools/number-explorer/src/paint.js';
+import { clearedLabelY, createBooksScene } from '../../tools/number-explorer/src/scene-books.js';
+import { createFillScene } from '../../tools/number-explorer/src/scene-fill.js';
+import { createTimeScene } from '../../tools/number-explorer/src/scene-time.js';
 
 function close(actual, expected, tolerance = 1e-10) {
   assert.ok(Number.isFinite(actual));
@@ -272,6 +275,153 @@ test('number explorer wraps a label in any language without leaving the width it
   for (const line of broken) assert.ok(ctx.measureText(line).width <= 60, line);
   assert.deepEqual(wrapLines(ctx, '', 60, 12), []);
 });
+
+// A canvas that paints nothing and keeps what it was told to write, with a chip counted as
+// the rounded box it fills, because the box is what covers its neighbour. Characters are
+// wider than most fonts make them, so a label that clears here has room to spare there.
+function recordingCanvas() {
+  const written = [];
+  let state = { font: '12px sans-serif', globalAlpha: 1, textAlign: 'left' };
+  const saved = [];
+  let arcs = [];
+  let round = null;
+  let halo = null;
+  const size = () => Number(/([\d.]+)px/.exec(state.font)?.[1] ?? 12);
+  const widthOfText = text => [...String(text)].reduce((sum, char) => sum + (char.charCodeAt(0) > 0x2e7f ? 1 : 0.6), 0) * size();
+  const methods = {
+    save() { saved.push({ ...state }); },
+    restore() { state = saved.pop(); },
+    measureText: text => ({ width: widthOfText(text) }),
+    beginPath() { arcs = []; round = null; },
+    arcTo(a, b, c, d) { arcs.push([a, b], [c, d]); },
+    fill() {
+      if (arcs.length !== 8) return;
+      const xs = arcs.map(point => point[0]);
+      const ys = arcs.map(point => point[1]);
+      round = { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+    },
+    strokeText(text) { halo = String(text); },
+    fillText(text, x, y) {
+      const line = String(text);
+      const wide = widthOfText(line);
+      const left = state.textAlign === 'center' ? x - wide / 2 : state.textAlign === 'right' ? x - wide : x;
+      const box = { left, right: left + wide, top: y - size() * 0.42, bottom: y + size() * 0.42 };
+      const inChip = round && halo !== line && (box.left + box.right) / 2 >= round.left && (box.left + box.right) / 2 <= round.right && y >= round.top && y <= round.bottom;
+      halo = null;
+      if (state.globalAlpha <= 0.25) return;
+      if (!inChip) written.push({ line, ...box });
+      else if (!written.some(other => other.round === round)) written.push({ line, round, ...round });
+    }
+  };
+  const nothing = () => ({ addColorStop() {} });
+  const canvas = new Proxy({}, {
+    get: (_, key) => methods[key] ?? (key in state ? state[key] : nothing),
+    set(_, key, value) { state[key] = value; return true; }
+  });
+  return { canvas, written };
+}
+
+const stageWords = {
+  name: id => `The far side of ${id}`,
+  length: value => `${value.toPrecision(3)} light-years`,
+  volume: value => `${value.toPrecision(3)} cubic km`,
+  duration: value => `${value.toPrecision(3)} long years`,
+  long: value => `${value.toPrecision(3)} long years`,
+  tally: (counted, share) => `Counted so far: ${counted} (${share.toFixed(2)})`,
+  top: value => `${value.toPrecision(3)} light-years`,
+  before: value => `Before: ${value.toPrecision(3)} light-years`,
+  passed: (id, ratio) => `Below: the far side of ${id}, ${ratio.toPrecision(3)} ×`,
+  full: share => `${Math.round(share * 100)}% full`,
+  times: ratio => `${ratio.toPrecision(3)} ×`
+};
+
+// Every count in sixteenths of a power of ten, come to from a tenth of it, from the step below
+// and from the step above, which between them put "Before" anywhere it can stand. It has to be
+// that close: quarters of a power of ten stepped straight past "Before" on a container's name.
+function labelMeetings(world, createScene, perUnit, readoutBottom, words = stageWords) {
+  const meetings = [];
+  const rungs = ladderFor(world);
+  const scene = createScene();
+  for (const [w, h] of [[242, 302], [297, 371], [680, 382], [894, 503]]) {
+    const readout = { left: 0, right: w * 0.72, top: 0, bottom: readoutBottom };
+    for (let sixteenth = 0; sixteenth <= 480; sixteenth += 1) {
+      const amount = 10 ** (sixteenth / 16) * perUnit;
+      for (const from of [amount / 10, amount / 10 ** (1 / 16), amount * 10 ** (1 / 16)]) {
+        const { canvas, written } = recordingCanvas();
+        scene.draw(canvas, { w, h, t: 2.5, dt: 0, velocity: 0, moving: false, motion: false, still: true, amount, perUnit, zero: false, rungs, readout, thickness: perUnit, words, previous: from, sinceOpened: 0 });
+        const placed = [{ line: 'the readout', ...readout }, ...written];
+        placed.forEach((one, i) => placed.slice(i + 1).forEach(other => {
+          if (meets(one, other)) meetings.push(`${w}px, ${amount.toPrecision(3)} from ${from.toPrecision(3)}: "${one.line}" meets "${other.line}"`);
+        }));
+      }
+    }
+  }
+  return meetings;
+}
+
+test('number explorer keeps every label on the books, fill and time stages clear of every other, at any count', t => {
+  // Only the deep-space backdrops ask for these, and they are only ever painted on.
+  globalThis.Path2D = class {};
+  globalThis.document = { createElement: () => ({ getContext: () => recordingCanvas().canvas }) };
+  t.after(() => {
+    delete globalThis.Path2D;
+    delete globalThis.document;
+  });
+  assert.deepEqual(labelMeetings('books', createBooksScene, 0.03, 84), []);
+  for (const world of ['water', 'sand']) assert.deepEqual(labelMeetings(world, () => createFillScene(world), sizePerUnit(world), 52), [], world);
+  assert.deepEqual(labelMeetings('time', createTimeScene, sizePerUnit('time'), 62), []);
+  // A flag's name long enough to take a second line reaches up to the big line over it.
+  const longFlags = { ...stageWords, name: id => `The long and winding way to ${id} as it is written` };
+  assert.deepEqual(labelMeetings('time', createTimeScene, sizePerUnit('time'), 62, longFlags), []);
+});
+
+test('number explorer keeps the name of what the stack has just reached on a phone, whatever the chip says', t => {
+  globalThis.Path2D = class {};
+  globalThis.document = { createElement: () => ({ getContext: () => recordingCanvas().canvas }) };
+  t.after(() => {
+    delete globalThis.Path2D;
+    delete globalThis.document;
+  });
+  const rungs = ladderFor('books');
+  const scene = createBooksScene();
+  const [w, h] = [297, 371];
+  for (const id of ['iss', 'moon', 'sun', 'voyager', 'proxima', 'andromeda', 'edge']) {
+    const { canvas, written } = recordingCanvas();
+    const amount = rungs.find(rung => rung.id === id).size * 1.001;
+    scene.draw(canvas, { w, h, t: 2.5, dt: 0, velocity: 0, moving: false, motion: false, still: true, amount, perUnit: 0.03, zero: false, rungs, readout: { left: 0, right: w * 0.72, top: 0, bottom: 84 }, thickness: 0.03, words: stageWords, previous: null, sinceOpened: 0 });
+    assert.ok(written.some(item => item.line.endsWith(id)), id);
+  }
+});
+
+test('number explorer brings a landmark\'s name down clear of what is over it, and no further than its icon', () => {
+  const column = { left: 200, right: 280 };
+  const over = { left: 150, right: 260, top: 86, bottom: 110 };
+  assert.equal(clearedLabelY(200, column, 14, 16, [over]), 200);
+  assert.equal(clearedLabelY(120, column, 14, 16, [over]), 125);
+  // One line under the chip would leave the icon above its name altogether.
+  assert.equal(clearedLabelY(90, column, 14, 16, [over]), null);
+  // What is under it cannot be got round by coming down.
+  assert.equal(clearedLabelY(300, column, 14, 16, [{ ...over, top: 305, bottom: 340 }]), null);
+  // Clear of it sideways, it stays where it is.
+  assert.equal(clearedLabelY(90, { left: 270, right: 340 }, 14, 16, [over]), 90);
+});
+
+test('number explorer knows where a chip will go before painting it, and steps it off what is there', () => {
+  const ctx = { save() {}, restore() {}, font: '', measureText: text => ({ width: [...text].length * 10 }) };
+  const box = chipBox(ctx, 'abcd', 100, 50, { size: 10 });
+  assert.deepEqual([box.left, box.right, box.top, box.bottom], [100, 153, 40, 60]);
+  const taken = { left: 90, right: 200, top: 45, bottom: 70 };
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: taken }).bottom, 42);
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: taken, downward: true }).top, 73);
+  // Taken in turn, so a step off the first can be a step off the second as well.
+  const above = { left: 90, right: 200, top: 20, bottom: 44 };
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: [taken, above] }).bottom, 17);
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: [null, undefined] }).top, 40);
+  assert.equal(meets({ left: 0, right: 10, top: 0, bottom: 10 }, { left: 10, right: 20, top: 0, bottom: 10 }), false);
+  assert.equal(fittedSize(ctx, 'abcd', 12, 700, 100), 12);
+  assert.equal(fittedSize(ctx, 'abcd', 12, 700, 20), 10);
+});
+
 test('number explorer turns the default billion grains into approximately 109 liters', () => {
   const result = sandModel(1000000000n);
   close(result.volumeM3, 0.109083078, 1e-7);

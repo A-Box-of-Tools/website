@@ -107,6 +107,14 @@ A translated name can be far longer than the English one, and a phone's stage is
 between characters and anything else at spaces and hyphens, a chip shrinks and then takes a
 second line, and `write` and `chip` slide along to stay on the stage when given its width.
 
+Nor may two labels share a place, at any count. On a stage that narrow there is no column they
+can be kept apart by, so the stage settles it in order of what each one is for. The readout comes
+first, then the chips, which is why `chipBox` says where a chip will go before anything is painted,
+and on a narrow stage the height chip stands on the far side of the stack from the landmarks' names.
+A landmark's name comes down clear of what is over it, as long as it stays beside its icon, and
+otherwise goes without. A tick on the ruler goes without its number first of all. Nothing here is
+kept apart by a position that happens to work in English.
+
 The saved picture repaints the current scene off screen and writes the readback, result,
 caption and model assumptions beneath it, so they travel together. All processing is
 local, with no network calls, API keys, model downloads, input storage or input-bearing
