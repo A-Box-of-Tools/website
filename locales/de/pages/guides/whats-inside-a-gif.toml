@@ -4,14 +4,10 @@
 
 nav = "Was in einem GIF steckt"
 title = "Was wirklich in einer GIF-Datei steckt (und warum Ihre so groß ist)"
-description = "Einzelbilder, Verzögerungen, Aufräummethoden und Farbtabellen erklärt, warum Browser die schnellsten Verzögerungen verweigern, und wie Sie herausfinden, wohin die Dateigröße eines GIFs wirklich geht."
+description = "GIF-Bilder, Timing, Aufräumregeln und Paletten prüfen, um eine große oder langsame Animation zu verstehen. Die Größenverteilung lesen und dann Bilder extrahieren, bearbeiten oder MP4 wählen."
 heading = "Was wirklich in einem GIF steckt"
-lede = """
-    Ein GIF ist ein Stapel Rechtecke, jedes mit einer Uhr und einer Farbtabelle,
-    und fast jede Klage über das Format kommt von einem dieser drei Dinge. Hier
-    steht, was jeder Teil tut &mdash; und wie Sie herausfinden, welcher davon
-    die Größe Ihrer Datei verbraucht."""
-updated = "13. Oktober 2026"
+lede = "Finden Sie heraus, was ein GIF groß macht, warum eine Pause anders abgespielt wird als ihre gespeicherte Verzögerung und was Aufräumregeln mit transparenten Bildern tun. Lesen Sie den Bericht des Analysators und entscheiden Sie dann, ob Sie Bilder extrahieren, die Animation neu aufbauen oder das Original in MP4 umwandeln."
+updated = "23. Oktober 2026"
 og_title = "Was wirklich in einer GIF-Datei steckt"
 og_description = "Einzelbilder, Verzögerungen, Aufräumen und Paletten: was jedes tut, warum Ihr GIF langsamer läuft als angegeben, und wohin seine Dateigröße gegangen ist."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

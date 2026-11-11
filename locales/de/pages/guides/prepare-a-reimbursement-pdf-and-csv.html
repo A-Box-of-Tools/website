@@ -1,0 +1,100 @@
+  <section>
+    <h2>Belege und Tabellenzeilen aus denselben Datensätzen erstellen</h2>
+    <p>
+      Ein PDF gibt dem Empfänger lesbare Belege. Eine CSV liefert Felder, die er prüfen oder in einer Tabellenkalkulation öffnen kann. Beginnen Sie im <a href="../../belege-rechnungen-auslesen/">Beleg- und Rechnungsausleser</a>, prüfen Sie die Datensätze und verwenden Sie danach dessen aufbereitete JPEG-Anhänge in <a href="../../bilder-in-pdf-umwandeln/">Bilder zu PDF</a>. Komprimieren Sie das PDF nur, wenn es eine niedrigere Anhanggrenze einhalten muss.
+    </p>
+    <p>
+      Dieses Beispiel verwendet drei erfundene Belege in kanadischen Dollar:
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Beleg in Datensatzreihenfolge</th><th>Bestätigter Gesamtbetrag</th></tr></thead>
+      <tbody>
+        <tr><td>1. North Street Print</td><td>CAD 12,40</td></tr>
+        <tr><td>2. Market Car Park</td><td>CAD 8,00</td></tr>
+        <tr><td>3. Harbour Stationery</td><td>CAD 17,60</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      Die erwartete Summe beträgt CAD 38,00. Prüfen Sie zuerst, welche Felder und Anhangformate der Empfänger verlangt. Dieser Artikel stellt zwei zueinander passende Dateien zusammen. Er entscheidet nicht, ob eine Ausgabe erstattungsfähig ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mit einem Foto pro Dokument beginnen</h2>
+    <p>
+      Bewahren Sie die Originale auf und wählen Sie Kopien im <a href="../../belege-rechnungen-auslesen/">Ausleser</a> aus. Er akzeptiert vom Browser unterstützte JPEG-, PNG-, WebP- und AVIF-Bilder, bis zu 20 Bilder pro Durchgang und 20 MB pro Bild. Die Erkennung verwendet ein lokales Modell für gedruckten englischen Text. Wandeln Sie nicht unterstützte Bilder vorher um und beschaffen Sie ein schärferes Foto, wenn Datum oder Betrag nicht mehr lesbar sind.
+    </p>
+    <p>
+      Ein Bild wird zu einem Dokumentdatensatz. Drei Seiten einer Rechnung werden nicht automatisch zu einer Ausgabe zusammengefasst. Wiederholte Summen auf diesen Seiten können mehrere Datensätze für denselben Betrag erzeugen. Dieser einfache Ablauf setzt einen vollständigen Beleg pro Foto voraus. Der <a href="../belege-rechnungen-aus-fotos-auslesen/">Ratgeber zum Auslesen</a> beschreibt den Funktionsumfang und die Prüfschritte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Felder und Zuschnitte gemeinsam prüfen</h2>
+    <p>
+      Die Erkennung schlägt Werte vor. Vergleichen Sie diese mit dem Bild. Prüfen Sie Händler, Datum, Referenz, Gesamtbetrag und Währung. Eine Zwischensumme, ein Steuerbetrag, der gegebene Barbetrag oder das Wechselgeld können plausibel aussehen, ohne der Endbetrag des Belegs zu sein. Erfinden Sie keinen fehlenden Wert, nur damit eine Zeile vollständig aussieht.
+    </p>
+    <p>
+      Lassen Sie das gesamte Dokument im Zuschnitt des Anhangs, einschließlich Belegnummer, Endbetrag und relevanter Steueraufschlüsselung. Bestätigen Sie Felder und Zuschnitt erst, nachdem Sie sie gelesen haben. Eine spätere Änderung des Zuschnitts oder eines Feldes kann die Bestätigung aufheben. Prüfen Sie den Status deshalb vor dem Export erneut.
+    </p>
+    <p>
+      Wählen Sie für dieses Beispiel CAD als Zielwährung und prüfen Sie, dass alle drei ursprünglichen Währungen CAD sind. Datensätze mit derselben Währung verwenden den Kurs eins. Eine Online-Abfrage von Wechselkursen ist nicht nötig. Bei unterschiedlichen Währungen folgen Sie der Kursprüfung im Ausleser-Ratgeber, statt ungleiche Währungsbeträge zu addieren.
+    </p>
+    <p>
+      Nur bestätigte Datensätze fließen in die Summen ein. Eine richtig aussehende Summe kann trotzdem einen noch nicht fertig geprüften Beleg auslassen. Prüfen Sie daher gemeinsam, dass drei Datensätze bestätigt sind und CAD 38,00 ergeben. Duplikatwarnungen vergleichen nur Dateinamen und Größe. Prüfen Sie die Bilder, denn umbenannte Duplikate können unbemerkt bleiben und unterschiedliche Bilder eine Warnung auslösen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Zueinander passende Zeilen und Bilder exportieren</h2>
+    <p>
+      Laden Sie die geprüfte CSV und die vorbereiteten JPEG-Anhänge herunter oder die ZIP-Datei, die beides enthält. Entpacken Sie die ZIP-Datei, bevor Sie die Bilder für das nächste Werkzeug auswählen. Die Anhangnamen enthalten feste Datensatznummern, während die Dateinamenspalte der CSV den ursprünglichen Fotonamen enthält. Speichern Sie auch den Textbericht. Er führt ursprüngliche und vorbereitete Anhangnamen gemeinsam auf. Verwenden Sie diese Zuordnung zusammen mit Händler, Datum und Betrag, um Zeilen und Bilder abzugleichen, besonders bei wiederkehrenden Kameradateinamen.
+    </p>
+    <p>
+      Eine CSV lässt sich auch exportieren, wenn die Prüfung noch nicht abgeschlossen ist. Öffnen Sie die tatsächlich heruntergeladene Datei und kontrollieren Sie Status und Felder jedes Datensatzes. Ein Export allein bedeutet nicht, dass alles bestätigt wurde. In diesem Beispiel müssen drei vorgesehene Ausgabendatensätze vorhanden sein, jeweils mit passendem Bild und dem geprüften CAD-Betrag aus der Tabelle oben. Die CSV endet außerdem mit Zeilen für Dokumentanzahl, Anzahl geprüfter Dokumente und Gesamtsumme. Das sind Zusammenfassungen, keine weiteren Belege. Lassen Sie sie weg, wenn Sie die Ausgabenzeilen selbst summieren.
+    </p>
+    <p>
+      Speichern Sie das Paar als <code>workshop-expenses.csv</code> und einen Arbeitsordner mit nummerierten Belegbildern. Bewahren Sie die Originalfotos getrennt auf. Beim Öffnen einer CSV kann eine Tabellenkalkulation Daten und Zahlen auf ihre eigene Weise interpretieren. Vergleichen Sie die Anzeige daher mit dem exportierten Text und dem Beleg, bevor Sie sich auf einen importierten Wert verlassen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Das PDF in Datensatzreihenfolge erstellen</h2>
+    <p>
+      Wählen Sie die vorbereiteten JPEGs in <a href="../../bilder-in-pdf-umwandeln/">Bilder zu PDF</a>. Bei dieser Übergabe laden Sie Dateien herunter und wählen sie erneut aus. Würden Sie stattdessen wieder die ursprünglichen Kamerafotos auswählen, gingen die geprüften Zuschnitte und die Verbindung zu diesen Anhängen verloren.
+    </p>
+    <p>
+      Ordnen Sie die Bilder wie die Ausgabenzeilen der CSV: Druck, Parken, dann Schreibwaren. Prüfen Sie die Dateinamenszuordnung im Bericht, statt sich auf die Sortierung des Dateiauswahldialogs zu verlassen. Wählen Sie eine Seitengestaltung, die jeden Beleg vollständig und lesbar erhält, und speichern Sie <code>workshop-receipts.pdf</code>. Der <a href="../bilder-zu-pdf-zusammenfuegen/">Ratgeber zu Bildern als PDF</a> erklärt Seitengrößen und Bildqualität.
+    </p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-reimbursement-pdf-and-csv/layout.webp" loading="lazy" decoding="async"
+           alt="Die Seiteneinstellungen von Bilder zu PDF zur Wahl der Papiergröße und der Einpassung eines Bildes auf die Seite.">
+      <figcaption>
+        Die Seiteneinstellungen. Erhalten Sie lange Belege vollständig und prüfen Sie ihr Kleingedrucktes im exportierten PDF, nicht nur in der Vorschau.
+      </figcaption>
+    </figure>
+    <p>
+      Öffnen Sie das heruntergeladene PDF und lesen Sie jede Seite. Prüfen Sie Ausrichtung, vollständige Ränder, Datumsangaben und kleine Steuerbeträge. Dieses bildbasierte PDF erhält nicht allein deshalb eine durchsuchbare Textebene, weil zur Erstellung der CSV OCR verwendet wurde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nur komprimieren, wenn die Grenze des Empfängers es verlangt</h2>
+    <p>
+      Ist das PDF klein genug, behalten Sie es. Der Ausleser erstellt bereits komprimierte JPEG-Anhänge. Ein weiterer Durchgang bringt daher möglicherweise wenig und macht kleine Schrift schwerer lesbar. Andernfalls probieren Sie eine Kopie im <a href="../../pdf-verkleinern/">PDF-Kompressor</a>, vergleichen Sie die Größen und lesen Sie jeden Beleg erneut. Komprimierung garantiert keine bestimmte Einsparung. Der <a href="../pdf-kleiner-machen/">Ratgeber zur PDF-Komprimierung</a> erklärt die Abwägungen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die beiden einzureichenden Dateien prüfen</h2>
+    <ul>
+      <li>Die CSV enthält die drei vorgesehenen, bestätigten Ausgaben mit den richtigen Währungen.</li>
+      <li>Jeder Beleg passt zu einem Datensatz und erscheint in der entsprechenden Reihenfolge im PDF.</li>
+      <li>Jede endgültige PDF-Seite enthält weiterhin die Angaben, die ihren Betrag belegen.</li>
+      <li>Die bestätigten CAD-Beträge ergeben zusammen CAD 38,00.</li>
+      <li>Genau diese Anhänge erfüllen die Format- und Größenvorgaben des Empfängers.</li>
+    </ul>
+    <p>
+      OCR und manuelle Prüfung geschehen in diesem Beispiel lokal. Eine optionale Abfrage historischer Wechselkurse ist eine eigene Netzwerkaktion; das Versenden der Dateien per E-Mail oder über einen anderen Dienst ist eine weitere. Bewahren Sie Originale für spätere Rückfragen auf. Ein passendes PDF-CSV-Paar erleichtert die Prüfung, beweist aber weder eine korrekte Erkennung noch garantiert es die Annahme.
+    </p>
+  </section>

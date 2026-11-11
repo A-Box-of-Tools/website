@@ -9,8 +9,20 @@
   </section>
 
   <section>
+    <h2>Une séquence de rendu numérotée en MP4</h2>
+    <ol>
+      <li>Dans <a href="../../images-en-video/" data-workflow-target="images-to-video">Images en vidéo</a>, ajoutez les images fixes exportées par Blender, After Effects ou un autre moteur de rendu. Utilisez un format d’image que votre navigateur sait décoder, comme PNG ou JPG.</li>
+      <li>Choisissez Trier par nom. Le tri reconnaît les nombres, donc frame_2 précède frame_10. Vérifiez qu’il ne manque aucune image et que la numérotation ne recommence pas à un endroit indésirable.</li>
+      <li>Laissez « Tenir chaque image pendant » sur une image vidéo et réglez la cadence sur celle du rendu. Une séquence de 240 images à 24 images/s dure dix secondes.</li>
+      <li>Choisissez les dimensions de sortie et « Tenir dedans (bandes noires) » pour conserver l’image entière. Les zones transparentes prennent le fond choisi : le MP4 H.264 ne conserve pas l’alpha.</li>
+      <li>Créez la vidéo, regardez le début et la fin, puis téléchargez-la et ouvrez-la dans l’application qui la recevra.</li>
+    </ol>
+    <p>Un dossier de photos en accéléré suit les mêmes étapes. La cadence détermine la vitesse de lecture. Trier par date utilise la date de modification des fichiers ; vérifiez donc l’ordre si les photos ont été copiées ou retouchées. Pour un clip vidéo existant, utilisez plutôt le <a href="../../faire-un-timelapse/" data-workflow-target="timelapse-video">Créateur de vidéos en accéléré</a>.</p>
+  </section>
+
+  <section>
     <h2>Diaporama, stop motion ou trace de progression</h2>
-    <p>Pour vacances, événement ou catalogue, passez Maintenir chaque image en secondes, entrez par exemple trois et Appliquer à toutes. Arrangez l'histoire, choisissez 1080p ou la forme verticale cible et Ajuster à l'intérieur pour garder toute la photo. Vérifiez la durée avant rendu, puis premières, centrales et dernières images du résultat.</p>
+    <p>Pour vacances, événement ou catalogue, passez « Tenir chaque image pendant » en secondes, entrez par exemple trois et Appliquer à toutes. Arrangez l'histoire, choisissez 1080p ou la forme verticale cible et « Tenir dedans (bandes noires) » pour garder toute la photo. Vérifiez la durée avant rendu, puis premières, centrales et dernières images du résultat.</p>
     <p>Pour stop motion, rendu ou photos de progression régulières, utilisez des durées en images&nbsp;: une photo tenue une image à 24 fps donne 24 photos par seconde. Triez par nom et vérifiez l'ordre. L'outil fait des coupes nettes sans zoom, fondu ni son. Une narration demande un autre éditeur&nbsp;; une progression visuelle muette peut être complète ici.</p>
   </section>
 
@@ -116,20 +128,15 @@
 
   <section>
     <h2>Ce qui sort, et que faire si cela refuse de se lire</h2>
-    <p>
-      La cible est du MP4 avec du H.264, la combinaison la plus largement lisible
-      qui soit. Dans un navigateur sans WebCodecs, l'outil se rabat sur un
-      enregistrement WebM, soit les mêmes images dans un conteneur que moins
-      d'éditeurs et de plateformes sociales acceptent.
-    </p>
-    <p>
-      Si vous vous retrouvez avec un WebM et que quelque chose le refuse, le
-      remède est un navigateur qui prend en charge WebCodecs plutôt qu'une
-      conversion&nbsp;: les versions actuelles de Chrome, Edge et Safari le font
-      toutes. Refaire le rendu vaut mieux que convertir, parce que convertir veut
-      dire une génération de plus d'encodage avec perte.
-    </p>
-    <p>Il n'y a pas de limite fixe de photos. La vidéo est assemblée en mémoire avant téléchargement et ne peut dépasser 4 Go&nbsp;; ses dimensions doivent être compatibles avec l'encodeur du navigateur. Un long diaporama 4K peut atteindre ces limites avant que le nombre de sources semble grand.</p>
+    <p>La cible est du MP4 avec du H.264, la combinaison la plus largement lisible. La solution de repli enregistre en temps réel, généralement en WebM, accepté par moins d’éditeurs et de plateformes sociales. Gardez l’onglet visible pendant cet enregistrement : les durées sont approximatives et des images peuvent être omises si le décodage prend du retard. Pour une séquence numérotée exacte, utilisez l’encodeur MP4 si votre navigateur le prend en charge.</p>
+    <p>Si vous obtenez un WebM refusé par une application, essayez de refaire le rendu des originaux avec MP4 sélectionné dans un navigateur dont l’encodeur WebCodecs prend en charge H.264 aux dimensions choisies. Refaire le rendu évite la génération supplémentaire d’encodage avec perte qu’ajouterait la conversion d’une vidéo déjà compressée.</p>
+    <p>Il n’y a pas de limite fixe au nombre d’images. La vidéo terminée est assemblée en mémoire avant le téléchargement. Les exports MP4 doivent rester sous 4 Gio (environ 4,3 Go), et la mémoire peut manquer bien avant cette limite. Les dimensions choisies doivent aussi être prises en charge par l’encodeur du navigateur. Un long diaporama 4K peut atteindre ces limites avant que le nombre d’images source paraisse particulièrement élevé.</p>
+  </section>
+
+  <section>
+    <h2>Vérifier le résultat avant de le transmettre</h2>
+    <p>Si le diaporama défile trop vite, vérifiez que l’unité de maintien est en secondes et choisissez Appliquer à toutes. Si une séquence de rendu est trop lente, vérifiez la cadence et la durée de chaque image en images vidéo. Les bandes préservent l’image entière ; des bords manquants indiquent généralement que « Remplir l'image (rogne les bords) » était sélectionné. Réexportez depuis les images fixes d’origine lorsque vous modifiez ces choix.</p>
+    <p>Pour créer une animation qui doit rester un GIF, utilisez le <a href="../../creer-un-gif/" data-workflow-target="gif-maker">Créateur de GIF</a>. Pour convertir un GIF existant en vidéo, utilisez directement <a href="../../gif-en-mp4/" data-workflow-target="gif-to-mp4">GIF en MP4</a>, qui conserve les durées des images telles qu’elles sont lues dans le GIF. Extraire d’abord les PNG oblige à régler les durées manuellement ; le <a href="../decouper-un-gif-en-images/" data-workflow-target="guides/split-a-gif-into-frames">guide d’extraction des GIF</a> explique quand cette étape supplémentaire est utile.</p>
   </section>
 
   <section>

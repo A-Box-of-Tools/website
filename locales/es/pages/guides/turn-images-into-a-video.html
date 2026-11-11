@@ -9,6 +9,18 @@
   </section>
 
   <section>
+    <h2>De una secuencia renderizada numerada a MP4</h2>
+    <ol>
+      <li>En <a href="../../imagenes-a-video/" data-workflow-target="images-to-video">Imágenes a vídeo</a>, añade las imágenes fijas exportadas por Blender, After Effects u otro programa de renderizado. Usa un formato de imagen que el navegador pueda decodificar, como PNG o JPG.</li>
+      <li>Elige Ordenar por nombre. La ordenación entiende los números, así que frame_2 va antes que frame_10. Revisa la lista por si faltan fotogramas o la numeración vuelve a empezar donde no debería.</li>
+      <li>Deja Mantener cada imagen durante en un fotograma y ajusta la tasa de fotogramas a la del renderizado. Una secuencia de 240 imágenes a 24 fps dura diez segundos.</li>
+      <li>Elige las dimensiones de salida y Ajustar dentro para conservar la imagen completa. Las zonas transparentes adoptan el fondo seleccionado: el MP4 con H.264 no conserva el canal alfa.</li>
+      <li>Crea el vídeo, mira el principio y el final, descárgalo y ábrelo en la aplicación que lo recibirá.</li>
+    </ol>
+    <p>Una carpeta de fotografías para un vídeo acelerado sigue los mismos pasos. La tasa de fotogramas determina la velocidad de reproducción; Ordenar por fecha usa la fecha de modificación del archivo, así que revisa el orden si has copiado o editado las fotografías. Para un vídeo que ya existe, usa el <a href="../../crear-timelapse/" data-workflow-target="timelapse-video">Creador de vídeos acelerados</a>.</p>
+  </section>
+
+  <section>
     <h2>Diapositivas, animación cuadro a cuadro o registro de progreso</h2>
     <p>Para vacaciones, resumen de evento o catálogo, cambia Mantener cada imagen durante a segundos, escribe por ejemplo tres y pulsa Aplicar a todas. Ordena la historia, elige 1080p o forma vertical del destino y Ajustar dentro para conservar toda la foto. Revisa duración antes de crear y mira primera, central y última imagen en el vídeo final.</p>
     <p>Para animación cuadro a cuadro, render o fotos periódicas de progreso, usa fotogramas: una imagen durante un fotograma a 24 fps da 24 imágenes por segundo. Ordena por nombre y revisa. Escribe cortes directos entre imágenes, sin zoom, fundido ni sonido. Una presentación narrada necesita otro editor; un registro visual silencioso queda completo aquí.</p>
@@ -75,7 +87,7 @@
     <p>
       Como en cualquier trabajo por lotes, los nombres de archivo se ordenan de
       una manera que no es la manera en que contaste tú. En una ordenación
-      alfabética, <code>foto2.jpg</code> va después de <code>foto10.jpg</code>,
+      alfabética, <code>photo2.jpg</code> va después de <code>photo10.jpg</code>,
       porque la comparación es carácter a carácter.
     </p>
     <p>Ordenar por nombre cuenta números: photo2 va antes de photo10. Por fecha usa modificación del archivo, no necesariamente captura; las fotos copiadas o editadas pueden necesitar orden manual. Arrastra si la historia no es cronológica. Revisa antes de crear: cambiar el orden del vídeo exige repetir todo.</p>
@@ -113,20 +125,21 @@
 
   <section>
     <h2>Qué sale, y qué hacer si no se reproduce</h2>
-    <p>
-      Lo que se busca es MP4 con H.264, que es la combinación que se reproduce en
-      más sitios. En un navegador sin WebCodecs, la herramienta recurre a grabar en
-      WebM, que es el mismo material en un contenedor que aceptan menos editores y
-      menos plataformas sociales.
-    </p>
-    <p>
-      Si acabas con un WebM y algo te lo rechaza, la solución no es convertirlo,
-      sino usar un navegador compatible con WebCodecs, y las versiones actuales de
-      Chrome, Edge y Safari lo son todas. Vuelve a renderizar en lugar de
-      convertir, porque convertir es otra generación de codificación con
-      pérdidas.
-    </p>
-    <p>No hay máximo fijo de imágenes. El vídeo se monta en memoria y no puede superar 4 GB; el codificador del navegador también debe admitir las dimensiones. Un pase largo 4K puede alcanzar esos límites con pocas imágenes de origen.</p>
+    <p>Se busca MP4 con H.264 porque es la combinación que se reproduce en más sitios. Si ese codificador no está disponible, la herramienta puede recurrir a grabar la reproducción en tiempo real, normalmente en WebM, que aceptan menos editores y plataformas sociales. Mantén visible la pestaña durante esa grabación. Los tiempos de esta alternativa son aproximados y pueden saltarse imágenes si la decodificación se retrasa; para una secuencia numerada exacta, usa un codificador MP4 compatible.</p>
+    <p>Si el resultado es un WebM y una aplicación lo rechaza, vuelve a renderizar las imágenes originales con MP4 seleccionado en un navegador cuyo codificador WebCodecs admita H.264 con las dimensiones elegidas. Así evitas la generación adicional de codificación con pérdidas que supondría convertir el vídeo.</p>
+    <p>No hay un máximo fijo de imágenes. El vídeo se monta en memoria antes de descargarse, y la salida MP4 debe quedar por debajo de 4 GiB (unos 4,3 GB); la memoria puede agotarse antes. El codificador del navegador también debe admitir las dimensiones elegidas. Una presentación larga en 4K puede alcanzar estos límites con relativamente pocas imágenes de origen.</p>
+  </section>
+
+  <section>
+    <h2>Comprueba el resultado antes de compartirlo</h2>
+    <p>Si las diapositivas pasan demasiado rápido, comprueba que la unidad de duración sea segundos y pulsa Aplicar a todas. Si una secuencia renderizada se reproduce demasiado despacio, revisa tanto la tasa de fotogramas como los fotogramas de duración de cada imagen. Las bandas conservan la imagen completa; si faltan bordes, normalmente se ha seleccionado Llenar el fotograma. Vuelve a exportar desde las imágenes originales cuando cambies estas opciones.</p>
+    <p>Para crear una animación que deba seguir siendo GIF, usa el
+      <a href="../../crear-gif/" data-workflow-target="gif-maker">Creador de GIF</a>.
+      Para convertir un GIF existente en vídeo, usa
+      <a href="../../convertir-gif-a-mp4/" data-workflow-target="gif-to-mp4">GIF a MP4</a>
+      directamente y conserva sus tiempos de reproducción. Extraer primero los PNG obliga a ajustar los tiempos a mano; la
+      <a href="../separar-un-gif-en-fotogramas/" data-workflow-target="guides/split-a-gif-into-frames">guía para extraer fotogramas de un GIF</a>
+      explica cuándo resulta útil ese paso adicional.</p>
   </section>
 
   <section>

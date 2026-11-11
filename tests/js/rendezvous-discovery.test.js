@@ -9,6 +9,7 @@ import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
 import worker, { Broadcast, Discovery, Inbox, Room } from '../../workers/rendezvous/worker.js';
 import { DISCOVERY_SCOPE_HEADER } from '../../workers/rendezvous/discovery.js';
+import { completeRefusal } from '../../workers/rendezvous/refusal.js';
 import { broadcastCode } from '../../workers/rendezvous/broadcast.js';
 import { groupIdentifier } from '../../shared/js/discovery-group.js';
 
@@ -160,6 +161,13 @@ async function edgeSocket(s, path, address, extra) {
   assert.equal(response.status, 101);
   return response.webSocket.peer;
 }
+
+test('a page that closes first is answered', async () => {
+  const s = system(), leaving = await observer(s), watching = await observer(s);
+  s.discovery().instance.webSocketClose(leaving);
+  assert.deepEqual(leaving.closed, { code: undefined, reason: undefined });
+  assert.equal(watching.readyState, 1);
+});
 
 test('different IPv6 devices on one /64 find a live lease through the public Worker', async () => {
   const s = system();
@@ -481,9 +489,9 @@ test('only an explicitly discoverable local host receives a server-issued lease'
   assert.deepEqual(unscoped.webSocket.peer.messages, []);
   assert.equal(unscoped.webSocket.peer.deserializeAttachment().role, 'host');
   assert.equal(unscoped.webSocket.peer.deserializeAttachment().lease, undefined);
-  const collision = await s.room(claim.code).instance.fetch(new Request(`https://room.internal/ws/${claim.code}?role=host&local=1&discover=1`, {
+  const collision = completeRefusal(await s.room(claim.code).instance.fetch(new Request(`https://room.internal/ws/${claim.code}?role=host&local=1&discover=1`, {
     headers: { [DISCOVERY_SCOPE_HEADER]: SCOPE },
-  }));
+  })));
   assert.equal(collision.webSocket.peer.closed.code, 4409);
 });
 
@@ -692,7 +700,9 @@ test('withdrawal of an old lease cannot remove a newly hosted instance of the sa
   assert.deepEqual(shares(publisher).list, [{ code: oldClaim.code, local: true }]);
 });
 
-test('manual refresh revalidates unique leases and repairs a missed host withdrawal', async () => {
+test('manual refresh revalidates unique leases and repairs a missed host withdrawal', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
   const s = system();
   const live = await host(s);
   const publisher = await observer(s);
@@ -707,10 +717,73 @@ test('manual refresh revalidates unique leases and repairs a missed host withdra
   // A binding failure could lose Room's withdrawal; refresh must consult
   // the live socket again rather than trusting its old verified attachment.
   live.close(1000, 'gone');
+  now += 10000;
   await s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
   assert.deepEqual(shares(watching).list, []);
   assert.equal(publisher.deserializeAttachment().publication, null);
   assert.equal(duplicate.deserializeAttachment().publication, null);
+});
+
+test('a directory rechecks its leases once per interval and answers the rest from its list', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system();
+  const live = await host(s);
+  const publisher = await observer(s);
+  const watching = await observer(s);
+  await publish(s, publisher, publication(live));
+  const refresh = () => s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+  const before = s.calls.length;
+  await refresh();
+  assert.equal(s.calls.length - before, 1);
+  const heard = watching.messages.length, others = publisher.messages.length;
+  live.close(1000, 'gone');
+  for (let i = 0; i < 5; i += 1) { now += 1000; await refresh(); }
+  assert.equal(s.calls.length - before, 1, 'no further check inside the interval');
+  assert.equal(watching.messages.length, heard + 5, 'whoever asks still hears the list');
+  assert.equal(publisher.messages.length, others, 'and nobody else is sent it again');
+  assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }]);
+  now += 5000;
+  await refresh();
+  assert.equal(s.calls.length - before, 2);
+  assert.deepEqual(shares(watching).list, []);
+});
+
+test('a refresh while a recheck is in flight starts no other, and both askers hear the list', async () => {
+  const s = system();
+  const live = await host(s);
+  const publisher = await observer(s);
+  const first = await observer(s);
+  const second = await observer(s);
+  await publish(s, publisher, publication(live));
+  const originalGet = s.env.ROOMS.get;
+  const held = holdRoomCheck(s);
+  const before = s.calls.length;
+  const pending = s.discovery().instance.webSocketMessage(first, JSON.stringify({ refresh: true }));
+  await held.checked;
+  await s.discovery().instance.webSocketMessage(second, JSON.stringify({ refresh: true }));
+  assert.equal(s.calls.length - before, 1);
+  assert.deepEqual(shares(second).list, [{ code: 'brave-otter-42', local: true }]);
+  s.env.ROOMS.get = originalGet;
+  held.release();
+  await pending;
+  assert.deepEqual(shares(first).list, [{ code: 'brave-otter-42', local: true }]);
+});
+
+test('the interval governs rechecks, not a new publication or another directory', async () => {
+  const s = system();
+  const watching = await observer(s);
+  await s.discovery().instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+  const live = await host(s);
+  const publisher = await observer(s);
+  await publish(s, publisher, publication(live));
+  assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }], 'a new listing is checked and shown at once');
+  const elsewhere = await host(s, 'other-room', OTHER_SCOPE);
+  const neighbour = await observer(s, OTHER_SCOPE);
+  await publish(s, neighbour, publication(elsewhere), OTHER_SCOPE);
+  elsewhere.close(1000, 'gone');
+  await s.discovery(OTHER_SCOPE).instance.webSocketMessage(neighbour, JSON.stringify({ refresh: true }));
+  assert.deepEqual(shares(neighbour).list, [], 'each directory keeps its own time');
 });
 
 test('a stale refresh result cannot remove a newly verified lease', async () => {
@@ -733,11 +806,15 @@ test('a stale refresh result cannot remove a newly verified lease', async () => 
   assert.deepEqual(shares(watching).list, [{ code: 'brave-otter-42', local: true }]);
 });
 
-test('discovery bounds observers, listed shares, messages, and updates per socket', async () => {
-  const s = system();
-  for (let i = 0; i < 64; i += 1) await observer(s);
+test('discovery bounds observers, listed shares, messages, and updates per socket', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), seated = [];
+  for (let i = 0; i < 64; i += 1) seated.push(await observer(s));
   const excess = await observer(s);
-  assert.equal(excess.closed.code, 4429);
+  assert.equal(excess.readyState, 1);
+  assert.equal(seated[0].closed.code, 4429);
+  assert.equal(s.discovery().instance.observers().length, 64);
   const listSystem = system();
   const watching = await observer(listSystem);
   for (let i = 0; i < 33; i += 1) {
@@ -753,10 +830,46 @@ test('discovery bounds observers, listed shares, messages, and updates per socke
     JSON.stringify({ publish: { code: 'room-0', lease: '' } })]) await instance.webSocketMessage(watching, message);
   assert.equal(listSystem.calls.length, before);
   assert.equal(watching.deserializeAttachment().updates, 0);
-  for (let i = 0; i < 120; i += 1) await publish(listSystem, watching, null);
+  // Slowly enough for the rolling window: this is the per-connection allowance.
+  for (let i = 0; i < 120; i += 1) {
+    if (i % 100 === 0) now += 10000;
+    await publish(listSystem, watching, null);
+  }
+  assert.equal(watching.readyState, 1);
   await publish(listSystem, watching, null);
   assert.equal(watching.closed.code, 4429);
+  assert.equal(watching.closed.reason, 'too-many-updates');
   assert.equal(watching.deserializeAttachment(), null);
+});
+
+test('a discovery socket over its frame window is closed, whatever it sent', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  for (const frame of ['{}', '{"unknown":true}', 'not json', '[]', 'null', 'x'.repeat(513), new ArrayBuffer(1),
+    JSON.stringify({ publish: { code: '', lease: '' } })]) {
+    const s = system(), watching = await observer(s), { instance } = s.discovery();
+    for (let i = 0; i < 120; i += 1) await instance.webSocketMessage(watching, frame);
+    assert.equal(watching.readyState, 1, String(frame).slice(0, 20));
+    await instance.webSocketMessage(watching, frame);
+    assert.equal(watching.closed?.code, 4429, String(frame).slice(0, 20));
+    assert.equal(watching.closed.reason, 'too-many-frames');
+    assert.equal(watching.deserializeAttachment(), null);
+    now += 10000;
+  }
+  const s = system(), steady = await observer(s), { instance } = s.discovery();
+  for (let round = 0; round < 3; round += 1) {
+    for (let i = 0; i < 120; i += 1) await instance.webSocketMessage(steady, '{}');
+    now += 10000;
+  }
+  assert.equal(steady.readyState, 1, 'the window rolls');
+  assert.equal(steady.deserializeAttachment().updates, 0, 'and ignored frames still spend no update');
+  for (let i = 0; i < 500; i += 1) await instance.webSocketMessage(steady, 'ping');
+  assert.equal(steady.readyState, 1, 'keepalives are not frames');
+  // Attachments written by the previous deployment have neither field.
+  const { window: unusedWindow, frames: unusedFrames, ...older } = steady.deserializeAttachment();
+  steady.serializeAttachment(older);
+  await instance.webSocketMessage(steady, '{}');
+  assert.equal(steady.deserializeAttachment().frames, 1);
 });
 
 test('public requests cannot forge a Room lease or reach binding-only control paths', async () => {
@@ -935,6 +1048,111 @@ test('private scope separates codes, origins and tools even when the caller know
   assert.equal(shares(owner.ws).list.length, 1);
 });
 
+// A dual-stack browser chooses the IP version per connection, so one page's room
+// socket and its directory can arrive over different versions, each with its own scope.
+async function networkHost(s, tool, address, code = `both-${tool}`) {
+  if (!['walkie-talkie', 'voice-oncall'].includes(tool)) {
+    const ws = await edgeSocket(s, `/ws/${code}?role=host&local=1&discover=1&tool=${tool}`, address);
+    return { ws, claim: publication(ws), state: s.room(tool === 'share-text' ? code : tool + ':' + code) };
+  }
+  const key = 'N'.repeat(43), listenKey = 'L'.repeat(43), digest = await broadcastCode(key);
+  const binding = tool === 'walkie-talkie' ? 'BROADCASTS' : 'INBOXES';
+  const ws = await edgeSocket(s, `/${tool === 'walkie-talkie' ? 'broadcast' : 'inbox'}/${digest}`, address);
+  const state = s.voice(binding, digest);
+  await state.instance.webSocketMessage(ws, JSON.stringify({ type: 'auth', role: 'host', key, roomName: 'Both versions',
+    ...(tool === 'walkie-talkie' ? { listenKey, discover: true } : { passwordProof: null }) }));
+  return { ws, state, claim: { code: digest, lease: publication(ws).lease, ...(tool === 'walkie-talkie' ? { listenKey } : {}) } };
+}
+
+test('a page whose room and directory reach the Worker over different IP versions lists its own share', async () => {
+  for (const [room, page, nearby] of [
+    [['1.2.3.4'], ['2606:4700:4700:ab::1111'], ['2606:4700:4700:ab::2222']],
+    [['2606:4700:4700:ab::1111'], ['1.2.3.4'], ['1.2.3.4']],
+    [['1.2.3.4'], ['240.16.0.1', { 'CF-Connecting-IPv6': '2606:4700:4700:ab::1111' }], ['2606:4700:4700:ab::2222']],
+  ]) {
+    const s = system(), name = page[0];
+    const host = await edgeSocket(s, '/ws/both-versions?role=host&local=1&discover=1', ...room);
+    const watching = await edgeSocket(s, '/discover', ...page);
+    const scope = watching.deserializeAttachment().scope;
+    assert.notEqual(host.deserializeAttachment().scope, scope, name);
+    await publish(s, watching, publication(host), scope);
+    assert.deepEqual(shares(watching).list, [{ code: 'both-versions', local: true }], name);
+    const neighbour = await edgeSocket(s, '/discover', ...nearby);
+    assert.deepEqual(shares(neighbour).list, [{ code: 'both-versions', local: true }], name);
+    await s.discovery(scope).instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+    assert.deepEqual(shares(neighbour).list, [{ code: 'both-versions', local: true }], name);
+    // The page says nothing: the room's own close takes the listing from that directory.
+    host.close(1000, 'done');
+    s.room('both-versions').instance.webSocketClose(host);
+    await s.room('both-versions').ctx.flush();
+    assert.deepEqual(shares(neighbour).list, [], name);
+    assert.equal(watching.deserializeAttachment().publication, null, name);
+  }
+});
+
+test('every tool lists its own share across IP versions and withdraws it there', async () => {
+  for (const tool of PRIVATE_TOOLS) {
+    const s = system();
+    const host = await networkHost(s, tool, '1.2.3.4');
+    const page = await edgeSocket(s, `/discover?tool=${tool}`, '2606:4700:4700:ab::1111');
+    const scope = page.deserializeAttachment().scope;
+    assert.notEqual(host.ws.deserializeAttachment().scope, scope, tool);
+    await publish(s, page, host.claim, scope);
+    assert.equal(shares(page).list.length, 1, tool);
+    assert.equal(shares(page).list[0].code, host.claim.code, tool);
+    host.ws.close(1000, 'done');
+    host.state.instance.webSocketClose(host.ws);
+    await host.state.ctx.flush();
+    assert.deepEqual(shares(page).list, [], tool);
+  }
+});
+
+test('outside its own scope a lease reaches only its page directory over the other IP version', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await edgeSocket(s, '/ws/one-page?role=host&local=1&discover=1', '1.2.3.4');
+  for (const [address, extra] of [['1.2.3.5', {}], ['2606:4700::1111', { Origin: 'https://pr-1.abox-preview.pages.dev' }]]) {
+    const stranger = await edgeSocket(s, '/discover', address, extra);
+    await publish(s, stranger, publication(host), stranger.deserializeAttachment().scope);
+    assert.deepEqual(shares(stranger).list, [], address);
+  }
+  const unplaced = await observer(s, OTHER_SCOPE);
+  await publish(s, unplaced, publication(host), OTHER_SCOPE);
+  assert.deepEqual(shares(unplaced).list, []);
+  // A private group has no network part, so neither side of one has another version.
+  const grouped = await privateHost(s, 'share-text', id);
+  const network = await edgeSocket(s, '/discover', '2606:4700::2222');
+  await publish(s, network, grouped.claim, network.deserializeAttachment().scope);
+  assert.deepEqual(shares(network).list, []);
+  const member = await privateObserver(s, GROUP_CODE, { address: '2606:4700::3333' });
+  await publish(s, member.ws, publication(host), member.scope);
+  assert.deepEqual(shares(member.ws).list, []);
+});
+
+test('a room keeps one directory over the other IP version and withdraws its lease from each it named', async () => {
+  const s = system();
+  const host = await edgeSocket(s, '/ws/shape-check?role=host&local=1&discover=1', '1.2.3.4');
+  const own = host.deserializeAttachment().scope, third = 'c'.repeat(64);
+  const claim = { ...publication(host), scope: OTHER_SCOPE }, other = { origin: 'https://abox.tools', family: 6 };
+  assert.equal((await check(s, 'shape-check', claim)).status, 403);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: other })).status, 204);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: { ...other, family: 4 } })).status, 403);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: { ...other, origin: 'http://localhost:8000' } })).status, 403);
+  for (const network of [null, {}, [], { ...other, family: '6' }, { ...other, origin: 'https://example.com' }, { ...other, port: 443 }]) {
+    assert.equal((await check(s, 'shape-check', { ...claim, network })).status, 400, JSON.stringify(network));
+  }
+  const withdrawn = () => s.calls.filter((call) => call.target === 'discovery'
+    && new URL(call.request.url).pathname === '/_discovery/withdraw').map((call) => call.scope);
+  assert.deepEqual(withdrawn(), []);
+  // A newer directory takes the place of the last, which is told to let the lease go.
+  assert.equal((await check(s, 'shape-check', { ...claim, scope: third, network: other })).status, 204);
+  await s.room('shape-check').ctx.flush();
+  assert.deepEqual(withdrawn(), [OTHER_SCOPE]);
+  host.close(1000, 'done');
+  s.room('shape-check').instance.webSocketClose(host);
+  await s.room('shape-check').ctx.flush();
+  assert.deepEqual(withdrawn(), [OTHER_SCOPE, own, third]);
+});
+
 test('private discovery needs an allowed origin and group proof but does not require a public address match', async () => {
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   const first = await privateObserver(s, GROUP_CODE);
@@ -983,7 +1201,7 @@ test('private group authorization survives hibernation without persisting the co
 test('private directories bound pending proofs and expire them before admitting more observers', async t => {
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   let deadline;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 4; i++) {
     const pending = await privateObserver(s, GROUP_CODE, { authenticate: false });
     deadline = pending.ws.deserializeAttachment().deadline;
   }
@@ -1019,4 +1237,207 @@ test('closing a private observer or repeating its proof cancels an in-flight aut
   assert.equal(second.ws.deserializeAttachment(), null);
   assert.deepEqual(first.ws.messages, []);
   assert.deepEqual(second.ws.messages, []);
+});
+
+test('a private directory gives each address its own pending allowance', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const from = (address) => edgeSocket(s, `/discover?group=${id}`, address);
+  for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
+  const refused = await from('198.51.100.1');
+  assert.equal(refused.closed.code, 4429);
+  assert.deepEqual(refused.tags, [], 'no object holds it');
+  assert.equal(refused.deserializeAttachment(), null);
+  // Rotating inside a /64 is still one address, and the neighbouring /64 is not.
+  for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);
+  assert.equal((await from('2606:4700:4700:ab:9876:5432:abcd:ef01')).closed.code, 4429);
+  assert.equal((await from('2606:4700:4700:ac::1')).readyState, 1);
+  const member = await privateObserver(s, GROUP_CODE, { address: '203.0.113.9' });
+  assert.equal(shares(member.ws).group, id, 'a member elsewhere is seated and reads the list');
+  assert.equal(JSON.stringify(member.ws.deserializeAttachment()).includes('source'), false, 'nothing about the address outlives the proof');
+  const attachments = JSON.stringify(s.discovery(member.scope).ctx.sockets.map((ws) => ws.deserializeAttachment()));
+  for (const address of ['198.51.100.1', '2606:4700', '203.0.113.9']) assert.equal(attachments.includes(address), false, address);
+});
+
+test('the address digest changes with the directory, so nobody is recognisable across groups', async () => {
+  const s = system(), address = '198.51.100.7';
+  const one = (await privateObserver(s, GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  const other = (await privateObserver(s, OTHER_GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  const again = (await privateObserver(s, GROUP_CODE, { address, authenticate: false })).ws.deserializeAttachment().source;
+  assert.match(one, /^[a-f0-9]{64}$/);
+  assert.notEqual(one, other);
+  assert.equal(one, again);
+});
+
+test('a private directory at its pending ceiling closes its longest wait, never the newcomer', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), silent = [];
+  for (let address = 1; address <= 8; address += 1) {
+    for (let i = 0; i < 4; i += 1) {
+      now += 1;
+      silent.push((await privateObserver(s, GROUP_CODE, { address: `198.51.100.${address}`, authenticate: false })).ws);
+    }
+  }
+  assert.ok(silent.every((ws) => ws.readyState === 1));
+  const member = await privateObserver(s, GROUP_CODE, { address: '203.0.113.9' });
+  assert.deepEqual(silent[0].closed, { code: 4429, reason: 'full' });
+  assert.equal(silent[0].deserializeAttachment(), null);
+  assert.ok(silent.slice(1).every((ws) => ws.readyState === 1));
+  assert.deepEqual(shares(member.ws).list, []);
+});
+
+test('a pending socket takes no seat, and only a proof can free one', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), members = [];
+  for (let i = 0; i < 64; i += 1) { now += 1; members.push((await privateObserver(s, GROUP_CODE)).ws); }
+  now += 1;
+  const { ws: silent, scope } = await privateObserver(s, GROUP_CODE, { address: '198.51.100.1', authenticate: false });
+  assert.equal(silent.readyState, 1, 'a full directory still hears a proof');
+  const { ws: wrong } = await privateObserver(s, GROUP_CODE, { address: '198.51.100.2', authenticate: false });
+  await s.discovery(scope).instance.webSocketMessage(wrong, JSON.stringify({ group: OTHER_GROUP_CODE }));
+  assert.equal(wrong.closed.code, 4403);
+  assert.ok(members.every((ws) => ws.readyState === 1), 'neither waiting nor failing costs a member anything');
+  await s.discovery(scope).instance.webSocketMessage(silent, JSON.stringify({ group: GROUP_CODE }));
+  assert.equal(silent.deserializeAttachment().authenticated, true);
+  assert.deepEqual(members[0].closed, { code: 4429, reason: 'full' });
+  assert.ok(members.slice(1).every((ws) => ws.readyState === 1));
+});
+
+test('a proof still digesting cannot seat a socket the queue has given up', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const first = await privateObserver(s, GROUP_CODE, { address: '198.51.100.1', authenticate: false });
+  const digest = crypto.subtle.digest.bind(crypto.subtle);
+  let reached, release;
+  const started = new Promise((resolve) => { reached = resolve; });
+  const held = new Promise((resolve) => { release = resolve; });
+  t.mock.method(crypto.subtle, 'digest', async (algorithm, input) => {
+    if (new TextDecoder().decode(input).includes(GROUP_CODE)) { reached(); await held; }
+    return digest(algorithm, input);
+  });
+  const proving = s.discovery(first.scope).instance.webSocketMessage(first.ws, JSON.stringify({ group: GROUP_CODE }));
+  await started;
+  for (let address = 2; address <= 9; address += 1) {
+    for (let i = 0; i < 4; i += 1) { now += 1; await edgeSocket(s, `/discover?group=${id}`, `198.51.100.${address}`); }
+  }
+  assert.equal(first.ws.closed?.code, 4429);
+  release();
+  await proving;
+  assert.equal(first.ws.deserializeAttachment(), null);
+  assert.deepEqual(first.ws.messages, []);
+});
+
+test('a full directory seats the newcomer and gives up its longest watcher, never a listing', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), live = await host(s), publisher = await observer(s), watching = [];
+  await publish(s, publisher, publication(live));
+  for (let i = 0; i < 63; i += 1) { now += 1; watching.push(await observer(s)); }
+  const heard = watching[1].messages.length;
+  now += 1;
+  const newcomer = await observer(s);
+  assert.deepEqual(shares(newcomer).list, [{ code: 'brave-otter-42', local: true }], 'a newcomer reads the list at once');
+  assert.equal(publisher.readyState, 1, 'the oldest socket of all holds the listing');
+  assert.deepEqual(watching[0].closed, { code: 4429, reason: 'full' });
+  assert.equal(watching[0].deserializeAttachment(), null);
+  assert.ok(watching.slice(1).every((ws) => ws.readyState === 1));
+  assert.equal(watching[1].messages.length, heard, 'the list did not change, so nobody hears about it');
+  assert.equal(s.discovery().instance.observers().length, 64);
+});
+
+test('seats in a full network directory turn over, and a late host is listed', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), address = '1.2.3.4', earlier = [];
+  const open = () => { now += 1; return edgeSocket(s, '/discover', address); };
+  for (let i = 0; i < 64; i += 1) earlier.push(await open());
+  const later = await open();
+  const scope = later.deserializeAttachment().scope;
+  assert.deepEqual(shares(later).list, []);
+  assert.equal(earlier[0].closed.code, 4429);
+  const offered = await edgeSocket(s, '/ws/late-room?role=host&local=1&discover=1', address);
+  const sharing = await open();
+  await publish(s, sharing, publication(offered), scope);
+  assert.deepEqual(shares(later).list, [{ code: 'late-room', local: true }], 'a host arriving at a full directory is listed');
+  // Every older watcher goes first.
+  for (let i = 0; i < 62; i += 1) await open();
+  assert.equal(later.readyState, 1);
+  const next = await open();
+  assert.equal(later.closed.code, 4429);
+  assert.equal(sharing.readyState, 1);
+  assert.deepEqual(shares(next).list, [{ code: 'late-room', local: true }]);
+});
+
+test('a listed code keeps one seat however many sockets publish it', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), claim = publication(await host(s)), sockets = [];
+  for (let i = 0; i < 64; i += 1) {
+    now += 1;
+    const ws = await observer(s);
+    await publish(s, ws, claim);
+    sockets.push(ws);
+  }
+  for (let i = 0; i < 63; i += 1) { now += 1; await observer(s); }
+  const left = sockets.filter((ws) => ws.readyState === 1);
+  assert.equal(left.length, 1);
+  assert.deepEqual(shares(left[0]).list, [{ code: 'brave-otter-42', local: true }]);
+});
+
+test('listings can hold no more than half the seats', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), listed = [], watching = [];
+  for (let i = 0; i < 32; i += 1) {
+    now += 1;
+    const ws = await observer(s);
+    await publish(s, ws, publication(await host(s, `room-${i}`)));
+    listed.push(ws);
+  }
+  for (let i = 0; i < 32; i += 1) { now += 1; watching.push(await observer(s)); }
+  let newest;
+  for (let i = 0; i < 40; i += 1) { now += 1; newest = await observer(s); }
+  assert.ok(listed.every((ws) => ws.readyState === 1));
+  assert.ok(watching.every((ws) => ws.closed?.code === 4429));
+  assert.equal(shares(newest).list.length, 32);
+  assert.equal(s.discovery().instance.observers().length, 64);
+});
+
+test('who has watched longest comes from the attachments, so hibernation cannot lose it', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), seated = [];
+  for (let i = 0; i < 64; i += 1) { now += 1; seated.push(await observer(s)); }
+  const state = s.discovery();
+  state.instance = new Discovery(state.ctx, s.env);
+  state.ctx.sockets.reverse();
+  now += 1;
+  await observer(s);
+  assert.equal(seated[0].closed?.code, 4429);
+  assert.ok(seated.slice(1).every((ws) => ws.readyState === 1));
+  // An attachment written by the previous deployment has no such field.
+  const { since: unusedSince, ...older } = seated[40].deserializeAttachment();
+  seated[40].serializeAttachment(older);
+  now += 1;
+  await observer(s);
+  assert.equal(seated[40].closed?.code, 4429);
+  assert.equal(seated[1].readyState, 1);
+});
+
+test('giving up a watcher cancels the publication it had in flight', async (t) => {
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const s = system(), live = await host(s), publisher = await observer(s);
+  for (let i = 0; i < 63; i += 1) { now += 1; await observer(s); }
+  const held = holdRoomCheck(s);
+  const pending = publish(s, publisher, publication(live));
+  await held.checked;
+  const newcomer = await observer(s);
+  assert.equal(publisher.closed?.code, 4429);
+  held.release();
+  await pending;
+  assert.equal(publisher.deserializeAttachment(), null);
+  assert.deepEqual(shares(newcomer).list, []);
 });

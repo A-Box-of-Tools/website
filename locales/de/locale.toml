@@ -68,6 +68,16 @@ complete = true
 #
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "ratgeber/geschwaerztes-pdf-paket-vorbereiten"
+"guides/prepare-a-screen-recording-for-support" = "ratgeber/bildschirmaufnahme-fuer-fehlerbericht-vorbereiten"
+"guides/turn-a-bitmap-logo-into-website-assets" = "ratgeber/rasterlogo-in-website-grafiken-umwandeln"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "ratgeber/erstattung-pdf-und-csv-aus-belegen-erstellen"
+"guides/protect-transfer-and-verify-a-pdf" = "ratgeber/pdf-schuetzen-uebertragen-und-pruefen"
+"guides/where-do-your-file-copies-go" = "ratgeber/wo-dateikopien-landen"
+"guides/does-private-browsing-keep-downloads-private" = "ratgeber/bleiben-downloads-beim-privaten-surfen-privat"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "ratgeber/was-eine-gewoehnliche-datei-ueber-sie-verraet"
+"guides/receive-voice-from-nearby-devices" = "ratgeber/sprache-von-geraeten-in-der-naehe-empfangen"
+"guides/share-a-browser-tab" = "ratgeber/browser-tab-teilen"
 "guides/broadcast-voice-on-a-local-network" = "ratgeber/stimme-im-lokalen-netzwerk-senden"
 "guides/arrange-images" = "ratgeber/bilder-anordnen"
 "guides/watch-camera-from-another-device" = "ratgeber/kamera-von-anderem-geraet-ansehen"
@@ -140,6 +150,7 @@ complete = true
 # "Groessenvergleich" ist das Wort, das gesucht wird, und es sagt zugleich,
 # was das Bild am Ende zeigt.
 "compare-heights" = "groessenvergleich-erstellen"
+"number-explorer" = "zahlen-veranschaulichen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -223,6 +234,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "ratgeber/qr-code-erstellen-und-scan-beweisen"
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
 "guides/make-a-height-comparison-chart" = "ratgeber/groessenvergleich-diagramm-erstellen"
+"guides/understand-big-numbers" = "ratgeber/grosse-zahlen-verstehen"
 "guides/is-it-safe-to-scan-a-qr-code" = "ratgeber/ist-das-scannen-von-qr-codes-sicher"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "ratgeber/ist-das-hochladen-eines-ausweisfotos-sicher"
 "guides/can-blacked-out-text-be-recovered" = "ratgeber/kann-geschwaerzter-text-wiederhergestellt-werden"
@@ -400,7 +412,7 @@ og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"
 #
 
 [not_found]
-title = "Seite nicht gefunden &mdash; abox.tools"
+title = "404: Seite nicht gefunden &mdash; abox.tools"
 description = "Diese Adresse gibt es auf abox.tools nicht. Hier sind die kostenlosen Browser-Werkzeuge zur Dateiverarbeitung auf Ihrem Gerät."
 heading = "Diese Seite gibt es hier nicht"
 tools_heading = "Alle Werkzeuge auf einen Blick"
@@ -419,7 +431,7 @@ lede = """
 #
 
 [footer]
-blurb = "Tools, die Dateien auf deinem Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto nötig."
+blurb = "Tools, die Dateien auf Ihrem Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto nötig."
 base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben."
 licence = """
     Texte unter
@@ -485,7 +497,7 @@ hub_view_all = "Alle anzeigen"
 hub_show_fewer = "Weniger anzeigen"
 hub_privacy_details = "So bleiben Ihre Dateien privat"
 hub_filter_label = "Werkzeug suchen"
-hub_filter_none = "Kein Werkzeug passt dazu. Versuche weniger Wörter oder ein Dateiformat wie PDF oder PNG."
+hub_filter_none = "Kein Werkzeug passt dazu. Versuchen Sie es mit weniger Wörtern oder einem Dateiformat wie PDF oder PNG."
 hub_agent_title = "Browserwerkzeug finden"
 hub_agent_description = "Durchsucht die auf dieser Seite aufgeführten Werkzeuge nach Aufgabe, Name oder Dateiformat. Gibt öffentliche Werkzeugnamen, Beschreibungen und Links zurück; öffnet keine Werkzeuge und verarbeitet keine Dateien. Sucht nach kurzen Stichwörtern in der Sprache dieser Seite."
 hub_agent_query_description = "Stichwörter wie PNG zu WebP oder JSON. Eine leere Suche listet Werkzeuge auf."
@@ -509,8 +521,8 @@ approval_approve = "Genehmigen"
 approval_deny = "Ablehnen"
 approval_later = "Später prüfen"
 approval_pending = "Beitrittsanfragen"
-approval_session = "Genehmige Personen, die du kennst. Sie können sich erneut verbinden, bis du diese Host-Sitzung beendest."
-approval_limit = "Diese Sitzung kann keine weitere Genehmigung speichern. Beende sie und starte eine neue Sitzung, um ein weiteres Gerät zu genehmigen."
+approval_session = "Genehmigen Sie Personen, die Sie kennen. Diese können sich erneut verbinden, bis Sie diese Host-Sitzung beenden."
+approval_limit = "Diese Sitzung kann keine weitere Genehmigung speichern. Beenden Sie sie und starten Sie eine neue Sitzung, um ein weiteres Gerät zu genehmigen."
 approval_required = "Genehmigung erforderlich"
 transport_label = "Verbindung"
 transport_direct = "Direkt"
@@ -559,7 +571,7 @@ pairing_cached = "Seite gespeichert. Zum Koppeln oder erneuten Verbinden der Ger
 pairing_hotspot_heading = "WLAN oder einen Handy-Hotspot verwenden"
 pairing_hotspot_enable = "Aktivieren Sie in den Einstellungen des Handys den persönlichen Hotspot auf einem iPhone oder den WLAN-Hotspot auf einem Android-Handy."
 pairing_hotspot_join = "Verbinden Sie das andere Gerät über seine WLAN-Einstellungen mit diesem Hotspot. Lassen Sie auf beiden Geräten Internet für die Suche in der Nähe und die Kopplung verfügbar."
-pairing_hotspot_connect = "Öffne dieses Tool auf beiden Geräten und wähle Join neben der gewünschten Verbindung. Gib bei Bedarf das Passwort ein oder warte auf die Genehmigung des Hosts. Fehlt der Eintrag, nutze den Link oder Code des Hosts."
+pairing_hotspot_connect = "Öffnen Sie dieses Tool auf beiden Geräten und wählen Sie Join neben der gewünschten Verbindung. Geben Sie bei Bedarf das Passwort ein oder warten Sie auf die Genehmigung des Hosts. Fehlt der Eintrag, nutzen Sie den Link oder Code des Hosts."
 pairing_hotspot_limits = "Das Netzwerk muss direkte Verbindungen zwischen Geräten erlauben. Manche Hotspots, Gastnetze, VPNs und verwalteten Geräte blockieren sie. Ein Eintrag in der Nähe beweist weder Erreichbarkeit noch Vertrauenswürdigkeit. Diese Seite kann keinen Hotspot einschalten."
 pairing_version_help = "Über die Werkzeugversion"
 pairing_version_hint = "Vergleichen Sie diesen Wert auf beiden Geräten. Wenn er unterschiedlich ist, laden Sie beide Seiten neu, bevor Sie eine neue Freigabe starten."
@@ -601,13 +613,14 @@ offline_insecure = "braucht https:// oder localhost, um für offline zwischenzus
 offline_failed = "Zwischenspeichern ist hier nicht möglich, hochgeladen wird aber so oder so nichts."
 net_clean = "Ihre Dateien sind nirgendwohin gegangen. {total} Dateien geladen, allesamt eigene dieser Seite. {platform}"
 net_dirty = "Etwas hat {hosts} kontaktiert, und das tut dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}"
-net_platform_one = "Die eigenen Skripte der Seite für Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines davon hat eine Datei oder ein Byte davon bekommen."
-net_platform_many = "Die eigenen Skripte der Seite für Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines davon hat eine Datei oder ein Byte davon bekommen."
+net_platform_one = "Die eigenen Skripte der Seite für Werbung und Messung kamen von {hosts} Host; keines davon hat eine Datei oder ein Byte davon bekommen."
+net_platform_many = "Die eigenen Skripte der Seite für Werbung und Messung kamen von {hosts} Hosts; keines davon hat eine Datei oder ein Byte davon bekommen."
 
 error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um von vorn zu beginnen."
 
 reading_one = "{count} Datei wird gelesen&hellip;"
 reading_many = "{count} Dateien werden gelesen&hellip;"
+text_encoding = "Sie ist nicht als UTF-8-Text gespeichert. Speichern Sie sie als UTF-8 und versuchen Sie es erneut, oder fügen Sie den Text direkt ein."
 
 check_yourself = """
       <strong>Prüfen Sie es selbst.</strong> Nichts davon müssen Sie uns glauben.

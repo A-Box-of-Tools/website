@@ -82,6 +82,11 @@
         var req = use(tx.objectStore(STORE));
         tx.oncomplete = function () { db.close(); resolve(req && req.result); };
         tx.onerror = function () { db.close(); reject(tx.error); };
+        // A failure while committing, which is where a full disk usually shows
+        // up, fires abort and never error. Without this the promise never
+        // settles: the link stays busy, and the plain visit this file promises
+        // as its fallback never happens.
+        tx.onabort = function () { db.close(); reject(tx.error); };
       });
     });
   }
@@ -119,6 +124,42 @@
   // a file under, and it is already in the markup.
   var page = document.getElementById('feedback');
   var slug = page ? page.getAttribute('data-tool') : '';
+
+  // Source pipelines already own Files, rather than download URLs. Use the
+  // same one-shot store without fetching a patch or another derived result.
+  // The token check keeps a cancelled write from deleting a newer transfer.
+  var explicitHandoff = 0;
+  function removeOwned(target, id) {
+    return inStore('readwrite', function (store) {
+      var got = store.get(target);
+      got.onsuccess = function () {
+        if (got.result && got.result.id === id) store.delete(target);
+      };
+      return got;
+    });
+  }
+
+  window.aboxHandoffFiles = function (target, files, isCurrent) {
+    var owner = ++explicitHandoff;
+    if (typeof target !== 'string' || !target || !Array.isArray(files) || !files.length
+        || !files.every(function (file) { return file instanceof File; })
+        || typeof isCurrent !== 'function') {
+      return Promise.reject(new TypeError('handoff-files'));
+    }
+    function current() { return owner === explicitHandoff && isCurrent(); }
+    if (!current()) return Promise.resolve(false);
+    var packet = { files: files.slice(), from: slug, time: Date.now(), id: crypto.randomUUID() };
+    var wrote = false;
+    return inStore('readwrite', function (store) {
+      if (!current()) return null;
+      wrote = true;
+      return store.put(packet, target);
+    }).then(function () {
+      if (!wrote) return false;
+      if (current()) return true;
+      return removeOwned(target, packet.id).then(function () { return false; });
+    });
+  };
 
   function deliver(files) {
     var input = document.getElementById('file-input');

@@ -3,13 +3,13 @@
 #
 
 nav = "Fotos stacken"
-title = "Fotos stacken gegen Bildrauschen &mdash; oder um Leute zu entfernen"
-description = "Stacken rechnet eine Serie von Aufnahmen zu einem Bild zusammen. Welche Methode Sie brauchen, hängt davon ab, was weg soll: das Rauschen, die Passanten oder die geringe Schärfentiefe einer Makroaufnahme. Wie jede funktioniert, was sie kostet und wo RAW-Dateien hineinpassen."
+title = "Fotos stacken: Rauschen reduzieren, Menschen entfernen oder Sternspuren erzeugen"
+description = "Wählen Sie Mittelwert für eine sauberere Serie, Median für bewegte Menschen oder Aufhellen für Sternspuren. Einheitliche Aufnahmen vorbereiten, ausrichten, vergleichen und speichern, mit erklärten Grenzen von RAW-Vorschauen."
 
-heading = "So stacken Sie Fotos gegen Bildrauschen oder um Leute zu entfernen"
-lede = "Eine Serie enthält mehr Information als jede einzelne Aufnahme. Ihr Mittelwert senkt unabhängiges zufälliges Rauschen; der mittlere Wert jedes Pixels kann Dinge entfernen, die in weniger als der Hälfte der Aufnahmen vorkamen. Welche Methode passt, hängt davon ab, was sich bewegt hat."
+heading = "Fotos stacken, um Rauschen zu reduzieren, Menschen zu entfernen oder Sternspuren zu erzeugen"
+lede = "Wählen Sie die Stacking-Methode nach Ihrem gewünschten Ergebnis: eine sauberere Serie, einen Hintergrund ohne bewegte Menschen oder Sternspuren. Beginnen Sie mit einheitlichen Aufnahmen, richten Sie diese bei Bedarf aus und vergleichen Sie den fertigen Stack vor dem Speichern."
 
-updated = "13. Oktober 2026"
+updated = "23. Oktober 2026"
 
 og_title = "So stacken Sie Fotos gegen Bildrauschen oder um Leute zu entfernen"
 og_description = "Eine Serie mitteln gegen das Rauschen, den Median nehmen, um einen belebten Platz zu leeren, aufhellen für Sternspuren. Welche Methode welches Problem löst und wo RAW-Dateien hineinpassen."

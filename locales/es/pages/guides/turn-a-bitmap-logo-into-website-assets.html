@@ -1,0 +1,60 @@
+  <section>
+    <h2>Empieza con una forma que la vectorización pueda conservar</h2>
+    <p>Un sitio ficticio de jardinería tiene un logotipo bitmap: una hoja y un tallo sólidos sobre un fondo liso. Necesita un logotipo escalable, un PNG transparente y un favicon reconocible en una pestaña del navegador. La secuencia es <a href="../../convertir-imagen-a-svg/">Imagen a SVG</a>, <a href="../../convertir-svg-a-png/">SVG a imagen</a> y, después, <a href="../../crear-favicon/">Imagen a ICO</a>.</p>
+    <p>Cada herramienta hace una tarea distinta: trazar un contorno, convertirlo en píxeles y preparar los archivos de iconos. Este proceso sirve para una forma monocroma sencilla. La herramienta de vectorización crea un único trazado SVG; no reconstruye un logotipo a todo color, una fotografía, un degradado ni una ilustración por capas. Consigue el diseño original cuando esos detalles definan la figura. Si ya tienes un buen SVG, omite la vectorización.</p>
+  </section>
+
+  <section>
+    <h2>Elige el original más nítido</h2>
+    <p>Usa el mejor bitmap original disponible. Una captura de una página web puede contener marcas de compresión, un fondo teñido o texto ajeno al logotipo. Ampliarla no recupera los detalles ausentes. En este ejemplo, la hoja está dentro de una imagen cuadrada con margen en cada lado.</p>
+    <p>Decide qué pertenece a la figura. La hoja y el tallo van juntos; el nombre del sitio de jardinería no tiene que caber en un favicon. Guarda el original por separado para compararlo. Si es diminuto o borroso, el trazado será una aproximación, aunque la geometría resultante pueda escalarse.</p>
+  </section>
+
+  <section>
+    <h2>Vectoriza una vez e inspecciona el contorno</h2>
+    <p>Abre el bitmap en <a href="../../convertir-imagen-a-svg/">Imagen a SVG</a>. Compara la forma vectorizada con el original, comprobando la punta de la hoja, la unión con el tallo y las aberturas intencionadas. Usa la selección del primer plano y los controles de corrección para eliminar zonas sueltas; vuelve a inspeccionar el resultado después de cambiar el suavizado.</p>
+    <p>Una línea suave no es necesariamente fiel. Un suavizado excesivo puede convertir la hoja en un óvalo; uno insuficiente puede conservar los puntos de compresión como geometría permanente. La <a href="../convertir-una-imagen-a-svg/">guía de vectorización</a> explica esas opciones. Guarda el resultado aceptado como <code>leaf-master.svg</code>. Genera los futuros tamaños rasterizados a partir de este original, en lugar de ampliar un PNG que ya se haya reducido.</p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/outline.webp" loading="lazy" decoding="async"
+           alt="Imagen a SVG muestra un bitmap de plantilla de ejemplo y su contorno vectorizado, uno junto al otro, con controles de corrección y suavizado.">
+      <figcaption>Los controles de vectorización con una plantilla de ejemplo. Compara el contorno y las aberturas antes de aceptar el vector; un nuevo formato de archivo no demuestra que la forma sea correcta.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Genera PNG para tareas concretas</h2>
+    <p>Carga <code>leaf-master.svg</code> en <a href="../../convertir-svg-a-png/">SVG a imagen</a>. Para el original cuadrado de este ejemplo, exporta un PNG transparente de 1024 por 1024 y llámalo <code>leaf-icon-source.png</code>. Es un tamaño de trabajo para el ejemplo, no un requisito de todos los logotipos. Conserva las proporciones e inspecciona el margen; no estires una figura no cuadrada para forzarla a un cuadrado. La herramienta de iconos puede añadir márgenes a una entrada no cuadrada más adelante.</p>
+    <p>Elige las dimensiones en la herramienta de rasterización. No hace falta redimensionar por separado si puede generar directamente los píxeles necesarios. Exporta también un PNG del tamaño adecuado para el lugar del logotipo en la web, si ese lugar lo necesita, y ponle un nombre que describa su uso, como <code>leaf-header.png</code>. Conserva el SVG para los lugares que admitan diseños vectoriales.</p>
+    <p>Abre los PNG exportados e inspecciona los bordes y la transparencia. Una vista previa blanca no basta para saber si el fondo es transparente. La <a href="../convertir-un-svg-a-png/">guía de SVG a PNG</a> explica las dimensiones y las opciones de fondo.</p>
+  </section>
+
+  <section>
+    <h2>Prepara el paquete de iconos web</h2>
+    <p>Carga <code>leaf-icon-source.png</code> en <a href="../../crear-favicon/">Imagen a ICO</a>. Elige la salida para sitio web y los tamaños de icono que necesite. Mantén juntos el ICO generado, los PNG web y los archivos de referencia que los acompañan. La <a href="../como-hacer-un-favicon/">guía de favicons</a> explica sus funciones.</p>
+    <p>Esta herramienta también admite iconos de aplicaciones para Windows y macOS. Un archivo ICNS pertenece a ese proceso de macOS; un sitio web no necesita todos los formatos que puede producir la herramienta. Elige los resultados según su destino. Generar el paquete no lo instala: coloca los recursos en las rutas que use el sitio y actualiza sus referencias a iconos.</p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/sizes.webp" loading="lazy" decoding="async"
+           alt="La herramienta de iconos muestra una imagen de ejemplo en los diferentes tamaños elegidos para la salida.">
+      <figcaption>Vistas previas de tamaños con un diseño de ejemplo. Inspecciona el propio icono más pequeño, no solo la imagen grande de origen que aparece encima.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Evalúa por separado la versión más pequeña</h2>
+    <p>Inspecciona el icono de 16 por 16 píxeles a su tamaño real de visualización y comprueba después las versiones mayores. La hoja puede verse excelente a 1024 píxeles mientras el tallo desaparece o una abertura estrecha se cierra en el icono de la pestaña. Tener más píxeles de origen no puede hacer que todos los detalles finos sean legibles en dieciséis.</p>
+    <p>Si el icono pequeño no funciona, vuelve al diseño y simplifícalo de forma deliberada. Un tallo más grueso o una silueta más sencilla son decisiones de diseño; otro ajuste del conversor no puede decidir por ti la identidad de la figura. Estas herramientas no sustituyen a un editor de dibujo general cuando el propio diseño necesita rehacerse.</p>
+    <p>Comprueba los resultados transparentes sobre fondos claros y oscuros. Una hoja oscura puede desaparecer sobre una superficie oscura. Prepara una alternativa deliberada a partir del original cuando un único tratamiento no sirva para ambos y repite las exportaciones y comprobaciones necesarias.</p>
+  </section>
+
+  <section>
+    <h2>Entrega un conjunto de recursos comprensible</h2>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Archivo</th><th>Finalidad</th></tr></thead>
+      <tbody>
+        <tr><td><code>leaf-master.svg</code></td><td>Diseño escalable aprobado y origen para futuras exportaciones</td></tr>
+        <tr><td><code>leaf-header.png</code></td><td>Logotipo rasterizado al tamaño de su ubicación en la página</td></tr>
+        <tr><td>Paquete de iconos web</td><td>Recursos ICO y PNG con las referencias que necesitan en el sitio</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>Guarda el PNG grande usado como origen del icono junto a los archivos de trabajo. Abre cada resultado final, verifica las dimensiones y comprueba los iconos instalados en el sitio real, incluida una visita nueva desde el navegador si hay un icono antiguo en caché. El procesamiento de archivos es local; publicar los resultados los hace accesibles allí donde los sirva el sitio web. Usa diseños que quieras publicar y tengas permiso para utilizar.</p>
+  </section>

@@ -139,3 +139,6 @@ textarea:focus-visible {
   textarea { min-height: 170px; font-size: 0.8rem; }
   .diff { font-size: 0.75rem; }
 }
+.csv-pipeline { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.csv-pipeline p { margin: .5rem 0; }
+.csv-pipeline .transfer-note { color: var(--text-dim); font-size: 0.78rem; line-height: 1.5; }

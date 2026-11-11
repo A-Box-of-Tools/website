@@ -220,12 +220,12 @@ body = """
       steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Knopf lädt und was er nicht bekommt."
+title = "Der Spenden-Knopf lädt nichts und bekommt nichts."
 body = """
 
-      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von einem
-      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Er ist ein Link und sonst nichts: Er meldet keinen Besuch,
+      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von dieser
+      Seite selbst gezeichnet und lädt nirgendwoher etwas. Er ist ein Link und
+      sonst nichts: Er meldet keinen Besuch,
       und er bekommt nichts über Sie oder Ihre Dokumente. Es passiert nichts,
       bis Sie ihn anklicken, und dann sind Sie auf einer fremden Seite."""
 

@@ -45,7 +45,7 @@ body = "Un SVG peut porter un <code>&lt;script&gt;</code>, une <code>&lt;image h
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre dessin. Chaque ligne qui lit, dimensionne ou dessine un fichier est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur votre dessin. Chaque ligne qui lit, dimensionne ou dessine un fichier est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."

@@ -75,9 +75,9 @@
             <input type="checkbox" id="discoverable" checked disabled>
             可发现——在所选网络或群组中显示此链接
           </label>
-          <details id="discoverable-help" class="discoverable-help info-fold">
+          <details id="discoverable-help" class="info-tip">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">关于可被发现的分享</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">可发现的分享会在上方所选本地网络或私密群组中显示名称。请保持“私密”开启，尤其是在共享网络上。关闭“私密”后，任何看到名称的人都能连接和阅读，无需你的批准。取消“可发现”即可仅通过链接分享。</p>
+            <p id="discoverable-note" role="tooltip">可发现的分享会在上方所选本地网络或私密群组中显示名称。请保持“私密”开启，尤其是在共享网络上。关闭“私密”后，任何看到名称的人都能连接和阅读，无需你的批准。取消“可发现”即可仅通过链接分享。</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -272,8 +272,8 @@
 
     <span data-phrase="net.clean">这一页分享的内容没有经过任何服务器。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
-    <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
-    <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
+    <span data-phrase="net.platform.one">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
+    <span data-phrase="net.platform.many">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到其中的一个字。</span>
   </div>
   {% include "partials/paired-approval-prompt.html" %}
 </main>

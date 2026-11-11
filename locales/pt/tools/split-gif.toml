@@ -7,12 +7,12 @@
 
 name = "Separador de GIF"
 heading = "Separador&nbsp;de&nbsp;GIF <span class=\"h1-kw\">&mdash; cada quadro em um PNG</span>"
-tagline = "Cada quadro sai no próprio PNG."
+tagline = "Extraia quadros PNG, um ZIP ou uma folha de sprites, com os tempos anotados."
 
 title = "Separar GIF em quadros &mdash; grátis e sem enviar nada"
-description = "Separe um GIF animado nos quadros dele e salve cada um como PNG, de graça e inteiramente no navegador. A transparência e os tempos ficam preservados. Nada é enviado, e funciona offline."
+description = "Extraia quadros de um GIF como PNGs, em um ZIP ou em uma folha de sprites no navegador. Mantenha a transparência e salve os atrasos em uma lista de tempos separada. Sem upload."
 og_title = "Separador de GIF &mdash; desmonte uma animação no navegador"
-og_description = "Cada quadro de um GIF no próprio PNG, com os tempos e a transparência intactos. O arquivo é lido no seu computador e nunca é enviado."
+og_description = "Baixe quadros PNG um a um, em um ZIP ou como uma folha de sprites. Mantenha a transparência e salve os atrasos em uma lista de tempos separada. Nada é enviado."
 og_image_alt = "Separador de GIF - cada quadro de um GIF no próprio PNG"
 
 pledge = """
@@ -84,11 +84,11 @@ body = """
       uma imagem é servida desta origem e está listada no repositório."""
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não chega até ele."
+title = "O botão de doação não carrega nada e não recebe nada."
 body = """
 
-      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
-      script de cdnjs.buymeacoffee.com e pega as letras no Google Fonts. Ele não
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado pela
+      própria página e não carrega nada de lugar nenhum. Ele não
       é mais do que um link: não avisa ninguém da sua visita e não recebe nada
       sobre você nem sobre os seus arquivos. Nada acontece enquanto você não
       clicar, e o que você abriria ao clicar é o site de outra pessoa."""
@@ -190,12 +190,7 @@ a = """
 
 [[faq]]
 q = "Dá para juntar os quadros de novo?"
-a = """
-        Dá, com o <a href="../criar-gif/">Criador de GIF</a> deste site ou com
-        qualquer outra coisa que aceite uma pasta de imagens. É para isso que
-        serve o <code>frames.txt</code> do ZIP: separar uma animação joga fora os
-        tempos, porque um PNG não tem onde anotar quanto tempo ficou na tela, e
-        então a lista leva embora a duração e a posição de cada quadro."""
+a = """ Sim. Extraia <strong>O quadro como ele aparece</strong>, adicione esses PNGs completos ao <a href="../criar-gif/" data-workflow-target="gif-maker">Criador de GIF</a> e ordene-os por nome. Use <code>frames.txt</code> do ZIP como referência ao definir o tempo de cada quadro; o Criador de GIF não importa a lista automaticamente. Um PNG não consegue guardar sozinho o atraso de reprodução. O <a href="../guias/editar-um-gif-quadro-a-quadro/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guia de edição quadro a quadro</a> mostra como reconstruir a animação."""
 
 [[faq]]
 q = "Em que formatos os quadros podem ser salvos?"
@@ -239,7 +234,7 @@ features = [
   "O quadro como ele aparece, ou só os pixels que aquele quadro guarda",
   "Duração, posição, tamanho e descarte mostrados quadro a quadro",
   "Ficar com um quadro a cada dois ou a cada cinco, ou marcar os que quiser",
-  "Um ZIP para tudo, com lista de tempos opcional para remontar a animação",
+  "Um ZIP com lista de tempos opcional, ou quadros completos selecionados em uma folha de sprites PNG",
   "Funciona offline; sem envio, sem conta, sem marca d'água",
 ]
 

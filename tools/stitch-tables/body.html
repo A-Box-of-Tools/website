@@ -1,0 +1,155 @@
+<main id="main">
+  <section class="card">
+    <h2><span class="step">1</span> Add two tables</h2>
+    <p class="card-lede">Paste cells from a spreadsheet, or open or drop a CSV or TSV file. Your tables stay in this browser.</p>
+    <p class="field-note">Up to 2 MiB of text, 5,000 data rows, 100 columns and 100,000 cells per table. Save spreadsheets as CSV UTF-8 first; XLSX files are not supported.</p>
+    <input id="file-input" type="file" multiple hidden aria-label="Import tables from another tool" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain">
+    <div class="table-inputs">
+      <div class="table-source" data-side="a">
+        <div class="source-head"><h3>Table A</h3><button type="button" id="clear-a" class="btn small">Clear A</button></div>
+        <label for="file-a">Open table A</label>
+        <input id="file-a" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain">
+        <label for="input-a">Or paste table A</label>
+        <textarea id="input-a" data-language-text spellcheck="false" wrap="off" placeholder="ID,Name&#10;001,Ada&#10;002,Sam"></textarea>
+        <div class="source-settings">
+          <label>Separator <select id="delimiter-a"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value="tab">Tab</option><option value=";">Semicolon</option><option value="|">Pipe</option></select></label>
+          <label>Headings <select id="header-a"><option value="auto">Detect automatically</option><option value="present">First row is headings</option><option value="absent">No heading row — suggest names</option></select></label>
+        </div>
+        <p id="status-a" class="field-note" role="status">No table loaded.</p>
+        <p id="header-note-a" class="field-note" role="status"></p>
+      </div>
+      <div class="table-source" data-side="b">
+        <div class="source-head"><h3>Table B</h3><button type="button" id="clear-b" class="btn small">Clear B</button></div>
+        <label for="file-b">Open table B</label>
+        <input id="file-b" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain">
+        <label for="input-b">Or paste table B</label>
+        <textarea id="input-b" data-language-text spellcheck="false" wrap="off" placeholder="Reference,Team&#10;paid/002,Blue&#10;paid/001,Green"></textarea>
+        <div class="source-settings">
+          <label>Separator <select id="delimiter-b"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value="tab">Tab</option><option value=";">Semicolon</option><option value="|">Pipe</option></select></label>
+          <label>Headings <select id="header-b"><option value="auto">Detect automatically</option><option value="present">First row is headings</option><option value="absent">No heading row — suggest names</option></select></label>
+        </div>
+        <p id="status-b" class="field-note" role="status">No table loaded.</p>
+        <p id="header-note-b" class="field-note" role="status"></p>
+      </div>
+    </div>
+    <div class="run-row"><button type="button" id="example" class="btn">Try an example</button><button type="button" id="load" class="btn primary">Read tables</button></div>
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="setup">
+    <h2><span class="step">2</span> Choose how to stitch</h2>
+    <fieldset class="workflow"><legend>Method</legend>
+      <label><input type="radio" name="mode" value="match" checked> <span><strong>Match rows</strong><small>Join on values or a pattern in chosen columns.</small></span></label>
+      <label><input type="radio" name="mode" value="manual"> <span><strong>Pair manually</strong><small>Choose which rows belong together.</small></span></label>
+      <label><input type="radio" name="mode" value="simple"> <span><strong>Simple merge</strong><small>Add rows, add columns, or merge both directions.</small></span></label>
+    </fieldset>
+    <div id="simple" hidden>
+      <label class="field">Merge direction<select id="simple-mode"><option value="append">Add rows — stack tables</option><option value="position">Add columns — place side by side</option><option value="both">Add rows and columns — match records and combine fields</option></select></label>
+      <p id="direction-append" class="field-note">Stack B below A. Headed columns align by exact, trimmed names and extra columns are kept. Without headings, stacking uses column position.</p>
+      <p id="direction-position" class="field-note" hidden>Place B beside A. Rows pair by position, and every row from the longer table remains.</p>
+      <p id="direction-both" class="field-note" hidden>Choose a match key below. All rows remain. Shared headings combine equal values or fill exactly empty cells. If a field has conflicting values, its full A/B columns stay separate. Without source headings, columns stay separate.</p>
+    </div>
+    <div id="matching">
+      <div class="settings-grid">
+        <label class="field">Match column in A<select id="key-a" disabled><option value="">Read tables first</option></select></label>
+        <label class="field">Match column in B<select id="key-b" disabled><option value="">Read tables first</option></select></label>
+        <label class="field">Match using<select id="pattern"><option value="exact">Whole cell value</option><option value="digits">First number in the cell</option><option value="letters-digits">Letters and numbers only</option><option value="before">Text before a separator</option><option value="after">Text after a separator</option></select></label>
+      </div>
+      <p class="field-note">The first number makes invoice-001 match paid/001. Leading zeroes matter: 001 and 1 stay different. Before and after use the first separator; a missing separator gives no match.</p>
+      <label class="field" id="separator-field" hidden>Pattern separator<input id="separator" type="text" value="-" maxlength="100"></label>
+      <div class="normalization"><label class="check"><input type="checkbox" id="trim" checked> Trim spaces around matching values</label><label class="check"><input type="checkbox" id="ignore-case" checked> Ignore case when matching</label></div>
+      <p class="field-note" id="key-preview"></p>
+    </div>
+    <div id="join-options"><label class="field">Rows to keep<select id="join"><option value="full">All rows from both tables</option><option value="left">All rows from table A</option><option value="inner">Matching pairs only</option></select></label><p class="field-note">Blank matching values never match. Repeated keys produce every matching combination; the summary reports them. Original cell values stay unchanged.</p></div>
+    <div id="manual" hidden>
+      <p>Choose a row from each table, then add the pair. Each row can belong to one pair. Unpaired rows follow your “Rows to keep” setting.</p>
+      <div class="settings-grid"><label class="field">Row in table A<select id="row-a" disabled><option value="">Read tables first</option></select></label><label class="field">Row in table B<select id="row-b" disabled><option value="">Read tables first</option></select></label></div>
+      <div class="run-row"><button type="button" class="btn" id="add-pair" disabled>Add pair</button><button type="button" class="btn" id="clear-pairs">Clear pairs</button></div>
+      <p id="pair-status" class="field-note" role="status"></p><ol id="pairs"></ol>
+    </div>
+    <div class="run-row"><button type="button" id="stitch" class="btn primary" disabled>Stitch tables</button></div>
+    <p id="stitch-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="result" inert>
+    <h2><span class="step">3</span> Review and export</h2>
+    <p id="summary" role="status">Stitch the tables to prepare a preview and export.</p><p id="duplicates" class="warning" hidden></p>
+    <p id="conflicts" class="warning" role="status" hidden></p>
+    <p class="field-note">The preview shows the first 100 rows and 20 columns. Copy and download include the whole result, up to 20,000 rows, 500,000 cells and 16 MiB of text.</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Stitched table preview"><table id="preview"></table></div>
+    <div class="export-settings"><label class="field">Output separator<select id="output-delimiter"><option value=",">CSV (comma)</option><option value="tab">TSV (tab)</option><option value=";">CSV (semicolon)</option></select></label><label class="check"><input type="checkbox" id="output-header" checked> Include headings</label></div>
+    <label class="check"><input type="checkbox" id="protect" checked> Protect formula-like cells for spreadsheet import</label>
+    <p class="field-note">Protection adds an apostrophe before cells a spreadsheet could run: those starting with =, @, a tab or a line break, and those starting with + or - unless they hold only a number. So -12.50 and +1 555 010 1234 stay as they are. Turn it off to export the original cell text. This affects headings too.</p>
+    <div class="run-row"><a id="download" class="as-button primary" hidden>Download table</a><button type="button" id="copy" class="btn">Copy table</button></div>
+    <p id="copy-status" class="field-note" role="status"></p>
+    <label for="output">Export text</label><textarea id="output" readonly spellcheck="false" wrap="off"></textarea>
+  </section>
+
+  <pre id="example-a" hidden>Invoice,Name,Amount
+invoice-001,Ada,15.00
+invoice-002,Sam,22.50
+invoice-003,Lee,10.00</pre>
+  <pre id="example-b" hidden>Reference,Team,Paid
+paid/002,Blue,yes
+paid/001,Green,yes
+paid/004,Gold,no</pre>
+  <div id="phrases" hidden>
+    <span data-phrase="table.empty">Add a table with at least one column.</span>
+    <span data-phrase="table.quotes">The table contains an unfinished or misplaced quote. Check quoted cells or choose the separator explicitly.</span>
+    <span data-phrase="table.ragged">A row has more cells than the heading row. Check the separator or turn off headings.</span>
+    <span data-phrase="table.input-limit">This table exceeds the 2 MiB text limit.</span>
+    <span data-phrase="table.row-limit">This table exceeds 5,000 data rows.</span>
+    <span data-phrase="table.column-limit">This table exceeds 100 columns.</span>
+    <span data-phrase="table.cell-limit">This table exceeds 100,000 cells.</span>
+    <span data-phrase="table.output-limit">The result exceeds 20,000 rows, 500,000 cells or 16 MiB of text. Choose more specific keys or smaller tables.</span>
+    <span data-phrase="table.key">Choose a matching column in each table.</span>
+    <span data-phrase="table.pairs">A manual pair is invalid or uses a row more than once. Clear the pairs and try again.</span>
+    <span data-phrase="table.delimiter">Choose a supported separator.</span>
+    <span data-phrase="table.separator">Enter a separator for the matching pattern.</span>
+    <span data-phrase="table.pattern">Choose a supported matching pattern.</span>
+    <span data-phrase="table.mode">Choose a supported merge method.</span>
+    <span data-phrase="table.join">Choose which rows to keep.</span>
+    <span data-phrase="table.header">Choose how to read the heading row.</span>
+    <span data-phrase="stitch.header-detected">First row looks like headings. Check the Headings setting if it contains data.</span>
+    <span data-phrase="stitch.header-present">Using the first row as headings.</span>
+    <span data-phrase="stitch.header-guessed">No clear heading row. All rows kept. Suggested names: {names}. Check the Headings setting if the first row is a header.</span>
+    <span data-phrase="stitch.header-generated">All rows kept. Suggested names: {names}.</span>
+    <span data-phrase="stitch.kind.column">Column</span>
+    <span data-phrase="stitch.kind.email">Email</span>
+    <span data-phrase="stitch.kind.url">URL</span>
+    <span data-phrase="stitch.kind.date">Date</span>
+    <span data-phrase="stitch.kind.datetime">Date and time</span>
+    <span data-phrase="stitch.kind.time">Time</span>
+    <span data-phrase="stitch.kind.boolean">Boolean</span>
+    <span data-phrase="stitch.kind.phone">Phone</span>
+    <span data-phrase="stitch.kind.id">ID</span>
+    <span data-phrase="stitch.kind.number">Number</span>
+    <span data-phrase="stitch.kind.text">Text</span>
+    <span data-phrase="stitch.empty">No table loaded.</span>
+    <span data-phrase="stitch.not-read">Not read yet. Select Read tables.</span>
+    <span data-phrase="stitch.reading">Reading the selected file…</span>
+    <span data-phrase="stitch.read-first">Read tables first</span>
+    <span data-phrase="stitch.await-result">Stitch the tables to prepare a preview and export.</span>
+    <span data-phrase="stitch.loaded">Rows: {rows} · columns: {columns}</span>
+    <span data-phrase="stitch.column">Column</span><span data-phrase="stitch.left">A</span><span data-phrase="stitch.right">B</span>
+    <span data-phrase="stitch.side-error">Table {side}: {reason}</span>
+    <span data-phrase="stitch.read-error">Could not read this text file. Save it as UTF-8 CSV or TSV and try again.</span>
+    <span data-phrase="stitch.no-data">Both tables need at least one data row.</span>
+    <span data-phrase="stitch.file-count">Open one or two table files. No files were imported.</span>
+    <span data-phrase="stitch.stale">The inputs changed. Read the tables again to prepare a new result.</span>
+    <span data-phrase="stitch.unexpected">Could not stitch these tables. Check the inputs and settings.</span>
+    <span data-phrase="stitch.row">Row {row}: {cells}</span>
+    <span data-phrase="stitch.no-rows">No unpaired rows remain</span>
+    <span data-phrase="stitch.pairs-count">Manual pairs selected: {count}.</span>
+    <span data-phrase="stitch.pair">A row {a} ↔ B row {b}</span>
+    <span data-phrase="stitch.remove">Remove pair {number}</span>
+    <span data-phrase="stitch.summary">Result rows: {rows} · columns: {columns} · pairs: {matched} · unpaired rows in A: {a} · unpaired rows in B: {b}.</span>
+    <span data-phrase="stitch.simple-summary">Result rows: {rows} · columns: {columns}.</span>
+    <span data-phrase="stitch.duplicates">Repeated matching keys: {count}. Automatic matching includes every combination; review the result carefully.</span>
+    <span data-phrase="stitch.conflicts">Fields with conflicting values: {count}. Their A/B columns stay separate.</span>
+    <span data-phrase="stitch.copied">Table copied.</span>
+    <span data-phrase="stitch.selected">Export text selected. Copy it with your browser’s copy command.</span>
+    <span data-phrase="stitch.key-sample">First extracted keys — A: {a} · B: {b}</span>
+    <span data-phrase="stitch.no-key">no matching value</span>
+  </div>
+</main>

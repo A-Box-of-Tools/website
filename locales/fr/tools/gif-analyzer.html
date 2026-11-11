@@ -11,6 +11,10 @@
   <section class="card">
     <h2>Choisissez un GIF</h2>
 
+    <p class="card-lede">
+      Vérifiez le minutage des images, l’effacement, les palettes et la taille d’une animation sans modifier le fichier. Le <a href="../guides/ce-qu-il-y-a-dans-un-gif/" data-workflow-target="guides/whats-inside-a-gif">guide d’analyse des GIF</a> explique comment lire les résultats quand un GIF est lourd, lent ou laisse des traînées.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -156,6 +160,16 @@
       chaque copie du fichier les transporte quand même.
     </p>
     <ul class="extras" id="extras"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Après l’analyse</h2>
+    <p>
+      Besoin d’images séparées ? <a href="../decouper-un-gif-en-images/" data-workflow-target="split-gif">Extrayez les images en PNG ou en planche de sprites</a>. Pour modifier l’animation, suivez le <a href="../guides/modifier-un-gif-image-par-image/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guide pour découper et reconstruire</a>, en gardant la liste des durées comme référence.
+    </p>
+    <p>
+      Besoin d’une vidéo ? <a href="../gif-en-mp4/" data-workflow-target="gif-to-mp4">Convertissez directement le GIF d’origine en MP4</a> pour garder ses délais variables sans le reconstruire à partir de PNG. Les zones transparentes reçoivent une couleur, et la boucle dépend du lecteur vidéo.
+    </p>
   </section>
 
   <!--
@@ -522,11 +536,11 @@
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
       outil ne fait jamais. {platform}</span>
-    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
-      du bouton de don propres à la page ont été chargés depuis {hosts}
+    <span data-phrase="net.platform.one">Les scripts de publicité et de mesure
+      propres à la page ont été chargés depuis {hosts}
       hôte&nbsp;; aucun d'eux n'a reçu un fichier.</span>
-    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
-      du bouton de don propres à la page ont été chargés depuis {hosts}
+    <span data-phrase="net.platform.many">Les scripts de publicité et de
+      mesure propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'a reçu un fichier.</span>
     <span data-phrase="extension.comment">Commentaire</span>
     <span data-phrase="extension.plaintext">Du texte brut</span>

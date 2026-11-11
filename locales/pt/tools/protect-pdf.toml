@@ -75,8 +75,8 @@ title = "O que o Google carrega, e o que não chega até ele."
 body = "Os scripts de publicidade e medição vêm do Google. Eles não recebem arquivo, página, nome, tamanho, quantidade de páginas, senha nem método de proteção. Todo o código que lê, criptografa ou grava o PDF é servido desta origem e está no repositório."
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não chega até ele."
-body = "O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado por um script de cdnjs.buymeacoffee.com e busca as letras no Google Fonts. É um link e nada mais: não relata visita alguma, e não recebe nada sobre você nem sobre os seus documentos. Nada acontece a menos que você clique, e para onde você iria ao clicar é o site de outra pessoa."
+title = "O botão de doação não carrega nada e não recebe nada."
+body = "O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado pela própria página e não carrega nada de lugar nenhum. É um link e nada mais: não relata visita alguma, e não recebe nada sobre você nem sobre os seus documentos. Nada acontece a menos que você clique, e para onde você iria ao clicar é o site de outra pessoa."
 
 [[privacy]]
 title = "Funciona offline."

@@ -12,5 +12,5 @@ lede = "Übertragen Sie eine Notiz oder Datei ohne Kopie in einem E-Mail-Postfac
 updated = "13. Oktober 2026"
 
 og_title = "Zwischen Geräten teilen, ohne dass ein Server eine Kopie behält"
-og_description = "Text und Dateien zwischen Browsern teilen: standardmäßig direkt oder wahlweise verschlüsselt über Cloudflare. Kein Konto und keine gespeicherte Serverkopie; Empfänger können eigene Kopien behalten."
+og_description = "Teilen Sie Text und Dateien über eine direkte verschlüsselte Verbindung oder ein optionales verschlüsseltes Cloud relay. Keine gespeicherte Serverkopie; Empfänger können die erhaltenen Inhalte speichern."
 og_image_alt = "abox.tools - Text und Dateien zwischen Browsern teilen"

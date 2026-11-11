@@ -1,0 +1,105 @@
+#
+# Zahlenentdecker - German.
+#
+# Overrides for tools/number-explorer/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Every figure here was carried over by value and not by word. The English
+# billion is a Milliarde and the German Billion is the English trillion, so a
+# sentence that keeps the word keeps it a thousand times too large.
+#
+
+name = "Zahlenentdecker"
+heading = "Zahlenentdecker <span class=\"h1-kw\">&mdash; eine Million, eine Milliarde und mehr vor Augen</span>"
+tagline = "Tippen Sie eine beliebige Zahl ein und sehen Sie ihr beim Wachsen zu: ein Bücherstapel, ein Wasserguss, ein Sternenhimmel, ein Sandhaufen, ein sehr langes Zählen."
+
+title = "Zahlen veranschaulichen &mdash; Millionen und Milliarden verstehen &mdash; kostenlos, offline"
+description = "Sehen Sie, wie groß eine Zahl wirklich ist. Sie wächst als Bücherstapel, Wasserguss, Sternenhimmel und Sandhaufen und als die Zeit, die das Zählen dauert, neben Wegmarken vom Mount Everest bis zur Milchstraße. Kostenlos und offline."
+og_title = "Wie sieht eine Milliarde aus?"
+og_description = "Machen Sie aus einer riesigen Zahl etwas Sichtbares: Bücher, Wasser, Sterne, Sand und Zeit, mit klaren Annahmen und ohne KI oder Upload."
+og_image_alt = "Zahlenentdecker - große Zahlen als Bücher, Wasser, Sterne, Sand und Zeit darstellen"
+
+pledge = "Ein Vergleich besteht aus einer Anzahl, einem gewählten Bezug und etwas Rechnen, und all das steckt in dieser Seite. Es gibt keinen KI-Dienst, den man fragen müsste, und keine Eingabe, die hochgeladen würde. Bücher, Wasser, Sterne, Sand und Zählzeit bleiben getrennt, und ihre Annahmen stehen neben dem Ergebnis, statt hinter dem Bild versteckt zu sein."
+live_hint = "Ändern Sie die Zahl bei geöffnetem Tab &bdquo;Netzwerk&ldquo;. Der Rechner stellt keine Anfragen. Laden Sie die Seite einmal, trennen Sie die Verbindung und entdecken Sie weiter."
+read_first = ", <code>src/scale.js</code> für das Lesen der Anzahl, die Modelle und die Wegmarken, <code>src/containers.js</code> dafür, was eine farbige Fläche misst, <code>src/stage.js</code> und die Dateien <code>src/scene-*.js</code> für die Bilder und <code>src/main.js</code> dafür, wie die Seite zusammenhängt."
+howto_heading = "So stellen Sie eine große Zahl bildlich dar"
+card = "Wie hoch ist ein Stapel aus einer Milliarde Büchern? Wie viel Wasser sind eine Milliarde Tropfen? Tippen Sie eine beliebige Zahl ein und sehen Sie zu, wie sie zu Büchern, Wasser, Sternen, Sand und Zeit wird, die Annahmen immer im Blick."
+
+[words]
+plural = "Zahlen und Vergleiche"
+choose = "eine Zahl"
+
+[[facts]]
+text = "Funktioniert offline"
+[[facts]]
+text = "Keine KI- oder API-Kosten"
+[[facts]]
+text = "Klare Annahmen"
+[[facts]]
+text = "Bild speichern"
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Der Rechner läuft in diesem Browser."
+body = "Der Verarbeitungscode des Werkzeugs berechnet die Ergebnisse und zeichnet die Bilder lokal. Er schickt keine Eingabe und kein Ergebnis an einen Dienst. Content-Security-Policy beschränkt die Verbindungsziele, prüft aber keine Inhalte; vergleichen Sie den Quelltext mit dem Tab &bdquo;Netzwerk&ldquo; oder nutzen Sie den Rechner ohne Verbindung."
+[[privacy]]
+title = "Es gibt kein Modell und keine Live-Abfrage."
+body = "Die Wegmarken und Formeln werden mit dieser Seite ausgeliefert. Die Vergleiche entstehen durch Rechnen über diesen Katalog. Quellenlinks öffnen sich nur, wenn Sie sie lesen möchten."
+[[privacy]]
+title = "Ihre Eingaben bleiben in der Seite."
+body = "Der Rechner schreibt keine Eingaben in einen Speicher oder in die Adresszeile. Neu laden setzt alles zurück. Ein gespeichertes Bild ist eine Datei, die Sie bewusst auf Ihrem Gerät behalten."
+[[privacy]]
+title = "Die anderen Skripte der Website haben ihre eigenen Grenzen."
+body = "Der Rahmen kann Skripte für Werbung und Messung laden. Der Rechner schickt ihnen weder Eingaben noch Ergebnisse. Die Live-Netzwerkanzeige meldet die Verbindungen der Seite."
+
+[[howto]]
+title = "Tippen Sie eine Zahl ein oder ziehen Sie den Regler."
+body = "Versuchen Sie eine Milliarde, 1,5 Mrd. oder 3 Billionen. Erlaubt sind ganze Zahlen von null bis 1 Quintillion. Der Regler bewegt sich in Zehnerpotenzen, und das Bild folgt ihm beim Ziehen."
+[[howto]]
+title = "Wählen Sie Bücher, Wasser, Sterne, Sand oder Zeit."
+body = "Jede Ansicht zeigt dieselbe Zahl auf andere Weise und sagt, was eines davon ist. Bei den Büchern kann jedes auch ein Wort oder ein KI-Text-Token sein, und dann wird aus der Anzahl eine Textmenge."
+[[howto]]
+title = "Sehen Sie sie wachsen und vergleichen Sie."
+body = "Die Kamera fährt zurück, während die Zahl steigt. Drücken Sie × 10 oder Ab 1 wachsen, um es noch einmal zu sehen, und lesen Sie an den Wegmarken neben Ihrer Zahl ab, wie viel Mal größer jede ist. Raten Sie, ob zehnmal mehr die nächste erreicht."
+[[howto]]
+title = "Prüfen Sie die Annahmen und behalten Sie das Bild."
+body = "Ändern Sie Buchdicke, Tropfengröße, Korndurchmesser oder Zähltempo und lesen Sie nach, woher der Wert jeder Wegmarke stammt. Speichern Sie das Bild als PNG, mit den Annahmen darunter."
+
+[[faq]]
+q = "Braucht das ein KI-Modell?"
+a = "Nein. Der Browser ordnet Ihre Zahl in einen kleinen Katalog von Wegmarken ein und berechnet die Ergebnisse selbst. Es gibt keinen API-Schlüssel, keinen Modell-Download und keine laufenden KI-Kosten."
+[[faq]]
+q = "Wie hoch ist ein Stapel aus einer Milliarde Büchern?"
+a = "Bei 3 cm dicken Büchern etwa 30.000 km: mehr als die doppelte Breite der Erde und etwa 8 % des Wegs zum Mond. Bis zum Mond bräuchte es etwa 13 Milliarden Bücher. Die Dicke können Sie in den Annahmen ändern."
+[[faq]]
+q = "Wie viel Wasser sind eine Milliarde Tropfen?"
+a = "Bei Tropfen von 0,05 ml, der Größe aus einer Pipette, 50.000 Liter: etwa 250 Badewannen zu je 200 Litern oder 2 % eines olympischen Beckens. Der größere Tropfen eines tropfenden Wasserhahns von etwa 0,25 ml ergibt das Fünffache."
+[[faq]]
+q = "Wie viele Sterne sind eine Milliarde?"
+a = "Etwa 1 % der Milchstraße, gemessen am runden ESA-Wert von 100 Milliarden Sternen, und die wahre Zahl kann ein Mehrfaches davon sein. Außerdem ist es etwa das 110.000-Fache der rund 9.100 Sterne, die am ganzen Himmel hell genug sind, um sie ohne Teleskop zu sehen."
+[[faq]]
+q = "Wie viel Sand sind eine Milliarde Körner?"
+a = "Mit dem gewählten Modell kugelförmiger Körner von 0,5 mm Durchmesser und einem Behälter aus 60 % Körnern und 40 % Luft etwa 109 Liter, also rund elf Eimer zu je 10 Litern. Echte Körner sind verschieden, also ist das eine Schätzung unter diesen Annahmen."
+[[faq]]
+q = "Wie viele Bücher sind eine Million Token?"
+a = "Für englischen Text ergibt die grobe Schätzung von 0,75 Wörtern pro Token etwa 750.000 Wörter. Mit dem voreingestellten Beispiel von 75.000 Wörtern pro Buch sind das zehn Bücher, ein Stapel von etwa 30 cm Höhe. Sprache, Tokenisierung und Buchlänge ändern das Ergebnis. Es ist eine Textmenge und kein Beleg für tatsächlich gelesene oder erzeugte Bücher."
+[[faq]]
+q = "Welcher Berg wird verwendet?"
+a = "Ein bewusst festgelegtes Beispiel: ein Kegel von 1.000 Metern Höhe und 1.000 Metern Grundradius. Sein Volumen ist ein Drittel von Pi mal Radius zum Quadrat mal Höhe. Ein echter Berg braucht seine eigene Geometrie; die Höhe allein verrät sein Volumen nicht."
+[[faq]]
+q = "Lässt es sich mit allem Sand der Erde vergleichen?"
+a = "Diese Version erfindet keine exakte weltweite Kornzahl. Eine solche Schätzung braucht zuerst einen Geltungsbereich, etwa Strände oder Wüsten, und Annahmen über Fläche, Tiefe und Korngröße. Nutzen Sie die festgelegten Behälter und Wegmarken für Vergleiche, deren Annahmen sich prüfen lassen."
+[[faq]]
+q = "Sind die Bilder maßstabsgetreu?"
+a = "Der Bücherstapel und seine Wegmarken stehen auf einem einzigen, echten Maßstab, nur wird der Stapel breiter als in Wirklichkeit gezeichnet, sobald er sonst verschwinden würde, und der Zeitstrahl ist auf die gleiche Weise echt. Wasser und Sand stehen nicht auf einem Maßstab: Die Behälter sind Illustrationen, und die farbige Fläche ist der wahre Anteil am genannten Behälter. Sterne sind ein Punkt pro Stern, bis es zu viele zum Zeichnen sind, und danach sagt die Bildunterschrift, wofür jeder Punkt steht."
+[[faq]]
+q = "Kann ich die Animation ausschalten?"
+a = "Ja. Bewegung anhalten stoppt alles und lässt das fertige Bild stehen. Ist Ihr Gerät auf reduzierte Bewegung eingestellt, zeigt die Seite von Anfang an das fertige Bild."
+[[faq]]
+q = "Funktioniert das Werkzeug offline?"
+a = "Ja. Nachdem die Seite geladen ist, funktionieren alle Berechnungen, Vergleiche, Zeichnungen und gespeicherten Bilder ohne Verbindung. Keine Eingabe wird zur Verarbeitung hochgeladen."
+
+[schema]
+description = "Große Zahlen im Browser als Bücherstapel, Wassermengen, Sternenhimmel, Sandhaufen und Zählzeit veranschaulichen."
+features = ["Exakte ganzzahlige Eingabe bis 10^30", "Ein Zehnerpotenz-Regler mit animiertem Live-Bild", "Bücherstapel auf einem einzigen, echten Maßstab, vom Tisch bis zum Rand des beobachtbaren Universums", "Wasser und Sand, die benannte Behälter füllen", "Sterne vom einzelnen Punkt bis zum beobachtbaren Universum", "Zählzeit auf einem echten Zeitstrahl", "Textmengen für Wörter und KI-Token", "Einstellbare Buchdicke, Tropfengröße, Korngröße und Zähltempo", "Gespeicherte Bilder mit ihren Annahmen", "Unterstützung für reduzierte Bewegung", "Funktioniert offline ohne KI-Modell"]

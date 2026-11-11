@@ -12,7 +12,6 @@ import { inferLocationCurrency } from './location-currency.js';
 import { mostUsedCurrency, isoDate, parseRate, conversionFor, summarizeConverted, buildConversionCsv, fetchHistoricalRate } from './fx.js';
 import { FULL_CROP, inspectImage, prepareImage, readImageCanvas, rotateCrop } from './attachments.js';
 import { buildEmailDraft } from './email.js';
-import { wireHelpTooltip } from './shared/help-tooltip.js';
 
 const $ = id => document.getElementById(id);
 const records = [];
@@ -700,7 +699,6 @@ $('use-default-currency').addEventListener('click', () => {
   useDefaultCurrency = true;
   updateDefaultCurrency();
 });
-wireHelpTooltip($('default-currency-help'));
 $('stop-reading').addEventListener('click', stopReading);
 $('clear-all').addEventListener('click', () => {
   stopReading();

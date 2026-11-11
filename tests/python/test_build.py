@@ -1038,6 +1038,20 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_the_frame_loads_the_information_marks_on_a_page_that_has_them(self):
+        """Nothing in a tool calls this module, so the page's tag is all there
+        is: a paired tool for the mark the frame draws, the receipt tool for the
+        one it asks for, and no third request on a page with none."""
+        for slug, marks in (('voice-oncall', True), ('receipt-invoice-extractor', True),
+                            ('stack-images', False)):
+            page = self.out / slug / 'index.html'
+            if not page.is_file():
+                continue
+            with self.subTest(tool=slug):
+                self.assertEqual(marks, '<script type="module" src="src/shared/info-tip.js?v='
+                                 in page.read_text(encoding='utf-8'))
+                self.assertEqual(marks, (self.out / slug / 'src/shared/info-tip.js').is_file())
+
     def test_every_module_is_asked_for_by_one_versioned_url_everywhere(self):
         """The page's two module tags, its modulepreloads, every relative
         import inside the emitted modules, and the worker's precache list all
@@ -1323,6 +1337,29 @@ class BuildTheSite(unittest.TestCase):
                         self.assertIn(f'data-slug="{target}"', page)
                         folder = by_slug[target].split('/')[-1]
                         self.assertIn(f'href="../{folder}/"', page)
+
+    def test_source_handoffs_use_local_tool_addresses_and_accept_both_files(self):
+        senders = {path.parent.name: buildmod.sitelib.load_toml(path).get('source_handoff', [])
+                   for path in ROOT.glob('tools/*/tool.toml')}
+        english = (self.out / 'text-diff/index.html').read_text(encoding='utf-8')
+        self.assertIn('id="csv-pipeline"', english)
+        self.assertNotIn('<nav class="handoff"', english)
+        receiver = (self.out / 'stitch-tables/index.html').read_text(encoding='utf-8')
+        self.assertRegex(receiver, r'<input[^>]*id="file-input"[^>]*multiple')
+        for locale in self.locales:
+            for slug, targets in senders.items():
+                if not targets:
+                    continue
+                folder = buildmod.i18n.locale_path(locale, slug).strip('/')
+                page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+                # Translated bodies adopt optional actions when translated.
+                if 'id="csv-pipeline"' not in page:
+                    continue
+                for target in targets:
+                    with self.subTest(locale=locale['lang'], tool=slug, target=target):
+                        target_folder = buildmod.i18n.locale_path(locale, target).strip('/').split('/')[-1]
+                        self.assertIn(f'href="../{target_folder}/"', page)
+                        self.assertIn(f'data-slug="{target}"', page)
 
     def test_a_tool_that_offers_a_handoff_has_a_result_the_row_can_find(self):
         """A sender needs somewhere for shared/handoff.js to look.
@@ -1917,6 +1954,34 @@ class BuildTheSite(unittest.TestCase):
         self.assertLess(script.index('if (!notAVisit) {'),
                         script.index('pagead2.googlesyndication.com/pagead/js'))
 
+    # -- the donate link --------------------------------------------------
+    #
+    # It used to be the service's own snippet: a classic script in the header
+    # that drew the button with document.writeln, so it could not be deferred,
+    # and every tool waited on a third party before it could appear. Pasting a
+    # provider's snippet back is a one-line change that reads as harmless, and
+    # the page would still work, only slower, so nothing else here would notice.
+
+    def test_no_page_makes_the_parser_wait_for_another_host(self):
+        blocking = re.compile(
+            r'<script\b(?![^>]*\b(?:async|defer)\b)[^>]*\bsrc="(?:https?:)?//[^"]*"')
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertIsNone(blocking.search(page))
+
+    def test_the_donate_button_is_a_link_and_the_policy_opens_nothing_for_it(self):
+        page = (self.out / self.a_tool() / 'index.html').read_text(encoding='utf-8')
+        slug = self.site['bmc']['slug']
+        self.assertIn(f'<a class="bmc-link" href="https://www.buymeacoffee.com/{slug}" '
+                      'target="_blank" rel="noopener noreferrer">', page)
+        policy = re.search(r'<meta http-equiv="Content-Security-Policy" content="(.*?)">',
+                           page, re.S)[1]
+        for host in ('buymeacoffee.com', 'fonts.googleapis.com', 'fonts.gstatic.com'):
+            self.assertNotIn(host, policy)
+
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)
         self.assertTrue((self.out / '404.html').is_file())
@@ -1928,6 +1993,17 @@ class BuildTheSite(unittest.TestCase):
         found" in place of a real page."""
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
         self.assertNotIn('404', sitemap)
+
+    def test_the_404_page_says_404_where_it_will_be_read(self):
+        """The number is the one word there that every visitor can read.
+
+        This is one English file answering for every language, so a reader of
+        none of its sentences has only this to say the address failed. The
+        heading is where a screen reader lands, and the title is what a tab
+        shows."""
+        page = (self.out / '404.html').read_text(encoding='utf-8')
+        self.assertRegex(page, r'<title>404\b')
+        self.assertRegex(page, r'(?s)<h1>\s*<span class="not-found-code">404</span>')
 
     def test_the_404_page_asks_not_to_be_indexed(self):
         page = (self.out / '404.html').read_text(encoding='utf-8')

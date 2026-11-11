@@ -7,12 +7,12 @@
 
 name = "GIF-Zerleger"
 heading = "GIF&nbsp;zerlegen <span class=\"h1-kw\">&mdash; jedes Einzelbild als eigenes PNG</span>"
-tagline = "Jedes Einzelbild einzeln als PNG heraus."
+tagline = "PNG-Einzelbilder, ein ZIP oder ein Spritesheet herausholen, mit aufgeschriebenem Timing."
 
 title = "GIF in Einzelbilder zerlegen &mdash; kostenlos, ohne Upload"
-description = "Ein animiertes GIF in seine Einzelbilder zerlegen und jedes davon als PNG speichern, kostenlos und vollständig im Browser. Transparenz und Timing bleiben erhalten. Es wird nichts hochgeladen, und es geht auch offline."
+description = "GIF-Einzelbilder als PNGs, ZIP oder ein Spritesheet im Browser extrahieren. Transparenz behalten und die Anzeigedauern in einer separaten Zeitliste sichern. Kein Upload."
 og_title = "GIF-Zerleger &mdash; eine Animation auseinandernehmen, im Browser"
-og_description = "Jedes Einzelbild eines GIFs als eigenes PNG, mit unversehrter Transparenz und den Anzeigedauern. Die Datei wird auf Ihrem eigenen Gerät gelesen und nie hochgeladen."
+og_description = "PNG-Einzelbilder einzeln, als ZIP oder als ein Spritesheet herunterladen. Transparenz behalten und die Anzeigedauern in einer separaten Zeitliste sichern. Es wird nichts hochgeladen."
 og_image_alt = "GIF-Zerleger - jedes Einzelbild eines GIFs als eigenes PNG"
 
 pledge = """
@@ -86,12 +86,12 @@ body = """
       oder schreibt, kommt von dieser Domain selbst und steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt und was er nicht bekommt."
+title = "Der Spenden-Button lädt nichts und bekommt nichts."
 body = """
 
-      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
-      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von
+      dieser Seite selbst gezeichnet und lädt nirgendwoher etwas. Mehr als ein
+      Link ist er nicht. Er meldet keinen Besuch, und
       über Sie oder Ihre Dateien bekommt er nichts. Es passiert nichts, solange
       Sie nicht klicken, und was Sie dann öffnen, ist die Seite von jemand
       anderem."""
@@ -197,13 +197,7 @@ a = """
 
 [[faq]]
 q = "Kann ich die Einzelbilder wieder zusammensetzen?"
-a = """
-        Ja, mit dem <a href="../gif-erstellen/">GIF-Ersteller</a> auf dieser Seite
-        oder mit allem anderen, was einen Ordner voller Bilder annimmt. Genau
-        dafür ist die <code>frames.txt</code> im ZIP da: Beim Zerlegen geht das
-        Timing verloren, weil ein PNG nirgends festhalten kann, wie lange es stand,
-        also trägt die Liste die Dauer und die Position jedes Einzelbildes mit
-        hinaus."""
+a = """ Ja. Extrahieren Sie <strong>Das Einzelbild, wie es erscheint</strong>, fügen Sie diese vollständigen PNGs dann zum <a href="../gif-erstellen/" data-workflow-target="gif-maker">GIF-Ersteller</a> hinzu und sortieren Sie sie nach Name. Nehmen Sie <code>frames.txt</code> aus dem ZIP als Referenz, wenn Sie die Standzeit jedes Einzelbildes festlegen; der GIF-Ersteller importiert die Liste nicht automatisch. Ein PNG kann seine Anzeigedauer nicht selbst mitführen. Der <a href="../ratgeber/gif-bild-fuer-bild-bearbeiten/" data-workflow-target="guides/edit-a-gif-frame-by-frame">Ratgeber zum Bearbeiten Bild für Bild</a> führt durch den Neuaufbau der Animation."""
 
 [[faq]]
 q = "In welchen Formaten lassen sich die Einzelbilder speichern?"
@@ -250,7 +244,7 @@ features = [
   "Das Einzelbild, wie es erscheint, oder nur die Pixel, die es speichert",
   "Dauer, Position, Größe und Entsorgungsart für jedes Einzelbild",
   "Jedes zweite oder fünfte Einzelbild behalten, oder die gewünschten ankreuzen",
-  "Alles in einem ZIP, wahlweise mit Zeitliste zum Wiederzusammensetzen",
+  "Ein ZIP mit optionaler Zeitliste oder ausgewählte vollständige Einzelbilder in einem PNG-Spritesheet",
   "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
 ]
 

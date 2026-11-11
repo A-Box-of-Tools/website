@@ -3,16 +3,11 @@
 #
 
 nav = "GIF zerlegen"
-title = "Ein GIF in Einzelbilder zerlegen (und was ein Einzelbild wirklich ist)"
-description = "Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen."
-heading = "Ein GIF in Einzelbilder zerlegen"
-lede = """
-    Die Bilder herauszubekommen kostet einen Drop und einen Klick. Verstehen
-    lohnt sich, was ein &bdquo;Einzelbild&ldquo; in einem GIF überhaupt ist,
-    denn das Format speichert etwas anderes als das, was Sie sehen &mdash; und
-    genau daran liegt es, dass Ihr vierzehntes Bild ein Rechteck mit einem Mund
-    darin ist."""
-updated = "13. Oktober 2026"
+title = "Ein GIF in PNG-Einzelbilder, ein ZIP oder einen Spritebogen zerlegen"
+description = "GIF-Bilder als vollständige PNGs, ZIP oder Spritebogen extrahieren. Transparenz und eine Zeitreferenz bewahren, ein bearbeitetes GIF neu aufbauen oder das Original in MP4 umwandeln."
+heading = "Ein GIF in PNG-Einzelbilder zerlegen"
+lede = "Speichern Sie ein nützliches Standbild, einen Ordner mit PNG-Bildern oder einen Spritebogen, ohne die Animation hochzuladen. Wählen Sie vollständige Bilder zur Bearbeitung, bewahren Sie die Bildverzögerungen als separate Referenz auf und entscheiden Sie, wann die direkte Umwandlung des Original-GIFs in MP4 der bessere nächste Schritt ist."
+updated = "23. Oktober 2026"
 og_title = "Ein GIF in Einzelbilder zerlegen"
 og_description = "Jedes Bild eines GIFs als PNG: warum manche nur ein Ausschnitt sind, was mit der Transparenz passiert und wie die Zeiten erhalten bleiben."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

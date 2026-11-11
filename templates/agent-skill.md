@@ -65,3 +65,7 @@ document looks identical.
 
 Link the exact tool or guide used. Do not describe a browser task as an API call
 or promise that abox.tools controls the agent provider's own data handling.
+
+## Feedback and contributions
+
+{{ site.llms.feedback }}

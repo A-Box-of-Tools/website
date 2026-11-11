@@ -1,0 +1,159 @@
+  <section>
+    <h2>Start with a shape that tracing can preserve</h2>
+    <p>
+      A fictional gardening site has a bitmap logo: one solid leaf and stem
+      on a plain background. It needs a scalable logo, a transparent PNG and
+      a favicon that remains recognisable in a browser tab. The chain is
+      <a href="../../image-to-svg/">Image to SVG</a>,
+      <a href="../../svg-to-image/">SVG to Image</a>, then
+      <a href="../../image-to-ico/">Image to ICO</a>.
+    </p>
+    <p>
+      Each tool does a different job: trace an outline, render it into pixels,
+      and package icon assets. This route suits a simple monochrome shape.
+      The tracer makes a single SVG path; it does not reconstruct a
+      full-colour logo, photograph, gradient or layered illustration. Obtain
+      original artwork when those details define the mark. If you already
+      have a good SVG, skip tracing.
+    </p>
+  </section>
+
+  <section>
+    <h2>Choose the clearest source</h2>
+    <p>
+      Use the best original bitmap available. A screenshot from a webpage
+      may contain compression marks, a tinted background or unrelated text.
+      Enlarging it does not restore missing detail. For this example the
+      leaf sits inside a square image with a margin on each side.
+    </p>
+    <p>
+      Decide what belongs in the mark. The leaf and stem belong together;
+      the gardening site's name does not need to fit inside a favicon. Keep
+      the source separately for comparison. If it is tiny or blurred, the
+      trace is an approximation, even though the resulting geometry scales.
+    </p>
+  </section>
+
+  <section>
+    <h2>Trace once and inspect the outline</h2>
+    <p>
+      Open the bitmap in <a href="../../image-to-svg/">Image to SVG</a>.
+      Compare the traced shape with the source, checking the leaf tip, the
+      join with the stem and any intentional openings. Use the foreground
+      selection and correction controls to remove stray regions; inspect
+      the result again after changing smoothing.
+    </p>
+    <p>
+      A smooth line is not automatically a faithful one. Too much smoothing
+      can turn the leaf into an oval; too little can preserve compression
+      specks as permanent geometry. The
+      <a href="../trace-an-image-into-an-svg/">tracing guide</a> explains
+      those choices. Save the accepted result as <code>leaf-master.svg</code>.
+      Make future raster sizes from this master, rather than enlarging a
+      PNG that has already been reduced.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/outline.webp" loading="lazy" decoding="async"
+           alt="Image to SVG showing a sample stencil bitmap and its traced outline side by side, with correction and smoothing controls.">
+      <figcaption>
+        The tracing controls with a sample stencil. Compare the outline and
+        openings before accepting the vector; a new file format does not
+        establish that the shape is right.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Render PNGs for specific jobs</h2>
+    <p>
+      Load <code>leaf-master.svg</code> into
+      <a href="../../svg-to-image/">SVG to Image</a>. For the square source
+      in this example, export a transparent 1024 by 1024 PNG and name it
+      <code>leaf-icon-source.png</code>. This is a working size for the
+      example, not a requirement for every logo. Keep the proportions and
+      inspect the margin; do not stretch a non-square mark to force it into
+      a square. The icon tool can pad a non-square input later.
+    </p>
+    <p>
+      Choose dimensions in the rasterizer. A separate resize is unnecessary
+      when it can render the required pixels directly. Also export a PNG
+      sized for the website's logo placement if that placement needs one,
+      and name it for its purpose, such as <code>leaf-header.png</code>.
+      Keep the SVG for places that accept vector artwork.
+    </p>
+    <p>
+      Open the exported PNGs and inspect the edges and transparency. A white
+      preview alone does not tell you whether the background is transparent.
+      The <a href="../convert-an-svg-to-png/">SVG-to-PNG guide</a>
+      explains dimensions and background choices.
+    </p>
+  </section>
+
+  <section>
+    <h2>Package the website icons</h2>
+    <p>
+      Load <code>leaf-icon-source.png</code> into
+      <a href="../../image-to-ico/">Image to ICO</a>. Choose the website
+      output and the icon sizes it needs. Keep the generated ICO, website
+      PNGs and accompanying reference files together. The
+      <a href="../make-a-favicon/">favicon guide</a> explains their roles.
+    </p>
+    <p>
+      This tool also supports Windows and macOS application icons. An ICNS
+      file belongs to that macOS workflow; a website does not need every
+      format the tool can produce. Choose outputs for their destination.
+      Generating the package does not install it: place the assets at the
+      paths your site uses and update its icon references.
+    </p>
+    <figure class="shot">
+      <img src="/screens/turn-a-bitmap-logo-into-website-assets/sizes.webp" loading="lazy" decoding="async"
+           alt="The icon tool showing a sample image at the different sizes selected for its output.">
+      <figcaption>
+        Size previews with sample artwork. Inspect the smallest icon itself,
+        not just the large source image above it.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Judge the smallest version separately</h2>
+    <p>
+      Inspect the icon at 16 by 16 pixels at its actual displayed size, then
+      check the larger versions. The leaf might look excellent at 1024 pixels
+      while its stem disappears or a narrow opening closes in the tab icon.
+      More source pixels cannot make every fine feature legible in sixteen.
+    </p>
+    <p>
+      If the small icon fails, return to the artwork and simplify it
+      deliberately. A sturdier stem or simpler silhouette is a design
+      decision; a different converter setting cannot decide the identity
+      of the mark for you. These tools do not replace a general drawing
+      editor when the artwork itself needs redesigning.
+    </p>
+    <p>
+      Check transparent outputs against both light and dark backgrounds.
+      A dark leaf may disappear on a dark surface. Prepare a deliberate
+      alternative from the source when one treatment cannot serve both,
+      then repeat the relevant exports and checks.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hand over an understandable asset set</h2>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>leaf-master.svg</code></td><td>Approved scalable artwork and source for future exports</td></tr>
+        <tr><td><code>leaf-header.png</code></td><td>Raster logo sized for its page placement</td></tr>
+        <tr><td>Website icon package</td><td>ICO and PNG assets with the website references they need</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      Keep the larger icon-source PNG with the working files. Open each final
+      output, verify dimensions, and check the installed icons on the actual
+      site, including a fresh browser visit if an old icon is cached.
+      File processing is local; publishing the outputs makes them available
+      wherever the website serves them. Use artwork you intend to publish
+      and have permission to use.
+    </p>
+  </section>

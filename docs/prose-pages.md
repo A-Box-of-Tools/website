@@ -75,9 +75,9 @@ reassuring. File processing stays in the browser; deliberate sharing, browser
 introductions, optional remote-image or exchange-rate requests and external-app
 handoffs have their own disclosures. CSP bounds destinations but cannot prove
 what goes to an allowed destination or describe WebRTC traffic. The page also
-names AdSense, Analytics, the donate button's CDN, Google Fonts and hosting,
-with their controls. Blocking those services leaves local processing usable;
-network features still need their respective connections.
+names AdSense, Analytics, the donate link and hosting, with their controls.
+Blocking those services leaves local processing usable; network features still
+need their respective connections.
 
 Private discovery groups have a separate disclosure across the built languages:
 the code reaches the rendezvous transiently inside encrypted signaling, only its
@@ -85,6 +85,11 @@ derived identifier appears in request metadata, and group membership changes
 discovery rather than granting access. The current page holds the code in memory
 only. Normal page scripts can read its fields; a private group is not a script
 isolation mechanism.
+
+A new disclosure lands in every built language in the same pull request.
+`tests/python/test_legal_parity.py` fails on a section, a heading or a link on
+Privacy, Terms or Contact that reached English alone, because a data flow the
+translations do not mention is a data flow their readers were told is not there.
 
 Two things it does **not** claim, deliberately:
 

@@ -4,14 +4,10 @@
 
 nav = "Qué hay dentro de un GIF"
 title = "Qué hay de verdad dentro de un archivo GIF (y por qué el tuyo pesa tanto)"
-description = "Fotogramas, retardos, métodos de descarte y tablas de color explicados, por qué los navegadores rechazan los retardos más rápidos, y cómo averiguar adónde se ha ido el tamaño de un GIF."
+description = "Inspecciona fotogramas, tiempos, disposición y paletas para explicar una animación GIF grande o lenta. Lee el desglose del tamaño y elige entre extraer fotogramas, editar o convertir a MP4."
 heading = "Qué hay de verdad dentro de un GIF"
-lede = """
-    Un GIF es un montón de rectángulos, cada uno con un temporizador y una tabla
-    de color, y casi todas las quejas que la gente tiene sobre el formato salen
-    de una de esas tres cosas. Esto es lo que hace cada parte, y cómo averiguar
-    en cuál se está gastando el tamaño tu archivo."""
-updated = "13 de octubre de 2026"
+lede = "Descubre qué hace que un GIF ocupe tanto, por qué una pausa se reproduce de forma distinta a su retardo guardado y qué hacen las reglas de disposición con los fotogramas transparentes. Lee el informe del analizador y decide si extraer imágenes, reconstruir la animación o convertir el original en MP4."
+updated = "23 de octubre de 2026"
 og_title = "Qué hay de verdad dentro de un archivo GIF"
 og_description = "Fotogramas, retardos, descarte y paletas: qué hace cada uno, por qué tu GIF va más lento de lo que dice, y adónde se fue su tamaño."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

@@ -7,6 +7,7 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { textImport } from './shared/text-import.js';
 import { compareText, alignRows, changeBlocks, diffWords, formatUnified, splitLines } from './diff.js';
 import { SAMPLES } from './samples.js';
+import { tablePair } from './table-pipeline.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -48,6 +49,11 @@ const download = downloadLink(el.download);
 /** The patch of the last comparison, for the copy and download buttons. */
 let result = null;
 let navigation = null;
+let pipelineFiles = null;
+let pipelineRevision = 0;
+let pipelineBusy = false;
+const pipeline = $('csv-pipeline');
+const stitchLink = $('stitch-tables');
 
 /** What the Copy button says at rest, read off the button rather than written
  *  here, so that the word it goes back to after "Copied" is the translated one
@@ -258,6 +264,10 @@ function runDiff(aText, bText) {
   result = { text: patch, name: 'changes.patch' };
   el.copy.disabled = patch === '';
   download.offer(patch, 'changes.patch');
+  if (pipeline) {
+    pipelineFiles = tablePair(aText, bText);
+    pipeline.hidden = !pipelineFiles;
+  }
 
   if (stats.identical) {
     el.resultNote.textContent = phrase('result.identical');
@@ -509,6 +519,10 @@ el.copy.addEventListener('click', async () => {
 });
 
 function clearResult() {
+  pipelineRevision += 1;
+  pipelineFiles = null;
+  if (pipeline) pipeline.hidden = true;
+  if ($('csv-pipeline-error')) $('csv-pipeline-error').hidden = true;
   el.copy.textContent = copyLabel;
   el.diffView.replaceChildren();
   el.endingNote.textContent = '';
@@ -517,6 +531,30 @@ function clearResult() {
   download.clear();
   result = null;
 }
+
+stitchLink?.addEventListener('click', async event => {
+  event.preventDefault();
+  if (pipelineBusy || !pipelineFiles) return;
+  const owner = pipelineRevision;
+  const files = pipelineFiles;
+  const current = () => owner === pipelineRevision;
+  pipelineBusy = true;
+  stitchLink.setAttribute('aria-busy', 'true');
+  try {
+    const parked = await window.aboxHandoffFiles(stitchLink.dataset.slug, files, current);
+    if (!parked || !current()) return;
+    globalThis.aboxToolComplete?.();
+    window.location.assign(stitchLink.href);
+  } catch {
+    if (!current()) return;
+    $('csv-pipeline-error').textContent = phrase('csv-pipeline.failed');
+    $('csv-pipeline-error').hidden = false;
+  } finally {
+    pipelineBusy = false;
+    stitchLink.removeAttribute('aria-busy');
+  }
+});
+window.addEventListener('pagehide', () => { pipelineRevision += 1; });
 
 /* ----------------------------------------------------------------- wording */
 

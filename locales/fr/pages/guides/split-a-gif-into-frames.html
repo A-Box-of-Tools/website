@@ -17,6 +17,12 @@
   </section>
 
   <section>
+    <h2>Choisir entre extraction, modification et vidéo</h2>
+    <p>Si le problème vient de la taille ou des temps de l’animation, examinez d’abord l’original dans l’<a href="../../analyser-un-gif/" data-workflow-target="gif-analyzer">Analyseur de GIF</a>. Les délais, les règles d’effacement et la répartition des octets aident à comprendre ce qui doit changer&nbsp;; le <a href="../ce-qu-il-y-a-dans-un-gif/" data-workflow-target="guides/whats-inside-a-gif">guide sur la structure du GIF</a> explique comment les lire.</p>
+    <p>Pour modifier un GIF, extrayez des images PNG complètes et suivez le <a href="../modifier-un-gif-image-par-image/" data-workflow-target="guides/edit-a-gif-frame-by-frame">parcours de découpage et de reconstruction</a>. Si le destinataire souhaite une vidéo, <a href="../../gif-en-mp4/" data-workflow-target="gif-to-mp4">convertissez directement l’original en MP4</a> au lieu de reconstruire une séquence PNG. La conversion conserve les délais variables&nbsp;; les zones transparentes reçoivent une couleur et le lecteur contrôle la répétition.</p>
+  </section>
+
+  <section>
     <h2>Une image utile, un dossier de montage ou une planche</h2>
     <p>Pour une étape d'animation dans des instructions ou diapositives, laissez Chaque PNG contient sur L'image telle qu'elle apparaît et téléchargez la plus claire. Gardez la transparence pour un éditeur compatible ou remplissez avec le fond du document si elle devient noire. Le fragment brut stocké n'est pas une illustration autonome.</p>
     <p>Pour une planche-contact ou référence de sprites, choisissez les images et Télécharger en une planche de sprites. Cela réunit des images visibles de taille égale en PNG, sans temps de lecture ni animation. Un long GIF peut dépasser canevas ou mémoire. Gardez moins d'images ou le ZIP avec frames.txt pour fournir images séparées et temps au prochain éditeur.</p>
@@ -48,14 +54,7 @@
       planche-contact, une vignette, une image à publier, ou des images qui
       partent dans un logiciel de montage.
     </p>
-    <p>
-      <strong>Uniquement les pixels que cette image enregistre.</strong> La
-      rustine elle-même, à sa taille, à sa position, tout ce qu'elle ne porte pas
-      restant transparent. L'image 14 fait peut-être
-      &#x2066;60&nbsp;&times;&nbsp;40&#x2069;&nbsp;pixels de bouche. C'est la vue qui explique où
-      sont passés les octets du GIF, et celle qu'il vous faut si vous modifiez
-      l'animation au lieu d'y récolter des images.
-    </p>
+    <p><strong>Uniquement les pixels que cette image enregistre.</strong> La rustine elle-même, à sa taille et à sa position, tout ce qu’elle ne contient pas restant transparent. L’image 14 représente peut-être &#x2066;60&nbsp;&times;&nbsp;40&#x2069;&nbsp;pixels de bouche. Cette vue explique où sont passés les octets du GIF. Un éditeur n’en a besoin que s’il comprend aussi la position et la règle d’effacement de chaque rustine. Pour une retouche ordinaire ou une reconstruction dans le Créateur de GIF, utilisez des images complètes.</p>
     <p>
       Quand une image enregistrée ressemble à un fragment, votre fichier n'a
       aucun problème. C'est le fichier.
@@ -142,22 +141,12 @@
       Découpez une animation en PNG et les durées disparaissent, ce qui compte dès
       l'instant où vous voulez tout remonter.
     </p>
-    <p>
-      C'est à cela que sert le <code>frames.txt</code> de l'archive. Il liste le
-      délai, la position et la taille de chaque image, de sorte que l'animation
-      peut être reconstruite dans le
-      <a href="../../creer-un-gif/">Créateur de GIF</a> ou ailleurs. Cela coûte
-      quelques kilo-octets, et il n'y a aucun moyen de le reconstituer plus tard.
-    </p>
+    <p>C’est à cela que sert le <code>frames.txt</code> de l’archive ZIP. Il indique le délai, la position et la taille de chaque image. Pour reconstruire avec le <a href="../../creer-un-gif/" data-workflow-target="gif-maker">Créateur de GIF</a>, extrayez <em>L’image telle qu’elle apparaît</em>, ajoutez ces PNG, triez-les par nom et réglez chaque durée à partir de la liste. Le Créateur de GIF n’importe pas automatiquement <code>frames.txt</code>. Conservez la liste avec les images&nbsp;; les PNG seuls ne permettent pas de retrouver les délais d’origine.</p>
     <p>
       Deux choses au sujet des délais de GIF qui prennent tout le monde de
       court&nbsp;:
     </p>
-    <p>
-      <strong>L'unité est le centième de seconde</strong>, donc le pas le plus fin
-      du format est 0,01&nbsp;s. Un GIF exactement à 30&nbsp;i/s, cela n'existe
-      pas&nbsp;: 0,03&nbsp;s par image font 33,3&nbsp;i/s et 0,04&nbsp;s font 25.
-    </p>
+    <p><strong>L’unité est le centième de seconde</strong>, donc le pas le plus fin du format est 0,01&nbsp;s. Un seul délai fixe ne peut pas représenter exactement 30&nbsp;i/s&nbsp;: 0,03&nbsp;s par image donnent 33,3&nbsp;i/s et 0,04&nbsp;s donnent 25. En combinant des durées de 0,03 et 0,04&nbsp;s, on peut atteindre la vitesse globale demandée. C’est ainsi que le Créateur de GIF traite une fréquence d’images demandée.</p>
     <p>
       <strong>Tout ce qui est sous 0,02&nbsp;s est joué à 0,10&nbsp;s.</strong>
       Les navigateurs plafonnent cela depuis les années 1990 &mdash; une règle

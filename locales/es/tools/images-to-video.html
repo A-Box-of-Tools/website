@@ -11,6 +11,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>Secuencia de render o timelapse de fotos:</strong> deja un fotograma por imagen. <strong>Presentación de fotos:</strong> elige segundos y Aplicar a todas después de añadir las imágenes. Prueba un ejemplo para ver los controles antes de elegir tus propios archivos.
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -164,6 +168,15 @@
     </div>
   </section>
 
+  <section class="card">
+    <h2>Elige el siguiente paso para tu material</h2>
+    <ul>
+      <li>¿Ya tienes un vídeo largo? Usa el <a href="../crear-timelapse/" data-workflow-target="timelapse-video">Creador de timelapse</a> para acelerar ese clip.</li>
+      <li>¿Empiezas con un GIF animado? <a href="../convertir-gif-a-mp4/" data-workflow-target="gif-to-mp4">GIF a MP4</a> lleva a un vídeo los tiempos de reproducción de sus fotogramas.</li>
+      <li>¿Necesitas un GIF animado a partir de tus imágenes fijas? Usa el <a href="../crear-gif/" data-workflow-target="gif-maker">Creador de GIF</a>.</li>
+    </ul>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -244,10 +257,10 @@
     <span data-phrase="net.dirty">se han cargado imágenes desde {hosts},
       direcciones que pegaste tú mismo. {platform}</span>
     <span data-phrase="net.platform.one">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       host; a ninguno se le ha dado un archivo.</span>
     <span data-phrase="net.platform.many">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       hosts; a ninguno se le ha dado un archivo.</span>
     <span data-phrase="url.invalid">No es una dirección web válida: {address}</span>
     <span data-phrase="url.protocol">Solo se admiten direcciones http y https (se recibió {protocol}).</span>

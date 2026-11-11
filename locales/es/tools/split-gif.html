@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> Elige un GIF</h2>
 
+    <p class="card-lede">
+      Guarda una imagen fija para unas instrucciones, extrae fotogramas PNG para editarlos o crea una hoja de sprites. Deja <strong>Cada PNG guarda</strong> en <strong>El fotograma tal como aparece</strong> para obtener imágenes completas. La <a href="../guias/separar-un-gif-en-fotogramas/" data-workflow-target="guides/split-a-gif-into-frames">guía para extraer fotogramas de un GIF</a> explica las opciones.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -107,6 +111,16 @@
     <ul class="frames" id="frames"></ul>
   </section>
 
+  <section class="card">
+    <h2>Usa los fotogramas en tu siguiente paso</h2>
+    <p>
+      Para reconstruir una animación editada, añade los fotogramas PNG completos al <a href="../crear-gif/" data-workflow-target="gif-maker">Creador de GIF</a>, ordénalos por nombre y fija cada duración con <code>frames.txt</code> como referencia. La lista de tiempos no se importa automáticamente. Sigue la <a href="../guias/editar-un-gif-fotograma-a-fotograma/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guía para editar fotograma a fotograma</a> para ver el proceso completo.
+    </p>
+    <p>
+      Si solo necesitas un vídeo, <a href="../convertir-gif-a-mp4/" data-workflow-target="gif-to-mp4">convierte directamente el GIF original a MP4</a> para conservar sus retardos variables. Comprueba tiempos o tamaños inesperados en el <a href="../analizar-gif/" data-workflow-target="gif-analyzer">Analizador de GIF</a> antes de editar.
+    </p>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -188,10 +202,10 @@
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
       herramienta no hace nunca. {platform}</span>
     <span data-phrase="net.platform.one">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       host; a ninguno se le ha dado un archivo.</span>
     <span data-phrase="net.platform.many">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       hosts; a ninguno se le ha dado un archivo.</span>
   </div>
 </main>

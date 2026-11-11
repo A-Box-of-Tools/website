@@ -11,6 +11,10 @@
   <section class="card">
     <h2>GIFを選ぶ</h2>
 
+    <p class="card-lede">
+      アニメーションのコマのタイミング、破棄方法、パレット、ファイルサイズを、ファイルを変更せずに確認できます。<a href="../guides/whats-inside-a-gif/" data-workflow-target="guides/whats-inside-a-gif">GIF解析ガイド</a>では、GIFが大きい、遅い、跡が残るといった場合の結果の読み方を説明しています。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -152,6 +156,16 @@
       絵を持たないブロックです。表示ソフトはすべて読み飛ばしますが、ファイルのコピーはそれでも毎回それを運びます。
     </p>
     <ul class="extras" id="extras"></ul>
+  </section>
+
+  <section class="card">
+    <h2>解析のあとで</h2>
+    <p>
+      個別の画像が必要ですか。<a href="../split-gif/" data-workflow-target="split-gif">コマをPNGまたはスプライトシートとして取り出せます</a>。アニメーションを変更するには、タイミング一覧を参考にしながら<a href="../guides/edit-a-gif-frame-by-frame/" data-workflow-target="guides/edit-a-gif-frame-by-frame">分解と再構築のガイド</a>に従ってください。
+    </p>
+    <p>
+      動画が必要ですか。<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">元のGIFを直接MP4に変換すれば</a>、PNGから作り直さなくてもコマごとに異なる遅延を保てます。透明な部分には色が付き、ループするかどうかは動画プレーヤーによります。
+    </p>
   </section>
 
   <!--
@@ -395,8 +409,8 @@
     <span data-phrase="find.broken.body.short">コマが埋まる前に圧縮データが終わっています。ビューアーは描ける分だけ描き、長方形の残りは空のままにします。</span>
     <span data-phrase="net.clean">GIFはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
-    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
-    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.one">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
     <span data-phrase="extension.plaintext">ただの文字列</span>
     <span data-phrase="extension.comment">コメント</span>
     <span data-phrase="extension.unknown">拡張ブロック{code}</span>

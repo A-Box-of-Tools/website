@@ -28,6 +28,19 @@
   </section>
 
   <section>
+    <h2>Feedback you choose to send</h2>
+    <p>
+      The separate <a href="https://feedback.abox.tools/" target="_blank" rel="noopener noreferrer">feedback form and agent endpoint</a> accept messages without a login or email address. Submitting sends the message and any optional page, agent/browser details or reply address through Cloudflare to the maintainer&rsquo;s email inbox. This is a deliberate message, separate from files processed in a tool and from the fixed feedback votes described below.
+    </p>
+    <p>
+      The service accepts text only, never attachments, and does not fetch submitted links. Emails show the self-declared sender type and the submission format separately; neither verifies a person or agent&rsquo;s identity. The connection address is used for platform limits and a keyed network identifier, without adding the address to the report. A private abuse ledger holds keyed network and message/page identifiers, attempt times, delivery status and receipts, not message text, page addresses, reply addresses, environment details or raw IP addresses. Report records expire after 24 hours; network records expire after a day without activity. Expired records and older attempt times are cleaned hourly. Cloudflare may retain underlying service backups under its own policies.
+    </p>
+    <p>
+      Cloudflare and the email provider handle connection and delivery metadata. Application request-body logging is disabled. Actual reports stay in the email inbox for handling and follow-up; an optional reply address is used to answer the message. Duplicate suppression, a network cooldown and rolling network and global budgets reduce repeated email. Do not include private files, credentials or conversation transcripts.
+    </p>
+  </section>
+
+  <section>
     <h2>Features that deliberately use a connection</h2>
     <p>
       <a href="../images-to-video/">Images to Video</a> can fetch an image from a web address you supply. That server receives your IP address and the requested URL, including query parameters. The image is copied into local memory and re-encoded for processing. This request does not send files selected from your device.
@@ -55,7 +68,7 @@
     <h2>What is collected, and by whom</h2>
     <p>
       This site is free and is paid for by advertising. That means two Google
-      products run on these pages, and a donate button runs on most of them.
+      products run on these pages.
       Here is the whole list.
     </p>
 
@@ -92,15 +105,13 @@
       Optional feedback records the fixed tool identifier, a fixed up or down answer and a fixed reason after you choose an answer. There is no free-text field. The tools attach no files, filenames, contents, entered text, counts, sizes, dimensions, formats, settings, error messages or other input or output details to these records. We can view aggregate Analytics reports. Blocking Analytics leaves local processing available, including offline use once the tool's cache is ready.
     </p>
 
-    <h3>Buy Me a Coffee &mdash; the donate button</h3>
+    <h3>Buy Me a Coffee &mdash; the donate link</h3>
     <p>
-      The hub page and the tool pages carry a donate button, which loads from
-      Buy Me a Coffee's servers. Loading it means their CDN sees your IP address
-      and that you were on this site, and the button's lettering is fetched from
-      Google Fonts, which likewise sees your IP address. Nothing else is sent,
-      and nothing further happens unless you actually click it, at which point
-      you are on their site under their policies. This page and the
-      <a href="../terms/">Terms page</a> do not draw the button.
+      The hub page and the tool pages carry a donate link to Buy Me a Coffee.
+      This site draws the link itself, so showing it loads nothing from them or
+      from a font service, and neither sees your visit. They hear from you only
+      if you click it, at which point you are on their site under their
+      policies.
     </p>
 
     <h3>Hosting</h3>
@@ -142,7 +153,7 @@
 
     <h3>Local Walkie-Talkie</h3>
     <p>
-      <a href="../walkie-talkie/">Local Walkie-Talkie</a> hosts directly in the website without Python or a download. Opening the page connects securely to our rendezvous for nearby discovery. Starting or joining adds a channel connection for authentication, setup and availability checks. Make this channel discoverable publishes its name and listener invitation to browsers grouped by public IPv4 address or IPv6 /64 subnet and page origin. Shared gateways can include strangers and VPNs can hide nearby devices; this is not a physical Wi-Fi scan. Hosts can turn the option off before starting to keep invitations link-only. Hiding or ending the host withdraws the listing. Live voice travels from the host browser to up to ten receive-only browsers using encrypted WebRTC, directly by default or through the explicitly chosen Cloud relay; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key. Active recovery state stays in per-tab session storage; the browser also retains a random personal key locally for return visits to the same session. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and a working chosen route can request to join. Host approval is required by default before listening; hosts can turn it off. Approved browsers may rejoin the same host session unless removed. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
+      <a href="../walkie-talkie/">Local Walkie-Talkie</a> hosts directly in the website without Python or a download. Opening the page connects securely to our rendezvous for nearby discovery. Starting or joining adds a channel connection for authentication, setup and availability checks. Make this channel discoverable publishes its name and listener invitation to browsers grouped by public IPv4 address or IPv6 /64 subnet and page origin. Shared gateways can include strangers and VPNs can hide nearby devices; this is not a physical Wi-Fi scan. Hosts can turn the option off before starting to keep invitations link-only. Hiding or ending the host withdraws the listing. Live voice travels from the host browser to up to ten receive-only browsers using encrypted WebRTC, directly by default or through the explicitly chosen Cloud relay; the rendezvous receives no audio and writes no room history. Temporary room state lives on open connections. Cloudflare retains seven-day invocation metadata logs including the room identifier, address and timing. Host and listener keys differ and travel in secure message payloads, not request URLs. Listener invitations carry a fragment key. Active recovery state stays in per-tab session storage; the browser also retains a random personal key locally for return visits to the same session. The site's regular page scripts can read its address and browser storage; removing a fragment after saving it does not isolate them. Anyone with a listener invitation and a working chosen route can request to join. Host approval is required by default before listening; hosts can turn it off. Approved browsers may rejoin the same host session until the host ends it; there is no control to remove one listener. Direct configures no STUN or TURN; Cloud relay uses TURN. There is no recording feature. Internet pairing is required; VPN and operating-system routes can affect direct reachability without proving a physical LAN boundary. A recipient can independently record audio.
     </p>
 
     <h3>Voice Oncall</h3>
@@ -194,7 +205,7 @@
       </li>
     </ul>
     <p>
-      Blocking advertising, Analytics and the donate button leaves local processing available. Once a tool's offline cache is ready, its local processing works disconnected. Web-image imports, online rates, browser introductions and delivery through another app need their respective connections. No processing feature is withheld behind an ad.
+      Blocking advertising and Analytics leaves local processing available. Once a tool's offline cache is ready, its local processing works disconnected. Web-image imports, online rates, browser introductions and delivery through another app need their respective connections. No processing feature is withheld behind an ad.
     </p>
   </section>
 

@@ -38,8 +38,8 @@ roadmap_group = "beyond"
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks", "paired-tools"]
 supports_relay = true
-js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "help-tooltip", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "peer-admission", "room-names"]
-lastmod = "2026-10-17"
+js_parts = ["peer-transport", "peer-transport-ui", "connection-diagnostics", "peer-pairing", "peer-endpoint", "foreground-recovery", "clipboard-feedback", "peer-network", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-join", "peer-approval-ui", "peer-admission", "room-names", "peer-host-claim"]
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -148,7 +148,10 @@ body = """
       a link name with the person sharing under it, forwards a few kilobytes
       of connection negotiation between them, and holds nothing: no storage
       is ever written, and a room ceases to exist the moment the sharer
-      disconnects. It can see that a name is in use, when peers come and go,
+      disconnects.
+      If a sharer's connection is lost rather than closed, it keeps only their
+      name reserved, in memory, for at most two minutes, so their retry can
+      reclaim it. It can see that a name is in use, when peers come and go,
       and their IP addresses. It cannot see the text, the files, who was let
       in, or what anybody said &mdash; even the knock on a private share
       travels the encrypted peer channel. Its entire source is in the
@@ -196,7 +199,7 @@ body = """
 [[privacy]]
 title = "What Google loads, and what it is not given."
 body = """ The ad and measurement
-      scripts come from Google, and the donate button from Buy Me a Coffee.
+      scripts come from Google.
       None of them is handed the text, the files, their names or sizes, or
       who connected. The exception is this page's own address: a reader's
       link carries the link name in it, and the ad script reads the address.

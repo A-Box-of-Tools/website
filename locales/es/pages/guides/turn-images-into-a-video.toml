@@ -8,17 +8,14 @@
 
 nav = "Imágenes en un vídeo"
 
-title = "Cómo convertir una carpeta de imágenes en un vídeo"
-description = "Haz un pase de diapositivas en MP4 con tus fotos: qué controlan de verdad la cadencia y la duración, qué hacer con las imágenes que tienen otra forma, y por qué el resultado no lleva banda sonora."
+title = "De secuencia de imágenes a MP4: renderizados, vídeo acelerado o diapositivas"
+description = "Convierte fotogramas renderizados numerados o fotografías de vídeo acelerado a MP4, o crea una presentación. Elige la duración en fotogramas o segundos, revisa el orden y evita recortes o tiempos incorrectos."
 
-heading = "Cómo convertir una carpeta de imágenes en un vídeo"
-lede = """
-    Un pase de diapositivas es fácil de hacer y fácil de tener que renderizar dos
-    veces, porque hay dos ajustes que no significan lo que parece. Aquí va lo que
-    controla cada uno y cuál elegir."""
+heading = "Convierte una secuencia de imágenes o una presentación de fotos a MP4"
+lede = "Una secuencia renderizada necesita una imagen por fotograma de vídeo; una presentación necesita tiempo para mirar cada fotografía. Empieza por esa elección y revisa el orden, las dimensiones y la duración antes de codificar en tu dispositivo."
 
-updated = "13 de octubre de 2026"
+updated = "23 de octubre de 2026"
 
-og_title = "Cómo convertir una carpeta de imágenes en un vídeo"
-og_description = "Qué controlan de verdad la cadencia y la duración, qué hacer con las imágenes que tienen otra forma, y por qué no hay banda sonora."
+og_title = "De secuencia de imágenes o presentación a MP4"
+og_description = "Elige fotogramas o segundos, ordena las imágenes y comprueba el vídeo antes de compartirlo. Sin subir archivos para procesarlos."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

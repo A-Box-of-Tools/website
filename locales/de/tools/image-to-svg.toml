@@ -96,7 +96,7 @@ body = """
 title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
-      Messskripte kommen von Google, der Spendenknopf von Buy Me a Coffee.
+      Messskripte kommen von Google.
       Keines davon bekommt irgendetwas über Ihr Bild in die Hand. Jede Zeile,
       die es liest, schwellt oder nachzeichnet, wird von diesem Ursprung
       ausgeliefert und steht im Repository."""

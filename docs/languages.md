@@ -260,7 +260,10 @@ checks are structure — the same ids, `data-phrase` keys and `{blank}`
 placeholders as the English body, the same array lengths and `<code>`
 contents in the toml — and those are faults: a page with one of them shows a
 raw key or a broken control in that language, and a phrase key it reports is
-the same one CI's tests will refuse. The other half are each language's house
+the same one CI's tests will refuse. On the legal pages the structure half is
+a gate as well: `tests/python/test_legal_parity.py` runs the same comparison over
+Privacy, Terms and Contact and fails on a section, a heading or a link that
+English has and a translation lacks. The other half are each language's house
 style as regular expressions, taken from the top of its `locale.toml`, and
 those are places to look rather than orders. `--built` points it at a build's
 output and adds the one check that cannot be made from the source: a space
@@ -327,6 +330,16 @@ A module too deep to reach the page returns a **key** rather than a sentence,
 and whoever has the DOM resolves it — `qr-barcode-reader/src/camera.js` is the
 worked example. That also keeps the module unit-testable: a key is a value to
 assert on, and a translated sentence is not.
+
+The words a page has to *read* belong there as well. `number-explorer`'s
+`count.words` phrase lists the number words its box accepts, language by
+language, because "1 Billion" is a thousand times larger in German than
+"1 billion" is in English and a list in the JavaScript would have had to pick.
+Its tests read the list out of each locale's markup, so a word that stops
+parsing is a failure rather than something a visitor finds. Its `count.names`
+phrase is the same idea in the other direction: the words the page writes once
+`Intl` has run out of its own, so 10²¹ can be "sextillion" in English,
+"Trilliarde" in German and "10 万亿亿" in Chinese.
 
 **Done:** the frame's seven, in every language — the four "Offline:" lines,
 what the window's error handlers say, and the drop zone's "Reading 3 files…".

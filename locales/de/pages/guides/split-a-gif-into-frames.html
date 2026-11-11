@@ -17,9 +17,15 @@
   </section>
 
   <section>
+    <h2>Zwischen Extraktion, Bearbeitung und Video wählen</h2>
+    <p>Wenn Größe oder Timing der Animation das Problem sind, prüfen Sie das Original zuerst im <a href="../../gif-analysieren/" data-workflow-target="gif-analyzer">GIF-Analyse</a>. Bildverzögerungen, Aufräumregeln und Byteverteilung helfen zu erkennen, was geändert werden muss. Der <a href="../was-steckt-in-einem-gif/" data-workflow-target="guides/whats-inside-a-gif">Ratgeber zum GIF-Aufbau</a> erklärt, wie Sie diese Angaben lesen.</p>
+    <p>Für ein bearbeitetes GIF extrahieren Sie vollständige PNG-Bilder und folgen dem <a href="../gif-bild-fuer-bild-bearbeiten/" data-workflow-target="guides/edit-a-gif-frame-by-frame">Ablauf zum Aufteilen und Neuaufbauen</a>. Wenn das Ziel ein Video verlangt, <a href="../../gif-in-mp4-umwandeln/" data-workflow-target="gif-to-mp4">wandeln Sie das Original direkt in MP4 um</a>, statt eine PNG-Folge neu zusammenzusetzen. Die Umwandlung erhält unterschiedliche Bildverzögerungen; transparente Bereiche bekommen eine Farbe, und der Player steuert die Wiederholung.</p>
+  </section>
+
+  <section>
     <h2>Ein Standbild, ein Bearbeitungsordner oder ein Bogen</h2>
-    <p>Lassen Sie für einen Animationsschritt in Anleitung oder Folie Jedes PNG enthält auf Der Frame wie angezeigt und laden den klarsten aus dem Raster. Behalten Sie Transparenz für geeignete Editoren oder füllen mit Dokumenthintergrund, wenn transparente Bereiche sonst schwarz werden. Der gespeicherte rohe Bildausschnitt ist keine eigenständige Illustration.</p>
-    <p>Wählen Sie für Kontaktbogen oder Sprite-Referenz Frames und Als einen Spritebogen herunterladen. Gleich große sichtbare Frames landen in einem PNG ohne Zeiten oder Animation. Ein langes GIF kann Canvas- oder Speicherlimits überschreiten. Behalten Sie weniger Frames oder nutzen ZIP mit frames.txt für Einzelbilder und Zeiten im nächsten Editor.</p>
+    <p>Um einen Animationsschritt in einer Anleitung oder auf einer Folie zu zeigen, lassen Sie „Jedes PNG enthält“ auf „Das Einzelbild, wie es erscheint“ stehen und laden das klarste Bild aus dem Raster herunter. Behalten Sie Transparenz für einen Editor bei, der sie unterstützt. Füllen Sie transparente Bereiche andernfalls mit der Hintergrundfarbe des Dokuments, wenn dessen Bildverarbeitung sie schwarz darstellt. Der gespeicherte rohe Bildausschnitt ist keine eigenständige Illustration.</p>
+    <p>Wählen Sie für einen Kontaktbogen oder eine Sprite-Animationsreferenz die Bilder aus und anschließend „Als ein Spritesheet herunterladen“. So werden gleich große sichtbare Bilder in einem PNG angeordnet; Wiedergabezeiten oder eine Animation enthält es nicht. Ein langes GIF kann einen Bogen erzeugen, der die Canvas- oder Arbeitsspeichergrenze überschreitet. Behalten Sie weniger Bilder oder verwenden Sie das ZIP mit frames.txt, wenn der nächste Editor separate Bilder und deren Zeiten benötigt.</p>
   </section>
 
   <section>
@@ -47,14 +53,7 @@
       Voreinstellung, und das wollen Sie für eine Übersicht, ein Vorschaubild,
       ein Standbild zum Posten oder für Bilder, die in einen Videoschnitt gehen.
     </p>
-    <p>
-      <strong>Nur die Pixel, die dieses Bild speichert.</strong> Der Flicken
-      selbst, in seiner eigenen Größe, an seiner eigenen Stelle, und alles, was
-      er nicht trägt, bleibt transparent. Bild 14 sind dann vielleicht
-      &#x2066;60&nbsp;&times;&nbsp;40&#x2069; Pixel Mund. Das ist die Ansicht, die erklärt, wohin
-      die Bytes eines GIFs gegangen sind, und die Sie wollen, wenn Sie die
-      Animation bearbeiten und nicht Bilder daraus ernten.
-    </p>
+    <p><strong>Nur die Pixel, die dieses Bild speichert.</strong> Der Flicken selbst, in seiner eigenen Größe, an seiner eigenen Stelle; alles, was er nicht enthält, bleibt transparent. Bild 14 besteht vielleicht aus &#x2066;60&nbsp;&times;&nbsp;40&#x2069; Pixeln eines Mundes. Diese Ansicht erklärt, wohin die Bytes eines GIFs gegangen sind. Ein Editor braucht sie nur, wenn er auch Position und Aufräumregel jedes Flickens versteht. Für gewöhnliche Bildbearbeitung oder den Neuaufbau im GIF-Ersteller verwenden Sie vollständige Bilder.</p>
     <p>
       An Ihrer Datei ist nichts falsch, wenn ein gespeichertes Bild wie ein
       Fetzen aussieht. Das ist die Datei.
@@ -142,21 +141,11 @@
       Zerlegen Sie eine Animation in PNGs, sind die Zeiten weg &mdash; und das
       zählt in dem Moment, in dem Sie sie wieder zusammensetzen wollen.
     </p>
-    <p>
-      Dafür ist die <code>frames.txt</code> im ZIP da. Sie führt Verzögerung,
-      Position und Größe jedes Bildes auf, sodass die Animation im
-      <a href="../../gif-erstellen/">GIF-Ersteller</a> oder anderswo wieder
-      aufgebaut werden kann. Sie kostet ein paar Kilobyte, und es gibt keine
-      Möglichkeit, sie später zu rekonstruieren.
-    </p>
+    <p>Dafür ist die <code>frames.txt</code> im ZIP da. Sie führt Verzögerung, Position und Größe jedes Bildes auf. Für den Neuaufbau mit dem <a href="../../gif-erstellen/" data-workflow-target="gif-maker">GIF-Ersteller</a> extrahieren Sie <em>Das Einzelbild, wie es erscheint</em>, fügen diese PNGs hinzu, sortieren nach Namen und stellen jede Haltezeit anhand der Liste ein. Der GIF-Ersteller importiert <code>frames.txt</code> nicht automatisch. Bewahren Sie die Liste bei den Bildern auf; aus den PNGs allein lassen sich die ursprünglichen Verzögerungen nicht wiederherstellen.</p>
     <p>
       Zwei Dinge über GIF-Verzögerungen, die alle erwischen:
     </p>
-    <p>
-      <strong>Die Einheit sind Hundertstelsekunden</strong>, der feinste Schritt
-      des Formats ist also 0,01&nbsp;s. Ein exakt 30&nbsp;fps schnelles GIF gibt
-      es nicht; 0,03&nbsp;s pro Bild sind 33,3&nbsp;fps und 0,04&nbsp;s sind 25.
-    </p>
+    <p><strong>Die Einheit sind Hundertstelsekunden</strong>, der feinste Schritt des Formats ist also 0,01&nbsp;s. Mit einer einzigen festen Verzögerung sind exakt 30&nbsp;fps nicht darstellbar: 0,03&nbsp;s pro Bild sind 33,3&nbsp;fps und 0,04&nbsp;s sind 25. Gemischte Haltezeiten von 0,03 und 0,04&nbsp;s können die gewünschte Gesamtgeschwindigkeit erreichen. So setzt der GIF-Ersteller eine angeforderte Bildrate um.</p>
     <p>
       <strong>Alles unter 0,02&nbsp;s wird mit 0,10&nbsp;s abgespielt.</strong>
       Browser deckeln das seit den 1990ern &mdash; eine Regel, geschrieben für
@@ -174,9 +163,9 @@
     <p>
       Die Bilder kommen als <code>name-001.png</code>, <code>name-002.png</code>
       heraus, ab eins gezählt und auf die Breite der letzten Zahl aufgefüllt. Das
-      ist keine Verzierung: <code>bild9.png</code> sortiert in jedem
+      ist keine Verzierung: <code>frame9.png</code> sortiert in jedem
       Dateimanager und in den meisten Programmen, die eine Sequenz importieren,
-      <em>hinter</em> <code>bild10.png</code>, weil sie Text sortieren und nicht
+      <em>hinter</em> <code>frame10.png</code>, weil sie Text sortieren und nicht
       Zahlen. Aufgefüllte Namen sortieren überall richtig, und jedes
       Schnittprogramm, das eine Bildsequenz importiert, erwartet sie.
     </p>

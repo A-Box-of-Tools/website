@@ -5,6 +5,10 @@
 {{ llms.intro }}
 
 [Browser workflow skill]({{ site.domain }}.well-known/agent-skills/{{ site.agents.name }}/SKILL.md)
+
+## Feedback and contributions
+
+{{ llms.feedback }}
 {% for group in groups %}
 ## {{ group.name }}
 

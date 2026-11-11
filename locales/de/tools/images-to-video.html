@@ -11,6 +11,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>Render-Sequenz oder Foto-Zeitraffer:</strong> ein Einzelbild pro Bild beibehalten. <strong>Foto-Diashow:</strong> nach dem Hinzufügen der Bilder Sekunden wählen und &bdquo;Auf alle anwenden&ldquo; drücken. Probieren Sie ein Beispiel aus, um die Bedienelemente zu prüfen, bevor Sie eigene Dateien wählen.
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -165,6 +169,15 @@
     </div>
   </section>
 
+  <section class="card">
+    <h2>Den nächsten Schritt für Ihr Material wählen</h2>
+    <ul>
+      <li>Haben Sie schon ein langes Video? Mit dem <a href="../zeitraffer-erstellen/" data-workflow-target="timelapse-video">Zeitraffer-Generator</a> beschleunigen Sie diesen Clip.</li>
+      <li>Beginnen Sie mit einem animierten GIF? <a href="../gif-in-mp4-umwandeln/" data-workflow-target="gif-to-mp4">GIF zu MP4</a> überträgt das abgespielte Timing der Einzelbilder in ein Video.</li>
+      <li>Brauchen Sie aus Ihren Standbildern ein animiertes GIF? Nehmen Sie den <a href="../gif-erstellen/" data-workflow-target="gif-maker">GIF-Ersteller</a>.</li>
+    </ul>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -246,10 +259,10 @@
     <span data-phrase="net.dirty">Bilder wurden von {hosts} geholt - Adressen,
       die Sie selbst eingefügt haben. {platform}</span>
     <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
-      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines
+      Werbung und Messung kamen von {hosts} Host; keines
       davon hat eine Datei bekommen.</span>
     <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
-      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
+      Werbung und Messung kamen von {hosts} Hosts; keines
       davon hat eine Datei bekommen.</span>
     <span data-phrase="url.invalid">Keine gültige Webadresse: {address}</span>
     <span data-phrase="url.protocol">Nur http- und https-Adressen werden unterstützt (erhalten: {protocol}).</span>

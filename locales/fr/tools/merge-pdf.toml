@@ -60,8 +60,8 @@ title = "Ce que Google charge, et ce qu'on ne lui donne pas."
 body = "Les scripts publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit quoi que ce soit sur vos documents&nbsp;: ni un fichier, ni une page, ni un nom, une taille ou un nombre de pages. Chaque ligne qui lit, copie ou écrit un PDF est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
-title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
-body = "Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par un script de cdnjs.buymeacoffee.com et prend sa typographie sur Google Fonts. Ce n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et ne reçoit rien sur vous ni sur vos documents. Rien ne se produit tant que vous ne cliquez pas, et ce sur quoi vous cliqueriez alors est le site de quelqu'un d'autre."
+title = "Le bouton de don ne charge rien et ne reçoit rien."
+body = "Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par la page elle-même et ne charge rien de nulle part. Ce n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et ne reçoit rien sur vous ni sur vos documents. Rien ne se produit tant que vous ne cliquez pas, et ce sur quoi vous cliqueriez alors est le site de quelqu'un d'autre."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."

@@ -1,0 +1,17 @@
+# This workflow joins tools that already have their own reference guides.
+# Omitting tool keeps their existing guide links intact.
+
+slug = "guides/prepare-a-reimbursement-pdf-and-csv"
+kind = "guide"
+nav = "Prepare a reimbursement PDF and CSV from receipt photos"
+group = "workflows"
+title = "Prepare a reimbursement PDF and CSV from receipt photos"
+description = "Review receipt photos, then use the cleaned images and checked fields to make a matching reimbursement PDF and CSV."
+heading = "Prepare a reimbursement PDF and CSV from receipt photos"
+lede = "A reimbursement request often needs readable receipts and a list of expenses. Start with one reviewed set of photos so the PDF and CSV describe the same documents in the same order."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Prepare a reimbursement PDF and CSV from receipt photos"
+og_description = "Review receipt photos, then use the cleaned images and checked fields to make a matching reimbursement PDF and CSV."
+og_image_alt = "abox.tools - browser tools for local file processing"

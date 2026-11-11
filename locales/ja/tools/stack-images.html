@@ -11,6 +11,10 @@
   <section class="card">
     <h2><span class="step">1</span> フレームを選ぶ</h2>
 
+    <p>
+      同じ場面の写真を2枚以上追加するか、例を試してノイズのあるコマとスタック結果を比べてください。ご自身の写真では露出と構図をそろえてください。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -45,13 +49,19 @@
   <section class="card">
     <h2><span class="step">2</span> どうまとめるか</h2>
 
+    <ul class="note">
+      <li><strong>ノイズを減らす：</strong>安定した連写なら、平均と自動の位置合わせから始めます。</li>
+      <li><strong>動く人を消す：</strong>中央値を使います。背景が半分より多くのコマで見えている必要があります。</li>
+      <li><strong>星の軌跡を作る：</strong>比較明を使い、空の動きを残すために位置合わせを「しない」にします。</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">手法</label>
         <select id="mode">
           <option value="mean" selected>平均｜ノイズを下げる</option>
           <option value="median">中央値｜人や通り過ぎる車を消す</option>
-          <option value="sigma">シグマクリッピング｜両方いちどに</option>
+          <option value="sigma">シグマクリッピング｜ノイズを下げ、外れ値を除く</option>
           <option value="max">比較明｜星の軌跡、花火、ライトペインティング</option>
           <option value="min">比較暗｜動いた明るいものを消す</option>
           <option value="sum">加算｜加算合成</option>
@@ -201,6 +211,9 @@
           <summary>位置合わせの詳細</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          保存する前に、細かい輪郭と滑らかな部分を100%で確認してください。スタックが甘く見えるときは、位置合わせの詳細を確認し、怪しいコマを外してもう一度スタックしてください。ダウンロードの横のリンクから、この結果をこのブラウザー内でそのままリサイズや圧縮のツールへ渡せます。
+        </p>
         <a id="download" class="primary as-button" download>画像をダウンロード</a>
       </div>
     </div>
@@ -294,8 +307,8 @@
 
     <span data-phrase="net.clean">写真はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
-    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真は渡っていません。</span>
-    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真は渡っていません。</span>
+    <span data-phrase="net.platform.one">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真は渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真は渡っていません。</span>
     <span data-phrase="error.unsupported">このブラウザには、このツールの描画に必要なOffscreenCanvasがありません。Chrome、Edge、Firefox 105、Safari 16.4以降には備わっています。</span>
   </div>
 </main>

@@ -1,0 +1,105 @@
+#
+# Explorador de números - Portuguese (Brazil).
+#
+# Overrides for tools/number-explorer/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Every figure here was carried over by value. In Brazil a bilhão is 10^9 and a
+# trilhão is 10^12, as in English; the bilião of European Portuguese is a
+# thousand times larger, and the input box refuses it rather than guessing.
+#
+
+name = "Explorador de números"
+heading = "Explorador&nbsp;de&nbsp;números <span class=\"h1-kw\">&mdash; imagine um milhão, um bilhão e muito mais</span>"
+tagline = "Digite qualquer número e veja-o crescer: uma pilha de livros, um jorro de água, um céu de estrelas, um monte de areia, uma contagem muito longa."
+
+title = "Visualizador de números &mdash; entenda milhões e bilhões &mdash; grátis e offline"
+description = "Veja o tamanho real de um número. Ele cresce como uma pilha de livros, um jorro de água, um céu de estrelas, um monte de areia e o tempo que se leva para contá-lo, ao lado de marcos do Monte Everest à Via Láctea. Grátis e offline."
+og_title = "Como é um bilhão?"
+og_description = "Transforme um número enorme em algo que dá para ver: livros, água, estrelas, areia e tempo, com suposições claras e sem IA nem envio."
+og_image_alt = "Explorador de números - imagine números grandes como livros, água, estrelas, areia e tempo"
+
+pledge = "Uma comparação é uma quantidade, uma referência escolhida e um pouco de aritmética, tudo dentro desta página. Não há serviço de IA para consultar nem entrada para enviar. Livros, água, estrelas, areia e tempo de contagem ficam separados, e suas suposições estão escritas ao lado do resultado, não escondidas atrás da imagem."
+live_hint = "Mude o número com a aba Rede aberta. A calculadora não faz nenhuma requisição. Carregue a página uma vez, desconecte e continue explorando."
+read_first = ", <code>src/scale.js</code> para a leitura da quantidade, os modelos e os marcos, <code>src/containers.js</code> para o que uma área colorida mede, <code>src/stage.js</code> e os arquivos <code>src/scene-*.js</code> para as imagens, e <code>src/main.js</code> para ver como a página se conecta."
+howto_heading = "Como imaginar um número grande"
+card = "Qual é a altura de uma pilha de um bilhão de livros? Quanta água é um bilhão de gotas? Digite qualquer número e veja-o virar livros, água, estrelas, areia e tempo, com as suposições à vista."
+
+[words]
+plural = "números e comparações"
+choose = "um número"
+
+[[facts]]
+text = "Funciona offline"
+[[facts]]
+text = "Sem custo de IA ou API"
+[[facts]]
+text = "Suposições claras"
+[[facts]]
+text = "Salve a imagem"
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "A calculadora roda neste navegador."
+body = "O código de processamento da ferramenta calcula os resultados e desenha as imagens localmente. Ele não envia nenhuma entrada nem resultado a nenhum serviço. A Content-Security-Policy restringe os destinos de conexão, mas não inspeciona o conteúdo; compare o código-fonte com a aba Rede, ou use a calculadora desconectado."
+[[privacy]]
+title = "Não há modelo nem consulta em tempo real."
+body = "Os marcos e as fórmulas vêm com esta página. As comparações são escolhidas com aritmética sobre esse catálogo. Os links das fontes só abrem quando você decide lê-los."
+[[privacy]]
+title = "O que você digita fica na página."
+body = "A calculadora não grava nenhuma entrada no armazenamento nem na barra de endereços. Recarregar recomeça a exploração. Uma imagem salva é um arquivo que você guarda de propósito no seu dispositivo."
+[[privacy]]
+title = "Os outros scripts do site têm seus próprios limites."
+body = "A estrutura da página pode carregar scripts de anúncios e medição. A calculadora não envia a eles suas entradas nem seus resultados. O painel de rede ao vivo informa as conexões da página."
+
+[[howto]]
+title = "Digite um número ou arraste o controle."
+body = "Experimente um bilhão, 1,5 bi ou 3 trilhões. São aceitos números inteiros de zero a 1 nonilhão. O controle se move por potências de dez, e a imagem acompanha enquanto você arrasta."
+[[howto]]
+title = "Escolha livros, água, estrelas, areia ou tempo."
+body = "Cada um representa o mesmo número de outra forma e diz o que é cada unidade. Em livros, cada um também pode ser uma palavra ou um token de texto de IA, e aí a quantidade vira uma extensão de texto."
+[[howto]]
+title = "Veja crescer e compare."
+body = "A câmera se afasta à medida que o número sobe. Aperte × 10 ou Crescer a partir de 1 para ver de novo, e leia nos marcos ao lado do seu número quantas vezes maior cada um é. Tente adivinhar se dez vezes mais chega ao próximo."
+[[howto]]
+title = "Confira as suposições e fique com a imagem."
+body = "Mude a espessura do livro, o tamanho da gota, o diâmetro do grão ou o ritmo da contagem, e leia de onde vem o valor de cada marco. Salve a imagem como PNG, com as suposições escritas embaixo."
+
+[[faq]]
+q = "Isso precisa de um modelo de IA?"
+a = "Não. O navegador coloca seu número em um pequeno catálogo de marcos e calcula os resultados sozinho. Não há chave de API, download de modelo nem custo contínuo de IA."
+[[faq]]
+q = "Qual é a altura de uma pilha de um bilhão de livros?"
+a = "Com livros de 3 cm de espessura, cerca de 30.000 km: mais que o dobro da largura da Terra, e cerca de 8% do caminho até a Lua. Seriam precisos cerca de 13 bilhões de livros para chegar à Lua. Você pode mudar a espessura nas suposições."
+[[faq]]
+q = "Quanta água é um bilhão de gotas?"
+a = "Com gotas de 0,05 ml, o tamanho de um conta-gotas, 50.000 litros: cerca de 250 banheiras de 200 litros, ou 2% de uma piscina olímpica. A gota maior de uma torneira pingando, de cerca de 0,25 ml, dá cinco vezes mais."
+[[faq]]
+q = "Quantas estrelas é um bilhão?"
+a = "Cerca de 1% da Via Láctea, tomando o valor redondo da ESA de 100 bilhões de estrelas, e o número real pode ser várias vezes maior. Também é cerca de 110.000 vezes as aproximadamente 9.100 estrelas brilhantes o bastante para serem vistas sem telescópio no céu inteiro."
+[[faq]]
+q = "Quanta areia é um bilhão de grãos?"
+a = "Com o modelo escolhido de grãos esféricos de 0,5 mm de diâmetro e um recipiente com 60% de grãos e 40% de ar, cerca de 109 litros: aproximadamente onze baldes de 10 litros. Os grãos reais variam, então esta é uma estimativa sob essas suposições."
+[[faq]]
+q = "Quantos livros são um milhão de tokens?"
+a = "Para texto em inglês, a estimativa aproximada de 0,75 palavra por token dá cerca de 750.000 palavras. Com o exemplo padrão de 75.000 palavras por livro, são dez livros, uma pilha de cerca de 30 cm de altura. O idioma, a tokenização e o tamanho do livro mudam a resposta. É um equivalente de escrita, não uma prova de livros realmente lidos ou gerados."
+[[faq]]
+q = "Qual montanha é usada?"
+a = "Um exemplo definido de propósito: um cone de 1.000 metros de altura com raio de base de 1.000 metros. Seu volume é um terço de pi vezes o raio ao quadrado vezes a altura. Uma montanha real precisa da própria geometria; só a altura não diz o volume."
+[[faq]]
+q = "Dá para comparar com toda a areia da Terra?"
+a = "Esta versão não inventa uma contagem global exata de grãos. Uma estimativa assim precisa primeiro de um escopo, como praias ou desertos, e de suposições sobre área, profundidade e tamanho do grão. Use os recipientes e os marcos definidos para comparações cujas suposições possam ser conferidas."
+[[faq]]
+q = "As imagens são desenhadas em escala física?"
+a = "A pilha de livros e seus marcos compartilham uma única régua real, exceto que a pilha é desenhada mais larga que o real quando, de outro modo, sumiria, e a linha do tempo é real do mesmo jeito. Água e areia não estão em uma única régua: os recipientes são ilustrações, e a área colorida é a proporção real do recipiente indicado. As estrelas são uma por ponto até serem demais para desenhar, e depois disso a legenda diz quantas cada ponto representa."
+[[faq]]
+q = "Posso desligar a animação?"
+a = "Sim. Pausar movimento faz tudo parar e deixa a imagem pronta na tela. Se seu dispositivo estiver configurado para reduzir movimento, a página mostra a imagem pronta desde o início."
+[[faq]]
+q = "A ferramenta funciona offline?"
+a = "Sim. Depois que a página carrega, todos os cálculos, comparações, desenhos e imagens salvas funcionam sem conexão. Nenhuma entrada é enviada para processamento."
+
+[schema]
+description = "Visualize números grandes como pilhas de livros, volumes de água, céus de estrelas, montes de areia e tempo de contagem, tudo no navegador."
+features = ["Entrada exata de números inteiros até 10^30", "Um controle por potências de dez com imagem animada ao vivo", "Pilhas de livros em uma única régua real, de uma mesa até a borda do universo observável", "Água e areia enchendo recipientes com nome", "Estrelas de um único ponto até o universo observável", "Tempo de contagem em uma linha do tempo real", "Equivalentes de escrita para palavras e tokens de IA", "Espessura do livro, tamanho da gota, tamanho do grão e ritmo de contagem ajustáveis", "Imagens salvas com suas suposições", "Suporte a movimento reduzido", "Funciona offline sem modelo de IA"]

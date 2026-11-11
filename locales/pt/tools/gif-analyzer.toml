@@ -9,8 +9,8 @@ name = "Analisador de GIF"
 heading = "Analisador&nbsp;de&nbsp;GIF <span class=\"h1-kw\">&mdash; o que tem de verdade dentro de um GIF</span>"
 tagline = "Quadros, tempos, paletas e para onde foi cada byte."
 
-title = "Analisar GIF &mdash; quadros, tempos, paleta e tamanho do arquivo"
-description = "Desmonte um GIF no navegador: cada quadro com o tempo e o descarte dele, as tabelas de cor, as repetições e um detalhamento byte a byte de para onde foi o tamanho do arquivo. Nada é enviado."
+title = "Analisador de GIF &mdash; Verifique quadros, tempos e tamanho, sem upload"
+description = "Inspecione quadros, atrasos, paletas e uma divisão do tamanho byte a byte de um GIF no navegador. Verifique animações grandes ou lentas sem enviar nem alterar o arquivo."
 og_title = "Analisador de GIF &mdash; desmonte um GIF no navegador"
 og_description = "Cada quadro, cada tempo, cada paleta e uma prestação de contas honesta de para onde foram os bytes. O arquivo é lido no seu computador e nunca é enviado."
 og_image_alt = "Analisador de GIF - quadros, tempos, paleta e para onde foram os bytes"
@@ -87,11 +87,11 @@ body = """
       desenha um GIF é servida desta origem e está listada no repositório."""
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não chega até ele."
+title = "O botão de doação não carrega nada e não recebe nada."
 body = """
 
-      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um script de
-      cdnjs.buymeacoffee.com e pega as letras no Google Fonts. Ele não é mais do que um
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado pela
+      própria página e não carrega nada de lugar nenhum. Ele não é mais do que um
       link: não avisa ninguém da sua visita e não recebe nada sobre você nem sobre os
       seus arquivos. Nada acontece enquanto você não clicar, e o que você abriria ao
       clicar é o site de outra pessoa."""

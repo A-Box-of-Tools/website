@@ -33,7 +33,7 @@ glyph = "scan-line"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
@@ -185,8 +185,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed a picture, a frame, or anything read out
+      measurement scripts come from Google. None of them is handed a picture,
+      a frame, or anything read out
       of one. Every line that turns pixels into a string is served from this
       origin and listed in the repository."""
 

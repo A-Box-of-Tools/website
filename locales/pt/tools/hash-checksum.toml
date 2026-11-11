@@ -116,11 +116,11 @@ body = """
       domínio e está no repositório."""
 
 [[privacy]]
-title = "O que o botão de doação carrega e o que ele não recebe."
+title = "O botão de doação não carrega nada e não recebe nada."
 body = """
 
-      O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado por um script de
-      cdnjs.buymeacoffee.com e pega as letras no Google Fonts. É um link e nada
+      O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado pela própria
+      página e não carrega nada de lugar nenhum. É um link e nada
       além disso: não avisa da visita e não recebe nada sobre você nem sobre seus
       arquivos. Nada acontece enquanto você não clicar, e o que você abriria é o
       site de outra pessoa."""

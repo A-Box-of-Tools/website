@@ -105,6 +105,12 @@
     </div>
 
     <div id="diff-view" class="diff"></div>
+    <div id="csv-pipeline" class="csv-pipeline" hidden>
+      <p>Continúa con ambas tablas de origen: original → A, versión modificada → B. Elige coincidencias, emparejamiento manual o una combinación sencilla en Stitch Tables.</p>
+{% for other in source_handoff %}      <a id="stitch-tables" class="as-button primary" href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">Unir estas tablas</a>
+{% endfor %}      <p class="transfer-note">La transferencia permanece en este navegador y caduca a los diez minutos.</p>
+      <p id="csv-pipeline-error" class="error" role="alert" hidden></p>
+    </div>
   </section>
   <!--
     The tool's own sentences, kept out of the JavaScript so that a translator
@@ -120,9 +126,10 @@
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
 
     <span data-phrase="read.failed">Ese archivo no se pudo leer: {detail}</span>
+    <span data-phrase="csv-pipeline.failed">No se pudieron transferir las tablas. Tus textos siguen aquí. Permite el almacenamiento del navegador e inténtalo de nuevo, o guarda ambos archivos y ábrelos en Stitch Tables.</span>
 
     <span data-phrase="result.waiting">Pega algo en las dos cajas.</span>
-    <span data-phrase="result.identical">Los dos son idénticos, byte a byte.</span>
+    <span data-phrase="result.identical">Los dos son idénticos, carácter por carácter.</span>
     <span data-phrase="result.ignored">Iguales, una vez ignoradas las diferencias que pediste ignorar.</span>
     <span data-phrase="result.counts">{added} añadidas, {removed} quitadas</span>
     <span data-phrase="result.summary">{changes}: el contenido coincide en el {percent}% de las líneas. {note}</span>
@@ -152,10 +159,10 @@
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
       herramienta no hace nunca. {platform}</span>
     <span data-phrase="net.platform.one">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       host; a ninguno se le ha dado ni un carácter.</span>
     <span data-phrase="net.platform.many">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       hosts; a ninguno se le ha dado ni un carácter.</span>
   </div>
 </main>

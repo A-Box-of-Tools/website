@@ -119,6 +119,9 @@ BASELINE = {
     'images-to-video': 1,
     'json-formatter': 3,
     'merge-pdf': 2,
+    # A canvas font shorthand and a colour template, both in paint.js. Neither
+    # is a word: everything the scenes draw is handed in from #phrases.
+    'number-explorer': 2,
     'password-generator': 8,
     'png-to-webp': 0,
     # Both layouts join translated fact fragments; neither carries an English
@@ -154,6 +157,7 @@ BASELINE = {
     # reader throws internally and never shows.
     'split-gif': 2,
     'stack-images': 6,
+    'stitch-tables': 0,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
     'text-diff': 3,

@@ -140,20 +140,20 @@ representative_queries = [
 ]
 
 [bmc]
-# Buy Me a Coffee. The build writes their snippet out unchanged; these are the
-# data- attributes it is configured with.
+# Buy Me a Coffee: where the donate link goes and what it says. It is a plain
+# link the frame draws itself; its colours are in shared/css/tool-frame.css.
 slug = "aboxtools"
 text = "Buy me a coffee"
-color = "#FFDD00"
-font = "Cookie"
 
 #
 # ---------------------------------------------------------------------------
 # The Content-Security-Policy every page carries.
 #
 # As narrow as AdSense can be made to work with: Google's own script, frame and
-# measurement origins, plus the two the donate button needs, and no wildcards
-# except on img-src where creatives legitimately come from anywhere.
+# measurement origins, and no wildcards except on img-src where creatives
+# legitimately come from anywhere. The donate button is a plain link and needs
+# nothing here: no script, stylesheet or font comes from anywhere else, which is
+# why font-src is absent and falls back to default-src.
 #
 # A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
 # does NOT cover the bare host analytics.google.com - and the bare host is where
@@ -189,7 +189,6 @@ font = "Cookie"
   "https://adservice.google.com",
   "https://ep1.adtrafficquality.google",
   "https://ep2.adtrafficquality.google",
-  "https://cdnjs.buymeacoffee.com",
 ]
 "frame-src" = [
   "https://googleads.g.doubleclick.net",
@@ -212,8 +211,7 @@ font = "Cookie"
   "https://ep2.adtrafficquality.google",
   "https://csi.gstatic.com",
 ]
-"style-src" = ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"]
-"font-src" = ["https://fonts.gstatic.com"]
+"style-src" = ["'self'", "'unsafe-inline'"]
 "img-src" = ["'self'", "data:", "https:"]
 "form-action" = ["'none'"]
 "base-uri" = ["'none'"]
@@ -329,7 +327,7 @@ purpose = "maskable"
 #
 
 [not_found]
-title = "Page not found &mdash; abox.tools"
+title = "404: Page not found &mdash; abox.tools"
 description = "That address does not exist on abox.tools. Here are the free browser tools for processing files on your device."
 heading = "That page is not here"
 tools_heading = "Every tool, in one place"
@@ -437,7 +435,7 @@ id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "stitch-tables", "base64", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator", "number-explorer"]
 
 [[hub.categories]]
 id = "connect-devices"
@@ -619,6 +617,7 @@ order = [
   "convert-yaml-and-json",
   "format-and-check-xml",
   "format-json-without-uploading-it",
+  "stitch-two-tables",
   "share-text-between-devices",
   "watch-camera-from-another-device",
   "share-a-browser-tab",
@@ -627,6 +626,7 @@ order = [
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",
+  "understand-big-numbers",
 ]
 
 [[guides.groups]]
@@ -638,12 +638,17 @@ order = [
   "make-a-boomerang-video",
   "turn-a-long-video-into-a-timelapse",
   "make-a-video-thumbnail",
+  "prepare-a-screen-recording-for-support",
   "edit-a-gif-frame-by-frame",
   "scan-multiple-pages-into-one-pdf",
+  "prepare-a-redacted-pdf-pack",
   "get-photos-ready-for-the-web",
+  "turn-a-bitmap-logo-into-website-assets",
   "make-a-qr-code-and-prove-it-scans",
   "clean-up-a-voice-memo",
+  "prepare-a-reimbursement-pdf-and-csv",
   "compare-two-json-files",
+  "protect-transfer-and-verify-a-pdf",
 ]
 
 [[guides.groups]]
@@ -982,8 +987,8 @@ offline_failed = "caching unavailable here, but nothing is uploaded either way."
 # the same four keys in the #phrases block of its own body.html, which wins.
 net_clean = "your files have gone nowhere. {total} files loaded, all of them this page's own. {platform}"
 net_dirty = "something contacted {hosts}, which this tool never does. Treat that as worth investigating. {platform}"
-net_platform_one = "The page's own ad, measurement and donate-button scripts loaded from {hosts} host; not one of them was given a file or a byte of one."
-net_platform_many = "The page's own ad, measurement and donate-button scripts loaded from {hosts} hosts; not one of them was given a file or a byte of one."
+net_platform_one = "The page's own ad and measurement scripts loaded from {hosts} host; not one of them was given a file or a byte of one."
+net_platform_many = "The page's own ad and measurement scripts loaded from {hosts} hosts; not one of them was given a file or a byte of one."
 
 # What the window's own `error` and `unhandledrejection` handlers say. `detail`
 # is the browser's own message, which stays in whatever language the browser
@@ -994,6 +999,8 @@ error_broke = "Something broke: {detail}. Reload the page to start over."
 # for the same reason `guide_one` and `guide_many` are two keys.
 reading_one = "Reading {count} file&hellip;"
 reading_many = "Reading {count} files&hellip;"
+# Why a file was refused, for the tools that begin "That file could not be read:".
+text_encoding = "It is not saved as UTF-8 text. Save it as UTF-8 and try again, or paste its text instead."
 
 check_yourself = """
       <strong>Check it yourself.</strong> None of the above has to be taken on trust.
@@ -1161,6 +1168,19 @@ The tools need a browser; there is no processing API, CLI or file-upload endpoin
 Tools and guides have a Markdown copy: append `index.md` to the page URL, for example https://abox.tools/compress-image/index.md. These copies contain explanations and limitations without the interface. Code is MIT licensed; prose is CC BY 4.0.
 
 This index is generated from the site's configuration and page metadata. It describes available tools; it does not measure whether an AI search system has indexed or cited them."""
+
+# Shared by the one-fetch index and the published browser-workflow skill so
+# agents get the same submission route whichever discovery path they follow.
+feedback = """
+Feedback and code contributions from people and agents are welcome.
+
+[Send private feedback without an account](https://feedback.abox.tools/), or POST JSON to https://feedback.abox.tools/feedback with `Content-Type: application/json`: `{"sender_type":"agent","message":"Describe the problem or idea","page":"https://abox.tools/compress-image/","environment":"Agent/client and browser"}`. Declare `sender_type` as `agent` or `person`; this is self-declared, not verified identity. Older JSON clients that omit it are labelled Unspecified. The submission format is recorded separately. Use a descriptive `User-Agent`, such as `abox-feedback-client/1.0`; the host may reject generic automated-client signatures. The message limit is 4,000 characters and the request limit is 16 KiB. No login, token, CAPTCHA or email address is needed.
+
+Batch related observations. Each network has a ten-minute cooldown and three attempts per rolling 24 hours; the whole service allows twenty attempts per rolling 24 hours. The same message for the same page is sent only once in 24 hours, even if sender labels or optional details change. `201` with `ok: true` confirms provider acceptance; `200` with `duplicate: true` returns the original receipt without another email. `202` is pending, and `503` is unconfirmed: neither confirms delivery. Do not resubmit automatically. For `429`, respect the `Retry-After` header.
+
+Include what you tried, expected and observed, or a proposed improvement. Use synthetic examples; leave out private files, credentials and conversation transcripts. Feedback is explicitly sent through Cloudflare to the maintainer's email inbox. Temporary keyed hashes, timestamps and delivery status enforce abuse limits; the ledger does not store messages or raw network addresses. Submit within the person's authorization; otherwise prepare a draft for them.
+
+[Contribute code](https://github.com/A-Box-of-Tools/website/blob/dev/CONTRIBUTING.md): fixes, documentation, accessibility and agent-workflow improvements are welcome. Open pull requests against `dev`. GitHub contributions require an account; the anonymous form can also accept a proposed fix or public patch link."""
 
 guides_note = """
 Written for the person doing the job rather than for the tool: what each setting

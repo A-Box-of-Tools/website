@@ -25,9 +25,9 @@
     <div class="field camera-name-field">
       <div class="camera-help-row">
         <label for="camera-name">Viewer link name</label>
-        <details id="camera-name-help" class="camera-help info-fold">
+        <details id="camera-name-help" class="info-tip">
           <summary aria-describedby="camera-name-note"><span class="visually-hidden">About the viewer link name</span></summary>
-          <p id="camera-name-note" class="camera-help-note" role="tooltip">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
+          <p id="camera-name-note" role="tooltip">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
         </details>
       </div>
       <div class="camera-name-row">
@@ -39,25 +39,25 @@
     <p class="field-note">The link name is visible in the network or private group selected above. Private group sessions are not also listed in the network list. Turn this off to invite viewers by link only.</p>
     <div class="camera-help-row">
       <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
-      <details id="camera-approval-help" class="camera-help info-fold">
+      <details id="camera-approval-help" class="info-tip">
         <summary aria-describedby="camera-approval-policy"><span class="visually-hidden">About viewer approval</span></summary>
-        <p id="camera-approval-policy" class="camera-help-note camera-policy" role="tooltip">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
+        <p id="camera-approval-policy" class="camera-policy" role="tooltip">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
       </details>
     </div>
     <div class="camera-help-row">
       <label class="camera-discoverable"><input type="checkbox" id="camera-audio" aria-describedby="camera-audio-note">Enable microphone</label>
-      <details id="camera-audio-help" class="camera-help info-fold">
+      <details id="camera-audio-help" class="info-tip">
         <summary aria-describedby="camera-audio-note"><span class="visually-hidden">About enabling the microphone</span></summary>
-        <p id="camera-audio-note" class="camera-help-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice. If the browser interrupts the microphone, choose Resume microphone when you are ready.</p>
+        <p id="camera-audio-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice. If the browser interrupts the microphone, choose Resume microphone when you are ready.</p>
       </details>
     </div>
     <p id="camera-audio-status" class="field-note" role="status" aria-live="polite"></p>
     <div class="field camera-bandwidth-field">
       <div class="camera-help-row">
         <label for="camera-bandwidth">Shared video bandwidth</label>
-        <details id="camera-bandwidth-help" class="camera-help info-fold">
+        <details id="camera-bandwidth-help" class="info-tip">
           <summary aria-describedby="camera-bandwidth-note"><span class="visually-hidden">About sharing video bandwidth</span></summary>
-          <p id="camera-bandwidth-note" class="camera-help-note" role="tooltip">Choose a video limit that leaves room for other Wi-Fi traffic. Up to eight viewers share it; each connection can lower its quality when congested. The browser cannot measure your total Wi-Fi capacity. Audio and network overhead are additional. A 1 Mbps limit allows four new viewers; higher limits allow eight. Lowering the limit keeps current viewers connected.</p>
+          <p id="camera-bandwidth-note" role="tooltip">Choose a video limit that leaves room for other Wi-Fi traffic. Up to eight viewers share it; each connection can lower its quality when congested. The browser cannot measure your total Wi-Fi capacity. Audio and network overhead are additional. A 1 Mbps limit allows four new viewers; higher limits allow eight. Lowering the limit keeps current viewers connected.</p>
         </details>
       </div>
       <select id="camera-bandwidth" aria-describedby="camera-bandwidth-note">
@@ -123,9 +123,9 @@
       <div class="field">
         <div class="camera-help-row">
           <label for="viewer-name">A name the camera device will recognise</label>
-          <details id="viewer-name-help" class="camera-help info-fold">
+          <details id="viewer-name-help" class="info-tip">
             <summary aria-describedby="viewer-name-note"><span class="visually-hidden">About your viewer name</span></summary>
-            <p id="viewer-name-note" class="camera-help-note" role="tooltip">Optional. This note goes to the camera browser over the encrypted connection.</p>
+            <p id="viewer-name-note" role="tooltip">Optional. This note goes to the camera browser over the encrypted connection.</p>
           </details>
         </div>
         <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop" aria-describedby="viewer-name-note">
@@ -138,9 +138,9 @@
       </div>
       <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
       <div class="camera-help-row">
-        <details id="viewer-connection-help" class="camera-help info-fold">
+        <details id="viewer-connection-help" class="info-tip">
           <summary aria-describedby="viewer-connection-note"><span class="visually-hidden">About connecting to a camera</span></summary>
-          <p id="viewer-connection-note" class="camera-help-note" role="tooltip">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
+          <p id="viewer-connection-note" role="tooltip">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
         </details>
       </div>
     </div>
@@ -152,9 +152,9 @@
           <button type="button" id="viewer-play" hidden>Play live video</button>
           <button type="button" id="viewer-listen" aria-pressed="false" hidden>Unmute audio</button>
           <button type="button" id="viewer-fullscreen" aria-pressed="false">Full screen</button>
-          <details id="viewer-audio-help" class="camera-help info-fold">
+          <details id="viewer-audio-help" class="info-tip">
             <summary aria-describedby="viewer-audio-note"><span class="visually-hidden">About camera audio and video controls</span></summary>
-            <div id="viewer-audio-note" class="camera-help-note" role="tooltip">
+            <div id="viewer-audio-note" role="tooltip">
               <p>Audio starts automatically when the host enables its microphone and your browser allows playback. Otherwise, choose Unmute audio. Muting playback does not stop sound detection. Full screen keeps these controls with the video.</p>
               <p id="viewer-audio-status" role="status" aria-live="polite"></p>
             </div>
@@ -165,9 +165,9 @@
         <legend class="visually-hidden">Browser notifications</legend>
         <div class="camera-help-row viewer-alert-heading">
           <span aria-hidden="true">Browser notifications</span>
-          <details id="viewer-alert-help" class="camera-help info-fold">
+          <details id="viewer-alert-help" class="info-tip">
             <summary aria-describedby="viewer-alert-note"><span class="visually-hidden">About motion and sound notifications</span></summary>
-            <p id="viewer-alert-note" class="camera-help-note" role="tooltip">Enable an alert to request notification permission. Detection runs on this device while this page stays open; browsers may pause it in the background. Lighting changes can trigger motion alerts. Sound alerts need the host to share audio and work while playback is muted. Alerts can be missed; they are not a safety monitor.</p>
+            <p id="viewer-alert-note" role="tooltip">Enable an alert to request notification permission. Detection runs on this device while this page stays open; browsers may pause it in the background. Lighting changes can trigger motion alerts. Sound alerts need the host to share audio and work while playback is muted. Alerts can be missed; they are not a safety monitor.</p>
           </details>
         </div>
         <label class="camera-discoverable"><input type="checkbox" id="viewer-motion-alert">Notify me when motion is detected</label>

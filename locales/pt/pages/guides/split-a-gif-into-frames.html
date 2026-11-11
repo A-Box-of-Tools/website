@@ -16,6 +16,12 @@
   </section>
 
   <section>
+    <h2>Escolha entre extrair, editar ou converter em vídeo</h2>
+    <p>Se o problema for o tamanho ou os tempos da animação, examine primeiro o original no <a href="../../analisar-gif/" data-workflow-target="gif-analyzer">Analisador de GIF</a>. Os atrasos dos quadros, as regras de descarte e a distribuição de bytes ajudam a entender o que precisa mudar; o <a href="../o-que-tem-dentro-de-um-gif/" data-workflow-target="guides/whats-inside-a-gif">guia sobre a estrutura do GIF</a> explica como interpretar esses dados.</p>
+    <p>Para editar um GIF, extraia quadros PNG completos e siga o <a href="../editar-um-gif-quadro-a-quadro/" data-workflow-target="guides/edit-a-gif-frame-by-frame">processo de dividir e reconstruir</a>. Se o destino precisar de vídeo, <a href="../../gif-para-mp4/" data-workflow-target="gif-to-mp4">converta o original diretamente em MP4</a> em vez de reconstruir uma sequência PNG. A conversão mantém os atrasos variáveis; as áreas transparentes recebem uma cor e o player controla a repetição.</p>
+  </section>
+
+  <section>
     <h2>Uma imagem útil, uma pasta de edição ou uma folha</h2>
     <p>Para ilustrar um passo em instruções ou slides, deixe Cada PNG contém em O quadro como aparece e baixe o mais claro. Preserve transparência se o editor entender ou preencha com o fundo do documento se converter em preto. O fragmento armazenado sem composição não é uma ilustração independente.</p>
     <p>Para uma folha de contato ou referência de sprites, escolha quadros e Baixar como uma folha de sprites. Reúne imagens visíveis do mesmo tamanho em PNG; não leva tempos nem cria animação. Um GIF longo pode superar canvas ou memória. Mantenha menos quadros ou use ZIP com frames.txt se o próximo editor precisar de imagens separadas e tempos.</p>
@@ -46,13 +52,7 @@
       padrão, e é o que você quer para uma folha de contato, uma miniatura, uma
       imagem para postar, ou quadros que vão para um editor de vídeo.
     </p>
-    <p>
-      <strong>Só os pixels que aquele quadro guarda.</strong> O remendo em si, no
-      tamanho dele, na posição dele, com tudo o que ele não carrega deixado
-      transparente. O quadro 14 pode ser &#x2066;60&nbsp;&times;&nbsp;40&#x2069; pixels de boca.
-      Essa é a visão que explica para onde foram os bytes do GIF, e é a que você
-      quer se estiver editando a animação em vez de colher imagens dela.
-    </p>
+    <p><strong>Só os pixels que aquele quadro guarda.</strong> O remendo em si, no seu tamanho e na sua posição, deixando transparente tudo o que não contém. O quadro 14 pode ser &#x2066;60&nbsp;&times;&nbsp;40&#x2069; pixels de uma boca. Essa visão explica para onde foram os bytes do GIF. Um editor só precisa dela se também entender a posição e a regra de descarte de cada remendo. Para edição comum de imagens ou reconstrução no Criador de GIF, use quadros completos.</p>
     <p>
       Não há nada de errado com o seu arquivo quando um quadro guardado parece um
       fragmento. Aquilo é o arquivo.
@@ -136,21 +136,11 @@
       em PNGs e os tempos somem, o que importa no instante em que você quer montar
       tudo de novo.
     </p>
-    <p>
-      É para isso que serve o <code>frames.txt</code> dentro do ZIP. Ele lista o
-      atraso, a posição e o tamanho de cada quadro, para a animação poder ser
-      reconstruída no <a href="../../criar-gif/">Criador de GIF</a> ou em qualquer
-      outro lugar. Custa uns poucos kilobytes e não existe jeito de reconstruir
-      isso depois.
-    </p>
+    <p>É para isso que serve <code>frames.txt</code> no ZIP. Ele lista o atraso, a posição e o tamanho de cada quadro. Para reconstruir com o <a href="../../criar-gif/" data-workflow-target="gif-maker">Criador de GIF</a>, extraia <em>O quadro como ele aparece</em>, adicione esses PNGs, ordene por nome e ajuste cada duração usando a lista como referência. O Criador de GIF não importa <code>frames.txt</code> automaticamente. Guarde a lista com as imagens; os PNGs sozinhos não permitem recuperar os atrasos originais.</p>
     <p>
       Duas coisas sobre os atrasos do GIF que pegam todo mundo:
     </p>
-    <p>
-      <strong>A unidade é o centésimo de segundo</strong>, então o passo mais fino
-      que o formato tem é 0,01&nbsp;s. Não existe GIF de exatamente 30&nbsp;fps;
-      0,03&nbsp;s por quadro dá 33,3&nbsp;fps e 0,04&nbsp;s dá 25.
-    </p>
+    <p><strong>A unidade é o centésimo de segundo</strong>, então o menor passo do formato é 0,01&nbsp;s. Um único atraso fixo não representa exatamente 30&nbsp;fps: 0,03&nbsp;s por quadro dá 33,3&nbsp;fps e 0,04&nbsp;s dá 25. Combinar durações de 0,03 e 0,04&nbsp;s permite atingir a velocidade geral solicitada. É assim que o Criador de GIF trabalha com uma taxa de quadros solicitada.</p>
     <p>
       <strong>Qualquer coisa abaixo de 0,02&nbsp;s toca a 0,10&nbsp;s.</strong> Os
       navegadores limitam isso desde os anos 1990 &mdash; uma regra escrita para
@@ -165,10 +155,10 @@
   <section>
     <h2>Os números dos quadros, e por que eles têm zeros na frente</h2>
     <p>
-      Os quadros saem como <code>nome-001.png</code>, <code>nome-002.png</code>,
+      Os quadros saem como <code>name-001.png</code>, <code>name-002.png</code>,
       numerados a partir de um e preenchidos até a largura do último número. Isso
-      não é enfeite: <code>quadro9.png</code> vem <em>depois</em> de
-      <code>quadro10.png</code> em qualquer gerenciador de arquivos e na maioria
+      não é enfeite: <code>frame9.png</code> vem <em>depois</em> de
+      <code>frame10.png</code> em qualquer gerenciador de arquivos e na maioria
       dos programas que importam uma sequência, porque eles ordenam texto e não
       número. Nomes preenchidos ordenam certo em todo lugar, e todo editor de
       vídeo que importa uma sequência de imagens espera desse jeito.

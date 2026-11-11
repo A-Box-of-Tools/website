@@ -13,6 +13,10 @@
   <section class="card">
     <h2><span class="step">1</span> 选帧</h2>
 
+    <p>
+      至少加两张同一场景的照片，或者试试例子，对比一下有噪点的一帧和堆栈结果。你自己的这组照片，曝光和取景要保持一致。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -47,13 +51,19 @@
   <section class="card">
     <h2><span class="step">2</span> 怎么合到一起</h2>
 
+    <ul class="note">
+      <li><strong>压低噪点：</strong>稳定的连拍，先用平均值和自动对齐。</li>
+      <li><strong>去掉走动的人：</strong>用中位数，背景要在一半以上的帧里露出来。</li>
+      <li><strong>做星轨：</strong>用最亮，对齐设为不对齐，保留天空的运动。</li>
+    </ul>
+
     <div class="settings">
       <div class="field field-wide">
         <label for="mode">手法</label>
         <select id="mode">
           <option value="mean" selected>平均值 | 压低噪点</option>
           <option value="median">中位数 | 去掉人和开过去的车</option>
-          <option value="sigma">Sigma 裁剪 | 两样一起</option>
+          <option value="sigma">Sigma 裁剪 | 压低噪点，剔除异常值</option>
           <option value="max">最亮 | 星轨、烟花、光绘</option>
           <option value="min">最暗 | 去掉动过的亮东西</option>
           <option value="sum">相加 | 加法混合</option>
@@ -203,6 +213,9 @@
           <summary>对齐详情</summary>
           <ul id="alignment-list" class="alignment-list"></ul>
         </details>
+        <p class="field-note">
+          保存前按 100% 检查细小边缘和平滑区域。堆栈结果发软时，看看对齐详情，移除拿不准的帧，再堆一次。下载按钮旁边的链接可以把结果直接带到这个浏览器里的缩放或压缩工具。
+        </p>
         <a id="download" class="primary as-button" download>下载图片</a>
       </div>
     </div>
@@ -295,7 +308,7 @@
 
     <span data-phrase="net.clean">你的照片没有去任何地方。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
-    <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何照片。</span>
-    <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何照片。</span>
+    <span data-phrase="net.platform.one">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到任何照片。</span>
+    <span data-phrase="net.platform.many">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到任何照片。</span>
   </div>
 </main>

@@ -49,7 +49,7 @@ body = "Le téléchargement n'est pas un second rendu qui pourrait contredire l'
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit de ce que vous tapez. Chaque ligne qui transforme une chaîne en code est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit de ce que vous tapez. Chaque ligne qui transforme une chaîne en code est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Tout fonctionne hors ligne."

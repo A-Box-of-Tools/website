@@ -93,6 +93,27 @@ body {
   font-size: 1.02rem;
 }
 
+/* The number on the 404 page, big enough to outweigh the grid of tools under it:
+   that grid is what makes the page look like an index rather than an error.
+   Its own line, so the sentence beside it stays the size of any other heading.
+   Why it is shown at all is in templates/404.html.
+
+   The heading's own bold, and nothing heavier. Segoe UI Variable stops at 700,
+   so asking Windows for more gets a smeared imitation that all but closes the
+   holes in the 4s, and at this size that is the first thing anybody sees. */
+.not-found-code {
+  display: block;
+  margin-bottom: 0.15em;
+  color: var(--accent);
+  font-size: clamp(5rem, 3.5rem + 7vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* The error, then the way out of it. Left at the usual gap, the explanation
+   runs straight into the heading of the list and the two read as one thing. */
+.not-found-head { padding-bottom: 1.75rem; }
+
 /* Three previews per category let a visitor scan the whole box before opening
    one group. These rules belong to the homepage, leaving article pages
    at the widths they were written for. */
@@ -249,14 +270,6 @@ body {
 
 /* ---- buy me a coffee ---------------------------------------------------- */
 
-/*
-  The button draws itself and brings its own stylesheet, which its script
-  writes into the page after this file - so a bare `.bmc-btn` rule here would
-  lose on document order whatever it said. These are scoped one level deeper
-  and win on specificity instead. The colours and the Cookie lettering are left
-  alone: they are what make the button recognisable at a glance, which is the
-  only reason to use somebody else's button rather than draw a link.
-*/
 .support-cta {
   display: flex;
   align-items: center;
@@ -266,17 +279,6 @@ body {
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
 }
-
-.support-cta .bmc-btn {
-  height: 50px;
-  min-width: 0;
-  padding: 0 1.15rem;
-  border-radius: var(--radius);
-  font-size: 26px;
-  box-shadow: var(--shadow);
-}
-
-.support-cta .bmc-btn svg { height: 28px !important; }
 
 .support-note {
   margin: 0;

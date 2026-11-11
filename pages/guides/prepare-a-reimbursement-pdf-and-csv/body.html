@@ -1,0 +1,168 @@
+  <section>
+    <h2>Make the evidence and the rows from the same records</h2>
+    <p>
+      A PDF gives the recipient receipts to read. A CSV gives them fields to
+      check or open in a spreadsheet. Start in the
+      <a href="../../receipt-invoice-extractor/">Receipt &amp; Invoice
+      Extractor</a>, review the records, then use its cleaned JPEG attachments
+      in <a href="../../images-to-pdf/">Images to PDF</a>. Compress the PDF
+      only if it needs to meet a smaller attachment limit.
+    </p>
+    <p>
+      This worked example uses three fictional receipts in Canadian dollars:
+    </p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Receipt, in record order</th><th>Confirmed total</th></tr></thead>
+      <tbody>
+        <tr><td>1. North Street Print</td><td>CAD 12.40</td></tr>
+        <tr><td>2. Market Car Park</td><td>CAD 8.00</td></tr>
+        <tr><td>3. Harbour Stationery</td><td>CAD 17.60</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>
+      The expected total is CAD 38.00. Check the recipient's required fields
+      and attachment formats first. This article assembles a matching pair
+      of files; it does not decide whether an expense qualifies for payment.
+    </p>
+  </section>
+
+  <section>
+    <h2>Start with one photo per document</h2>
+    <p>
+      Keep the originals and select copies in the
+      <a href="../../receipt-invoice-extractor/">extractor</a>. It accepts
+      browser-supported JPEG, PNG, WebP and AVIF, up to 20 images per batch
+      and 20 MB per image. Recognition uses a local English printed-text
+      model. Convert unsupported images first, and obtain a clearer photo
+      when a date or amount is blurred beyond reading.
+    </p>
+    <p>
+      One image becomes one document record. Three pages of one invoice are
+      not automatically grouped into one expense. Repeated totals across
+      those pages can create several records for the same charge; this
+      simple workflow assumes one complete receipt in each photo. The
+      <a href="../extract-receipts-and-invoices/">extraction guide</a>
+      describes the tool's scope and review steps.
+    </p>
+  </section>
+
+  <section>
+    <h2>Review fields and crops together</h2>
+    <p>
+      Recognition suggests values; compare them with the picture. Check the
+      merchant, date, reference, total and currency. A subtotal, tax amount,
+      cash tendered or change can look plausible without being the receipt's
+      final amount. Do not invent a missing value to make a row look complete.
+    </p>
+    <p>
+      Keep the whole document inside the attachment crop, including the
+      receipt number, final amount and relevant tax breakdown. Confirm the
+      fields and crop only after reading them. A later crop or field change
+      can clear confirmation, so review the status again before exporting.
+    </p>
+    <p>
+      For this example, choose CAD as the final currency and verify all three
+      original currencies are CAD. Same-currency records use a rate of one;
+      no online exchange-rate lookup is needed. With different currencies,
+      follow the extraction guide's rate review rather than adding unlike
+      amounts together.
+    </p>
+    <p>
+      Only confirmed records enter the totals. A correct-looking sum can
+      still omit an unfinished receipt. Check three confirmed records and
+      CAD 38.00 together. Duplicate warnings compare filename and size only:
+      inspect the pictures, because renamed duplicates can escape a warning
+      and different images can trigger one.
+    </p>
+  </section>
+
+  <section>
+    <h2>Export matching rows and images</h2>
+    <p>
+      Download the reviewed CSV and prepared JPEG attachments, or the ZIP
+      containing both. Extract the ZIP before selecting the images for the
+      next tool. Attachment names include stable record numbers, while the
+      CSV's filename column contains the original photo name. Save a copy of
+      the text report too: it lists the original and prepared attachment
+      names together. Use that mapping and the merchant, date and amount to
+      match rows to images, especially when camera filenames repeat.
+    </p>
+    <p>
+      A CSV can be exported while review is unfinished. Open the actual
+      download and inspect each record's status and fields; export alone
+      does not mean everything was confirmed. For this example there should
+      be three intended expense records, each with a matching image and the
+      checked CAD amount from the table above. The CSV also ends with document
+      count, checked count and grand total rows; those are summaries, not
+      extra receipts. Exclude them when summing the expense rows yourself.
+    </p>
+    <p>
+      Save the pair as <code>workshop-expenses.csv</code> and a working
+      folder of numbered receipt images. Keep the original photos separate.
+      Opening the CSV in a spreadsheet can apply that program's date or
+      number interpretation, so compare what it displays with the exported
+      text and receipt before relying on an imported value.
+    </p>
+  </section>
+
+  <section>
+    <h2>Build the PDF in record order</h2>
+    <p>
+      Choose the prepared JPEGs in <a href="../../images-to-pdf/">Images
+      to PDF</a>. This is a download-and-select handoff; selecting the original
+      camera photos again would discard the reviewed crops and break the
+      connection with those attachments.
+    </p>
+    <p>
+      Arrange the images to match the CSV expense rows: printing, parking,
+      then stationery. Check the report's filename mapping rather than
+      trusting the file picker's sort order. Choose a page layout that keeps each receipt
+      whole and readable, then save <code>workshop-receipts.pdf</code>.
+      The <a href="../combine-images-into-a-pdf/">image-to-PDF guide</a>
+      explains page sizes and image quality.
+    </p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-reimbursement-pdf-and-csv/layout.webp" loading="lazy" decoding="async"
+           alt="Images to PDF page layout controls for choosing the paper size and how an image fits on the page.">
+      <figcaption>
+        Page layout controls. Keep long receipts whole and check their small
+        print in the exported PDF, not only in the preview.
+      </figcaption>
+    </figure>
+    <p>
+      Open the downloaded PDF and read every page. Check orientation, complete
+      edges, dates and small tax figures. This image-based PDF does not gain
+      a searchable text layer merely because OCR was used to make the CSV.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compress only if the recipient's limit requires it</h2>
+    <p>
+      If the PDF fits, keep it. The extractor already prepares compressed
+      JPEG attachments, so another pass may offer little benefit and make
+      small print harder to read. Otherwise try a copy in the
+      <a href="../../compress-pdf/">PDF Compressor</a>, compare sizes and
+      reread every receipt. Compression cannot guarantee a particular saving.
+      The <a href="../make-a-pdf-smaller/">PDF compression guide</a>
+      explains the tradeoffs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Check the pair you will submit</h2>
+    <ul>
+      <li>The CSV has the three intended, confirmed expenses and correct currencies.</li>
+      <li>Every receipt matches a record and appears in the corresponding PDF order.</li>
+      <li>Every final PDF page retains the details supporting its amount.</li>
+      <li>The confirmed CAD amounts add to CAD 38.00.</li>
+      <li>The exact attachments meet the recipient's format and size requirements.</li>
+    </ul>
+    <p>
+      OCR and manual review in this example happen locally. An optional
+      historical-rate lookup is a separate network action; sending the
+      resulting files through email or another service is another. Keep
+      originals for later questions. A matched PDF and CSV make review easier,
+      but do not prove that recognition was correct or guarantee acceptance.
+    </p>
+  </section>

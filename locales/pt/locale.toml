@@ -33,6 +33,16 @@ complete = true
 #
 
 [slugs]
+"guides/prepare-a-redacted-pdf-pack" = "guias/preparar-pacote-pdf-com-dados-tarjados"
+"guides/prepare-a-screen-recording-for-support" = "guias/preparar-gravacao-de-tela-para-suporte"
+"guides/turn-a-bitmap-logo-into-website-assets" = "guias/transformar-logotipo-bitmap-em-arquivos-para-site"
+"guides/prepare-a-reimbursement-pdf-and-csv" = "guias/preparar-pdf-e-csv-para-reembolso"
+"guides/protect-transfer-and-verify-a-pdf" = "guias/proteger-transferir-e-verificar-pdf"
+"guides/where-do-your-file-copies-go" = "guias/para-onde-vao-as-copias-dos-seus-arquivos"
+"guides/does-private-browsing-keep-downloads-private" = "guias/navegacao-privada-mantem-downloads-privados"
+"guides/what-an-ordinary-file-can-reveal-about-you" = "guias/o-que-um-arquivo-comum-pode-revelar-sobre-voce"
+"guides/receive-voice-from-nearby-devices" = "guias/receber-voz-de-dispositivos-proximos"
+"guides/share-a-browser-tab" = "guias/compartilhar-aba-do-navegador"
 "guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-na-rede-local"
 "guides/arrange-images" = "guias/organizar-imagens"
 "guides/watch-camera-from-another-device" = "guias/ver-camera-de-outro-dispositivo"
@@ -121,6 +131,7 @@ complete = true
 # "Comparar alturas" e o que se digita; o grafico e o resultado e fica no
 # titulo.
 "compare-heights" = "comparar-alturas"
+"number-explorer" = "visualizar-numeros"
 # DICOM continua DICOM: e a sigla que vem escrita no disco que o hospital
 # entrega, e ninguem a procura traduzida.
 "dicom-viewer" = "visualizador-dicom"
@@ -181,6 +192,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "guias/criar-um-codigo-qr-e-provar-que-escaneia"
 "guides/clean-up-a-voice-memo" = "guias/limpar-uma-nota-de-voz"
 "guides/make-a-height-comparison-chart" = "guias/fazer-um-grafico-de-alturas"
+"guides/understand-big-numbers" = "guias/entender-numeros-grandes"
 "guides/is-it-safe-to-scan-a-qr-code" = "guias/e-seguro-escanear-um-qr-code"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "guias/e-seguro-enviar-foto-do-documento"
 "guides/can-blacked-out-text-be-recovered" = "guias/da-para-recuperar-texto-tarjado"
@@ -349,7 +361,7 @@ og_image_alt = "abox.tools - ferramentas de navegador para processamento local d
 #
 
 [not_found]
-title = "Página não encontrada &mdash; abox.tools"
+title = "404: Página não encontrada &mdash; abox.tools"
 description = "Esse endereço não existe em abox.tools. Aqui estão as ferramentas grátis de navegador para processar arquivos no seu dispositivo."
 heading = "Esta página não está aqui"
 tools_heading = "Todas as ferramentas num lugar só"
@@ -545,13 +557,14 @@ offline_insecure = "precisa de https:// ou localhost para guardar uma cópia off
 offline_failed = "não dá para guardar cópia aqui, mas nada é enviado de qualquer maneira."
 net_clean = "Os seus arquivos não foram a lugar nenhum. {total} arquivos carregados, todos do próprio site. {platform}"
 net_dirty = "Alguma coisa contatou {hosts}, e esta ferramenta nunca faz isso. Vale a pena ir ver. {platform}"
-net_platform_one = "Os scripts do próprio site para publicidade, medição e o botão de doação vieram de {hosts} host; nenhum deles recebeu um arquivo ou um byte de um."
-net_platform_many = "Os scripts do próprio site para publicidade, medição e o botão de doação vieram de {hosts} hosts; nenhum deles recebeu um arquivo ou um byte de um."
+net_platform_one = "Os scripts do próprio site para publicidade e medição vieram de {hosts} host; nenhum deles recebeu um arquivo ou um byte de um."
+net_platform_many = "Os scripts do próprio site para publicidade e medição vieram de {hosts} hosts; nenhum deles recebeu um arquivo ou um byte de um."
 
 error_broke = "Algo deu errado: {detail}. Recarregue a página para começar de novo."
 
 reading_one = "Lendo {count} arquivo&hellip;"
 reading_many = "Lendo {count} arquivos&hellip;"
+text_encoding = "Ele não está salvo como texto UTF-8. Salve-o como UTF-8 e tente novamente, ou cole o texto diretamente."
 
 check_yourself = """
       <strong>Confira você mesmo.</strong> Nada do que está acima precisa ser aceito

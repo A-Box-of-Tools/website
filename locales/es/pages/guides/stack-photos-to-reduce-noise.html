@@ -6,7 +6,7 @@
     </p>
     <ul>
       <li><strong>Ruido</strong>, y no se movió nada &mdash; media.</li>
-      <li><strong>Ruido</strong>, y se movió algo &mdash; recorte sigma.</li>
+      <li><strong>Ruido con valores atípicos ocasionales</strong> &mdash; prueba el recorte sigma; usa mediana si lo principal es quitar un objeto en movimiento.</li>
       <li><strong>Gente, coches, un avión</strong> &mdash; mediana.</li>
       <li><strong>Un cielo oscuro que quieres como estelas de estrellas</strong> &mdash; aclarar.</li>
       <li><strong>Una macro con casi nada de profundidad de campo</strong> &mdash; apilado de enfoque.</li>
@@ -15,14 +15,15 @@
       Empieza con <strong>Auto con perspectiva</strong> para reducir ruido, incluso en fotos nocturnas tomadas con trípode: las estrellas se mueven aunque la cámara esté quieta. Usa <strong>No</strong> para estelas de estrellas intencionadas o tomas que ya coinciden. Los RAW pueden entrar directamente si contienen una vista previa JPEG utilizable. La fila muestra el tamaño real de la imagen.
     </p>
     <p>
-      Todo lo que sigue es por qué esas cinco líneas dicen lo que dicen.
+      Compara el resultado con una toma de referencia antes de guardarlo. El flujo de trabajo siguiente explica los ajustes, los problemas habituales y cómo terminar la imagen.
     </p>
   </section>
 
   <section>
-    <h2>Un interior ruidoso, un monumento despejado o un producto nítido</h2>
+    <h2>Una ráfaga más limpia, un fondo vacío o estelas de estrellas</h2>
     <p><strong>Una escena estática con poca luz.</strong> Toma una ráfaga con exposición y foco bloqueados, elige referencia nítida y empieza con Promedio y Perspectiva automática. Compara bordes al 100% además de paredes lisas. Si indica un fotograma sin alinear y queda blando, quítalo y repite. Revisa el primer plano al apilar cielo: alinear estrellas puede difuminar el paisaje fijo.</p>
     <p><strong>Un monumento con personas pasando.</strong> Separa las tomas lo suficiente para que cambien de posición y usa Mediana. Solo las quita donde el fondo sea visible en más de la mitad. Si alguien permanece quieto, necesitas otras fotografías.</p>
+    <p><strong>Una secuencia de estelas en el cielo nocturno.</strong> Mantén fija la cámara, deja pausas cortas entre exposiciones y usa Aclarar con la alineación en No. La alineación seguiría las estrellas en movimiento e impediría conservar las estelas que buscas. Para obtener estrellas nítidas con menos ruido, usa Media con Auto con perspectiva y comprueba si el primer plano fijo ha quedado borroso.</p>
     <p><strong>Joyería, piezas pequeñas o muestras.</strong> Fija la cámara, cambia foco por el sujeto en pasos superpuestos y usa Apilado de enfoque. Revisa halos y uniones en bordes y reflejos; alinear cámara no repara objetos movidos. Usa PNG para editar después. El resultado sigue siendo de ocho bits, incluso desde vistas previas RAW.</p>
   </section>
 
@@ -182,6 +183,23 @@
         Mueve el separador sobre el ruido y los bordes finos para comparar la misma parte de ambas imágenes. Revisa los detalles de alineación si la pila parece borrosa.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Comprueba, guarda y termina la imagen</h2>
+    <ol>
+      <li><strong>Compara el mismo detalle.</strong> Usa el separador en Ajustar a la ventana para comparar una zona lisa y un borde fino. Después elige 100% para examinar la referencia y la pila por separado. Menos grano con bordes más suaves puede indicar que las tomas no se alinearon bien; revisa Detalles de alineación, quita una toma que no se haya podido alinear y vuelve a apilar.</li>
+      <li><strong>Elige el formato según el siguiente paso.</strong> Guarda PNG si quieres una imagen sin pérdidas para seguir editando, o JPEG para obtener un archivo más pequeño. Ambos son imágenes opacas de ocho bits, también cuando se apilan vistas previas RAW.</li>
+      <li><strong>Termina con los enlaces para continuar.</strong> Cuando el resultado esté listo, los enlaces junto a su descarga permiten llevarlo directamente al
+        <a href="../../redimensionar-imagen/" data-workflow-target="resize-image">redimensionador de imágenes</a>
+        si importan las dimensiones, o al
+        <a href="../../comprimir-imagen/" data-workflow-target="compress-image">compresor de imágenes</a>
+        si necesitas un archivo más pequeño. La imagen permanece en este navegador, por lo que no hace falta descargarla y elegirla de nuevo entre herramientas.</li>
+    </ol>
+    <p>Para conservar una escena cambiante como vídeo acelerado, usa la secuencia original en
+      <a href="../../imagenes-a-video/" data-workflow-target="images-to-video">Imágenes a vídeo</a>.
+      La <a href="../convertir-imagenes-en-un-video/" data-workflow-target="guides/turn-images-into-a-video">guía de secuencias de imágenes</a>
+      explica el orden, la tasa de fotogramas y la exportación del vídeo.</p>
   </section>
 
   <section>

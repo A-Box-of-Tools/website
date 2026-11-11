@@ -64,11 +64,13 @@ browser and uploads nothing; how the site around them is built is in the
 | [YAML to JSON Converter](yaml-to-json/) | `/yaml-to-json/` | Both directions, and it says what each one costs. Nothing is pasted into anyone else's server. |
 | [XML Formatter](xml-formatter/) | `/xml-formatter/` | XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server. |
 | [Text Diff](text-diff/) | `/text-diff/` | Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server. |
+| [Stitch Tables](stitch-tables/) | `/stitch-tables/` | Bring two tables together by a shared value, a pattern, a manual pairing or their row order. Everything stays in your browser. |
 | [Base64 Encoder & Decoder](base64/) | `/base64/` | Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server. |
 | [QR & Barcode Generator](qr-barcode/) | `/qr-barcode/` | Type it, and it becomes a code. Nothing is sent to make one. |
 | [QR & Barcode Reader](qr-barcode-reader/) | `/qr-barcode-reader/` | Point it at a code, or drop a picture of one. It is read here, and nowhere else. |
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |
 | [Password & Passphrase Generator](password-generator/) | `/password-generator/` | Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history. |
+| [Number Explorer](number-explorer/) | `/number-explorer/` | Type any number and watch it grow: a stack of books, a pour of water, a sky of stars, a pile of sand, a very long count. |
 | [Share Text & Files](share-text/) | `/share-text/` | Share text and files from your open browser, encrypted. Direct is the default; Cloud relay is an optional route when devices cannot connect directly. |
 | [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Connect directly on your local network, or choose Cloud relay for listeners over the internet. |
 | [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager and hear live voice from people who connect. Use Direct on your local network or choose Cloud relay over the internet, with a password and individual mute or remove controls. |

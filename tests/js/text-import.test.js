@@ -1,13 +1,18 @@
 /** Pending browser text reads must never outlive the editor they replace. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { textImport } from '../../shared/js/text-import.js';
+import { readFileSync } from 'node:fs';
+import { readText, textImport } from '../../shared/js/text-import.js';
+
+// phrase() reads the page. phrases.test.js covers that lookup, so here a key
+// stands for its sentence.
+globalThis.document = { querySelector: () => null };
 
 function delayed() {
   let resolve;
   let reject;
   const value = new Promise((pass, fail) => { resolve = pass; reject = fail; });
-  return { file: { text: () => value }, resolve, reject };
+  return { file: { arrayBuffer: () => value.then((text) => new TextEncoder().encode(text)) }, resolve, reject };
 }
 
 function page() {
@@ -105,7 +110,7 @@ test('Clear silences pending failures and allows the next read to start normally
   old.reject(new Error('late failure'));
   assert.equal(await before, null);
   assert.equal(busy(), false);
-  assert.deepEqual(await imports.read([{ text: async () => 'new' }]), ['new']);
+  assert.deepEqual(await imports.read([new File(['new'], 'new.txt')]), ['new']);
   assert.deepEqual(events, [['reading', 1], ['done'], ['reading', 1], ['done']]);
 });
 
@@ -113,7 +118,7 @@ test('a current asynchronous or synchronous read failure is reported and ends re
   for (const asynchronous of [true, false]) {
     const failure = new Error('current failure');
     const { imports, events, busy } = page();
-    const file = { text() { if (asynchronous) return Promise.reject(failure); throw failure; } };
+    const file = { arrayBuffer() { if (asynchronous) return Promise.reject(failure); throw failure; } };
     await assert.rejects(imports.read([file]), (error) => error === failure);
     assert.equal(busy(), false);
     assert.deepEqual(events, [['reading', 1], ['done']]);
@@ -146,4 +151,45 @@ test('error callbacks belong to the current owner and a stale failure cannot inv
   assert.equal(await before, null);
   assert.equal(await after, null);
   assert.deepEqual(failures, [current]);
+});
+
+const file = (...bytes) => new File([new Uint8Array(bytes)], 'source.txt');
+const refused = (error) => error.message === 'text.encoding';
+
+test('different files in another encoding are refused, never read as one string', async () => {
+  // Müller and Möller in Windows-1252, 张三 and 李四 in GBK. Each pair decodes to
+  // the same string of replacement characters, and Text Diff called them identical.
+  for (const bytes of [[0x4d, 0xfc, 0x6c], [0x4d, 0xf6, 0x6c], [0xd5, 0xc5, 0xc8, 0xfd], [0xc0, 0xee, 0xcb, 0xc4]]) {
+    await assert.rejects(readText(file(...bytes)), refused);
+  }
+});
+
+test('UTF-8 with or without a mark and marked UTF-16 read as their text', async () => {
+  for (const bytes of [[0x68, 0x69], [0xef, 0xbb, 0xbf, 0x68, 0x69],
+    [0xff, 0xfe, 0x68, 0x00, 0x69, 0x00], [0xfe, 0xff, 0x00, 0x68, 0x00, 0x69]]) {
+    assert.equal(await readText(file(...bytes)), 'hi');
+  }
+});
+
+test('a refused file reaches the failure callback and changes nothing', async () => {
+  const { imports, events } = page();
+  let applied = false;
+  const failures = [];
+  const texts = await imports.read([file(0x68, 0x69), file(0xfc)], {
+    apply() { applied = true; },
+    failed(error) { failures.push(error.message); },
+  });
+  assert.equal(texts, null);
+  assert.equal(applied, false);
+  assert.deepEqual(failures, ['text.encoding']);
+  assert.deepEqual(events, [['reading', 2], ['done']]);
+});
+
+test('every tool page carries the sentence a refusal shows', () => {
+  const template = readFileSync(new URL('../../templates/tool.html', import.meta.url), 'utf8');
+  assert.match(template, /<span data-phrase="text\.encoding">\{\{ ui\.tool\.text_encoding \}\}<\/span>/);
+  for (const source of ['config/site.toml', 'locales/zh/locale.toml', 'locales/de/locale.toml', 'locales/es/locale.toml',
+    'locales/pt/locale.toml', 'locales/fr/locale.toml', 'locales/ja/locale.toml']) {
+    assert.match(readFileSync(new URL('../../' + source, import.meta.url), 'utf8'), /^text_encoding = "/m, source);
+  }
 });

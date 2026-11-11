@@ -38,7 +38,7 @@ js_parts = ["document-detect", "document-geometry", "file-picker", "zip", "crc32
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["merge-pdf", "compress-pdf", "redact-pdf", "watermark-pdf", "protect-pdf"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 

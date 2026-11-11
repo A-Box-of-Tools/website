@@ -3,6 +3,10 @@
   <section class="card">
     <h2><span class="step">1</span> GIFを選ぶ</h2>
 
+    <p class="card-lede">
+      説明用の静止画を保存する、編集用にPNGのコマを取り出す、スプライトシートを1枚作る、のいずれかができます。完全な画像が必要なら<strong>1枚のPNGに入るもの</strong>を<strong>見えているとおりのコマ</strong>のままにしてください。選び方は<a href="../guides/split-a-gif-into-frames/" data-workflow-target="guides/split-a-gif-into-frames">GIFのコマ抽出ガイド</a>で説明しています。
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -105,6 +109,16 @@
     <ul class="frames" id="frames"></ul>
   </section>
 
+  <section class="card">
+    <h2>コマを次の作業に使う</h2>
+    <p>
+      編集したアニメーションを作り直すには、完全なPNGのコマを<a href="../gif-maker/" data-workflow-target="gif-maker">GIF作成</a>に追加し、名前順に並べて、<code>frames.txt</code>を参考に各コマの表示時間を設定します。タイミング一覧は自動では読み込まれません。全体の手順は<a href="../guides/edit-a-gif-frame-by-frame/" data-workflow-target="guides/edit-a-gif-frame-by-frame">コマごとの編集ガイド</a>をご覧ください。
+    </p>
+    <p>
+      動画だけが必要なら、<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">元のGIFを直接MP4に変換すれば</a>、コマごとに異なる遅延を保てます。タイミングやファイルサイズが予想と違うときは、編集の前に<a href="../gif-analyzer/" data-workflow-target="gif-analyzer">GIF解析</a>で確認してください。
+    </p>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -177,8 +191,8 @@
     <span data-phrase="sheet.stored">シートはすべてのセルが同じ大きさである必要があるため、そのコマが保存している画素だけではなく、表示されるままのコマを使います。</span>
     <span data-phrase="net.clean">GIFはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
-    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
-    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.one">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
     <span data-phrase="frame.download">ダウンロード</span>
   </div>
 </main>

@@ -3,6 +3,10 @@
 // gateways can include strangers, and nearby devices can use different routes.
 // Nothing here decides whether their eventual WebRTC connection is local.
 import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
+import { ipv4Octets, ipv6Network } from "../shared/address.js";
+import { answerClose } from "./closing.js";
+import { admitPending, pendingSource } from "./pending.js";
+import { refusal } from "./refusal.js";
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
 export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
@@ -12,7 +16,8 @@ const MAX_OBSERVERS = 64;
 const MAX_SHARES = 32;
 const MAX_MESSAGE = 512;
 const MAX_UPDATES = 120;
-const MAX_PENDING = 8;
+const RATE_WINDOW = 10000;
+const RECHECK_INTERVAL = 10000;
 const AUTH_TIMEOUT = 8000;
 
 const DEFAULT_TOOL = "share-text";
@@ -54,13 +59,6 @@ export function pageOrigin(value) {
   return null;
 }
 
-function ipv4Octets(value) {
-  if (typeof value !== "string" || !/^(?:\d{1,3}\.){3}\d{1,3}$/.test(value)) return null;
-  const parts = value.split(".");
-  const octets = parts.map(Number);
-  return octets.some((n, i) => n > 255 || String(n) !== parts[i]) ? null : octets;
-}
-
 function publicAddress(value) {
   if (typeof value !== "string" || value.length > 64) return null;
   const octets = ipv4Octets(value);
@@ -96,14 +94,7 @@ function networkAddress(request) {
     ? request.headers.get("CF-Connecting-IPv6") : edgeAddress);
   if (address === null) return null;
   if (!address.includes(":")) return octets !== null && octets[0] >= 240 ? null : address;
-  // Devices on an IPv6 LAN have distinct interface identifiers. Expanding
-  // the compressed form before masking avoids dividing one /64 by device.
-  const [left, right] = address.split("::");
-  const leading = left ? left.split(":") : [];
-  const trailing = right ? right.split(":") : [];
-  const groups = right === undefined ? leading
-    : [...leading, ...Array(8 - leading.length - trailing.length).fill("0"), ...trailing];
-  return `${groups.slice(0, 4).map((n) => parseInt(n, 16).toString(16)).join(":")}::/64`;
+  return ipv6Network(address);
 }
 
 // CF-Connecting-IP is supplied by the edge, but a same-zone Worker may
@@ -130,6 +121,32 @@ export const validPublication = (value) => value !== null && typeof value === "o
   && typeof value.code === "string" && CODE_PATTERN.test(value.code)
   && typeof value.lease === "string" && LEASE_PATTERN.test(value.lease);
 
+// A browser on a network with both IPv4 and IPv6 chooses the version for each
+// connection, and falls back to IPv4 when an IPv6 attempt is slow. One page's room
+// socket and its directory can then reach the edge over different versions, and so
+// derive different network scopes. What a network scope is made of besides the
+// address - the page's origin, and which version reached the edge - is kept with the
+// socket, so that a room can also accept its lease from the page's directory over
+// the other version. No parameter or message chooses either: the origin is the
+// handshake's own, which the scope digests too, and the version is the edge's. A
+// private group's scope has no network part.
+export function networkPage(request) {
+  if (request.headers.has("CF-Worker") || requestedGroup(new URL(request.url)) !== undefined) return null;
+  const origin = pageOrigin(request.headers.get("Origin"));
+  const address = origin === null ? null : networkAddress(request);
+  return address === null ? null : { origin, family: address.includes(":") ? 6 : 4 };
+}
+
+export const validNetwork = (value) => value !== null && typeof value === "object" && !Array.isArray(value)
+  && Object.keys(value).length === 2 && (value.family === 4 || value.family === 6)
+  && typeof value.origin === "string" && pageOrigin(value.origin) === value.origin;
+
+// Besides the directory of its own room socket's scope, a live lease is accepted by a
+// network directory of the same origin reached over the other IP version. The caller
+// still matches the code, lease and tool.
+export const otherVersion = (owner, claim) => validNetwork(owner?.network) && validNetwork(claim?.network)
+  && owner.network.origin === claim.network.origin && owner.network.family !== claim.network.family;
+
 function validVoicePublication(value, tool) {
   if (!/^[a-f0-9]{64}$/.test(value.code)) return false;
   return tool !== "walkie-talkie" || Object.keys(value).length === 3
@@ -151,6 +168,7 @@ export class Discovery {
   constructor(ctx, env) {
     this.ctx = ctx;
     this.env = env;
+    this.nextRecheck = 0;
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
   }
 
@@ -177,23 +195,52 @@ export class Discovery {
     const tool = rendezvousTool(url.searchParams.get("tool"));
     const group = requestedGroup(url);
     if (!validScope(scope) || tool === null || group === null) return new Response(null, { status: 403 });
+    // Digesting yields to other sockets, so the count and the accept below stay
+    // in one synchronous step after it. A network directory needs no digest: its
+    // scope is already its address.
+    const source = group === undefined ? null : await pendingSource(request, scope);
     this.cleanup();
+    const pending = this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false);
+    if (group === undefined) this.freeSeat();
+    else if (!admitPending(pending, source, (ws) => this.evict(ws))) return refusal(4429, "full");
     const { 0: client, 1: server } = new WebSocketPair();
-    if (this.observers().length >= MAX_OBSERVERS || group !== undefined
-        && this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false).length >= MAX_PENDING) {
-      server.accept();
-      server.close(4429, "full");
-      return new Response(null, { status: 101, webSocket: client });
-    }
+    const network = group === undefined ? networkPage(request) : null;
     this.ctx.acceptWebSocket(server, ["observer"]);
-    server.serializeAttachment({ scope, tool, generation: 0, updates: 0, publication: null,
-      ...(group === undefined ? {} : { group, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
+    server.serializeAttachment({ scope, tool, since: Date.now(), generation: 0, updates: 0, publication: null,
+      ...(network === null ? {} : { network }),
+      ...(group === undefined ? {} : { group, source, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
     if (group === undefined) server.send(this.snapshot());
     return new Response(null, { status: 101, webSocket: client });
   }
 
   observers() {
     return this.ctx.getWebSockets("observer").filter((ws) => ws.readyState === 1 && ws.deserializeAttachment() !== null);
+  }
+
+  // Nobody else needs telling: a socket given up holds nothing the list would miss.
+  evict(ws) {
+    ws.serializeAttachment(null);
+    try { ws.close(4429, "full"); } catch {}
+  }
+
+  // A full directory still seats a newcomer, who may be a host about to list. An
+  // observer is long-lived, so unlike a pending socket the one seated longest is
+  // usually somebody's open page: it loses its list for one retry thirty seconds
+  // away, and taking the longest-seated means every seat takes its turn. A listing
+  // stays because it is what the directory is for, but one per code: MAX_SHARES then
+  // leaves at least half the seats to take turns.
+  freeSeat() {
+    const seated = this.observers().filter((ws) => this.authorized(ws.deserializeAttachment()));
+    if (seated.length < MAX_OBSERVERS) return;
+    const listed = new Set();
+    const watching = seated.filter((ws) => {
+      const { publication } = ws.deserializeAttachment();
+      if (!publication?.verified || listed.has(publication.code)) return true;
+      listed.add(publication.code);
+      return false;
+    });
+    const since = (ws) => ws.deserializeAttachment().since ?? 0;
+    this.evict(watching.reduce((oldest, ws) => (since(ws) < since(oldest) ? ws : oldest)));
   }
 
   cleanup() {
@@ -243,7 +290,7 @@ export class Discovery {
     if (lostShare) this.broadcast();
   }
 
-  async verify(publication, scope, tool = DEFAULT_TOOL, privateGroup = false) {
+  async verify(publication, scope, tool = DEFAULT_TOOL, privateGroup = false, network = undefined) {
     try {
       const binding = tool === "voice-oncall" ? this.env.INBOXES
         : tool === "walkie-talkie" ? this.env.BROADCASTS : this.env.ROOMS;
@@ -252,7 +299,8 @@ export class Discovery {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: publication.code, lease: publication.lease, scope, tool,
-          ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}) }),
+          ...(tool === "walkie-talkie" ? { listenKey: publication.listenKey } : {}),
+          ...(network === undefined ? {} : { network }) }),
       });
       if (!metadataTool(tool) && result.status === 204) return true;
       if (result.status !== 200) return false;
@@ -286,14 +334,23 @@ export class Discovery {
     }
   }
 
-  async refresh() {
+  // A withdrawal removes a listing as it happens, so a recheck only repairs one that
+  // never arrived. One per interval does that, and a page asking in between gets the
+  // list as it stands. The time is kept in memory: forgetting it costs one early recheck.
+  async refresh(ws) {
+    if (Date.now() < this.nextRecheck) {
+      try { ws.send(this.snapshot()); }
+      catch { this.drop(ws); try { ws.close(1011, "send-failed"); } catch {} }
+      return;
+    }
+    this.nextRecheck = Date.now() + RECHECK_INTERVAL;
     const entries = this.observers().map((ws) => ({ ws, who: ws.deserializeAttachment() }))
       .filter(({ who }) => who.publication?.verified);
     const checks = new Map();
     for (const { who } of entries) {
       const tool = who.tool ?? DEFAULT_TOOL;
       const key = verificationKey(who);
-      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool, who.group !== undefined));
+      if (!checks.has(key)) checks.set(key, this.verify(who.publication, who.scope, tool, who.group !== undefined, who.network));
     }
     // Rechecking a manual refresh repairs a missed withdrawal without a
     // polling loop. Deduplicating leases bounds the binding calls to the list.
@@ -314,8 +371,14 @@ export class Discovery {
 
   async webSocketMessage(ws, message) {
     this.cleanup();
-    const who = ws.deserializeAttachment();
-    if (who === null || ws.readyState !== 1) return;
+    let who = ws.deserializeAttachment();
+    if (who === null || ws.readyState !== 1 || message === "ping") return;
+    // The window comes before anything about the frame is believed, so every
+    // kind of frame counts. `updates` remains the separate per-connection allowance.
+    const now = Date.now(), restart = now - (who.window ?? 0) >= RATE_WINDOW, frames = restart ? 1 : who.frames + 1;
+    if (frames > MAX_UPDATES) { this.drop(ws); try { ws.close(4429, "too-many-frames"); } catch {} return; }
+    who = { ...who, window: restart ? now : who.window, frames };
+    ws.serializeAttachment(who);
     const refuse = () => { this.drop(ws); try { ws.close(4403, "unauthorized"); } catch {} };
     if (typeof message !== "string" || message.length > MAX_MESSAGE) {
       if (!this.authorized(who)) refuse();
@@ -343,8 +406,11 @@ export class Discovery {
       }
       if (identifier !== current.group) return refuse();
       // Attachments survive hibernation. Only the public identifier and proof
-      // result belong there; the entered code is never retained or echoed.
-      const { deadline, authenticating, ...accepted } = current;
+      // result belong there; the entered code is never retained or echoed, and the
+      // address digest was only ever for admission. A seat is freed here and not at
+      // the handshake because only a proof earns one.
+      const { deadline, authenticating, source, ...accepted } = current;
+      this.freeSeat();
       ws.serializeAttachment({ ...accepted, authenticated: true });
       try { ws.send(this.snapshot()); }
       catch { this.drop(ws); try { ws.close(1011, "send-failed"); } catch {} }
@@ -359,7 +425,7 @@ export class Discovery {
     if (who.updates >= MAX_UPDATES) { this.drop(ws); ws.close(4429, "too-many-updates"); return; }
     if (!publishing) {
       ws.serializeAttachment({ ...who, updates: who.updates + 1 });
-      return this.refresh();
+      return this.refresh(ws);
     }
     const generation = who.generation + 1;
     const publication = parsed.publish === null ? null : {
@@ -371,7 +437,7 @@ export class Discovery {
     ws.serializeAttachment({ ...who, generation, updates: who.updates + 1, publication });
     if (who.publication?.verified || publication === null) this.broadcast();
     if (publication === null) return;
-    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL, who.group !== undefined);
+    let valid = await this.verify(publication, who.scope, who.tool ?? DEFAULT_TOOL, who.group !== undefined, who.network);
     const current = ws.deserializeAttachment();
     if (ws.readyState !== 1 || current === null || current.generation !== generation
         || current.publication?.code !== publication.code || current.publication.lease !== publication.lease) return;
@@ -382,7 +448,7 @@ export class Discovery {
     this.broadcast();
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

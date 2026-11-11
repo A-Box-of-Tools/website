@@ -11,6 +11,10 @@
   <section class="card">
     <h2>Elige un GIF</h2>
 
+    <p class="card-lede">
+      Comprueba los tiempos de los fotogramas, el descarte, las paletas y el tamaño de una animación sin cambiar el archivo. La <a href="../guias/que-hay-dentro-de-un-gif/" data-workflow-target="guides/whats-inside-a-gif">guía de análisis de GIF</a> explica cómo leer los resultados cuando un GIF es grande, lento o deja rastros.
+    </p>
+
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
       display:none input is refused by Safari and some Chrome configurations,
@@ -156,6 +160,16 @@
       archivo los arrastra igualmente.
     </p>
     <ul class="extras" id="extras"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Después del análisis</h2>
+    <p>
+      ¿Necesitas imágenes individuales? <a href="../separar-gif-en-fotogramas/" data-workflow-target="split-gif">Extrae los fotogramas como PNG o como una hoja de sprites</a>. Para cambiar la animación, sigue la <a href="../guias/editar-un-gif-fotograma-a-fotograma/" data-workflow-target="guides/edit-a-gif-frame-by-frame">guía para separar y reconstruir</a>, con la lista de tiempos como referencia.
+    </p>
+    <p>
+      ¿Necesitas un vídeo? <a href="../convertir-gif-a-mp4/" data-workflow-target="gif-to-mp4">Convierte directamente el GIF original a MP4</a> para conservar sus retardos variables sin reconstruirlo a partir de PNG. Las zonas transparentes reciben un color, y la repetición depende del reproductor.
+    </p>
   </section>
 
   <!--
@@ -502,10 +516,10 @@
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
       herramienta no hace nunca. {platform}</span>
     <span data-phrase="net.platform.one">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       host; a ninguno se le ha dado un archivo.</span>
     <span data-phrase="net.platform.many">Los scripts propios de la página para
-      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      publicidad y medición se han cargado desde {hosts}
       hosts; a ninguno se le ha dado un archivo.</span>
   </div>
 </main>

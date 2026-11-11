@@ -112,6 +112,38 @@ src/diff.js          Myers, the word diff, and the unified output
 src/samples.js       the example behind "Try an example"
 ```
 
+## Files that are not UTF-8
+
+`shared/js/text-import.js` reads UTF-8, and UTF-16 when a byte order mark says
+so. Anything else is refused with a sentence the visitor can act on, rather than
+decoded with replacement characters. This used to be `File.text()`, which cannot
+refuse: `Müller` and `Möller` from two Windows-1252 files lost the same letter to
+the same replacement character, and the page announced two different files as
+identical. For the same reason the sentence says "character for character" and
+not "byte for byte". The comparison is of decoded text, and two files that differ
+only in a byte order mark or an encoding do hold the same characters.
+
+## Continue with CSV source tables
+
+When both current inputs read as tables,
+Stitch these tables sends the original as A and the changed source as B. It
+sends exact source strings, including untouched CRLF, rather than the patch or
+the filtered diff view. Identical tables remain eligible. The shared table-data
+part is also Stitch Tables' parser, so malformed or over-limit tables are not
+offered a transfer. Any text with a comma in it parses, so reading as a table
+also asks for at least two records, a mostly rectangular shape, and separators
+that are not punctuation: a comma in a sentence has a space after it. A
+recognised heading row, a tab or a typed column outweighs that last test.
+Headerless input is recognized without consuming its first
+record; Stitch's own automatic heading detection runs on arrival.
+
+source_handoff targets are resolved to local tool addresses by the build.
+The frame's aboxHandoffFiles API parks ordered Files directly, without fetching
+Blob URLs or widening CSP. Records are consumed once and expire after ten
+minutes. Editing, replacing, swapping or clearing inputs, changing options and
+pagehide retire pending transfers. Packet ownership prevents late cleanup from
+deleting a newer transfer. Storage failures leave both inputs on this page.
+
 ## The tests
 
 ```bash

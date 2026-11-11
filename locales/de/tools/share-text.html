@@ -73,9 +73,9 @@
             <input type="checkbox" id="discoverable" checked disabled>
             Auffindbar — diesen Link im ausgewählten Netzwerk oder in der Gruppe anzeigen
           </label>
-          <details id="discoverable-help" class="discoverable-help info-fold">
+          <details id="discoverable-help" class="info-tip">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">Über auffindbare Freigaben</span></summary>
-            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen im oben ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat eingeschaltet, besonders in gemeinsam genutzten Netzwerken. Ist Privat aus, kann jeder, der den Namen sieht, ohne Ihre Zustimmung verbinden und lesen. Deaktivieren Sie Auffindbar, um nur per Link zu teilen.</p>
+            <p id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen im oben ausgewählten lokalen Netzwerk oder in der privaten Gruppe. Lassen Sie Privat eingeschaltet, besonders in gemeinsam genutzten Netzwerken. Ist Privat aus, kann jeder, der den Namen sieht, ohne Ihre Zustimmung verbinden und lesen. Deaktivieren Sie Auffindbar, um nur per Link zu teilen.</p>
           </details>
         </div>
         <label class="check" for="oneoff">
@@ -218,7 +218,7 @@
     <span data-phrase="discovery.not-published">Diese Freigabe ist per Link erreichbar; die Suche konnte sie nicht veröffentlichen.</span>
 
     <span data-phrase="share.active">Freigabe läuft</span>
-    <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>
+    <span data-phrase="share.waiting">Freigabe läuft. Warten Sie, bis jemand den Link öffnet, und lassen Sie diesen Tab offen.</span>
     <span data-phrase="share.reader-count.one">1 Leser verbunden</span>
     <span data-phrase="share.reader-count.many">{n} Leser verbunden</span>
     <span data-phrase="share.knock-count.one">1 Person wartet darauf, dass Sie sie einlassen</span>
@@ -252,7 +252,7 @@
     <span data-phrase="view.someone">Unter dieser Adresse teilt jemand etwas.</span>
     <span data-phrase="view.connecting">Verbinde direkt&hellip;</span>
     <span data-phrase="view.private">Der Teilende hat dies auf privat gestellt.</span>
-    <span data-phrase="view.asked">Angefragt. Warte, bis der Teilende Sie einlässt&hellip;</span>
+    <span data-phrase="view.asked">Angefragt. Warten Sie, bis der Teilende Sie einlässt&hellip;</span>
     <span data-phrase="view.denied">Der Teilende hat Sie nicht eingelassen.</span>
     <span data-phrase="view.empty">Verbunden. Der Teilende hat noch nichts geschrieben &mdash; diese Seite füllt sich, während er tippt.</span>
     <span data-phrase="view.ended">Der Teilende hat die Freigabe beendet, und diese Kopie ging mit ihr.</span>
@@ -261,14 +261,14 @@
     <span data-phrase="view.full">Diese Freigabe hat bereits ihre Höchstzahl an Lesern.</span>
     <span data-phrase="view.no-connect">Der Teilende war direkt nicht zu erreichen. Eines der beiden Netze lässt womöglich keine Peer-to-Peer-Verbindung zu.</span>
     <span data-phrase="view.waiting-content">Verbunden. Die erste Nachricht des Teilenden wird erwartet&hellip;</span>
-    <span data-phrase="view.no-content">Die Verbindung steht, aber die Freigabe ist nicht angekommen. Bitte den Teilenden, seinen Tab offen und aktiv zu halten, und prüfe diesen Link erneut.</span>
+    <span data-phrase="view.no-content">Die Verbindung steht, aber die Freigabe ist nicht angekommen. Bitten Sie den Teilenden, seinen Tab offen und aktiv zu halten, und prüfen Sie diesen Link erneut.</span>
     <span data-phrase="view.relaying">Verbinde über das Relais&hellip;</span>
     <span data-phrase="view.relay-none">Gerade ist kein Relais verfügbar. Ein Versuch aus einem anderen Netz klappt meistens.</span>
     <span data-phrase="view.relay-failed">Der Teilende war auch über das Relais nicht zu erreichen. Vielleicht hat er seinen Tab geschlossen.</span>
     <span data-phrase="view.error">Beim Verbinden ist etwas schiefgegangen. Laden Sie die Seite neu und versuchen Sie es wieder.</span>
     <span data-phrase="view.download">Herunterladen</span>
     <span data-phrase="view.file-gone">Wird nicht mehr geteilt</span>
-    <span data-phrase="share.local-waiting">Freigabe im Modus Lokales Netzwerk läuft. Warte, bis jemand den Link öffnet — lassen Sie diesen Tab offen.</span>
+    <span data-phrase="share.local-waiting">Freigabe im Modus Lokales Netzwerk läuft. Warten Sie, bis jemand den Link öffnet, und lassen Sie diesen Tab offen.</span>
     <span data-phrase="view.local-connecting">Verbinde über das lokale Netzwerk…</span>
     <span data-phrase="view.mode-local">Der Teilende nutzt den Modus Lokales Netzwerk. Versuchen Sie es mit seinem Modus erneut, um sich ohne Internet-Relais zu verbinden.</span>
     <span data-phrase="view.mode-direct">Der Host nutzt den normalen Direktmodus. Wiederholen Sie die Verbindung mit seinem Modus; Direkt wechselt nicht zu einem Relais. Für einen anderen Weg muss der Host eine neue Cloud-Relais-Sitzung starten.</span>
@@ -280,10 +280,10 @@
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
       dieses Werkzeug nie. {platform}</span>
     <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
-      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines
+      Werbung und Messung kamen von {hosts} Host; keines
       davon hat ein Zeichen davon bekommen.</span>
     <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
-      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
+      Werbung und Messung kamen von {hosts} Hosts; keines
       davon hat ein Zeichen davon bekommen.</span>
   </div>
   {% include "partials/paired-approval-prompt.html" %}

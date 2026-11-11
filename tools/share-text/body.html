@@ -96,9 +96,9 @@
             <input type="checkbox" id="discoverable" checked disabled>
             Discoverable &mdash; show this link in the selected network or group
           </label>
-          <details id="discoverable-help" class="discoverable-help info-fold">
+          <details id="discoverable-help" class="info-tip">
             <summary aria-describedby="discoverable-note"><span class="visually-hidden">About discoverable shares</span></summary>
-            <p id="discoverable-note" role="tooltip" class="discoverable-note">
+            <p id="discoverable-note" role="tooltip">
               A discoverable share lists its name in the local network or private
               group selected above. Keep Private on, especially on shared networks.
               With Private off, anyone who sees the name can connect and read
@@ -329,11 +329,11 @@
       server. {total} files loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool
       never does. {platform}</span>
-    <span data-phrase="net.platform.one">The page's own ad, measurement and
-      donate-button scripts loaded from {hosts} host; not one of them was given
+    <span data-phrase="net.platform.one">The page's own ad and measurement
+      scripts loaded from {hosts} host; not one of them was given
       a character of it.</span>
-    <span data-phrase="net.platform.many">The page's own ad, measurement and
-      donate-button scripts loaded from {hosts} hosts; not one of them was given
+    <span data-phrase="net.platform.many">The page's own ad and measurement
+      scripts loaded from {hosts} hosts; not one of them was given
       a character of it.</span>
   </div>
   {% include "partials/paired-approval-prompt.html" %}

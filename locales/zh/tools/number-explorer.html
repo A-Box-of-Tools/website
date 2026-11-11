@@ -1,0 +1,114 @@
+<main id="main" data-scene="books">
+  <section class="card ne-card" aria-labelledby="start-title">
+    <div class="ne-heading"><span class="eyebrow">数字小奇观</span><span class="local-badge">可离线使用 · 不需要 AI</span></div>
+    <h2 id="start-title">你的数字有多大？</h2>
+    <p class="card-lede">输入任意一个数字，看着它长大。同一个数字可以变成一摞书、一汪水、满天星星、一堆沙子，或者一次很长的计数。数字越大，镜头退得越远。</p>
+
+    <div class="ne-entry">
+      <div class="field ne-amount"><label for="amount">你的数字</label><input id="amount" type="text" value="10 亿" maxlength="160" spellcheck="false" autocomplete="off" inputmode="text" aria-describedby="amount-help amount-error"></div>
+      <div class="ne-steps" role="group" aria-label="改变数量"><button type="button" class="ghost" id="less" aria-label="缩小十倍">÷ 10</button><button type="button" class="primary" id="more" aria-label="放大十倍">× 10</button></div>
+    </div>
+    <p id="amount-help" class="field-note">可以输入 1,000,000、1.5 亿或 3 万亿。范围是 0 到 100 万亿亿亿（1 后面跟 30 个零）的整数。</p>
+    <p id="amount-error" class="error" role="alert" hidden></p>
+    <p id="read-number" class="ne-readback"></p>
+
+    <div class="ne-dial">
+      <input type="range" id="dial" min="0" max="30" step="0.01" value="9" aria-label="数字的大小，以 10 的幂表示">
+      <div class="ne-ticks" id="dial-ticks" aria-hidden="true"></div>
+    </div>
+
+    <div class="ne-worlds" role="group" aria-label="把数字画成">
+      <button type="button" data-world="books" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5C6 5 9 5 12 6.8 15 5 18 5 21 6.5V19c-3-1.5-6-1.5-9 .3-3-1.8-6-1.8-9-.3zM12 6.8v12.5"/></svg><span class="ne-world-name">书</span><span class="ne-world-value" id="tab-books"></span></button>
+      <button type="button" data-world="water" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.6 4.6 6.5 8 6.5 11.5a6.5 6.5 0 0 1-13 0C5.500 11 8.400 7.600 12 3z"/></svg><span class="ne-world-name">水</span><span class="ne-world-value" id="tab-water"></span></button>
+      <button type="button" data-world="stars" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.700 5.800 6.300.8-4.600 4.300 1.200 6.200L12 17l-5.600 3.100 1.200-6.200L3 9.600l6.300-.8z"/></svg><span class="ne-world-name">星星</span><span class="ne-world-value" id="tab-stars"></span></button>
+      <button type="button" data-world="sand" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7.500 3c0 5 9 6.500 9 9s-9 4-9 9M16.500 3c0 5-9 6.500-9 9s9 4 9 9"/></svg><span class="ne-world-name">沙子</span><span class="ne-world-value" id="tab-sand"></span></button>
+      <button type="button" data-world="time" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.300l3.500 2"/></svg><span class="ne-world-name">时间</span><span class="ne-world-value" id="tab-time"></span></button>
+    </div>
+
+    <div class="ne-stage">
+      <canvas id="stage" role="img" aria-label="表现数字大小的动画"></canvas>
+      <p id="magnify" class="ne-magnify" aria-hidden="true" hidden></p>
+      <div class="ne-stage-controls" id="stage-controls">
+        <button type="button" id="play" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.500v11l9-5.500z"/></svg><span id="play-label">从 1 开始长大</span></button>
+        <button type="button" id="still" aria-pressed="false"><span id="still-label">暂停动画</span></button>
+      </div>
+    </div>
+    <p id="stage-caption" class="ne-caption"></p>
+
+    <div class="ne-unit chips" id="unit-row" role="group" aria-labelledby="unit-label"><span class="chips-label" id="unit-label">每一个是</span><button type="button" class="chip" data-unit="book" aria-pressed="true">一本书</button><button type="button" class="chip" data-unit="word" aria-pressed="false">一个词</button><button type="button" class="chip" data-unit="token" aria-pressed="false">一个 AI 文本 token</button></div>
+
+    <div class="ne-answer"><p id="answer-kicker" class="ne-kicker"></p><p class="ne-big"><strong id="answer-number">—</strong> <span id="answer-unit"></span></p><p id="answer-story" class="ne-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+    <p id="step-note" class="field-note" role="status"></p>
+  </section>
+
+  <section class="card ne-more" aria-labelledby="ladder-title">
+    <div class="ne-ladder-side">
+      <h3 id="ladder-title">差了多少倍？</h3>
+      <p class="field-note">你的数字旁边的每个地标。选一个，就跳到刚好够得着它的数量。</p>
+      <ol class="ne-ladder" id="ladder"></ol>
+      <button type="button" class="ghost" id="ladder-all" aria-expanded="false">显示所有地标</button>
+    </div>
+    <div class="ne-side">
+      <div class="ne-guess" id="guess-box"><strong id="guess-question"></strong><div class="ne-guess-actions"><button type="button" class="ghost" id="guess-yes">能</button><button type="button" class="ghost" id="guess-no">不能</button></div><p id="guess-answer" role="status" hidden></p></div>
+      <div class="ne-followups"><h3>跟着好奇心走</h3><div id="followups"></div></div>
+      <div class="ne-examples"><h3>或者试试</h3><div class="ne-example-row">
+        <button type="button" class="ghost" data-example="books:100 万:token">100 万个 AI token</button>
+        <button type="button" class="ghost" data-example="water:1 万亿">1 万亿滴水</button>
+        <button type="button" class="ghost" data-example="stars:1000 亿">银河系</button>
+        <button type="button" class="ghost" data-example="sand:10 亿">10 亿粒沙</button>
+        <button type="button" class="ghost" data-example="time:10 亿">数到 10 亿</button>
+        <button type="button" class="ghost" data-example="books:100 万亿亿亿">这里最大的数</button>
+      </div></div>
+      <div class="ne-save"><button type="button" id="download-picture" class="ghost">保存这张图</button><span id="save-note" class="field-note" role="status"></span></div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>这些是怎么算出来的？</summary>
+    <p>你输入的数量是精确的。其余都是根据下面这些数值做的估算，你可以修改，也可以核对。</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="book-thickness">一本书有多厚？</label><select id="book-thickness"><option value="0.02">薄 · 2 厘米</option><option value="0.03" selected>普通 · 3 厘米</option><option value="0.05">砖头书 · 5 厘米</option></select><p class="field-note">平放叠起来，宽 15 厘米。书堆按真实高度画。书堆细到快看不见时，会画得比实际宽。</p></div>
+      <div class="field"><label for="book-length">示例书的词数</label><input id="book-length" type="number" min="100" max="1000000" step="1" value="75000" aria-describedby="settings-error"><p class="field-note">英文文本：每个 token 约 0.75 个词。这只是写作量的换算，不代表真的读过或写过这么多书。</p></div>
+      <div class="field"><label for="drop-size">一滴水有多大？</label><select id="drop-size"><option value="0.05" selected>滴管 · 0.05 毫升</option><option value="0.25">漏水的龙头 · 0.25 毫升</option></select><p class="field-note">标准滴管每毫升约 20 滴。水龙头滴下的水滴更大，通常按约 0.25 毫升算。</p></div>
+      <div class="field"><label for="grain-size">沙粒直径</label><select id="grain-size"><option value="0.25">小 · 0.25 毫米</option><option value="0.5" selected>中 · 0.5 毫米</option><option value="1">大 · 1 毫米</option></select><p class="field-note">这里假定沙粒是球形，沙粒占 60%，空气占 40%。真实的沙子形状和大小都不一样。</p></div>
+      <div class="field"><label for="count-rate">每秒数多少个</label><select id="count-rate"><option value="1">1 · 一个一个数</option><option value="10">10</option><option value="100">100</option></select><p class="field-note">连续不停地数，不睡觉也不休息。一年按 365.25 天算。</p></div>
+    </div>
+    <p id="settings-error" class="error" role="alert" hidden></p>
+    <p id="model-summary"></p>
+    <p><strong>书。</strong>高度都做了四舍五入：一个人 1.7 米，一张桌子 0.75 米，一栋房子 8 米，自由女神像从地面到火炬 93 米，埃菲尔铁塔 330 米，哈利法塔 828 米，珠穆朗玛峰 8849 米。距离都是从地面垂直向上量的：客机巡航高度 11 公里，空间站约 400 公里，月球 384400 公里，火星最近时约 5460 万公里，太阳 1.496 亿公里，海王星 45 亿公里，旅行者 1 号约 259 亿公里，而且还在远去，比邻星 4.24 光年，猎户座大星云约 1500 光年，仙女座星系 250 万光年，室女座星系团 5400 万光年，类星体 3C 273 约 25 亿光年，可观测宇宙的边缘约 465 亿光年。银河系的另一边按它的宽度算，约 10 万光年，因为星系就是按这个大小画在书堆脚下的。图书馆这两个地标是书的数量，所以会随书的厚度移动：2023 年美国国会图书馆约有 2580 万册编目图书，谷歌 2010 年估计全世界约有 1.3 亿种不同的书。</p>
+    <p><strong>水和沙。</strong>着色面积是容器图形的真实占比。容器本身只是示意，并不共用一把标尺。容量都是选定的例子：15 毫升的勺子，250 毫升的杯子，10 升的水桶，200 升的浴缸，5 × 3 × 2 米的房间，50 × 25 × 2 米的泳池，约 32 万立方米的超级油轮。大金字塔按约 260 万立方米算。示例山是一个高 1 公里、底面半径 1 公里的圆锥，这是选定的形状，不是对真实山峰的测量。尼斯湖约 7.4 立方公里，苏必利尔湖约 12100 立方公里，地球上所有的水约 13.86 亿立方公里。月球、地球和海王星都按整个天体的体积算。</p>
+    <p>这里没有一个“地球上所有沙子”的精确数字。要做出站得住脚的估算，得先划定范围，比如海滩或沙漠，再假定粒径和深度。</p>
+    <p><strong>星星。</strong>恒星数量本来就是粗略的。这里用的是公开发表的整数，不是逐颗测量的结果：全天空在黑暗夜空下不用望远镜能看到的恒星约 9100 颗；半人马座 ω 星团约 1000 万颗；银河系约 1000 亿颗，真实数字可能是它的好几倍；仙女座星系约 1 万亿颗；可观测宇宙取 1000 万亿亿颗，这是 100 万亿亿到 1 亿亿亿这个粗略范围的中间值。恒星多到画不下时，每个点代表一个标明的数量，被点亮的比例就是这个图形中点的比例，从中心向外亮起。</p>
+    <p><strong>时间。</strong>时长都做了四舍五入：人的一生 80 年，大金字塔建成至今约 4500 年，智人出现至今约 30 万年，恐龙灭绝至今约 6600 万年，地球的年龄约 45.4 亿年，宇宙的年龄约 138 亿年。</p>
+    <p class="source-links">参考资料：<a href="https://help.openai.com/en/articles/4936856-understanding-and-counting-tokens" target="_blank" rel="noopener noreferrer">OpenAI 对英文 token 的估算</a> · <a href="https://pubs.usgs.gov/of/1991/0375a/report.pdf" target="_blank" rel="noopener noreferrer">USGS 的粒径分类</a> · <a href="https://www.usgs.gov/special-topics/water-science-school/science/how-much-water-there-earth" target="_blank" rel="noopener noreferrer">USGS 谈地球上所有的水</a> · <a href="https://www.epa.gov/greatlakes/physical-features-great-lakes" target="_blank" rel="noopener noreferrer">EPA 谈五大湖</a> · <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASA 行星资料表</a> · <a href="https://www.esa.int/Science_Exploration/Space_Science/Herschel/How_many_stars_are_there_in_the_Universe" target="_blank" rel="noopener noreferrer">ESA 谈恒星有多少</a> · <a href="https://www.loc.gov/about/general-information/" target="_blank" rel="noopener noreferrer">美国国会图书馆馆藏数字</a>。这些链接只是延伸阅读，计算器不会访问它们。</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.words">十=1 百=2 千=3 万=4 萬=4 亿=8 億=8 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30</span>
+    <span data-phrase="count.names">万亿=12 亿亿=16 万亿亿=20 亿亿亿=24 万亿亿亿=28</span>
+    <span data-phrase="amount-required">输入一个数字，开始探索。</span><span data-phrase="amount-invalid">试试整数，比如 1,000,000、10 亿或 1.5 亿。千位分隔要三位一组。</span><span data-phrase="amount-whole">请用整数，不要留小数。</span><span data-phrase="amount-too-large">这里最大到 100 万亿亿亿（1 后面跟 30 个零）。换个小一点的数吧。</span>
+    <span data-phrase="said.aloud">{kicker} {number} {unit}。{story}</span><span data-phrase="result.empty">还没有东西可装</span><span data-phrase="zero.story">先从 1 开始，再试试多十倍。</span><span data-phrase="ratio.times">{number} 倍</span><span data-phrase="unit.tall">{unit}</span><span data-phrase="unit.of">{unit}</span><span data-phrase="unit.of.vowel">{unit}</span>
+    <span data-phrase="unit.lightyears">光年</span><span data-phrase="unit.lightyear">光年</span><span data-phrase="unit.m3">立方米</span><span data-phrase="unit.km3">立方公里</span><span data-phrase="unit.km3.single">立方公里</span>
+    <span data-phrase="kicker.books">{count} 本书叠起来，高度约</span><span data-phrase="kicker.books.single">一本书的厚度约</span><span data-phrase="kicker.words">{count} 个词约等于 {books} 本示例书，叠起来高度约</span><span data-phrase="kicker.tokens">{count} 个 AI 文本 token 约等于 {words} 个英文词，也就是 {books} 本示例书，叠起来高度约</span><span data-phrase="kicker.water">{count} 滴水加起来约</span><span data-phrase="kicker.water.single">一滴水约</span><span data-phrase="kicker.sand">{count} 粒沙加起来约</span><span data-phrase="kicker.sand.single">一粒沙约占</span><span data-phrase="kicker.stars">{count} 颗恒星相当于</span><span data-phrase="kicker.stars.single">一颗恒星相当于</span><span data-phrase="kicker.time">数到 {count} 大约要</span>
+    <span data-phrase="stars.of">（基准：{name}）</span><span data-phrase="stars.tab">银河系的 {share}</span><span data-phrase="stars.milkyways">个银河系</span><span data-phrase="stars.milkyway.single">个银河系</span><span data-phrase="stars.universes">个可观测宇宙</span><span data-phrase="stars.universe.single">个可观测宇宙</span>
+    <span data-phrase="past.books">{name}，已是它的 {times} 倍。</span><span data-phrase="near.books">{name}，差不多一样高。</span><span data-phrase="next.books">下一站：{name}，已走完 {share}。</span><span data-phrase="past.fill">{name}，能装满 {times} 次。</span><span data-phrase="near.fill">{name}，差不多刚好装满。</span><span data-phrase="next.fill">下一个要装的：{name}，已满 {share}。</span><span data-phrase="past.stars">{name}，已是它的 {times} 倍。</span><span data-phrase="near.stars">{name}，数量差不多。</span><span data-phrase="next.stars">下一个：{name}，已达到 {share}。</span><span data-phrase="past.time">{name}，已是它的 {times} 倍。</span><span data-phrase="near.time">{name}，差不多一样长。</span><span data-phrase="next.time">下一个：{name}，已走完 {share}。</span>
+    <span data-phrase="finish.date">现在开始，一刻不停，你会在 {date} 数完。</span><span data-phrase="finish.year">现在开始，一刻不停，你大约会在 {year} 数完。</span>
+    <span data-phrase="height.table">一张桌子</span><span data-phrase="height.person">一个人</span><span data-phrase="height.house">一栋两层楼房</span><span data-phrase="height.liberty">自由女神像</span><span data-phrase="height.eiffel">埃菲尔铁塔</span><span data-phrase="height.burj">哈利法塔</span><span data-phrase="height.everest">珠穆朗玛峰</span><span data-phrase="height.airliner">巡航中的客机</span><span data-phrase="height.congress">美国国会图书馆的书堆</span><span data-phrase="height.everybook">世上所有不同的书堆</span><span data-phrase="height.iss">空间站</span><span data-phrase="height.around">绕地球一圈</span><span data-phrase="height.moon">月球</span><span data-phrase="height.mars">最近时的火星</span><span data-phrase="height.sun">太阳</span><span data-phrase="height.neptune">海王星</span><span data-phrase="height.voyager">旅行者 1 号探测器</span><span data-phrase="height.lightyear">1 光年</span><span data-phrase="height.proxima">太阳之外最近的恒星</span><span data-phrase="height.orion">猎户座大星云</span><span data-phrase="height.milkyway">银河系的另一边</span><span data-phrase="height.andromeda">仙女座星系</span><span data-phrase="height.virgo">室女座星系团</span><span data-phrase="height.quasar">类星体 3C 273</span><span data-phrase="height.edge">可观测宇宙的边缘</span>
+    <span data-phrase="volume.spoon">15 毫升的勺子</span><span data-phrase="volume.cup">250 毫升的杯子</span><span data-phrase="volume.bucket">10 升的水桶</span><span data-phrase="volume.bath">200 升的浴缸</span><span data-phrase="volume.room">一整个房间</span><span data-phrase="volume.pool">奥运泳池</span><span data-phrase="volume.tanker">超级油轮</span><span data-phrase="volume.pyramid">大金字塔</span><span data-phrase="volume.mountain">示例山</span><span data-phrase="volume.loch">尼斯湖</span><span data-phrase="volume.superior">苏必利尔湖</span><span data-phrase="volume.water">地球上所有的水</span><span data-phrase="volume.moon">月球</span><span data-phrase="volume.earth">整个地球</span><span data-phrase="volume.neptune">海王星</span>
+    <span data-phrase="stars.dipper">北斗七星的七颗星</span><span data-phrase="stars.sky">不用望远镜能看到的所有恒星</span><span data-phrase="stars.omega">半人马座 ω 星团的恒星</span><span data-phrase="stars.milkyway">银河系的恒星</span><span data-phrase="stars.andromeda">仙女座星系的恒星</span><span data-phrase="stars.universe">可观测宇宙的恒星</span>
+    <span data-phrase="time.minute">一分钟</span><span data-phrase="time.hour">一小时</span><span data-phrase="time.day">一天</span><span data-phrase="time.week">一周</span><span data-phrase="time.year">一年</span><span data-phrase="time.decade">十年</span><span data-phrase="time.lifetime">人的一生</span><span data-phrase="time.pyramid">大金字塔至今</span><span data-phrase="time.sapiens">智人出现至今</span><span data-phrase="time.dinosaurs">恐龙灭绝至今</span><span data-phrase="time.earth">地球的年龄</span><span data-phrase="time.universe">宇宙的年龄</span>
+    <span data-phrase="hud.books">{count} 本书</span><span data-phrase="hud.books.single">一本书</span><span data-phrase="hud.words">{count} 个词</span><span data-phrase="hud.tokens">{count} 个 token</span><span data-phrase="hud.water">{count} 滴水</span><span data-phrase="hud.water.single">一滴水</span><span data-phrase="hud.sand">{count} 粒沙</span><span data-phrase="hud.sand.single">一粒沙</span><span data-phrase="hud.stars">{count} 颗恒星</span><span data-phrase="hud.stars.single">一颗恒星</span><span data-phrase="hud.time">已数 {count}</span>
+    <span data-phrase="stage.next">下一个：{name}，{share}</span><span data-phrase="stage.passed">下方：{name}，{times}</span><span data-phrase="stage.before">之前：{value}</span><span data-phrase="stage.full">已满 {share}</span><span data-phrase="stage.share">你：这个圆的 {share}</span><span data-phrase="stage.tally">已数：{count}（{share}）</span>
+    <span data-phrase="level.sky">不用望远镜看到的天空</span><span data-phrase="level.ball">半人马座 ω 星团</span><span data-phrase="level.spiral">银河系</span><span data-phrase="level.galaxies">许多个银河系</span><span data-phrase="level.web">可观测宇宙</span><span data-phrase="level.multi">许多个可观测宇宙</span>
+    <span data-phrase="caption.books">高度都在同一把真实的标尺上。书堆画得比实际宽，这样你才看得见。</span><span data-phrase="caption.fill">着色面积就是所标容器的真实占比。容器只是示意，不按同一比例绘制。</span><span data-phrase="caption.time">进度条和小旗都在同一条真实的时间轴上。计数是真的，从这张图打开时开始走。</span>
+    <span data-phrase="caption.stars.sky">每个点就是一颗恒星。</span><span data-phrase="caption.stars.ball">每个点代表约 {number} 颗恒星。亮点是你的，暗点是星团的其余部分。</span><span data-phrase="caption.stars.spiral">每个点代表约 {number} 颗恒星。亮点是你的，暗点是星系的其余部分。</span><span data-phrase="caption.stars.galaxies">每个星系是一个银河系，约有 {number} 颗恒星。</span><span data-phrase="caption.stars.web">这个圆是可观测宇宙，每个点代表约 {number} 颗恒星。被点亮的面积占比就是你的数字。</span><span data-phrase="caption.stars.multi">每个圆代表 {number} 个可观测宇宙。这比任何对可观测范围的估算都多。</span>
+    <span data-phrase="meaning.word">按你选的词数叠成书。这是一段文字的长度，不是在说真实的书。</span><span data-phrase="meaning.token">这是英文写作的近似换算，每个 token 约 0.75 个词。token 是一小段文本，书的长度也各不相同。</span>
+    <span data-phrase="ladder.here">你的数字</span><span data-phrase="ladder.all">显示所有地标</span><span data-phrase="ladder.fewer">少显示一些地标</span><span data-phrase="jump.note">已设为约 {number}，足够到达：{name}。已向上取整。</span>
+    <span data-phrase="guess.books">{name}：再多十倍，书堆够得着吗？</span><span data-phrase="guess.fill">{name}：再多十倍，能装满吗？</span><span data-phrase="guess.stars">{name}：再多十倍，数量赶得上吗？</span><span data-phrase="guess.time">{name}：再多十倍，时间有这么长吗？</span><span data-phrase="guess.right">猜对了！{fact}</span><span data-phrase="guess.wrong">这次没猜中。{fact}</span><span data-phrase="guess.yes">多十倍就够了。</span><span data-phrase="guess.no">多十倍还是不够。</span>
+    <span data-phrase="follow.stars">如果每一个都是一颗恒星呢？</span><span data-phrase="follow.water">如果每一个都是一滴水呢？</span><span data-phrase="follow.time">把它们数完要多久？</span><span data-phrase="follow.books">如果每一个都是一本书呢？</span><span data-phrase="follow.tokens">如果这些是 AI 文本 token 呢？</span><span data-phrase="follow.grain">如果沙粒大一点呢？</span><span data-phrase="follow.thousand">多 1000 倍会是什么样？</span>
+    <span data-phrase="play.start">从 1 开始长大</span><span data-phrase="play.stop">停止</span><span data-phrase="still.pause">暂停动画</span><span data-phrase="still.resume">继续动画</span>
+    <span data-phrase="step.whole">至少要有一个完整的单位，才能再除以十。</span><span data-phrase="step.rounded">已除以十，并向下取整。</span><span data-phrase="step.limit">已经到这里最大的数字了：100 万亿亿亿。</span>
+    <span data-phrase="model.summary">沙的体积 = 数量 × 单个球形颗粒体积 ÷ 0.60。当前粒径：{diameter} 毫米。粒径翻倍，沙量变成八倍；数量乘以 1000，立方体只宽十倍。</span><span data-phrase="settings.invalid">请选择 100 到 1,000,000 之间的整数词数。</span><span data-phrase="save.done">已保存，比较结果和假设都在图上。</span><span data-phrase="save.assumptions">模型：每本书 {thickness} 厘米、{length} 词；每滴水 {drop} 毫升；球形沙粒直径 {diameter} 毫米，沙粒占 60%，空气占 40%；每秒数 {rate} 个，不休息。英文文本：每个 token 约 0.75 个词。地标都是取整的数字和选定的例子。</span>
+    <span data-phrase="net.clean">你的数字没有去任何地方。加载了 {total} 个文件。{platform}</span><span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span><span data-phrase="net.platform.one">本站自己用于广告和统计的脚本来自 {hosts} 个主机，计算器不会把任何输入或结果发给它们。</span><span data-phrase="net.platform.many">本站自己用于广告和统计的脚本来自 {hosts} 个主机，计算器不会把任何输入或结果发给它们。</span>
+  </div>
+</main>

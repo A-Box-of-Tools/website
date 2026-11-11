@@ -134,6 +134,19 @@ test('tab relay waits for credentials and retains approval before media', async 
   assert.equal(f.session.relay, null);
 });
 
+test('a tab viewer told host-gone in a frame stops as the close would, without waiting for it', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(f.session.role, null);
+  assert.deepEqual(f.states.at(-1), { key: 'connection.ended', role: 'viewer' });
+  assert.equal(f.sockets[0].readyState, 3);
+  const buffering = fixture(t), opening = buffering.session.connect(CODE, 'Viewer', { transport: 'relay' });
+  const rejected = assert.rejects(opening, /connection\.ended/);
+  await settle();
+  buffering.sockets[0].receive({ type: 'host-gone' });
+  await rejected;
+});
+
 test('tab relay viewer buffers ready until credentials and mismatch cannot create a peer', async (t) => {
   for (const outcome of ['ready', 'mismatch', 'disabled']) {
     const f = fixture(t);
@@ -427,6 +440,47 @@ test('sending the local hello does not accept approval before the remote hello',
   assert.equal(f.states.at(-1).key, 'connection.invalid');
   assert.equal(peer.transceivers.length, 0);
   assert.equal(f.streams.some((stream) => stream !== null), false);
+});
+
+test('a tab host names its digest and sends its key only when asked for proof', async (t) => {
+  const hostClaim = { key: 'K'.repeat(43), digest: 'd'.repeat(64) };
+  const f = fixture(t, { hostClaim: Promise.resolve(hostClaim) });
+  await settle();
+  await f.session.startHost(source(), CODE);
+  assert.equal(new URL(f.sockets[0].url).searchParams.get('holder'), hostClaim.digest);
+  assert.equal(f.sockets[0].url.includes(hostClaim.key), false);
+  assert.deepEqual(f.sockets[0].sent, ['ping']);
+  f.sockets[0].receive({ type: 'host-prove' });
+  assert.deepEqual(f.sockets[0].sent, ['ping', { type: 'host-proof', key: hostClaim.key }]);
+  assert.equal(f.session.role, 'host', 'the request for proof is not a protocol error');
+  f.session.stop();
+  await f.session.connect(CODE, 'Viewer');
+  const viewer = f.sockets.at(-1);
+  assert.equal(new URL(viewer.url).searchParams.has('holder'), false);
+  viewer.receive({ type: 'host-prove' });
+  assert.equal(JSON.stringify(viewer.sent).includes(hostClaim.key), false, 'a viewer has no claim to answer with');
+});
+
+test('a relay host answers for its room ahead of the credentials that wait on it', async (t) => {
+  const hostClaim = { key: 'K'.repeat(43), digest: 'd'.repeat(64) };
+  const f = fixture(t, { hostClaim: Promise.resolve(hostClaim) });
+  await settle();
+  const opening = f.session.startHost(source(), CODE, { transport: 'relay' });
+  await settle();
+  f.sockets[0].receive({ type: 'host-prove' });
+  assert.ok(f.sockets[0].sent.some((frame) => frame.type === 'host-proof'), 'not queued behind relay setup');
+  relayReply(f.sockets[0]); await opening;
+  assert.equal(f.session.role, 'host');
+});
+
+test('a tab can still be hosted without a claim, as an older page hosts it', async (t) => {
+  const f = fixture(t, { hostClaim: Promise.reject(new Error('no WebCrypto here')) });
+  await settle();
+  await f.session.startHost(source(), CODE);
+  assert.equal(new URL(f.sockets[0].url).searchParams.has('holder'), false);
+  f.sockets[0].receive({ type: 'host-prove' });
+  assert.deepEqual(f.sockets[0].sent, ['ping']);
+  assert.equal(f.session.role, 'host');
 });
 
 test('a tab host uses its own pairing room and no ICE servers or media before consent', async (t) => {

@@ -11,6 +11,10 @@
     -->
     {% include "partials/file-picker.html" %}
 
+    <p class="reorder-hint">
+      <strong>レンダリング連番や写真のタイムラプス：</strong>画像1枚につき1フレームのままにします。<strong>写真のスライドショー：</strong>画像を追加してから秒を選び、「全部に適用」を押します。自分のファイルを選ぶ前に、例を試して操作を確認できます。
+    </p>
+
     {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -163,6 +167,15 @@
     </div>
   </section>
 
+  <section class="card">
+    <h2>素材の次の作業を選ぶ</h2>
+    <ul>
+      <li>長い動画がすでにありますか。<a href="../timelapse-video/" data-workflow-target="timelapse-video">タイムラプス作成ツール</a>でそのクリップを速められます。</li>
+      <li>アニメーションGIFから始めますか。<a href="../gif-to-mp4/" data-workflow-target="gif-to-mp4">GIFをMP4に</a>は再生時のコマのタイミングを動画に引き継ぎます。</li>
+      <li>静止画からアニメーションGIFを作りたいですか。<a href="../gif-maker/" data-workflow-target="gif-maker">GIF作成</a>を使ってください。</li>
+    </ul>
+  </section>
+
   <!--
     The sentences the live network check puts on the pledge's live row,
     held in the markup rather than src/ because src/ is copied byte for
@@ -219,8 +232,8 @@
     <span data-phrase="export.failed">動画を作る途中で問題が起きました。</span>
     <span data-phrase="net.clean">画像はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">{hosts}から画像を取得しました。あなたが貼り付けたアドレスです。{platform}</span>
-    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
-    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.one">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
     <span data-phrase="record.failed">録画に失敗しました。</span>
     <span data-phrase="url.import">画像をダウンロードしましたが、ツールに追加できませんでした。</span>
     <span data-phrase="url.problem">{url}：{reason}</span>

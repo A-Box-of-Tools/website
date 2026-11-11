@@ -1,0 +1,68 @@
+  <section>
+    <h2>Prepara el paquete, elimina los datos privados y dale el acabado final</h2>
+    <p>Empieza con <a href="../../unir-pdf/">Unir PDF</a> para seleccionar y ordenar las páginas. Usa <a href="../../censurar-pdf/">Censurar PDF</a> para eliminar el texto privado del documento reunido. Añade una marca de agua con el destinatario si ayuda a explicar la finalidad del paquete y comprímelo solo si el archivo terminado necesita ocupar menos.</p>
+    <p>Estas herramientas procesan los archivos localmente en el navegador. Descarga cada resultado y cárgalo en la siguiente herramienta; cuando se ofrezca un enlace para continuar, puede transferir el resultado por ti. Guarda los originales y las copias de trabajo en una carpeta distinta de la del archivo adjunto que piensas enviar.</p>
+  </section>
+
+  <section>
+    <h2>El ejemplo: cuatro páginas para quien revisa un taller</h2>
+    <p>Morgan está revisando el plan de un taller ficticio. Los documentos de origen también contienen un teléfono personal y un coste interno que Morgan no necesita. Escribe la lista de páginas antes de abrir una herramienta:</p>
+    <figure class="data pairs"><div class="scroll"><table>
+      <thead><tr><th>Páginas de origen</th><th>Finalidad</th></tr></thead>
+      <tbody>
+        <tr><td><code>outline.pdf</code>, páginas 1 y 3</td><td>Esquema y horario</td></tr>
+        <tr><td><code>delivery.pdf</code>, página 2</td><td>Acuerdos de entrega</td></tr>
+        <tr><td><code>equipment.pdf</code>, página 1</td><td>Lista de equipos</td></tr>
+      </tbody>
+    </table></div></figure>
+    <p>El resultado debe contener cuatro páginas en ese orden. Excluir una página innecesaria resulta más fácil de comprobar que conservarla e intentar eliminar todos sus datos privados. Mantén suficiente contexto para que la persona que la lea entienda el material restante.</p>
+  </section>
+
+  <section>
+    <h2>1. Selecciona y ordena las páginas</h2>
+    <p>Carga los PDF de origen en la <a href="../../unir-pdf/">herramienta para unirlos</a>. Conserva las páginas necesarias y ordénalas para su lectura. Los números de página de la lista de trabajo cambian al quitar o mover páginas; compara el nombre del archivo de origen y su contenido con la lista que preparaste, en lugar de aplicar los números originales a una lista que ya has modificado.</p>
+    <p>Guarda <code>01-selected.pdf</code> y ábrelo. Comprueba que contiene cuatro páginas en el orden correcto, que no falta el horario y que no hay notas adicionales sobre los equipos. Revisa que referencias como «consulta la página siguiente» sigan teniendo sentido. La <a href="../unir-y-separar-archivos-pdf/">guía para unir y dividir archivos PDF</a> explica qué conserva la combinación de páginas y qué no puede trasladar.</p>
+  </section>
+
+  <section>
+    <h2>2. Elimina el texto privado del paquete reunido</h2>
+    <p>Carga <code>01-selected.pdf</code> en <a href="../../censurar-pdf/">Censurar PDF</a>. Busca el teléfono y el coste interno, revisa las coincidencias y selecciona todas las apariciones que deban eliminarse. Comprueba también los encabezados, los pies de página y los datos de contacto repetidos. Los patrones automáticos ayudan a encontrar posibles coincidencias; no deciden qué necesita ver este destinatario concreto.</p>
+    <p>La herramienta elimina las instrucciones de texto compatibles y comprueba el resultado antes de ofrecer la descarga. Un rectángulo oscuro dibujado en un editor PDF convencional puede dejar las palabras originales debajo. Sigue la <a href="../censurar-un-pdf/">guía para censurar un PDF</a> y detente si la herramienta indica que hay texto ilegible o no puede manejar el documento de forma fiable.</p>
+    <p>Guarda <code>02-redacted.pdf</code> y vuelve a abrir ese archivo descargado. Inspecciona cada eliminación y la información que la rodea. Busca los valores eliminados e intenta seleccionar y copiar las zonas afectadas. Son comprobaciones útiles, pero no una prueba universal: las imágenes, las codificaciones de fuentes ilegibles y el contenido no compatible pueden impedir que la búsqueda encuentre texto.</p>
+    <figure class="shot">
+      <img src="/screens/prepare-a-redacted-pdf-pack/find.webp" loading="lazy" decoding="async"
+           alt="El cuadro de búsqueda de Censurar PDF y los patrones opcionales de datos sensibles, con identificadores de una factura de ejemplo.">
+      <figcaption>Busca los valores que has decidido eliminar y revisa las coincidencias. Los términos de la factura de ejemplo que se muestran aquí no son una lista completa para otro documento.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Si una página es un escaneo, censura primero sus píxeles</h2>
+    <p>Un escaneo es una imagen. Eliminar su capa de texto OCR con búsqueda no borra las palabras visibles en esa imagen. Una búsqueda sin resultados no demuestra que el escaneo esté censurado.</p>
+    <p>Si partes de fotografías, usa <a href="../../censurar-imagen/">Censurar imagen</a> antes de reunir las imágenes exportadas con <a href="../../imagenes-a-pdf/">Imágenes a PDF</a>. Inspecciona los píxeles exportados y, después, el PDF resultante. Las guías sobre <a href="../censurar-una-imagen/">censurar una imagen</a> y <a href="../unir-imagenes-en-un-pdf/">combinar imágenes</a> explican esta alternativa. Un PDF escaneado existente no es una imagen de entrada para estas herramientas: vuelve a imágenes de origen adecuadas o usa un proceso compatible con él.</p>
+  </section>
+
+  <section>
+    <h2>3. Añade el destinatario y la finalidad, si resulta útil</h2>
+    <p>Carga <code>02-redacted.pdf</code> en <a href="../../marca-de-agua-en-pdf/">Marca de agua en PDF</a> y añade «Revisión del taller - Morgan». Guarda <code>03-marked.pdf</code>. Comprueba cada página para asegurarte de que la marca permite leer las fechas, los diagramas y las tablas pequeñas. La <a href="../poner-una-marca-de-agua-en-un-pdf/">guía de marcas de agua</a> explica su posición y sus limitaciones.</p>
+    <p>La marca comunica a quien lee la finalidad prevista. No impide reenviar, copiar o fotografiar el documento y no sustituye la eliminación de datos. Omítela cuando esa etiqueta no aporte información útil.</p>
+  </section>
+
+  <section>
+    <h2>4. Comprime solo cuando el archivo terminado lo necesite</h2>
+    <p>Comprueba el límite de archivos adjuntos del destino. Si el archivo con la marca ya cabe con margen, consérvalo. En caso contrario, prueba una copia en <a href="../../comprimir-pdf/">Comprimir PDF</a> y compara el resultado con el original de entrada. Un documento breve de texto puede reducirse muy poco.</p>
+    <p>Lee la tabla de equipos y la letra pequeña a un tamaño de visualización útil. Un archivo adjunto más pequeño no supone una mejora si Morgan no puede leerlo. La <a href="../reducir-el-tamano-de-un-pdf/">guía de compresión</a> explica de dónde procede la reducción. Llama a la versión final elegida <code>workshop-review-morgan.pdf</code>.</p>
+  </section>
+
+  <section>
+    <h2>Comprueba el archivo adjunto exacto que vas a enviar</h2>
+    <p>Abre el archivo final descargado en lugar de una vista previa anterior. Cada operación ha producido un resultado distinto, por lo que el último archivo adjunto necesita su propia revisión:</p>
+    <ul>
+      <li>Cuenta y lee las cuatro páginas en su orden final.</li>
+      <li>Inspecciona las zonas de eliminación y repite las comprobaciones de búsqueda y copia.</li>
+      <li>Comprueba la etiqueta del destinatario y la legibilidad después de comprimir.</li>
+      <li>Revisa el tamaño, las propiedades y el nombre del archivo para detectar datos no previstos.</li>
+      <li>Al adjuntar, selecciona ese archivo revisado y no una copia de trabajo.</li>
+    </ul>
+    <p>Seleccionar primero las páginas limita lo que necesitas revisar. Después se eliminan los datos; la marca de agua y la compresión completan la copia. Si el destinatario acepta PDF protegidos con contraseña y necesitas esa protección, termina estas modificaciones antes de añadirla. Guarda los originales por separado y envía únicamente el archivo adjunto revisado.</p>
+  </section>

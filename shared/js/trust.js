@@ -23,11 +23,11 @@
  *
  * Every resource the page has fetched, read from the browser's own
  * performance buffer and sorted three ways: this origin's own files; the
- * platform's - the ad, measurement and donate-button scripts the page loads
- * without the visitor asking, and which are handed nothing; and everything
- * else. Everything else is what turns the panel red, and it is the whole
- * point: a visitor who will not take the pledge's word for it can watch this
- * line and the browser's network tab agree.
+ * platform's - the ad and measurement scripts the page loads without the
+ * visitor asking, and which are handed nothing; and everything else. Everything
+ * else is what turns the panel red, and it is the whole point: a visitor who
+ * will not take the pledge's word for it can watch this line and the browser's
+ * network tab agree.
  *
  * A tool that legitimately talks to a host of its own - share-text's
  * rendezvous - declares that host in its CSP, and the build writes it into
@@ -46,15 +46,14 @@ import { phrase } from './phrases.js';
 // the visitor's own country domain, and a list of literal hostnames would turn
 // this panel red for a visitor in the wrong country - which is the worst
 // possible failure for the one part of the page that exists to be checked.
-// buymeacoffee.com and googleapis.com are here for the donate button in the
-// header: its script comes from cdnjs.buymeacoffee.com and it pulls its
-// lettering from fonts.googleapis.com and fonts.gstatic.com. Like the ad
-// scripts, it is something the page loads without the visitor asking, and it
-// is handed nothing - so it belongs in this bucket rather than being reported
-// as an intruder. cloudflareinsights.com is here because the host injects its
-// own beacon; the CSP blocks it from running, but a blocked script still
-// leaves a timing entry.
-export const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+// gstatic.com is here for the measurement ping to csi.gstatic.com.
+// cloudflareinsights.com is here because the host injects its own beacon; the
+// CSP blocks it from running, but a blocked script still leaves a timing entry.
+//
+// The donate button's hosts are not here. It is a plain link now and loads
+// nothing, so a request to one of them would be news, and news is what the red
+// line is for.
+export const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
 
 /**
  * Sort resource entries into the platform's hosts and everybody else's.
@@ -135,6 +134,28 @@ function monitorNetwork() {
   } catch {
     // PerformanceObserver is unavailable; the one-time snapshot above still stands.
   }
+}
+
+/**
+ * Make WebKit work out a stale computed style again.
+ *
+ * Parsed early enough, a <select> leaves itself and every ancestor up to <body>
+ * reporting a style that inherited nothing: transparent, black, color-scheme
+ * normal. It paints correctly and is wrong only when read, and the reader that
+ * matters is axe, which then calls the text on a dark page unreadable against
+ * white. Nothing at parse time prevents it, not even moving the stylesheet. The
+ * old donate widget hid it only by holding the parser back until the page had
+ * been styled once. Changing an inherited property on the root does clear it, and
+ * the check keeps that from running in an engine with nothing to clear.
+ *
+ * @param {{ colorScheme?: string }} bodyStyle  the computed style of <body>
+ * @param {{ style: { setProperty(name: string, value: string): void } }} root
+ * @returns {boolean} whether the root was changed
+ */
+export function refreshStaleStyle(bodyStyle, root) {
+  if (bodyStyle.colorScheme !== 'normal') return false;
+  root.style.setProperty('--style-refreshed', '1');
+  return true;
 }
 
 /** Confirm the exact worker named by this page, including its saved assets. */
@@ -226,6 +247,7 @@ async function registerServiceWorker() {
 // The page runs both on load. The tests import the two exported functions and
 // never reach here, because there is no document for them to fill in.
 if (typeof document !== 'undefined') {
+  refreshStaleStyle(getComputedStyle(document.body), document.documentElement);
   monitorNetwork();
   registerServiceWorker();
 }

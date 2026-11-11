@@ -25,8 +25,8 @@ category = "documents-and-audio"
 roadmap_group = "documents"
 
 css_parts = ["form", "notes", "results", "cropper"]
-js_parts = ["file-picker", "download", "errors", "cropper", "zip", "crc32", "document-detect", "document-geometry", "image-input", "help-tooltip"]
-lastmod = "2026-10-12"
+js_parts = ["file-picker", "download", "errors", "cropper", "zip", "crc32", "document-detect", "document-geometry", "image-input", "info-tip"]
+lastmod = "2026-11-03"
 
 title = "Receipt &amp; Invoice Extractor &mdash; Photos to CSV and Email, No Upload"
 description = "Read receipt and invoice photos locally, review amounts and convert currencies with manual or optional historical rates. Prepare compressed attachments and totals for a share sheet or email file; you review and send."
@@ -195,7 +195,7 @@ body = """
 [[privacy]]
 title = "What the page's other scripts are given."
 body = """
-      The site's ad, measurement and donate-button scripts load as on the other
+      The site's ad and measurement scripts load as on the other
       tools. They are not handed photographs, OCR text, filenames, merchant
       names, amounts or document counts. The code that reads the photos and
       builds the report is served from this site and listed in the repository."""

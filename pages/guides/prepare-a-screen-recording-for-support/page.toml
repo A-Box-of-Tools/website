@@ -1,0 +1,17 @@
+# This workflow joins tools that already have their own reference guides.
+# Omitting tool keeps their existing guide links intact.
+
+slug = "guides/prepare-a-screen-recording-for-support"
+kind = "guide"
+nav = "Turn a screen recording into a useful bug report"
+group = "workflows"
+title = "Turn a screen recording into a useful bug report"
+description = "Trim, crop and compress a screen recording while preserving the evidence support needs, then add clear steps and an optional redacted screenshot."
+heading = "Turn a screen recording into a useful bug report"
+lede = "A useful bug report shows the action that failed, keeps the result readable, and explains what should have happened. Build a short recording and a written reproduction from the same attempt."
+updated = "22 October 2026"
+published = "2026-10-22"
+lastmod = "2026-10-22"
+og_title = "Turn a screen recording into a useful bug report"
+og_description = "Trim, crop and compress a screen recording while preserving the evidence support needs, then add clear steps and an optional redacted screenshot."
+og_image_alt = "abox.tools - browser tools for local file processing"

@@ -3,16 +3,11 @@
 #
 
 nav = "Separar un GIF"
-title = "Cómo separar un GIF en fotogramas (y qué es de verdad un fotograma)"
-description = "Saca cada fotograma de un GIF animado como PNG: por qué algunos fotogramas son solo un trozo pequeño de la imagen, qué pasa con la transparencia y cómo conservar los tiempos para volver a montarlo."
-heading = "Cómo separar un GIF en fotogramas"
-lede = """
-    Sacar los fotogramas cuesta un arrastre y un botón. Lo que merece la pena
-    entender es qué es en realidad un «fotograma» de un GIF, porque el formato
-    guarda algo bastante distinto de lo que ves &mdash; y esa diferencia es la
-    razón de que tu fotograma catorce sea un rectángulo con la boca de alguien
-    dentro."""
-updated = "13 de octubre de 2026"
+title = "Cómo dividir un GIF en fotogramas PNG, un ZIP o una hoja de sprites"
+description = "Extrae fotogramas GIF como PNG completos, un ZIP o una hoja de sprites. Conserva la transparencia y una referencia de tiempos, reconstruye un GIF editado o convierte el original a MP4."
+heading = "Cómo dividir un GIF en fotogramas PNG"
+lede = "Guarda una imagen útil, una carpeta de fotogramas PNG o una hoja de sprites sin subir la animación. Elige imágenes completas para editar, conserva una referencia aparte de los retardos y decide cuándo conviene convertir el GIF original directamente a MP4."
+updated = "23 de octubre de 2026"
 og_title = "Cómo separar un GIF en fotogramas"
 og_description = "Cada fotograma de un GIF como PNG: por qué algunos son solo un trozo, qué pasa con la transparencia y cómo conservar los tiempos."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

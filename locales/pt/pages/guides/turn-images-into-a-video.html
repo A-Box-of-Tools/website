@@ -9,6 +9,18 @@
   </section>
 
   <section>
+    <h2>De uma sequência renderizada numerada a MP4</h2>
+    <ol>
+      <li>Em <a href="../../imagens-para-video/" data-workflow-target="images-to-video">Imagens para vídeo</a>, adicione as imagens estáticas exportadas pelo Blender, After Effects ou outro renderizador. Use um formato de imagem que o navegador consiga decodificar, como PNG ou JPG.</li>
+      <li>Escolha Ordenar por nome. A ordenação entende números, então frame_2 vem antes de frame_10. Confira se há quadros faltando ou se a numeração recomeça onde não deveria.</li>
+      <li>Deixe Manter cada imagem por em um quadro e ajuste a taxa de quadros para a mesma da renderização. Uma sequência de 240 imagens a 24 fps dura dez segundos.</li>
+      <li>Escolha as dimensões de saída e Ajustar dentro para preservar a imagem inteira. As áreas transparentes recebem o fundo selecionado: MP4 com H.264 não mantém o canal alfa.</li>
+      <li>Crie o vídeo, assista ao começo e ao fim, baixe e abra no aplicativo que vai recebê-lo.</li>
+    </ol>
+    <p>Uma pasta de fotografias para time-lapse segue os mesmos passos. A taxa de quadros define a velocidade de reprodução; Ordenar por data usa a data de modificação do arquivo, então confira a ordem se as fotografias foram copiadas ou editadas. Para um vídeo que já existe, use o <a href="../../fazer-timelapse/" data-workflow-target="timelapse-video">Criador de time-lapse</a>.</p>
+  </section>
+
+  <section>
     <h2>Slides, stop motion ou registro de progresso</h2>
     <p>Para férias, resumo de evento ou catálogo, mude Manter cada imagem por para segundos, informe por exemplo três e aperte Aplicar a todas. Ordene a história, escolha 1080p ou formato vertical do destino e Ajustar dentro para preservar a foto inteira. Confira a duração antes de criar e veja primeira, central e última imagem no vídeo final.</p>
     <p>Para stop motion, render ou fotos periódicas de progresso, use quadros: uma imagem por um quadro a 24 fps dá 24 imagens por segundo. Ordene por nome e confira. Grava cortes diretos entre imagens, sem zoom, transição nem som. Uma apresentação narrada precisa de outro editor; um registro visual silencioso fica completo aqui.</p>
@@ -111,20 +123,21 @@
 
   <section>
     <h2>O que sai, e o que fazer se não tocar</h2>
-    <p>
-      MP4 com H.264 é o alvo, e é a combinação mais amplamente reproduzível que
-      existe. Num navegador sem WebCodecs, a ferramenta usa WebM como alternativa:
-      são as mesmas imagens num contêiner que menos editores e menos
-      plataformas sociais aceitam.
-    </p>
-    <p>
-      Se você acabar com um WebM e alguma coisa recusar, o conserto é um
-      navegador com suporte a WebCodecs, e não uma conversão: as versões atuais
-      do Chrome, do Edge e do Safari têm. Renderizar de novo é melhor do que
-      converter, porque converter significa mais uma geração de codificação com
-      perdas.
-    </p>
-    <p>Não há máximo fixo de imagens. O vídeo é montado na memória e não pode superar 4 GB; o codificador do navegador também precisa aceitar as dimensões. Uma apresentação longa 4K pode atingir esses limites com poucas imagens de origem.</p>
+    <p>O objetivo é MP4 com H.264, a combinação que toca em mais lugares. Se esse codificador não estiver disponível, a ferramenta pode recorrer à gravação da reprodução em tempo real, geralmente em WebM, aceito por menos editores e plataformas sociais. Mantenha a aba visível durante essa gravação. Os tempos dessa alternativa são aproximados e imagens podem ser puladas se a decodificação atrasar; para uma sequência numerada exata, use um codificador MP4 compatível.</p>
+    <p>Se o resultado for WebM e um aplicativo recusá-lo, renderize as imagens originais novamente com MP4 selecionado em um navegador cujo codificador WebCodecs aceite H.264 nas dimensões escolhidas. Isso evita a geração adicional de codificação com perdas que converter o vídeo causaria.</p>
+    <p>Não há um máximo fixo de imagens. O vídeo é montado na memória antes do download, e a saída MP4 precisa ficar abaixo de 4 GiB (cerca de 4,3 GB); a memória pode acabar antes. O codificador do navegador também precisa aceitar as dimensões escolhidas. Uma apresentação longa em 4K pode atingir esses limites com relativamente poucas imagens de origem.</p>
+  </section>
+
+  <section>
+    <h2>Confira o resultado antes de compartilhar</h2>
+    <p>Se os slides passarem rápido demais, confira se a unidade de duração está em segundos e pressione Aplicar a todas. Se uma sequência renderizada tocar devagar demais, confira a taxa de quadros e a duração de cada imagem em quadros. As barras preservam a imagem inteira; bordas faltando geralmente indicam que Preencher quadro foi selecionado. Exporte novamente a partir das imagens originais ao mudar essas opções.</p>
+    <p>Para criar uma animação que precise continuar como GIF, use o
+      <a href="../../criar-gif/" data-workflow-target="gif-maker">Criador de GIF</a>.
+      Para transformar um GIF existente em vídeo, use
+      <a href="../../gif-para-mp4/" data-workflow-target="gif-to-mp4">GIF para MP4</a>
+      diretamente, preservando seus tempos de reprodução. Extrair PNGs primeiro exige ajustar os tempos manualmente; o
+      <a href="../separar-um-gif-em-quadros/" data-workflow-target="guides/split-a-gif-into-frames">guia para extrair quadros de um GIF</a>
+      explica quando essa etapa adicional é útil.</p>
   </section>
 
   <section>

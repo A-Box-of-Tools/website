@@ -41,7 +41,7 @@ function sourceStream(audio = false) {
   return Object.assign(new Stream([video, other]), { video, other });
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
-function fixture(t, { diagnostics = null, socketOpen = true, admissions } = {}) {
+function fixture(t, { diagnostics = null, socketOpen = true, admissions, hostClaim } = {}) {
   const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [], viewers = [], bandwidth = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
@@ -78,7 +78,7 @@ function fixture(t, { diagnostics = null, socketOpen = true, admissions } = {}) 
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, admissions, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, MediaStream: Stream, diagnostics, admissions, ...(hostClaim ? { hostClaim } : {}), onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); }, onViewers(value) { viewers.push(value); }, onBandwidth(value) { bandwidth.push(value); } });
   t.after(() => session.stop());
   return { session, sockets, peers, requests, streams, publications, states, viewers, bandwidth };
 }
@@ -106,6 +106,55 @@ test('camera discovery accepts only its own live room and namespace acknowledgem
 });
 
 const RELAY_SERVERS = [{ urls: ['turns:relay.example.test:443?transport=tcp'], username: 'temporary', credential: 'temporary-secret' }];
+
+test('a camera names one digest for its whole share and sends its key only when asked', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const hostClaim = { key: 'K'.repeat(43), digest: 'd'.repeat(64) };
+  const f = fixture(t, { hostClaim: Promise.resolve(hostClaim) });
+  await settle();
+  await f.session.startHost(sourceStream(), CODE);
+  const first = f.sockets[0];
+  assert.equal(new URL(first.url).searchParams.get('holder'), hostClaim.digest);
+  assert.equal(first.url.includes(hostClaim.key), false);
+  assert.deepEqual(first.sent, []);
+  first.drop(); await settle();
+  t.mock.timers.tick(2000); await settle();
+  const retry = f.sockets[1];
+  assert.equal(retry.url, first.url, 'its own retry names the holder it is coming back to');
+  assert.deepEqual(retry.sent, ['ping']);
+  retry.receive({ type: 'host-prove' });
+  assert.deepEqual(retry.sent, ['ping', { type: 'host-proof', key: hostClaim.key }]);
+  retry.pong(); await settle();
+  assert.equal(f.session.role, 'camera');
+  f.session.stop();
+  await f.session.connect(CODE, 'Viewer');
+  const viewer = f.sockets.at(-1);
+  assert.equal(new URL(viewer.url).searchParams.has('holder'), false);
+  viewer.receive({ type: 'host-prove' });
+  assert.equal(JSON.stringify(viewer.sent).includes(hostClaim.key), false, 'a viewer has no claim to answer with');
+});
+
+test('a relay camera answers for its room ahead of the credentials that wait on it', async (t) => {
+  const hostClaim = { key: 'K'.repeat(43), digest: 'd'.repeat(64) };
+  const f = fixture(t, { hostClaim: Promise.resolve(hostClaim) });
+  await settle();
+  const opening = f.session.startHost(sourceStream(), CODE, { transport: 'relay' });
+  await settle();
+  f.sockets[0].receive({ type: 'host-prove' });
+  assert.ok(f.sockets[0].sent.some((frame) => frame.type === 'host-proof'), 'not queued behind relay setup');
+  relayReply(f.sockets[0]); await opening;
+  assert.equal(f.session.role, 'camera');
+});
+
+test('a camera can still be hosted without a claim, as an older page hosts it', async (t) => {
+  const f = fixture(t, { hostClaim: Promise.reject(new Error('no WebCrypto here')) });
+  await settle();
+  await f.session.startHost(sourceStream(), CODE);
+  assert.equal(new URL(f.sockets[0].url).searchParams.has('holder'), false);
+  f.sockets[0].receive({ type: 'host-prove' });
+  assert.deepEqual(f.sockets[0].sent, []);
+  assert.equal(f.session.role, 'camera');
+});
 
 test('private camera recovery retains its directory while Stop prevents it leaking into another role', async (t) => {
   t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
@@ -1133,6 +1182,20 @@ test('a lost viewer socket and worker host-gone close preserve only established 
   channel.emit('close'); await settle();
   assert.equal(f.session.role, null); assert.equal(f.streams.at(-1), null);
   assert.equal(video.stops, 1); assert.equal(audio.stops, 1);
+});
+
+test('a viewer told host-gone in a frame acts as the close would, without waiting for it', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  peer.connectionState = 'connected'; channel.receive('approved'); await settle();
+  peer.emit('track', { track: new Track('video') }); peer.emit('track', { track: new Track('audio') });
+  f.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(f.session.role, 'viewer'); assert.equal(peer.closed, false);
+  assert.equal(f.states.at(-1), 'viewer.signaling-lost');
+  const early = fixture(t), unfinished = await readyViewer(early);
+  unfinished.peer.connectionState = 'connected'; unfinished.channel.receive('approved'); await settle();
+  early.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(early.session.role, null); assert.equal(unfinished.peer.closed, true);
+  assert.equal(early.states.at(-1), 'connection.ended');
 });
 
 test('a viewer losing only its introduction socket does not let worker leave close its healthy peer', async (t) => {
