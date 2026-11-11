@@ -55,7 +55,7 @@ body = "Der Rahmen kann Skripte für Werbung, Messung und Spenden laden. Der Rec
 
 [[howto]]
 title = "Tippen Sie eine Zahl ein oder ziehen Sie den Regler."
-body = "Versuchen Sie eine Milliarde, 1,5 Mrd. oder 1e12. Erlaubt sind ganze Zahlen von null bis 10³⁰. Der Regler bewegt sich in Zehnerpotenzen, und das Bild folgt ihm beim Ziehen."
+body = "Versuchen Sie eine Milliarde, 1,5 Mrd. oder 3 Billionen. Erlaubt sind ganze Zahlen von null bis 1 Quintillion. Der Regler bewegt sich in Zehnerpotenzen, und das Bild folgt ihm beim Ziehen."
 [[howto]]
 title = "Wählen Sie Bücher, Wasser, Sterne, Sand oder Zeit."
 body = "Jede Ansicht zeigt dieselbe Zahl auf andere Weise und sagt, was eines davon ist. Bei den Büchern kann jedes auch ein Wort oder ein KI-Text-Token sein, und dann wird aus der Anzahl eine Textmenge."

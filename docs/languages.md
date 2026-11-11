@@ -336,7 +336,10 @@ The words a page has to *read* belong there as well. `number-explorer`'s
 language, because "1 Billion" is a thousand times larger in German than
 "1 billion" is in English and a list in the JavaScript would have had to pick.
 Its tests read the list out of each locale's markup, so a word that stops
-parsing is a failure rather than something a visitor finds.
+parsing is a failure rather than something a visitor finds. Its `count.names`
+phrase is the same idea in the other direction: the words the page writes once
+`Intl` has run out of its own, so 10²¹ can be "sextillion" in English,
+"Trilliarde" in German and "10 万亿亿" in Chinese.
 
 **Done:** the frame's seven, in every language — the four "Offline:" lines,
 what the window's error handlers say, and the drop zone's "Reading 3 files…".

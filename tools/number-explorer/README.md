@@ -25,6 +25,17 @@ than multiplied through into a wrong answer. A language switch carries the box a
 digits, the one spelling every language reads alike, and leaves the dial behind so its
 two significant digits cannot replace an exact count.
 
+The page writes a big number as a word and never as a power of ten, in the box as well
+as beside it, because somebody who needs a picture to feel a quintillion will not get it
+from 10¹⁸. Scientific notation is still read when somebody types it, just not written.
+`Intl` has words up to about a trillion, and the `count.names` phrase has the rest: the
+one spelling of each that is fit to print, singular first where a language has two
+forms, and every one of them on that language's `count.words` list so the box can read
+back what it wrote. The names are not one list translated. German 10¹² is "Billion" and
+English 10⁹ is "billion", Spanish names only every sixth power, so 10¹⁵ is "1000
+billones", and Chinese composes 亿亿 and 万亿亿 from the words its readers know rather
+than reach for 京 and 垓, which few of them could use.
+
 The module also holds the landmark ladders, `placeOnLadder`, which finds what a value
 has passed and what it is climbing toward, and `dialCount`, which lands the dial on two
 significant digits, because one exact count per position would make most positions

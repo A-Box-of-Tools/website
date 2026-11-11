@@ -1,19 +1,18 @@
 import { phrase } from './shared/phrases.js';
 import { saveBlob } from './shared/download.js';
-import { MAX_COUNT, countForSize, countReading, countText, dialCount, ladderFor, log10Count, parseCount, placeOnLadder, sizePerUnit } from './scale.js';
+import { MAX_COUNT, countForSize, countText, dialCount, ladderFor, log10Count, parseCount, placeOnLadder, sizePerUnit } from './scale.js';
 import { chip, fontFor, useFont, wrapLines, write } from './paint.js';
 import { createStage } from './stage.js';
 import { createBooksScene } from './scene-books.js';
 import { createFillScene } from './scene-fill.js';
 import { circleGroup, createStarsScene, starLevel } from './scene-stars.js';
 import { createTimeScene } from './scene-time.js';
-import { cached, capital, describe, duration, durationLong, exact, hud, joined, length, percent, pretty, readback, rungName, sizeOf, times, volume } from './say.js';
+import { cached, capital, describe, duration, durationLong, exact, hud, joined, length, percent, pretty, readback, reading, rungName, sizeOf, times, volume } from './say.js';
 
 const $ = id => document.getElementById(id);
 const amount = $('amount');
 const dial = $('dial');
 const page = $('main');
-const reading = countReading(phrase('count.words'), document.documentElement.lang || undefined);
 
 let world = 'books';
 let unit = 'book';
@@ -442,9 +441,10 @@ function drawTicks() {
     // Labels rather than buttons: the dial is the control, and these are a shortcut
     // along it for a pointer, too close together to be targets for a finger.
     const tick = document.createElement('span');
-    tick.textContent = power === 0 ? '1' : power <= 12 ? short.format(10 ** power) : `10${pretty(10 ** power).slice(2)}`;
+    tick.textContent = power === 0 ? '1' : power <= 12 ? short.format(10 ** power) : pretty(10 ** power);
     tick.style.setProperty('--at', String(power / 30));
     if (power % 6) tick.classList.add('ne-tick-minor');
+    if (power === 24) tick.classList.add('ne-tick-spare');
     tick.addEventListener('click', () => {
       setCount(10n ** BigInt(power));
       commit();
