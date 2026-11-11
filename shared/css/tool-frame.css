@@ -1067,29 +1067,36 @@ button, .as-button {
 /* ----------------------------------------------------- buy me a coffee */
 
 /*
-  The Buy Me a Coffee button draws itself and brings its own stylesheet, which
-  the script writes into the page after this file - so a bare `.bmc-btn` rule
-  here would lose on document order no matter what it said. Everything below is
-  scoped one level deeper, which wins on specificity instead, and needs
-  !important only where the button's own rule already used it.
+  A plain link wearing the service's colours, because the colours and the cup are
+  what people recognise at a glance. It sits on the same yellow with the same
+  black in both themes: the brand does not have a dark mode, and black on this
+  yellow reads at about 15:1. The lettering is the page's own, since a web font
+  is the kind of request this link exists to avoid.
 
-  Only the size is touched. The yellow, the black outline and the Cookie
-  lettering are the button's own and are the whole point of it: people
-  recognise it at a glance. Left at its native 60px it is twice the height of
-  the controls beside it and pushes the tool itself off a small screen, so it
-  is brought down to something that still shouts but does not take over.
+  44px is the size the service's own button was brought down to here, which still
+  shouts without pushing the tool off a small screen. The border is transparent
+  rather than absent because forced-colours mode drops the yellow and draws the
+  border, which is then the only thing that says this is a button.
 */
 .support-cta { display: flex; }
 
-.support-cta .bmc-btn {
-  height: 44px;
-  min-width: 0;
-  padding: 0 1rem;
+.bmc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 1px solid transparent;
   border-radius: 8px;
-  font-size: 24px;
+  background: #fd0;
+  color: #000;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
 }
 
-.support-cta .bmc-btn svg { height: 26px !important; }
+.bmc-link:hover { background: #ffe74d; }
+.bmc-link svg { flex: none; }
 
 /* --------------------------------------------------------------------- faq */
 

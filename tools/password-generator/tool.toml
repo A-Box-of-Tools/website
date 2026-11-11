@@ -31,7 +31,7 @@ category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -173,8 +173,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed a character of what this page makes, or its
+      measurement scripts come from Google. None of them is handed a character
+      of what this page makes, or its
       length, or its strength, or which settings produced it. Every line that
       draws a character or a word is served from this origin and listed in the
       repository."""

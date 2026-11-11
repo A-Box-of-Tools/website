@@ -33,7 +33,7 @@ css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
 js_parts = ["image-input", "file-picker", "zip", "crc32", "message-box", "format", "example-mark", "example-photo"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -148,8 +148,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your picture. Every line that
+      measurement scripts come from Google. None of them is handed anything
+      about your picture. Every line that
       reads, scales or writes a file is served from this origin and listed in the
       repository."""
 

@@ -51,7 +51,7 @@ title = "Ihre Eingaben bleiben in der Seite."
 body = "Der Rechner schreibt keine Eingaben in einen Speicher oder in die Adresszeile. Neu laden setzt alles zurück. Ein gespeichertes Bild ist eine Datei, die Sie bewusst auf Ihrem Gerät behalten."
 [[privacy]]
 title = "Die anderen Skripte der Website haben ihre eigenen Grenzen."
-body = "Der Rahmen kann Skripte für Werbung, Messung und Spenden laden. Der Rechner schickt ihnen weder Eingaben noch Ergebnisse. Die Live-Netzwerkanzeige meldet die Verbindungen der Seite."
+body = "Der Rahmen kann Skripte für Werbung und Messung laden. Der Rechner schickt ihnen weder Eingaben noch Ergebnisse. Die Live-Netzwerkanzeige meldet die Verbindungen der Seite."
 
 [[howto]]
 title = "Tippen Sie eine Zahl ein oder ziehen Sie den Regler."

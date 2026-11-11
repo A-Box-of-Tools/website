@@ -40,7 +40,7 @@ js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-mar
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["compress-image"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -161,8 +161,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your drawing. Every line that
+      measurement scripts come from Google. None of them is handed anything
+      about your drawing. Every line that
       reads, sizes or draws a file is served from this origin and listed in the
       repository."""
 

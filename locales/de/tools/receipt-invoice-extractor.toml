@@ -157,7 +157,7 @@ body = """
 [[privacy]]
 title = "Was die anderen Skripte der Seite erhalten."
 body = """
-    Die Skripte für Werbung, Messung und die Spenden-Schaltfläche laden wie bei
+    Die Skripte für Werbung und Messung laden wie bei
     den anderen Werkzeugen. Sie erhalten keine Fotos, OCR-Texte, Dateinamen,
     Händlernamen, Beträge oder Dokumentanzahlen. Der Code, der die Fotos ausliest
     und den Bericht erstellt, kommt von dieser Website und steht im Repository."""

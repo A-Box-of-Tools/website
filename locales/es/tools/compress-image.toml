@@ -85,8 +85,8 @@ body = """
 title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y de medición vienen de Google, y el botón de donación, de Buy
-      Me a Coffee. A ninguno se le entrega nada sobre tus fotos. Cada línea que
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada
+      sobre tus fotos. Cada línea que
       lee, comprime o mide un archivo se sirve desde este origen y está en el
       repositorio."""
 

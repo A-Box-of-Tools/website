@@ -63,7 +63,7 @@ body = "No hay cuentas ni historial de documentos. Mantén la página abierta du
 
 [[privacy]]
 title = "Qué reciben los demás scripts de la página."
-body = "Los scripts de publicidad, medición y del botón de donaciones se cargan como en las demás herramientas. No reciben fotos, texto de OCR, nombres de archivo, nombres de comercios, importes ni número de documentos. El código que lee las fotos y prepara el informe se sirve desde este sitio y figura en el repositorio."
+body = "Los scripts de publicidad y medición se cargan como en las demás herramientas. No reciben fotos, texto de OCR, nombres de archivo, nombres de comercios, importes ni número de documentos. El código que lee las fotos y prepara el informe se sirve desde este sitio y figura en el repositorio."
 
 [[privacy]]
 title = "La lectura funciona sin conexión; la entrega depende de la aplicación."

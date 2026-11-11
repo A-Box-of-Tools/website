@@ -50,7 +50,7 @@ body = """Le PCM 16 bits arrondit et écrête les échantillons décodés pour f
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre vidéo&nbsp;: ni un fichier, ni un échantillon, ni un nom, une taille ou une durée."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur votre vidéo&nbsp;: ni un fichier, ni un échantillon, ni un nom, une taille ou une durée."
 
 [[privacy]]
 title = "Cela fonctionne hors ligne."

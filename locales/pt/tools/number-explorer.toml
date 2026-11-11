@@ -51,7 +51,7 @@ title = "O que você digita fica na página."
 body = "A calculadora não grava nenhuma entrada no armazenamento nem na barra de endereços. Recarregar recomeça a exploração. Uma imagem salva é um arquivo que você guarda de propósito no seu dispositivo."
 [[privacy]]
 title = "Os outros scripts do site têm seus próprios limites."
-body = "A estrutura da página pode carregar scripts de anúncios, medição e doações. A calculadora não envia a eles suas entradas nem seus resultados. O painel de rede ao vivo informa as conexões da página."
+body = "A estrutura da página pode carregar scripts de anúncios e medição. A calculadora não envia a eles suas entradas nem seus resultados. O painel de rede ao vivo informa as conexões da página."
 
 [[howto]]
 title = "Digite um número ou arraste o controle."

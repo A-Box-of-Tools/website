@@ -59,7 +59,7 @@ title = "Your entries stay in the page."
 body = "The calculator writes no inputs to storage or to the address bar. Reloading resets the exploration. A saved picture is a file you deliberately keep on your device."
 [[privacy]]
 title = "The site's other scripts have their own boundaries."
-body = "The frame may load advertising, measurement and donation scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
+body = "The frame may load advertising and measurement scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
 
 [[howto]]
 title = "Type a number or drag the dial."
