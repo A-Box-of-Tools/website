@@ -710,6 +710,32 @@ test('moderation history and worst-case Unicode attachments stay bounded and unm
   assert.equal(state(keeper).anchor.moderation.length, 24);
 });
 
+test('a full room sets aside its listing over the other IP version before a kick, mute or approval', async () => {
+  const s = await system();
+  // The longest origin a preview allows gives that listing its largest share of the attachment.
+  const origin = `https://${['a', 'b', 'c'].map((c) => c.repeat(63)).join('.')}.abox-preview.pages.dev`;
+  const open = async (path, extra = {}) => (await worker.fetch(s.request(path, { Origin: origin, ...extra }), s.env)).webSocket.peer;
+  const host = await open(`/inbox/${s.code}`);
+  await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: '界'.repeat(80), passwordProof: PASSWORD, approval: true });
+  const page = await open('/discover?tool=voice-oncall', { 'CF-Connecting-IP': '2606:4700::1' });
+  await s.publish(page, host.messages[0].discovery);
+  assert.equal(last(page).list.length, 1);
+  assert.equal(state(host).elsewhere, state(page).scope);
+  const approve = (caller) => s.send(host, { type: 'approve', generation: state(host).generation, to: state(caller).id });
+  for (let i = 0; i < 24; i += 1) {
+    const caller = await s.sender(i, PASSWORD);
+    await approve(caller);
+    if (i < 14) await s.kick(host, caller);
+    else await s.moderate(host, caller, true);
+  }
+  await Promise.all(s.room().ctx.tasks);
+  assert.equal(state(host).moderation.length, 24);
+  assert.equal(state(host).approved.length, 10);
+  assert.equal(state(host).network, undefined);
+  assert.equal(state(host).elsewhere, undefined);
+  assert.deepEqual(last(page).list, []);
+});
+
 test('full kick history refuses removal without changing authoritative membership', async () => {
   const s = await system(), host = await s.open();
   await s.send(host, { type: 'auth', role: 'host', key: HOST_KEY, roomName: 'Desk', passwordProof: PASSWORD, approval: true });

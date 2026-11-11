@@ -1048,6 +1048,111 @@ test('private scope separates codes, origins and tools even when the caller know
   assert.equal(shares(owner.ws).list.length, 1);
 });
 
+// A dual-stack browser chooses the IP version per connection, so one page's room
+// socket and its directory can arrive over different versions, each with its own scope.
+async function networkHost(s, tool, address, code = `both-${tool}`) {
+  if (!['walkie-talkie', 'voice-oncall'].includes(tool)) {
+    const ws = await edgeSocket(s, `/ws/${code}?role=host&local=1&discover=1&tool=${tool}`, address);
+    return { ws, claim: publication(ws), state: s.room(tool === 'share-text' ? code : tool + ':' + code) };
+  }
+  const key = 'N'.repeat(43), listenKey = 'L'.repeat(43), digest = await broadcastCode(key);
+  const binding = tool === 'walkie-talkie' ? 'BROADCASTS' : 'INBOXES';
+  const ws = await edgeSocket(s, `/${tool === 'walkie-talkie' ? 'broadcast' : 'inbox'}/${digest}`, address);
+  const state = s.voice(binding, digest);
+  await state.instance.webSocketMessage(ws, JSON.stringify({ type: 'auth', role: 'host', key, roomName: 'Both versions',
+    ...(tool === 'walkie-talkie' ? { listenKey, discover: true } : { passwordProof: null }) }));
+  return { ws, state, claim: { code: digest, lease: publication(ws).lease, ...(tool === 'walkie-talkie' ? { listenKey } : {}) } };
+}
+
+test('a page whose room and directory reach the Worker over different IP versions lists its own share', async () => {
+  for (const [room, page, nearby] of [
+    [['1.2.3.4'], ['2606:4700:4700:ab::1111'], ['2606:4700:4700:ab::2222']],
+    [['2606:4700:4700:ab::1111'], ['1.2.3.4'], ['1.2.3.4']],
+    [['1.2.3.4'], ['240.16.0.1', { 'CF-Connecting-IPv6': '2606:4700:4700:ab::1111' }], ['2606:4700:4700:ab::2222']],
+  ]) {
+    const s = system(), name = page[0];
+    const host = await edgeSocket(s, '/ws/both-versions?role=host&local=1&discover=1', ...room);
+    const watching = await edgeSocket(s, '/discover', ...page);
+    const scope = watching.deserializeAttachment().scope;
+    assert.notEqual(host.deserializeAttachment().scope, scope, name);
+    await publish(s, watching, publication(host), scope);
+    assert.deepEqual(shares(watching).list, [{ code: 'both-versions', local: true }], name);
+    const neighbour = await edgeSocket(s, '/discover', ...nearby);
+    assert.deepEqual(shares(neighbour).list, [{ code: 'both-versions', local: true }], name);
+    await s.discovery(scope).instance.webSocketMessage(watching, JSON.stringify({ refresh: true }));
+    assert.deepEqual(shares(neighbour).list, [{ code: 'both-versions', local: true }], name);
+    // The page says nothing: the room's own close takes the listing from that directory.
+    host.close(1000, 'done');
+    s.room('both-versions').instance.webSocketClose(host);
+    await s.room('both-versions').ctx.flush();
+    assert.deepEqual(shares(neighbour).list, [], name);
+    assert.equal(watching.deserializeAttachment().publication, null, name);
+  }
+});
+
+test('every tool lists its own share across IP versions and withdraws it there', async () => {
+  for (const tool of PRIVATE_TOOLS) {
+    const s = system();
+    const host = await networkHost(s, tool, '1.2.3.4');
+    const page = await edgeSocket(s, `/discover?tool=${tool}`, '2606:4700:4700:ab::1111');
+    const scope = page.deserializeAttachment().scope;
+    assert.notEqual(host.ws.deserializeAttachment().scope, scope, tool);
+    await publish(s, page, host.claim, scope);
+    assert.equal(shares(page).list.length, 1, tool);
+    assert.equal(shares(page).list[0].code, host.claim.code, tool);
+    host.ws.close(1000, 'done');
+    host.state.instance.webSocketClose(host.ws);
+    await host.state.ctx.flush();
+    assert.deepEqual(shares(page).list, [], tool);
+  }
+});
+
+test('outside its own scope a lease reaches only its page directory over the other IP version', async () => {
+  const s = system(), id = await groupIdentifier(GROUP_CODE);
+  const host = await edgeSocket(s, '/ws/one-page?role=host&local=1&discover=1', '1.2.3.4');
+  for (const [address, extra] of [['1.2.3.5', {}], ['2606:4700::1111', { Origin: 'https://pr-1.abox-preview.pages.dev' }]]) {
+    const stranger = await edgeSocket(s, '/discover', address, extra);
+    await publish(s, stranger, publication(host), stranger.deserializeAttachment().scope);
+    assert.deepEqual(shares(stranger).list, [], address);
+  }
+  const unplaced = await observer(s, OTHER_SCOPE);
+  await publish(s, unplaced, publication(host), OTHER_SCOPE);
+  assert.deepEqual(shares(unplaced).list, []);
+  // A private group has no network part, so neither side of one has another version.
+  const grouped = await privateHost(s, 'share-text', id);
+  const network = await edgeSocket(s, '/discover', '2606:4700::2222');
+  await publish(s, network, grouped.claim, network.deserializeAttachment().scope);
+  assert.deepEqual(shares(network).list, []);
+  const member = await privateObserver(s, GROUP_CODE, { address: '2606:4700::3333' });
+  await publish(s, member.ws, publication(host), member.scope);
+  assert.deepEqual(shares(member.ws).list, []);
+});
+
+test('a room keeps one directory over the other IP version and withdraws its lease from each it named', async () => {
+  const s = system();
+  const host = await edgeSocket(s, '/ws/shape-check?role=host&local=1&discover=1', '1.2.3.4');
+  const own = host.deserializeAttachment().scope, third = 'c'.repeat(64);
+  const claim = { ...publication(host), scope: OTHER_SCOPE }, other = { origin: 'https://abox.tools', family: 6 };
+  assert.equal((await check(s, 'shape-check', claim)).status, 403);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: other })).status, 204);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: { ...other, family: 4 } })).status, 403);
+  assert.equal((await check(s, 'shape-check', { ...claim, network: { ...other, origin: 'http://localhost:8000' } })).status, 403);
+  for (const network of [null, {}, [], { ...other, family: '6' }, { ...other, origin: 'https://example.com' }, { ...other, port: 443 }]) {
+    assert.equal((await check(s, 'shape-check', { ...claim, network })).status, 400, JSON.stringify(network));
+  }
+  const withdrawn = () => s.calls.filter((call) => call.target === 'discovery'
+    && new URL(call.request.url).pathname === '/_discovery/withdraw').map((call) => call.scope);
+  assert.deepEqual(withdrawn(), []);
+  // A newer directory takes the place of the last, which is told to let the lease go.
+  assert.equal((await check(s, 'shape-check', { ...claim, scope: third, network: other })).status, 204);
+  await s.room('shape-check').ctx.flush();
+  assert.deepEqual(withdrawn(), [OTHER_SCOPE]);
+  host.close(1000, 'done');
+  s.room('shape-check').instance.webSocketClose(host);
+  await s.room('shape-check').ctx.flush();
+  assert.deepEqual(withdrawn(), [OTHER_SCOPE, own, third]);
+});
+
 test('private discovery needs an allowed origin and group proof but does not require a public address match', async () => {
   const s = system(), id = await groupIdentifier(GROUP_CODE);
   const first = await privateObserver(s, GROUP_CODE);

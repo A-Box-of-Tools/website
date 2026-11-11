@@ -198,9 +198,12 @@ A group scope hashes the page origin, tool namespace and public identifier,
 with a separate domain from the unchanged network scope. Different public
 addresses therefore share one private directory, while other groups,
 origins, tools and network directories stay separate. The Worker strips
-caller-supplied internal scope headers. A live host binds its lease to
-exactly one derived scope, so knowing a lease cannot republish that host in
-another group or the network list. Group discovery does not alter the host's
+caller-supplied internal scope headers. A live host binds its lease to the
+scope derived for its own room connection, so knowing a lease cannot
+republish that host in another group or the network list. The one other
+directory that accepts a network lease is the same page's directory over the
+other IP version, described under network discovery below; a group lease has
+no such exception. Group discovery does not alter the host's
 Direct or Cloud relay policy, password checks, approval or media path.
 Share Text's ordinary Direct mode can advertise in a private group without
 enabling its separate local-only checkbox. That exception still requires an
@@ -273,10 +276,24 @@ shared Worker address are refused rather than grouped together. A local
 host with an unsupported discovery scope can still open its room and share
 by link; the room issues no discovery lease for that connection.
 
+A browser on a network with both IPv4 and IPv6 chooses the version for each
+connection, and falls back to IPv4 when an IPv6 attempt is slow. One page's
+room socket and its directory can therefore reach the Worker over different
+versions and derive two scopes. So that such a page can list its own share,
+the room also accepts its lease from a network directory with the same origin
+and tool reached over the other IP version, and withdraws it from that
+directory as it does from its own. Each socket's group is still derived from
+its own connection: the origin is the handshake's, the version is the edge's,
+and the page's messages name neither. Host and directory attachments keep that
+origin and version, never the address. The room remembers one such directory
+at a time, the latest. A directory over the same version with a different
+address, or with another origin or tool, is still refused.
+
 This is a finding aid, not a physical LAN guarantee. Browsers behind one
 router commonly share the address, but a shared VPN or carrier-grade NAT
 can include unrelated networks; mixed IPv4 and IPv6 connections or
-different routes can hide nearby devices. The page explains the scope before listing or
+different routes can hide nearby devices from one another, although a page's
+own share is listed in its own directory. The page explains the scope before listing or
 advertising anything. Local shares advertise by default, with a switch for
 link-only sharing. Names are visible to the group, so Private stays on by
 default. Choosing a name opens consent; it does not initiate a peer
@@ -433,14 +450,18 @@ transport, host approval, password or microphone consent.
   their existing protocol and are never listed.
 - An observer publishes `{publish: {code, lease}}`. Discovery calls the
   room through its private binding at `POST /_discovery/check` with
-  `{code, lease, scope}`. A 204 confirms that the matching local,
+  `{code, lease, scope}`, adding `network: {origin, family}` for a network
+  directory. A 204 confirms that the matching local,
   discoverable Direct host is still connected; a relay host returns 200 with
   the single field `{transport: "relay"}`. Other responses refuse publication.
-  The lease is not accepted as authority without that live room check.
+  The lease is not accepted as authority without that live room check. The
+  room accepts its own scope, or a network directory of the same origin over
+  the other IP version, which it then remembers.
 - `{publish: null}` withdraws the observer's listing. Closing the observer
   also removes it. When the actual room host disconnects, the room calls
   Discovery through its private binding at `POST /_discovery/withdraw` with
-  `{code, lease}`. That cancels matching pending or verified listings and
+  `{code, lease}`, in its own directory and in the remembered one over the
+  other IP version. That cancels matching pending or verified listings and
   broadcasts the change; an earlier host's lease cannot remove a newer one.
 - `{refresh: true}` is answered with a snapshot. At most once per ten seconds per
   directory it first revalidates the listed rooms' leases and broadcasts the result,
@@ -485,7 +506,9 @@ network discovery or only `group=<public identifier>` for a private group.
   Unsupported network scopes still permit ordinary invitation-based use;
   a malformed private-group parameter is refused without a network fallback.
   A discoverable host's attachment additionally retains its trusted name,
-  scope and random lease, never the raw listener capability.
+  scope and random lease, never the raw listener capability. A network scope
+  also keeps its page origin and IP version, and, once listed there, the scope
+  of its page's directory over the other version.
 - A listener arriving before the first host can wait, but its capability is
   unverified and cannot establish authority for other listeners. A genuine
   host validates those waiting hashes and removes mismatches. After a host
@@ -501,7 +524,8 @@ network discovery or only `group=<public identifier>` for a private group.
   its network scope is unavailable. The page publishes `{publish: {code,
   lease, listenKey}}` on `/discover?tool=walkie-talkie`. Through `BROADCASTS`,
   the directory privately checks the listener capability's hash and the live,
-  unended host's current lease and scope, then obtains `{name, listenKey}`.
+  unended host's current lease and scope, or the same page's directory over
+  the other IP version as for text rooms, then obtains `{name, listenKey}`.
   The check reads host authority again after hashing, so a concurrent End,
   disconnect or replacement cannot revive an old listing. Public snapshots
   whitelist `{code, local: true, name, listenKey}` and never expose the host
@@ -634,6 +658,9 @@ forwards the accepted SDP unchanged and still allows only one audio section.
   storage writes. Unmute can free a mute-only entry. When that history is full,
   `moderation-full` leaves the room active and reports that further remembered
   moderation was refused. Ending the room and creating another resets history.
+  Moderation and approvals come first: a host whose next entry would leave too
+  little room withdraws its listing over the other IP version and forgets
+  what that listing needed, rather than refusing the entry.
 - Host-ready includes a private discovery lease. The page publishes code and
   lease on `/discover?tool=voice-oncall`; the directory obtains only trusted
   room name and password-required flag through its binding-only lease check.
