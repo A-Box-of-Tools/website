@@ -10,6 +10,7 @@ export function bindTransportControl({ onChange = () => {} } = {}) {
     input.id = index ? `pairing-transport-${index}` : 'pairing-transport';
     note.id = `${input.id}-note`;
     input.setAttribute('aria-describedby', note.id);
+    element.querySelector('.info-tip > summary').setAttribute('aria-describedby', note.id);
     return { toggle, input, note };
   });
   const badges = [...document.querySelectorAll('[data-transport-badge]')];

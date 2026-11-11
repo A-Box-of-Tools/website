@@ -146,11 +146,6 @@
   line-height: 1.4;
 }
 .paired-page .paired-transport-toggle[hidden], .paired-transport-badge[hidden] { display: none; }
-.paired-transport-help { margin: 0; }
-.paired-transport-help > summary { min-width: 44px; min-height: 44px; justify-content: center; }
-.paired-transport-help[open] { flex-basis: 100%; }
-/* This live description stays in its own fold, outside the build's field-note gathering. */
-.paired-transport-note { max-width: 62ch; margin: 0 0 .5rem; font-size: .85rem; color: var(--text-dim); line-height: 1.6; }
 .paired-route { margin-block: .75rem; font-size: .9rem; font-weight: 600; }
 .paired-discovery-group {
   display: flex;

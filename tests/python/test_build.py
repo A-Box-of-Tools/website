@@ -1038,6 +1038,20 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_the_frame_loads_the_information_marks_on_a_page_that_has_them(self):
+        """Nothing in a tool calls this module, so the page's tag is all there
+        is: a paired tool for the mark the frame draws, the receipt tool for the
+        one it asks for, and no third request on a page with none."""
+        for slug, marks in (('voice-oncall', True), ('receipt-invoice-extractor', True),
+                            ('stack-images', False)):
+            page = self.out / slug / 'index.html'
+            if not page.is_file():
+                continue
+            with self.subTest(tool=slug):
+                self.assertEqual(marks, '<script type="module" src="src/shared/info-tip.js?v='
+                                 in page.read_text(encoding='utf-8'))
+                self.assertEqual(marks, (self.out / slug / 'src/shared/info-tip.js').is_file())
+
     def test_every_module_is_asked_for_by_one_versioned_url_everywhere(self):
         """The page's two module tags, its modulepreloads, every relative
         import inside the emitted modules, and the worker's precache list all
