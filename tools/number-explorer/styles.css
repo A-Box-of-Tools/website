@@ -115,6 +115,11 @@
 }
 @media (max-width: 720px) {
   .ne-more { grid-template-columns: minmax(0, 1fr); }
+  /* Under the picture rather than on it: two buttons a thumb can hit would cover the
+     readout on a stage this narrow, and that readout runs far longer in most languages
+     than it does in English. */
+  .ne-stage-controls { position: static; gap: .4rem; padding: .4rem; }
+  .ne-stage-controls button { flex: 1; }
 }
 @media (max-width: 560px) {
   /* The frame above already fills most of a phone's first screen, so what the
@@ -129,8 +134,4 @@
   .ne-world-value { display: none; }
   #stage { aspect-ratio: 4 / 5; max-height: none; }
   .ne-ticks span.ne-tick-minor { display: none; }
-  /* Under the picture rather than on it: two buttons a thumb can hit would cover
-     the readout on a stage this narrow. */
-  .ne-stage-controls { position: static; gap: .4rem; padding: .4rem; }
-  .ne-stage-controls button { flex: 1; }
 }

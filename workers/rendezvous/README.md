@@ -41,8 +41,8 @@ it - and never a payload. Voice URLs carry an opaque digest of the host secret;
 both voice capabilities enter the first WSS message, never the URL. The worker
 adds one line of its own on a text/camera refusal,
 because a refused handshake completes the upgrade exactly like an admission
-and the record alone cannot tell them apart; the line carries the close code
-and nothing else. It is a view of the switchboard working, not of anything
+and the record of that request cannot tell them apart; the line carries the close
+code and nothing else. It is a view of the switchboard working, not of anything
 passing through it. Tracing is written off in the same file rather than left
 to its default, so there is no second stream to account for.
 
@@ -348,6 +348,16 @@ transport, host approval, password or microphone consent.
   because a single customer normally holds all of it. The start page
   opens a discovery socket and a host adds one room socket; each reader opens one
   introduction socket.
+- A socket turned away at the door completes the upgrade and closes at once with a
+  4xxx code, because a page cannot read the status of a failed upgrade. The object
+  only decides: it answers with a private header and takes no socket, and the
+  stateless front of the Worker does the closing (`refusal.js`). That is what makes
+  the answer quick. A socket an object accepted with `acceptWebSocket` and then closed
+  first keeps its connection after both ends have sent Close, until the object next
+  goes idle about ten seconds later, and Chromium holds a page's `close` event until
+  the connection ends or two seconds pass. An admitted socket cannot be handed over
+  like this, so a close the object starts later, such as `host-gone`, still reaches
+  Chromium about two seconds after its frame; WebKit and Firefox have it straight away.
 - A socket that sends more than 120 frames in a rolling ten seconds is closed with
   4429 `busy`. Frames are counted before they are parsed, so malformed and empty
   ones count too. A host's allowance is that many per connected viewer, because
@@ -394,10 +404,17 @@ transport, host approval, password or microphone consent.
   New Direct rooms cannot obtain them. Cached non-local Share Text pages retain
   the old viewer-only `{relay: true}` request once per socket only when their
   host did not pin a transport. Other tools and local text shares refuse it.
-- When the host's socket drops, every viewer is closed with 4410
-  "host-gone" - the instant, authoritative end-of-share signal, long before
-  WebRTC's own ~30s consent expiry would notice.
+- When the host's socket drops, every viewer gets `{type: "host-gone"}` and is
+  closed with 4410 "host-gone" - the instant, authoritative end-of-share signal,
+  long before WebRTC's own ~30s consent expiry would notice. The frame is what makes
+  it instant in Chromium, which holds a page's `close` event until the connection
+  ends or two seconds pass, and an object cannot end it any sooner. A page from
+  before the frame passes over it and hears the close.
 - `ping` is answered `pong` by the runtime without waking the object.
+- A page that closes its own socket gets a Close frame back at once, with no code in
+  it, so its `close` event is immediate and clean. The runtime does not send one for a
+  socket accepted with `acceptWebSocket`: unanswered, the connection stays up until the
+  object next goes idle about ten seconds later, and the event reports 1006.
 
 ## The discovery protocol
 
@@ -509,11 +526,15 @@ network discovery or only `group=<public identifier>` for a private group.
   and their live attachments preserve that state for subsequent checks.
   Nothing preserves an ended history after the final socket has left.
 - A host socket disappearing sends `waiting` and keeps listener sockets open.
-  A waiting page sends `{type: "check"}` once a second; the worker replies
-  `waiting`, `ready`, or `ended`. A host returning with the same capability
-  receives a fresh generation and reintroduces valid listeners. A replacement
-  host retires the prior host with `replaced` and close code 4409, so a late
-  old-host callback cannot disturb the new generation.
+  A host returning with the same capability receives a fresh generation and
+  reintroduces valid listeners, sending each one `ready` without being asked;
+  an approval decision and `ended` reach a waiting listener the same way. A
+  replacement host retires the prior host with `replaced` and close code 4409,
+  so a late old-host callback cannot disturb the new generation.
+- `{type: "check"}` asks for the same answer, `waiting`, `ready`, or `ended`,
+  and only covers a message that never arrived. A waiting page sends it about
+  once a minute. Pages cached from before that change send it once a second, so
+  the worker has to keep answering it.
 - `{type: "leave"}` removes that listener and closes its socket normally.
   A current host receives `{type: "leave", id, generation}`. Socket close,
   error, and failed sends perform the same cleanup without duplicate events.
@@ -620,6 +641,7 @@ forwards the accepted SDP unchanged and still allows only one audio section.
   credentials and participant identities never enter directory snapshots.
 - Up to ten participants can be admitted. Wrong passwords and kicked sessions
   are terminal for that attempt. Authorized senders can remain parked during
-  host absence, probing at the one-second foreground target. End and Leave
-  stop retries; raw ping/pong maintains idle signaling. Socket messages,
-  pending authentication, negotiation and rate bookkeeping remain bounded.
+  host absence: the host's return reaches them as `ready`, and `check` works as in
+  the voice protocol above. End and Leave stop retries; raw ping/pong maintains
+  idle signaling. Socket messages, pending authentication, negotiation and rate
+  bookkeeping remain bounded.

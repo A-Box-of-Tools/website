@@ -3,7 +3,9 @@
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
 import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { answerClose } from "./closing.js";
 import { admitPending, pendingSource } from "./pending.js";
+import { refusal } from "./refusal.js";
 import { answerRelayRequest, relayEnabled, relayPolicy } from "./relay.js";
 import { approvalFrame, approvalState, approvalMatches, admitted, approved, rememberApproval, forgetApproval, clearApprovals } from "./voice-approval.js";
 
@@ -122,17 +124,14 @@ export class Inbox {
     // in one synchronous step after it.
     const source = await pendingSource(request, code);
     this.cleanup();
-    const { 0: client, 1: server } = new WebSocketPair();
     if (!admitPending(this.sockets("pending"), source, (ws) => this.refuse(ws, 4429, "full"))) {
-      this.ctx.acceptWebSocket(server, ["refused"]);
-      server.send(JSON.stringify({ type: "error", error: "full" }));
-      server.close(4429, "full");
-    } else {
-      const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
-      this.ctx.acceptWebSocket(server, ["inbox"]);
-      this.attach(server, { role: "pending", code, source, scope: validScope(scope) ? scope : null,
-        deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
+      return refusal(4429, "full", { type: "error", error: "full" });
     }
+    const { 0: client, 1: server } = new WebSocketPair();
+    const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
+    this.ctx.acceptWebSocket(server, ["inbox"]);
+    this.attach(server, { role: "pending", code, source, scope: validScope(scope) ? scope : null,
+      deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
     return new Response(null, { status: 101, webSocket: client });
   }
 
@@ -399,7 +398,7 @@ export class Inbox {
     )).catch(() => {}));
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

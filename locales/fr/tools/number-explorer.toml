@@ -1,0 +1,105 @@
+#
+# Explorateur de nombres - French.
+#
+# Overrides for tools/number-explorer/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Every figure here was carried over by value and not by word. The English
+# billion is un milliard and the French billion is the English trillion, so a
+# sentence that keeps the word keeps it a thousand times too large.
+#
+
+name = "Explorateur de nombres"
+heading = "Explorateur&nbsp;de&nbsp;nombres <span class=\"h1-kw\">&mdash; se représenter un million, un milliard et au-delà</span>"
+tagline = "Tapez n'importe quel nombre et regardez-le grandir&nbsp;: une pile de livres, un filet d'eau, un ciel d'étoiles, un tas de sable, un très long comptage."
+
+title = "Visualiser un nombre &mdash; comprendre les millions et les milliards &mdash; gratuit, hors ligne"
+description = "Voyez la vraie taille d'un nombre. Il grandit en pile de livres, en filet d'eau, en ciel d'étoiles, en tas de sable et en temps de comptage, à côté de repères allant de l'Everest à la Voie lactée. Gratuit et hors ligne."
+og_title = "À quoi ressemble un milliard&nbsp;?"
+og_description = "Transformez un nombre immense en quelque chose de visible&nbsp;: livres, eau, étoiles, sable et temps, avec des hypothèses claires, sans IA ni envoi."
+og_image_alt = "Explorateur de nombres - se représenter les grands nombres en livres, eau, étoiles, sable et temps"
+
+pledge = "Une comparaison, c'est un nombre, une référence choisie et un peu d'arithmétique, le tout dans cette page. Il n'y a aucun service d'IA à interroger et aucune saisie à envoyer. Les livres, l'eau, les étoiles, le sable et le temps de comptage restent séparés, et leurs hypothèses sont écrites à côté du résultat au lieu d'être cachées derrière l'image."
+live_hint = "Changez le nombre avec l'onglet Réseau ouvert. La calculatrice ne fait aucune requête. Chargez la page une fois, déconnectez-vous et continuez à explorer."
+read_first = ", <code>src/scale.js</code> pour la lecture du nombre, les modèles et les repères, <code>src/containers.js</code> pour ce que mesure une zone colorée, <code>src/stage.js</code> et les fichiers <code>src/scene-*.js</code> pour les images, et <code>src/main.js</code> pour la façon dont la page s'assemble."
+howto_heading = "Comment se représenter un grand nombre"
+card = "Quelle hauteur fait une pile d'un milliard de livres&nbsp;? Combien d'eau font un milliard de gouttes&nbsp;? Tapez n'importe quel nombre et regardez-le devenir livres, eau, étoiles, sable et temps, hypothèses en vue."
+
+[words]
+plural = "nombres et comparaisons"
+choose = "un nombre"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+[[facts]]
+text = "Aucun coût d'IA ou d'API"
+[[facts]]
+text = "Hypothèses claires"
+[[facts]]
+text = "Enregistrez l'image"
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "La calculatrice tourne dans ce navigateur."
+body = "Le code de traitement de l'outil calcule les résultats et dessine les images localement. Il n'envoie aucune saisie ni aucun résultat à un service. La Content-Security-Policy restreint les destinations de connexion mais n'inspecte pas le contenu&nbsp;; comparez le code source avec l'onglet Réseau, ou utilisez la calculatrice hors connexion."
+[[privacy]]
+title = "Il n'y a ni modèle ni consultation en direct."
+body = "Les repères et les formules sont livrés avec cette page. Les comparaisons sont choisies par arithmétique sur ce catalogue. Les liens vers les sources ne s'ouvrent que si vous décidez de les lire."
+[[privacy]]
+title = "Vos saisies restent dans la page."
+body = "La calculatrice n'écrit aucune saisie dans le stockage ni dans la barre d'adresse. Recharger remet l'exploration à zéro. Une image enregistrée est un fichier que vous gardez volontairement sur votre appareil."
+[[privacy]]
+title = "Les autres scripts du site ont leurs propres limites."
+body = "Le cadre peut charger des scripts de publicité, de mesure et de dons. La calculatrice ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
+
+[[howto]]
+title = "Tapez un nombre ou faites glisser le curseur."
+body = "Essayez un milliard, 1,5&nbsp;Md ou 1e12. Les nombres entiers de zéro à 10³⁰ sont acceptés. Le curseur avance par puissances de dix, et l'image suit pendant que vous le faites glisser."
+[[howto]]
+title = "Choisissez livres, eau, étoiles, sable ou temps."
+body = "Chacun représente le même nombre d'une autre façon et dit ce qu'est chaque unité. Pour les livres, chacun peut aussi être un mot ou un jeton de texte d'IA, ce qui change le nombre en longueur de texte."
+[[howto]]
+title = "Regardez-le grandir et comparez."
+body = "La caméra recule à mesure que le nombre monte. Appuyez sur × 10 ou sur Grandir depuis 1 pour le revoir, et lisez dans les repères à côté de votre nombre combien de fois chacun est plus grand. Devinez si dix fois plus atteindra le suivant."
+[[howto]]
+title = "Vérifiez les hypothèses, puis gardez l'image."
+body = "Changez l'épaisseur des livres, la taille des gouttes, le diamètre des grains ou le rythme de comptage, et lisez d'où vient le chiffre de chaque repère. Enregistrez l'image en PNG, avec ses hypothèses écrites dessous."
+
+[[faq]]
+q = "Faut-il un modèle d'IA&nbsp;?"
+a = "Non. Le navigateur place votre nombre dans un petit catalogue de repères et calcule lui-même les résultats. Il n'y a ni clé d'API, ni téléchargement de modèle, ni frais d'IA récurrents."
+[[faq]]
+q = "Quelle hauteur fait une pile d'un milliard de livres&nbsp;?"
+a = "Avec des livres de 3&nbsp;cm d'épaisseur, environ 30&nbsp;000&nbsp;km&nbsp;: plus de deux fois la largeur de la Terre, et environ 8&nbsp;% du chemin jusqu'à la Lune. Il faudrait environ 13&nbsp;milliards de livres pour atteindre la Lune. Vous pouvez changer l'épaisseur dans les hypothèses."
+[[faq]]
+q = "Combien d'eau font un milliard de gouttes&nbsp;?"
+a = "Avec des gouttes de 0,05&nbsp;ml, la taille que donne un compte-gouttes, 50&nbsp;000&nbsp;litres&nbsp;: environ 250&nbsp;baignoires de 200&nbsp;litres, ou 2&nbsp;% d'une piscine olympique. La goutte plus grosse d'un robinet qui fuit, environ 0,25&nbsp;ml, en donne cinq fois plus."
+[[faq]]
+q = "Combien d'étoiles font un milliard&nbsp;?"
+a = "Environ 1&nbsp;% de la Voie lactée, en prenant le chiffre rond de l'ESA de 100&nbsp;milliards d'étoiles, et le vrai nombre peut être plusieurs fois supérieur. C'est aussi environ 110&nbsp;000&nbsp;fois les quelque 9&nbsp;100&nbsp;étoiles assez brillantes pour être vues sans télescope sur tout le ciel."
+[[faq]]
+q = "Combien de sable font un milliard de grains&nbsp;?"
+a = "Avec le modèle choisi de grains sphériques de 0,5&nbsp;mm de diamètre et un récipient contenant 60&nbsp;% de grains et 40&nbsp;% d'air, environ 109&nbsp;litres&nbsp;: à peu près onze seaux de 10&nbsp;litres. Les vrais grains varient, c'est donc une estimation sous ces hypothèses."
+[[faq]]
+q = "Combien de livres font un million de jetons&nbsp;?"
+a = "Pour un texte anglais, l'estimation approximative de 0,75&nbsp;mot par jeton donne environ 750&nbsp;000&nbsp;mots. Avec l'exemple par défaut de 75&nbsp;000&nbsp;mots par livre, cela fait dix livres, une pile d'environ 30&nbsp;cm de haut. La langue, la tokenisation et la longueur des livres changent la réponse. C'est un équivalent d'écriture, pas la preuve de livres réellement lus ou générés."
+[[faq]]
+q = "Quelle montagne est utilisée&nbsp;?"
+a = "Un exemple défini exprès&nbsp;: un cône de 1&nbsp;000&nbsp;mètres de haut avec un rayon de base de 1&nbsp;000&nbsp;mètres. Son volume est un tiers de pi fois le rayon au carré fois la hauteur. Une vraie montagne a besoin de sa propre géométrie&nbsp;; la hauteur seule ne donne pas son volume."
+[[faq]]
+q = "Peut-on comparer avec tout le sable de la Terre&nbsp;?"
+a = "Cette version n'invente pas de chiffre mondial exact de grains. Une telle estimation demande d'abord un périmètre, comme les plages ou les déserts, et des hypothèses sur la surface, la profondeur et la taille des grains. Utilisez les récipients et les repères définis pour des comparaisons dont on peut examiner les hypothèses."
+[[faq]]
+q = "Les images sont-elles dessinées à l'échelle physique&nbsp;?"
+a = "La pile de livres et ses repères partagent une seule règle fidèle, sauf que la pile est dessinée plus large que nature dès qu'elle disparaîtrait autrement, et la frise du temps est fidèle de la même façon. L'eau et le sable ne sont pas sur une seule règle&nbsp;: les récipients sont des illustrations, et la zone colorée est la part réelle du récipient nommé. Les étoiles sont une par point tant qu'on peut toutes les dessiner, et ensuite la légende indique combien chaque point en représente."
+[[faq]]
+q = "Puis-je désactiver l'animation&nbsp;?"
+a = "Oui. Mettre en pause arrête tout et laisse l'image terminée à l'écran. Si votre appareil est réglé pour réduire les animations, la page montre l'image terminée dès le début."
+[[faq]]
+q = "L'outil fonctionne-t-il hors ligne&nbsp;?"
+a = "Oui. Une fois la page chargée, tous les calculs, comparaisons, dessins et images enregistrées fonctionnent sans connexion. Aucune saisie n'est envoyée pour traitement."
+
+[schema]
+description = "Visualisez les grands nombres en piles de livres, volumes d'eau, ciels d'étoiles, tas de sable et temps de comptage, entièrement dans le navigateur."
+features = ["Saisie exacte de nombres entiers jusqu'à 10^30", "Un curseur en puissances de dix avec une image animée en direct", "Des piles de livres sur une seule règle fidèle, d'une table au bord de l'univers observable", "De l'eau et du sable qui remplissent des récipients nommés", "Des étoiles, d'un seul point à l'univers observable", "Le temps de comptage sur une frise fidèle", "Des équivalents d'écriture pour les mots et les jetons d'IA", "Épaisseur des livres, taille des gouttes, taille des grains et rythme de comptage réglables", "Des images enregistrées avec leurs hypothèses", "Prise en charge de la réduction des animations", "Fonctionne hors ligne sans modèle d'IA"]

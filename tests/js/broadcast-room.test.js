@@ -124,6 +124,13 @@ const offer = (host, listener, connection = CONNECTION) => ({
   type: 'offer', generation: generation(host), connection, to: id(listener), sdp: SDP,
 });
 
+test('a page that closes first is answered', async () => {
+  const s = await system(), host = await s.host(), listener = await s.listener();
+  s.room().instance.webSocketClose(listener);
+  assert.deepEqual(listener.closed, { code: undefined, reason: undefined });
+  assert.equal(host.readyState, 1);
+});
+
 test('broadcast approval gates every relay and signaling path before the host admits a listener', async t => {
   const s = await system();
   s.env.TURN_KEY_ID = 'test-key'; s.env.TURN_KEY_TOKEN = 'test-token';
@@ -395,6 +402,55 @@ test('host loss parks authenticated listeners and anchors survive hibernation', 
   assert.equal(resumed.messages.filter((message) => message.type === 'join').length, 2);
 });
 
+test('a parked listener hears everything it waits for without asking, even from a hibernated room', async () => {
+  const s = await system(), host = await s.host(), listener = await s.listener();
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  assert.equal(last(listener).type, 'waiting');
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  const returned = await s.host();
+  assert.deepEqual(last(listener), { type: 'ready', id: id(listener), generation: generation(returned), talking: false });
+  assert.deepEqual(returned.messages.filter((message) => message.type === 'join'),
+    [{ type: 'join', id: id(listener), generation: generation(returned) }]);
+
+  const approvals = await system();
+  const owner = await approvals.open();
+  await approvals.send(owner, { type: 'auth', role: 'host', key: HOST_KEY, listenKey: LISTEN_KEY, approval: true });
+  const [admitted, refused, ended] = [await approvals.listener(), await approvals.listener(), await approvals.listener()];
+  for (const ws of [admitted, refused, ended]) assert.equal(last(ws).type, 'approval-pending');
+  await approvals.send(owner, { type: 'approve', generation: generation(owner), to: id(admitted) });
+  assert.equal(last(admitted).type, 'ready');
+  await approvals.send(owner, { type: 'deny', generation: generation(owner), to: id(refused) });
+  assert.equal(last(refused).type, 'denied');
+  assert.equal(refused.closed.code, 4403);
+  await approvals.send(owner, { type: 'end', generation: generation(owner) });
+  assert.equal(last(ended).type, 'ended');
+});
+
+test('a cached page still asking every second gets the same answers and no second join', async () => {
+  const s = await system(), listener = await s.listener();
+  const ask = async (type, times = 5) => {
+    for (let i = 0; i < times; i += 1) {
+      await s.send(listener, { type: 'check' });
+      assert.equal(last(listener).type, type);
+    }
+  };
+  await ask('waiting');
+  const host = await s.host();
+  await ask('ready');
+  assert.equal(host.messages.filter((message) => message.type === 'join').length, 1);
+  host.close(1000, 'gone');
+  s.room().instance.webSocketClose(host);
+  await ask('waiting');
+  s.room().instance = new Broadcast(s.room().ctx, s.env);
+  await ask('waiting');
+  const returned = await s.host();
+  await ask('ready');
+  assert.equal(returned.messages.filter((message) => message.type === 'join').length, 1);
+  await s.send(returned, { type: 'end', generation: generation(returned) });
+  await ask('ended', 1);
+});
+
 test('a replacement host retires the old socket before its late close callback', async () => {
   const s = await system(), old = await s.host(), listener = await s.listener();
   const previous = generation(old), replacement = await s.host();
@@ -529,7 +585,7 @@ test('pending sockets are capped per address, and another address still gets in'
   const refused = await from('198.51.100.1');
   assert.equal(refused.closed.code, 4429);
   assert.deepEqual(last(refused), { type: 'error', error: 'full' });
-  assert.deepEqual(refused.tags, ['refused']);
+  assert.deepEqual(refused.tags, [], 'no object holds it');
   assert.equal(refused.deserializeAttachment(), null);
   // All of a /64 is one address, and the neighbouring /64 is not.
   for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);

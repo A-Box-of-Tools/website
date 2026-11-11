@@ -134,6 +134,19 @@ test('tab relay waits for credentials and retains approval before media', async 
   assert.equal(f.session.relay, null);
 });
 
+test('a tab viewer told host-gone in a frame stops as the close would, without waiting for it', async (t) => {
+  const f = fixture(t); await f.session.connect(CODE, 'Viewer');
+  f.sockets[0].receive({ type: 'host-gone' }); await settle();
+  assert.equal(f.session.role, null);
+  assert.deepEqual(f.states.at(-1), { key: 'connection.ended', role: 'viewer' });
+  assert.equal(f.sockets[0].readyState, 3);
+  const buffering = fixture(t), opening = buffering.session.connect(CODE, 'Viewer', { transport: 'relay' });
+  const rejected = assert.rejects(opening, /connection\.ended/);
+  await settle();
+  buffering.sockets[0].receive({ type: 'host-gone' });
+  await rejected;
+});
+
 test('tab relay viewer buffers ready until credentials and mismatch cannot create a peer', async (t) => {
   for (const outcome of ['ready', 'mismatch', 'disabled']) {
     const f = fixture(t);

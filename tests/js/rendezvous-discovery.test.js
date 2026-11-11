@@ -9,6 +9,7 @@ import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
 import worker, { Broadcast, Discovery, Inbox, Room } from '../../workers/rendezvous/worker.js';
 import { DISCOVERY_SCOPE_HEADER } from '../../workers/rendezvous/discovery.js';
+import { completeRefusal } from '../../workers/rendezvous/refusal.js';
 import { broadcastCode } from '../../workers/rendezvous/broadcast.js';
 import { groupIdentifier } from '../../shared/js/discovery-group.js';
 
@@ -160,6 +161,13 @@ async function edgeSocket(s, path, address, extra) {
   assert.equal(response.status, 101);
   return response.webSocket.peer;
 }
+
+test('a page that closes first is answered', async () => {
+  const s = system(), leaving = await observer(s), watching = await observer(s);
+  s.discovery().instance.webSocketClose(leaving);
+  assert.deepEqual(leaving.closed, { code: undefined, reason: undefined });
+  assert.equal(watching.readyState, 1);
+});
 
 test('different IPv6 devices on one /64 find a live lease through the public Worker', async () => {
   const s = system();
@@ -481,9 +489,9 @@ test('only an explicitly discoverable local host receives a server-issued lease'
   assert.deepEqual(unscoped.webSocket.peer.messages, []);
   assert.equal(unscoped.webSocket.peer.deserializeAttachment().role, 'host');
   assert.equal(unscoped.webSocket.peer.deserializeAttachment().lease, undefined);
-  const collision = await s.room(claim.code).instance.fetch(new Request(`https://room.internal/ws/${claim.code}?role=host&local=1&discover=1`, {
+  const collision = completeRefusal(await s.room(claim.code).instance.fetch(new Request(`https://room.internal/ws/${claim.code}?role=host&local=1&discover=1`, {
     headers: { [DISCOVERY_SCOPE_HEADER]: SCOPE },
-  }));
+  })));
   assert.equal(collision.webSocket.peer.closed.code, 4409);
 });
 
@@ -1132,7 +1140,7 @@ test('a private directory gives each address its own pending allowance', async (
   for (let i = 0; i < 4; i += 1) assert.equal((await from('198.51.100.1')).readyState, 1);
   const refused = await from('198.51.100.1');
   assert.equal(refused.closed.code, 4429);
-  assert.deepEqual(refused.tags, ['refused']);
+  assert.deepEqual(refused.tags, [], 'no object holds it');
   assert.equal(refused.deserializeAttachment(), null);
   // Rotating inside a /64 is still one address, and the neighbouring /64 is not.
   for (let i = 1; i <= 4; i += 1) assert.equal((await from(`2606:4700:4700:ab::${i}`)).readyState, 1);

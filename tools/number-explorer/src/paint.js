@@ -66,7 +66,8 @@ export function fontFor(size, weight = 600) { return `${weight} ${size}px ${fami
 
 // Every label sits on a backdrop that changes with scale, so each one carries a
 // halo of the opposite tone rather than trusting what is behind it.
-export function write(ctx, line, x, y, { size = 12, weight = 600, fill = '#fff', halo = 'rgba(0,0,0,.6)', align = 'left', baseline = 'middle', alpha = 1 } = {}) {
+// `within` is the stage's width: a label given it slides along to stay on the stage.
+export function write(ctx, line, x, y, { size = 12, weight = 600, fill = '#fff', halo = 'rgba(0,0,0,.6)', align = 'left', baseline = 'middle', alpha = 1, within = 0 } = {}) {
   if (alpha <= 0.01 || !line) return;
   ctx.save();
   ctx.globalAlpha *= alpha;
@@ -74,6 +75,11 @@ export function write(ctx, line, x, y, { size = 12, weight = 600, fill = '#fff',
   ctx.textAlign = align;
   ctx.textBaseline = baseline;
   ctx.lineJoin = 'round';
+  if (within) {
+    const wide = ctx.measureText(line).width;
+    const left = align === 'right' ? x - wide : align === 'center' ? x - wide / 2 : x;
+    x += clamp(left, 4, Math.max(4, within - 4 - wide)) - left;
+  }
   if (halo) {
     ctx.strokeStyle = halo;
     ctx.lineWidth = Math.max(2.5, size / 4);
@@ -84,39 +90,45 @@ export function write(ctx, line, x, y, { size = 12, weight = 600, fill = '#fff',
   ctx.restore();
 }
 
-// Landmark names are written for sentences, and some are long for a narrow stage.
-// `within` is the stage's width and `room` how much of it this chip may have: a chip
-// shrinks to fit and is cut short only after that, and it always stays on the stage.
-export function chip(ctx, line, x, y, { size = 12, weight = 700, fill = '#fff', ink = '#16202a', align = 'left', alpha = 1, stroke = null, within = 0, room = 0 } = {}) {
+// Landmark names are written for sentences, and some are long for a narrow stage, in
+// some languages much longer than in others. `within` is the stage's width and `room`
+// how much of it this chip may have: a chip shrinks to fit, takes a second line after
+// that, and always stays on the stage. It never drops words, because a name cut short
+// says nothing about which landmark is meant. `clear` is a chip already drawn: this one
+// steps up above it rather than covering it, and what it returns is for the next to clear.
+export function chip(ctx, line, x, y, { size = 12, weight = 700, fill = '#fff', ink = '#16202a', align = 'left', alpha = 1, stroke = null, within = 0, room = 0, clear = null } = {}) {
   if (alpha <= 0.01 || !line) return;
   ctx.save();
   ctx.globalAlpha *= alpha;
-  let visible = line;
+  let lines = [line];
   let fontSize = size;
   ctx.font = fontFor(fontSize, weight);
-  let width = ctx.measureText(visible).width + fontSize * 1.3;
+  let width = ctx.measureText(line).width + fontSize * 1.3;
   const limit = room || (within ? within - 12 : 0);
   if (limit && width > limit) {
     fontSize = Math.max(10, size * limit / width);
     ctx.font = fontFor(fontSize, weight);
-    width = ctx.measureText(visible).width + fontSize * 1.3;
-    while (width > limit && visible.length > 4) {
-      visible = `${visible.slice(0, -2).trimEnd()}…`;
-      width = ctx.measureText(visible).width + fontSize * 1.3;
+    width = ctx.measureText(line).width + fontSize * 1.3;
+    if (width > limit) {
+      lines = wrapLines(ctx, line, limit - fontSize * 1.3, fontSize, weight);
+      width = Math.max(...lines.map(part => ctx.measureText(part).width)) + fontSize * 1.3;
     }
   }
-  const height = size * 2;
+  const leading = fontSize * 1.2;
+  const height = size * 2 + (lines.length - 1) * leading;
   let left = align === 'right' ? x - width : align === 'center' ? x - width / 2 : x;
   if (within) left = clamp(left, 6, Math.max(6, within - 6 - width));
-  rounded(ctx, left, y - height / 2, width, height, height / 2);
+  if (clear && left < clear.right && left + width > clear.left && Math.abs(y - clear.y) < (height + clear.height) / 2) y = clear.y - (height + clear.height) / 2 - 3;
+  rounded(ctx, left, y - height / 2, width, height, Math.min(height, size * 2) / 2);
   ctx.fillStyle = fill;
   ctx.fill();
   if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
   ctx.fillStyle = ink;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(visible, left + width / 2, y + 0.5);
+  lines.forEach((part, i) => ctx.fillText(part, left + width / 2, y + 0.5 + (i - (lines.length - 1) / 2) * leading));
   ctx.restore();
+  return { left, right: left + width, y, height };
 }
 
 export function widthOf(ctx, line, size, weight = 600) {
@@ -127,21 +139,37 @@ export function widthOf(ctx, line, size, weight = 600) {
   return width;
 }
 
+// Where a line may give way. Chinese and Japanese have no spaces and break between any
+// two characters, keeping opening marks with what follows and closing marks and small
+// kana with what comes before. Anything else breaks at a plain space or after a hyphen,
+// which is the one place a long German compound can give way. The no-break space Intl
+// puts in "0,1 %" is not a place to break, which is why this is not \s.
+const BREAKS = / +|[（「『《“‘]*[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}ー][）」』》”’，。、；：？！ぁぃぅぇぉっゃゅょァィゥェォッャュョー]*|[^ \p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}-]*-|[^ \p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}-]+/gu;
+
 export function wrapLines(ctx, line, width, size, weight = 600) {
   ctx.save();
   ctx.font = fontFor(size, weight);
+  const fits = text => ctx.measureText(text).width <= width;
   const lines = [];
   let part = '';
-  for (const word of line.split(' ')) {
-    const longer = part ? `${part} ${word}` : word;
-    if (part && ctx.measureText(longer).width > width) {
-      lines.push(part);
-      part = word;
-    } else {
-      part = longer;
+  for (let piece of line.match(BREAKS) ?? []) {
+    if (fits((part + piece).trimEnd())) {
+      part += piece;
+      continue;
     }
+    if (part.trim()) lines.push(part.trimEnd());
+    piece = piece.trimStart();
+    // A word wider than the whole line breaks where it has to, since the alternative
+    // is a word that runs off the stage.
+    while (piece.length > 1 && !fits(piece)) {
+      let cut = piece.length - 1;
+      while (cut > 1 && !fits(`${piece.slice(0, cut)}-`)) cut -= 1;
+      lines.push(`${piece.slice(0, cut)}-`);
+      piece = piece.slice(cut);
+    }
+    part = piece;
   }
-  if (part) lines.push(part);
+  if (part.trim()) lines.push(part.trimEnd());
   ctx.restore();
   return lines;
 }

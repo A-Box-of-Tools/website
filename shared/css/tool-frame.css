@@ -259,16 +259,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
-.pairing-version { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; width: fit-content; max-width: 100%; margin: 0.35rem 0 0; color: var(--text-dim); font-size: 0.82rem; }
+.pairing-version { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; width: fit-content; max-width: 100%; margin: 0.35rem 0 0; color: var(--text-dim); font-size: 0.82rem; }
 .pairing-version code { font-size: inherit; overflow-wrap: anywhere; user-select: all; }
-.tool-version-help { flex: none; }
-.tool-version-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
-.tool-version-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.tool-version-note { position: absolute; z-index: 5; inset-block-start: calc(100% + 0.35rem); inset-inline-start: 0; width: min(32rem, calc(100vw - 4rem)); margin: 0; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgb(0 0 0 / 0.16); font-size: 0.84rem; line-height: 1.5; }
-.tool-version-note::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.5rem; }
-.tool-version-help[data-placement="above"] > .tool-version-note { inset-block-start: auto; inset-block-end: calc(100% + 0.35rem); }
-.tool-version-help[data-placement="above"] > .tool-version-note::before { inset-block-start: 100%; inset-block-end: auto; }
-@media (pointer: coarse) { .tool-version-help > summary { min-width: 2.75rem; min-height: 2.75rem; } }
 
 .topbar-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 
@@ -561,7 +553,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
    would get the mark in the wrong place and no way to tell why. inline-flex
    and not flex, because this summary is a line of text with the mark after it
    rather than a heading with the mark pushed to the end of a full-width row. */
-.info-fold > summary {
+.info-fold > summary,
+.info-tip > summary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -569,7 +562,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   list-style: none;
 }
 
-.info-fold > summary::-webkit-details-marker { display: none; }
+.info-fold > summary::-webkit-details-marker,
+.info-tip > summary::-webkit-details-marker { display: none; }
 
 /*
   The mark that says there is more here, drawn rather than typed.
@@ -584,8 +578,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 /*
   The mark on a fold that explains a step: the small print under one of them,
   the list of steps at the foot of the page, and anything a tool opts in with
-  `info-fold`. All three are the same promise - open this and it will tell you
-  more about the thing you are looking at. The first two were two different
+  `info-fold` or `info-tip`. All of them are the same promise - open this and it
+  will tell you more about the thing you are looking at. The first two were two different
   marks, a circled i and a caret, until they were not; the third drew its own
   copy of the i in its own stylesheet, until it did not.
 
@@ -602,7 +596,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 */
 .card-note > summary::after,
 .how-to-fold > summary > h2::after,
-.info-fold > summary::after {
+.info-fold > summary::after,
+.info-tip > summary::after {
   content: "";
   flex: none;
   width: 1.05rem;
@@ -622,7 +617,9 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .how-to-fold > summary:hover > h2::after,
 .how-to-fold > summary:focus-visible > h2::after,
 .info-fold > summary:hover::after,
-.info-fold > summary:focus-visible::after { color: var(--accent); }
+.info-fold > summary:focus-visible::after,
+.info-tip > summary:hover::after,
+.info-tip > summary:focus-visible::after { color: var(--accent); }
 
 /*
   Open, the mark stops being an invitation and becomes a state - and says so by
@@ -637,7 +634,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 */
 .card-note[open] > summary::after,
 .how-to-fold[open] > summary > h2::after,
-.info-fold[open] > summary::after {
+.info-fold[open] > summary::after,
+.info-tip[open] > summary::after {
   color: var(--accent-text);
   border-color: var(--accent);
   background:
@@ -646,6 +644,93 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
     linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat,
     var(--accent);
 }
+
+/*
+  The same mark, opening a bubble over the page rather than a paragraph in it.
+
+  `info-fold` pushes everything below it down, which is right for a page of
+  hotspot instructions and wrong for one sentence about the control beside it.
+  The connection switch on the paired tools was a fold like that, and opening it
+  threw the mark onto a line of its own and the button beside it out of line.
+  The tools that wanted a bubble had each written these rules for themselves:
+  four copies in three widths, every one hung off a row of its own.
+
+  A tool writes this and asks for "info-tip" in js_parts, and that is all of it:
+
+    <details class="info-tip">
+      <summary aria-describedby="x-note"><span class="visually-hidden">About x</span></summary>
+      <p id="x-note" role="tooltip">What x does.</p>
+    </details>
+
+  The bubble is found by its role rather than by a class of its own, so a note
+  no screen reader would announce as a tooltip does not get to look like one. It
+  hangs from the mark, so the row around it owes it nothing, and
+  shared/js/info-tip.js keeps it on screen.
+*/
+.info-tip {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+.info-tip > summary {
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border-radius: 50%;
+}
+
+.info-tip > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (pointer: coarse) {
+  .info-tip > summary { min-width: 2.75rem; min-height: 2.75rem; }
+}
+
+/* As wide as its words up to a comfortable line, so a short note is not a wide
+   empty box, and never so wide that a phone cannot hold it with a margin. */
+.info-tip > [role="tooltip"] {
+  position: absolute;
+  z-index: 5;
+  inset-block-start: calc(100% + 0.35rem);
+  inset-inline-start: 0;
+  width: max-content;
+  max-width: min(24rem, calc(100vw - 3rem));
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+  font-size: 0.84rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* The gap between the mark and the bubble belongs to the bubble, so a pointer
+   crossing it has not left. */
+.info-tip > [role="tooltip"]::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  height: 0.5rem;
+}
+
+.info-tip[data-placement="above"] > [role="tooltip"] {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + 0.35rem);
+}
+
+.info-tip[data-placement="above"] > [role="tooltip"]::before {
+  inset-block-start: 100%;
+  inset-block-end: auto;
+}
+
+.info-tip > [role="tooltip"] > p { margin: 0; }
+.info-tip > [role="tooltip"] > p + p { margin-top: 0.65rem; }
 
 .card-note[open] > summary > h2 { margin-bottom: 0.7rem; }
 
@@ -682,7 +767,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 @media (prefers-reduced-motion: reduce) {
   .card-note > summary::after,
   .how-to-fold > summary > h2::after,
-  .info-fold > summary::after { transition: none; }
+  .info-fold > summary::after,
+  .info-tip > summary::after { transition: none; }
 }
 
 .step {

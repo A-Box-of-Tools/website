@@ -1,4 +1,4 @@
-import { backdrop, chip, clamp, hash, keyed, mix, nightSky, rgba, rounded, smooth, wrapLines, write } from './paint.js';
+import { backdrop, chip, clamp, hash, keyed, mix, nightSky, rgba, rounded, smooth, widthOf, wrapLines, write } from './paint.js';
 
 // Time as one true timeline: the bar is how long the count takes, and every flag on
 // it is at its real distance from the start. The clock above it ticks at the rate
@@ -158,13 +158,21 @@ export function createTimeScene() {
       const visible = (w - left) / scale;
       const step = tickStep(visible);
       ctx.lineWidth = 1;
+      // How long a tick's label is depends on the language, so a tick with no room for its
+      // label goes without rather than writing over the one before it.
+      let clearFrom = left + 36;
       for (let value = step; value < visible; value += step) {
         const x = left + value * scale;
         ctx.beginPath();
         ctx.moveTo(x, axis + 12);
         ctx.lineTo(x, axis + 18);
         ctx.stroke();
-        if (x - left > 36) write(ctx, words.duration(value), x, axis + 29, { size: 11, weight: 500, fill: ink, halo, align: 'center' });
+        const label = words.duration(value);
+        const half = widthOf(ctx, label, 11, 500) / 2;
+        if (x - half > clearFrom && x + half < w - 2) {
+          write(ctx, label, x, axis + 29, { size: 11, weight: 500, fill: ink, halo, align: 'center' });
+          clearFrom = x + half + 6;
+        }
       }
 
       if (!zero) {
@@ -218,7 +226,7 @@ export function createTimeScene() {
           // Whichever side of the pole has more room, wrapped to fit it.
           const leftSide = x > w / 2;
           const lines = wrapLines(ctx, words.name(rung.id), leftSide ? x - 14 : w - x - 22, 11.5, 700);
-          lines.forEach((line, n) => write(ctx, line, leftSide ? x - 6 : x + 14, top + 2 - (lines.length - 1 - n) * 13, { size: 11.5, weight: 700, fill: ink, halo, align: leftSide ? 'right' : 'left' }));
+          lines.forEach((line, n) => write(ctx, line, leftSide ? x - 6 : x + 14, top + 2 - (lines.length - 1 - n) * 13, { size: 11.5, weight: 700, fill: ink, halo, align: leftSide ? 'right' : 'left', within: w }));
         });
 
         chip(ctx, words.top(seconds), Math.min(left + barW, w - 8), axis - 28 < 60 ? axis + 30 : axis, { size: 12, align: left + barW + 90 > w ? 'right' : 'left', fill: '#16202a', ink: '#ffffff', within: w });

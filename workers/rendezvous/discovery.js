@@ -4,7 +4,9 @@
 // Nothing here decides whether their eventual WebRTC connection is local.
 import { groupIdentifier, normalizeGroupCode } from "../../shared/js/discovery-group.js";
 import { ipv4Octets, ipv6Network } from "../shared/address.js";
+import { answerClose } from "./closing.js";
 import { admitPending, pendingSource } from "./pending.js";
+import { refusal } from "./refusal.js";
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
 export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
@@ -172,14 +174,10 @@ export class Discovery {
     // scope is already its address.
     const source = group === undefined ? null : await pendingSource(request, scope);
     this.cleanup();
-    const { 0: client, 1: server } = new WebSocketPair();
     const pending = this.observers().filter((ws) => ws.deserializeAttachment().authenticated === false);
     if (group === undefined) this.freeSeat();
-    else if (!admitPending(pending, source, (ws) => this.evict(ws))) {
-      this.ctx.acceptWebSocket(server, ["refused"]);
-      server.close(4429, "full");
-      return new Response(null, { status: 101, webSocket: client });
-    }
+    else if (!admitPending(pending, source, (ws) => this.evict(ws))) return refusal(4429, "full");
+    const { 0: client, 1: server } = new WebSocketPair();
     this.ctx.acceptWebSocket(server, ["observer"]);
     server.serializeAttachment({ scope, tool, since: Date.now(), generation: 0, updates: 0, publication: null,
       ...(group === undefined ? {} : { group, source, authenticated: false, deadline: Date.now() + AUTH_TIMEOUT }) });
@@ -421,7 +419,7 @@ export class Discovery {
     this.broadcast();
   }
 
-  webSocketClose(ws) { this.drop(ws); }
+  webSocketClose(ws) { this.drop(ws); answerClose(ws); }
   webSocketError(ws) { this.drop(ws); }
 
   drop(ws) {

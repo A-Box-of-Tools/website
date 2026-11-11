@@ -157,6 +157,8 @@ export class TabSession {
           if (this.relay?.receive(message)) return;
           // Never queued behind relay setup: the credentials wait on this proof.
           if (answerHostProve(message, this.role === 'host' ? this.hostClaim : null, (frame) => pairing.send(frame))) return;
+          // Just ahead of the close with 4410, which Chromium holds for up to two seconds.
+          if (message.type === 'host-gone') return fail('connection.ended');
           if (!configured) {
             if (waiting.length >= 64) return fail('connection.invalid');
             waiting.push(message);

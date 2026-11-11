@@ -68,7 +68,11 @@ logic serves both directions. Only audio SDP is accepted. Direct admits only
 host ICE candidates and uses no STUN or TURN. Cloud relay admits only relay
 candidates and configures iceTransportPolicy: 'relay'.
 Internet pairing is required; a healthy direct voice path can outlive a brief
-signaling outage, and foreground waiting participants probe at a one-second target.
+signaling outage. Waiting participants are told when the host returns, and ask for
+themselves about once a minute only in case that message never arrived. On Direct they
+keep their socket when an old audio connection fails, so that message reaches them.
+Cloud relay still takes a new socket, because its credentials belong to the socket and
+renewing them needs a host.
 
 The host's route is pinned in the invitation, authenticated admission and the
 room's retained moderation anchor. Password validation still precedes admission

@@ -1,5 +1,10 @@
 export const MAX_COUNT = 10n ** 30n;
-const SUFFIX_POWERS = Object.freeze({ k: 3, thousand: 3, m: 6, million: 6, b: 9, billion: 9, t: 12, trillion: 12, quadrillion: 15, quintillion: 18, sextillion: 21, septillion: 24, octillion: 27, nonillion: 30 });
+const LATIN = /\p{Script=Latin}/u;
+const HAN_DIGITS = Object.freeze({ '一': '1', '二': '2', '两': '2', '兩': '2', '三': '3', '四': '4', '五': '5', '六': '6', '七': '7', '八': '8', '九': '9' });
+// Grouped twice over, a number can only be grouped, whichever mark it uses, so one
+// pasted from another language is read rather than refused.
+const MANY_GROUPS = /^\d{1,3}(?:(?:\.\d{3}){2,}|(?:,\d{3}){2,})$/;
+const SPACED = /^\d{1,3}(?: \d{3})+$/;
 const SECONDS_PER_YEAR = 365.25 * 24 * 60 * 60;
 const LIGHT_YEAR_M = 9.4607e15;
 const WORDS_PER_TOKEN = 0.75;
@@ -91,33 +96,82 @@ export const TIME_REFERENCES = ladder([
 
 function invalid(key) { return { ok: false, key }; }
 
-export function parseCount(raw) {
+function escaped(mark) { return mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+// How one language writes a count. Both halves change what a string means: "1.000" is
+// a thousand in German and one in English, and "1 billion" is 10^12 in German and 10^9
+// in English. So a count is read against the page's own language, with the words from
+// its `count.words` phrase and the marks from Intl, where the page's own numbers get
+// theirs. A word that language could mean two ways, like 兆 in Chinese, is left out of
+// its list, so it is refused rather than guessed.
+export function countReading(words, locale) {
+  const parts = new Intl.NumberFormat(locale).formatToParts(1234567.5);
+  const mark = type => parts.find(part => part.type === type).value.replace(/[\u00a0\u202f]/g, ' ');
+  const decimal = mark('decimal');
+  const group = mark('group');
+  return {
+    decimal,
+    group,
+    words: [...words.matchAll(/([^\s=\d]+)=(\d+)/g)].map(([, word, power]) => [word.toLowerCase(), Number(power)]),
+    number: new RegExp(`^(\\d[\\d${escaped(group)} ]*)?(?:${escaped(decimal)}(\\d+))?$`),
+    grouped: new RegExp(`^\\d{1,3}(?:${escaped(group)}\\d{3})+$`)
+  };
+}
+
+export const ENGLISH = countReading('a=0 an=0 k=3 thousand=3 m=6 million=6 b=9 billion=9 t=12 trillion=12 quadrillion=15 quintillion=18 sextillion=21 septillion=24 octillion=27 nonillion=30', 'en');
+
+// The words off the end of a count, largest first: "mil millones" and 万亿 are both one
+// power of ten times another. A Latin word has to start a word, or the kilometers of
+// "1km" would read as a thousand millions.
+function takeWords(value, words) {
+  let rest = value;
+  const taken = [];
+  for (;;) {
+    // "Mio." and "Mrd." are how German writes the two it abbreviates.
+    const bare = rest.replace(/(\p{Script=Latin})\.$/u, '$1');
+    const lower = bare.toLowerCase();
+    const found = words.find(([word]) => lower.endsWith(word) && !(LATIN.test(word[0]) && LATIN.test(lower.at(-word.length - 1) ?? '')));
+    if (!found) return { rest, taken };
+    taken.push(found);
+    rest = bare.slice(0, -found[0].length).trimEnd();
+  }
+}
+
+export function parseCount(raw, reading = ENGLISH) {
   if (raw === null || raw === undefined || raw === '') return invalid('amount-required');
   if (typeof raw !== 'string') return invalid('amount-invalid');
-  let value = raw.replace(/[  ]/g, ' ').trim();
+  // An input method can type wide digits and marks, and French groups with thin spaces.
+  let value = raw.replace(/[\uff01-\uff5e]/g, wide => String.fromCharCode(wide.charCodeAt(0) - 0xfee0)).replace(/[\u00a0\u202f\u3000]/g, ' ').normalize('NFC').trim();
   if (!value) return invalid('amount-required');
   if (value.length > 256) return invalid('amount-invalid');
-  let suffixPower = 0;
-  const suffix = /^(.*?)\s*(thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonillion|[kmbt])$/i.exec(value);
-  if (suffix) {
-    value = suffix[1].trim();
-    suffixPower = SUFFIX_POWERS[suffix[2].toLowerCase()];
+  const { rest, taken } = takeWords(value, reading.words);
+  const suffixPower = taken.reduce((sum, [, power]) => sum + power, 0);
+  value = HAN_DIGITS[rest] ?? rest;
+  if (!value) {
+    // Words can name a count alone, as 十亿 and "mil millones" do, but the letter of
+    // "1.5b" is only ever shorthand, and "a" or "eine" is only ever the start of one.
+    if (!suffixPower || /^\p{Script=Latin}$/u.test(taken[0][0])) return invalid('amount-invalid');
+    value = '1';
+  } else if (taken.some(([, power]) => !power)) {
+    return invalid('amount-invalid');
   }
   let exponent = 0;
   const scientific = /^(.*?)[eE]([+-]?\d+)$/.exec(value);
   if (scientific) {
-    if (suffixPower) return invalid('amount-invalid');
-    value = scientific[1];
+    if (taken.length) return invalid('amount-invalid');
+    // Grouping is never written in this notation, so a point can only be a decimal.
+    value = scientific[1].replace('.', reading.decimal);
     exponent = Number(scientific[2]);
   }
-  const decimal = /^(\d[\d, ]*)?(?:\.(\d+))?$/.exec(value);
+  if (MANY_GROUPS.test(value)) value = value.replace(/\D/g, '');
+  const decimal = reading.number.exec(value);
   if (!decimal || (!decimal[1] && !decimal[2])) return invalid('amount-invalid');
   const integerPart = decimal[1] || '';
   const fractionPart = decimal[2] || '';
   if (integerPart && !/^\d+$/.test(integerPart)
-      && !/^\d{1,3}(?:,\d{3})+$/.test(integerPart)
-      && !/^\d{1,3}(?: \d{3})+$/.test(integerPart)) return invalid('amount-invalid');
-  let digits = (integerPart.replace(/[, ]/g, '') + fractionPart).replace(/^0+/, '');
+      && !reading.grouped.test(integerPart)
+      && !SPACED.test(integerPart)) return invalid('amount-invalid');
+  let digits = (integerPart.replace(/\D/g, '') + fractionPart).replace(/^0+/, '');
   if (!digits) return { ok: true, count: 0n };
   if (!Number.isSafeInteger(exponent)) return invalid(exponent < 0 ? 'amount-whole' : 'amount-too-large');
   let power = exponent + suffixPower - fractionPart.length;
@@ -299,10 +353,10 @@ export function dialCount(position) {
 }
 
 // What goes back in the input box. parseCount accepts every form written here.
-export function countText(count) {
+export function countText(count, { decimal, group } = ENGLISH) {
   const text = count.toString();
-  if (text.length <= 15) return text.replace(/\B(?=(\d{3})+$)/g, ',');
+  if (text.length <= 15) return text.replace(/\B(?=(\d{3})+$)/g, group);
   const significant = text.replace(/0+$/, '');
   if (significant.length > 4) return text;
-  return `${significant[0]}${significant.length > 1 ? `.${significant.slice(1)}` : ''}e${text.length - 1}`;
+  return `${significant[0]}${significant.length > 1 ? `${decimal}${significant.slice(1)}` : ''}e${text.length - 1}`;
 }
