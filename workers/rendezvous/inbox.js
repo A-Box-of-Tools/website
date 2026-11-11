@@ -2,7 +2,7 @@
 // Socket attachments retain only admission and moderation metadata, including
 // an anchor while the host reconnects; audio and room history are never stored.
 import { broadcastCode, validBroadcastSignal } from "./broadcast.js";
-import { DISCOVERY_SCOPE_HEADER, validPublication, validScope, validVoiceQuery } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, networkPage, otherVersion, validNetwork, validPublication, validScope, validVoiceQuery } from "./discovery.js";
 import { answerClose } from "./closing.js";
 import { admitPending, pendingSource } from "./pending.js";
 import { refusal } from "./refusal.js";
@@ -39,6 +39,17 @@ function cleanName(value, limit) {
   const name = value.trim();
   return name.length > 0 ? name : null;
 }
+
+// Kicks, mutes and approvals come before a listing over the other IP version, and so do
+// the counters every frame rewrites. What that listing needs is kept only while it
+// leaves room for all of them. Otherwise it is set aside and the caller withdraws the
+// listing, so the host holds exactly what it would have held without it.
+const roomy = (value) => fits({ ...value, window: Number.MAX_SAFE_INTEGER, updates: MAX_UPDATES });
+const spare = (owner) => {
+  if (owner.network === undefined && owner.elsewhere === undefined || roomy(owner)) return owner;
+  const { network, elsewhere, ...rest } = owner;
+  return rest;
+};
 
 const anchor = (owner) => ({ name: owner.name, passwordHash: owner.passwordHash,
   moderation: owner.moderation, ended: owner.ended, ...transportFrame(mode(owner.transport)), ...approvalState(owner) });
@@ -105,13 +116,25 @@ export class Inbox {
         if (text.length > 512) return new Response(null, { status: 400 });
         claim = JSON.parse(text);
       } catch { return new Response(null, { status: 400 }); }
-      if (!fields(claim, ["code", "lease", "scope", "tool"]) || claim.tool !== "voice-oncall"
-          || !identity(claim.code) || !validPublication(claim) || !validScope(claim.scope)) {
+      const network = object(claim) && Object.hasOwn(claim, "network") ? ["network"] : [];
+      if (!fields(claim, ["code", "lease", "scope", "tool", ...network]) || claim.tool !== "voice-oncall"
+          || !identity(claim.code) || !validPublication(claim) || !validScope(claim.scope)
+          || network.length > 0 && !validNetwork(claim.network)) {
         return new Response(null, { status: 400 });
       }
-      const owner = this.host()?.deserializeAttachment();
-      if (!owner || owner.ended || owner.code !== claim.code || owner.scope !== claim.scope || owner.lease !== claim.lease) {
+      const host = this.host(), owner = host?.deserializeAttachment();
+      if (!owner || owner.ended || owner.code !== claim.code || owner.lease !== claim.lease
+          || owner.scope !== claim.scope && !otherVersion(owner, claim)) {
         return new Response(null, { status: 403 });
+      }
+      // Remembered so the room withdraws the lease there too; a page watches one
+      // directory at a time, so a newer one takes the place of the last. A host with
+      // no room left for it is not listed there.
+      if (owner.scope !== claim.scope && owner.elsewhere !== claim.scope) {
+        const recorded = { ...owner, elsewhere: claim.scope };
+        if (!roomy(recorded)) return new Response(null, { status: 403 });
+        this.attach(host, recorded);
+        if (validScope(owner.elsewhere)) this.withdrawFrom(owner, owner.elsewhere);
       }
       return new Response(JSON.stringify({ name: owner.name, locked: owner.passwordHash !== null,
         ...transportFrame(mode(owner.transport)), ...approvalFrame(owner) }), {
@@ -129,9 +152,10 @@ export class Inbox {
     }
     const { 0: client, 1: server } = new WebSocketPair();
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
+    const network = validScope(scope) ? networkPage(request) : null;
     this.ctx.acceptWebSocket(server, ["inbox"]);
     this.attach(server, { role: "pending", code, source, scope: validScope(scope) ? scope : null,
-      deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
+      ...(network === null ? {} : { network }), deadline: Date.now() + AUTH_TIMEOUT, window: Date.now(), updates: 0 });
     return new Response(null, { status: 101, webSocket: client });
   }
 
@@ -192,10 +216,11 @@ export class Inbox {
       if (trusted && mode(trusted.transport) !== transport) { this.refuse(ws, 4403, "transport-mismatch"); return; }
       if (!approvalMatches(trusted, value.approval)) { this.refuse(ws, 4403, "approval-mismatch"); return; }
       const previous = this.sockets("host"), generation = crypto.randomUUID(), lease = crypto.randomUUID();
-      const owner = { role: "host", code: who.code, scope: who.scope, lease, generation, ...transportFrame(transport),
+      const owner = spare({ role: "host", code: who.code, scope: who.scope, lease, generation, ...transportFrame(transport),
         ...approvalState({ ...trusted, ...approvalFrame(value) }),
         name: trusted?.name ?? name, passwordHash: trusted ? trusted.passwordHash : passwordHash,
-        moderation: trusted?.moderation ?? [], ended: false, window: Date.now(), updates: 0 };
+        moderation: trusted?.moderation ?? [], ended: false, window: Date.now(), updates: 0,
+        ...(validScope(who.scope) && who.network ? { network: who.network } : {}) });
       if (!this.attach(ws, owner)) { this.refuse(ws, 4429, "full"); return; }
       for (const old of previous) {
         const retired = old.deserializeAttachment();
@@ -275,12 +300,14 @@ export class Inbox {
     }
     if (value.type === "deny") { this.terminal(sender, "denied"); return; }
     const peers = this.sockets("sender");
-    const updated = rememberApproval(owner, who);
+    const remembered = rememberApproval(owner, who);
+    const updated = remembered && spare(remembered);
     const projections = updated && peers.filter(peer => peer.deserializeAttachment().verified)
       .map(peer => ({ peer, value: { ...peer.deserializeAttachment(), anchor: anchor(updated) } }));
     if (!updated || !fits(updated) || projections.some(({ value: projected }) => !fits(projected))) {
       this.send(host, { type: "request-error", id: who.id, generation: owner.generation, error: "full" }); return;
     }
+    if (validScope(owner.elsewhere) && updated.elsewhere === undefined) this.withdrawFrom(owner, owner.elsewhere);
     this.attach(host, updated);
     for (const { peer, value: projected } of projections) this.attach(peer, projected);
     this.send(host, { type: "request-resolved", id: who.id, generation: owner.generation });
@@ -290,13 +317,14 @@ export class Inbox {
   remember(host, who, id, state) {
     const retained = who.moderation.filter((entry) => !entry.startsWith(token(id)));
     if (state !== null) retained.push(token(id) + state);
-    const owner = { ...(state === "k" ? forgetApproval(who, { id }) : who), moderation: retained };
+    const owner = spare({ ...(state === "k" ? forgetApproval(who, { id }) : who), moderation: retained });
     const projections = this.sockets("sender").filter((ws) => ws.deserializeAttachment().verified)
       .map((ws) => ({ ws, value: { ...ws.deserializeAttachment(), anchor: anchor(owner),
         ...(ws.deserializeAttachment().id === id ? { muted: state !== null, talking: false } : {}) } }));
     if (retained.length > MAX_MODERATION || !fits(owner) || projections.some(({ value }) => !fits(value))) {
       this.send(host, { type: "error", error: "moderation-full" }); return false;
     }
+    if (validScope(who.elsewhere) && owner.elsewhere === undefined) this.withdrawFrom(who, who.elsewhere);
     this.attach(host, owner);
     for (const { ws, value } of projections) this.attach(ws, value);
     return true;
@@ -390,7 +418,12 @@ export class Inbox {
 
   withdraw(owner) {
     if (!owner || !validScope(owner.scope) || !validPublication(owner)) return;
-    this.ctx.waitUntil(Promise.resolve().then(() => this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(owner.scope)).fetch(
+    this.withdrawFrom(owner, owner.scope);
+    if (validScope(owner.elsewhere)) this.withdrawFrom(owner, owner.elsewhere);
+  }
+
+  withdrawFrom(owner, scope) {
+    this.ctx.waitUntil(Promise.resolve().then(() => this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(scope)).fetch(
       "https://discovery.internal/_discovery/withdraw", {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: owner.code, lease: owner.lease, tool: "voice-oncall" }),
