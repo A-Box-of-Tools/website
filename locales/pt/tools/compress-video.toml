@@ -60,8 +60,8 @@ title = "O que o Google carrega, e o que não chega até ele."
 body = "Os scripts de publicidade e medição vêm do Google. Não recebem vídeo, quadro, nome, tamanho, duração nem o limite escolhido. Todo o código que lê, codifica e grava é servido deste endereço e está no repositório."
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não chega até ele."
-body = "O botão \"Buy me a coffee\" no cabeçalho é desenhado por um script de cdnjs.buymeacoffee.com e usa letras do Google Fonts. É apenas um link: não registra visitas e não recebe informações sobre você ou seus vídeos. Nada acontece até você clicar, e o destino é um site de outra pessoa."
+title = "O botão de doação não carrega nada e não recebe nada."
+body = "O botão \"Buy me a coffee\" no cabeçalho é desenhado pela própria página e não carrega nada de lugar nenhum. É apenas um link: não registra visitas e não recebe informações sobre você ou seus vídeos. Nada acontece até você clicar, e o destino é um site de outra pessoa."
 
 [[privacy]]
 title = "Funciona offline."

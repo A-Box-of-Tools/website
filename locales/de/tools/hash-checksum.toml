@@ -119,11 +119,11 @@ body = """
       kommt von dieser Domain und steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt und was er nicht bekommt."
+title = "Der Spenden-Button lädt nichts und bekommt nichts."
 body = """
 
-      Den &bdquo;Buy me a coffee&ldquo;-Button oben zeichnet ein Skript von
-      cdnjs.buymeacoffee.com, und seine Schrift holt er von Google Fonts. Er ist
+      Den &bdquo;Buy me a coffee&ldquo;-Button oben zeichnet diese Seite
+      selbst, und er lädt nirgendwoher etwas. Er ist
       ein Link und sonst nichts. Er meldet keinen Besuch, und er bekommt nichts
       über Sie oder Ihre Dateien. Es passiert nichts, solange Sie nicht klicken,
       und was Sie dann öffnen, ist die Seite von jemand anderem."""

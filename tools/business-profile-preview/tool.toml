@@ -45,7 +45,7 @@ roadmap_group = "beyond"
 # the build so that its own can override them.
 css_parts = ["form", "checks", "notes", "chips"]
 js_parts = ["download", "errors", "text-import"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -178,8 +178,8 @@ body = """
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything you type &mdash; the irony is
+      measurement scripts come from Google. None of them is handed anything
+      you type &mdash; the irony is
       noted, and the separation is real: every line that turns your fields into
       a picture is served from this origin and listed in the repository."""
 

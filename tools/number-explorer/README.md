@@ -25,6 +25,17 @@ than multiplied through into a wrong answer. A language switch carries the box a
 digits, the one spelling every language reads alike, and leaves the dial behind so its
 two significant digits cannot replace an exact count.
 
+The page writes a big number as a word and never as a power of ten, in the box as well
+as beside it, because somebody who needs a picture to feel a quintillion will not get it
+from 10¹⁸. Scientific notation is still read when somebody types it, just not written.
+`Intl` has words up to about a trillion, and the `count.names` phrase has the rest: the
+one spelling of each that is fit to print, singular first where a language has two
+forms, and every one of them on that language's `count.words` list so the box can read
+back what it wrote. The names are not one list translated. German 10¹² is "Billion" and
+English 10⁹ is "billion", Spanish names only every sixth power, so 10¹⁵ is "1000
+billones", and Chinese composes 亿亿 and 万亿亿 from the words its readers know rather
+than reach for 京 and 垓, which few of them could use.
+
 The module also holds the landmark ladders, `placeOnLadder`, which finds what a value
 has passed and what it is climbing toward, and `dialCount`, which lands the dial on two
 significant digits, because one exact count per position would make most positions
@@ -95,6 +106,14 @@ A translated name can be far longer than the English one, and a phone's stage is
 300 pixels wide, so nothing here may assume a length. `wrapLines` breaks Chinese and Japanese
 between characters and anything else at spaces and hyphens, a chip shrinks and then takes a
 second line, and `write` and `chip` slide along to stay on the stage when given its width.
+
+Nor may two labels share a place, at any count. On a stage that narrow there is no column they
+can be kept apart by, so the stage settles it in order of what each one is for. The readout comes
+first, then the chips, which is why `chipBox` says where a chip will go before anything is painted,
+and on a narrow stage the height chip stands on the far side of the stack from the landmarks' names.
+A landmark's name comes down clear of what is over it, as long as it stays beside its icon, and
+otherwise goes without. A tick on the ruler goes without its number first of all. Nothing here is
+kept apart by a position that happens to work in English.
 
 The saved picture repaints the current scene off screen and writes the readback, result,
 caption and model assumptions beneath it, so they travel together. All processing is

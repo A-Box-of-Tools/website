@@ -46,7 +46,7 @@ body = "Vectoriser, c'est d'ordinaire le programme de quelqu'un d'autre, et sur 
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts de publicité et de mesure viennent de Google, et le bouton de don de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre image. Chaque ligne qui la lit, la seuille ou la vectorise est servie depuis cette origine et figure dans le dépôt."
+body = "Les scripts de publicité et de mesure viennent de Google. Aucun d'eux ne reçoit quoi que ce soit sur votre image. Chaque ligne qui la lit, la seuille ou la vectorise est servie depuis cette origine et figure dans le dépôt."
 
 [[privacy]]
 title = "Il fonctionne hors ligne."

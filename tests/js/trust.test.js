@@ -13,7 +13,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { sortHosts, describe, PLATFORM_HOSTS, prepareOffline } from '../../shared/js/trust.js';
+import {
+  sortHosts, describe, PLATFORM_HOSTS, prepareOffline, refreshStaleStyle,
+} from '../../shared/js/trust.js';
 
 const ORIGIN = 'https://abox.tools';
 const entries = (...names) => names.map((name) => ({ name }));
@@ -45,14 +47,12 @@ test('the platform hosts are reported as themselves, country domains included', 
     'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
     'https://www.google.co.uk/pagead/1p-user-list/',
     'https://www.google.com.au/ads/ga-audiences',
-    'https://fonts.gstatic.com/s/inter.woff2',
-    'https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js',
+    'https://csi.gstatic.com/csi?v=3',
   ), page());
-  assert.equal(sorted.total, 6);
+  assert.equal(sorted.total, 5);
   assert.equal(sorted.external.size, 0);
   assert.deepEqual([...sorted.platform].sort(), [
-    'cdnjs.buymeacoffee.com',
-    'fonts.gstatic.com',
+    'csi.gstatic.com',
     'pagead2.googlesyndication.com',
     'www.google.co.uk',
     'www.google.com.au',
@@ -68,6 +68,18 @@ test('anything else is external, and a look-alike is not the platform', () => {
   ), page());
   assert.deepEqual([...sorted.external].sort(),
     ['example.com', 'google.com.evil.example', 'notgoogle.com']);
+  assert.equal(sorted.platform.size, 0);
+});
+
+test('the donate button and its old font service are nobody the page expects', () => {
+  // The button is a plain link that loads nothing, so these hosts appearing in
+  // the buffer would be something new, and the panel should say so.
+  const sorted = sortHosts(entries(
+    'https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js',
+    'https://fonts.googleapis.com/css?family=Cookie&display=swap',
+  ), page());
+  assert.deepEqual([...sorted.external].sort(),
+    ['cdnjs.buymeacoffee.com', 'fonts.googleapis.com']);
   assert.equal(sorted.platform.size, 0);
 });
 
@@ -130,6 +142,22 @@ test('describe: an external host makes it dirty and names every one', () => {
     hosts: 'example.com, evil.example',
     platform: '<net.platform.one>',
   }]);
+});
+
+test('a body that inherited nothing gets the root restyled, and any other is left alone', () => {
+  const root = () => {
+    const set = [];
+    return { set, style: { setProperty: (name, value) => set.push([name, value]) } };
+  };
+  const stale = root();
+  assert.equal(refreshStaleStyle({ colorScheme: 'normal' }, stale), true);
+  assert.deepEqual(stale.set, [['--style-refreshed', '1']]);
+
+  for (const colorScheme of ['light dark', undefined]) {
+    const healthy = root();
+    assert.equal(refreshStaleStyle({ colorScheme }, healthy), false);
+    assert.deepEqual(healthy.set, []);
+  }
 });
 
 function offlineFixture(reply = { ready: true, version: '0123456789' }) {

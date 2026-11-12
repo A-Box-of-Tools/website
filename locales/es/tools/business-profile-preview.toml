@@ -54,7 +54,7 @@ body = "El JSON se descarga en tu dispositivo. Reabrirlo es la única forma de r
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
-body = "Los scripts de publicidad y medición vienen de Google, y el botón de donación, de Buy Me a Coffee. No reciben los datos que escribes. Todo el código que convierte los campos en una imagen se sirve desde este origen y está en el repositorio."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben los datos que escribes. Todo el código que convierte los campos en una imagen se sirve desde este origen y está en el repositorio."
 
 [[privacy]]
 title = "Funciona sin conexión."

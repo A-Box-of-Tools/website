@@ -53,7 +53,7 @@ body = "Le JSON va sur votre disque seul. Le rouvrir est le seul moyen pour l’
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
-body = "Les scripts publicitaires et de mesure viennent de Google, le bouton de don de Buy Me a Coffee. Aucun ne reçoit votre saisie. Tout le code qui dessine vos champs vient du site et figure dans le dépôt."
+body = "Les scripts publicitaires et de mesure viennent de Google. Aucun ne reçoit votre saisie. Tout le code qui dessine vos champs vient du site et figure dans le dépôt."
 
 [[privacy]]
 title = "Cela fonctionne hors ligne."

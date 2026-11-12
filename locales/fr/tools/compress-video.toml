@@ -60,8 +60,8 @@ title = "Ce que Google charge, et ce qu'on ne lui donne pas."
 body = "Les scripts publicitaires et de mesure de Google ne reçoivent ni vidéo, image, nom, taille, durée ni poids demandé. Tout le code de lecture, encodage et écriture vient du site et figure dans le dépôt."
 
 [[privacy]]
-title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
-body = "Le bouton de don est dessiné par cdnjs.buymeacoffee.com avec Google Fonts. C’est un lien qui ne signale aucune visite et ne reçoit rien sur vous ou vos vidéos. Il mène à un autre site uniquement si vous cliquez."
+title = "Le bouton de don ne charge rien et ne reçoit rien."
+body = "Le bouton de don est dessiné par la page elle-même et ne charge rien de nulle part. C’est un lien qui ne signale aucune visite et ne reçoit rien sur vous ou vos vidéos. Il mène à un autre site uniquement si vous cliquez."
 
 [[privacy]]
 title = "Cela fonctionne hors ligne."

@@ -1,5 +1,5 @@
 import { CONTAINERS, containerIndex, levelForShare } from './containers.js';
-import { backdrop, chip, clamp, hash, lerp, mix, nightSky, paintEarth, rgba, scatter, smooth, write } from './paint.js';
+import { backdrop, chip, chipBox, clamp, hash, lerp, meets, mix, nightSky, paintEarth, rgba, scatter, smooth, widthOf, write } from './paint.js';
 
 // Water or sand pouring into one named container after another. When a container
 // overflows the camera pulls back to the next one and the old one shrinks into the
@@ -507,7 +507,7 @@ export function createFillScene(kind) {
 
   return {
     draw(ctx, f) {
-      const { w, h, amount, rungs, words, perUnit, previous, zero } = f;
+      const { w, h, amount, rungs, words, perUnit, previous, zero, readout } = f;
       const index = containerIndex(amount, rungs);
       const countedBelow = !zero && amount / perUnit <= Math.min(rungs[0].size / perUnit, 3000);
       const id = rungs[index].id;
@@ -570,23 +570,36 @@ export function createFillScene(kind) {
       const ink = pale ? '#16202a' : '#f1f5fb';
       const halo = pale ? 'rgba(255,255,255,.85)' : 'rgba(4,8,20,.85)';
       const nameY = Math.max(box.y - 16, 58);
-      if (share < 1 && showingFrom === null) {
-        const tagX = Math.min(box.x + box.w + 10, w - 8);
-        const align = box.x + box.w + 90 < w ? 'left' : 'right';
-        chip(ctx, words.full(share), align === 'left' ? tagX : w - 10, clamp(level, box.y + 10, box.y + box.h - 10), { size: 12, align, fill: pale ? '#0f6db6' : '#ffffff', ink: pale ? '#ffffff' : '#0a1626', within: w });
-      }
-      if (share >= 1) chip(ctx, words.times(amount / rungs[index].size), w / 2, box.y + box.h / 2, { size: 15, align: 'center', fill: '#ffffff', ink: '#0a1626', within: w });
 
-      // Corner inset: the last thing this amount filled, and how many times over.
+      // Corner inset: the last thing this amount filled, and how many times over. It stays
+      // in its corner, so it is worked out first and the chips that move keep clear of it.
+      let corner = null;
       if (index > 0 && showingFrom === null) {
         const lastId = rungs[index - 1].id;
         const aspect = CONTAINERS[lastId].aspect;
         const insetW = Math.min(insetTall * aspect, w * 0.2);
         const insetH = insetW / aspect;
         const inset = { x: w - 18 - insetW, y: 62, w: insetW, h: insetH };
-        drawContainer(ctx, lastId, inset, 1, f, scenery.shell, true);
-        const times = amount / rungs[index - 1].size;
-        chip(ctx, words.times(times), w - 18, inset.y + insetH + 15, { size: 12, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w });
+        const line = words.times(amount / rungs[index - 1].size);
+        const y = inset.y + insetH + 15;
+        const options = { size: 12, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w };
+        const times = chipBox(ctx, line, w - 18, y, options);
+        corner = { lastId, inset, line, y, options, box: { left: Math.min(inset.x, times.left), right: w, top: inset.y, bottom: times.bottom } };
+      }
+
+      // The level's chip follows the surface until the corner is in its way, and then waits
+      // under the corner while the surface goes on up. The surface says the rest.
+      let levelBox = null;
+      if (share < 1 && showingFrom === null) {
+        const tagX = Math.min(box.x + box.w + 10, w - 8);
+        const align = box.x + box.w + 90 < w ? 'left' : 'right';
+        const options = { size: 12, align, fill: pale ? '#0f6db6' : '#ffffff', ink: pale ? '#ffffff' : '#0a1626', within: w, clear: corner?.box ?? null, downward: true };
+        levelBox = chip(ctx, words.full(share), align === 'left' ? tagX : w - 10, clamp(level, box.y + 10, box.y + box.h - 10), options);
+      }
+      if (share >= 1) chip(ctx, words.times(amount / rungs[index].size), w / 2, box.y + box.h / 2, { size: 15, align: 'center', fill: '#ffffff', ink: '#0a1626', within: w });
+      if (corner) {
+        drawContainer(ctx, corner.lastId, corner.inset, 1, f, scenery.shell, true);
+        chip(ctx, corner.line, w - 18, corner.y, corner.options);
       }
       // After the inset, which a long name reaches on a narrow stage.
       write(ctx, words.name(id), w / 2, nameY, { size: 13, weight: 700, fill: ink, halo, align: 'center', within: w });
@@ -601,7 +614,19 @@ export function createFillScene(kind) {
         ctx.lineTo(drawn.x + drawn.w * 0.28, beforeLevel);
         ctx.stroke();
         ctx.restore();
-        chip(ctx, words.before(previous), Math.max(drawn.x - 12, 92), beforeLevel, { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w });
+        // A level near the brim puts this under the container's name, and it comes down off
+        // that. A long one reaches across the stage to the level's chip when the two are close,
+        // and steps off toward the side it came from. If that leaves it nowhere, it goes without.
+        const line = words.before(previous);
+        const x = Math.max(drawn.x - 12, 92);
+        const nameHalf = widthOf(ctx, words.name(id), 13, 700) / 2 + 2;
+        const nameBox = { left: w / 2 - nameHalf, right: w / 2 + nameHalf, top: nameY - 9, bottom: nameY + 9 };
+        const look = { size: 11, weight: 600, align: 'right', fill: pale ? 'rgba(255,255,255,.92)' : 'rgba(16,24,34,.9)', ink: pale ? '#16202a' : '#ffffff', stroke: pale ? 'rgba(16,24,34,.25)' : 'rgba(255,255,255,.3)', within: w };
+        const y = chipBox(ctx, line, x, beforeLevel, { ...look, clear: nameBox, downward: true }).y;
+        // Nearest first, in the direction it steps, because the level's chip can be waiting under the corner.
+        const options = { ...look, clear: previous < amount ? [corner?.box, levelBox] : [levelBox, corner?.box], downward: previous < amount };
+        const placed = chipBox(ctx, line, x, y, options);
+        if (![readout, nameBox].some(other => other && meets(placed, other))) chip(ctx, line, x, y, options);
       }
       return { dark: darkness };
     }

@@ -49,7 +49,7 @@ body = "Esta ferramenta grava um JPEG SDR comum de 8 bits a partir do canvas do 
 
 [[privacy]]
 title = "O que o Google carrega e o que não recebe."
-body = "Os scripts de anúncios e medição vêm do Google, e o botão de doação vem do Buy Me a Coffee. Nenhum recebe informações sobre suas imagens. Todo o código que lê, decodifica ou grava um arquivo é servido por este site e está no repositório."
+body = "Os scripts de anúncios e medição vêm do Google. Nenhum recebe informações sobre suas imagens. Todo o código que lê, decodifica ou grava um arquivo é servido por este site e está no repositório."
 
 [[privacy]]
 title = "Funciona offline."

@@ -90,16 +90,22 @@ export function write(ctx, line, x, y, { size = 12, weight = 600, fill = '#fff',
   ctx.restore();
 }
 
+// Everything placed on a stage can be asked for its box, and two labels that share any of
+// it are a label nobody can read. The scenes settle who moves and who goes without.
+export const meets = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+
 // Landmark names are written for sentences, and some are long for a narrow stage, in
 // some languages much longer than in others. `within` is the stage's width and `room`
 // how much of it this chip may have: a chip shrinks to fit, takes a second line after
 // that, and always stays on the stage. It never drops words, because a name cut short
-// says nothing about which landmark is meant. `clear` is a chip already drawn: this one
-// steps up above it rather than covering it, and what it returns is for the next to clear.
-export function chip(ctx, line, x, y, { size = 12, weight = 700, fill = '#fff', ink = '#16202a', align = 'left', alpha = 1, stroke = null, within = 0, room = 0, clear = null } = {}) {
-  if (alpha <= 0.01 || !line) return;
+// says nothing about which landmark is meant. `clear` is a box already claimed, or a list
+// of them taken in turn: this chip steps up above it rather than covering it, or below it
+// when `downward`.
+//
+// This is where a chip will go, without painting it, because what is written before a
+// chip has to keep clear of it as well as what is written after.
+export function chipBox(ctx, line, x, y, { size = 12, weight = 700, align = 'left', within = 0, room = 0, clear = null, downward = false } = {}) {
   ctx.save();
-  ctx.globalAlpha *= alpha;
   let lines = [line];
   let fontSize = size;
   ctx.font = fontFor(fontSize, weight);
@@ -114,21 +120,36 @@ export function chip(ctx, line, x, y, { size = 12, weight = 700, fill = '#fff', 
       width = Math.max(...lines.map(part => ctx.measureText(part).width)) + fontSize * 1.3;
     }
   }
-  const leading = fontSize * 1.2;
-  const height = size * 2 + (lines.length - 1) * leading;
+  ctx.restore();
+  const height = size * 2 + (lines.length - 1) * fontSize * 1.2;
   let left = align === 'right' ? x - width : align === 'center' ? x - width / 2 : x;
   if (within) left = clamp(left, 6, Math.max(6, within - 6 - width));
-  if (clear && left < clear.right && left + width > clear.left && Math.abs(y - clear.y) < (height + clear.height) / 2) y = clear.y - (height + clear.height) / 2 - 3;
-  rounded(ctx, left, y - height / 2, width, height, Math.min(height, size * 2) / 2);
+  for (const box of [clear].flat()) {
+    if (box && left < box.right && left + width > box.left && y - height / 2 < box.bottom && y + height / 2 > box.top) {
+      y = downward ? box.bottom + height / 2 + 3 : box.top - height / 2 - 3;
+    }
+  }
+  return { left, right: left + width, top: y - height / 2, bottom: y + height / 2, y, height, lines, fontSize };
+}
+
+export function chip(ctx, line, x, y, options = {}) {
+  const { size = 12, weight = 700, fill = '#fff', ink = '#16202a', alpha = 1, stroke = null } = options;
+  if (alpha <= 0.01 || !line) return undefined;
+  const box = chipBox(ctx, line, x, y, options);
+  const { left, right, top, height, lines, fontSize } = box;
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.font = fontFor(fontSize, weight);
+  rounded(ctx, left, top, right - left, height, Math.min(height, size * 2) / 2);
   ctx.fillStyle = fill;
   ctx.fill();
   if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
   ctx.fillStyle = ink;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  lines.forEach((part, i) => ctx.fillText(part, left + width / 2, y + 0.5 + (i - (lines.length - 1) / 2) * leading));
+  lines.forEach((part, i) => ctx.fillText(part, (left + right) / 2, box.y + 0.5 + (i - (lines.length - 1) / 2) * fontSize * 1.2));
   ctx.restore();
-  return { left, right: left + width, y, height };
+  return box;
 }
 
 export function widthOf(ctx, line, size, weight = 600) {
@@ -137,6 +158,12 @@ export function widthOf(ctx, line, size, weight = 600) {
   const width = ctx.measureText(line).width;
   ctx.restore();
   return width;
+}
+
+// The size that lets a line a scene will not wrap fit its room, no larger than it asked for.
+export function fittedSize(ctx, line, size, weight, room) {
+  const width = widthOf(ctx, line, size, weight);
+  return width > room ? Math.max(10, size * room / width) : size;
 }
 
 // Where a line may give way. Chinese and Japanese have no spaces and break between any

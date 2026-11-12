@@ -127,7 +127,7 @@ body = "A conexão direta troca os endereços de rede necessários para alcança
 [[privacy]]
 title = "O que o Google carrega, e o que ele não recebe."
 body = """ Os scripts de anúncio e
-      medição vêm do Google, e o botão de doação, do Buy Me a Coffee.
+      medição vêm do Google.
       Nenhum deles recebe o texto, os arquivos, seus nomes ou tamanhos, nem
       quem se conectou. A exceção é o próprio endereço desta página: o link
       de um leitor carrega o nome do link, e o script de anúncio lê o

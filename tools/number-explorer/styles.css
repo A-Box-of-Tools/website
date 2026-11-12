@@ -48,7 +48,7 @@
 .ne-stage-controls button:hover { background: rgb(12 18 28 / 86%); }
 .ne-stage-controls svg { width: 11px; height: 11px; fill: currentColor; }
 #play[aria-pressed="true"] svg { display: none; }
-.ne-magnify { position: absolute; top: 34%; left: 50%; margin: 0; padding: .1rem .9rem; transform: translate(-50%, -50%); border-radius: 12px; background: var(--world); color: #fff; font-size: clamp(1.5rem, 5vw, 2.6rem); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; box-shadow: 0 6px 24px rgb(0 0 0 / 35%); }
+.ne-magnify { position: absolute; top: 34%; left: 50%; margin: 0; padding: .1rem .9rem; transform: translate(-50%, -50%); border-radius: 12px; background: var(--world); color: #fff; font-size: clamp(1.5rem, 5vw, 2.6rem); font-weight: 800; font-variant-numeric: tabular-nums; width: max-content; max-width: calc(100% - 1rem); line-height: 1.15; text-align: center; pointer-events: none; box-shadow: 0 6px 24px rgb(0 0 0 / 35%); }
 .ne-pop { animation: ne-pop 1.9s ease both; }
 @keyframes ne-pop {
   0% { opacity: 0; transform: translate(-50%, -50%) scale(.5); }
@@ -113,6 +113,11 @@
   .ne-pop { animation: none; }
   #dial::-webkit-slider-thumb, .ne-card, .ne-worlds button { transition: none; }
 }
+/* The labels past a trillion are words, and the longest take about 90 px at this size. */
+@media (max-width: 960px) {
+  .ne-ticks span.ne-tick-minor { display: none; }
+}
+
 @media (max-width: 720px) {
   .ne-more { grid-template-columns: minmax(0, 1fr); }
   /* Under the picture rather than on it: two buttons a thumb can hit would cover the
@@ -133,5 +138,10 @@
   .ne-world-name { font-size: .72rem; }
   .ne-world-value { display: none; }
   #stage { aspect-ratio: 4 / 5; max-height: none; }
-  .ne-ticks span.ne-tick-minor { display: none; }
+  .ne-ticks span.ne-tick-spare { display: none; }
+  /* Centered on the end of the track, the last word would run into the card's edge. */
+  .ne-ticks span:last-child { transform: translateX(calc(-100% + 13px)); }
+}
+@media (max-width: 340px) {
+  .ne-ticks span { font-size: .62rem; }
 }

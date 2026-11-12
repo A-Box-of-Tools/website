@@ -56,8 +56,8 @@ title = "O que o Google carrega e o que não recebe."
 body = "Os scripts de anúncios e medição vêm do Google. Nenhum recebe informações sobre seu GIF: arquivo, quadro, nome, tamanho ou duração. Todo o código que lê, codifica ou grava o arquivo é servido por este site e está no repositório."
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não chega até ele."
-body = "O botão \"Buy me a coffee\" no cabeçalho é desenhado por um script de cdnjs.buymeacoffee.com e usa letras do Google Fonts. É apenas um link: não registra visitas e não recebe informações sobre você ou seus GIFs. Nada acontece até você clicar, e o destino é um site de outra pessoa."
+title = "O botão de doação não carrega nada e não recebe nada."
+body = "O botão \"Buy me a coffee\" no cabeçalho é desenhado pela própria página e não carrega nada de lugar nenhum. É apenas um link: não registra visitas e não recebe informações sobre você ou seus GIFs. Nada acontece até você clicar, e o destino é um site de outra pessoa."
 
 [[privacy]]
 title = "Funciona offline."

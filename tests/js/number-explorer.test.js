@@ -1,10 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { ENGLISH, MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countReading, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
+import { ENGLISH, MAX_COUNT, PLANET_REFERENCES, STAR_REFERENCES, TIME_REFERENCES, VOLUME_LADDER, VOLUME_REFERENCES, bookModel, booksPerUnit, compareVolume, countForSize, countForVolume, countReading, countText, countingModel, dialCount, heightLadder, ladderFor, log10Count, namedAmount, parseCount, placeOnLadder, roundUpCount, sandModel, sizePerUnit, textModel, waterModel } from '../../tools/number-explorer/src/scale.js';
 import { CONTAINERS, containerIndex, levelForShare } from '../../tools/number-explorer/src/containers.js';
 import { circleGroup, starLevel } from '../../tools/number-explorer/src/scene-stars.js';
-import { wrapLines } from '../../tools/number-explorer/src/paint.js';
+import { chipBox, fittedSize, meets, wrapLines } from '../../tools/number-explorer/src/paint.js';
+import { clearedLabelY, createBooksScene } from '../../tools/number-explorer/src/scene-books.js';
+import { createFillScene } from '../../tools/number-explorer/src/scene-fill.js';
+import { createTimeScene } from '../../tools/number-explorer/src/scene-time.js';
 
 function close(actual, expected, tolerance = 1e-10) {
   assert.ok(Number.isFinite(actual));
@@ -19,7 +22,7 @@ const LANGUAGES = readdirSync(LOCALES).filter(lang => existsSync(bodyPath(lang))
 const ENGLISH_BODY = readFileSync(new URL('../../tools/number-explorer/body.html', import.meta.url), 'utf8');
 const bodyOf = lang => (lang === 'en' ? ENGLISH_BODY : readFileSync(bodyPath(lang), 'utf8'));
 const phraseIn = (body, key) => new RegExp(`data-phrase="${key.replace(/\./g, '\\.')}">([^<]*)<`).exec(body)[1].replace(/&nbsp;/g, '\u00a0');
-const readingOf = lang => countReading(phraseIn(bodyOf(lang), 'count.words'), lang);
+const readingOf = lang => countReading(phraseIn(bodyOf(lang), 'count.words'), lang, phraseIn(bodyOf(lang), 'count.names'));
 
 test('number explorer preserves exact counts across accepted input forms', () => {
   for (const input of ['1000000000', '1,000,000,000', '1 000 000 000', '1b', '1 billion', '1e9']) assert.deepEqual(parseCount(input), { ok: true, count: 1000000000n });
@@ -129,7 +132,45 @@ test('number explorer writes back what each language reads', () => {
   assert.equal(countText(10n ** 9n, readingOf('de')), '1.000.000.000');
   assert.equal(countText(10n ** 9n, readingOf('fr')), '1 000 000 000');
   assert.equal(countText(10n ** 9n, readingOf('zh')), '1,000,000,000');
-  assert.equal(countText(12n * 10n ** 17n, readingOf('de')), '1,2e18');
+  assert.equal(countText(12n * 10n ** 17n, readingOf('de')), '1,2 Trillionen');
+});
+test('number explorer writes a big count in the words of the page it is on', () => {
+  const written = {
+    en: [[10n ** 15n, '1 quadrillion'], [12n * 10n ** 17n, '1.2 quintillion'], [1234n * 10n ** 20n, '123.4 sextillion'], [MAX_COUNT, '1 nonillion']],
+    de: [[10n ** 15n, '1 Billiarde'], [12n * 10n ** 17n, '1,2 Trillionen'], [2n * 10n ** 21n, '2 Trilliarden'], [MAX_COUNT, '1 Quintillion']],
+    es: [[10n ** 15n, '1000 billones'], [12n * 10n ** 16n, '120.000 billones'], [12n * 10n ** 17n, '1,2 trillones'], [10n ** 18n, '1 trillón'], [MAX_COUNT, '1 quintillón']],
+    // 1,5 takes the singular here, as "1,5 milhão" and "1,5 million" do.
+    fr: [[10n ** 15n, '1 billiard'], [12n * 10n ** 17n, '1,2 trillion'], [2n * 10n ** 18n, '2 trillions'], [MAX_COUNT, '1 quintillion']],
+    pt: [[10n ** 15n, '1 quatrilhão'], [12n * 10n ** 17n, '1,2 quintilhão'], [2n * 10n ** 18n, '2 quintilhões'], [MAX_COUNT, '1 nonilhão']],
+    zh: [[10n ** 15n, '1000万亿'], [12n * 10n ** 17n, '120亿亿'], [10n ** 24n, '1亿亿亿'], [MAX_COUNT, '100万亿亿亿']],
+    ja: [[10n ** 15n, '1000兆'], [12n * 10n ** 17n, '120京'], [10n ** 24n, '1秭'], [MAX_COUNT, '100穣']]
+  };
+  for (const [lang, cases] of Object.entries(written)) {
+    for (const [count, text] of cases) assert.equal(countText(count, readingOf(lang)), text, lang);
+  }
+});
+test('number explorer can read back every name it writes, and has one for every big count', () => {
+  for (const lang of ['en', ...LANGUAGES]) {
+    const reading = readingOf(lang);
+    for (const { one, other, power } of reading.names) {
+      assert.ok(power <= 30, `${lang}: ${one} is past the largest count`);
+      for (const word of [one, other]) assert.deepEqual(parseCount(`1${reading.joint}${word}`, reading), { ok: true, count: 10n ** BigInt(power) }, `${lang}: ${word}`);
+    }
+    // Intl's words run out at about 10^15. Past that a name has to be in reach, or the
+    // number comes out as a million of something, which is the digits all over again.
+    for (let power = 15; power <= 30; power++) {
+      const named = namedAmount(Number(`1e${power}`), 3, reading);
+      assert.ok(named && named.amount < 1e6, `${lang}: 10^${power}`);
+    }
+  }
+});
+test('number explorer states no power of ten in superscript, in any language', () => {
+  const toml = lang => new URL(lang === 'en' ? '../../tools/number-explorer/tool.toml' : `${lang}/tools/number-explorer.toml`, lang === 'en' ? import.meta.url : LOCALES);
+  for (const lang of ['en', ...LANGUAGES]) {
+    assert.doesNotMatch(bodyOf(lang), /10[⁰¹²³⁴⁵⁶⁷⁸⁹]/, `${lang} body`);
+    assert.doesNotMatch(readFileSync(toml(lang), 'utf8'), /10[⁰¹²³⁴⁵⁶⁷⁸⁹]/, `${lang} tool.toml`);
+  }
+  for (const module of ['say', 'main']) assert.doesNotMatch(readFileSync(new URL(`../../tools/number-explorer/src/${module}.js`, import.meta.url), 'utf8').replace(/^\s*\/\/.*$/gm, ''), /[⁰¹²⁴⁵⁶⁷⁸⁹]/, module);
 });
 test('number explorer reads back the numbers the page itself prints', () => {
   for (const lang of LANGUAGES) {
@@ -159,19 +200,21 @@ test('number explorer opens and runs its examples on the same numbers in every l
 });
 test('number explorer promises only numbers its box can read', () => {
   const promised = {
-    en: { help: ['1,000,000', '1.5b', '3 trillion', '1e12'], invalid: ['1,000,000', '1 billion', '1.5b', '1e12'] },
-    de: { help: ['1.000.000', '1,5 Mrd.', '3 Billionen', '1e12'], invalid: ['1.000.000', '1 Milliarde', '1,5 Mrd.', '1e12'] },
-    es: { help: ['1.000.000', '1,5 M', '3 billones', '1e12'], invalid: ['1.000.000', 'mil millones', '1,5 M', '1e12'] },
-    fr: { help: ['1\u00a0000\u00a0000', '1,5\u00a0Md', '3\u00a0billions', '1e12'], invalid: ['1\u00a0000\u00a0000', '1\u00a0milliard', '1,5\u00a0Md', '1e12'] },
-    pt: { help: ['1.000.000', '1,5 bi', '3 trilhões', '1e12'], invalid: ['1.000.000', '1 bilhão', '1,5 bi', '1e12'] },
-    zh: { help: ['1,000,000', '1.5 亿', '3 万亿', '1e12'], invalid: ['1,000,000', '10 亿', '1.5 亿', '1e12'] },
-    ja: { help: ['1,000,000', '1.5億', '3兆', '1e12'], invalid: ['1,000,000', '10億', '1.5億', '1e12'] }
+    en: { help: ['1,000,000', '1.5b', '3 trillion'], invalid: ['1,000,000', '1 billion', '1.5b'], largest: '1 nonillion' },
+    de: { help: ['1.000.000', '1,5 Mrd.', '3 Billionen'], invalid: ['1.000.000', '1 Milliarde', '1,5 Mrd.'], largest: '1 Quintillion' },
+    es: { help: ['1.000.000', '1,5 M', '3 billones'], invalid: ['1.000.000', 'mil millones', '1,5 M'], largest: '1 quintillón' },
+    fr: { help: ['1\u00a0000\u00a0000', '1,5\u00a0Md', '3\u00a0billions'], invalid: ['1\u00a0000\u00a0000', '1\u00a0milliard', '1,5\u00a0Md'], largest: '1\u00a0quintillion' },
+    pt: { help: ['1.000.000', '1,5 bi', '3 trilhões'], invalid: ['1.000.000', '1 bilhão', '1,5 bi'], largest: '1 nonilhão' },
+    zh: { help: ['1,000,000', '1.5 亿', '3 万亿'], invalid: ['1,000,000', '10 亿', '1.5 亿'], largest: '100 万亿亿亿' },
+    ja: { help: ['1,000,000', '1.5億', '3兆'], invalid: ['1,000,000', '10億', '1.5億'], largest: '100穣' }
   };
-  for (const [lang, { help, invalid }] of Object.entries(promised)) {
+  for (const [lang, { help, invalid, largest }] of Object.entries(promised)) {
     const body = bodyOf(lang);
     const reading = readingOf(lang);
     const helpText = /id="amount-help"[^>]*>([^<]*)</.exec(body)[1].replace(/&nbsp;/g, '\u00a0');
     const invalidText = phraseIn(body, 'amount-invalid');
+    assert.deepEqual(parseCount(largest, reading), { ok: true, count: MAX_COUNT }, `${lang} calls ${largest} its largest number`);
+    for (const said of [helpText, phraseIn(body, 'amount-too-large'), phraseIn(body, 'step.limit')]) assert.ok(said.includes(largest), `${lang} does not say ${largest}: ${said}`);
     for (const form of help) {
       assert.ok(helpText.includes(form), `${lang} help no longer says ${form}: ${helpText}`);
       assert.equal(parseCount(form, reading).ok, true, `${lang} help promises ${form}`);
@@ -185,6 +228,7 @@ test('number explorer promises only numbers its box can read', () => {
 test('number explorer keeps the words it reads by default in step with the English markup', () => {
   const sorted = ({ words }) => [...words].sort(([a], [b]) => a.localeCompare(b));
   assert.deepEqual(sorted(readingOf('en')), sorted(ENGLISH));
+  assert.deepEqual(readingOf('en').names, ENGLISH.names);
 });
 test('number explorer drops a landmark into a sentence without needing it declined', () => {
   // A rung name is written once, in the form it has standing alone. A preposition in
@@ -231,6 +275,153 @@ test('number explorer wraps a label in any language without leaving the width it
   for (const line of broken) assert.ok(ctx.measureText(line).width <= 60, line);
   assert.deepEqual(wrapLines(ctx, '', 60, 12), []);
 });
+
+// A canvas that paints nothing and keeps what it was told to write, with a chip counted as
+// the rounded box it fills, because the box is what covers its neighbour. Characters are
+// wider than most fonts make them, so a label that clears here has room to spare there.
+function recordingCanvas() {
+  const written = [];
+  let state = { font: '12px sans-serif', globalAlpha: 1, textAlign: 'left' };
+  const saved = [];
+  let arcs = [];
+  let round = null;
+  let halo = null;
+  const size = () => Number(/([\d.]+)px/.exec(state.font)?.[1] ?? 12);
+  const widthOfText = text => [...String(text)].reduce((sum, char) => sum + (char.charCodeAt(0) > 0x2e7f ? 1 : 0.6), 0) * size();
+  const methods = {
+    save() { saved.push({ ...state }); },
+    restore() { state = saved.pop(); },
+    measureText: text => ({ width: widthOfText(text) }),
+    beginPath() { arcs = []; round = null; },
+    arcTo(a, b, c, d) { arcs.push([a, b], [c, d]); },
+    fill() {
+      if (arcs.length !== 8) return;
+      const xs = arcs.map(point => point[0]);
+      const ys = arcs.map(point => point[1]);
+      round = { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+    },
+    strokeText(text) { halo = String(text); },
+    fillText(text, x, y) {
+      const line = String(text);
+      const wide = widthOfText(line);
+      const left = state.textAlign === 'center' ? x - wide / 2 : state.textAlign === 'right' ? x - wide : x;
+      const box = { left, right: left + wide, top: y - size() * 0.42, bottom: y + size() * 0.42 };
+      const inChip = round && halo !== line && (box.left + box.right) / 2 >= round.left && (box.left + box.right) / 2 <= round.right && y >= round.top && y <= round.bottom;
+      halo = null;
+      if (state.globalAlpha <= 0.25) return;
+      if (!inChip) written.push({ line, ...box });
+      else if (!written.some(other => other.round === round)) written.push({ line, round, ...round });
+    }
+  };
+  const nothing = () => ({ addColorStop() {} });
+  const canvas = new Proxy({}, {
+    get: (_, key) => methods[key] ?? (key in state ? state[key] : nothing),
+    set(_, key, value) { state[key] = value; return true; }
+  });
+  return { canvas, written };
+}
+
+const stageWords = {
+  name: id => `The far side of ${id}`,
+  length: value => `${value.toPrecision(3)} light-years`,
+  volume: value => `${value.toPrecision(3)} cubic km`,
+  duration: value => `${value.toPrecision(3)} long years`,
+  long: value => `${value.toPrecision(3)} long years`,
+  tally: (counted, share) => `Counted so far: ${counted} (${share.toFixed(2)})`,
+  top: value => `${value.toPrecision(3)} light-years`,
+  before: value => `Before: ${value.toPrecision(3)} light-years`,
+  passed: (id, ratio) => `Below: the far side of ${id}, ${ratio.toPrecision(3)} ×`,
+  full: share => `${Math.round(share * 100)}% full`,
+  times: ratio => `${ratio.toPrecision(3)} ×`
+};
+
+// Every count in sixteenths of a power of ten, come to from a tenth of it, from the step below
+// and from the step above, which between them put "Before" anywhere it can stand. It has to be
+// that close: quarters of a power of ten stepped straight past "Before" on a container's name.
+function labelMeetings(world, createScene, perUnit, readoutBottom, words = stageWords) {
+  const meetings = [];
+  const rungs = ladderFor(world);
+  const scene = createScene();
+  for (const [w, h] of [[242, 302], [297, 371], [680, 382], [894, 503]]) {
+    const readout = { left: 0, right: w * 0.72, top: 0, bottom: readoutBottom };
+    for (let sixteenth = 0; sixteenth <= 480; sixteenth += 1) {
+      const amount = 10 ** (sixteenth / 16) * perUnit;
+      for (const from of [amount / 10, amount / 10 ** (1 / 16), amount * 10 ** (1 / 16)]) {
+        const { canvas, written } = recordingCanvas();
+        scene.draw(canvas, { w, h, t: 2.5, dt: 0, velocity: 0, moving: false, motion: false, still: true, amount, perUnit, zero: false, rungs, readout, thickness: perUnit, words, previous: from, sinceOpened: 0 });
+        const placed = [{ line: 'the readout', ...readout }, ...written];
+        placed.forEach((one, i) => placed.slice(i + 1).forEach(other => {
+          if (meets(one, other)) meetings.push(`${w}px, ${amount.toPrecision(3)} from ${from.toPrecision(3)}: "${one.line}" meets "${other.line}"`);
+        }));
+      }
+    }
+  }
+  return meetings;
+}
+
+test('number explorer keeps every label on the books, fill and time stages clear of every other, at any count', t => {
+  // Only the deep-space backdrops ask for these, and they are only ever painted on.
+  globalThis.Path2D = class {};
+  globalThis.document = { createElement: () => ({ getContext: () => recordingCanvas().canvas }) };
+  t.after(() => {
+    delete globalThis.Path2D;
+    delete globalThis.document;
+  });
+  assert.deepEqual(labelMeetings('books', createBooksScene, 0.03, 84), []);
+  for (const world of ['water', 'sand']) assert.deepEqual(labelMeetings(world, () => createFillScene(world), sizePerUnit(world), 52), [], world);
+  assert.deepEqual(labelMeetings('time', createTimeScene, sizePerUnit('time'), 62), []);
+  // A flag's name long enough to take a second line reaches up to the big line over it.
+  const longFlags = { ...stageWords, name: id => `The long and winding way to ${id} as it is written` };
+  assert.deepEqual(labelMeetings('time', createTimeScene, sizePerUnit('time'), 62, longFlags), []);
+});
+
+test('number explorer keeps the name of what the stack has just reached on a phone, whatever the chip says', t => {
+  globalThis.Path2D = class {};
+  globalThis.document = { createElement: () => ({ getContext: () => recordingCanvas().canvas }) };
+  t.after(() => {
+    delete globalThis.Path2D;
+    delete globalThis.document;
+  });
+  const rungs = ladderFor('books');
+  const scene = createBooksScene();
+  const [w, h] = [297, 371];
+  for (const id of ['iss', 'moon', 'sun', 'voyager', 'proxima', 'andromeda', 'edge']) {
+    const { canvas, written } = recordingCanvas();
+    const amount = rungs.find(rung => rung.id === id).size * 1.001;
+    scene.draw(canvas, { w, h, t: 2.5, dt: 0, velocity: 0, moving: false, motion: false, still: true, amount, perUnit: 0.03, zero: false, rungs, readout: { left: 0, right: w * 0.72, top: 0, bottom: 84 }, thickness: 0.03, words: stageWords, previous: null, sinceOpened: 0 });
+    assert.ok(written.some(item => item.line.endsWith(id)), id);
+  }
+});
+
+test('number explorer brings a landmark\'s name down clear of what is over it, and no further than its icon', () => {
+  const column = { left: 200, right: 280 };
+  const over = { left: 150, right: 260, top: 86, bottom: 110 };
+  assert.equal(clearedLabelY(200, column, 14, 16, [over]), 200);
+  assert.equal(clearedLabelY(120, column, 14, 16, [over]), 125);
+  // One line under the chip would leave the icon above its name altogether.
+  assert.equal(clearedLabelY(90, column, 14, 16, [over]), null);
+  // What is under it cannot be got round by coming down.
+  assert.equal(clearedLabelY(300, column, 14, 16, [{ ...over, top: 305, bottom: 340 }]), null);
+  // Clear of it sideways, it stays where it is.
+  assert.equal(clearedLabelY(90, { left: 270, right: 340 }, 14, 16, [over]), 90);
+});
+
+test('number explorer knows where a chip will go before painting it, and steps it off what is there', () => {
+  const ctx = { save() {}, restore() {}, font: '', measureText: text => ({ width: [...text].length * 10 }) };
+  const box = chipBox(ctx, 'abcd', 100, 50, { size: 10 });
+  assert.deepEqual([box.left, box.right, box.top, box.bottom], [100, 153, 40, 60]);
+  const taken = { left: 90, right: 200, top: 45, bottom: 70 };
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: taken }).bottom, 42);
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: taken, downward: true }).top, 73);
+  // Taken in turn, so a step off the first can be a step off the second as well.
+  const above = { left: 90, right: 200, top: 20, bottom: 44 };
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: [taken, above] }).bottom, 17);
+  assert.equal(chipBox(ctx, 'abcd', 100, 50, { size: 10, clear: [null, undefined] }).top, 40);
+  assert.equal(meets({ left: 0, right: 10, top: 0, bottom: 10 }, { left: 10, right: 20, top: 0, bottom: 10 }), false);
+  assert.equal(fittedSize(ctx, 'abcd', 12, 700, 100), 12);
+  assert.equal(fittedSize(ctx, 'abcd', 12, 700, 20), 10);
+});
+
 test('number explorer turns the default billion grains into approximately 109 liters', () => {
   const result = sandModel(1000000000n);
   close(result.volumeM3, 0.109083078, 1e-7);
@@ -433,8 +624,8 @@ test('number explorer writes back only what its own parser reads', () => {
   const counts = [0n, 1n, 999n, 1000n, 1234567n, 999999999999999n, 10n ** 15n, 12n * 10n ** 17n, 1234n * 10n ** 20n, 12345n * 10n ** 20n, 9007199254740993n, MAX_COUNT];
   for (const count of counts) assert.deepEqual(parseCount(countText(count)), { ok: true, count }, count.toString());
   assert.equal(countText(1000000000n), '1,000,000,000');
-  assert.equal(countText(MAX_COUNT), '1e30');
-  assert.equal(countText(12n * 10n ** 17n), '1.2e18');
+  assert.equal(countText(MAX_COUNT), '1 nonillion');
+  assert.equal(countText(12n * 10n ** 17n), '1.2 quintillion');
 });
 
 test('number explorer marks a world only on the buttons that choose one', () => {

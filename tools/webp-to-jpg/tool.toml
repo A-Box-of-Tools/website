@@ -48,7 +48,7 @@ js_parts = ["file-picker", "image-convert", "image-batch", "zip", "crc32", "mess
 # The tool to offer next, on the carry-on row under the result. A JPEG that has
 # just been written is the thing people most often need smaller.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-10-12"
+lastmod = "2026-11-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -176,8 +176,8 @@ body = "The picture is decoded and drawn onto a canvas, and a canvas holds pixel
 title = "What Google loads, and what it is not given."
 body = """
  The ad and
-      measurement scripts come from Google, and the donate button from Buy Me a
-      Coffee. None of them is handed anything about your pictures. Every line
+      measurement scripts come from Google. None of them is handed anything
+      about your pictures. Every line
       that reads, decodes or writes a file is served from this origin and listed
       in the repository."""
 

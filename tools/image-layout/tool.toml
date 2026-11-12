@@ -24,7 +24,7 @@ css_parts = ["form", "notes", "progress", "checks"]
 js_parts = ["file-picker", "image-list", "image-input", "image-convert", "message-box", "download", "format", "example-photo", "errors"]
 # There is no carry-on row, so this page needs no blob: connect-src allowance.
 handoff = []
-lastmod = "2026-10-08"
+lastmod = "2026-11-03"
 
 title = "Image Layout &mdash; Free Collage &amp; Contact Sheet Maker, No Upload"
 description = "Arrange images in a grid or strip with ready-to-use presets. Adjust each picture with pan and zoom, then save one PNG, JPEG or WebP. Free, offline and no upload."
@@ -118,11 +118,11 @@ body = """
       The code that reads and arranges a picture is served from this origin."""
 
 [[privacy]]
-title = "What the donate button loads, and what it is not given."
+title = "The donate button loads nothing, and is given nothing."
 body = """
  The
-      &ldquo;Buy me a coffee&rdquo; button is drawn by a script from
-      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link,
+      &ldquo;Buy me a coffee&rdquo; button is drawn by this page and loads
+      nothing from anywhere. It is a link,
       and it is handed nothing about your pictures. Clicking it opens the
       service's own page."""
 

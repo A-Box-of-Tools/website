@@ -51,11 +51,11 @@ title = "Vos saisies restent dans la page."
 body = "La calculatrice n'écrit aucune saisie dans le stockage ni dans la barre d'adresse. Recharger remet l'exploration à zéro. Une image enregistrée est un fichier que vous gardez volontairement sur votre appareil."
 [[privacy]]
 title = "Les autres scripts du site ont leurs propres limites."
-body = "Le cadre peut charger des scripts de publicité, de mesure et de dons. La calculatrice ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
+body = "Le cadre peut charger des scripts de publicité et de mesure. La calculatrice ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
 
 [[howto]]
 title = "Tapez un nombre ou faites glisser le curseur."
-body = "Essayez un milliard, 1,5&nbsp;Md ou 1e12. Les nombres entiers de zéro à 10³⁰ sont acceptés. Le curseur avance par puissances de dix, et l'image suit pendant que vous le faites glisser."
+body = "Essayez un milliard, 1,5&nbsp;Md ou 3&nbsp;billions. Les nombres entiers de zéro à 1&nbsp;quintillion sont acceptés. Le curseur avance par puissances de dix, et l'image suit pendant que vous le faites glisser."
 [[howto]]
 title = "Choisissez livres, eau, étoiles, sable ou temps."
 body = "Chacun représente le même nombre d'une autre façon et dit ce qu'est chaque unité. Pour les livres, chacun peut aussi être un mot ou un jeton de texte d'IA, ce qui change le nombre en longueur de texte."

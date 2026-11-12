@@ -102,8 +102,8 @@ body = """
 title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
-      publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
-      Coffee. Nenhum deles recebe coisa alguma sobre as suas imagens. Toda linha
+      publicidade e de medição vêm do Google. Nenhum deles recebe coisa alguma
+      sobre as suas imagens. Toda linha
       que lê ou codifica um arquivo é servida desta origem e está listada no
       repositório."""
 
