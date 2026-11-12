@@ -6,12 +6,14 @@ import { observeForeground } from './shared/foreground-recovery.js';
 import { createDiagnostics } from './shared/connection-diagnostics.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
-import { alertCapabilities, ViewerAlerts } from './alerts.js';
+import { alertCapabilities, COOLDOWN_MS, ViewerAlerts } from './alerts.js';
+import { pictureWatch } from './picture.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { AdmissionGrants } from './shared/peer-admission.js';
+import { createChime } from './shared/chime.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
@@ -45,6 +47,19 @@ let viewerAlerts = null;
 let alertsRevision = 0;
 let alertsTimer = null;
 let alertsAttempts = 0;
+let alertCount = 0;
+let alertMarkTimer = null;
+let viewerStatusKey = null;
+let pictureStalled = false;
+const picture = pictureWatch();
+// A call from across the room rather than the QR reader's "yes": lower, so
+// that a laptop's speakers and older ears both carry it, and long enough to
+// reach somebody who was not waiting for it. It is felt twice for the same
+// reason.
+const chime = createChime({
+  notes: [{ hertz: 880, starts: 0, lasts: 0.16 }, { hertz: 1175, starts: 0.19, lasts: 0.26 }],
+  buzz: [120, 80, 120],
+});
 let viewerAudioTrack = null;
 let viewerWantsAudio = true;
 let viewerAudioBlocked = false;
@@ -79,9 +94,10 @@ const capture = new CameraCapture({ getUserMedia: (constraints) => {
   return navigator.mediaDevices.getUserMedia(constraints);
 } });
 
-const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
+const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken|stalled/.test(key);
 function showStatus(key, role = mode) {
   const element = $(role === 'camera' ? 'camera-status' : 'viewer-status');
+  if (role !== 'camera') viewerStatusKey = key;
   element.textContent = phrase(key);
   element.classList.toggle('warn', warning(key));
 }
@@ -129,6 +145,9 @@ function idleCamera() {
 function idleViewer() {
   if (document.fullscreenElement === $('viewer-video-frame')) document.exitFullscreen().catch(() => {});
   resetViewerAlerts();
+  picture.reset();
+  pictureStalled = false;
+  $('viewer-picture-mark').hidden = true;
   $('viewer-connect').disabled = false;
   $('viewer-connect').hidden = false;
   $('viewer-code').disabled = false;
@@ -479,6 +498,33 @@ async function updateDetails() {
   $('details-route').textContent = phrase(result.route === 'direct' ? 'details.direct' : result.route === 'relay' ? 'transport.route.relay' : 'transport.route.unknown');
   $('details-frames').hidden = mode !== 'viewer';
   $('details-frames').textContent = phrase('details.frames', { count: ltr(result.frames.toLocaleString(document.documentElement.lang)) });
+  if (session.role === 'viewer') watchPicture(result.frames);
+}
+
+/** The viewer's line while video plays: receiving, unless the picture has stopped. */
+function showReceiving() {
+  showStatus(pictureStalled ? 'viewer.stalled' : 'viewer.receiving', 'viewer');
+}
+
+/**
+ * Say so when the picture stops arriving, and again when it comes back.
+ *
+ * picture.js has why this has to be worked out rather than heard. The mark is
+ * on the video because that is what a viewer in full screen can see. The line
+ * above it changes only between its two sentences about the picture: one
+ * about a lost introduction service, or playback the browser paused, is
+ * saying something else and keeps its place.
+ */
+function watchPicture(frames) {
+  // A hidden page may not be decoding at all, and nobody is reading the line.
+  // Taking no reading is what makes the next one late, which starts the wait
+  // again.
+  if (document.hidden || pageSuspended) return;
+  const change = picture.read(frames, performance.now());
+  if (!change) return;
+  pictureStalled = change === 'stalled';
+  $('viewer-picture-mark').hidden = !pictureStalled;
+  if (viewerStatusKey === (pictureStalled ? 'viewer.receiving' : 'viewer.stalled')) showReceiving();
 }
 
 function watchDetails() {
@@ -530,6 +576,7 @@ function resetViewerAlerts() {
   viewerSoundSupported = false;
   viewerAlerts?.disconnect();
   viewerAlerts = null;
+  clearAlertMark();
   $('viewer-alert-options').hidden = true;
   $('viewer-motion-alert').checked = false;
   $('viewer-sound-alert').checked = false;
@@ -587,12 +634,16 @@ async function refreshViewerAlerts() {
     title: phrase('alerts.title'), motionBody: phrase('alerts.motion-body'), soundBody: phrase('alerts.sound-body'),
     onStatus(key) {
       if (current !== epoch || viewerAlerts !== monitor) return;
+      if (key === 'alerts.motion' || key === 'alerts.sound') { markAlert(key); return; }
       $('viewer-alert-status').textContent = phrase(key);
       $('viewer-alert-status').classList.toggle('warn', key === 'alerts.denied' || key === 'alerts.failed');
       if (key === 'alerts.denied' || key === 'alerts.failed') {
         $('viewer-motion-alert').checked = false;
         $('viewer-sound-alert').checked = false;
       }
+      // Off, refused or broken: nothing is watching, so nothing on the
+      // picture goes on looking as if something were.
+      if (key === 'alerts.off' || key === 'alerts.denied' || key === 'alerts.failed') clearAlertMark();
     },
   });
   viewerAlerts = monitor;
@@ -605,9 +656,74 @@ async function refreshViewerAlerts() {
   $('viewer-alert-status').textContent = phrase('alerts.off');
 }
 
+/**
+ * One alert, said where somebody is looking and where somebody is listening.
+ *
+ * It used to be one sentence in small grey type under the checkboxes, the
+ * same sentence every time, so a second alert changed nothing anybody could
+ * see and the line could not tell a minute ago from an hour ago. It also said
+ * a notification had been sent, which the page cannot know: the browser only
+ * accepts the request, and a system on Do Not Disturb shows nothing.
+ *
+ * So the line carries the time and a count, which also makes it a different
+ * sentence each time for a screen reader to speak. The video carries the same
+ * thing as a mark, because the video is what is being watched and the frame
+ * is the element that goes full screen. And the page sounds, if it may: a
+ * viewer who enabled alerts has usually stopped looking.
+ *
+ * The mark is lit for as long as the gap alerts.js keeps between two alerts,
+ * so that activity that goes on stays lit and nothing flickers. After that it
+ * stays as a small note of when the last one was.
+ */
+function markAlert(key) {
+  const lang = document.documentElement.lang;
+  const time = ltr(new Intl.DateTimeFormat(lang, { timeStyle: 'medium' }).format(new Date()));
+  alertCount += 1;
+  const line = $('viewer-alert-status'), mark = $('viewer-alert-mark'), frame = $('viewer-video-frame');
+  line.textContent = phrase(key, { time, count: ltr(alertCount.toLocaleString(lang)) });
+  line.classList.remove('warn');
+  mark.textContent = phrase(key === 'alerts.motion' ? 'alerts.mark-motion' : 'alerts.mark-sound', { time });
+  mark.hidden = false;
+  mark.classList.add('fresh');
+  // Taken off and put back with a layout between, or an alert that lands on a
+  // frame that is still lit would not draw its outline arriving again.
+  frame.classList.remove('alerting');
+  void frame.offsetWidth;
+  frame.classList.add('alerting');
+  clearTimeout(alertMarkTimer);
+  alertMarkTimer = setTimeout(settleAlertMark, COOLDOWN_MS);
+  if ($('viewer-alert-chime').checked) chime.play();
+}
+
+function settleAlertMark() {
+  clearTimeout(alertMarkTimer);
+  alertMarkTimer = null;
+  $('viewer-alert-mark').classList.remove('fresh');
+  $('viewer-video-frame').classList.remove('alerting');
+}
+
+function clearAlertMark() {
+  settleAlertMark();
+  $('viewer-alert-mark').hidden = true;
+  $('viewer-alert-mark').textContent = '';
+  alertCount = 0;
+  chime.release();
+}
+
+const chimeWanted = () => activeRole === 'viewer' && Boolean(viewerAlerts) && $('viewer-alert-chime').checked
+  && ($('viewer-motion-alert').checked || $('viewer-sound-alert').checked);
+
+function armChime() {
+  if (chimeWanted()) chime.arm();
+  else chime.release();
+}
+
 function changeViewerAlerts() {
   if (!viewerAlerts || activeRole !== 'viewer') return;
   const options = { motion: $('viewer-motion-alert').checked, sound: $('viewer-sound-alert').checked };
+  // Here, inside the tap that ticked the box, or the first alert is silent:
+  // shared/js/chime.js has why a sound has to be asked for this early.
+  armChime();
   updateViewerAudio();
   if (!options.motion && !options.sound) viewerAlerts.disable();
   else viewerAlerts.enable(options).catch(() => {});
@@ -1018,7 +1134,7 @@ async function playVideo(retryAudio = false) {
     if (!valid()) return;
     $('viewer-play').hidden = true;
     globalThis.aboxToolComplete?.();
-    showStatus('viewer.receiving', 'viewer');
+    showReceiving();
   } catch {
     if (!valid()) return;
     if (viewerAudioTrack && !video.muted) {
@@ -1030,7 +1146,7 @@ async function playVideo(retryAudio = false) {
         await video.play();
         if (!valid()) return;
         $('viewer-play').hidden = true;
-        showStatus('viewer.receiving', 'viewer');
+        showReceiving();
         return;
       } catch { if (!valid()) return; }
     }
@@ -1083,6 +1199,11 @@ $('viewer-play').addEventListener('click', () => playVideo(true));
 $('viewer-listen').addEventListener('click', listenToAudio);
 $('viewer-motion-alert').addEventListener('change', changeViewerAlerts);
 $('viewer-sound-alert').addEventListener('change', changeViewerAlerts);
+$('viewer-alert-chime').addEventListener('change', armChime);
+// A context can be suspended again after it was armed - by a permission sheet
+// over the page, by a phone call - and is only let back from a gesture. The
+// tap that ticked the box has been spent by then; any later one will do.
+document.addEventListener('pointerdown', () => { if (chimeWanted()) chime.arm(); }, { passive: true });
 navigator.serviceWorker?.addEventListener('controllerchange', refreshViewerAlerts);
 $('viewer-fullscreen').addEventListener('click', async () => {
   const frame = $('viewer-video-frame'), video = $('remote-video');

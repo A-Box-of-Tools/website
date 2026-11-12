@@ -262,6 +262,45 @@ detector records or sends data. Disconnect invalidates pending permission work,
 closes its audio context, clears timers and closes only its own notifications.
 These notices contain generic activity text, never frames, audio or room names.
 
+An alert is shown on the page as well as sent to the system, because the
+notification is the half the page cannot vouch for: the browser only accepts
+the request, and a system on Do Not Disturb shows nothing. `main.js` writes the
+time and a count into the line under the checkboxes, which also makes each
+alert a different sentence for a screen reader, and puts the same thing on the
+video as a mark with an amber outline. Both are inside `#viewer-video-frame`,
+the element that goes full screen; the native video fullscreen an iPhone falls
+back to cannot show them. The mark is lit for the cooldown `alerts.js`
+exports, so activity that goes on stays lit, and then remains as a small note
+of the last alert until alerts are turned off or the viewer disconnects. The
+count starts again whenever alerts go from off to on. Activity inside the
+cooldown still shows nothing, by design.
+
+Each alert also plays two notes and a vibration through the shared `chime`
+part, unless Beep on this device is unticked. Its audio context is separate
+from the analyser's, which still has no speaker output, and is started inside
+the tap that ticks a checkbox. The choice lasts as long as the page and is
+stored nowhere. A silenced device stays silent, so the sound is never the only
+signal.
+
+The system notification keeps one tag per alert cycle, so a later alert
+replaces the earlier one instead of piling up, and sets `renotify`. Without it
+Chromium on Windows suppresses the popup while the earlier notice is still in
+the notification centre, and only the first alert of a session reached anybody
+who had not dismissed it.
+
+`src/picture.js` decides whether the picture is still arriving. A camera its
+browser has paused leaves the peer connection up, and the video element fires
+nothing, so the viewer used to read "Receiving encrypted live video" over a
+frame that was minutes old. The frames-decoded count `updateDetails()` already
+reads once a second feeds a watch that reports a stop after five seconds
+without a new frame, and the first frame after one. The viewer's status line
+then changes between `viewer.receiving` and `viewer.stalled`, and the video
+carries Picture paused. No reading is taken while the page is hidden, and the
+first one after a gap only restarts the wait, so returning to the tab cannot
+show a warning that is withdrawn a second later. The camera does not announce
+a pause itself because an older viewer page treats a control message it does
+not know as a broken connection.
+
 The viewer page must remain open and runnable. Browser freezing, device sleep,
 lighting changes and threshold choices can miss activity or trigger false
 alerts; this is not a safety monitor. Notification controls remain hidden when
@@ -312,6 +351,17 @@ republishes after recovery, camera switching still works and Stop releases all
 resources. Before approval or live video, transport failure must still close
 the unfinished attempt. Confirm sound notices while playback is muted, and
 muted video plus an Unmute control after an audible autoplay rejection.
+
+For alerts, trigger motion twice more than ten seconds apart and once inside
+the gap. Each of the two must light the mark and the outline, change the time
+and the count, beep, and ask for a notification with the same tag and
+`renotify`; the one inside the gap must change nothing. Check the mark in full
+screen, that it settles after ten seconds, that Beep on this device silences
+only the sound, and that turning both alerts off or disconnecting clears it.
+Then stop the camera's frames without closing its connection: after about five
+seconds the viewer must say the picture has stopped, on the line and on the
+video, and take it back when frames return. A canvas stream that is no longer
+repainted does this on one computer; a locked phone does it for real.
 
 Check that a new request focuses Review later, dismissal and Escape preserve
 the pending request without media, and another arrival cannot replace an open

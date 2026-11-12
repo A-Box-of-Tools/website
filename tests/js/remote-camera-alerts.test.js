@@ -141,7 +141,7 @@ test('motion ignores a transient frame and alerts on sustained movement with hys
   assert.equal(f.registration.calls.length, 1);
   assert.equal(f.registration.calls[0].title, 'Localized title');
   assert.equal(f.registration.calls[0].options.body, 'Localized motion');
-  assert.equal(f.registration.calls[0].options.renotify, false);
+  assert.equal(f.registration.calls[0].options.renotify, true);
   for (let i = 0; i < 60; i++) f.tick(i % 2 ? 20 : 100);
   assert.equal(f.registration.calls.length, 1);
   assert.equal(f.statuses.includes('alerts.motion'), true);
@@ -155,6 +155,11 @@ test('separate motion bursts share a ten-second cooldown and disable clears samp
   assert.equal(f.registration.calls.length, 1);
   f.tick(20, 11000); f.tick(20); f.tick(20); f.movement();
   assert.equal(f.registration.calls.length, 2);
+  // The second replaces the first under one tag, so they never pile up, and
+  // is announced. Left to the default, a system still holding the first
+  // updates it in silence: Chromium on Windows suppresses the popup.
+  assert.equal(f.registration.calls[1].options.tag, f.registration.calls[0].options.tag);
+  assert.equal(f.registration.calls[1].options.renotify, true);
   f.alerts.disable(); await flush();
   assert.equal(f.timers.size, 0);
   assert.equal(f.registration.notifications.every((notification) => notification.closed > 0), true);

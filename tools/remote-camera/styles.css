@@ -54,6 +54,25 @@
 .viewer-video-controls .info-tip > summary { min-width: 2.75rem; }
 .viewer-video-controls button:hover, .viewer-video-controls .info-tip > summary:hover { background: #26313b; }
 .viewer-video-controls button:focus-visible, .viewer-video-controls .info-tip > summary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* What the page has to say about the picture is said on the picture: an alert,
+   and a picture that has stopped arriving. Somebody watching is looking here
+   and not at the lines around it, and the frame is the element that goes full
+   screen, so anything outside it is not there at all. The colours are fixed
+   rather than the theme's because the frame is dark in both themes, as its
+   controls are. */
+.viewer-mark { position: absolute; z-index: 1; box-sizing: border-box; max-width: calc(100% - 1.5rem); margin: 0; padding: 0.3rem 0.65rem; border: 1px solid rgb(255 255 255 / 0.6); border-radius: 999px; background: rgb(16 20 24 / 0.9); color: #fff; font-size: 0.8rem; line-height: 1.3; pointer-events: none; }
+.viewer-alert-mark { inset-block-start: 0.75rem; inset-inline-start: 0.75rem; }
+.viewer-alert-mark.fresh { border-color: #ffb020; background: #ffb020; color: #1c1300; font-size: 1rem; font-weight: 600; }
+.viewer-picture-mark { inset-block-start: 50%; inset-inline: 0; width: fit-content; margin-inline: auto; transform: translateY(-50%); font-size: 1rem; font-weight: 600; }
+.viewer-video-frame.alerting::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 4px #ffb020; pointer-events: none; animation: viewer-alert-in 0.6s ease-out; }
+@keyframes viewer-alert-in {
+  from { box-shadow: inset 0 0 0 14px #ffb020; }
+  to { box-shadow: inset 0 0 0 4px #ffb020; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .viewer-video-frame.alerting::after { animation: none; }
+}
+.viewer-video-frame:fullscreen .viewer-alert-mark { inset-block-start: max(0.75rem, env(safe-area-inset-top)); }
 .viewer-video-frame:fullscreen { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #000; border-radius: 0; }
 .viewer-video-frame:fullscreen video { max-height: none; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; }
 .viewer-video-frame:fullscreen .viewer-video-controls { inset-block-end: max(0.75rem, env(safe-area-inset-bottom)); }
