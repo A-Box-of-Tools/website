@@ -34,6 +34,11 @@ kbd {
   button on.
 */
 .viewfinder {
+  /* The green a read is said in. Fixed, like the white of the reticle, and
+     not the page's --ok: this is drawn on a photograph rather than on the
+     page, and the dark green that reads well on a white card disappears into
+     a picture of a desk. */
+  --read: #3ddc84;
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
@@ -68,9 +73,143 @@ kbd {
   transition: border-color 0.2s ease;
 }
 
+/* ------------------------------------------------- a code has been read
+
+   Three things say so on the viewfinder, because that is where somebody is
+   looking: the whole picture is washed green, the square in the middle of it
+   goes green and heavy, and a strip along the bottom names what was read. The
+   first two are over in a second on purpose - the camera is still looking,
+   and a frame that stayed green would say it had stopped. The strip stays,
+   for the visitor who glanced away at the wrong moment.
+
+   It used to be the square's border alone: two pixels, in the page's dark
+   green, for 0.7 seconds. */
+
+.viewfinder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--read);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#camera-card.hit .viewfinder::after {
+  animation: read-wash 0.9s ease-out;
+}
+
+@keyframes read-wash {
+  from { opacity: 0.5; }
+  to { opacity: 0; }
+}
+
 #camera-card.hit .reticle {
-  border-color: var(--ok);
-  border-width: 4px;
+  border-color: var(--read);
+  border-width: 5px;
+}
+
+/* Dark and nearly opaque whatever the theme, for the same reason --read is
+   fixed: what is behind it is a photograph, and it has to be legible over a
+   white label and over a black one. */
+.found {
+  position: absolute;
+  inset: auto 0.5rem 0.5rem;
+  /* As wide as a phone's viewfinder and no wider: on a desktop the picture is
+     three times that, and a bar across the whole of it reads as part of the
+     frame rather than as something to press. */
+  max-width: 24rem;
+  margin-inline: auto;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.65rem;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 9px;
+  background: rgb(12 16 22 / 86%);
+  color: #fff;
+  font: inherit;
+  line-height: 1.35;
+  text-align: start;
+  animation: found-in 0.22s ease-out;
+}
+
+/* `display: grid` above outweighs the browser's own rule for [hidden], so the
+   strip would sit on the viewfinder, empty, before anything had been read. */
+.found[hidden] { display: none; }
+
+.found:hover,
+.found:active { background: rgb(12 16 22 / 96%); }
+
+/* The page's own ring is --accent, a blue that is lost against a picture. */
+.found:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@keyframes found-in {
+  from { opacity: 0; translate: 0 0.5rem; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.found-mark {
+  grid-row: 1 / span 2;
+  color: var(--read);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.found-what {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 0.5rem;
+  min-width: 0;
+}
+
+.found-kind {
+  font-size: 0.92rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.found-symbology {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 78%);
+}
+
+.found-go {
+  font-size: 0.82rem;
+  color: rgb(255 255 255 / 88%);
+}
+
+/* Down, because that is where the answer is - and drawn here rather than
+   typed into the markup, so it is not a character seven translations each
+   have to remember. */
+.found-go::after { content: " \2193"; }
+
+/* The line under the camera, once it has something to say other than that
+   it is looking. */
+#camera-status.read {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+/* Somebody who has asked their system for less movement still gets told: the
+   wash holds steady for the second it is there and nothing slides. */
+@media (prefers-reduced-motion: reduce) {
+  #camera-card.hit .viewfinder::after {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .found { animation: none; }
+  .reticle { transition: none; }
 }
 
 .camera-controls {
@@ -187,6 +326,37 @@ kbd {
 }
 
 .result + .result { margin-top: 1rem; }
+
+/* Where a result stops when the page is scrolled to it: clear of the edge it
+   is brought to, at either end. The row is the Copy and Open buttons, which
+   is as far down as the camera brings a new result into view. */
+.result { scroll-margin-top: 0.75rem; }
+.result > .run-row { scroll-margin-bottom: 1rem; }
+
+/* The one the camera has just read, among up to twenty that look like it. The
+   ring fades because it is about a moment: by the time somebody has read the
+   string, "new" has stopped being true. */
+.result.fresh { animation: fresh-result 2.4s ease-out; }
+
+@keyframes fresh-result {
+  from {
+    border-color: var(--ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 55%, transparent);
+  }
+
+  to {
+    border-color: var(--border);
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result.fresh {
+    animation: none;
+    border-color: var(--ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 45%, transparent);
+  }
+}
 
 .result-head {
   display: flex;

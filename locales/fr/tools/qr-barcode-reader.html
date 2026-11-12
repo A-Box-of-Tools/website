@@ -43,6 +43,23 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="Aperçu"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        Ce qui vient d'être lu, dit sur l'image que quelqu'un regarde. La
+        réponse est à l'étape 2, sous cette carte, et sur un téléphone c'est
+        sous le bord de l'écran. La lecture est donc nommée ici, et toute la
+        bande est le bouton qui y mène. Elle dit le genre de chose et jamais
+        la chaîne : une adresse coupée pour tenir dans une bande est
+        exactement l'adresse lue à moitié dont cette page veut protéger.
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">Voir ce qu'il dit</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -59,6 +76,18 @@
             Seules certaines caméras en ont une, et seuls certains navigateurs
             laissent une page la demander. Là où ce n'est pas proposé, il n'y en
             a pas.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>Bip quand un code est lu</strong>
+          <span class="check-note">
+            Un son bref que cette page produit elle-même, et une vibration sur
+            les téléphones qui le permettent. Rien n'est téléchargé pour le
+            jouer.
           </span>
         </span>
       </label>
@@ -271,6 +300,8 @@
     <span data-phrase="status.looking">Recherche&hellip; tenez le code immobile et
       remplissez-en environ la moitié du cadre.</span>
     <span data-phrase="status.on">Caméra allumée. Rien n'est enregistré.</span>
+    <span data-phrase="status.read">Lu&nbsp;: {kind} ({symbol}). Ce qu'il dit
+      est plus bas, et la caméra cherche toujours.</span>
 
     <span data-phrase="camera.denied">Le navigateur a refusé la caméra à cette
       page. C'est une autorisation que vous pouvez changer&nbsp;: cherchez l'icône de

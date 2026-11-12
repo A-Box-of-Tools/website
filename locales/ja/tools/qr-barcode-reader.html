@@ -45,6 +45,21 @@
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture aria-label="プレビュー"></video>
       <div class="reticle" aria-hidden="true"></div>
+
+      <!--
+        いま読み取ったものを、見ている映像の上で伝えます。答えはこのカードの下のステップ2にあり、
+        スマートフォンでは画面の下端より下です。だからここで読み取りを知らせ、帯全体がそこへ行くボタンになります。
+        帯が言うのは種類だけで、文字列そのものは出しません。帯に収まるよう切り詰めたアドレスは、
+        このページが信用させまいとしている「途中までしか読んでいないアドレス」そのものだからです。
+      -->
+      <button type="button" id="camera-found" class="found" hidden>
+        <span class="found-mark" aria-hidden="true">&#10003;</span>
+        <span class="found-what">
+          <span class="found-kind"></span>
+          <span class="found-symbology"></span>
+        </span>
+        <span class="found-go">中身を見る</span>
+      </button>
     </div>
 
     <div class="camera-controls">
@@ -59,6 +74,16 @@
           <strong>ライトを点ける</strong>
           <span class="check-note">
             ライトが付いているカメラは一部だけで、ページからの要求を通すブラウザーも一部だけです。ここに出ていないなら、それは付いていないということです。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="camera-signal" checked>
+        <span>
+          <strong>コードを読み取ったら音で知らせる</strong>
+          <span class="check-note">
+            このページが自分で鳴らす短い音です。対応しているスマートフォンでは振動もします。鳴らすために何かをダウンロードすることはありません。
           </span>
         </span>
       </label>
@@ -182,7 +207,7 @@
 
     <span data-phrase="status.cleared">結果と画像のプレビューを消去しました。</span>
     <span data-phrase="status.reading">画像を読んでいます&hellip;</span>
-    <span data-phrase="status.nothing">この画像にコードは見つかりませんでした。白い余白まで含めてシンボル全体が画面に入っていること、そして濃い四角がきちんと濃く写る明るさが必要です。</span><span data-phrase="status.broken">このファイルは画像として開けませんでした。</span><span data-phrase="status.looking">探しています&hellip;コードを動かさず、画面の半分ほどを埋めてください。</span><span data-phrase="status.on">カメラが動いています。記録はされていません。</span>
+    <span data-phrase="status.nothing">この画像にコードは見つかりませんでした。白い余白まで含めてシンボル全体が画面に入っていること、そして濃い四角がきちんと濃く写る明るさが必要です。</span><span data-phrase="status.broken">このファイルは画像として開けませんでした。</span><span data-phrase="status.looking">探しています&hellip;コードを動かさず、画面の半分ほどを埋めてください。</span><span data-phrase="status.on">カメラが動いています。記録はされていません。</span><span data-phrase="status.read">読み取りました：{kind}（{symbol}）。中身は下にあります。カメラは引き続き探しています。</span>
 
     <span data-phrase="camera.denied">ブラウザーがこのページへのカメラの受け渡しを拒みました。これは変えられる権限です。アドレスバーのカメラのアイコンを見てください。代わりに画像を選ぶのなら、権限はまったく要りません。</span><span data-phrase="camera.none">この端末でカメラが見つかりませんでした。上に写真かスクリーンショットを置けば、同じように読まれます。</span><span data-phrase="camera.busy">カメラはありますが、ほかの何かが使っています。開いているもの、たいていはビデオ通話を閉じてから、もう一度試してください。</span><span data-phrase="camera.insecure">ブラウザーがカメラを渡すのはhttpsで配信されたページだけで、このページは今そうなっていません。</span><span data-phrase="camera.unsupported">このブラウザーには、ページから要求できるカメラの仕組みがありません。ほかの機能はそのまま使えます。</span><span data-phrase="camera.failed">カメラを開始できませんでした。理由はブラウザーから示されていません。</span>
 
