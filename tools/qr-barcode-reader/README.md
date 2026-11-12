@@ -33,7 +33,7 @@ So this folder is two thirds computer vision and one third specification.
 | `scan.js` | the order all of that is tried in |
 | `camera.js` | the live camera, and every way it can refuse |
 | `sightings.js` | which of the camera's reads are worth announcing: a code held in view is read eight times a second |
-| `chime.js` | the two notes and the buzz a read makes |
+| `shared/chime.js` | the two notes and the buzz a read makes, shared with Remote Camera's alerts |
 | `main.js` | the page |
 
 ## The three decisions worth knowing about
@@ -238,9 +238,10 @@ The pictures are drawn in the test â€” flat, rotated, warped, inverted, noisy â€
 rather than checked in as binary fixtures, the same way `tests/js/helpers.js`
 builds its images.
 
-`tests/js/qr-reader-signal.test.js` holds the two modules that decide what a
-camera read says: `sightings.js`, with a number for a clock, and `chime.js`,
-with an object for an audio context.
+`tests/js/qr-reader-signal.test.js` holds the module that decides which
+camera reads are announced: `sightings.js`, with a number for a clock. The
+sound is the shared part `shared/js/chime.js`, tested in
+`tests/js/chime.test.js` with an object for an audio context.
 
 ## Repeated results, malformed fields, and stopping work
 
