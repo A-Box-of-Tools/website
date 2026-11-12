@@ -51,9 +51,10 @@
  * a doorbell, and on a phone that allows it a short buzz and then a longer
  * one.
  *
- * Falling, and lower and slower than the notes a tool plays for "yes, that
- * worked", which rise - so that neither can be taken for the other. Hand it
- * to `createChime` as it is.
+ * Falling, where the other two sounds this site makes both rise - the QR
+ * reader's "that scanned" and Remote Camera's "something moved" - and lower
+ * and slower than either, so that none can be taken for another. Hand it to
+ * `createChime` as it is.
  */
 export const KNOCK = {
   notes: [
