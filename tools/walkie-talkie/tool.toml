@@ -10,10 +10,10 @@ glyph = "audio-waveform"
 category = "connect-devices"
 roadmap_group = "audio"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "peer-approval-ui", "voice-session", "voice-identity", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
+js_parts = ["peer-pairing", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "peer-approval-ui", "peer-request-signal", "chime", "voice-session", "voice-identity", "peer-discovery", "discovery-group", "peer-discovery-ui", "room-names", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
 supports_relay = true
-lastmod = "2026-11-04"
+lastmod = "2026-11-12"
 
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
 description = "Broadcast voice to up to ten receive-only browsers. Direct local connections or optional Cloud relay, with push to talk, hands-free speech and private group discovery."

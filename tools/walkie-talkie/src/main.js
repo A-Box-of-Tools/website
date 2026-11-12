@@ -8,6 +8,8 @@ import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createApprovalList } from './shared/peer-approval-ui.js';
+import { createRequestSignal, KNOCK } from './shared/peer-request-signal.js';
+import { createChime } from './shared/chime.js';
 import { createVoiceIdentityCache } from './shared/voice-identity.js';
 
 activateChannel();
@@ -121,8 +123,14 @@ function activateChannel() {
   let pageSuspended = false;
   let channels = [];
   let lastPublication = null;
+  // A host talking hands-free has the phone in a pocket or the page behind
+  // another tab. The popup cannot reach them there; this can.
+  const requestSignal = createRequestSignal({
+    panel: ui['requests-panel'],
+    sound: { chime: createChime(KNOCK), toggle: document.getElementById('pairing-request-sound') },
+  });
   const approvalRequests = createApprovalList({
-    list: ui.requests, section: ui['requests-panel'],
+    list: ui.requests, section: ui['requests-panel'], signal: requestSignal,
     template: document.getElementById('pairing-request-row'),
     dialog: document.getElementById('pairing-request-dialog'),
     isActive: () => role === 'host' && hostActive && !pageSuspended,
@@ -268,6 +276,9 @@ function activateChannel() {
     ui.discover.disabled = starting || preparingCredentials;
     ui['require-approval'].disabled = hostActive || starting || preparingCredentials || Boolean(session) || hostNeedsResume;
     approvalRequests.refresh();
+    // Nobody asks to join a channel that admits without approval, so the
+    // switch for the sound is not offered for one.
+    requestSignal.host(role === 'host' && (hostActive || starting) && ui['require-approval'].checked);
     renderRole();
     ui.transmit.hidden = !hostActive;
     ui.invite.hidden = !hostActive || !ui.link.value;
@@ -596,6 +607,10 @@ function activateChannel() {
     }
     hostWanted = true;
     starting = true;
+    // Inside the click that starts the channel and before anything is awaited:
+    // see arm() in peer-request-signal.js. A channel that restarts itself on
+    // the way back from the background has no click, and takes the next one.
+    if (ui['require-approval'].checked) requestSignal.arm();
     const epoch = ++sourceEpoch;
     releaseTransmission();
     renderState('host-starting');

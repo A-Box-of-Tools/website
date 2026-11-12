@@ -9,6 +9,8 @@ import { readTransport } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { createApprovalPrompt } from './shared/peer-approval-ui.js';
+import { createRequestSignal, KNOCK } from './shared/peer-request-signal.js';
+import { createChime } from './shared/chime.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
@@ -35,8 +37,15 @@ let nearbyShares = [];
 let discoveryState = 'idle';
 let browsingNearby = false;
 let pageSuspended = false;
+// The host of a shared tab is looking at the tab being shared, not at this
+// page, so a request that only opened a popup here would reach nobody.
+const requestSignal = createRequestSignal({
+  panel: $('request-panel'),
+  sound: { chime: createChime(KNOCK), toggle: $('pairing-request-sound') },
+});
 const approvalPrompt = createApprovalPrompt({
   dialog: $('pairing-request-dialog'),
+  signal: requestSignal,
   isActive: () => role === 'host' && !pageSuspended,
   canApprove: () => session.viewerCount === 0,
   onApprove: id => session.approve(id),
@@ -226,6 +235,7 @@ function updateControls() {
   $('viewer-code').readOnly = busy;
   $('viewer-name').readOnly = busy;
   $('host-invitation').hidden = !hosting || !invitation;
+  requestSignal.host(hosting);
 }
 
 const session = new TabSession({
@@ -308,6 +318,9 @@ async function startHost() {
   stopAll();
   const owner = revision;
   role = 'host';
+  // Here, inside the click and before the picker is awaited, or the first
+  // request has no sound: see arm() in peer-request-signal.js.
+  requestSignal.arm();
   status('host-status', 'host.choosing');
   updateControls();
   try {

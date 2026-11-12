@@ -41,10 +41,11 @@
         {% include "partials/paired-transport.html" %}
       </div>
     </div>
+    {% include "partials/paired-request-sound.html" %}
     <div role="region" id="wt-requests-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="wt-requests-title" data-pairing-requests>
       <h3 id="wt-requests-title">{{ ui.tool.approval_pending }}</h3>
       <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
-      <ul id="wt-requests"></ul>
+      <ul id="wt-requests" aria-live="polite"></ul>
     </div>
     <p class="wt-note" id="wt-publication" hidden aria-live="polite"></p>
     <div id="wt-transmit" hidden>

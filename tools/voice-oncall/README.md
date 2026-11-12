@@ -176,6 +176,17 @@ The Worker writes no room history to storage. Pending requests count toward capa
 The shared inline request panel sits beside End pager and the participant list,
 before the invitation, so a dismissed popup remains easy to act on.
 
+A pager is left open to be heard rather than watched, and a caller cannot be
+heard until they are approved, so a request used to reach a host in another tab
+as a new row and nothing else. `peer-request-signal.js` puts the number of
+waiting requests in the tab's title, plays two falling notes from the shared
+`chime`, and on return brings the list into view and marks it instead of
+opening a popup. The notes have an audio context of their own, armed by the
+click on Start pager, so callers' playback and its recovery are untouched.
+"Play a sound when someone asks to join" is offered while a pager that requires
+approval is open, and only "off" is remembered. The request list is a live
+region, as Tab's and Camera's already were.
+
 ## The shared pairing library
 
 Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events

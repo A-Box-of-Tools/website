@@ -41,6 +41,15 @@ and camera-change/recovery guards as the list. Request withdrawal closes its
 dialog; hiding the page, pagehide, Stop and Stop confirmation also dismiss it
 without granting approval. The two dialogs never overlap.
 
+What a hidden camera page does say comes from `peer-request-signal.js`. The
+number of requests waiting on a decision is put in the tab's title, and when
+the owner returns to a page that received one while hidden, the list is brought
+into view and marked once. No popup opens, as above, and a request being
+accepted automatically is not counted. The camera is handed no chime, unlike
+Tab and the voice tools: this device is often left beside what it is watching,
+where a sound could wake the child it is pointed at, and with the microphone on
+it would be sent to the viewers.
+
 The inline request panel sits beside Start/Stop and the live status, before
 the camera preview and invitation. An approved viewer receives a private
 session receipt from `peer-admission.js`. The same browser can explicitly

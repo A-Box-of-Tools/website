@@ -1,8 +1,14 @@
 // Dismissing a request is not a decision. Only a current request, acted on
 // while its host is active, may reach the tool's approval callback.
+//
+// The popup opens only on a page that is in front, so it cannot be how a host
+// in another tab finds out. `signal` is the part that says it there: handed
+// the ids still waiting each time the list changes, it keeps the tab's title,
+// the sound and the mark on the list. See peer-request-signal.js.
 export function createApprovalPrompt({
   dialog, onApprove, onDeny, isBlocked = () => false,
   isActive = () => true, canApprove = () => true, focusFallback = () => null,
+  signal = null,
 }) {
   let requests = new Map();
   let current = null;
@@ -44,6 +50,7 @@ export function createApprovalPrompt({
     const next = new Map(rows.map(row => [row.id, row]));
     const fresh = rows.find(row => !requests.has(row.id));
     requests = next;
+    signal?.update(rows.map(row => row.id));
     refresh();
     // Requests arriving behind another dialog stay in the list. They must not
     // take focus away from Stop, a password prompt, or a decision in progress.
@@ -58,18 +65,19 @@ export function createApprovalPrompt({
   }
   return {
     update, close, refresh,
-    clear() { requests.clear(); close(false); },
+    clear() { requests.clear(); signal?.clear(); close(false); },
   };
 }
 
 export function createApprovalList({
   list, section, template, dialog, onApprove, onDeny,
   isBlocked = () => false, isActive = () => true, focusFallback = () => null,
+  signal = null,
 }) {
   let rows = new Map();
   const nodes = new Map();
   const prompt = createApprovalPrompt({
-    dialog, onApprove, onDeny, isBlocked, isActive,
+    dialog, onApprove, onDeny, isBlocked, isActive, signal,
     focusFallback: id => nodes.get(id)?.querySelector('[data-action="approve"]') || focusFallback(),
   });
   function refresh() {
@@ -98,7 +106,10 @@ export function createApprovalList({
         nodes.set(row.id, node);
         list.append(node);
       }
-      node.querySelector('[data-approval-row-name]').textContent = row.name;
+      // The list is a live region. Writing a name that has not changed would
+      // have every waiting row read out again each time another arrives.
+      const name = node.querySelector('[data-approval-row-name]');
+      if (name.textContent !== row.name) name.textContent = row.name;
     }
     section.hidden = next.length === 0;
     refresh();

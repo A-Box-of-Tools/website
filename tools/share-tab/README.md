@@ -160,6 +160,24 @@ while the single viewer slot is occupied; Deny remains available. Hiding the
 page, stopping capture or withdrawing a request closes its popup without
 granting access. Popup and list actions use the same session approval API.
 
+A host is usually looking at the tab being shared, not at this page, so the
+popup alone told nobody. `peer-request-signal.js` puts the number of waiting
+requests in this tab's title and plays two falling notes from the shared
+`chime` when a new one arrives. The notes come from an oscillator, with no file
+and no request. They are armed by the click on Choose a tab to share and are
+heard only on this device: capture is video-only, and of another tab. "Play a
+sound when someone asks to join" turns them off; it is shown while sharing, and
+only "off" is remembered. The page's "no sound" describes the stream, which
+still carries none.
+
+One browser rule decides what else happens meanwhile. While a tab capture is
+running, Chrome and Edge report the capturing page as visible even when it sits
+in a background tab. The popup therefore does open while the host is away,
+unseen, and is waiting when they return. That was measured in Edge 157 with a
+real capture. A stand-in capture stream does not show it, which is why a
+simulated hidden page behaves here as it does in the other tools: no popup, and
+the list marked on return.
+
 The rendezvous groups pages by public IPv4 address or IPv6 /64, page origin
 and tool. It is a best-effort network hint, not a Wi-Fi scan, verified identity
 or proof of physical proximity. A shared carrier gateway or VPN can include

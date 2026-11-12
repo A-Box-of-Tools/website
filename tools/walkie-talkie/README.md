@@ -150,6 +150,18 @@ The Worker writes no room history to storage. Pending requests count toward capa
 The pending list is beside the host controls and uses the shared inline panel,
 so Review later leaves an actionable request before the talking controls and invite.
 
+A request that arrives while the page is in the background cannot open the
+popup, so `peer-request-signal.js` says it instead: the number of waiting
+requests in the tab's title, two falling notes from the shared `chime`, and on
+return the list brought into view and marked rather than a popup. The notes are
+armed by the click on Start channel and need no permission. "Play a sound when
+someone asks to join" is offered while a channel that requires approval is
+open, and only "off" is remembered. The host's own microphone can pick the
+notes up while talking; echo cancellation normally removes them, and the switch
+is there for a host who would rather not find out. The request list is a live
+region, as Tab's and Camera's already were. A locked or suspended phone runs
+none of this until its host is back.
+
 ## The shared pairing library
 
 Socket ownership, guarded callbacks, heartbeat timers and page lifecycle events

@@ -8,6 +8,8 @@ import { observeForeground } from './shared/foreground-recovery.js';
 import { transportMode, readTransport, transportUrl } from './shared/peer-transport.js';
 import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createApprovalList } from './shared/peer-approval-ui.js';
+import { createRequestSignal, KNOCK } from './shared/peer-request-signal.js';
+import { createChime } from './shared/chime.js';
 import { createVoiceIdentityCache } from './shared/voice-identity.js';
 import { validCode, validKey, makeSenderKey, makeInboxIdentity, codeForKey, derivePasswordProof } from './inbox-credentials.js';
 
@@ -124,8 +126,14 @@ function activateOncall() {
   if (savedHost?.discoveryGroup) removeStored(hostStorage);
   let passwordRoom = null;
   let passwordFocus = null;
+  // A pager is left open to be heard, not watched, and a caller cannot be
+  // heard until they are approved. So the request has to make the sound.
+  const requestSignal = createRequestSignal({
+    panel: ui['requests-panel'],
+    sound: { chime: createChime(KNOCK), toggle: document.getElementById('pairing-request-sound') },
+  });
   const approvalRequests = createApprovalList({
-    list: ui.requests, section: ui['requests-panel'],
+    list: ui.requests, section: ui['requests-panel'], signal: requestSignal,
     template: document.getElementById('pairing-request-row'),
     dialog: document.getElementById('pairing-request-dialog'),
     isActive: () => activeRole === 'host' && hostActive && !pageSuspended,
@@ -212,6 +220,9 @@ function activateOncall() {
     ui.start.disabled = starting;
     ui['require-approval'].disabled = hostActive || starting || resumeRoleOnReturn === 'host';
     approvalRequests.refresh();
+    // Nobody asks to join a pager that admits without approval, so the switch
+    // for the sound is not offered for one.
+    requestSignal.host(activeRole === 'host' && hostActive && ui['require-approval'].checked);
     ui.join.disabled = starting;
     ui['host-form'].hidden = hostActive;
     ui['host-live'].hidden = !hostActive;
@@ -888,6 +899,11 @@ function activateOncall() {
       audioContext = new Context();
       monitorHostAudio(audioContext);
       const playing = audioContext.resume();
+      // Still inside the click that opens the pager, and before anything is
+      // awaited: see arm() in peer-request-signal.js. A pager that reopens
+      // itself on the way back from the background has no click, and takes
+      // the next one. After the pager's own context, so that one stays first.
+      if (ui['require-approval'].checked) requestSignal.arm();
       if (automatic) void playing.catch(() => {
         if (epoch === operationEpoch) updateHostSound();
       });

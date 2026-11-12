@@ -77,10 +77,11 @@
       </div>
       <p class="vi-note" id="vi-participant-count" aria-live="polite">0 people connected</p>
       <p class="vi-note" id="vi-host-empty">Your pager is open. Share its link or let people find it in your selected discovery scope.</p>
+      {% include "partials/paired-request-sound.html" %}
       <div role="region" id="vi-requests-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="vi-requests-title" data-pairing-requests>
         <h3 id="vi-requests-title">{{ ui.tool.approval_pending }}</h3>
         <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
-        <ul id="vi-requests"></ul>
+        <ul id="vi-requests" aria-live="polite"></ul>
       </div>
       <ul class="vi-participants" id="vi-participants" aria-label="Connected people"></ul>
       <p class="vi-note" id="vi-moderation-note" hidden role="alert"></p>

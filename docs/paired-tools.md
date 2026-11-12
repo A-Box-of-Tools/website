@@ -248,6 +248,30 @@ before invitations and video previews. Share Text puts it above the editor so
 the host can keep writing while reviewing requests. Empty lists take no space;
 long lists stay in normal page flow rather than covering Stop controls.
 
+`peer-request-signal.js` says a request has arrived where the popup cannot. The
+popup opens only on a page that is in front, so a request received by a page in
+the background used to add a row to the list and nothing else. The signal is
+handed the ids still waiting each time the list changes, by the shared popup or
+by Camera's own controller, and keeps three things. The tab's title carries the
+count, in the words of the list's heading, for as long as anything waits. A list
+that received a request while its page was hidden is brought into view and
+marked once when the host returns, without taking focus. And in Tab,
+Walkie-Talkie and Oncall a new request plays two falling notes from the shared
+`chime`, armed in the click that starts hosting, at most once every few seconds
+and once for each request. `partials/paired-request-sound.html` is the switch
+for that sound: it is on the page only during a session that requires approval,
+and only "off" is remembered. Text and Camera hand the signal no chime. A camera
+is often left beside what it watches, and with its microphone on the notes would
+reach the viewers. None of this needs a permission or opens a connection, and no
+system notification is sent. A request received while hidden still opens no
+popup on return.
+
+One browser rule changes what "in front" means for Tab. While a tab capture is
+running, Chrome and Edge report the capturing page as visible even from a
+background tab, so Tab's popup does open there, unseen, and is waiting when the
+host returns. The title and the sound are what reach that host meanwhile; the
+mark on return is for the pages a browser really hides.
+
 Approval belongs to a host session, not one transport connection. For Text,
 Tab and Camera, `peer-admission.js` issues unguessable receipts from the live
 host and remembers them in the joining browser, scoped to tool, room and route.
