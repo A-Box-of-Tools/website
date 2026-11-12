@@ -24,6 +24,15 @@
 
     {% include "partials/url-import.html" %}
 
+    <!--
+      What went wrong with something that was just added, said here rather than
+      in the last step. That card is dimmed until images arrive, and a dimmed
+      card is kept from a screen reader as well as faded - so the reason a
+      first address was refused, which is the usual answer because most sites
+      send no CORS header, was the one sentence on the page nobody could read.
+    -->
+    <p id="load-error" class="error" role="alert" hidden></p>
+
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
