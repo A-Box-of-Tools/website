@@ -153,9 +153,10 @@ async function addFiles(files) {
 /* ------------------------------------------------------------ web addresses */
 
 // The importer itself is shared - src/shared/url-import.js, brought in by
-// [picker.urls] in this tool's tool.toml. What stays here is the one part that
-// is this tool's own business: remembering which address each image came from,
-// so a row can say so.
+// [picker.urls] in this tool's tool.toml. What stays here is this tool's own
+// business: remembering which address each image came from, so a row can say
+// so, and waking the last step, which nothing else does for an image that came
+// this way.
 wireUrlImport({
   input: el.urlInput,
   button: el.fetchUrls,
@@ -165,6 +166,31 @@ wireUrlImport({
   async onFiles(downloaded) {
     const before = items.length;
     await addFiles(downloaded.map((d) => d.file));
+
+    // The last step is on the page from the start and dimmed, and the picker
+    // takes `inert` off it in one place only: its own hand-over, for a file
+    // that was dropped or chosen. An image fetched from an address never
+    // passes through there. So the first images to arrive this way filled the
+    // list and the preview and left "Create video" unclickable beneath them,
+    // under a line saying the step would open as soon as a file was chosen -
+    // and this tool's one message line is inside that card, so whatever the
+    // import had to report was dimmed along with it.
+    //
+    // Only once the list has grown. The picker wakes the card before the tool
+    // has looked at a file, because it cannot wait to find out; this route has
+    // already waited, and a step woken for images that were all skipped is a
+    // live card with nothing to make a video from.
+    //
+    // An import that adds nothing leaves the card as it found it, and that is
+    // a decision rather than an omission: there is no `picker.waiting()` here,
+    // and none for the import whose every address is refused, which never
+    // reaches this function. The list is cumulative, so one bad address says
+    // nothing about the images already in it. And where the list is empty the
+    // call either does nothing, the card never having woken, or dims a card
+    // that an earlier drop woke - and #error with it, the only place the
+    // reason for the refusal is written, which an inert card also keeps from
+    // a screen reader.
+    if (items.length > before) picker.arrived();
 
     // addFiles can itself skip a file, so match on the File object rather than
     // assuming the two lists still line up: attributing an image to the wrong

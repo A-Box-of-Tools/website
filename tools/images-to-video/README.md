@@ -239,3 +239,11 @@ edge focuses the opposite direction so the same image remains reachable.
 
 The generated player has a translated accessible name so assistive technology
 identifies the finished video alongside its native playback controls.
+
+The last step waits, dimmed, until images arrive. The shared picker wakes it
+the moment a file is dropped or chosen. An image fetched from a web address
+never passes through the picker, so `main.js` wakes the step for that route
+itself, and only once the list has grown. Nothing puts the step back to waiting
+afterwards: the tool's one message line, `#error`, sits in that card, and an
+inert card is both dimmed and kept from assistive technology, so dimming it
+after a refused import would take the reason for the refusal away with it.
