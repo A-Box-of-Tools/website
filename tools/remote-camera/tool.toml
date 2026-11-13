@@ -13,9 +13,9 @@ glyph = "camera"
 category = "connect-devices"
 roadmap_group = "video"
 css_parts = ["form", "notes", "paired-tools"]
-js_parts = ["peer-pairing", "peer-greeting", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-admission", "room-names", "peer-host-claim"]
+js_parts = ["peer-pairing", "peer-greeting", "peer-endpoint", "foreground-recovery", "peer-network", "peer-transport", "peer-transport-ui", "connection-diagnostics", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-admission", "room-names", "peer-host-claim", "chime"]
 supports_relay = true
-lastmod = "2026-11-03"
+lastmod = "2026-11-12"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera with Direct or optional Cloud relay, multiple viewers, shared video bandwidth, optional audio, viewer approval, camera switching and activity notifications."
 og_title = "Watch another device's camera"
@@ -170,7 +170,9 @@ body = """
       motion or sound alerts requests notification permission. Small video frames
       and received audio are analyzed on the viewer device, without recordings or
       uploads. The browser and operating system display generic activity notices;
-      notices contain no camera image, audio, link name or viewer note. Disconnect
+      notices contain no camera image, audio, link name or viewer note. The page
+      also marks each alert on the video with its time and can beep; the beep is
+      two notes made in the page, with no sound file and no request. Disconnect
       stops detection and closes this session's notifications. Keep the viewer
       page open; a browser may pause analysis in the background or during sleep."""
 
@@ -240,7 +242,7 @@ q = "Does it send sound or record video?"
 a = "Audio is off by default on the host. Select Enable microphone before starting to request the microphone and send encrypted audio to an accepted viewer using the chosen connection mode. Stop before changing this choice. If the browser interrupts the microphone, it stays quiet until you choose Resume microphone. The viewer tries to play shared audio automatically; if the browser requires a tap, choose Unmute audio on the video. Mute silences playback while sound detection remains available. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
 [[faq]]
 q = "Can I receive motion or sound alerts?"
-a = "Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen."
+a = "Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Each alert is also marked on the video with its time, and the viewer page can beep. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen."
 [[faq]]
 q = "Why can pairing fail on the same Wi-Fi?"
 a = "Guest networks, client isolation, firewalls, local-network permissions and VPN routes can prevent Direct. Stop on both devices and check those settings, or deliberately choose Cloud relay on the host and share its new invitation. The viewer must explicitly connect using that mode. There is no automatic relay fallback, and a managed device can block relay connections too. If relay preparation fails, capture is released instead of retrying through Direct."

@@ -1,5 +1,7 @@
 const SAMPLE_MS = 250;
-const COOLDOWN_MS = 10000;
+// Exported because the page keeps an alert lit for exactly this long: the next
+// one cannot arrive sooner, so two never overlap.
+export const COOLDOWN_MS = 10000;
 const WIDTH = 32, HEIGHT = 24;
 let nextTag = 0;
 
@@ -260,7 +262,12 @@ export class ViewerAlerts {
     this.#lastAlert = time;
     let displayed;
     try {
-      displayed = this.#registration.showNotification(this.#title, { body: this.#bodies[kind], tag: token.tag, renotify: false });
+      // One tag, so a later alert replaces the earlier one instead of piling up
+      // beside it, and `renotify`, so the replacement is announced. Without it
+      // a system that still holds the first notice updates it in silence:
+      // Chromium on Windows suppresses the popup, and the second and every
+      // later alert of a session reached nobody who had not dismissed the first.
+      displayed = this.#registration.showNotification(this.#title, { body: this.#bodies[kind], tag: token.tag, renotify: true });
     } catch {
       this.#clearRun(); this.#onStatus('alerts.failed'); return;
     }

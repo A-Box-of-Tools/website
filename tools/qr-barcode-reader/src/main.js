@@ -2,7 +2,7 @@
 
 import * as camera from './camera.js';
 import { scan } from './scan.js';
-import { createChime } from './chime.js';
+import { createChime } from './shared/chime.js';
 import { sightings } from './sightings.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { phrase } from './shared/phrases.js';
@@ -626,7 +626,7 @@ function look() {
 async function startCamera(deviceId) {
   stopCamera();
   // Here, inside the tap and before anything is awaited, or not at all: see
-  // chime.js for why a sound has to be asked for this early.
+  // shared/js/chime.js for why a sound has to be asked for this early.
   if (el.signal.checked) chime.arm();
   el.pickError.hidden = true;
   el.startCamera.hidden = true;

@@ -164,6 +164,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/download.js` | `js_parts = ["download"]` | a download that starts now, or a link that follows the latest result |
 | `shared/js/media.js` | `js_parts = ["media"]` | what the browser makes of a file: a video's size and length, a picture's size |
 | `shared/js/cropper.js` | `js_parts = ["cropper"]` | the crop box dragged over a preview, in the picture's own pixels; the tool names its smallest crop and whether sides must be even |
+| `shared/js/chime.js` | `js_parts = ["chime"]` | a sound the page makes itself, and the buzz that goes with it: notes from an oscillator, so there is no audio file and no request. Armed inside a tap; a tool that is not saying "yes" passes notes of its own |
 | `shared/js/info-tip.js` | `js_parts = ["info-tip"]`; a paired tool has it already | the information mark, an i that opens a sentence or two in a bubble over the page; see [An information mark](#an-information-mark) |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
