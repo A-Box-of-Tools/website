@@ -52,6 +52,9 @@ name = "Dokumente &amp; PDF"
 items = [
   ["Seiten zuschneiden", "die Ränder eines Scans abschneiden, oder die einer ausgedruckten Folie"],
   ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
+  ["PDF zu Excel", "die Tabellen eines Auszugs, als echte .xlsx-Datei"],
+  ["PDF unterschreiben", "eine handschriftliche Unterschrift auf der Seite, keine Signatur mit Zertifikat"],
+  ["Bild in Text", "die Wörter aus einem Screenshot oder Scan, als Text zum Kopieren"],
 ]
 
 [[group]]
