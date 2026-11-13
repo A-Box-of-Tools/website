@@ -23,6 +23,7 @@ const el = {
   urlInput: $('url-input'),
   fetchUrls: $('fetch-urls'),
   urlStatus: $('url-status'),
+  loadError: $('load-error'),
   countLabel: $('count-label'),
   clearAll: $('clear-all'),
   bulk: $('bulk-duration'),
@@ -64,6 +65,16 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+// Two lines, each in the step it speaks for: #load-error for what was just
+// added, #error for the export. There used to be only the second, in the last
+// step, and it carried the first step's messages as well - a file that could
+// not be read, an address that was refused. But the last step is dimmed until
+// images arrive, and an inert card is kept from a screen reader as well as
+// faded, so the reason a first import was refused was written where nobody
+// could read it or be told it. That is not a corner of this tool: most sites
+// send no CORS header, so a refusal is the answer "Add from a web address"
+// gives most often.
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 const { show: showError, clear: clearError } = messageBox(el.error);
 const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1 });
 const formatDuration = (seconds) => durationText(seconds, phrase, { decimals: 1 });
@@ -132,12 +143,12 @@ async function addFiles(files) {
       // language puts a comma and a space between two of them.
       const names = skipped.slice(0, 3)
         .reduce((a, b) => phrase('join.comma', { a, b }));
-      showError(phrase(skipped.length === 1 ? 'read.skipped.one' : 'read.skipped.many', {
+      showLoadError(phrase(skipped.length === 1 ? 'read.skipped.one' : 'read.skipped.many', {
         n: skipped.length,
         names: skipped.length > 3 ? phrase('list.more', { names }) : names,
       }));
     } else {
-      clearError();
+      clearLoadError();
     }
   } catch (error) {
     if (userInput) journey('problem');
@@ -153,18 +164,43 @@ async function addFiles(files) {
 /* ------------------------------------------------------------ web addresses */
 
 // The importer itself is shared - src/shared/url-import.js, brought in by
-// [picker.urls] in this tool's tool.toml. What stays here is the one part that
-// is this tool's own business: remembering which address each image came from,
-// so a row can say so.
+// [picker.urls] in this tool's tool.toml. What stays here is this tool's own
+// business: remembering which address each image came from, so a row can say
+// so, and waking the last step, which nothing else does for an image that came
+// this way.
 wireUrlImport({
   input: el.urlInput,
   button: el.fetchUrls,
   status: el.urlStatus,
-  onError: showError,
-  onClear: clearError,
+  onError: showLoadError,
+  onClear: clearLoadError,
   async onFiles(downloaded) {
     const before = items.length;
     await addFiles(downloaded.map((d) => d.file));
+
+    // The last step is on the page from the start and dimmed, and the picker
+    // takes `inert` off it in one place only: its own hand-over, for a file
+    // that was dropped or chosen. An image fetched from an address never
+    // passes through there. So the first images to arrive this way filled the
+    // list and the preview and left "Create video" unclickable beneath them,
+    // under a line saying the step would open as soon as a file was chosen.
+    //
+    // Only once the list has grown. The picker wakes the card before the tool
+    // has looked at a file, because it cannot wait to find out; this route has
+    // already waited, and a step woken for images that were all skipped is a
+    // live card with nothing to make a video from.
+    //
+    // An import that adds nothing leaves the card as it found it, and that is
+    // a decision rather than an omission: there is no `picker.waiting()` here,
+    // and none for the import whose every address is refused, which never
+    // reaches this function. The list is cumulative, so one bad address says
+    // nothing about the images already in it. And where the list is empty the
+    // call either does nothing, the card never having woken, or dims a card
+    // that an earlier drop woke - which is where a video made before the list
+    // was emptied still sits, beside the link that downloads it. Nothing else
+    // here dims that card again, "Remove all" included, and a refused address
+    // is no reason to be the first.
+    if (items.length > before) picker.arrived();
 
     // addFiles can itself skip a file, so match on the File object rather than
     // assuming the two lists still line up: attributing an image to the wrong
@@ -835,12 +871,17 @@ el.privacyToggle.addEventListener('click', () => {
 /* -------------------------------------------------------------------- boot */
 
 // An error thrown after boot would otherwise only reach the console, leaving
-// the page looking functional but doing nothing.
+// the page looking functional but doing nothing. It is said beside the work it
+// interrupted: under the progress bar while a video is being made, and
+// otherwise in the first step, the one card that is never dimmed.
+function showBroke(detail) {
+  (exporting ? showError : showLoadError)(phrase('error.broke', { detail }));
+}
 window.addEventListener('error', (event) => {
-  showError(phrase('error.broke', { detail: event.message }));
+  showBroke(event.message);
 });
 window.addEventListener('unhandledrejection', (event) => {
-  showError(phrase('error.broke', { detail: event.reason?.message ?? event.reason }));
+  showBroke(event.reason?.message ?? event.reason);
 });
 
 initFormatNote();

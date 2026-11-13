@@ -239,3 +239,21 @@ edge focuses the opposite direction so the same image remains reachable.
 
 The generated player has a translated accessible name so assistive technology
 identifies the finished video alongside its native playback controls.
+
+The last step waits, dimmed, until images arrive. The shared picker wakes it
+the moment a file is dropped or chosen. An image fetched from a web address
+never passes through the picker, so `main.js` wakes the step for that route
+itself, and only once the list has grown. Nothing puts the step back to waiting
+afterwards, neither "Remove all" nor a refused import: a video made before the
+list was emptied still sits in that card, beside the link that downloads it.
+
+There are two message lines, each in the step it speaks for. `#load-error` in
+the first step says what went wrong with something that was just added, a file
+that could not be read or an address that was refused; `#error` in the last
+speaks for the export. They were one line in the last step until that proved to
+be the wrong place for the first step's messages. An inert card is both dimmed
+and kept from assistive technology, so the reason a first import was refused
+could be neither read nor announced, and a refusal is the usual answer, because
+most sites send no CORS header. An error nothing caught is said under the
+progress bar while a video is being made, and otherwise in the first step, the
+one card that is never dimmed.
