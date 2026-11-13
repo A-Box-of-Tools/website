@@ -40,6 +40,7 @@
       </div>
       <p id="host-status" class="tab-share-status" role="status" aria-live="polite">Nothing is being captured or shared.</p>
       <p id="host-publication-status" class="tab-share-status" role="status" aria-live="polite" hidden></p>
+      {% include "partials/paired-request-sound.html" %}
       <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
         <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
         <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>

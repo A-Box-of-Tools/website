@@ -39,8 +39,10 @@
  * qr-barcode-reader, for a code its camera has read, with the notes below.
  * remote-camera, for motion or sound in a view somebody may have stopped
  * looking at, with a lower and longer pair of its own: an answer to "did that
- * scan?" and a call from across the room are not the same sound. It began as
- * the reader's own module and moved here when the second tool needed it.
+ * scan?" and a call from across the room are not the same sound. share-tab,
+ * walkie-talkie and voice-oncall, for a request to join, with the falling
+ * pair peer-request-signal.js keeps and plays for them. It began as the
+ * reader's own module and moved here when the second tool needed it.
  */
 
 /**

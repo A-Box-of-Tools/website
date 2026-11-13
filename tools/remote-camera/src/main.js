@@ -14,6 +14,7 @@ import { bindTransportControl } from './shared/peer-transport-ui.js';
 import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/peer-discovery-ui.js';
 import { AdmissionGrants } from './shared/peer-admission.js';
 import { createChime } from './shared/chime.js';
+import { createRequestSignal } from './shared/peer-request-signal.js';
 
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
@@ -84,6 +85,11 @@ const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
   startDiscovery();
 } });
 let pendingApprovalRequests = new Map();
+// A camera is often left beside what it is watching, with nobody at its page:
+// the tab's title and the mark on the list are for whoever comes back to it.
+// It is handed no chime. A sound from this device could wake the child it is
+// pointed at, and with the microphone on it would go out to the viewers.
+const requestSignal = createRequestSignal({ panel: $('camera-approval') });
 let approvalDialogPeer = null;
 let approvalDialogRevision = 0;
 let reportAction = 0;
@@ -105,6 +111,7 @@ function showStatus(key, role = mode) {
 function idleCamera() {
   closeApprovalDialog();
   pendingApprovalRequests.clear();
+  requestSignal.clear();
   cameraResumeNeeded = false;
   cameraAudioResumeNeeded = false;
   cameraResuming = false;
@@ -200,6 +207,7 @@ const session = new CameraSession({
         && ['connection.server-failed', 'connection.ended', 'camera.switch-ended', 'camera.ended', 'camera.paused'].includes(key);
       closeStopDialog();
       closeApprovalDialog();
+      requestSignal.clear();
       discovery?.unpublish();
       epoch += 1;
       clearDetails();
@@ -227,6 +235,9 @@ const session = new CameraSession({
   onRequests(requests) {
     const fresh = requests.filter((request) => !request.autoAccept && !pendingApprovalRequests.has(request.id));
     pendingApprovalRequests = new Map(requests.map((request) => [request.id, request]));
+    // Only the ones somebody has to decide. A viewer held back while the camera
+    // is switched, and let in again without a decision, is not waiting on the owner.
+    requestSignal.update(requests.filter((request) => !request.autoAccept).map((request) => request.id));
     const focused = document.activeElement?.dataset;
     $('camera-requests').replaceChildren();
     $('camera-approval').hidden = requests.length === 0;

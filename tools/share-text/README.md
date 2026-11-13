@@ -242,6 +242,10 @@ from both physical devices are needed to investigate those boundaries.
   Fresh requests use the shared approval popup. Review later or Escape leaves
   the request in the list directly above the editor; hiding or stopping the page closes the popup without
   granting access. Its actions use the same current-channel guards as the list.
+  A request that arrives while the page is in the background says so through
+  `peer-request-signal.js`: the number waiting goes in the tab's title, and on
+  return the list is brought into view and marked, with no popup. This tool
+  hands the signal no chime, so it makes no sound.
   `peer-admission.js` remembers an approved browser's receipt by room and route.
   A later explicit connection can reuse it in the same host session, including
   in a new reader tab. Stop sharing clears every host grant, so starting again

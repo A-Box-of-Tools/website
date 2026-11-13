@@ -19,6 +19,7 @@ import { createDiscoveryGroupControl, appendConnectionIcons } from './shared/pee
 import { answerHostProve, createHostClaim, holderUrl } from './shared/peer-host-claim.js';
 import { openJoinedPage, consumeJoinedPage } from './shared/peer-join.js';
 import { createApprovalPrompt } from './shared/peer-approval-ui.js';
+import { createRequestSignal } from './shared/peer-request-signal.js';
 import { AdmissionGrants, createAdmissionCache, validAdmissionToken } from './shared/peer-admission.js';
 import { shareConfiguration, shareCandidate, shareDescription } from './transport.js';
 
@@ -150,8 +151,13 @@ const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row, note} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
 const sendQueue = new Map(); // viewer id -> its bounded file sender
+// A sharer who has sent the link has usually gone back to what they were
+// doing. The tab's title and the mark on the list reach them there; this
+// tool hands the signal no chime, so it makes no sound.
+const requestSignal = createRequestSignal({ panel: document.querySelector('[data-pairing-requests]') });
 const approvalPrompt = createApprovalPrompt({
   dialog: $('pairing-request-dialog'),
+  signal: requestSignal,
   isActive: () => sharing && isPrivate,
   onApprove: id => decideRequest(id, true),
   onDeny: id => decideRequest(id, false),

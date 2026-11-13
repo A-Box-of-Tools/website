@@ -298,6 +298,42 @@
   line-height: 1.5;
 }
 .paired-host-requests button { min-height: 44px; }
+/* A request that arrived while the page was in the background is pointed at
+   once, when the host comes back: the list is marked, and no popup opens. */
+.paired-host-requests { scroll-margin-block: 1rem; }
+.paired-host-requests.paired-requests-noticed { animation: paired-requests-noticed 1s ease-out 3; }
+@keyframes paired-requests-noticed {
+  from { box-shadow: 0 0 0 4px var(--accent); }
+  to { box-shadow: 0 0 0 4px transparent; }
+}
+/* The switch for the sound a request makes sits above the list it is about,
+   and is on the page only while there is a session somebody could ask to join. */
+.paired-request-sound {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+  margin-block: .5rem 0;
+  color: var(--text);
+  font-size: .9rem;
+  font-weight: 400;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.paired-request-sound input {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .paired-host-requests.paired-requests-noticed {
+    animation: none;
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
 .paired-host-requests button[data-action$="approve"],
 .paired-host-requests .request button:not(.ghost) {
   border-color: var(--accent);
