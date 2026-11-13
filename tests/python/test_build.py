@@ -1902,6 +1902,39 @@ class BuildTheSite(unittest.TestCase):
                 with self.subTest(index=name, leak=leak):
                     self.assertNotIn(leak, text)
 
+    def test_llms_txt_and_the_skill_send_an_agent_to_the_same_adapter(self):
+        """The index says where the local adapter is and the skill says when
+        to use it, so the two have to be talking about one place.
+
+        Both are rendered from `agents.routes`, and this is the guard on that:
+        a template that went back to spelling an address out would pass every
+        other test and quietly disagree with the config after a rename. The
+        last assertion is the sentence this section replaced. The site has no
+        CLI and the adapter is one, so "there is no CLI" stopped being a fact
+        an agent could act on the day the adapter was published.
+        """
+        handed = buildmod.agents.routes(self.site)
+        adapter = handed['adapter']
+        self.assertEqual(adapter['repository'],
+                         'https://github.com/A-Box-of-Tools/abox-tools-plugin')
+        llms = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        section = llms.split('## Agent access', 1)[1].split('\n## ', 1)[0]
+        skill = (self.out / handed['skill']['path']).read_text(encoding='utf-8')
+        section_links = re.findall(r'\]\(([^)]+)\)', section)
+        self.assertEqual(section_links, [
+            handed['skill']['url'], adapter['repository'],
+            adapter['registry_url'], adapter['skill_listing']])
+        self.assertIn(f'`{handed["skill"]["install"]}`', section)
+        for address in (adapter['repository'], adapter['registry_url'],
+                        adapter['skill_listing']):
+            with self.subTest(address=address):
+                self.assertIn(f']({address})', skill)
+        for text in (section, skill):
+            self.assertIn(f'`{adapter["skill_install"]}`', text)
+            self.assertIn(f'`{adapter["registry_name"]}`', text)
+        for text in (llms, skill):
+            self.assertNotIn('CLI or file-upload', text)
+
     def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
         """The same rule as the sitemap and the hreflang tags, and for the same
         reason: a language whose hub is still half English should not be handed
