@@ -52,6 +52,9 @@ name = "Documentos y PDF"
 items = [
   ["Recortar páginas", "quitarle los márgenes a un escaneo, o a unas diapositivas impresas"],
   ["Extraer imágenes", "recuperar las fotos que hay dentro de un documento"],
+  ["PDF a Excel", "las tablas de un extracto, como un .xlsx de verdad"],
+  ["Firmar un PDF", "tu firma manuscrita en la página, no una firma con certificado"],
+  ["Imagen a texto", "las palabras de una captura o de un escaneo, listas para copiar"],
 ]
 
 [[group]]

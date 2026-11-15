@@ -52,6 +52,9 @@ name = "Documents &amp; PDF"
 items = [
   ["Recadrer des pages", "rogner les marges d'un scan, ou celles d'un diaporama imprimé"],
   ["Extraire les images", "ressortir les images d'un document"],
+  ["PDF en Excel", "les tableaux d'un relevé, dans un vrai fichier .xlsx"],
+  ["Signer un PDF", "une signature manuscrite sur la page, pas une signature par certificat"],
+  ["Image en texte", "les mots d'une capture ou d'un scan, prêts à copier"],
 ]
 
 [[group]]

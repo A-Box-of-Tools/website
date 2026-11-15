@@ -61,6 +61,9 @@ name = "Documents &amp; PDF"
 items = [
   ["Crop pages", "trim the margins off a scan, or off a printed slide deck"],
   ["Extract images", "pull the pictures back out of a document"],
+  ["PDF to Excel", "the tables in a statement, as a real .xlsx"],
+  ["Sign a PDF", "a handwritten signature on the page, not the certificate kind"],
+  ["Image to text", "the words in a screenshot or a scan, ready to copy"],
 ]
 
 [[group]]
