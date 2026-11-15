@@ -1,0 +1,31 @@
+#
+# Guide: what a magnification number means.
+#
+# Written for the person holding a box, or a listing, with a number on it: 675×
+# on a telescope, 8×42 on binoculars, 40×/0.65 on a microscope objective. What
+# the number says, what it shrinks as it grows, and why the width of the lens
+# and not the number decides how much there is to see. Then one section for
+# each instrument's own notation, because that is the part people get stuck on.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/understand-magnification"
+kind = "guide"
+nav = "Understanding magnification"
+group = "doing-the-job"
+tool = "magnification-calculator"
+
+title = "What Magnification Numbers Mean on a Telescope, Microscope or Binoculars"
+description = "What 8×42, 40×/0.65 and 675× really tell you: how big things look, how much fits in the view, and why the width of the lens decides the detail. With the limits worked out for your own instrument."
+
+heading = "What a magnification number tells you, and what it leaves out"
+lede = "A 675× telescope shows no more than the same telescope at 120×, and binoculars marked 8×42 beat 8×21 only when the light fades. The number says how big things look. How much there is to see is in the other numbers beside it."
+
+updated = "15 November 2026"
+published = "2026-11-15"
+lastmod = "2026-11-15"
+
+og_title = "What magnification numbers really mean"
+og_description = "How big things look, how much fits in the view, and where a bigger number stops showing anything new, for telescopes, binoculars, microscopes and magnifiers."
+og_image_alt = "abox.tools - browser tools for local file processing"
