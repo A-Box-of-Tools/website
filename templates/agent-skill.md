@@ -93,6 +93,10 @@ each operation needs.
 - [{{ routes.adapter.skill }} on skills.sh]({{ routes.adapter.skill_listing }}),
   installed with `{{ routes.adapter.skill_install }}`
 
+## Building on {{ site.name }}
+
+{{ site.llms.building }}
+
 ## Feedback and contributions
 
 {{ site.llms.feedback }}

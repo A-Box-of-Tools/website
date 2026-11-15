@@ -32,7 +32,10 @@ its own EXIF parser again. Every module under `tools/*/src/` has no imports to
 install and is already run outside a browser by `node --test`: the EXIF and TIFF
 parsers, the JPEG, PNG and WebP container walks, the PDF object reader and
 rewriter, the three MP4 writers, the GIF LZW codec, the QR encoder and the ZIP
-writer. Keep the MIT notice with one and the whole condition is met.
+writer. Keep the MIT notice with one and the whole condition is met. The site
+asks for one thing more and requires nothing more: `/llms.txt` and the
+published skill ask whoever builds a tool on this code to link
+https://abox.tools/ from it.
 
 **The writing half asks to be credited.** CC BY wants the creator named, a link
 to the licence, and — the clause most often missed — a note that you changed it,

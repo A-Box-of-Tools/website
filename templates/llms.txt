@@ -13,6 +13,10 @@
 - [Official MCP Registry record]({{ routes.adapter.registry_url }}): {{ llms.adapter_registry_note }} `{{ routes.adapter.registry_name }}`
 - [{{ routes.adapter.skill }} on skills.sh]({{ routes.adapter.skill_listing }}): {{ llms.adapter_skill_note }} `{{ routes.adapter.skill_install }}`
 
+## Building on {{ site.name }}
+
+{{ llms.building }}
+
 ## Feedback and contributions
 
 {{ llms.feedback }}

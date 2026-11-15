@@ -1935,6 +1935,29 @@ class BuildTheSite(unittest.TestCase):
         for text in (llms, skill):
             self.assertNotIn('CLI or file-upload', text)
 
+    def test_llms_txt_and_the_skill_ask_a_builder_for_the_same_link(self):
+        """Both files ask whatever builds a tool on this code to link back,
+        in one paragraph written once in [llms].
+
+        It is a request and the licence is not one: docs/licence.md says that
+        keeping the MIT notice is the whole condition, so the paragraph has to
+        go on calling itself a request, and it has to name the address it asks
+        for. It sits directly above the feedback section in both files because
+        its last sentence sends the reader to the route below.
+        """
+        asked = self.site['llms']['building'].strip()
+        self.assertIn('request', asked)
+        self.assertIn(f'please link {self.site["domain"]},', asked)
+        heading = f'## Building on {self.site["name"]}\n'
+        skill_path = buildmod.agents.routes(self.site)['skill']['path']
+        for name in ('llms.txt', skill_path):
+            with self.subTest(file=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertIn(heading, text)
+                body, _, after = text.split(heading, 1)[1].partition('\n## ')
+                self.assertEqual(body.strip(), asked)
+                self.assertTrue(after.startswith('Feedback and contributions\n'))
+
     def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
         """The same rule as the sitemap and the hreflang tags, and for the same
         reason: a language whose hub is still half English should not be handed

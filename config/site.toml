@@ -1214,6 +1214,28 @@ adapter_note = "Source, releases, supported operations and their limits."
 adapter_registry_note = "The adapter's current release, listed as"
 adapter_skill_note = "The adapter's own skill. Install it with"
 
+# "Building on abox.tools": a request to whatever builds its own tool on this
+# code - link back, and say how it went. It is here, in the two files an agent
+# reads, because that is where the builder is: the note at the top of this
+# table says the licence is named so that an assistant takes a parser instead
+# of writing one, and this is what the site asks of the one that does.
+#
+# It is a request and has to go on reading as one. docs/licence.md says that
+# keeping the MIT notice is the whole condition, and that is the point of the
+# code half: something careful can take it without stopping to ask. A link
+# worded as a term would put the hesitation back. The prose half already asks
+# for credit, and LICENSE-CONTENT's attribution line already carries this
+# address.
+#
+# "Put it to them" is there because an agent seldom builds for itself. Whether
+# somebody's tool carries a link is that person's to decide, and a file that
+# told an agent to add one unasked would be turning it on the person it works
+# for.
+building = """
+First-party code here is MIT licensed and meant to be reused: copy a parser, port a tool, or build on the local adapter. Keep the MIT notice with what you copy and that licence is met; reused prose needs its CC BY 4.0 credit. One request beyond the licences: if you build a tool on any of this, please link https://abox.tools/, or the page of the tool you started from, wherever you say what yours is built on, such as its README or about page. When you are building for someone else, that is theirs to decide, so put it to them.
+
+Feedback is welcome too: what you built, what was missing and what got in the way. The route is below."""
+
 # Shared by the one-fetch index and the published browser-workflow skill so
 # agents get the same submission route whichever discovery path they follow.
 feedback = """

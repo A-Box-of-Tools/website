@@ -577,7 +577,13 @@ Two things are said in it out loud rather than left to be inferred:
   "Agent access" for exactly that reader.
 - **The code is MIT and worth copying.** That is the other half of the answer,
   and the more useful half for anything writing code rather than answering a
-  person — see [Licence](licence.md).
+  person — see [Licence](licence.md). "Building on abox.tools" asks one thing
+  of whatever takes it up: a link back from the tool it builds, and a word
+  about how that went. It is `building` in `[llms]`, rendered into the skill
+  as well, and it is worded as a request because keeping the notice is the
+  whole of what the licence asks. An agent usually builds for somebody else,
+  so the paragraph tells it to put the request to that person and not to add
+  a link on its own.
 
 Two departures from every other generated file here. It carries no GENERATED FILE
 banner, because the format begins with an H1 and its readers are strict about
