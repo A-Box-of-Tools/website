@@ -82,7 +82,12 @@ label.chip { position: relative; display: inline-flex; align-items: center; }
 .mc-fig { margin: 0; min-width: 0; }
 .mc-whole { grid-row: span 2; }
 .mc-fig canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; background: #05070d; box-shadow: 0 0 0 1px var(--border); }
-.mc-fig figcaption { margin-top: .3rem; color: var(--text-dim); font-size: .76rem; line-height: 1.35; }
+/* A caption under a small picture is two short lines, and balanced so that the second
+   is not one word, or in Chinese and Japanese one character. Where a browser can find
+   the phrases in Japanese it breaks between them, and not inside a word in katakana.
+   The labels above the boxes do not ask for that: a third line there would push one
+   box below its neighbour. */
+.mc-fig figcaption { margin-top: .3rem; color: var(--text-dim); font-size: .76rem; line-height: 1.35; text-wrap: balance; word-break: auto-phrase; }
 .mc-caption { max-width: 780px; margin: .5rem auto 0; color: var(--text-dim); font-size: .78rem; line-height: 1.45; }
 .mc-answer { padding-top: .7rem; }
 .mc-story { max-width: 72ch; margin: .35rem 0 0; font-size: .98rem; line-height: 1.5; }
@@ -145,10 +150,12 @@ label.chip { position: relative; display: inline-flex; align-items: center; }
   .mc-world-value { grid-column: 1; font-size: .7rem; }
   /* Two boxes to a row, so the pictures are not three screens down. A box that
      shares its row with a menu keeps the whole row, and a label is given room for
-     two lines so the boxes under two labels of different lengths still line up. */
+     two lines so the boxes under two labels of different lengths still line up. Those
+     two lines are balanced, because left alone a Japanese label puts its last
+     character and a closing bracket on a line of their own. */
   .mc-form .settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
   .mc-form .mc-wide { grid-column: 1 / -1; }
-  .mc-form .field:not(.mc-wide) > label { display: flex; align-items: flex-end; min-height: 2.5em; line-height: 1.25; }
+  .mc-form .field:not(.mc-wide) > label { display: flex; align-items: flex-end; min-height: 2.5em; line-height: 1.25; text-wrap: balance; }
   .mc-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .mc-whole { grid-row: auto; grid-column: span 2; }
   .mc-rung { grid-template-columns: minmax(4rem, auto) minmax(0, 1fr); }
@@ -157,9 +164,10 @@ label.chip { position: relative; display: inline-flex; align-items: center; }
 @media (max-width: 480px) {
   /* Four names in a row fit a phone in English and no further: "Microscopio" is two
      pixels too wide at 360. Two rows of two have room for any of the seven languages,
-     with the picture beside the name again. */
+     with the picture beside the name again. The padding is what the five characters
+     of a Chinese telescope need at 320, where they were one pixel short of a line. */
   .mc-worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mc-world { grid-template-columns: auto 1fr; justify-items: start; padding: .4rem .6rem; text-align: start; }
+  .mc-world { grid-template-columns: auto 1fr; justify-items: start; column-gap: .35rem; padding: .4rem .45rem; text-align: start; }
   .mc-world svg { grid-row: span 2; }
   .mc-world-name { font-size: .84rem; }
   .mc-world-value { grid-column: 2; }
