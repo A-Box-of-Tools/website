@@ -67,11 +67,30 @@ function radio(name, otherwise) {
 
 // A box's number, null when it is empty, and not a number when the browser could not
 // read what is in it.
-function typed(id) {
-  const box = $(id);
-  if (box.validity && box.validity.badInput) return Number.NaN;
-  const text = box.value.trim();
-  return text === '' ? null : Number(text);
+const numberOf = text => (text.trim() === '' ? null : Number(text));
+const numberIn = box => (box.validity && box.validity.badInput ? Number.NaN : numberOf(box.value));
+
+// What each box last held that the page could use, starting from what the markup
+// gives it. A box in error is set aside for this until it is put right, so that the
+// rest of the page goes on answering. Without it one number out of range froze the
+// dial, the subjects and the assumptions as well, and the reason was written beside a
+// box that may have scrolled off the screen. Two boxes mean what the menu beside them
+// says, and a number kept under one meaning is no use under another, so each of those
+// is kept once for every choice in its menu.
+const MENU_OF = { 'bin-field': 'bin-field-unit', 'mag-value': 'mag-unit' };
+const slot = id => (MENU_OF[id] ? `${id} ${$(MENU_OF[id]).value}` : id);
+const good = {};
+for (const id of new Set(Object.values(BOXES).flatMap(boxes => Object.values(boxes)))) {
+  const start = $(id).defaultValue;
+  if (!MENU_OF[id]) {
+    good[id] = start;
+    continue;
+  }
+  // An empty box is right whatever its menu says. A number is right only under the
+  // choice the markup makes beside it.
+  for (const option of $(MENU_OF[id]).options) {
+    if (option.defaultSelected || start === '') good[`${id} ${option.value}`] = start;
+  }
 }
 
 const fieldTo = { degrees: value => value, metres: metresAt1000, feet: feetAt1000Yards };
@@ -79,8 +98,14 @@ const fieldFrom = { degrees: value => value, metres: fieldFromMetres, feet: fiel
 
 // Everything one instrument's boxes say, read fresh every time. Nothing is taken from
 // the event that prompted the reading: a language switch fires one for every box it
-// puts back, in the page's order, and only the page as a whole is ever right.
-function read(world) {
+// puts back, in the page's order, and only the page as a whole is ever right. A box
+// named in `held` answers with the text given there in place of its own.
+function read(world, held = {}) {
+  const used = [];
+  const typed = id => {
+    used.push(id);
+    return id in held ? numberOf(held[id]) : numberIn($(id));
+  };
   const eyePupil = Number($('eye-pupil').value);
   if (world === 'telescope') {
     const values = {
@@ -92,7 +117,7 @@ function read(world) {
       barrel: Number($('barrel').value),
       eyePupil
     };
-    return { values, checked: values };
+    return { values, checked: values, used };
   }
   if (world === 'binoculars') {
     const unit = $('bin-field-unit').value;
@@ -104,7 +129,7 @@ function read(world) {
       eyePupil,
       unit
     };
-    return { values, checked: values };
+    return { values, checked: values, used };
   }
   if (world === 'microscope') {
     const preset = OBJECTIVES[chosen.objective];
@@ -114,7 +139,7 @@ function read(world) {
       eyepiece: typed('mic-eyepiece'),
       fieldNumber: typed('mic-fn')
     };
-    return { values, checked: values };
+    return { values, checked: values, used };
   }
   const unit = $('mag-unit').value;
   // A lens marked in diopters is a lamp or reading magnifier, which is sold counted
@@ -125,13 +150,31 @@ function read(world) {
   const value = typed('mag-value');
   const values = { value, unit, close, lens: typed('mag-lens') };
   const usable = Number.isFinite(value) && value > (close && unit === 'power' ? 1 : 0);
-  return { values, checked: { [unit]: value, lens: values.lens, close, focalLength: usable ? magnifierFocal(value, unit, close) : 0 } };
+  return { values, used, checked: { [unit]: value, lens: values.lens, close, focalLength: usable ? magnifierFocal(value, unit, close) : 0 } };
 }
 
 function work(world) {
-  const { values, checked } = read(world);
-  const wrong = firstFault(world, checked);
-  if (wrong) return { values, checked, wrong };
+  let reading = read(world);
+  const wrong = firstFault(world, reading.checked);
+  if (!wrong) {
+    for (const id of reading.used) good[slot(id)] = $(id).value;
+  } else {
+    // Set the boxes at fault aside one at a time: first for what the box last held,
+    // and then, where a box may be left empty, for nothing, because a lens width that
+    // was right for a weak magnifier is not right for a strong one. A box with neither
+    // to offer leaves nothing to answer with.
+    const held = {};
+    const turns = {};
+    for (let next = wrong; next; next = firstFault(world, reading.checked)) {
+      const id = BOXES[world][next.name];
+      turns[id] = (turns[id] || 0) + 1;
+      const kept = turns[id] === 1 ? good[slot(id)] : turns[id] === 2 && $(id).defaultValue === '' ? '' : undefined;
+      if (kept === undefined) return { values: reading.values, wrong };
+      held[id] = kept;
+      reading = read(world, held);
+    }
+  }
+  const { values } = reading;
   const id = chosen[world];
   const subject = SUBJECTS[id];
   let numbers;
@@ -139,7 +182,7 @@ function work(world) {
   else if (world === 'binoculars') numbers = binoculars({ ...values, eyePupil: subject.pupil ?? values.eyePupil });
   else if (world === 'microscope') numbers = microscope(values);
   else numbers = magnifier(values);
-  return { values, checked, numbers, id, subject, sight: seen(subject, numbers), span: dialSpan(world, values) };
+  return { values, wrong, numbers, id, subject, sight: seen(subject, numbers), span: dialSpan(world, values) };
 }
 
 // Canvases to draw small in, kept by size, so dragging the dial does not make a new
@@ -159,7 +202,7 @@ function layerFor(wide, tall) {
 
 function draw() {
   const state = results[chosen.world];
-  if (!state || state.wrong || !shown) return;
+  if (!state || !state.numbers || !shown) return;
   const { subject, id, numbers } = state;
   const common = { subject, id, backdrop: chosen.world === 'magnifier' ? 'paper' : 'slide', words: printed, face };
   const through = {
@@ -330,17 +373,19 @@ function update({ moveDial = true, jump = false } = {}) {
   $('microscope-form').dataset.custom = String(chosen.objective === 'custom');
   for (const name of WORLDS) {
     results[name] = work(name);
-    setText(`tab-${name}`, results[name].wrong ? '' : power(results[name].numbers.magnification));
+    setText(`tab-${name}`, results[name].numbers ? power(results[name].numbers.magnification) : '');
   }
   for (const id of new Set(Object.values(BOXES[world]))) $(id).removeAttribute('aria-invalid');
   const state = results[world];
   if (state.wrong) {
-    // The picture stays as it was: a half-typed number is not a reason to blank it.
     showFault(world, state);
-    return;
+  } else {
+    $('input-error').hidden = true;
+    setText('input-error', '');
   }
-  $('input-error').hidden = true;
-  setText('input-error', '');
+  // With nothing to fall back on the picture stays as it was: a half-typed number is
+  // not a reason to blank it.
+  if (!state.numbers) return;
   const { numbers, values, id, sight } = state;
   const spoken = verdict(world, numbers);
   const told = story(id, numbers, sight);
@@ -361,7 +406,10 @@ function update({ moveDial = true, jump = false } = {}) {
   $('bare').setAttribute('aria-label', phrase('aria.bare'));
   clearTimeout(announceTimer);
   announceTimer = setTimeout(() => {
-    setText('announce', phrase('said.aloud', { power: power(numbers.magnification), zone: spoken.name, verdict: spoken.text, story: told, fit: fits }));
+    // A box in error leaves the answer as it was, and saying it again after every
+    // keystroke would talk over the message about the box.
+    const said = phrase('said.aloud', { power: power(numbers.magnification), zone: spoken.name, verdict: spoken.text, story: told, fit: fits });
+    if ($('announce').textContent !== said) setText('announce', said);
   }, 700);
   aim(state, jump);
 }
@@ -391,7 +439,7 @@ const snapPower = (value, low, high) => tidy(clamp(Math.round(value * 2) / 2, lo
 function turnDial() {
   const world = chosen.world;
   const state = results[world];
-  if (!state || state.wrong) return;
+  if (!state || !state.numbers) return;
   const { values, numbers, span } = state;
   const target = dialPower(Number(dial.value) / 1000, span);
   if (world === 'telescope') {

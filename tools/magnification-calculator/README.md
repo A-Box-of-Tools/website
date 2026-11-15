@@ -126,6 +126,16 @@ strength, is one box and a menu saying what the number is. The menu reinterprets
 number and never converts it, since a conversion would run again on every restore.
 Boxes that may be left empty take a typical value and show it as their placeholder.
 
+A box holding a number the page cannot use is set aside for what it last held, and the
+message names it. The rest of the page goes on answering. A first version stopped
+altogether, so one number out of range froze the dial, the subjects and the assumptions
+too, with the reason written beside a box that may have scrolled away. A box that may
+be left empty and no longer fits beside the others, a lens width typed for a weaker
+magnifier, falls back to empty. Only when there is nothing to fall back on does the
+last answer stand as it was. What a box last held is not carried across a language
+switch, so a page that arrives with a fault answers from that box's starting value
+until the box is put right.
+
 Help text belongs to its own control and carries `data-for`, because the build folds
 every note in a card behind the card's heading and four instruments' notes would
 otherwise arrive there together.
