@@ -1,0 +1,19 @@
+#
+# Ratgeber: Vergrößerung verstehen - German.
+#
+# What is printed on an instrument stays as printed - 8×42, 40×/0.65, 675× -
+# and "useful" is "sinnvoll", as in the tool this guide belongs to.
+#
+
+nav = "Vergrößerung verstehen"
+title = "Was Vergrößerungszahlen auf Teleskop, Mikroskop oder Fernglas bedeuten"
+description = "Was 8×42, 40×/0.65 und 675× wirklich sagen: wie groß die Dinge aussehen, wie viel ins Sehfeld passt und warum der Durchmesser der Linse über das Detail entscheidet. Mit den Grenzen, ausgerechnet für Ihr eigenes Instrument."
+
+heading = "Was eine Vergrößerungszahl verrät und was sie verschweigt"
+lede = "Ein Teleskop mit 675× zeigt nicht mehr als dasselbe Teleskop bei 120×, und ein Fernglas 8×42 schlägt ein 8×21 erst, wenn das Licht schwindet. Die Zahl sagt, wie groß die Dinge aussehen. Wie viel es zu sehen gibt, steht in den anderen Zahlen daneben."
+
+updated = "15. November 2026"
+
+og_title = "Was Vergrößerungszahlen wirklich bedeuten"
+og_description = "Wie groß die Dinge aussehen, wie viel ins Sehfeld passt und ab wann eine größere Zahl nichts Neues mehr zeigt, für Teleskope, Ferngläser, Mikroskope und Lupen."
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"

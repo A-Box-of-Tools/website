@@ -1,0 +1,118 @@
+#
+# Calculateur de grossissement - French.
+#
+# Overrides for tools/magnification-calculator/tool.toml. Only words: the slug,
+# the category, the icon and the list of shared parts stay where they are.
+#
+# What is printed on an instrument is quoted as printed, decimal point included:
+# 8×42, 40×/0.65, 10×/18. A figure the prose works out takes the French comma
+# and its spaces, so the objective marked 40×/0.65 has an ouverture numérique
+# de 0,65. A magnification is the exception to the spaces: the page never
+# groups one, so it is 1000× here as well, beside 1 000 fois and 1 000 m.
+#
+# What a visitor reads off an instrument and types is a nombre, as in
+# Explorateur de nombres. Chiffre is kept for a figure somebody quotes at them,
+# le chiffre de 675× sur la boîte or le chiffre de zoom, because that is the
+# word a claim takes in French and the one people search with.
+#
+
+name = "Calculateur de grossissement"
+heading = "Calculateur&nbsp;de&nbsp;grossissement <span class=\"h1-kw\">&mdash; ce que montrent vraiment un télescope, un microscope ou des jumelles</span>"
+tagline = "Tapez les nombres inscrits sur un télescope, des jumelles, un microscope ou une loupe, et voyez ce qu'ils montrent, à l'échelle."
+
+title = "Calculateur de grossissement &mdash; télescope, microscope, jumelles &mdash; gratuit, hors ligne"
+description = "Voyez ce que montre vraiment un grossissement. Tapez les nombres inscrits sur un télescope, des jumelles, un microscope ou une loupe et obtenez la vue à l'échelle, le champ de vision, la pupille de sortie et le point où grossir davantage n'apporte plus rien. Gratuit et hors ligne."
+og_title = "Que montre vraiment 675×&nbsp;?"
+og_description = "Transformez les nombres inscrits sur un télescope, des jumelles, un microscope ou une loupe en ce qu'ils montrent vraiment, limites bien en vue. Sans envoi ni IA."
+og_image_alt = "Calculateur de grossissement - ce que montrent vraiment les nombres d'un télescope, d'un microscope ou de jumelles"
+
+pledge = "Un grossissement, c'est quelques nombres lus sur une boîte et un peu d'arithmétique, le tout dans cette page. Il n'y a aucun service à interroger et rien à envoyer. Les images sont des dessins calculés à partir de ces nombres, pas des photographies récupérées quelque part, et les règles sur lesquelles elles reposent sont écrites à côté du résultat."
+live_hint = "Faites glisser le curseur avec l'onglet Réseau ouvert. Le calculateur ne fait aucune requête. Chargez la page une fois, déconnectez-vous et continuez à explorer."
+read_first = ", <code>src/optics.js</code> pour l'arithmétique des quatre instruments, <code>src/subjects.js</code> pour ce qu'il y a à observer et la taille de chaque chose, <code>src/view.js</code> et les fichiers <code>src/scene-*.js</code> pour les images, et <code>src/main.js</code> pour la façon dont la page s'assemble."
+howto_heading = "Comment lire un chiffre de grossissement"
+card = "Que montrent vraiment 8×42, 400× et 675×&nbsp;? Tapez les nombres inscrits sur un télescope, des jumelles, un microscope ou une loupe et découvrez la vue à l'échelle, avec le point où grossir davantage ne sert plus à rien."
+
+[words]
+plural = "nombres et les vues qu'ils donnent"
+choose = "les nombres d'un instrument"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+[[facts]]
+text = "Aucun coût d'IA ou d'API"
+[[facts]]
+text = "Hypothèses claires"
+[[facts]]
+text = "Quatre instruments"
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Le calculateur tourne dans ce navigateur."
+body = "Le code de traitement de l'outil calcule les résultats et dessine les images localement. Il n'envoie aucune saisie ni aucun résultat à un service. La Content-Security-Policy restreint les destinations de connexion mais n'inspecte pas le contenu&nbsp;; comparez le code source avec l'onglet Réseau, ou utilisez le calculateur hors connexion."
+[[privacy]]
+title = "Il n'y a ni modèle, ni photographie, ni consultation en direct."
+body = "Les formules, les données de la Lune et des planètes et les dessins sont tous livrés avec cette page. Rien n'est téléchargé pour produire une image. Les liens vers les sources ne s'ouvrent que si vous décidez de les lire."
+[[privacy]]
+title = "Vos saisies restent dans la page."
+body = "Le calculateur n'écrit aucune saisie dans le stockage ni dans la barre d'adresse. Recharger la page le remet à zéro. Changer de langue transporte ce que vous avez tapé vers l'autre page, à l'intérieur de ce navigateur et nulle part ailleurs."
+[[privacy]]
+title = "Les autres scripts du site ont leurs propres limites."
+body = "Le cadre peut charger des scripts de publicité et de mesure. Le calculateur ne leur envoie ni vos saisies ni vos résultats. Le panneau réseau en direct signale les connexions de la page."
+
+[[howto]]
+title = "Choisissez l'instrument et tapez ce qui est inscrit dessus."
+body = "Un télescope porte son ouverture et sa distance focale, et chaque oculaire sa propre distance focale. Des jumelles portent deux nombres, comme 8×42. Un objectif de microscope porte son grossissement et son ouverture numérique, comme 40×/0.65. Une loupe porte un grossissement, une distance focale ou des dioptries."
+[[howto]]
+title = "Faites glisser le curseur à travers les zones."
+body = "Le curseur change le grossissement&nbsp;: en changeant l'oculaire sur un télescope ou un microscope, et le grossissement inscrit sur des jumelles ou une loupe. Sa barre est colorée d'après les limites propres à l'instrument. Suivez le verdict quand vous passez du plus net au haut de la plage utile, puis au grossissement vide."
+[[howto]]
+title = "Comparez les trois images."
+body = "La première est le cercle entier dans lequel vous regardez, avec son sujet à l'échelle. La deuxième regarde son centre de près, aussi nettement que le ferait un bon œil. La troisième est ce même gros plan sans instrument, si bien que la différence entre les deux dernières, c'est le grossissement."
+[[howto]]
+title = "Lisez ce que veut dire chaque nombre, puis vérifiez les hypothèses."
+body = "Le champ de vision, la pupille de sortie, le détail le plus fin et la lumière recueillie sont calculés à côté du résultat. Changez la largeur de la pupille de votre œil, le champ de l'oculaire ou la façon de compter le grossissement d'une loupe, et lisez d'où vient chaque règle."
+
+[[faq]]
+q = "Que signifie 8×42 sur des jumelles&nbsp;?"
+a = "Le premier nombre est le grossissement&nbsp;: les choses paraissent huit fois plus larges, comme si vous étiez huit fois plus près. Le second est le diamètre de chaque lentille frontale, 42&nbsp;mm. Diviser le second par le premier donne la pupille de sortie, ici 5,25&nbsp;mm, c'est-à-dire la largeur du faisceau de lumière qui atteint votre œil. C'est pourquoi des 8×42 restent lumineuses au crépuscule, et pas des 8×21."
+[[faq]]
+q = "Comment calculer le grossissement d'un télescope&nbsp;?"
+a = "Divisez la distance focale du télescope par celle de l'oculaire. Un télescope de 700&nbsp;mm avec un oculaire de 10&nbsp;mm donne 70×, et une lentille de Barlow 2× le double. Le télescope n'a pas de grossissement unique qui lui soit propre&nbsp;: une boîte qui en affiche un décrit donc son oculaire le plus court, et non ce que vous verrez."
+[[faq]]
+q = "Quel est le grossissement utile maximal d'un télescope&nbsp;?"
+a = "Environ deux fois l'ouverture en millimètres, soit 50× par pouce&nbsp;: 140× pour un télescope de 70&nbsp;mm et 400× pour un télescope de 200&nbsp;mm. Les détails sont fixés par le diamètre de l'objectif ou du miroir, et à ce stade ils sont tous confortablement visibles. Au-delà, l'image devient seulement plus grande, plus floue et plus sombre&nbsp;: c'est ce qu'on appelle le grossissement vide. L'air ajoute son propre plafond, environ 300× la plupart des nuits, quelle que soit la taille du télescope."
+[[faq]]
+q = "Un télescope 675× est-il meilleur qu'un télescope 100×&nbsp;?"
+a = "Pas d'après ce chiffre. Un télescope de 60&nbsp;mm vendu comme un 675× peut montrer de vrais détails jusqu'à environ 120×, et le reste n'est que le même flou, agrandi et assombri. Comparez plutôt les ouvertures&nbsp;: l'objectif ou le miroir le plus large montre des détails plus fins et des objets plus faibles à n'importe quel grossissement."
+[[faq]]
+q = "Quel grossissement montre les anneaux de Saturne ou les lunes de Jupiter&nbsp;?"
+a = "Moins que ce que la plupart des gens imaginent. Les quatre grandes lunes de Jupiter se voient comme des points dans des jumelles ordinaires, de 7× à 10×. Les anneaux de Saturne apparaissent à partir d'environ 25× à 30× sous la forme d'un minuscule ovale, et 100× ou plus dans un télescope d'au moins 60&nbsp;mm d'ouverture les montrent nettement détachés de la planète. Essayez les deux ci-dessus&nbsp;: les planètes restent petites dans le champ, et c'est bien ainsi qu'on les voit."
+[[faq]]
+q = "Que voit-on au microscope à 40×, 100×, 400× et 1000×&nbsp;?"
+a = "À 40×, le champ fait environ 4,5&nbsp;mm de large&nbsp;: des cristaux de sel, les parties d'un insecte, la trame d'un tissu. À 100×, il fait 1,8&nbsp;mm&nbsp;: des cellules végétales comme celles de l'épiderme d'oignon, et un cheveu pareil à un gros câble. À 400×, il fait 0,45&nbsp;mm&nbsp;: des cellules isolées avec leur noyau, et des globules rouges en petits disques. À 1000× avec un objectif à immersion à huile, il fait 0,18&nbsp;mm&nbsp;: des bactéries en bâtonnets et en points distincts. Ces largeurs supposent un oculaire 10× courant, d'indice de champ 18&nbsp;mm."
+[[faq]]
+q = "Pourquoi 1000× ne montre-t-il parfois rien de nouveau&nbsp;?"
+a = "Parce que les détails d'un microscope sont fixés par l'ouverture numérique de l'objectif, le nombre après la barre oblique, et non par le grossissement total. La plage utile va d'environ 500 à 1&nbsp;000&nbsp;fois ce nombre, soit de 325× à 650× pour un objectif 40×/0.65. Le pousser à 1000× avec un oculaire 25× ne fait qu'agrandir le flou. Un objectif à immersion à huile 100×/1.25 atteint le même 1000× et sépare des détails environ deux fois plus petits."
+[[faq]]
+q = "Qu'est-ce que la pupille de sortie&nbsp;?"
+a = "La largeur du faisceau de lumière qui sort de l'oculaire et entre dans votre œil&nbsp;: l'ouverture divisée par le grossissement. S'il est plus large que votre propre pupille, environ 7&nbsp;mm dans le noir et 2 à 3&nbsp;mm en plein jour, la lumière en trop n'entre pas dans votre œil. En dessous d'environ 1&nbsp;mm, l'image commence à perdre en netteté et en luminosité, et sous un demi-millimètre vous êtes dans le grossissement vide."
+[[faq]]
+q = "Quel rapport entre le grossissement d'une loupe, ses dioptries et sa distance focale&nbsp;?"
+a = "La distance focale en millimètres vaut 1&nbsp;000 divisé par les dioptries, et le grossissement vaut 250&nbsp;mm divisés par la distance focale&nbsp;: une loupe de bijoutier 10× a donc une distance focale de 25&nbsp;mm et 40&nbsp;dioptries. Les lampes-loupes et les loupes de lecture marquées en dioptries se comptent d'ordinaire en ajoutant un, l'œil étant accommodé de près&nbsp;: une loupe de +3&nbsp;dioptries est vendue comme une 1,75×, et une lentille de +20&nbsp;dioptries comme une 6×, ou comme une 5× par un fabricant qui ne l'ajoute pas. Les lentilles plus fortes doivent être plus petites et tenues plus près&nbsp;: une loupe de bijoutier 10× travaille à environ 25&nbsp;mm de l'objet."
+[[faq]]
+q = "Un zoom 10× sur un appareil photo, est-ce la même chose que des jumelles 10×&nbsp;?"
+a = "Non. Le chiffre de zoom d'un appareil photo est le rapport entre sa plus longue et sa plus courte distance focale, si bien qu'un objectif 24&ndash;240&nbsp;mm est un 10× quoi qu'il montre. Par rapport à votre œil, en prenant 50&nbsp;mm comme vue normale sur un appareil plein format, cet objectif va d'environ la moitié de la grandeur nature à environ 5×. Les jumelles et les télescopes indiquent leur grossissement par rapport à l'œil lui-même."
+[[faq]]
+q = "Le 1000× d'un microscope USB veut-il dire la même chose&nbsp;?"
+a = "C'est un autre calcul. Le chiffre d'un microscope numérique est la taille de l'image sur un écran divisée par la taille de l'objet&nbsp;: il grandit donc avec l'écran et ne dit rien des détails. Ce qu'il peut séparer reste fixé par son objectif. Son champ de vision est un meilleur repère&nbsp;: un instrument qui montre une zone d'environ 2&nbsp;mm de large travaille à peu près au niveau d'un microscope optique à 100×, quoi que dise la boîte."
+[[faq]]
+q = "Les images sont-elles des photographies&nbsp;?"
+a = "Non. Ce sont des dessins réalisés dans la page à partir des nombres. Les tailles sont à l'échelle, le manque de netteté est le flou propre à l'instrument à cette échelle, et l'assombrissement suit la pupille de sortie. Les mers et les plus grands cratères de la Lune, les lunes de Jupiter, les anneaux de Saturne et les Pléiades les plus brillantes sont placés d'après des données publiées, et les petits cratères, les cellules et les plumes sont une illustration. Une vraie observation dépend aussi de l'air, de la qualité de l'optique et de vos propres yeux."
+[[faq]]
+q = "L'outil fonctionne-t-il hors ligne&nbsp;?"
+a = "Oui. Une fois la page chargée, tous les calculs et tous les dessins fonctionnent sans connexion. Rien de ce que vous tapez n'est envoyé ni enregistré."
+
+[schema]
+description = "Calculez ce que montrent vraiment un télescope, des jumelles, un microscope ou une loupe à partir des nombres inscrits dessus, avec la vue dessinée à l'échelle, entièrement dans le navigateur."
+features = ["Grossissement d'un télescope à partir des distances focales, avec les lentilles de Barlow et le diaphragme de champ de l'oculaire", "Les nombres de jumelles comme 8×42 décodés&nbsp;: pupille de sortie, champ de vision, luminosité de jour et au crépuscule", "Grossissement d'un microscope, avec le champ de vision tiré de l'indice de champ et les détails tirés de l'ouverture numérique", "Grossissement d'une loupe à partir de la distance focale ou des dioptries, dans les deux conventions", "Un curseur découpé en zones&nbsp;: lumière perdue, grossissements les plus nets, haut de la plage utile et grossissement vide", "Trois images à la même échelle&nbsp;: le champ entier, un gros plan et l'œil nu", "La Lune, Jupiter, Saturne et les Pléiades dessinés d'après des données publiées", "Pupille de l'œil et champ de l'oculaire réglables, avec les formules et leurs sources", "Prise en charge de la réduction des animations", "Fonctionne hors ligne sans modèle d'IA"]

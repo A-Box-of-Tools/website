@@ -1,0 +1,16 @@
+#
+# Guia: entender o aumento - Portuguese (Brazil).
+#
+
+nav = "Entender o aumento"
+title = "O que significam os números de aumento de um telescópio, microscópio ou binóculo"
+description = "O que 8×42, 40×/0.65 e 675× dizem de verdade: de que tamanho as coisas aparecem, quanto cabe na vista e por que é a largura da lente que decide o detalhe. Com os limites calculados para o seu próprio instrumento."
+
+heading = "O que um número de aumento diz, e o que ele deixa de fora"
+lede = "Um telescópio de 675× não mostra mais do que o mesmo telescópio a 120×, e um binóculo marcado 8×42 só ganha de um 8×21 quando a luz diminui. O número diz de que tamanho as coisas aparecem. Quanto há para ver está nos outros números ao lado dele."
+
+updated = "15 de novembro de 2026"
+
+og_title = "O que os números de aumento significam de verdade"
+og_description = "De que tamanho as coisas aparecem, quanto cabe na vista e onde um número maior deixa de mostrar algo novo, para telescópios, binóculos, microscópios e lupas."
+og_image_alt = "abox.tools - ferramentas do navegador para processamento local de arquivos"
