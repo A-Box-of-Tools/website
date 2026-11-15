@@ -571,11 +571,19 @@ Two things are said in it out loud rather than left to be inferred:
 
 - **These need a browser.** There is no API and there will not be one: a promise
   that nothing leaves the machine and a server to send files to are not the same
-  repository. Something reading this from a terminal cannot call any of it, and
-  saying so up front is worth more than letting it find out.
+  repository. Something reading this from a terminal cannot call any of these
+  pages, and saying so up front is worth more than letting it find out. What it
+  can use is the [local adapter](#the-local-adapter), which the file names under
+  "Agent access" for exactly that reader.
 - **The code is MIT and worth copying.** That is the other half of the answer,
   and the more useful half for anything writing code rather than answering a
-  person — see [Licence](licence.md).
+  person — see [Licence](licence.md). "Building on abox.tools" asks one thing
+  of whatever takes it up: a link back from the tool it builds, and a word
+  about how that went. It is `building` in `[llms]`, rendered into the skill
+  as well, and it is worded as a request because keeping the notice is the
+  whole of what the licence asks. An agent usually builds for somebody else,
+  so the paragraph tells it to put the request to that person and not to add
+  a link on its own.
 
 Two departures from every other generated file here. It carries no GENERATED FILE
 banner, because the format begins with an H1 and its readers are strict about
@@ -708,6 +716,54 @@ The discovery files are ordinary static JSON and Markdown. Serve the JSON as
 and HEAD support. They are intentionally outside the page sitemap and page
 service workers. Existing `.md` response `noindex` rules also cover the
 skill: clients discover it through links and the index.
+
+`/llms.txt` gives the command that installs the skill, `npx skills add
+https://abox.tools`. The [skills CLI](https://github.com/vercel-labs/skills)
+takes a bare site address, reads `/.well-known/agent-skills/index.json` in the
+v0.2.0 form this build writes, and refuses a skill whose bytes do not match
+the index's digest — which is the digest the build computes, so the command
+needs nothing published beyond what is already there. That is read from the
+CLI's source and checked by repeating its steps against the built files; it is
+not a record of the CLI having been run. [skills.sh](https://www.skills.sh/)
+lists a skill from the installations that CLI reports, and names a site-hosted
+one by its hostname. Nothing is submitted, so a listing there is a count of
+installations rather than something to arrange.
+
+### The local adapter
+
+The site's processing code also exists as a
+[local adapter](https://github.com/A-Box-of-Tools/abox-tools-plugin): a
+separate repository, with its own releases, that an agent runs on a person's
+own computer over MCP stdio or a command line. It is the answer for an agent
+that works with local files and has no browser to drive, and it leaves the
+promise where it was — there is still no endpoint to send a file to.
+
+`/llms.txt` and the skill both name it, under "Agent access" and "When there
+is no browser to drive". Before they did, the site said only that it had no
+processing API or CLI, which was true of the site and hid the one route such
+an agent has; and a crawler looking for this publisher's skills, with no
+address to follow, credited the site with an unrelated listing whose owner's
+name resembled it.
+
+`[agents.adapter]` in [`config/site.toml`](../config/site.toml) holds three
+facts — the repository, its name in the
+[Official MCP Registry](https://registry.modelcontextprotocol.io/) and the
+name of its skill — and `routes` in
+[`buildlib/agents.py`](../buildlib/agents.py) works out the registry record,
+the skills.sh listing and the install command from them, for both files at
+once. The build refuses a repository outside the organisation `source_url`
+names and a registry name outside that organisation's `io.github.` namespace,
+because a link from these files is the site saying the code is its own.
+
+The adapter's version, its operations and what each one needs are deliberately
+absent: they change with its releases, and the registry link ends in `latest`
+so that it does not have to be told. Nothing here establishes that a given
+release works; that evidence is the adapter repository's to keep. The sentences
+about it in `[llms]` and in
+[`templates/agent-skill.md`](../templates/agent-skill.md) are limited to what
+its README says of every release, including the one exception to "offline":
+its opt-in sharing, camera and voice sessions use this site's rendezvous once
+a person starts them. If the adapter changes any of that, change the sentences.
 
 ## Every page as Markdown
 

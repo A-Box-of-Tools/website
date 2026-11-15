@@ -21,6 +21,7 @@ file at the root of the site. build.py is one function per kind of page, and
 these three were sitting in the middle of it answering a different question.
 """
 
+from buildlib import agents
 from buildlib import i18n
 from buildlib import landing
 from buildlib import site as sitelib
@@ -320,6 +321,9 @@ def build_llms(out, templates, site, locales, tools, prose):
         'guides': guides,
         'languages': languages,
         'optional': optional,
+        # The same addresses the skill is rendered with, so the index and the
+        # instructions it points at cannot send an agent to different places.
+        'routes': agents.routes(site),
     }
     write(out / 'llms.txt', templates.render('llms.txt', context))
     guide_index = templates.render('llms-guides.txt', context)

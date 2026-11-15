@@ -4,7 +4,18 @@
 
 {{ llms.intro }}
 
-[Browser workflow skill]({{ site.domain }}.well-known/agent-skills/{{ site.agents.name }}/SKILL.md)
+## Agent access
+
+{{ llms.agents_note }}
+
+- [Browser workflow skill]({{ routes.skill.url }}): {{ llms.skill_note }} `{{ routes.skill.install }}`
+- [{{ routes.adapter.name }}]({{ routes.adapter.repository }}): {{ llms.adapter_note }}
+- [Official MCP Registry record]({{ routes.adapter.registry_url }}): {{ llms.adapter_registry_note }} `{{ routes.adapter.registry_name }}`
+- [{{ routes.adapter.skill }} on skills.sh]({{ routes.adapter.skill_listing }}): {{ llms.adapter_skill_note }} `{{ routes.adapter.skill_install }}`
+
+## Building on {{ site.name }}
+
+{{ llms.building }}
 
 ## Feedback and contributions
 

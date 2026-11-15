@@ -39,6 +39,7 @@ class Discovery(unittest.TestCase):
         self.out.mkdir()
         self.site = {
             'domain': 'https://example.com/',
+            'source_url': 'https://github.com/Example-Org/site',
             'agents': {
                 'name': 'browser-tools',
                 'display_name': 'Browser tools',
@@ -64,6 +65,12 @@ class Discovery(unittest.TestCase):
                         'Find a PNG conversion tool through A2A.',
                         'Get public tool links for PDF compression.',
                     ],
+                },
+                'adapter': {
+                    'name': 'Local adapter',
+                    'repository': 'https://github.com/Example-Org/Local.Adapter',
+                    'registry_name': 'io.github.Example-Org/local-tools',
+                    'skill': 'local-files',
                 },
             },
         }
@@ -296,6 +303,99 @@ class Discovery(unittest.TestCase):
                 with self.assertRaisesRegex(ConfigError, 'agents.a2a'):
                     self.build()
                 self.assertEqual(list(self.out.iterdir()), [])
+
+    # -- the local adapter ------------------------------------------------
+    #
+    # The site holds three facts about it and works every address out of them.
+    # What is checked is the working out, and that a fact the site cannot stand
+    # behind stops the build instead of becoming a link.
+
+    def test_the_adapters_addresses_are_worked_out_from_its_repository(self):
+        handed = agents.routes(self.site)
+        self.assertEqual(handed['skill'], {
+            'path': '.well-known/agent-skills/browser-tools/SKILL.md',
+            'url': 'https://example.com/.well-known/agent-skills/browser-tools/SKILL.md',
+            'install': 'npx skills add https://example.com',
+        })
+        self.assertEqual(handed['adapter'], {
+            'name': 'Local adapter',
+            'repository': 'https://github.com/Example-Org/Local.Adapter',
+            'registry_name': 'io.github.Example-Org/local-tools',
+            'registry_url': 'https://registry.modelcontextprotocol.io/v0.1/servers/'
+                            'io.github.Example-Org%2Flocal-tools/versions/latest',
+            'skill': 'local-files',
+            'skill_listing': 'https://www.skills.sh/example-org/local.adapter/local-files',
+            'skill_install': 'npx skills add Example-Org/Local.Adapter --skill local-files',
+        })
+
+    def test_the_skill_names_the_addresses_the_index_is_given(self):
+        (self.templates / 'agent-skill.md').write_bytes((
+            TEMPLATE + '\n{{ routes.skill.install }}\n{{ routes.adapter.repository }}\n'
+            '{{ routes.adapter.registry_url }}\n{{ routes.adapter.skill_install }}\n'
+        ).encode('utf-8'))
+        self.build()
+        raw = (self.out / '.well-known/agent-skills/browser-tools/SKILL.md').read_text(
+            encoding='utf-8')
+        handed = agents.routes(self.site)
+        self.assertEqual(raw.splitlines()[-4:], [
+            handed['skill']['install'], handed['adapter']['repository'],
+            handed['adapter']['registry_url'], handed['adapter']['skill_install']])
+        index = self.document('.well-known/agent-skills/index.json')['skills'][0]
+        self.assertEqual(index['url'], handed['skill']['url'])
+        self.assertEqual(index['digest'],
+                         'sha256:' + hashlib.sha256(raw.encode('utf-8')).hexdigest())
+
+    def test_an_adapter_the_site_cannot_stand_behind_stops_the_build(self):
+        """A link from these files says "this is ours".
+
+        So the repository has to sit in the organisation the site's own source
+        does, and the registry name in the namespace only that organisation
+        can publish under. Each case here is one way of saying it about
+        somebody else's code, or of deriving two broken addresses from one.
+        """
+        original = copy.deepcopy(self.site)
+        cases = [
+            ('repository', 'https://github.com/Someone-Else/Local.Adapter'),
+            ('repository', 'http://github.com/Example-Org/Local.Adapter'),
+            ('repository', 'https://github.com/Example-Org/Local.Adapter/'),
+            ('repository', 'https://github.com/Example-Org/Local.Adapter.git'),
+            ('repository', 'https://github.com/Example-Org/Local.Adapter/tree/main'),
+            ('repository', 'https://github.com/Example-Org/Local.Adapter?tab=readme'),
+            ('repository', 'https://github.com.attacker.example/Example-Org/Local.Adapter'),
+            ('repository', 'https://user@github.com/Example-Org/Local.Adapter'),
+            ('repository', 'https://github.com/Example-Org'),
+            ('repository', None),
+            ('registry_name', 'io.github.Someone-Else/local-tools'),
+            ('registry_name', 'io.github.example-org/local-tools'),
+            ('registry_name', 'com.example/local-tools'),
+            ('registry_name', 'io.github.Example-Org/'),
+            ('registry_name', 'io.github.Example-Org/local tools'),
+            ('registry_name', 'io.github.Example-Org/local/tools'),
+            ('skill', 'Local Files'),
+            ('skill', 'local--files'),
+            ('skill', None),
+            ('name', ''),
+            ('name', 'Local\nadapter'),
+        ]
+        for key, value in cases:
+            with self.subTest(key=key, value=value):
+                self.site = copy.deepcopy(original)
+                self.site['agents']['adapter'][key] = value
+                with self.assertRaisesRegex(ConfigError, f'agents.adapter.{key}'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+        for source in ('https://example.com/source', None):
+            with self.subTest(source_url=source):
+                self.site = copy.deepcopy(original)
+                self.site['source_url'] = source
+                with self.assertRaisesRegex(ConfigError, 'agents.adapter.repository'):
+                    self.build()
+                self.assertEqual(list(self.out.iterdir()), [])
+        self.site = copy.deepcopy(original)
+        del self.site['agents']['adapter']
+        with self.assertRaisesRegex(ConfigError, 'agents.adapter'):
+            self.build()
+        self.assertEqual(list(self.out.iterdir()), [])
 
 
 if __name__ == '__main__':

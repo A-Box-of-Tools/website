@@ -1902,6 +1902,62 @@ class BuildTheSite(unittest.TestCase):
                 with self.subTest(index=name, leak=leak):
                     self.assertNotIn(leak, text)
 
+    def test_llms_txt_and_the_skill_send_an_agent_to_the_same_adapter(self):
+        """The index says where the local adapter is and the skill says when
+        to use it, so the two have to be talking about one place.
+
+        Both are rendered from `agents.routes`, and this is the guard on that:
+        a template that went back to spelling an address out would pass every
+        other test and quietly disagree with the config after a rename. The
+        last assertion is the sentence this section replaced. The site has no
+        CLI and the adapter is one, so "there is no CLI" stopped being a fact
+        an agent could act on the day the adapter was published.
+        """
+        handed = buildmod.agents.routes(self.site)
+        adapter = handed['adapter']
+        self.assertEqual(adapter['repository'],
+                         'https://github.com/A-Box-of-Tools/abox-tools-plugin')
+        llms = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        section = llms.split('## Agent access', 1)[1].split('\n## ', 1)[0]
+        skill = (self.out / handed['skill']['path']).read_text(encoding='utf-8')
+        section_links = re.findall(r'\]\(([^)]+)\)', section)
+        self.assertEqual(section_links, [
+            handed['skill']['url'], adapter['repository'],
+            adapter['registry_url'], adapter['skill_listing']])
+        self.assertIn(f'`{handed["skill"]["install"]}`', section)
+        for address in (adapter['repository'], adapter['registry_url'],
+                        adapter['skill_listing']):
+            with self.subTest(address=address):
+                self.assertIn(f']({address})', skill)
+        for text in (section, skill):
+            self.assertIn(f'`{adapter["skill_install"]}`', text)
+            self.assertIn(f'`{adapter["registry_name"]}`', text)
+        for text in (llms, skill):
+            self.assertNotIn('CLI or file-upload', text)
+
+    def test_llms_txt_and_the_skill_ask_a_builder_for_the_same_link(self):
+        """Both files ask whatever builds a tool on this code to link back,
+        in one paragraph written once in [llms].
+
+        It is a request and the licence is not one: docs/licence.md says that
+        keeping the MIT notice is the whole condition, so the paragraph has to
+        go on calling itself a request, and it has to name the address it asks
+        for. It sits directly above the feedback section in both files because
+        its last sentence sends the reader to the route below.
+        """
+        asked = self.site['llms']['building'].strip()
+        self.assertIn('request', asked)
+        self.assertIn(f'please link {self.site["domain"]},', asked)
+        heading = f'## Building on {self.site["name"]}\n'
+        skill_path = buildmod.agents.routes(self.site)['skill']['path']
+        for name in ('llms.txt', skill_path):
+            with self.subTest(file=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertIn(heading, text)
+                body, _, after = text.split(heading, 1)[1].partition('\n## ')
+                self.assertEqual(body.strip(), asked)
+                self.assertTrue(after.startswith('Feedback and contributions\n'))
+
     def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
         """The same rule as the sitemap and the hreflang tags, and for the same
         reason: a language whose hub is still half English should not be handed

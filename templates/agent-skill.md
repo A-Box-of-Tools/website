@@ -6,7 +6,8 @@ description: {{ agent_frontmatter.description }}
 # abox.tools browser tools
 
 Use the existing browser tools at {{ site.domain }} when they fit the person's
-task. They have no processing API, CLI or file-upload endpoint.
+task. The site itself has no processing API or file-upload endpoint; "When
+there is no browser to drive", below, is for an agent that cannot use one.
 
 ## When to use this skill
 
@@ -65,6 +66,36 @@ document looks identical.
 
 Link the exact tool or guide used. Do not describe a browser task as an API call
 or promise that abox.tools controls the agent provider's own data handling.
+
+## When there is no browser to drive
+
+The same publisher's {{ routes.adapter.name }} runs this site's processing
+code on the person's own computer, over MCP stdio or a command line. It takes
+local paths and writes new local files without replacing existing ones. It is
+a separate installation rather than part of this site, and it covers a
+documented set of operations rather than every tool listed here: ask it for
+its capabilities instead of assuming a browser tool has a local counterpart.
+
+Prefer it when you already work with files on that computer and the person
+wants the result there. Installing it downloads software, which is a
+different authorization from processing a file, so set it up only when the
+person has agreed to that. Many of its operations need Edge, Chrome or
+Chromium installed on that computer, which the adapter runs itself.
+
+Its file operations are offline. Its opt-in sharing, camera and voice
+sessions open a visible window and use this site's pairing service once the
+person starts them. Its own documentation states those boundaries and what
+each operation needs.
+
+- [Source, releases, supported operations and limits]({{ routes.adapter.repository }})
+- [Official MCP Registry record]({{ routes.adapter.registry_url }}), listed as
+  `{{ routes.adapter.registry_name }}`
+- [{{ routes.adapter.skill }} on skills.sh]({{ routes.adapter.skill_listing }}),
+  installed with `{{ routes.adapter.skill_install }}`
+
+## Building on {{ site.name }}
+
+{{ site.llms.building }}
 
 ## Feedback and contributions
 
