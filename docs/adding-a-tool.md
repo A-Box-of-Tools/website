@@ -260,6 +260,24 @@ const picker = wireFilePicker({
 The resting label is read off the markup, so it is written once, in `tool.toml`,
 rather than there and in the JavaScript as well.
 
+**A dropped folder is opened before `onFiles` is called.** The tool is handed
+the files in it and in the folders inside it: a folder's own files first, in
+the order a file manager shows them (`page2` before `page10`), then each
+subfolder the same way. What comes out of a folder is held to the tool's
+`accept`, which is the test the file dialog applies when the same folder is
+opened by clicking, so the `Thumbs.db` beside the photographs never reaches the
+tool. A file dropped by itself is still handed over whatever it is. A folder
+with nothing in it for the tool arrives as the one unreadable entry the browser
+makes of it, and is turned away by whatever the tool already says about a file
+it cannot read. A picker without `multiple` gets the first file it asks for.
+None of this needs anything from the tool. The file dialog is not part of it:
+without a second input it cannot choose a folder at all.
+
+One limit: a drop of more than a hundred things at once is taken to be loose
+files and handed over as it always was, folders and all. Finding out which of
+them are folders is a synchronous question to the browser for each one, and on
+five thousand loose slices it froze the page for 1.3 s.
+
 **Shared JavaScript is copied, not linked.** It lands in the tool's own
 `src/shared/`, so every tool folder in `dist/` is still complete on its own,
 cached by its own service worker, and works offline with nothing fetched from a

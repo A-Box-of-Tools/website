@@ -23,6 +23,16 @@
  * and by some Chrome configurations, which is the bug this shape avoids. The
  * input stays in the layout - visually hidden, still focusable, still reachable
  * by keyboard - and there is no JavaScript in that path at all.
+ *
+ * WHAT A DROPPED FOLDER IS
+ *
+ * The files in it, and in the folders inside it, that this tool's picker asks
+ * for. Several pages tell a visitor to drop a folder - a scan off a hospital
+ * disc is three hundred files in one, and GIF Maker's first step says "Drop a
+ * folder onto the picker" - and for as long as a drop was read from
+ * `dataTransfer.files` every one of those pages turned the folder away,
+ * because that list holds a folder as a single entry no tool can open. See
+ * `dropped` and `walkFolder` at the foot of this file.
  */
 
 import { phrase } from './phrases.js';
@@ -129,9 +139,61 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example })
     dropzone.addEventListener(type, () => dropzone.classList.remove('dragover'));
   }
 
+  /**
+   * A drop with a folder in it, handed over as the files it stands for.
+   *
+   * What comes out of a folder is held to the picker's own `accept`, which a
+   * dropped file never is. Somebody who drops a file chose that file, and the
+   * tool owes them its own answer about it. Nobody chose the `Thumbs.db` in a
+   * folder of photographs, and a row of failures for files they have never
+   * seen is not an answer to anything they did. It is the test the browser's
+   * own dialog applies when the same folder is opened by clicking.
+   *
+   * A folder with nothing in it for this tool is handed over exactly as the
+   * browser gave it, so the tool turns it away in the words it always has -
+   * "photos: not an image this tool can read" is right about a folder of
+   * spreadsheets too - and no folder is ever answered with silence.
+   *
+   * A picker that takes one file gets the first one in the folder that it
+   * asks for and the walk stops there, the same file a tool for one file takes
+   * out of several dropped together.
+   */
+  const openDropped = async (taken) => {
+    const takes = accepts(input.accept);
+    const files = [];
+    // Out of action while the folders are read, like any other time the drop
+    // zone is busy, and saying how far it has got: a disc holds thousands of
+    // files, and the browser gives each one up through a request of its own.
+    busy();
+    try {
+      for (const each of taken) {
+        if (each.file) {
+          files.push(each.file);
+          continue;
+        }
+        const inside = [];
+        await walkFolder(each.folder, (file) => {
+          if (!takes(file)) return true;
+          inside.push(file);
+          busy(readingLabel(files.length + inside.length));
+          return input.multiple;
+        });
+        if (inside.length) files.push(...inside);
+        else if (each.asDropped) files.push(each.asDropped);
+      }
+    } finally {
+      done();
+    }
+    hand(files);
+  };
+
   dropzone.addEventListener('drop', (event) => {
     event.preventDefault();
-    hand(event.dataTransfer?.files);
+    const taken = dropped(event.dataTransfer);
+    // No folder in it, which is nearly every drop there is: handed over as the
+    // browser gave it and in the same turn, as it was before folders opened.
+    if (!taken) hand(event.dataTransfer?.files);
+    else openDropped(taken);
   });
 
   // A file dropped anywhere else on the page would otherwise be opened by the
@@ -320,4 +382,185 @@ function liftToHeading(holder, dropzone) {
  */
 export function readingLabel(count) {
   return phrase(count === 1 ? 'reading.one' : 'reading.many', { count });
+}
+
+/**
+ * The most things one drop may hold and still be asked which of them are
+ * folders.
+ *
+ * Asking is not free. In Chromium `webkitGetAsEntry()` is a synchronous round
+ * trip to the browser's own process for every item, with the page frozen until
+ * the last one answers: 64 ms for three hundred loose files and 1.3 s for five
+ * thousand, measured in Edge, on a drop that took 2 ms before it had to ask.
+ * Loose slices were the only way a scan could be dropped at all until folders
+ * opened, and two thousand of them is an ordinary CT.
+ *
+ * So a drop of more than this many things is taken to be loose files and
+ * handed over as it always was. A folder in among them is turned away by the
+ * tool as it used to be, which is the worst this limit can do, and the folder
+ * above it can be dropped instead. Forty series folders dropped together are
+ * forty questions and 11 ms.
+ */
+const ASKED_AT_MOST = 100;
+
+/**
+ * What was dropped, with each folder still a folder - or null when there is no
+ * folder in it, which leaves the caller on the path it has always taken.
+ *
+ * `dataTransfer.files` gives a folder as one entry that looks like a file and
+ * is not: no size, no type, and an error from the first attempt to read it.
+ * The entry behind the item still knows it is a directory. It has to be asked
+ * here and all at once, because the browser empties `dataTransfer.items` the
+ * moment the drop handler returns - anything left for after an `await` finds
+ * the list empty.
+ *
+ * Each folder keeps the entry the browser would have handed over for it,
+ * `asDropped`, for the folder that turns out to hold nothing a tool takes.
+ *
+ * @param {DataTransfer|null|undefined} transfer
+ * @returns {Array<{file: File}|{folder: object, asDropped: File|null}>|null}
+ */
+function dropped(transfer) {
+  const items = Array.from(transfer?.items ?? []).filter((item) => item.kind === 'file');
+  if (items.length > ASKED_AT_MOST) return null;
+  const entries = items.map((item) => item.webkitGetAsEntry?.() ?? null);
+  if (!entries.some((entry) => entry?.isDirectory)) return null;
+
+  return items
+    .map((item, at) => (entries[at]?.isDirectory
+      ? { folder: entries[at], asDropped: item.getAsFile() }
+      : { file: item.getAsFile() }))
+    .filter((each) => each.folder || each.file);
+}
+
+/**
+ * `page2` before `page10`, and without regard to case: the order the visitor's
+ * own file manager shows the folder in.
+ *
+ * A directory is listed in whatever order the disk keeps it, which is not an
+ * order anybody chose. It matters to the tools that take the order they are
+ * given as the answer - the pages of a PDF, the frames of a GIF - and a folder
+ * of scanned pages that arrived shuffled would be a job to undo by hand.
+ */
+const BY_NAME = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
+/**
+ * How many files of one folder are asked for at once.
+ *
+ * Each `entry.file()` is a round trip to the browser's own process, and one at
+ * a time that is most of what a big folder costs: five thousand files took
+ * 3.1 s that way in Edge, and 1.0 s a hundred at a time. Asking for all five
+ * thousand at once was no faster than that, so the number stays at the size
+ * the browser itself lists a directory in.
+ */
+const TOGETHER = 100;
+
+/**
+ * Every file in a folder and in the folders inside it.
+ *
+ * A folder's own files come first, in name order, and then each folder inside
+ * it in the same way. Sorting the two together would put the pages of a
+ * folder called `appendix` ahead of `chapter1.pdf` beside it; what is seen on
+ * opening the folder is what was meant first.
+ *
+ * `each` is handed every File in turn, and answers false to stop the walk
+ * early. Resolves to false when it was stopped and true when the folder ran
+ * out.
+ *
+ * Nothing in here rejects. A file that has gone since the folder was listed,
+ * or a folder the visitor is not allowed to open, is passed over and the walk
+ * carries on: the rest of a disc is still worth having, and a tool can only
+ * report on the files it was given.
+ *
+ * @param {object} folder  a FileSystemDirectoryEntry
+ * @param {(file: File) => boolean|void} each
+ * @returns {Promise<boolean>}
+ */
+export async function walkFolder(folder, each) {
+  const children = await childrenOf(folder);
+  children.sort((a, b) => BY_NAME.compare(a.name, b.name));
+  const files = children.filter((child) => !child.isDirectory);
+  const folders = children.filter((child) => child.isDirectory);
+
+  for (let at = 0; at < files.length; at += TOGETHER) {
+    const opened = await Promise.all(files.slice(at, at + TOGETHER).map(fileOf));
+    for (const file of opened) {
+      if (file && each(file) === false) return false;
+    }
+  }
+
+  for (const inner of folders) {
+    if (!await walkFolder(inner, each)) return false;
+  }
+  return true;
+}
+
+/**
+ * Everything directly inside one folder.
+ *
+ * `readEntries` is asked until it answers with nothing. Chromium hands a
+ * directory over a hundred entries at a time, so one call on a series of three
+ * hundred slices returns the first hundred and gives no sign that there were
+ * more; Firefox returns everything at once and then the empty list.
+ */
+function childrenOf(folder) {
+  return new Promise((resolve) => {
+    const all = [];
+    const stop = () => resolve(all);
+    try {
+      const reader = folder.createReader();
+      const more = () => reader.readEntries((batch) => {
+        if (!batch.length) {
+          stop();
+          return;
+        }
+        all.push(...batch);
+        more();
+      }, stop);
+      more();
+    } catch {
+      stop();
+    }
+  });
+}
+
+/** The File behind one entry, or null where it can no longer be had. */
+function fileOf(entry) {
+  return new Promise((resolve) => {
+    try {
+      entry.file(resolve, () => resolve(null));
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+/**
+ * Whether a file is one a picker's `accept` asks for, by the rules the
+ * browser's own dialog reads that attribute with: `.ext` against the end of
+ * the name, `image/*` against the front of the type, anything else against the
+ * whole type, and none of it minding case.
+ *
+ * A star on each side of the slash is not in the specification and is what
+ * two tools here say, because what they take cannot be told from a name: a
+ * DICOM file has no extension more often than not, and a checksum is owed to
+ * any file at all. It means everything, and so does an `accept` that is empty.
+ *
+ * @param {string} [accept]  the attribute, as written
+ * @returns {(file: {name: string, type?: string}) => boolean}
+ */
+export function accepts(accept) {
+  const wanted = String(accept ?? '').toLowerCase().split(',')
+    .map((token) => token.trim()).filter(Boolean);
+  if (!wanted.length || wanted.includes('*/*')) return () => true;
+
+  return (file) => {
+    const name = String(file.name).toLowerCase();
+    const type = String(file.type ?? '').toLowerCase();
+    return wanted.some((token) => {
+      if (token.startsWith('.')) return name.endsWith(token);
+      if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
+      return type === token;
+    });
+  };
 }

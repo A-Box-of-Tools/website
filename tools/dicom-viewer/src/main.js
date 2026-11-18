@@ -3,7 +3,7 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { PIXEL_DATA, parseDataset, parseFile, walk } from './dicom.js';
+import { NotDicom, PIXEL_DATA, parseDataset, parseFile, walk } from './dicom.js';
 import { describe, formatTag } from './dictionary.js';
 import { charset, display, text } from './values.js';
 import { sopClass } from './uids.js';
@@ -235,6 +235,14 @@ async function openFiles(files) {
  * slice, or one whose image size is somewhere past it - the whole file is read.
  * Correctness first; the short read is only ever an optimisation that can
  * decline.
+ *
+ * The one verdict the head does settle is that a file is not DICOM at all. That
+ * is decided by the marker at byte 128 and the first element, and no later byte
+ * can overturn it, so that refusal is taken from the head and the rest of the
+ * file is left on the disk. It matters because of what else comes in a folder
+ * off a disc: the viewer program the hospital put beside the scans. A 1.5 GB
+ * file that was not a scan used to be read from end to end, in 1.7 s and into
+ * as much memory as its size, to be told what its first bytes had already said.
  */
 const HEAD_BYTES = 262144;
 
@@ -255,7 +263,7 @@ async function tryParse(bytes, name, quiet) {
   try {
     return await parse(bytes, name, bytes.length);
   } catch (error) {
-    if (quiet) return null;
+    if (quiet && !(error instanceof NotDicom)) return null;
     throw error;
   }
 }
