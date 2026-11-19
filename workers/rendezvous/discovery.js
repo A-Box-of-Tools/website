@@ -21,7 +21,7 @@ const RECHECK_INTERVAL = 10000;
 const AUTH_TIMEOUT = 8000;
 
 const DEFAULT_TOOL = "share-text";
-const TOOLS = new Set([DEFAULT_TOOL, "remote-camera", "share-tab", "voice-oncall", "walkie-talkie"]);
+const TOOLS = new Set([DEFAULT_TOOL, "folder-sync", "remote-camera", "share-tab", "voice-oncall", "walkie-talkie"]);
 const LISTEN_KEY_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
 export function rendezvousTool(value) {

@@ -311,6 +311,30 @@ test('a tab room has no discoverable lease unless the host explicitly opts in to
   assert.deepEqual(shares(cameraList).list, []);
 });
 
+test('a folder-sync room lists only in its own directory and is refused a relay', async () => {
+  const s = system(), address = '1.2.3.4';
+  const listed = await edgeSocket(s, '/discover?tool=folder-sync', address);
+  const scope = listed.deserializeAttachment().scope;
+  const tabList = await edgeSocket(s, '/discover?tool=share-tab', address);
+  const textList = await edgeSocket(s, '/discover', address);
+  const offered = await edgeSocket(s, '/ws/sync-offered?role=host&tool=folder-sync&transport=direct&local=1&discover=1', address);
+  assert.equal(offered.deserializeAttachment().tool, 'folder-sync');
+  const claim = publication(offered);
+  assert.equal(claim.tool, 'folder-sync');
+  await publish(s, listed, claim, scope);
+  assert.deepEqual(shares(listed), { type: 'shares', tool: 'folder-sync', list: [{ code: 'sync-offered', local: true }] });
+  await publish(s, tabList, claim, tabList.deserializeAttachment().scope);
+  await publish(s, textList, claim, textList.deserializeAttachment().scope);
+  assert.deepEqual(shares(tabList).list, []);
+  assert.deepEqual(shares(textList).list, []);
+  // Direct only: no deployment setting can hand this tool relay credentials.
+  const relayed = await edgeSocket(s, '/ws/sync-relayed?role=host&tool=folder-sync&transport=relay', address);
+  assert.equal(relayed.closed.code, 4413);
+  s.env.RELAY_TOOLS = 'share-text,folder-sync';
+  const allowed = await edgeSocket(s, '/ws/sync-allowed?role=host&tool=folder-sync&transport=relay', address);
+  assert.equal(allowed.closed.code, 4413);
+});
+
 test('only cached non-local text rooms retain the viewer-only once-per-socket relay fallback', async () => {
   for (const tool of ['share-text', 'remote-camera', 'share-tab']) {
     const s = system(), address = '1.2.3.4';

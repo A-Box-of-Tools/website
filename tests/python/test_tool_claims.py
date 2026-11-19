@@ -112,7 +112,7 @@ class ToolClaims(unittest.TestCase):
         source = self.templates.source('tool.html')
         match = re.search(r'<span data-phrase="offline.ready">(.*?)</span>', source, re.S)
         self.assertIsNotNone(match)
-        for slug in ('share-text', 'share-tab', 'walkie-talkie', 'voice-oncall', 'remote-camera'):
+        for slug in ('share-text', 'folder-sync', 'share-tab', 'walkie-talkie', 'voice-oncall', 'remote-camera'):
             with self.subTest(tool=slug):
                 rendered = self.templates.render_source(
                     match.group(1), 'offline readiness',

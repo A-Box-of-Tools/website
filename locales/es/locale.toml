@@ -280,7 +280,7 @@ note = "Léelo, compruébalo o créalo aquí. Ningún token, ningún archivo de 
 id = "connect-devices"
 name = "Conectar dispositivos"
 short_name = "Conectar dispositivos"
-note = "Comparte texto y archivos, habla en directo o ve una cámara o una pestaña del navegador desde otro dispositivo. Cada herramienta explica qué envía y cómo se conectan los navegadores."
+note = "Comparte texto y archivos, sincroniza una carpeta, habla en directo o ve una cámara o una pestaña del navegador desde otro dispositivo. Cada herramienta explica qué envía y cómo se conectan los navegadores."
 
 #
 # ---------------------------------------------------------------------------
@@ -493,7 +493,7 @@ group_scope = "Buscar en:"
 group_network = "Red local"
 group_private = "Grupo privado"
 group_heading = "Usar un grupo privado"
-group_help = "Crea un código de grupo y compártelo con tus otros dispositivos, o introduce un código que hayas recibido. El mismo código funciona en las cinco herramientas para conectar dispositivos; cada página muestra su propio tipo de conexión."
+group_help = "Crea un código de grupo y compártelo con tus otros dispositivos, o introduce un código que hayas recibido. El mismo código funciona en las seis herramientas para conectar dispositivos; cada página muestra su propio tipo de conexión."
 group_code = "Código del grupo privado"
 group_join = "Unirse al grupo"
 group_create = "Crear grupo"

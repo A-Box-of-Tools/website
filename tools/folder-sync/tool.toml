@@ -1,0 +1,240 @@
+# Keeping a folder in step between two devices is a network feature, not
+# local file processing: files cross from one browser to the other. They
+# cross directly, encrypted, over the network the two devices share. The
+# rendezvous introduces the browsers and never carries a file, a file name or
+# a listing; those travel the peer connection, and only after the host has
+# approved the device that asked to join.
+#
+# Unlike the other Connect Devices tools there is no Cloud relay. A relay
+# forwards a few kilobytes of text or a stream of video through a metered
+# service; this one would forward whole folders. Direct is host candidates
+# only, so the devices must reach each other on a shared network.
+#
+# Nothing is ever deleted. Without a record of the last sync there is no way
+# to tell a file deleted on one side from a file created on the other, and
+# guessing wrong destroys somebody's work. A file missing on one side is
+# offered to it, and the visitor can leave it alone instead.
+slug = "folder-sync"
+name = "Folder Sync"
+heading = "Folder Sync <span class=\"h1-kw\">&mdash; keep a folder the same on two devices</span>"
+tagline = "Choose a folder on each device, see every difference, and copy what is missing or newer straight between the two browsers on your network. Nothing is uploaded, and nothing is ever deleted."
+icon = "&#128194;"
+favicon = "&#128194;"
+glyph = "folder-sync"
+category = "connect-devices"
+roadmap_group = "beyond"
+css_parts = ["form", "notes", "paired-tools"]
+js_parts = ["peer-pairing", "peer-greeting", "peer-endpoint", "peer-network", "peer-transport", "peer-discovery", "discovery-group", "peer-discovery-ui", "peer-approval-ui", "peer-request-signal", "chime", "peer-admission", "room-names", "clipboard-feedback", "peer-host-claim", "format", "zip", "crc32", "download"]
+lastmod = "2026-11-19"
+
+title = "Sync a Folder Between Two Devices &mdash; Browser to Browser, No Upload"
+description = "Keep a folder the same on two computers. Compare both folders, review every change, and copy files directly between the browsers on your network. No upload, no account, nothing deleted."
+og_title = "Keep a folder the same on two devices"
+og_description = "Compare two folders and copy what is missing or newer, directly between the browsers on your network. No upload, no account, nothing deleted."
+og_image_alt = "Folder Sync - keep a folder the same on two devices"
+og_card = "Two folders, one comparison, files copied straight across."
+csp_note = """
+  Local builds and HTTPS abox-preview.pages.dev previews use the separate
+  rendezvous-dev.abox.tools service; other page addresses use production.
+  Pairing opens a WebSocket to rendezvous.abox.tools in the separate
+  folder-sync room namespace. It carries WebRTC descriptions and candidates,
+  never a file, a file name or a folder listing. Opt-in discovery uses a
+  separate socket and lists only the random invitation code. Direct configures
+  no STUN or TURN and accepts only host candidates; there is no relay.
+  WebRTC data channels are outside CSP's connect-src vocabulary. Listings,
+  fingerprints and files travel the encrypted peer connection, and only after
+  the host has approved the joining device."""
+pledge = """
+    You choose a folder on each device and approve the device that joins.
+    The two browsers then compare file names, sizes and dates over an
+    encrypted connection made directly between them, and copy the files you
+    agree to, without any server in between. There is no relay, so both
+    devices need to share a network they can reach each other on. Pairing uses
+    an internet introduction service that sees setup metadata, never a file,
+    a file name or the comparison. A received file replaces the old one only
+    once all of it has arrived, and nothing is ever deleted. Stop, or close
+    either page, to end the session."""
+pledge_line = "Files travel <strong>directly between your two devices</strong>, encrypted. Nothing is uploaded; an introduction service connects the browsers."
+md_note = "Folder comparison and file copying directly between two approved browsers, encrypted, with no relay. Internet introductions carry setup metadata, never files, file names or listings. Nothing is ever deleted."
+live_hint = """
+      DevTools shows a rendezvous WebSocket for introduction
+      messages. Opting into a listing or choosing Find connections
+      opens a separate discovery WebSocket. File lists and files
+      travel over encrypted WebRTC directly between the devices.
+      The Network panel and CSP alone do not inspect that peer
+      traffic. The site frame has its usual third-party resources."""
+read_first = """
+, <code>src/plan.js</code> for how two listings become the
+      list of differences and why nothing is deleted, <code>src/transfer.js</code>
+      for the acknowledged transfer that keeps a large file out of memory,
+      <code>src/folder.js</code> for the writes that replace a file only once
+      it is whole, and <code>src/session.js</code> for approval before either
+      folder is compared. The introduction service is published beside the
+      tool under <code>workers/rendezvous/</code>"""
+howto_heading = "How to sync a folder between two devices"
+card = "Compare a folder on two devices and copy what is missing or newer, directly between the browsers on your network. Nothing uploaded, nothing deleted."
+
+[csp]
+"connect-src" = ["wss://rendezvous.abox.tools", "wss://rendezvous-dev.abox.tools"]
+
+[words]
+plural = "folders and files"
+choose = "a folder"
+analytics_extra = ", and the tool does not pass file names, folder names, listings or file contents to those scripts"
+
+[[facts]]
+mark = "&#10003;"
+text = "Approval required"
+[[facts]]
+mark = "&#10003;"
+text = "Encrypted, device to device"
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+[[facts]]
+mark = "&#10007;"
+text = "No relay"
+[[facts]]
+mark = "&#10007;"
+text = "Never deletes"
+
+[[privacy]]
+title = "You choose the folders, then approve the device."
+body = """
+      Each device chooses its own folder in the browser's own picker, and
+      this page can reach nothing outside it. The device that starts the
+      sync approves the device that joins before anything about either
+      folder is sent: the first peer connection carries only an encrypted
+      control channel and the joining device's request, with an optional
+      note. A note is self-chosen text, not verified identity. One device
+      at a time can sync with the host, with up to four requests waiting.
+      The joining browser stores a random approval receipt locally and
+      presents it only over the encrypted peer channel, so it can reconnect
+      to the same session without another approval. Stopping the sync, or
+      disconnecting that device, revokes it."""
+[[privacy]]
+title = "The other device sees your file list, and the files you sync."
+body = """
+      Once approved, each device sends the other the path, size and
+      last-modified date of every file in its chosen folder, so the two can
+      be compared. That includes files that will not be copied. When two
+      files have the same size but different dates, each device reads its
+      own copy and sends a fingerprint of its contents, not the contents.
+      Files themselves are sent only when Sync now is pressed, and only those
+      in the plan both devices' settings allow. A device set to Send only
+      accepts no files; a device set to Receive only sends none. The other
+      device keeps whatever it receives."""
+[[privacy]]
+title = "Files cross directly between the devices, encrypted."
+body = """
+      Listings, fingerprints and files travel an encrypted WebRTC connection
+      made directly between the two browsers. Only host connection addresses
+      are accepted, no public STUN server is configured, and there is no
+      relay, so nothing passes through a server on the way. Both devices
+      need a network on which they can reach each other: the same Wi-Fi,
+      Ethernet or phone hotspot. Guest-network isolation, firewalls, VPN
+      routes and browser local-network permissions can prevent a connection.
+      Host addresses can include public interfaces or follow a VPN route, so
+      this does not prove that traffic stays inside a building."""
+[[privacy]]
+title = "Pairing exposes setup metadata to the introduction service."
+body = """
+      Starting or joining opens a WebSocket to
+      <code>rendezvous.abox.tools</code>. The service sees the random room
+      code, IP addresses, connection times, WebRTC descriptions and ICE
+      candidates; these setup messages are not hidden from it. File names,
+      listings, fingerprints, files, notes and approval decisions travel the
+      encrypted peer connection. No room content is written to storage.
+      Cloudflare, which runs the service, keeps connection logs for seven
+      days containing request metadata such as the code, address and time.
+      Internet access is required for discovery and connection setup."""
+[[privacy]]
+title = "Discovery is optional and lists only the invitation code."
+body = """
+      Show in Available connections is off by default. Check it before
+      starting to publish the random invitation code; it stays fixed until
+      you stop. Another device chooses Find connections to see it. No folder
+      name, file name or file count is listed. The service groups this
+      tool's pages by public IPv4 address or IPv6 /64 subnet and website
+      origin, so shared carrier gateways or VPNs can include strangers and
+      different routes can hide nearby devices. A private group instead uses
+      the same random group code on each device; the service receives the
+      code to authenticate that directory, and this tool neither saves it nor
+      puts it in sync links. Anyone with the group code can see listed
+      sessions, and approval still applies."""
+[[privacy]]
+title = "Writes are whole or not at all, and nothing is deleted."
+body = """
+      A received file is written to a temporary copy beside it, and replaces
+      the old file only once every byte has arrived, so a cancelled or broken
+      sync leaves no half-written file. A file that did not exist before an
+      interrupted write is removed again. Nothing in either folder is ever
+      deleted. Writing gives a file today's date, because a web page cannot
+      set the date a file was changed. In browsers that cannot write into a
+      folder, received files are collected in this page's memory and saved
+      as one ZIP when you choose to save it."""
+[[privacy]]
+title = "Invitations are visible to page scripts."
+body = """
+      A session uses a fresh random link. Possessing it permits a connection
+      attempt, and approval still controls what happens next. This page has
+      the site's usual Google advertising and measurement scripts. The tool
+      does not deliberately pass file names, listings or files to them, but
+      scripts running in the page can read its address and same-page state,
+      including a link code. Treat the expected device's request and your
+      approval as the admission step."""
+
+[[howto]]
+title = "Open this tool on both devices."
+body = "Use Chrome, Edge or most other Chromium browsers on a computer for a folder that can both send and receive. Firefox and Safari can send a folder, and receive into a ZIP. Put both devices on the same Wi-Fi, Ethernet or phone hotspot, and keep internet access available for the introduction."
+[[howto]]
+title = "Choose the folder on each device."
+body = "Choose a folder, and allow the browser to change it if this device should receive files. Pick what each device does: Send and receive, Send only, or Receive only. System files, temporary copies and names one of Windows, macOS or Linux cannot store are left out and listed."
+[[howto]]
+title = "Start on one device, join from the other."
+body = "Choose Start a sync, then open the sync link on the other device, or have it choose Find connections and Join if you showed the sync in Available connections. Approve the request you recognise; nothing about either folder is sent before you do."
+[[howto]]
+title = "Check the comparison."
+body = "Both devices list every difference: files only on one side, files newer on one side, and files that differ but carry the same date. Each row shows the default, which you can change: send it, copy it here, or leave it alone. Nothing is deleted, so a file you removed on purpose should be left alone or removed on both devices."
+[[howto]]
+title = "Sync, then compare again later."
+body = "Choose Sync now on either device. Both show progress, and a file replaces its older copy only once all of it has arrived. Afterwards both folders are read again and compared. Keep both pages open to sync again later, or stop and start a new session whenever you need one."
+
+[[faq]]
+q = "Are my files uploaded anywhere?"
+a = "No. Files, file names and folder listings travel an encrypted connection made directly between your two browsers, and there is no relay. The introduction service that connects the browsers sees setup metadata such as the room code and IP addresses, never what is in either folder."
+[[faq]]
+q = "Does it delete files that I deleted on the other device?"
+a = "No, never. Without a record of the last sync, a file missing on one device looks exactly like a new file on the other, and guessing wrong would destroy somebody's work. A file missing on one side is offered to it; set its row to Leave it alone, or delete it on both devices."
+[[faq]]
+q = "Which copy wins when a file changed on both devices?"
+a = "By default the copy with the later modification date replaces the older one, and the row says which way it goes. You can change any row before syncing. Two different copies with exactly the same date are left alone until you choose. Files with the same size and different dates are compared by content first, so identical copies are never sent again."
+[[faq]]
+q = "Which browsers can use it?"
+a = "Chrome, Edge and most other Chromium browsers on a computer can read a folder and write into it. Firefox and Safari can choose a folder to send from, and receive files as a ZIP to unpack yourself, up to 512 MB. A browser that cannot choose folders at all, as on most phones, can only receive as a ZIP."
+[[faq]]
+q = "Do the two devices need to be on the same network?"
+a = "Yes. Files cross directly between the devices, so they need a network on which they can reach each other: the same Wi-Fi, Ethernet or phone hotspot. Both also need internet access for the introduction. Guest networks, client isolation, firewalls and VPNs can block the connection. There is no relay for devices on different networks."
+[[faq]]
+q = "Can someone else join my sync?"
+a = "Only with your approval. A sync link or a listed invitation code lets a device ask to join, and you approve or turn away each request before anything about your folder is sent. One device at a time can sync with yours. A note in the request is self-chosen text, so recognise the device and the moment before approving."
+[[faq]]
+q = "Can I stop the other device from changing my folder?"
+a = "Yes. Set this device to Send only before starting: the other device can copy files from your folder but cannot write into it, and this page refuses any plan that would. Receive only works the other way round: files come in and none of yours are sent, though your file list is still compared."
+[[faq]]
+q = "What happens if the connection drops mid-sync?"
+a = "Files that arrived whole are kept. A file still in transit is discarded, and its older copy, if there was one, is left exactly as it was, because a received file replaces the old one only once every byte has arrived. Connect again and compare: the next plan picks up what is still missing."
+[[faq]]
+q = "Why do synced files show today's date?"
+a = "A web page can write a file's contents but cannot set the date it was last changed, so a received file is dated when it was written. The next comparison checks the contents of files that match in size but not in date, and treats identical copies as already in sync."
+[[faq]]
+q = "Is there a limit to the folder size?"
+a = "Each folder can hold up to 50,000 files. Writing into a folder streams each file to disk, so large files are fine. Receiving into a ZIP keeps the files in memory and stops at 512 MB. Very deep or very long paths, and names one of Windows, macOS or Linux cannot store, are left out and listed."
+[[faq]]
+q = "What does the connection service learn?"
+a = "The rendezvous sees the invitation code, IP addresses, connection times, WebRTC descriptions and candidates. If the host opts into discovery, its selected network or private group can see the random invitation code. Private group codes are sent to the service to authenticate their directory; sync links omit them. Cloudflare retains introduction request metadata for seven days. File names, listings, fingerprints, files, notes and approvals use the encrypted peer connection."
+
+[schema]
+category = "UtilitiesApplication"
+description = "Compare a folder on two devices and copy missing or newer files directly between the browsers over an encrypted WebRTC connection, with approval and no upload."
+features = ["Compare two folders by path, size, date and content fingerprint", "Review and change every file's action before syncing", "Encrypted transfer directly between the two browsers, with no relay", "Mandatory approval of the joining device", "Send only and Receive only modes enforced on each device", "Received files replace old copies only when complete", "Never deletes a file", "Receive into a ZIP in browsers that cannot write folders"]

@@ -320,7 +320,7 @@ note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei
 id = "connect-devices"
 name = "Geräte verbinden"
 short_name = "Geräte verbinden"
-note = "Teilen Sie Text und Dateien, sprechen Sie live oder sehen Sie eine Kamera oder einen Browser-Tab auf einem anderen Gerät. Jedes Tool erklärt, was es überträgt und wie sich die Browser verbinden."
+note = "Teilen Sie Text und Dateien, gleichen Sie einen Ordner ab, sprechen Sie live oder sehen Sie eine Kamera oder einen Browser-Tab auf einem anderen Gerät. Jedes Tool erklärt, was es überträgt und wie sich die Browser verbinden."
 
 #
 # ---------------------------------------------------------------------------
@@ -547,7 +547,7 @@ group_scope = "In diesem Bereich suchen:"
 group_network = "Lokales Netzwerk"
 group_private = "Private Gruppe"
 group_heading = "Private Gruppe verwenden"
-group_help = "Erstellen Sie einen Gruppencode und teilen Sie ihn mit Ihren anderen Geräten, oder geben Sie einen erhaltenen Code ein. Derselbe Code funktioniert in allen fünf Werkzeugen zum Verbinden von Geräten; jede Seite zeigt ihre eigene Verbindungsart."
+group_help = "Erstellen Sie einen Gruppencode und teilen Sie ihn mit Ihren anderen Geräten, oder geben Sie einen erhaltenen Code ein. Derselbe Code funktioniert in allen sechs Werkzeugen zum Verbinden von Geräten; jede Seite zeigt ihre eigene Verbindungsart."
 group_code = "Code der privaten Gruppe"
 group_join = "Gruppe beitreten"
 group_create = "Gruppe erstellen"

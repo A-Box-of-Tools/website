@@ -208,7 +208,7 @@ note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de
 id = "connect-devices"
 name = "Connecter des appareils"
 short_name = "Connecter des appareils"
-note = "Partagez du texte et des fichiers, parlez en direct ou regardez une caméra ou un onglet de navigateur depuis un autre appareil. Chaque outil explique ce qu'il envoie et comment les navigateurs se connectent."
+note = "Partagez du texte et des fichiers, synchronisez un dossier, parlez en direct ou regardez une caméra ou un onglet de navigateur depuis un autre appareil. Chaque outil explique ce qu'il envoie et comment les navigateurs se connectent."
 
 [guides]
 nav = "Tous les guides"
@@ -334,7 +334,7 @@ group_scope = "Rechercher dans :"
 group_network = "Réseau local"
 group_private = "Groupe privé"
 group_heading = "Utiliser un groupe privé"
-group_help = "Créez un code de groupe et partagez-le avec vos autres appareils, ou saisissez un code reçu. Le même code fonctionne dans les cinq outils de connexion entre appareils ; chaque page affiche son propre type de connexion."
+group_help = "Créez un code de groupe et partagez-le avec vos autres appareils, ou saisissez un code reçu. Le même code fonctionne dans les six outils de connexion entre appareils ; chaque page affiche son propre type de connexion."
 group_code = "Code du groupe privé"
 group_join = "Rejoindre le groupe"
 group_create = "Créer un groupe"

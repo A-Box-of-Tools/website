@@ -514,7 +514,7 @@ foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filte
     }
   }
 
-  $cardFooter = if ($slug -in @('share-text', 'remote-camera', 'share-tab', 'walkie-talkie', 'voice-oncall')) {
+  $cardFooter = if ($slug -in @('share-text', 'folder-sync', 'remote-camera', 'share-tab', 'walkie-talkie', 'voice-oncall')) {
     'Encrypted sharing | No accounts | Open source'
   } else { $footer }
 
