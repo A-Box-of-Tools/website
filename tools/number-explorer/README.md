@@ -92,6 +92,14 @@ changed so it is never blank when scrolled back to. The dot-heavy scenes draw on
 fixed layers and rescale those, and the lit layer is only added to as the number climbs,
 so a drag across the whole range stays cheap at sixteen thousand dots.
 
+A journey is the picture travelling from one number to another: growing from one, and
+the short zoom after a change of world. Whoever starts one can ask to be told when it is
+over, and is told once however it ends, whether it arrives or is overtaken by a new
+number, a jump, another journey or motion being turned off. The Grow button is set from
+that and from nothing else. It used to be set from whether any journey was running, and
+the zoom is one it does not offer to stop, so anything that redrew the answer during the
+zoom left it saying Stop with nothing to stop.
+
 Scenes get every word they draw from `main.js`, which reads them from `#phrases`. `say.js`
 leaves units to `Intl`, so kilometers and years are already right in every language this
 page is built in, and the phrases hold only what `Intl` has no word for.
