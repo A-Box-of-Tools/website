@@ -125,6 +125,25 @@ writing a second DCT decoder to produce a worse picture more slowly would be a
 strange way to spend as many again, and the page says out loud that those
 pixels came back eight bits deep.
 
+## A folder off a disc
+
+The drop zone is the shared one, and it is `shared/js/file-picker.js` that
+opens a dropped folder. `accept` here is everything, so the viewer is handed
+every file under it: a folder's own files first, then each folder inside it.
+A disc is mostly not scans. Beside the series sit a `DICOMDIR`, an
+`autorun.inf` and the viewer program the hospital burned on with them, and all
+of it arrives.
+
+So `scan` in `main.js` settles the one question it can from the first 256 KB
+of a file. With no `DICM` at byte 128 and no element at byte 0 it is not DICOM,
+no later byte can change that, and it is refused there. Before folders opened,
+such a file was read to its end first: 1.7 s and 1.5 GB of memory for a 1.5 GB
+file, measured, to arrive at the same sentence.
+
+The files that were skipped are counted and the first three are named. A
+`DICOMDIR` opens as what it is, a DICOM object with no picture, listed after
+the series it describes.
+
 ## Keyboard navigation
 
 The picture keeps its existing Tab stop and focus outline. Its translated group
