@@ -186,19 +186,19 @@ body = """
 
 [[howto]]
 title = "Open this tool on both devices."
-body = "Use Chrome, Edge or most other Chromium browsers on a computer for a folder that can both send and receive. Firefox and Safari can send a folder, and receive into a ZIP. Put both devices on the same Wi-Fi, Ethernet or phone hotspot, and keep internet access available for the introduction."
+body = " Use Chrome, Edge or most other Chromium browsers on a computer for a folder that can both send and receive. Firefox and Safari can send a folder, and receive into a ZIP. Put both devices on the same Wi-Fi, Ethernet or phone hotspot, and keep internet access available for the introduction."
 [[howto]]
 title = "Choose the folder on each device."
-body = "Choose a folder, and allow the browser to change it if this device should receive files. Pick what each device does: Send and receive, Send only, or Receive only. System files, temporary copies and names one of Windows, macOS or Linux cannot store are left out and listed."
+body = " Choose a folder, and allow the browser to change it if this device should receive files. Pick what each device does: Send and receive, Send only, or Receive only. System files, temporary copies and names one of Windows, macOS or Linux cannot store are left out and listed."
 [[howto]]
 title = "Start on one device, join from the other."
-body = "Choose Start a sync, then open the sync link on the other device, or have it choose Find connections and Join if you showed the sync in Available connections. Approve the request you recognise; nothing about either folder is sent before you do."
+body = " Choose Start a sync, then open the sync link on the other device, or have it choose Find connections and Join if you showed the sync in Available connections. Approve the request you recognise; nothing about either folder is sent before you do."
 [[howto]]
 title = "Check the comparison."
-body = "Both devices list every difference: files only on one side, files newer on one side, and files that differ but carry the same date. Each row shows the default, which you can change: send it, copy it here, or leave it alone. Nothing is deleted, so a file you removed on purpose should be left alone or removed on both devices."
+body = " Both devices list every difference: files only on one side, files newer on one side, and files that differ but carry the same date. Each row shows the default, which you can change: send it, copy it here, or leave it alone. Nothing is deleted, so a file you removed on purpose should be left alone or removed on both devices."
 [[howto]]
 title = "Sync, then compare again later."
-body = "Choose Sync now on either device. Both show progress, and a file replaces its older copy only once all of it has arrived. Afterwards both folders are read again and compared. Keep both pages open to sync again later, or stop and start a new session whenever you need one."
+body = " Choose Sync now on either device. Both show progress, and a file replaces its older copy only once all of it has arrived. Afterwards both folders are read again and compared. Keep both pages open to sync again later, or stop and start a new session whenever you need one."
 
 [[faq]]
 q = "Are my files uploaded anywhere?"
