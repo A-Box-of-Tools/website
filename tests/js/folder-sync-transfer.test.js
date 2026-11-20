@@ -77,6 +77,16 @@ function memoryWriter({ slow = 0, failOpen = new Set(), failWrite = new Set() } 
   };
 }
 
+// Waits on what a case is about rather than on a clock: a fixed delay that is
+// long enough on one machine is too short on a busy CI runner.
+async function until(predicate, label) {
+  for (let tries = 0; tries < 400; tries += 1) {
+    if (predicate()) return;
+    await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+  assert.fail(`timed out waiting for ${label}`);
+}
+
 function pull({ items, source: files, writer, sourceOptions = {}, sinkOptions = {} }) {
   const { source, sink, log } = lanes();
   const results = [], stored = [];
@@ -169,8 +179,7 @@ test('a peer that sends more bytes than it promised ends the run', async () => {
     source.send(JSON.stringify({ type: 'begin', id: message.id, size: 4 }));
     source.send(new Uint8Array(8).buffer);
   });
-  await new Promise((resolve) => setTimeout(resolve, 50));
-  assert.equal(failed, true);
+  await until(() => failed, 'the run to fail');
   assert.equal(writer.stored.size, 0);
 });
 
@@ -178,11 +187,14 @@ test('cancelling stops the sender and discards the file in flight', async () => 
   const files = folder([['huge.bin', bytes(16 * 1024 * 1024)]]);
   const { source, sink } = lanes();
   const writer = memoryWriter({ slow: 2 });
-  let finished = false;
+  let finished = false, received = 0;
   createSource({ channel: source, lookup: files.lookup, read: files.read });
+  // Cancel once bytes are arriving, so a file is open and in flight; a cancel
+  // that lands before the file begins has nothing to discard.
   const handle = createSink({ channel: sink, items: [{ key: 'huge.bin', path: 'huge.bin', size: 16 * 1024 * 1024 }], writer,
+    onProgress: (bytes) => { received += bytes; },
     onDone: () => { finished = true; }, onFile: () => { finished = true; } });
-  await new Promise((resolve) => setTimeout(resolve, 30));
+  await until(() => received > 0, 'the first bytes');
   handle.cancel();
   await new Promise((resolve) => setTimeout(resolve, 50));
   assert.equal(finished, false);
