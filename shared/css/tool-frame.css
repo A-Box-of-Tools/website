@@ -928,6 +928,52 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 .example-note:empty { display: none; }
 
+/* The way in for a whole folder, under the drop zone: a quiet button and,
+   beside it, the answer to what the browser is about to say. Chrome and
+   Firefox both make a visitor confirm an "upload" when a page asks for a
+   folder, which on this site has to be answered before it is asked. The
+   sentence takes the rest of the row, and goes under the button when the row
+   is too narrow for both.
+
+   The control is a <label> in a button's clothes and not a <button>. A label
+   opens its input natively; a script clicking a hidden input is what Safari
+   refuses, which is the whole reason for .visually-hidden above. `.as-button`
+   gives it the 44 pixels a thumb needs, as it does for a link dressed the
+   same way. */
+.dropzone-folder {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  margin-top: 0.75rem;
+}
+.dropzone-folder > label {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+.dropzone-folder-why {
+  flex: 1 1 16rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* Its input is invisible as well, so its focus ring is drawn on its label. */
+.dropzone-folder > .visually-hidden:focus-visible + label {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+/* Only ever filled in when a chosen folder held nothing for this tool, and a
+   row of its own so it reads as the answer to the button above it. */
+.folder-note {
+  flex-basis: 100%;
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+.folder-note:empty { display: none; }
+
 /* ----------------------------------------------------------------- toolbar */
 
 .toolbar {
