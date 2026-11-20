@@ -28,6 +28,17 @@ export function createStage(canvas, paint) {
 
   const moves = () => !quiet.matches && !paused;
 
+  // A journey does not always arrive. A new number is aimed at, the stage jumps, another
+  // journey starts, or motion is turned off under it, and each of those ends it where it
+  // stands. Whoever started it is told all the same, once, because a button that offers
+  // to stop a journey has to stop offering when there is none. This used to drop it
+  // without a word, and the page was left guessing from whether any journey was running.
+  function abandon() {
+    const done = journey?.done;
+    journey = null;
+    return done;
+  }
+
   // Out of view the stage asks for one frame when something changed and no more,
   // so it costs nothing there and is never found blank when it is scrolled back to.
   function wake() {
@@ -81,10 +92,11 @@ export function createStage(canvas, paint) {
     } else if (!visible) {
       moving = false;
     } else if (shown !== target || journey) {
-      journey = null;
+      const done = abandon();
       shown = target;
       velocity = 0;
       dirty = true;
+      done?.();
     }
     if (moving || dirty || (moves() && visible)) {
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -128,32 +140,39 @@ export function createStage(canvas, paint) {
     get paused() { return paused; },
     get quiet() { return quiet.matches; },
     aim(position, { dragging = false } = {}) {
-      journey = null;
+      const overtaken = abandon();
       target = position;
       ease = dragging ? DRAG_EASE : STEP_EASE;
       dirty = true;
       wake();
+      overtaken?.();
     },
     jump(position) {
-      journey = null;
+      const overtaken = abandon();
       target = position;
       shown = position;
       velocity = 0;
       dirty = true;
       wake();
+      overtaken?.();
     },
     travel(from, to, seconds, done) {
+      const overtaken = abandon();
       target = to;
       if (!moves()) {
         shown = to;
         dirty = true;
         wake();
+        overtaken?.();
         done?.();
         return;
       }
       shown = from;
       journey = { from, to, seconds, elapsed: 0, done };
       wake();
+      // Told last, here and above, with the stage already as it is going to be, so that
+      // whatever the one being told asks of the stage is true.
+      overtaken?.();
     },
     pause(value) {
       paused = value;
