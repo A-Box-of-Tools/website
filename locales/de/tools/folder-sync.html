@@ -1,0 +1,286 @@
+<main id="main" class="paired-page">
+  <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head"><h2 id="discovery-heading">Verfügbare Verbindungen</h2></div>
+    {% include "partials/paired-discovery-group.html" %}
+    <details class="paired-network info-fold">
+      <summary>{{ ui.tool.transport_label }}</summary>
+      <p>Beide Geräte brauchen Internetzugang, um einander zu finden, und ein Netzwerk, über das die Dateien direkt gehen können, also dasselbe WLAN, dasselbe Ethernet-Netz oder denselben Handy-Hotspot. Dieses Werkzeug hat kein Relais, daher können zwei Geräte in verschiedenen Netzwerken damit nicht synchronisieren.</p>
+      <h3>{{ ui.tool.pairing_hotspot_heading }}</h3>
+      <ol>
+        <li>{{ ui.tool.pairing_hotspot_enable }}</li>
+        <li>{{ ui.tool.pairing_hotspot_join }}</li>
+        <li>{{ ui.tool.pairing_hotspot_connect }}</li>
+      </ol>
+      <p>{{ ui.tool.pairing_hotspot_limits }}</p>
+      <p class="paired-network-links"><a href="https://support.apple.com/111785">iPhone / iPad</a><a href="https://support.google.com/android/answer/9059108">Android</a></p>
+    </details>
+    <div id="discovery-controls" class="sync-discovery-controls">
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">Verbindungen suchen</button>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p id="discovery-help" class="field-note">Sucht nach Synchronisierungen, die auf anderen Geräten im ausgewählten Netzwerk oder in der privaten Gruppe gestartet wurden. Jeder Eintrag ist ein Einladungscode und sonst nichts; Ordner- und Dateinamen werden nicht gelistet. Vergleichen Sie den Code mit dem anderen Gerät, bevor Sie beitreten.</p>
+      </details>
+    </div>
+    <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
+      <p id="discovery-status" role="status" aria-live="polite"></p>
+      <ul id="discovery-list" class="paired-nearby-list"></ul>
+      <div class="paired-actions">
+        <button type="button" id="discovery-refresh">Verbindungen aktualisieren</button>
+        <button type="button" id="discovery-close">Suche beenden</button>
+      </div>
+      <p class="field-note">Wählen Sie zuerst den Ordner dieses Geräts und dann „Beitreten“. Das andere Gerät genehmigt Sie, bevor einer der beiden Ordner verglichen wird.</p>
+    </section>
+  </section>
+
+  <section id="folder-panel" class="sync-card sync-folder" aria-labelledby="folder-heading">
+    <h2 id="folder-heading">Der Ordner auf diesem Gerät</h2>
+    <p class="card-lede">Wählen Sie den Ordner, der mit dem anderen Gerät auf demselben Stand bleiben soll. Bis Sie „Jetzt synchronisieren“ drücken, werden nur Dateinamen, Größen und Datumsangaben verglichen.</p>
+    <div class="run-row">
+      <button type="button" id="folder-choose" class="big">Ordner auswählen</button>
+      <input type="file" id="folder-input" class="visually-hidden" tabindex="-1" webkitdirectory multiple aria-label="Ordner auswählen" data-no-remember>
+    </div>
+    <p id="folder-status" class="sync-status" role="status" aria-live="polite">Noch kein Ordner ausgewählt.</p>
+    <details id="folder-skipped" class="sync-skipped" hidden>
+      <summary id="folder-skipped-summary"></summary>
+      <p class="field-note">Systemdateien, temporäre Kopien und Namen, die eines der Systeme Windows, macOS oder Linux nicht speichern kann, werden nie synchronisiert. So kann eine Synchronisierung keine Datei anlegen, die das andere Gerät verstümmeln würde.</p>
+      <ul id="folder-skipped-list"></ul>
+    </details>
+    <p id="folder-support" class="sync-help" hidden></p>
+    <fieldset id="mode-field" class="sync-modes">
+      <legend>Was dieses Gerät tut</legend>
+      <label><input type="radio" name="sync-mode" id="mode-both" value="both" checked data-no-remember>
+        <span><strong>Senden und empfangen</strong> <span class="field-note">Kopiert, was fehlt oder neuer ist, in beide Richtungen.</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-send" value="send" data-no-remember>
+        <span><strong>Nur senden</strong> <span class="field-note">Das andere Gerät kann aus diesem Ordner kopieren, ihn aber nie verändern.</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-receive" value="receive" data-no-remember>
+        <span><strong>Nur empfangen</strong> <span class="field-note">Holt Dateien in diesen Ordner. Keine seiner Dateien wird gesendet, seine Dateiliste wird aber trotzdem verglichen.</span></span></label>
+    </fieldset>
+  </section>
+
+  <div class="sync-grid" id="sync-grid" data-pairing-setup>
+    <section id="host-panel" class="sync-card" aria-labelledby="host-heading">
+      <h2 id="host-heading">Synchronisierung starten</h2>
+      <p class="card-lede">Starten Sie hier eine Synchronisierung und treten Sie ihr dann vom anderen Gerät aus bei. Sie genehmigen dieses Gerät, bevor einer der beiden Ordner verglichen wird.</p>
+      <div class="sync-option">
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> In den verfügbaren Verbindungen anzeigen</label>
+        <p id="host-discovery-help" class="field-note">Wählen Sie dies vor dem Start, damit der Einladungscode im oben ausgewählten Netzwerk oder in der privaten Gruppe gelistet wird. Ordner- und Dateinamen werden nicht gelistet, und Sie genehmigen das beitretende Gerät weiterhin selbst.</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="host">
+          <button type="button" id="host-start" class="big">Synchronisierung starten</button>
+        </div>
+        <button type="button" id="host-stop" class="big danger" hidden>Beenden</button>
+      </div>
+      <p id="host-status" class="sync-status" role="status" aria-live="polite">Wählen Sie einen Ordner und starten Sie dann.</p>
+      <p id="host-publication-status" class="sync-status" role="status" aria-live="polite" hidden></p>
+      {% include "partials/paired-request-sound.html" %}
+      <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
+        <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="guest-requests" class="sync-requests" aria-live="polite"></ul>
+      </div>
+      <div id="host-invitation" class="sync-invite" hidden>
+        <div class="field">
+          <label for="share-link">Synchronisierungslink</label>
+          <input type="text" id="share-link" readonly spellcheck="false" dir="ltr" data-no-remember>
+        </div>
+        <div class="run-row">
+          <button type="button" id="copy-link">Link kopieren</button>
+          <span id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="sync-help">Öffnen Sie diesen Link auf dem anderen Gerät und lassen Sie diese Seite geöffnet. Es kann jeweils nur ein Gerät mit diesem synchronisieren.</p>
+      </div>
+      <section id="partner-panel" hidden aria-labelledby="partner-heading">
+        <h3 id="partner-heading">Synchronisiert mit</h3>
+        <ul id="partner-list" class="sync-requests"></ul>
+      </section>
+    </section>
+
+    <section id="guest-panel" class="sync-card" aria-labelledby="guest-heading">
+      <h2 id="guest-heading">Einer Synchronisierung beitreten</h2>
+      <p class="card-lede">Verwenden Sie den Link oder Code des anderen Geräts. Es genehmigt Sie, bevor die Ordner verglichen werden.</p>
+      <div class="field">
+        <label for="guest-code">Synchronisierungslink oder Code</label>
+        <input type="text" id="guest-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="sync-abcdefghijklmnop" data-no-remember>
+      </div>
+      <div class="field">
+        <label for="guest-note">Eine Notiz, an der das andere Gerät Sie erkennt (optional)</label>
+        <input type="text" id="guest-note" maxlength="80" autocomplete="off" placeholder="Zum Beispiel mein Laptop" data-no-remember>
+        <p class="field-note">Ihre Notiz wird über die verschlüsselte Verbindung an das andere Gerät gesendet.</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="join">
+          <button type="button" id="guest-connect" class="big">Synchronisierung anfragen</button>
+        </div>
+        <button type="button" id="guest-stop" class="big danger" hidden>Trennen</button>
+      </div>
+      <p id="guest-status" class="sync-status" role="status" aria-live="polite">Geben Sie zum Beginnen einen Synchronisierungslink oder Code ein.</p>
+      <button type="button" id="show-host" class="ghost" hidden>Stattdessen eine eigene Synchronisierung starten</button>
+    </section>
+  </div>
+
+  <section id="sync-panel" class="sync-card sync-compare" aria-labelledby="sync-heading" hidden>
+    <h2 id="sync-heading">Vergleichen und synchronisieren</h2>
+    <dl class="sync-sides">
+      <div><dt>Dieses Gerät</dt><dd id="side-here"></dd></div>
+      <div><dt id="side-there-label">Anderes Gerät</dt><dd id="side-there"></dd></div>
+    </dl>
+    <p id="sync-status" class="sync-status" role="status" aria-live="polite"></p>
+    <progress id="sync-progress" max="1" value="0" hidden aria-label="Fortschritt der Synchronisierung"></progress>
+    <p id="sync-summary" class="sync-summary"></p>
+    <div class="run-row">
+      <button type="button" id="sync-start" class="big">Jetzt synchronisieren</button>
+      <button type="button" id="sync-compare">Erneut vergleichen</button>
+      <button type="button" id="sync-cancel" class="danger" hidden>Abbrechen</button>
+    </div>
+    <div id="sync-results" class="sync-results" hidden>
+      <p id="sync-results-text"></p>
+      <ul id="sync-failures"></ul>
+      <button type="button" id="zip-save" hidden>Empfangene Dateien als ZIP speichern</button>
+    </div>
+    <div id="sync-table-wrap" class="sync-table-wrap" hidden>
+      <table class="sync-table" role="table">
+        <caption>Unterschiede zwischen den beiden Ordnern</caption>
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Datei</th><th scope="col" role="columnheader">Dieses Gerät</th><th scope="col" role="columnheader">Anderes Gerät</th><th scope="col" role="columnheader">Was geschieht</th></tr></thead>
+        <tbody id="sync-rows" role="rowgroup"></tbody>
+      </table>
+      <p id="sync-more" class="field-note" hidden></p>
+    </div>
+  </section>
+
+  <details class="sync-details">
+    <summary>Was geteilt wird und wie die Verbindung funktioniert</summary>
+    <p>Bevor Sie „Jetzt synchronisieren“ drücken, tauschen die beiden Geräte Dateilisten aus, mit Pfad, Größe und Änderungsdatum jeder Datei in den gewählten Ordnern. Haben zwei Dateien dieselbe Größe, aber verschiedene Datumsangaben, liest jedes Gerät seine eigene Kopie, um einen Fingerabdruck des Inhalts zu vergleichen, und nur der Fingerabdruck wird ausgetauscht.</p>
+    <p>„Jetzt synchronisieren“ kopiert Dateien über eine verschlüsselte WebRTC-Verbindung direkt zwischen den beiden Geräten. Nichts wird hochgeladen, und es gibt kein Relais. Beide Geräte müssen deshalb in einem gemeinsamen Netzwerk sein, in dem sie einander erreichen. Der Vermittlungsdienst rendezvous.abox.tools überträgt nur die Einrichtungsnachrichten, mit denen sich die Geräte verbinden.</p>
+    <p>Eine empfangene Datei wird zuerst in eine temporäre Kopie geschrieben und ersetzt die alte Datei erst, wenn sie vollständig angekommen ist. Eine abgebrochene oder gestörte Synchronisierung hinterlässt deshalb nie eine halb geschriebene Datei. Gelöscht wird nie etwas. Eine Datei, die auf einer Seite fehlt, wird dorthin kopiert, außer Sie entscheiden, sie unverändert zu lassen.</p>
+    <p>Beim Schreiben erhält eine Datei das heutige Datum, weil eine Webseite das Änderungsdatum einer Datei nicht setzen kann. Der nächste Vergleich erkennt die Kopien an ihrem Inhalt als gleich.</p>
+  </details>
+
+  <div id="phrases" hidden>
+    <span data-phrase="folder.none">Noch kein Ordner ausgewählt.</span>
+    <span data-phrase="folder.reading">Ordner wird gelesen&hellip; bisher {count}.</span>
+    <span data-phrase="folder.ready">{name}: {count}, {size}.</span>
+    <span data-phrase="folder.unnamed">Der gewählte Ordner</span>
+    <span data-phrase="count.file">1 Datei</span>
+    <span data-phrase="count.files">{n} Dateien</span>
+    <span data-phrase="folder.receive-only">Kein Ordner. Dieses Gerät kann die Dateien des anderen Geräts als ZIP empfangen.</span>
+    <span data-phrase="folder.too-many">Dieser Ordner enthält mehr als {max} Dateien. Wählen Sie einen kleineren Ordner oder einen der Ordner darin.</span>
+    <span data-phrase="folder.failed">Der Ordner konnte nicht gelesen werden. Wählen Sie ihn erneut oder einen anderen.</span>
+    <span data-phrase="folder.denied">Der Browser hat diesen Ordner nicht geöffnet. Wählen Sie einen anderen, oder versuchen Sie es erneut.</span>
+    <span data-phrase="folder.write-denied">Ohne die Erlaubnis, den Ordner zu ändern, kann dieses Gerät nur senden. Wählen Sie den Ordner erneut und erlauben Sie Änderungen, um zu empfangen.</span>
+    <span data-phrase="folder.skipped">Ausgelassen: {count}</span>
+    <span data-phrase="folder.skipped-more">und {count} weitere</span>
+    <span data-phrase="support.zip">Dieser Browser kann nicht in Ordner schreiben. Dateien, die dieses Gerät empfängt, werden deshalb als ein einziges ZIP mit bis zu {limit} gespeichert, das Sie selbst entpacken.</span>
+    <span data-phrase="support.none">Dieser Browser kann keine Ordner öffnen. Er kann die Dateien des anderen Geräts aber als ein einziges ZIP mit bis zu {limit} empfangen.</span>
+    <span data-phrase="skip.system">Systemdatei</span>
+    <span data-phrase="skip.temporary">temporäre Kopie oder Sperrdatei</span>
+    <span data-phrase="skip.name">ein Name, den Windows, macOS oder Linux nicht speichern kann</span>
+    <span data-phrase="skip.deep">zu tief verschachtelte Ordner</span>
+    <span data-phrase="skip.long">Pfad zu lang</span>
+    <span data-phrase="skip.unreadable">konnte nicht gelesen werden</span>
+    <span data-phrase="skip.duplicate">zwei Namen, die sich nur in der Kodierung ihrer Akzente unterscheiden</span>
+    <span data-phrase="skip.item">{path} &mdash; {reason}</span>
+    <span data-phrase="host.ready">Wählen Sie einen Ordner und starten Sie dann.</span>
+    <span data-phrase="host.need-folder">Wählen Sie zuerst den Ordner auf diesem Gerät.</span>
+    <span data-phrase="host.waiting">Warten auf das andere Gerät. Öffnen Sie dort den Synchronisierungslink und genehmigen Sie dann hier seine Anfrage.</span>
+    <span data-phrase="host.approved">Genehmigt. Die beiden Ordner werden verbunden&hellip;</span>
+    <span data-phrase="host.linked">Verbunden. Vergleichen Sie die Ordner unten.</span>
+    <span data-phrase="host.lost">Das andere Gerät hat die Verbindung getrennt. Es kann mit demselben Link erneut beitreten.</span>
+    <span data-phrase="host.stopped">Synchronisierung beendet. Die Verbindung ist geschlossen.</span>
+    <span data-phrase="host.unnamed">Ein Gerät ohne Notiz</span>
+    <span data-phrase="host.approve">Genehmigen</span>
+    <span data-phrase="host.deny">Ablehnen</span>
+    <span data-phrase="host.disconnect">Trennen</span>
+    <span data-phrase="host.partner-linked">Verbunden</span>
+    <span data-phrase="host.partner-connecting">Wird verbunden</span>
+    <span data-phrase="approval.limit">Diese Sitzung kann keine weitere Genehmigung speichern. Beenden Sie sie und starten Sie eine neue Synchronisierung, um ein weiteres Gerät zu genehmigen.</span>
+    <span data-phrase="guest.ready">Geben Sie zum Beginnen einen Synchronisierungslink oder Code ein.</span>
+    <span data-phrase="guest.folder-first">Wählen Sie zuerst den Ordner auf diesem Gerät und fragen Sie dann die Synchronisierung an.</span>
+    <span data-phrase="guest.waiting">Ihre Anfrage hat das andere Gerät erreicht. Warten auf Genehmigung; über keinen der beiden Ordner wurde bisher etwas gesendet.</span>
+    <span data-phrase="guest.linked">Genehmigt. Vergleichen Sie die Ordner unten.</span>
+    <span data-phrase="guest.denied">Das andere Gerät hat Ihre Anfrage abgelehnt. Sprechen Sie mit der Person, die es benutzt, bevor Sie es erneut versuchen.</span>
+    <span data-phrase="code.invalid">Geben Sie einen vollständigen Synchronisierungslink oder Code aus diesem Werkzeug ein.</span>
+    <span data-phrase="discovery.idle">Wählen Sie „Verbindungen suchen“, um nach Synchronisierungen auf anderen Geräten zu suchen.</span>
+    <span data-phrase="discovery.connecting">Synchronisierungen auf anderen Geräten werden gesucht&hellip;</span>
+    <span data-phrase="discovery.found">Vergleichen Sie den Einladungscode mit dem anderen Gerät und treten Sie dann bei.</span>
+    <span data-phrase="discovery.empty">In diesem Netzwerk oder dieser Gruppe wurden keine Synchronisierungen gefunden. Bitten Sie das andere Gerät, seine Synchronisierung vor dem Start in den verfügbaren Verbindungen anzuzeigen, oder nutzen Sie seinen Link.</span>
+    <span data-phrase="discovery.unavailable">Die Verbindungssuche ist nicht verfügbar. Sie können weiterhin den Synchronisierungslink des anderen Geräts verwenden.</span>
+    <span data-phrase="discovery.join">Beitreten</span>
+    <span data-phrase="discovery.join-direct">{code} beitreten</span>
+    <span data-phrase="discovery.publishing">Ihre Einladung wird in den verfügbaren Verbindungen gelistet&hellip;</span>
+    <span data-phrase="discovery.published">Ihre Einladung ist im ausgewählten Netzwerk oder in der privaten Gruppe gelistet. Sie genehmigen das beitretende Gerät weiterhin selbst.</span>
+    <span data-phrase="discovery.not-published">Ihre Einladung ist noch nicht gelistet. Sie können weiterhin den Synchronisierungslink verwenden.</span>
+    <span data-phrase="connection.starting">Verbindung zum Vermittlungsdienst wird geöffnet&hellip;</span>
+    <span data-phrase="connection.connecting">Verbindung zum anderen Gerät wird hergestellt&hellip;</span>
+    <span data-phrase="connection.server-failed">Der Vermittlungsdienst konnte keine Verbindung herstellen. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.</span>
+    <span data-phrase="connection.not-found">Diese Synchronisierung ist nicht mehr offen. Bitten Sie um einen neuen Synchronisierungslink.</span>
+    <span data-phrase="connection.taken">Dieser Einladungscode wird bereits verwendet. Beenden Sie diese Synchronisierung und starten Sie eine neue.</span>
+    <span data-phrase="connection.busy">Das andere Gerät synchronisiert bereits mit einem anderen Gerät, oder es warten zu viele Anfragen.</span>
+    <span data-phrase="connection.ended">Das andere Gerät hat diese Synchronisierung beendet. Bitten Sie es, eine neue zu starten.</span>
+    <span data-phrase="connection.invalid">Das andere Gerät hat etwas gesendet, das diese Seite nicht versteht. Laden Sie beide Seiten neu und beginnen Sie von vorn.</span>
+    <span data-phrase="connection.direct-failed">Die beiden Geräte konnten einander nicht direkt erreichen. Verbinden Sie beide mit demselben WLAN, Ethernet-Netz oder Hotspot, und prüfen Sie, ob Gastnetz-Isolierung, Firewalls oder VPNs die Verbindung blockieren.</span>
+    <span data-phrase="connection.lost">Die Verbindung zum anderen Gerät ist abgebrochen. Vollständig angekommene Dateien wurden behalten.</span>
+    <span data-phrase="connection.stopped">Getrennt.</span>
+    <span data-phrase="connection.unsupported">Diese Seite braucht vertrauenswürdiges HTTPS und einen Browser mit WebRTC-Unterstützung.</span>
+    <span data-phrase="copy.done">Kopiert.</span>
+    <span data-phrase="copy.manual">Markieren und kopieren Sie den Text oben.</span>
+    <span data-phrase="side.folder">{name}: {count}, {size}.</span>
+    <span data-phrase="side.zip">{name}: {count}, {size}. Empfangene Dateien werden als ZIP gespeichert.</span>
+    <span data-phrase="side.none">Kein Ordner. Empfangene Dateien werden als ZIP gespeichert.</span>
+    <span data-phrase="side.waiting">Warten auf seine Dateiliste&hellip;</span>
+    <span data-phrase="side.mode.both">Sendet und empfängt.</span>
+    <span data-phrase="side.mode.send">Sendet nur.</span>
+    <span data-phrase="side.mode.receive">Empfängt nur.</span>
+    <span data-phrase="side.summary">{folder} {mode}</span>
+    <span data-phrase="side.there">Anderes Gerät: {note}</span>
+    <span data-phrase="side.other">Anderes Gerät</span>
+    <span data-phrase="sync.listing">Beide Ordner werden gelesen&hellip;</span>
+    <span data-phrase="sync.checking">Inhalte von Dateien mit gleicher Größe, aber verschiedenem Datum werden verglichen: {done} von {total}.</span>
+    <span data-phrase="sync.same">Beide Ordner enthalten dieselben Dateien.</span>
+    <span data-phrase="sync.review">Prüfen Sie, was mit jeder Datei geschieht, und wählen Sie dann „Jetzt synchronisieren“. Gelöscht wird nichts.</span>
+    <span data-phrase="sync.idle">Die Ordner unterscheiden sich, aber für keine Datei ist eine Übertragung eingestellt. Wählen Sie in der Liste eine Aktion, um eine Datei zu synchronisieren.</span>
+    <span data-phrase="sync.blocked">Alles, was sich synchronisieren lässt, stimmt überein. Die unten aufgeführten Dateien lassen sich so nicht synchronisieren; jede Zeile nennt den Grund.</span>
+    <span data-phrase="sync.asking">Warten, bis das andere Gerät zustimmt&hellip;</span>
+    <span data-phrase="sync.syncing">Synchronisierung läuft: {received} von {receiveTotal} empfangen, {sent} von {sendTotal} gesendet.</span>
+    <span data-phrase="sync.summary">Zu senden: {send} ({sendSize}). Zu empfangen: {receive} ({receiveSize}). Unverändert gelassen: {skip}. Bereits gleich: {same}.</span>
+    <span data-phrase="sync.more">Angezeigt werden die ersten {shown} von {total} Unterschieden. Für die übrigen gilt die Voreinstellung ihrer Art.</span>
+    <span data-phrase="sync.done">Synchronisierung abgeschlossen. Hier empfangen: {copied}. Dort empfangen: {delivered}. Nicht kopiert: {failed}.</span>
+    <span data-phrase="sync.cancelled">Synchronisierung abgebrochen. Vollständig angekommene Dateien wurden behalten, und keine Datei blieb halb geschrieben zurück.</span>
+    <span data-phrase="sync.failed">Die Synchronisierung wurde abgebrochen, weil die Verbindung fehlgeschlagen ist. Vollständig angekommene Dateien wurden behalten, und keine Datei blieb halb geschrieben zurück.</span>
+    <span data-phrase="sync.permission">Diese Seite braucht Ihre Erlaubnis, den Ordner zu ändern, bevor sie Dateien empfangen kann.</span>
+    <span data-phrase="refused.busy">Das andere Gerät war beschäftigt. Wählen Sie erneut „Jetzt synchronisieren“.</span>
+    <span data-phrase="refused.stale">Einer der Ordner hat sich geändert. Der Vergleich wurde aktualisiert; prüfen Sie ihn und synchronisieren Sie erneut.</span>
+    <span data-phrase="refused.permission">Das andere Gerät braucht die Erlaubnis, seinen Ordner zu ändern. Wählen Sie dort den Ordner erneut und erlauben Sie Änderungen.</span>
+    <span data-phrase="refused.invalid">Das andere Gerät hat diesen Plan abgelehnt. Vergleichen Sie erneut und synchronisieren Sie dann.</span>
+    <span data-phrase="error.rescan">Dieser Ordner konnte nicht erneut gelesen werden. Wählen Sie ihn erneut, um weiter zu vergleichen.</span>
+    <span data-phrase="kind.only-here">Nur auf diesem Gerät</span>
+    <span data-phrase="kind.only-there">Nur auf dem anderen Gerät</span>
+    <span data-phrase="kind.newer-here">Auf diesem Gerät neuer</span>
+    <span data-phrase="kind.newer-there">Auf dem anderen Gerät neuer</span>
+    <span data-phrase="kind.conflict">Verschieden, mit demselben Datum</span>
+    <span data-phrase="kind.case">Namen unterscheiden sich nur in Groß- und Kleinschreibung</span>
+    <span data-phrase="action.send">Senden</span>
+    <span data-phrase="action.send-replace">Senden und dort ersetzen</span>
+    <span data-phrase="action.receive">Hierher kopieren</span>
+    <span data-phrase="action.receive-replace">Hierher kopieren und hier ersetzen</span>
+    <span data-phrase="action.skip">Unverändert lassen</span>
+    <span data-phrase="row.action">Was mit {path} geschieht</span>
+    <span data-phrase="row.absent">Nicht vorhanden</span>
+    <span data-phrase="row.detail">{size}, {date}</span>
+    <span data-phrase="reason.refused">das andere Gerät hat sie nicht gesendet</span>
+    <span data-phrase="reason.changed">sie hat sich nach dem Vergleich geändert; vergleichen Sie erneut, um die neue Version zu kopieren</span>
+    <span data-phrase="reason.missing">sie war nicht mehr im anderen Ordner</span>
+    <span data-phrase="reason.unreadable">das andere Gerät konnte sie nicht lesen</span>
+    <span data-phrase="reason.write">sie konnte hier nicht geschrieben werden</span>
+    <span data-phrase="reason.limit">das ZIP hat seine Größengrenze erreicht</span>
+    <span data-phrase="failure.item">{path}: {reason}</span>
+    <span data-phrase="zip.save">Empfangene Dateien als ZIP speichern ({size})</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="net.clean">{total} Seitenressourcen geprüft. {platform} Verbindungsaufbau und verschlüsselte Dateiübertragung sind oben beschrieben; diese Ressourcenliste prüft keinen WebRTC-Verkehr.</span>
+    <span data-phrase="net.dirty">Unerwartete Ressourcen-Hosts: {hosts}. {platform} WebRTC-Verkehr wird von dieser Ressourcenprüfung nicht erfasst.</span>
+  </div>
+  {% include "partials/paired-approval-prompt.html" %}
+</main>

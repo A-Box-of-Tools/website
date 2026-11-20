@@ -1,0 +1,286 @@
+<main id="main" class="paired-page">
+  <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head"><h2 id="discovery-heading">利用できる接続</h2></div>
+    {% include "partials/paired-discovery-group.html" %}
+    <details class="paired-network info-fold">
+      <summary>{{ ui.tool.transport_label }}</summary>
+      <p>両方の端末に、互いを見つけるためのインターネット接続と、ファイルが直接行き来できるネットワークが必要です。同じWi-Fi、Ethernet、スマートフォンのテザリングのいずれかを使ってください。フォルダ同期には中継がないため、異なるネットワークにある2台の端末では同期できません。</p>
+      <h3>{{ ui.tool.pairing_hotspot_heading }}</h3>
+      <ol>
+        <li>{{ ui.tool.pairing_hotspot_enable }}</li>
+        <li>{{ ui.tool.pairing_hotspot_join }}</li>
+        <li>{{ ui.tool.pairing_hotspot_connect }}</li>
+      </ol>
+      <p>{{ ui.tool.pairing_hotspot_limits }}</p>
+      <p class="paired-network-links"><a href="https://support.apple.com/111785">iPhone / iPad</a><a href="https://support.google.com/android/answer/9059108">Android</a></p>
+    </details>
+    <div id="discovery-controls" class="sync-discovery-controls">
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">接続を探す</button>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p id="discovery-help" class="field-note">選択したネットワークまたは非公開グループで、ほかの端末が開始した同期を探します。各項目は招待コードだけで、フォルダ名やファイル名は表示されません。参加する前に、相手の端末とコードを照らし合わせてください。</p>
+      </details>
+    </div>
+    <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
+      <p id="discovery-status" role="status" aria-live="polite"></p>
+      <ul id="discovery-list" class="paired-nearby-list"></ul>
+      <div class="paired-actions">
+        <button type="button" id="discovery-refresh">一覧を更新</button>
+        <button type="button" id="discovery-close">探すのをやめる</button>
+      </div>
+      <p class="field-note">先にこの端末のフォルダを選んでから、「参加」を選んでください。どちらのフォルダも比較される前に、相手の端末があなたを承認します。</p>
+    </section>
+  </section>
+
+  <section id="folder-panel" class="sync-card sync-folder" aria-labelledby="folder-heading">
+    <h2 id="folder-heading">この端末のフォルダ</h2>
+    <p class="card-lede">相手の端末と同じ内容に保つフォルダを選びます。「今すぐ同期」を押すまでは、比較するのはファイル名、サイズ、日付だけです。</p>
+    <div class="run-row">
+      <button type="button" id="folder-choose" class="big">フォルダを選ぶ</button>
+      <input type="file" id="folder-input" class="visually-hidden" tabindex="-1" webkitdirectory multiple aria-label="フォルダを選ぶ" data-no-remember>
+    </div>
+    <p id="folder-status" class="sync-status" role="status" aria-live="polite">まだフォルダを選んでいません。</p>
+    <details id="folder-skipped" class="sync-skipped" hidden>
+      <summary id="folder-skipped-summary"></summary>
+      <p class="field-note">システムファイル、一時的なコピー、Windows・macOS・Linuxのいずれかで保存できない名前は、決して同期しません。相手の端末で壊れてしまうファイルを、同期で作らないためです。</p>
+      <ul id="folder-skipped-list"></ul>
+    </details>
+    <p id="folder-support" class="sync-help" hidden></p>
+    <fieldset id="mode-field" class="sync-modes">
+      <legend>この端末の動作</legend>
+      <label><input type="radio" name="sync-mode" id="mode-both" value="both" checked data-no-remember>
+        <span><strong>送信と受信</strong> <span class="field-note">片方にないファイルや新しいファイルを、双方向にコピーします。</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-send" value="send" data-no-remember>
+        <span><strong>送信のみ</strong> <span class="field-note">相手の端末はこのフォルダからコピーできますが、変更することはできません。</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-receive" value="receive" data-no-remember>
+        <span><strong>受信のみ</strong> <span class="field-note">このフォルダにファイルを取り込みます。ここにあるファイルは送信しませんが、ファイル一覧は比較されます。</span></span></label>
+    </fieldset>
+  </section>
+
+  <div class="sync-grid" id="sync-grid" data-pairing-setup>
+    <section id="host-panel" class="sync-card" aria-labelledby="host-heading">
+      <h2 id="host-heading">同期を開始</h2>
+      <p class="card-lede">ここで同期を開き、もう一方の端末から参加します。どちらのフォルダも比較される前に、あなたがその端末を承認します。</p>
+      <div class="sync-option">
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> 利用できる接続に表示</label>
+        <p id="host-discovery-help" class="field-note">上で選択したネットワークまたは非公開グループの一覧に招待コードを載せるには、開始する前にこれを選んでください。フォルダ名やファイル名は表示されず、参加する端末はこれまでどおりあなたが承認します。</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="host">
+          <button type="button" id="host-start" class="big">同期を開始</button>
+        </div>
+        <button type="button" id="host-stop" class="big danger" hidden>停止</button>
+      </div>
+      <p id="host-status" class="sync-status" role="status" aria-live="polite">フォルダを選んでから開始してください。</p>
+      <p id="host-publication-status" class="sync-status" role="status" aria-live="polite" hidden></p>
+      {% include "partials/paired-request-sound.html" %}
+      <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
+        <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="guest-requests" class="sync-requests" aria-live="polite"></ul>
+      </div>
+      <div id="host-invitation" class="sync-invite" hidden>
+        <div class="field">
+          <label for="share-link">同期リンク</label>
+          <input type="text" id="share-link" readonly spellcheck="false" dir="ltr" data-no-remember>
+        </div>
+        <div class="run-row">
+          <button type="button" id="copy-link">同期リンクをコピー</button>
+          <span id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="sync-help">このリンクをもう一方の端末で開き、このページは開いたままにしてください。この端末と同期できるのは、一度に1台だけです。</p>
+      </div>
+      <section id="partner-panel" hidden aria-labelledby="partner-heading">
+        <h3 id="partner-heading">同期の相手</h3>
+        <ul id="partner-list" class="sync-requests"></ul>
+      </section>
+    </section>
+
+    <section id="guest-panel" class="sync-card" aria-labelledby="guest-heading">
+      <h2 id="guest-heading">同期に参加</h2>
+      <p class="card-lede">もう一方の端末のリンクかコードを使います。フォルダが比較される前に、その端末があなたを承認します。</p>
+      <div class="field">
+        <label for="guest-code">同期リンクまたはコード</label>
+        <input type="text" id="guest-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="sync-abcdefghijklmnop" data-no-remember>
+      </div>
+      <div class="field">
+        <label for="guest-note">相手の端末で分かるメモ（任意）</label>
+        <input type="text" id="guest-note" maxlength="80" autocomplete="off" placeholder="例：私のノートパソコン" data-no-remember>
+        <p class="field-note">メモは暗号化された接続で相手の端末に送られます。</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="join">
+          <button type="button" id="guest-connect" class="big">同期をリクエスト</button>
+        </div>
+        <button type="button" id="guest-stop" class="big danger" hidden>切断</button>
+      </div>
+      <p id="guest-status" class="sync-status" role="status" aria-live="polite">同期リンクかコードを入力して始めてください。</p>
+      <button type="button" id="show-host" class="ghost" hidden>代わりに自分で同期を開始</button>
+    </section>
+  </div>
+
+  <section id="sync-panel" class="sync-card sync-compare" aria-labelledby="sync-heading" hidden>
+    <h2 id="sync-heading">比較と同期</h2>
+    <dl class="sync-sides">
+      <div><dt>この端末</dt><dd id="side-here"></dd></div>
+      <div><dt id="side-there-label">相手の端末</dt><dd id="side-there"></dd></div>
+    </dl>
+    <p id="sync-status" class="sync-status" role="status" aria-live="polite"></p>
+    <progress id="sync-progress" max="1" value="0" hidden aria-label="同期の進行状況"></progress>
+    <p id="sync-summary" class="sync-summary"></p>
+    <div class="run-row">
+      <button type="button" id="sync-start" class="big">今すぐ同期</button>
+      <button type="button" id="sync-compare">もう一度比較</button>
+      <button type="button" id="sync-cancel" class="danger" hidden>キャンセル</button>
+    </div>
+    <div id="sync-results" class="sync-results" hidden>
+      <p id="sync-results-text"></p>
+      <ul id="sync-failures"></ul>
+      <button type="button" id="zip-save" hidden>受信したファイルをZIPで保存</button>
+    </div>
+    <div id="sync-table-wrap" class="sync-table-wrap" hidden>
+      <table class="sync-table" role="table">
+        <caption>2つのフォルダの違い</caption>
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">ファイル</th><th scope="col" role="columnheader">この端末</th><th scope="col" role="columnheader">相手の端末</th><th scope="col" role="columnheader">処理</th></tr></thead>
+        <tbody id="sync-rows" role="rowgroup"></tbody>
+      </table>
+      <p id="sync-more" class="field-note" hidden></p>
+    </div>
+  </section>
+
+  <details class="sync-details">
+    <summary>共有される情報と接続の仕組み</summary>
+    <p>「今すぐ同期」を押す前に、2台の端末はファイル一覧を交換します。選んだフォルダ内の各ファイルのパス、サイズ、最終更新日時です。サイズが同じで日時が異なる2つのファイルがある場合、各端末は自分のコピーを読んで内容のフィンガープリントを比べ、交換するのはフィンガープリントだけです。</p>
+    <p>「今すぐ同期」では、2台の端末間で直接結んだ暗号化WebRTC接続でファイルをコピーします。アップロードはなく、中継もありません。そのため両方の端末が、互いに到達できるネットワークを共有している必要があります。紹介サービスのrendezvous.abox.toolsが運ぶのは、端末同士をつなぐための接続準備メッセージだけです。</p>
+    <p>受信したファイルはまず一時的なコピーに書き込まれ、すべて届いてから初めて古いファイルと置き換わります。そのため、同期をキャンセルしたり途中で失敗したりしても、書きかけのファイルが残ることはありません。何かが削除されることは決してありません。片側にないファイルは、「そのままにする」を選ばない限り、その側へコピーされます。</p>
+    <p>ウェブページはファイルの更新日時を設定できないため、書き込んだファイルの日付は今日になります。次の比較では、内容からコピーが同じであることを確認します。</p>
+  </details>
+
+  <div id="phrases" hidden>
+    <span data-phrase="folder.none">まだフォルダを選んでいません。</span>
+    <span data-phrase="folder.reading">フォルダを読み込み中&hellip;これまでに{count}を確認しました。</span>
+    <span data-phrase="folder.ready">{name}：{count}、{size}。</span>
+    <span data-phrase="folder.unnamed">選んだフォルダ</span>
+    <span data-phrase="count.file">1個のファイル</span>
+    <span data-phrase="count.files">{n}個のファイル</span>
+    <span data-phrase="folder.receive-only">フォルダなし：この端末は相手の端末のファイルをZIPで受信できます。</span>
+    <span data-phrase="folder.too-many">このフォルダには{max}個を超えるファイルがあります。もっと小さなフォルダか、その中にあるフォルダを選んでください。</span>
+    <span data-phrase="folder.failed">フォルダを読み込めませんでした。もう一度選ぶか、別のフォルダを選んでください。</span>
+    <span data-phrase="folder.denied">ブラウザがそのフォルダを開きませんでした。別のフォルダを選ぶか、もう一度お試しください。</span>
+    <span data-phrase="folder.write-denied">フォルダを変更する許可がないため、この端末は送信しかできません。受信するには、フォルダを選び直して変更を許可してください。</span>
+    <span data-phrase="folder.skipped">対象外：{count}件</span>
+    <span data-phrase="folder.skipped-more">ほか{count}件</span>
+    <span data-phrase="support.zip">このブラウザはフォルダに書き込めないため、この端末が受信したファイルは、自分で展開する1つのZIPとして最大{limit}まで保存されます。</span>
+    <span data-phrase="support.none">このブラウザはフォルダを開けません。それでも、相手の端末のファイルを1つのZIPとして最大{limit}まで受信できます。</span>
+    <span data-phrase="skip.system">システムファイル</span>
+    <span data-phrase="skip.temporary">一時的なコピーまたはロックファイル</span>
+    <span data-phrase="skip.name">Windows・macOS・Linuxのいずれかで保存できない名前</span>
+    <span data-phrase="skip.deep">フォルダの階層が深すぎる</span>
+    <span data-phrase="skip.long">パスが長すぎる</span>
+    <span data-phrase="skip.unreadable">読み込めなかった</span>
+    <span data-phrase="skip.duplicate">アクセント記号を合成すると同じになる2つの名前</span>
+    <span data-phrase="skip.item">{path}（{reason}）</span>
+    <span data-phrase="host.ready">フォルダを選んでから開始してください。</span>
+    <span data-phrase="host.need-folder">先にこの端末のフォルダを選んでください。</span>
+    <span data-phrase="host.waiting">相手の端末を待っています。そちらで同期リンクを開き、届いたリクエストをこちらで承認してください。</span>
+    <span data-phrase="host.approved">承認しました。2つのフォルダをつないでいます&hellip;</span>
+    <span data-phrase="host.linked">接続しました。下でフォルダを比較してください。</span>
+    <span data-phrase="host.lost">相手の端末の接続が切れました。同じリンクでもう一度参加できます。</span>
+    <span data-phrase="host.stopped">同期を停止しました。接続は閉じています。</span>
+    <span data-phrase="host.unnamed">メモのない端末</span>
+    <span data-phrase="host.approve">承認</span>
+    <span data-phrase="host.deny">拒否</span>
+    <span data-phrase="host.disconnect">切断</span>
+    <span data-phrase="host.partner-linked">接続済み</span>
+    <span data-phrase="host.partner-connecting">接続中</span>
+    <span data-phrase="approval.limit">このセッションでは、これ以上承認を保存できません。別の端末を承認するには、停止して新しい同期を開始してください。</span>
+    <span data-phrase="guest.ready">同期リンクかコードを入力して始めてください。</span>
+    <span data-phrase="guest.folder-first">先にこの端末のフォルダを選んでから、同期をリクエストしてください。</span>
+    <span data-phrase="guest.waiting">リクエストが相手の端末に届きました。承認を待っています。どちらのフォルダについても、まだ何も送られていません。</span>
+    <span data-phrase="guest.linked">承認されました。下でフォルダを比較してください。</span>
+    <span data-phrase="guest.denied">相手の端末がリクエストを拒否しました。もう一度試す前に、その端末を使っている人に確認してください。</span>
+    <span data-phrase="code.invalid">このツールで作られた同期リンクかコードを、省略せずに入力してください。</span>
+    <span data-phrase="discovery.idle">ほかの端末の同期を探すには、「接続を探す」を選んでください。</span>
+    <span data-phrase="discovery.connecting">ほかの端末の同期を探しています&hellip;</span>
+    <span data-phrase="discovery.found">相手の端末で招待コードを確かめてから参加してください。</span>
+    <span data-phrase="discovery.empty">このネットワークまたはグループに同期は見つかりませんでした。相手の端末で開始前に「利用できる接続に表示」を選んでもらうか、その端末のリンクを使ってください。</span>
+    <span data-phrase="discovery.unavailable">接続の検索を利用できません。相手の端末の同期リンクは引き続き使えます。</span>
+    <span data-phrase="discovery.join">参加</span>
+    <span data-phrase="discovery.join-direct">{code}に参加</span>
+    <span data-phrase="discovery.publishing">招待を「利用できる接続」に掲載しています&hellip;</span>
+    <span data-phrase="discovery.published">招待は選択したネットワークまたは非公開グループに掲載されています。参加する端末は、これまでどおりあなたが承認します。</span>
+    <span data-phrase="discovery.not-published">招待はまだ掲載されていません。同期リンクは引き続き使えます。</span>
+    <span data-phrase="connection.starting">紹介用の接続を開いています&hellip;</span>
+    <span data-phrase="connection.connecting">相手の端末に接続しています&hellip;</span>
+    <span data-phrase="connection.server-failed">紹介サービスに接続できませんでした。インターネット接続を確認して、もう一度お試しください。</span>
+    <span data-phrase="connection.not-found">この同期はもう開いていません。新しい同期リンクをもらってください。</span>
+    <span data-phrase="connection.taken">その招待コードはすでに使われています。停止して新しい同期を開始してください。</span>
+    <span data-phrase="connection.busy">相手の端末はすでに別の端末と同期しているか、待機中のリクエストが多すぎます。</span>
+    <span data-phrase="connection.ended">相手の端末がこの同期を終了しました。新しい同期を開始するよう頼んでください。</span>
+    <span data-phrase="connection.invalid">相手の端末から、このページが理解できないデータが届きました。両方のページを再読み込みして、もう一度始めてください。</span>
+    <span data-phrase="connection.direct-failed">2台の端末が直接つながりませんでした。両方を同じWi-Fi、Ethernet、またはテザリングにつなぎ、ゲストネットワークの端末分離、ファイアウォール、VPNを確認してください。</span>
+    <span data-phrase="connection.lost">相手の端末との接続が切れました。完全に届いたファイルは残っています。</span>
+    <span data-phrase="connection.stopped">切断しました。</span>
+    <span data-phrase="connection.unsupported">このページには、信頼できるHTTPS接続と、WebRTCに対応したブラウザが必要です。</span>
+    <span data-phrase="copy.done">コピーしました。</span>
+    <span data-phrase="copy.manual">上のテキストを選択してコピーしてください。</span>
+    <span data-phrase="side.folder">{name}：{count}、{size}。</span>
+    <span data-phrase="side.zip">{name}：{count}、{size}。受信したファイルはZIPで保存されます。</span>
+    <span data-phrase="side.none">フォルダなし。受信したファイルはZIPで保存されます。</span>
+    <span data-phrase="side.waiting">ファイル一覧を待っています&hellip;</span>
+    <span data-phrase="side.mode.both">送信と受信を行います。</span>
+    <span data-phrase="side.mode.send">送信のみ行います。</span>
+    <span data-phrase="side.mode.receive">受信のみ行います。</span>
+    <span data-phrase="side.summary">{folder}{mode}</span>
+    <span data-phrase="side.there">相手の端末：{note}</span>
+    <span data-phrase="side.other">相手の端末</span>
+    <span data-phrase="sync.listing">両方のフォルダを読み込んでいます&hellip;</span>
+    <span data-phrase="sync.checking">サイズが同じで日時が異なるファイルの内容を比較しています：{total}件中{done}件。</span>
+    <span data-phrase="sync.same">両方のフォルダの中身は同じです。</span>
+    <span data-phrase="sync.review">各ファイルの処理を確認してから、「今すぐ同期」を選んでください。何も削除されません。</span>
+    <span data-phrase="sync.idle">フォルダには違いがありますが、コピーするよう設定されたファイルはありません。ファイルを同期するには、一覧で処理を選んでください。</span>
+    <span data-phrase="sync.blocked">同期できるものはすべて一致しています。下に表示されたファイルは、このままでは同期できません。理由は各行に表示されています。</span>
+    <span data-phrase="sync.asking">相手の端末が受け入れるのを待っています&hellip;</span>
+    <span data-phrase="sync.syncing">同期中：{receiveTotal}のうち{received}を受信、{sendTotal}のうち{sent}を送信しました。</span>
+    <span data-phrase="sync.summary">送信：{send}件（{sendSize}）。受信：{receive}件（{receiveSize}）。そのまま：{skip}件。すでに同じ：{same}件。</span>
+    <span data-phrase="sync.more">{total}件の違いのうち、最初の{shown}件を表示しています。残りは、それぞれの種類の既定の処理に従います。</span>
+    <span data-phrase="sync.done">同期が完了しました。この端末で受信：{copied}件。相手の端末で受信：{delivered}件。コピーされなかったもの：{failed}件。</span>
+    <span data-phrase="sync.cancelled">同期をキャンセルしました。完全に届いたファイルは残り、書きかけのファイルは残っていません。</span>
+    <span data-phrase="sync.failed">接続に失敗したため、同期が止まりました。完全に届いたファイルは残り、書きかけのファイルは残っていません。</span>
+    <span data-phrase="sync.permission">ファイルを受信するには、このページにフォルダを変更する許可を与える必要があります。</span>
+    <span data-phrase="refused.busy">相手の端末は処理中でした。もう一度「今すぐ同期」を選んでください。</span>
+    <span data-phrase="refused.stale">どちらかのフォルダが変更されました。比較結果を最新の状態に更新したので、確認してからもう一度同期してください。</span>
+    <span data-phrase="refused.permission">相手の端末には、フォルダを変更する許可が必要です。相手の端末でフォルダを選び直し、変更を許可してください。</span>
+    <span data-phrase="refused.invalid">相手の端末がその同期内容を拒否しました。もう一度比較してから同期してください。</span>
+    <span data-phrase="error.rescan">このフォルダを読み直せませんでした。比較を続けるには、フォルダを選び直してください。</span>
+    <span data-phrase="kind.only-here">この端末だけにある</span>
+    <span data-phrase="kind.only-there">相手の端末だけにある</span>
+    <span data-phrase="kind.newer-here">この端末のほうが新しい</span>
+    <span data-phrase="kind.newer-there">相手の端末のほうが新しい</span>
+    <span data-phrase="kind.conflict">日付が同じで内容が異なる</span>
+    <span data-phrase="kind.case">大文字と小文字だけが異なる名前</span>
+    <span data-phrase="action.send">送信する</span>
+    <span data-phrase="action.send-replace">送信して相手側を上書きする</span>
+    <span data-phrase="action.receive">ここにコピーする</span>
+    <span data-phrase="action.receive-replace">ここにコピーしてこちら側を上書きする</span>
+    <span data-phrase="action.skip">そのままにする</span>
+    <span data-phrase="row.action">{path}の処理</span>
+    <span data-phrase="row.absent">なし</span>
+    <span data-phrase="row.detail">{size}、{date}</span>
+    <span data-phrase="reason.refused">相手の端末が送信しませんでした</span>
+    <span data-phrase="reason.changed">比較の後で変更されました（新しい版をコピーするには、もう一度比較してください）</span>
+    <span data-phrase="reason.missing">相手のフォルダにもうありませんでした</span>
+    <span data-phrase="reason.unreadable">相手の端末が読み込めませんでした</span>
+    <span data-phrase="reason.write">この端末に書き込めませんでした</span>
+    <span data-phrase="reason.limit">ZIPがサイズの上限に達しました</span>
+    <span data-phrase="failure.item">{path}：{reason}</span>
+    <span data-phrase="zip.save">受信したファイルをZIPで保存（{size}）</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="net.clean">ページのリソースを{total}件確認しました。{platform}接続の準備と暗号化されたファイル転送については上で説明しています。このリソース一覧ではWebRTCの通信は確認できません。</span>
+    <span data-phrase="net.dirty">予期しないリソースのホスト：{hosts}。{platform}WebRTCの通信は、このリソースの確認とは別です。</span>
+  </div>
+  {% include "partials/paired-approval-prompt.html" %}
+</main>

@@ -81,6 +81,7 @@ complete = true
 "guides/broadcast-voice-on-a-local-network" = "ratgeber/stimme-im-lokalen-netzwerk-senden"
 "guides/arrange-images" = "ratgeber/bilder-anordnen"
 "guides/watch-camera-from-another-device" = "ratgeber/kamera-von-anderem-geraet-ansehen"
+"guides/sync-a-folder-between-two-computers" = "ratgeber/ordner-zwischen-zwei-computern-synchronisieren"
 # The tools.
 "receipt-invoice-extractor" = "belege-rechnungen-auslesen"
 "protect-pdf" = "pdf-schuetzen"
@@ -151,6 +152,7 @@ complete = true
 # was das Bild am Ende zeigt.
 "compare-heights" = "groessenvergleich-erstellen"
 "number-explorer" = "zahlen-veranschaulichen"
+"folder-sync" = "ordner-synchronisieren"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of

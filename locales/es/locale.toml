@@ -56,6 +56,7 @@ complete = true
 "guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-en-red-local"
 "guides/arrange-images" = "guias/organizar-imagenes"
 "guides/watch-camera-from-another-device" = "guias/ver-camara-de-otro-dispositivo"
+"guides/sync-a-folder-between-two-computers" = "guias/sincronizar-una-carpeta-entre-dos-equipos"
 "receipt-invoice-extractor" = "extraer-recibos-facturas"
 "guides/extract-receipts-and-invoices" = "guias/extraer-recibos-facturas-de-fotos"
 "avif-to-jpg" = "convertir-avif-a-jpg"
@@ -136,6 +137,7 @@ complete = true
 # titulo y no en la direccion.
 "compare-heights" = "comparar-alturas"
 "number-explorer" = "visualizar-numeros"
+"folder-sync" = "sincronizar-carpetas"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"

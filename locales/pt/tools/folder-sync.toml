@@ -1,0 +1,224 @@
+#
+# Sincronizar pasta - Brazilian Portuguese.
+#
+# Overrides for tools/folder-sync/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+# Every control named in the prose below is named with the words of its label
+# in folder-sync.html: Iniciar sincronização, Pedir para sincronizar, Buscar
+# conexões, Entrar, Sincronizar agora, Só enviar, Só receber, Deixar como está.
+# Change a label there and change it here, or the steps point at a button the
+# page does not have.
+#
+
+name = "Sincronizar pasta"
+heading = "Sincronizar pasta <span class=\"h1-kw\">&mdash; mantenha uma pasta igual em dois dispositivos</span>"
+tagline = "Escolha uma pasta em cada dispositivo, veja todas as diferenças e copie o que estiver faltando ou for mais recente direto entre os dois navegadores, na sua rede. Nada é enviado a um servidor, e nada jamais é excluído."
+
+title = "Sincronizar uma pasta entre dois dispositivos &mdash; de navegador para navegador, sem upload"
+description = "Mantenha uma pasta igual em dois computadores. Compare as duas pastas, revise cada mudança e copie os arquivos direto entre os navegadores, na sua rede. Sem upload, sem conta, sem excluir nada."
+og_title = "Mantenha uma pasta igual em dois dispositivos"
+og_description = "Compare duas pastas e copie o que estiver faltando ou for mais recente direto entre os navegadores, na sua rede. Sem upload, sem conta, sem excluir nada."
+og_image_alt = "Sincronizar pasta - mantenha uma pasta igual em dois dispositivos"
+
+pledge = """
+    Você escolhe uma pasta em cada dispositivo e aprova o dispositivo que
+    entra. Depois, os dois navegadores comparam nomes, tamanhos e datas dos
+    arquivos por uma conexão criptografada feita diretamente entre eles e
+    copiam os arquivos que você autorizar, sem nenhum servidor no meio. Não há
+    retransmissão, então os dois dispositivos precisam estar numa rede em que
+    consigam se alcançar. O pareamento usa um serviço de apresentação na
+    internet, que vê os metadados da preparação da conexão, nunca um arquivo,
+    um nome de arquivo ou a comparação. Um arquivo recebido só substitui o
+    antigo depois de chegar inteiro, e nada jamais é excluído. Pare a
+    sincronização ou feche qualquer uma das duas páginas para encerrar a
+    sessão."""
+pledge_line = "Os arquivos viajam <strong>direto entre os seus dois dispositivos</strong>, criptografados. Nada é enviado a um servidor; um serviço de apresentação conecta os navegadores."
+md_note = "Comparação de pastas e cópia de arquivos direto entre dois navegadores aprovados, com criptografia e sem retransmissão. A apresentação pela internet leva metadados da preparação da conexão, nunca arquivos, nomes de arquivos ou listas. Nada jamais é excluído."
+live_hint = """
+      As ferramentas do desenvolvedor mostram um WebSocket para as mensagens
+      de apresentação. Optar por aparecer na lista ou escolher Buscar conexões
+      abre outro WebSocket, separado, para a busca. As listas de arquivos e os
+      arquivos viajam por WebRTC criptografado, direto entre os dispositivos.
+      A aba Rede e a CSP, sozinhas, não inspecionam esse tráfego entre os
+      dispositivos. O restante do site carrega os recursos de terceiros de
+      sempre."""
+read_first = """
+, <code>src/plan.js</code> para ver como duas listas viram a lista de
+      diferenças e por que nada é excluído, <code>src/transfer.js</code>
+      para a transferência com confirmação de recebimento, que mantém um
+      arquivo grande fora da memória, <code>src/folder.js</code> para as
+      gravações que só
+      substituem um arquivo quando ele está inteiro, e <code>src/session.js</code>
+      para a aprovação que vem antes de qualquer pasta ser comparada. O serviço
+      de apresentação está publicado ao lado da ferramenta, em
+      <code>workers/rendezvous/</code>."""
+howto_heading = "Como sincronizar uma pasta entre dois dispositivos"
+card = "Compare uma pasta em dois dispositivos e copie o que estiver faltando ou for mais recente, direto entre os navegadores na sua rede. Nada enviado a servidores, nada excluído."
+
+[words]
+plural = "pastas e arquivos"
+choose = "uma pasta"
+
+[[facts]]
+text = "Aprovação obrigatória"
+[[facts]]
+text = "Criptografado, de dispositivo a dispositivo"
+[[facts]]
+text = "Sem upload"
+[[facts]]
+text = "Sem retransmissão"
+[[facts]]
+text = "Nunca exclui nada"
+
+[[privacy]]
+title = "Você escolhe as pastas e depois aprova o dispositivo."
+body = """
+      Cada dispositivo escolhe a sua pasta no seletor do próprio navegador, e
+      esta página não alcança nada fora dela. O dispositivo que inicia a
+      sincronização, o anfitrião, aprova o dispositivo que entra antes que
+      qualquer coisa sobre as pastas seja enviada: a primeira conexão entre os
+      navegadores leva só um canal de controle criptografado e a solicitação
+      do dispositivo que entra, com uma nota opcional. A nota é um texto
+      escolhido por quem entra, não uma identidade verificada. Só um
+      dispositivo por vez pode sincronizar com o anfitrião, com até quatro
+      solicitações esperando. O navegador que entra guarda localmente um
+      comprovante aleatório de aprovação e só o apresenta pelo canal
+      criptografado entre os navegadores, para poder se reconectar à mesma
+      sessão sem nova aprovação. Parar a sincronização, ou desconectar esse
+      dispositivo, revoga a aprovação."""
+[[privacy]]
+title = "O outro dispositivo vê a sua lista de arquivos e os arquivos que você sincroniza."
+body = """
+      Depois da aprovação, cada dispositivo envia ao outro o caminho, o
+      tamanho e a data da última modificação de cada arquivo da pasta
+      escolhida, para que as duas possam ser comparadas. Isso inclui arquivos
+      que não serão copiados. Quando dois arquivos têm o mesmo tamanho mas
+      datas diferentes, cada dispositivo lê a própria cópia e envia uma
+      impressão digital do conteúdo, não o conteúdo. Os arquivos em si só são
+      enviados quando alguém pressiona Sincronizar agora, e só os que estão no
+      plano e que as configurações dos dois dispositivos permitem. Um
+      dispositivo no modo Só enviar não aceita nenhum arquivo; um dispositivo
+      no modo Só receber não envia nenhum. O outro dispositivo fica com tudo o
+      que receber."""
+[[privacy]]
+title = "Os arquivos passam direto entre os dispositivos, criptografados."
+body = """
+      Listas, impressões digitais e arquivos viajam por uma conexão WebRTC
+      criptografada feita diretamente entre os dois navegadores. Só são
+      aceitos os endereços de rede dos próprios dispositivos, nenhum servidor
+      STUN público é configurado e não há retransmissão, então nada passa por
+      um servidor no caminho. Os dois dispositivos precisam de uma rede em que
+      consigam se alcançar: o mesmo Wi-Fi, a mesma Ethernet ou o mesmo ponto de
+      acesso do celular. Isolamento da rede de convidados, firewalls, rotas de
+      VPN e permissões de rede local do navegador podem impedir a conexão.
+      Esses endereços podem incluir interfaces públicas ou seguir uma rota de
+      VPN, então isso não prova que o tráfego fica dentro de um prédio."""
+[[privacy]]
+title = "O pareamento expõe metadados da preparação ao serviço de apresentação."
+body = """
+      Iniciar ou entrar abre um WebSocket para
+      <code>rendezvous.abox.tools</code>. O serviço vê o código aleatório da
+      sala, os endereços IP, os horários de conexão, as descrições WebRTC e os
+      candidatos ICE; essas mensagens de preparação não ficam ocultas dele.
+      Nomes de arquivos, listas, impressões digitais, arquivos, notas e
+      decisões de aprovação viajam pela conexão criptografada entre os
+      navegadores. Nenhum conteúdo da sala é gravado em armazenamento. A
+      Cloudflare, que opera o serviço, guarda registros de conexão por sete
+      dias, com metadados das requisições como o código, o endereço e o
+      horário. É preciso internet para a busca e para preparar a conexão."""
+[[privacy]]
+title = "A busca é opcional e lista só o código do convite."
+body = """
+      A opção Mostrar em Conexões disponíveis vem desmarcada. Marque-a antes
+      de iniciar para publicar o código aleatório do convite; ele fica fixo até
+      você parar. Outro dispositivo escolhe Buscar conexões para vê-lo. Nenhum
+      nome de pasta, nome de arquivo ou número de arquivos é listado. O
+      serviço agrupa as páginas desta ferramenta pelo endereço IPv4 público ou
+      pela sub-rede IPv6 /64 e pela origem do site, então gateways
+      compartilhados de operadoras ou VPNs podem incluir desconhecidos, e rotas
+      diferentes podem esconder dispositivos próximos. Um grupo privado, em vez
+      disso, usa o mesmo código aleatório de grupo em cada dispositivo; o
+      serviço recebe o código para autenticar esse diretório, e esta ferramenta
+      não o salva nem o coloca nos links de sincronização. Qualquer pessoa com
+      o código do grupo pode ver as sessões listadas, e a aprovação continua
+      valendo."""
+[[privacy]]
+title = "As gravações são completas ou não acontecem, e nada é excluído."
+body = """
+      Um arquivo recebido é gravado numa cópia temporária ao lado dele e só
+      substitui o arquivo antigo depois que todos os bytes chegam, então uma
+      sincronização cancelada ou interrompida não deixa nenhum arquivo gravado
+      pela metade. Um arquivo que não existia antes de uma gravação
+      interrompida volta a não existir. Nada em nenhuma das pastas jamais é
+      excluído. A gravação dá ao arquivo a data de hoje, porque uma página web
+      não consegue definir a data em que um arquivo foi modificado. Nos
+      navegadores que não conseguem gravar numa pasta, os arquivos recebidos
+      são reunidos na memória desta página e salvos como um único ZIP quando
+      você decidir salvá-los."""
+[[privacy]]
+title = "Os convites ficam visíveis para os scripts da página."
+body = """
+      Cada sessão usa um link aleatório novo. Ter o link permite uma tentativa
+      de conexão, e a aprovação continua controlando o que acontece depois.
+      Esta página tem os scripts habituais de publicidade e medição do Google
+      usados no site. A ferramenta não repassa deliberadamente nomes de
+      arquivos, listas ou arquivos a esses scripts, mas os scripts que rodam
+      na página podem ler o endereço dela e o estado da própria página,
+      incluindo o código de um link. Trate a solicitação do dispositivo esperado e a sua aprovação como
+      a etapa de admissão."""
+
+[[howto]]
+title = "Abra esta ferramenta nos dois dispositivos."
+body = " Use o Chrome, o Edge ou a maioria dos outros navegadores Chromium em um computador para ter uma pasta que possa enviar e receber. O Firefox e o Safari conseguem enviar uma pasta e receber em um ZIP. Coloque os dois dispositivos no mesmo Wi-Fi, na mesma Ethernet ou no mesmo ponto de acesso do celular, e mantenha a internet disponível para a apresentação entre os navegadores."
+[[howto]]
+title = "Escolha a pasta em cada dispositivo."
+body = " Escolha uma pasta e permita que o navegador a altere se este dispositivo for receber arquivos. Defina o que cada dispositivo faz: Enviar e receber, Só enviar ou Só receber. Arquivos do sistema, cópias temporárias e nomes que o Windows, o macOS ou o Linux não aceita ficam de fora e aparecem listados."
+[[howto]]
+title = "Inicie em um dispositivo e entre pelo outro."
+body = " Escolha Iniciar sincronização e abra o link de sincronização no outro dispositivo, ou, no outro, escolha Buscar conexões e Entrar, se você tiver mostrado a sincronização em Conexões disponíveis. Aprove a solicitação que você reconhece; nada sobre nenhuma das pastas é enviado antes disso."
+[[howto]]
+title = "Confira a comparação."
+body = " Os dois dispositivos listam todas as diferenças: arquivos que só existem de um lado, arquivos mais recentes de um lado e arquivos que diferem mas têm a mesma data. Cada linha mostra o padrão, que você pode mudar: enviar, copiar para cá ou deixar como está. Nada é excluído, então um arquivo que você removeu de propósito deve ser deixado como está ou removido nos dois dispositivos."
+[[howto]]
+title = "Sincronize e compare de novo mais tarde."
+body = " Escolha Sincronizar agora em qualquer um dos dispositivos. Os dois mostram o progresso, e um arquivo só substitui a cópia mais antiga depois de chegar inteiro. Em seguida, as duas pastas são lidas de novo e comparadas. Mantenha as duas páginas abertas para sincronizar de novo mais tarde, ou pare e inicie uma nova sessão quando precisar."
+
+[[faq]]
+q = "Meus arquivos são enviados para algum servidor?"
+a = "Não. Arquivos, nomes de arquivos e listas de pastas viajam por uma conexão criptografada feita diretamente entre os seus dois navegadores, e não há retransmissão. O serviço de apresentação que conecta os navegadores vê metadados da preparação da conexão, como o código da sala e os endereços IP, nunca o que há dentro das pastas."
+[[faq]]
+q = "A ferramenta exclui os arquivos que eu excluí no outro dispositivo?"
+a = "Não, nunca. Sem um registro da última sincronização, um arquivo que falta em um dispositivo parece exatamente um arquivo novo no outro, e adivinhar errado destruiria o trabalho de alguém. Um arquivo que falta de um lado é oferecido a esse lado; mude a linha dele para Deixar como está, ou exclua o arquivo nos dois dispositivos."
+[[faq]]
+q = "Qual cópia vence quando um arquivo mudou nos dois dispositivos?"
+a = "Por padrão, a cópia com a data de modificação mais recente substitui a mais antiga, e a linha diz para que lado ela vai. Você pode mudar qualquer linha antes de sincronizar. Duas cópias diferentes com exatamente a mesma data ficam como estão até você escolher. Arquivos com o mesmo tamanho e datas diferentes têm o conteúdo comparado primeiro, então cópias idênticas nunca são enviadas de novo."
+[[faq]]
+q = "Quais navegadores funcionam?"
+a = "O Chrome, o Edge e a maioria dos outros navegadores Chromium em um computador conseguem ler uma pasta e gravar nela. O Firefox e o Safari conseguem escolher uma pasta de onde enviar arquivos e recebem os arquivos em um ZIP, de até 512 MB, para você descompactar. Um navegador que não consegue escolher pastas, como na maioria dos celulares, só pode receber em um ZIP."
+[[faq]]
+q = "Os dois dispositivos precisam estar na mesma rede?"
+a = "Sim. Os arquivos passam direto entre os dispositivos, então eles precisam de uma rede em que consigam se alcançar: o mesmo Wi-Fi, a mesma Ethernet ou o mesmo ponto de acesso do celular. Os dois também precisam de internet para a apresentação entre os navegadores. Redes de convidados, isolamento de clientes, firewalls e VPNs podem bloquear a conexão. Não há retransmissão para dispositivos em redes diferentes."
+[[faq]]
+q = "Outra pessoa pode entrar na minha sincronização?"
+a = "Só com a sua aprovação. Um link de sincronização ou um código de convite listado permite que um dispositivo peça para entrar, e você aprova ou dispensa cada solicitação antes que qualquer coisa sobre a sua pasta seja enviada. Só um dispositivo por vez pode sincronizar com o seu. A nota da solicitação é um texto escolhido por quem pede, então reconheça o dispositivo e o momento antes de aprovar."
+[[faq]]
+q = "Posso impedir que o outro dispositivo altere a minha pasta?"
+a = "Sim. Coloque este dispositivo no modo Só enviar antes de começar: o outro dispositivo pode copiar arquivos da sua pasta, mas não pode gravar nela, e esta página recusa qualquer plano que faria isso. Só receber funciona ao contrário: os arquivos chegam e nenhum dos seus é enviado, embora a sua lista de arquivos ainda seja comparada."
+[[faq]]
+q = "O que acontece se a conexão cair no meio da sincronização?"
+a = "Os arquivos que chegaram inteiros são mantidos. Um arquivo ainda em trânsito é descartado, e a cópia mais antiga dele, se havia uma, fica exatamente como estava, porque um arquivo recebido só substitui o antigo depois que todos os bytes chegam. Conecte de novo e compare: o próximo plano retoma o que ainda falta."
+[[faq]]
+q = "Por que os arquivos sincronizados mostram a data de hoje?"
+a = "Uma página web consegue gravar o conteúdo de um arquivo, mas não consegue definir a data da última modificação, então um arquivo recebido fica com a data em que foi gravado. A próxima comparação confere o conteúdo dos arquivos que batem no tamanho mas não na data, e trata cópias idênticas como já sincronizadas."
+[[faq]]
+q = "Existe um limite para o tamanho da pasta?"
+a = "Cada pasta pode ter até 50.000 arquivos. Gravar numa pasta transmite cada arquivo direto para o disco, então arquivos grandes não são problema. Receber em um ZIP mantém os arquivos na memória e para em 512 MB. Caminhos muito profundos ou muito longos, e nomes que o Windows, o macOS ou o Linux não aceita, ficam de fora e aparecem listados."
+[[faq]]
+q = "O que o serviço de conexão fica sabendo?"
+a = "Esse serviço de apresentação vê o código do convite, os endereços IP, os horários de conexão, as descrições WebRTC e os candidatos. Se o anfitrião optar pela busca, a rede ou o grupo privado selecionado pode ver o código aleatório do convite. Os códigos de grupo privado são enviados ao serviço para autenticar o diretório deles; os links de sincronização não os incluem. A Cloudflare guarda os metadados das requisições de apresentação por sete dias. Nomes de arquivos, listas, impressões digitais, arquivos, notas e aprovações usam a conexão criptografada entre os navegadores."
+
+[schema]
+description = "Compare uma pasta em dois dispositivos e copie os arquivos que faltam ou são mais recentes direto entre os navegadores, por uma conexão WebRTC criptografada, com aprovação e sem upload."
+features = ["Comparação de duas pastas por caminho, tamanho, data e impressão digital do conteúdo", "Revisão e alteração da ação de cada arquivo antes de sincronizar", "Transferência criptografada direto entre os dois navegadores, sem retransmissão", "Aprovação obrigatória do dispositivo que entra", "Modos Só enviar e Só receber aplicados por cada dispositivo", "Arquivos recebidos só substituem as cópias antigas quando estão completos", "Nunca exclui um arquivo", "Recebimento em ZIP nos navegadores que não conseguem gravar em pastas"]

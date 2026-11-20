@@ -1,0 +1,265 @@
+#
+# Ordner synchronisieren - German.
+#
+# Overrides for tools/folder-sync/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+# "Synchronisieren" for the job and "Vergleichen" for the comparison, which is
+# how German sync software labels the two buttons. "Abgleichen" would have put
+# "Jetzt abgleichen" beside "Erneut vergleichen". "Genehmigen" and "Ablehnen"
+# are what the frame's approval dialog already says about the same request,
+# so the list under it says them too.
+#
+
+name = "Ordner synchronisieren"
+heading = "Ordner synchronisieren <span class=\"h1-kw\">&mdash; einen Ordner auf zwei Geräten auf demselben Stand halten</span>"
+tagline = "Wählen Sie auf jedem Gerät einen Ordner, sehen Sie jeden Unterschied und kopieren Sie, was fehlt oder neuer ist, direkt zwischen den beiden Browsern in Ihrem Netzwerk. Nichts wird hochgeladen, und nichts wird je gelöscht."
+
+title = "Ordner zwischen zwei Geräten synchronisieren &mdash; von Browser zu Browser, ohne Upload"
+description = "Halten Sie einen Ordner auf zwei Computern auf demselben Stand. Vergleichen Sie beide Ordner, prüfen Sie jede Änderung und kopieren Sie Dateien direkt zwischen den Browsern in Ihrem Netzwerk. Kein Upload, kein Konto, nichts wird gelöscht."
+og_title = "Einen Ordner auf zwei Geräten auf demselben Stand halten"
+og_description = "Vergleichen Sie zwei Ordner und kopieren Sie, was fehlt oder neuer ist, direkt zwischen den Browsern in Ihrem Netzwerk. Kein Upload, kein Konto, nichts wird gelöscht."
+og_image_alt = "Ordner synchronisieren - einen Ordner auf zwei Geräten auf demselben Stand halten"
+
+pledge = """
+    Sie wählen auf jedem Gerät einen Ordner und genehmigen das Gerät, das
+    beitritt. Danach vergleichen die beiden Browser Dateinamen, Größen und
+    Datumsangaben über eine verschlüsselte Verbindung direkt zwischen ihnen
+    und kopieren die Dateien, denen Sie zustimmen, ohne einen Server
+    dazwischen. Es gibt kein Relais, deshalb brauchen beide Geräte ein
+    gemeinsames Netzwerk, in dem sie einander erreichen. Für die Kopplung wird
+    ein Vermittlungsdienst im Internet genutzt, der Metadaten zum
+    Verbindungsaufbau sieht, aber nie eine Datei, einen Dateinamen oder den
+    Vergleich. Eine empfangene Datei ersetzt die alte erst, wenn sie
+    vollständig angekommen ist, und gelöscht wird nie etwas. Mit „Beenden“
+    oder durch Schließen einer der beiden Seiten endet die Sitzung."""
+pledge_line = "Dateien werden verschlüsselt <strong>direkt zwischen Ihren beiden Geräten</strong> übertragen. Nichts wird hochgeladen; ein Vermittlungsdienst verbindet die Browser."
+md_note = "Ordnervergleich und Kopieren von Dateien direkt zwischen zwei genehmigten Browsern, verschlüsselt und ohne Relais. Die Vermittlung über das Internet überträgt Metadaten zum Verbindungsaufbau, nie Dateien, Dateinamen oder Dateilisten. Gelöscht wird nie etwas."
+live_hint = """
+      Die Entwicklertools zeigen einen WebSocket zum Vermittlungsdienst für
+      den Verbindungsaufbau. Wenn Sie den Eintrag in den verfügbaren
+      Verbindungen einschalten oder „Verbindungen suchen“ wählen, öffnet sich
+      ein separater WebSocket für die Verbindungssuche. Dateilisten und
+      Dateien laufen über verschlüsseltes WebRTC direkt zwischen den Geräten.
+      Der Netzwerkbereich und die CSP allein prüfen diesen Peer-Verkehr nicht.
+      Der Rahmen der Website lädt wie gewohnt Ressourcen von Drittanbietern."""
+read_first = """
+, <code>src/plan.js</code> dafür, wie aus zwei Dateilisten die Liste der
+      Unterschiede wird und warum nichts gelöscht wird, <code>src/transfer.js</code>
+      für die Übertragung mit Empfangsbestätigungen, die eine große Datei aus dem
+      Arbeitsspeicher heraushält, <code>src/folder.js</code> für die
+      Schreibvorgänge, die eine Datei erst ersetzen, wenn sie vollständig ist,
+      und <code>src/session.js</code> für die Genehmigung, bevor einer der
+      beiden Ordner verglichen wird. Der Vermittlungsdienst ist neben dem
+      Werkzeug unter <code>workers/rendezvous/</code> veröffentlicht."""
+howto_heading = "So synchronisieren Sie einen Ordner zwischen zwei Geräten"
+card = "Vergleichen Sie einen Ordner auf zwei Geräten und kopieren Sie, was fehlt oder neuer ist, direkt zwischen den Browsern in Ihrem Netzwerk. Nichts wird hochgeladen, nichts gelöscht."
+
+[words]
+plural = "Ordner und Dateien"
+choose = "einen Ordner"
+
+[[facts]]
+text = "Genehmigung erforderlich"
+[[facts]]
+text = "Verschlüsselt von Gerät zu Gerät"
+[[facts]]
+text = "Kein Upload"
+[[facts]]
+text = "Kein Relais"
+[[facts]]
+text = "Löscht nie"
+
+[[privacy]]
+title = "Sie wählen die Ordner und genehmigen dann das Gerät."
+body = """
+      Jedes Gerät wählt seinen eigenen Ordner im Auswahldialog des Browsers,
+      und diese Seite kann nichts außerhalb davon erreichen. Das Gerät, das
+      die Synchronisierung startet, genehmigt das beitretende Gerät, bevor
+      irgendetwas über einen der beiden Ordner gesendet wird. Die erste
+      Peer-Verbindung trägt nur einen verschlüsselten Steuerkanal und die
+      Anfrage des beitretenden Geräts mit einer optionalen Notiz. Eine Notiz
+      ist selbst gewählter Text, keine geprüfte Identität. Jeweils ein Gerät
+      kann mit dem Host synchronisieren, und bis zu vier Anfragen können
+      warten. Der beitretende Browser speichert lokal einen zufälligen
+      Genehmigungsnachweis und legt ihn nur über den verschlüsselten
+      Peer-Kanal vor, damit er sich ohne erneute Genehmigung wieder mit
+      derselben Sitzung verbinden kann. Das Beenden der Synchronisierung oder
+      das Trennen dieses Geräts widerruft den Nachweis."""
+[[privacy]]
+title = "Das andere Gerät sieht Ihre Dateiliste und die Dateien, die Sie synchronisieren."
+body = """
+      Nach der Genehmigung sendet jedes Gerät dem anderen Pfad, Größe und
+      Änderungsdatum jeder Datei im gewählten Ordner, damit beide verglichen
+      werden können. Das gilt auch für Dateien, die nicht kopiert werden.
+      Haben zwei Dateien dieselbe Größe, aber verschiedene Datumsangaben,
+      liest jedes Gerät seine eigene Kopie und sendet einen Fingerabdruck
+      ihres Inhalts, nicht den Inhalt selbst. Die Dateien selbst werden erst
+      gesendet, wenn „Jetzt synchronisieren“ gedrückt wird, und nur die im
+      Plan, die nach den Einstellungen beider Geräte erlaubt sind. Ein Gerät
+      mit „Nur senden“ nimmt keine Dateien an; ein Gerät mit
+      „Nur empfangen“ sendet keine. Was das andere Gerät empfängt, behält es."""
+[[privacy]]
+title = "Dateien werden verschlüsselt direkt zwischen den Geräten übertragen."
+body = """
+      Dateilisten, Fingerabdrücke und Dateien laufen über eine verschlüsselte
+      WebRTC-Verbindung direkt zwischen den beiden Browsern. Nur
+      Host-Verbindungsadressen werden akzeptiert, kein öffentlicher
+      STUN-Server ist eingerichtet, und es gibt kein Relais, sodass unterwegs
+      nichts über einen Server läuft. Beide Geräte brauchen ein Netzwerk, in
+      dem sie einander erreichen, also dasselbe WLAN, dasselbe Ethernet-Netz
+      oder denselben Handy-Hotspot. Isolierung im Gastnetz, Firewalls,
+      VPN-Routen und Berechtigungen des Browsers für das lokale Netzwerk
+      können eine Verbindung verhindern. Host-Adressen können auch öffentliche
+      Schnittstellen umfassen oder einer VPN-Route folgen. Das beweist also
+      nicht, dass der Verkehr in einem Gebäude bleibt."""
+[[privacy]]
+title = "Die Kopplung zeigt dem Vermittlungsdienst Metadaten zum Verbindungsaufbau."
+body = """
+      Starten oder Beitreten öffnet einen WebSocket zu
+      <code>rendezvous.abox.tools</code>. Der Dienst sieht den zufälligen
+      Raumcode, IP-Adressen, Verbindungszeiten, WebRTC-Beschreibungen und
+      ICE-Kandidaten; diese Einrichtungsnachrichten sind vor ihm nicht
+      verborgen. Dateinamen, Dateilisten, Fingerabdrücke, Dateien, Notizen
+      und Genehmigungsentscheidungen laufen über die verschlüsselte
+      Peer-Verbindung. Der Dienst schreibt keine Rauminhalte in einen
+      Speicher. Cloudflare, das den Dienst betreibt, bewahrt sieben Tage lang
+      Verbindungsprotokolle mit Anfragemetadaten wie Code, Adresse und
+      Uhrzeit auf. Für die Verbindungssuche und den Verbindungsaufbau ist
+      Internetzugang nötig."""
+[[privacy]]
+title = "Die Verbindungssuche ist optional und listet nur den Einladungscode."
+body = """
+      „In den verfügbaren Verbindungen anzeigen“ ist standardmäßig aus.
+      Aktivieren Sie es vor dem Start, um den zufälligen Einladungscode zu
+      veröffentlichen; er ändert sich nicht, bis Sie die Synchronisierung
+      beenden. Ein anderes Gerät wählt „Verbindungen suchen“, um ihn zu sehen. Weder Ordnername
+      noch Dateiname noch Dateianzahl werden gelistet. Der Dienst gruppiert
+      die Seiten dieses Werkzeugs nach öffentlicher IPv4-Adresse oder
+      IPv6-/64-Subnetz und Website-Origin. Gemeinsam genutzte Gateways von
+      Netzbetreibern oder VPNs können deshalb Fremde einschließen, und
+      unterschiedliche Routen können Geräte in der Nähe verbergen. Eine
+      private Gruppe nutzt stattdessen auf jedem Gerät denselben zufälligen
+      Gruppencode. Der Dienst erhält den Code, um dieses Verzeichnis zu
+      authentifizieren, und dieses Werkzeug speichert ihn nicht und schreibt
+      ihn nicht in Synchronisierungslinks. Jeder mit dem Gruppencode kann
+      gelistete Sitzungen sehen, und die Genehmigung gilt weiterhin."""
+[[privacy]]
+title = "Geschrieben wird ganz oder gar nicht, und gelöscht wird nichts."
+body = """
+      Eine empfangene Datei wird in eine temporäre Kopie daneben geschrieben
+      und ersetzt die alte Datei erst, wenn jedes Byte angekommen ist. Eine
+      abgebrochene oder gestörte Synchronisierung hinterlässt deshalb keine
+      halb geschriebene Datei. Eine Datei, die es vor einem unterbrochenen
+      Schreibvorgang noch nicht gab, wird wieder entfernt. In keinem der
+      beiden Ordner wird je etwas gelöscht. Beim Schreiben erhält eine Datei
+      das heutige Datum, weil eine Webseite das Änderungsdatum einer Datei
+      nicht setzen kann. In Browsern, die nicht in einen Ordner schreiben
+      können, werden empfangene Dateien im Arbeitsspeicher dieser Seite
+      gesammelt und als ein ZIP gespeichert, wenn Sie das Speichern wählen."""
+[[privacy]]
+title = "Einladungen sind für Seitenskripte sichtbar."
+body = """
+      Jede Sitzung verwendet einen neuen zufälligen Link. Wer ihn hat, kann
+      einen Verbindungsversuch starten; was danach geschieht, entscheidet
+      weiterhin die Genehmigung. Diese Seite enthält die üblichen Werbe- und
+      Messskripte von Google. Das Werkzeug übergibt ihnen nicht absichtlich
+      Dateinamen, Dateilisten oder Dateien, aber Skripte, die in der Seite
+      laufen, können ihre Adresse und ihren Zustand lesen, einschließlich
+      eines Link-Codes. Betrachten Sie die Anfrage des erwarteten Geräts und
+      Ihre Genehmigung als den Schritt, der Zugang gewährt."""
+
+[[howto]]
+title = "Öffnen Sie dieses Werkzeug auf beiden Geräten."
+body = """
+      Für einen Ordner, der senden und empfangen soll, eignen sich Chrome,
+      Edge und die meisten anderen Chromium-Browser auf einem Computer.
+      Firefox und Safari können einen Ordner senden und in ein ZIP empfangen.
+      Verbinden Sie beide Geräte mit demselben WLAN, Ethernet-Netz oder
+      Handy-Hotspot, und halten Sie den Internetzugang für die Vermittlung
+      verfügbar."""
+[[howto]]
+title = "Wählen Sie auf jedem Gerät den Ordner."
+body = """
+      Wählen Sie einen Ordner und erlauben Sie dem Browser, ihn zu ändern,
+      wenn dieses Gerät Dateien empfangen soll. Legen Sie fest, was jedes
+      Gerät tut: „Senden und empfangen“, „Nur senden“ oder „Nur empfangen“.
+      Systemdateien, temporäre Kopien und Namen, die eines der Systeme
+      Windows, macOS oder Linux nicht speichern kann, werden ausgelassen und
+      aufgeführt."""
+[[howto]]
+title = "Starten Sie auf einem Gerät, und treten Sie vom anderen aus bei."
+body = """
+      Wählen Sie „Synchronisierung starten“ und öffnen Sie dann den
+      Synchronisierungslink auf dem anderen Gerät. Haben Sie die
+      Synchronisierung in den verfügbaren Verbindungen angezeigt, kann das
+      andere Gerät stattdessen „Verbindungen suchen“ und dann „Beitreten“
+      wählen. Genehmigen Sie die Anfrage, die Sie wiedererkennen; vorher wird
+      über keinen der beiden Ordner etwas gesendet."""
+[[howto]]
+title = "Prüfen Sie den Vergleich."
+body = """
+      Beide Geräte listen jeden Unterschied auf: Dateien, die nur auf einer
+      Seite liegen, Dateien, die auf einer Seite neuer sind, und Dateien, die
+      sich unterscheiden, aber dasselbe Datum tragen. Jede Zeile zeigt die
+      Voreinstellung, die Sie ändern können, also senden, hierher kopieren
+      oder unverändert lassen. Gelöscht wird nichts. Eine Datei, die Sie
+      absichtlich entfernt haben, sollten Sie deshalb unverändert lassen oder
+      auf beiden Geräten entfernen."""
+[[howto]]
+title = "Synchronisieren Sie, und vergleichen Sie später erneut."
+body = """
+      Wählen Sie auf einem der beiden Geräte „Jetzt synchronisieren“. Beide
+      zeigen den Fortschritt, und eine Datei ersetzt ihre ältere Kopie erst,
+      wenn sie vollständig angekommen ist. Danach werden beide Ordner erneut
+      gelesen und verglichen. Lassen Sie beide Seiten geöffnet, um später
+      erneut zu synchronisieren, oder beenden Sie die Sitzung und starten Sie
+      bei Bedarf eine neue."""
+
+[[faq]]
+q = "Werden meine Dateien irgendwohin hochgeladen?"
+a = "Nein. Dateien, Dateinamen und Ordnerlisten laufen über eine verschlüsselte Verbindung direkt zwischen Ihren beiden Browsern, und es gibt kein Relais. Der Vermittlungsdienst, der die Browser verbindet, sieht Metadaten zum Verbindungsaufbau wie den Raumcode und IP-Adressen, aber nie, was in einem der beiden Ordner liegt."
+[[faq]]
+q = "Löscht es Dateien, die ich auf dem anderen Gerät gelöscht habe?"
+a = "Nein, nie. Ohne Aufzeichnung der letzten Synchronisierung sieht eine Datei, die auf einem Gerät fehlt, genauso aus wie eine neue Datei auf dem anderen, und falsch zu raten würde jemandes Arbeit zerstören. Eine Datei, die auf einer Seite fehlt, wird dieser Seite angeboten. Stellen Sie ihre Zeile auf „Unverändert lassen“, oder löschen Sie die Datei auf beiden Geräten."
+[[faq]]
+q = "Welche Kopie gewinnt, wenn sich eine Datei auf beiden Geräten geändert hat?"
+a = "Standardmäßig ersetzt die Kopie mit dem späteren Änderungsdatum die ältere, und die Zeile zeigt, in welche Richtung es geht. Sie können jede Zeile vor dem Synchronisieren ändern. Zwei verschiedene Kopien mit exakt demselben Datum bleiben unverändert, bis Sie entscheiden. Dateien mit gleicher Größe und verschiedenem Datum werden zuerst nach ihrem Inhalt verglichen, sodass identische Kopien nie erneut gesendet werden."
+[[faq]]
+q = "Welche Browser können es nutzen?"
+a = "Chrome, Edge und die meisten anderen Chromium-Browser auf einem Computer können einen Ordner lesen und in ihn schreiben. Firefox und Safari können einen Ordner zum Senden wählen und empfangen Dateien als ZIP mit bis zu 512 MB, das Sie selbst entpacken. Ein Browser, der überhaupt keine Ordner wählen kann, wie auf den meisten Handys, kann nur als ZIP empfangen."
+[[faq]]
+q = "Müssen die beiden Geräte im selben Netzwerk sein?"
+a = "Ja. Die Dateien gehen direkt zwischen den Geräten, daher brauchen sie ein Netzwerk, in dem sie einander erreichen, also dasselbe WLAN, dasselbe Ethernet-Netz oder denselben Handy-Hotspot. Beide brauchen außerdem Internetzugang für die Vermittlung. Gastnetze, Client-Isolierung, Firewalls und VPNs können die Verbindung blockieren. Für Geräte in verschiedenen Netzwerken gibt es kein Relais."
+[[faq]]
+q = "Kann jemand anderes meiner Synchronisierung beitreten?"
+a = "Nur mit Ihrer Genehmigung. Mit einem Synchronisierungslink oder einem gelisteten Einladungscode kann ein Gerät um Beitritt bitten, und Sie genehmigen jede Anfrage oder lehnen sie ab, bevor irgendetwas über Ihren Ordner gesendet wird. Jeweils ein Gerät kann mit Ihrem synchronisieren. Eine Notiz in der Anfrage ist selbst gewählter Text. Vergewissern Sie sich daher, dass Sie Gerät und Zeitpunkt wiedererkennen, bevor Sie genehmigen."
+[[faq]]
+q = "Kann ich verhindern, dass das andere Gerät meinen Ordner ändert?"
+a = "Ja. Stellen Sie dieses Gerät vor dem Start auf „Nur senden“. Das andere Gerät kann dann Dateien aus Ihrem Ordner kopieren, aber nicht hineinschreiben, und diese Seite lehnt jeden Plan ab, der das täte. „Nur empfangen“ funktioniert umgekehrt. Dateien kommen herein und keine Ihrer Dateien wird gesendet, Ihre Dateiliste wird aber trotzdem verglichen."
+[[faq]]
+q = "Was passiert, wenn die Verbindung mitten in der Synchronisierung abbricht?"
+a = "Vollständig angekommene Dateien bleiben erhalten. Eine Datei, die noch unterwegs war, wird verworfen, und ihre ältere Kopie, falls es eine gab, bleibt genau so, wie sie war, denn eine empfangene Datei ersetzt die alte erst, wenn jedes Byte angekommen ist. Verbinden Sie sich erneut und vergleichen Sie. Der nächste Plan holt nach, was noch fehlt."
+[[faq]]
+q = "Warum zeigen synchronisierte Dateien das heutige Datum?"
+a = "Eine Webseite kann den Inhalt einer Datei schreiben, aber nicht das Datum ihrer letzten Änderung setzen. Eine empfangene Datei trägt deshalb das Datum, an dem sie geschrieben wurde. Der nächste Vergleich prüft den Inhalt von Dateien, deren Größe übereinstimmt, deren Datum aber nicht, und behandelt identische Kopien als bereits synchron."
+[[faq]]
+q = "Gibt es eine Grenze für die Ordnergröße?"
+a = "Jeder Ordner kann bis zu 50.000 Dateien enthalten. Beim Schreiben in einen Ordner wird jede Datei fortlaufend auf den Datenträger geschrieben, große Dateien sind also kein Problem. Der Empfang in ein ZIP hält die Dateien im Arbeitsspeicher und endet bei 512 MB. Sehr tief verschachtelte oder sehr lange Pfade und Namen, die eines der Systeme Windows, macOS oder Linux nicht speichern kann, werden ausgelassen und aufgeführt."
+[[faq]]
+q = "Was erfährt der Vermittlungsdienst?"
+a = "Der Vermittlungsdienst sieht den Einladungscode, IP-Adressen, Verbindungszeiten, WebRTC-Beschreibungen und Kandidaten. Schaltet der Host die Verbindungssuche ein, sehen Geräte in seinem gewählten Netzwerk oder seiner privaten Gruppe den zufälligen Einladungscode. Codes privater Gruppen werden an den Dienst gesendet, um ihr Verzeichnis zu authentifizieren; Synchronisierungslinks enthalten sie nicht. Cloudflare bewahrt die Metadaten der Vermittlungsanfragen sieben Tage lang auf. Dateinamen, Dateilisten, Fingerabdrücke, Dateien, Notizen und Genehmigungen laufen über die verschlüsselte Peer-Verbindung."
+
+[schema]
+description = "Einen Ordner auf zwei Geräten vergleichen und fehlende oder neuere Dateien über eine verschlüsselte WebRTC-Verbindung direkt zwischen den Browsern kopieren, mit Genehmigung und ohne Upload."
+features = [
+  "Zwei Ordner nach Pfad, Größe, Datum und Inhaltsfingerabdruck vergleichen",
+  "Die Aktion jeder Datei vor dem Synchronisieren prüfen und ändern",
+  "Verschlüsselte Übertragung direkt zwischen den beiden Browsern, ohne Relais",
+  "Verpflichtende Genehmigung des beitretenden Geräts",
+  "Die Modi „Nur senden“ und „Nur empfangen“, auf jedem Gerät durchgesetzt",
+  "Empfangene Dateien ersetzen alte Kopien erst, wenn sie vollständig sind",
+  "Löscht nie eine Datei",
+  "Empfang in ein ZIP in Browsern, die nicht in Ordner schreiben können",
+]

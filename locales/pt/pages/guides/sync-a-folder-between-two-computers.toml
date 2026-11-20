@@ -1,0 +1,19 @@
+#
+# Guia: sincronizar uma pasta entre dois computadores - Brazilian Portuguese.
+#
+# The control names in the body are the labels of locales/pt/tools/folder-sync.html,
+# word for word, so a reader can find each one on the tool's page.
+#
+
+nav = "Sincronizar uma pasta entre dois computadores"
+title = "Como sincronizar uma pasta entre dois computadores sem a nuvem"
+description = "Mantenha uma pasta igual em dois computadores comparando as duas no navegador e copiando os arquivos direto pela sua rede. Sem upload, sem conta e sem excluir nada."
+
+heading = "Como sincronizar uma pasta entre dois computadores sem a nuvem"
+lede = "Dois computadores, uma pasta que deve ter os mesmos arquivos nos dois. Abra Sincronizar pasta em cada um, escolha a pasta, aprove o outro computador e leia a comparação antes que qualquer arquivo seja copiado. Os arquivos viajam direto entre os dois navegadores pela sua própria rede, e nada jamais é excluído."
+
+updated = "19 de novembro de 2026"
+
+og_title = "Sincronize uma pasta entre dois computadores, sem nuvem no meio"
+og_description = "Compare uma pasta em dois computadores e copie o que estiver faltando ou for mais recente direto pela sua rede. Sem upload e sem excluir nada."
+og_image_alt = "abox.tools - sincronizar uma pasta entre dois computadores"
