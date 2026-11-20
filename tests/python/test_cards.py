@@ -96,6 +96,25 @@ class Summaries(unittest.TestCase):
         html = cards.fold_ledes(card('  <p class="field-summary">Words.</p>'))
         self.assertIn('<summary><h2>A step</h2></summary>', html)
 
+    def test_a_chinese_name_runs_straight_on_into_its_note(self):
+        # The fold used to write an ASCII space between the two, which is a
+        # hole in the middle of a Chinese or Japanese line. See i18n.space_after.
+        html = cards.fold_ledes(card(
+            '  <label class="field" for="name">链接名</label><input id="name">\n'
+            '  <p class="field-note">名称就是地址。</p>\n'
+            '  <label><input type="checkbox" id="local"> <strong>仅限局域网</strong>'
+            '<span class="check-note">适用于同一网络中的设备。</span></label>'))
+        inside, _ = folded(html)
+        self.assertIn('<strong>链接名</strong>名称就是地址。', inside)
+        self.assertIn('<strong>仅限局域网</strong><span class="check-note">', inside)
+
+    def test_an_english_name_keeps_its_space_before_a_checkbox_note(self):
+        html = cards.fold_ledes(card(
+            '  <label><input type="checkbox" id="local"> <strong>Local only</strong> '
+            '<span class="check-note">For devices on the same network.</span></label>'))
+        inside, _ = folded(html)
+        self.assertIn('<strong>Local only</strong> <span class="check-note">', inside)
+
     def test_a_note_under_a_menu_takes_the_label_and_not_its_options(self):
         # A label wrapping its <select> holds the option text too, and removing
         # the tags alone ran it all into the name: "Rows to keepAll rowsMatching

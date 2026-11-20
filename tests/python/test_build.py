@@ -14,10 +14,12 @@ stopped rendering, a tool.toml that lost a key, or a page that quietly stopped
 being written. It needs nothing installed - the plain build is pure Python.
 """
 
+import html
 import importlib.util
 import json
 import re
 import tempfile
+import unicodedata
 import unittest
 import xml.etree.ElementTree as ElementTree
 from concurrent.futures import ThreadPoolExecutor
@@ -682,6 +684,52 @@ class BuildTheSite(unittest.TestCase):
                 self.assertIn('<link rel="manifest" href="manifest.json">', page)
                 # manifest-src falls back to default-src, which is 'none'.
                 self.assertIn("manifest-src 'self'", page)
+
+    # -- a bold lead-in and the text after it ------------------------------
+    #
+    # A privacy point, a how-to step, a folded note, a live-check row and the
+    # discovery line each open with a bold lead-in. Joined wrongly the page
+    # reads "browser.This tool" in English, or has a hole after 。 in Chinese,
+    # and neither shows in a diff of the source or fails anything else. Both
+    # were live: ninety-three English bodies and nearly every French one had
+    # been written without the space the template used to leave to them.
+
+    LEAD_INS = (
+        ('privacy', re.compile(r'<section id="privacy-panel".*?</ul>', re.S),
+         re.compile(r'<li><strong>((?:(?!</strong>).)*)</strong>(\s*)', re.S)),
+        ('how-to', re.compile(r'<ol class="how-to">.*?</ol>', re.S),
+         re.compile(r'<li>\s*<strong>((?:(?!</strong>).)*)</strong>(\s*)', re.S)),
+        ('live check', re.compile(r'<p class="live-row">.*?</p>', re.S),
+         re.compile(r'<strong>((?:(?!</strong>).)*)</strong>(\s*)<span id=', re.S)),
+        ('fold', re.compile(r'<details class="card-note">.*?</details>', re.S),
+         re.compile(r'<p class="(?:fold|field)-note"[^>]*><strong>((?:(?!</strong>).)*)'
+                    r'</strong>(\s*)', re.S)),
+        ('discovery', re.compile(r'<div class="paired-group-current">.*?</div>', re.S),
+         re.compile(r'<span>([^<]*?)(\s*)<strong data-group-current>')),
+    )
+
+    def test_a_bold_lead_in_is_joined_the_way_its_own_words_are_written(self):
+        """One space after a lead-in in a spaced script and none after Chinese
+        or Japanese, read off each lead-in rather than off the page: a page
+        whose translation is behind carries English entries among its own.
+        This states the rule in i18n.space_after again rather than calling it,
+        so that a template which stops using it is caught."""
+        tags = re.compile(r'<[^>]+>')
+        found, wrong = dict.fromkeys(kind for kind, _, _ in self.LEAD_INS), []
+        for name in self.tool_pages():
+            page = (self.out / name).read_text(encoding='utf-8')
+            for kind, region, join in self.LEAD_INS:
+                for part in region.findall(page):
+                    for lead, space in join.findall(part):
+                        found[kind] = True
+                        last = html.unescape(tags.sub('', lead)).rstrip()[-1:]
+                        wide = bool(last) and unicodedata.east_asian_width(last) in ('W', 'F')
+                        if space != ('' if wide else ' '):
+                            wrong.append(f'{name} {kind}: {lead[-30:]!r} then {space!r}')
+        self.assertEqual([kind for kind, seen in found.items() if not seen], [],
+                         'a kind of lead-in was not found on any page, so the '
+                         'pattern for it no longer matches what the build writes')
+        self.assertEqual(wrong, [], f'{len(wrong)} joined wrongly')
 
     # -- the page as Markdown -------------------------------------------------
     #

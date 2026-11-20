@@ -800,5 +800,52 @@ class LoadingALocale(unittest.TestCase):
         self.assertEqual(found['pt'], 'pt-BR')
 
 
+class LeadIns(unittest.TestCase):
+    """What joins a bold lead-in to the text after it.
+
+    Both ways of getting it wrong were live: a body written without the
+    leading space the template used to need ran into its title, "browser.This
+    tool", and a fold that wrote the space itself put a hole after every
+    Chinese and Japanese label.
+    """
+
+    def test_a_lead_in_in_a_spaced_script_is_followed_by_one_space(self):
+        for lead in ('Processing happens in this browser.', 'Live check:',
+                     'Vérification en direct&nbsp;:', 'Finish with <code>src/</code>',
+                     'Link name', 'Wait…', 'Say “yes”'):
+            with self.subTest(lead=lead):
+                self.assertEqual(i18n.space_after(lead), ' ')
+
+    def test_a_lead_in_ending_in_chinese_or_japanese_is_followed_by_nothing(self):
+        # Full-width punctuation, Han and kana all carry their own room.
+        for lead in ('处理在这个浏览器里完成。', '实时检查：', '链接名',
+                     'フォルダ', '<code>src/</code>には何もありません。', '（可选）'):
+            with self.subTest(lead=lead):
+                self.assertEqual(i18n.space_after(lead), '')
+
+    def test_the_join_follows_the_words_and_not_the_page(self):
+        # A Chinese page whose translation is behind the English carries
+        # English entries, and a Latin word can close a Chinese label; each is
+        # joined the way its own last character is written.
+        entries = i18n.lead_ins([
+            {'title': '不会上传。', 'body': '文件留在本机。'},
+            {'title': 'Nothing is uploaded.', 'body': 'Your files stay here.'},
+            {'title': '支持 Markdown', 'body': '文件与文本使用同一个通道。'},
+        ])
+        self.assertEqual([entry['space'] for entry in entries], ['', ' ', ' '])
+
+    def test_a_body_loses_the_whitespace_it_used_to_supply(self):
+        written = [
+            {'title': 'Nothing is uploaded.', 'body': ' Your files stay here.'},
+            {'title': 'Nothing is uploaded.', 'body': '\n\n      Your files stay here.'},
+            {'title': '不会上传。', 'body': ' 文件留在本机。'},
+        ]
+        entries = i18n.lead_ins(written)
+        self.assertEqual([entry['body'] for entry in entries],
+                         ['Your files stay here.', 'Your files stay here.', '文件留在本机。'])
+        self.assertEqual(written[0]['body'], ' Your files stay here.',
+                         'the entries a tool was loaded with are its own')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -56,6 +56,8 @@ which control it belongs to is still on the page.
 
 import re
 
+from buildlib.i18n import space_after
+
 # One card. Sections do not nest inside a card in any tool here, and if one
 # ever does this stops at the first close rather than silently swallowing the
 # rest of the page - a card that folds too little is a bug somebody sees.
@@ -166,7 +168,11 @@ def _named(inner, match):
     # written to by their tool - edit-audio's depth-note, json-formatter's
     # language-note, reverse-video's audio-note, timelapse-video's size-note -
     # and a rebuilt <p> without the id is a tool that has lost its handle.
-    return (f'{match.group("open")}<strong>{name}</strong> '
+    #
+    # The name and the note are joined the way the name's own language joins
+    # them, which is no space at all in Chinese and Japanese - see
+    # i18n.space_after. A plain space here was a hole in every one of those.
+    return (f'{match.group("open")}<strong>{name}</strong>{space_after(name)}'
             f'{match.group("body").strip()}</p>')
 
 
@@ -187,11 +193,13 @@ def _fold_card(card):
 
     for match in CHECK_NOTE.finditer(inner):
         # The label keeps its <strong>; the fold gets a copy of it, so the note
-        # arrives with the name of the setting it is about.
+        # arrives with the name of the setting it is about, joined to it as
+        # _named joins a field's name.
+        strong = match.group('strong')
         found.append((match.start(), match.end(),
-                      f'<p class="fold-note">{match.group("strong")} '
+                      f'<p class="fold-note">{strong}{space_after(strong)}'
                       f'{match.group("note")}</p>',
-                      match.group('strong')))
+                      strong))
 
     for match in STAGE_HINT.finditer(inner):
         found.append((match.start(), match.end(), match.group(0).strip(), ''))
