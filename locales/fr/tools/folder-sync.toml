@@ -1,0 +1,130 @@
+name = "Synchroniser un dossier"
+heading = "Synchroniser un dossier <span class=\"h1-kw\">&mdash; gardez un dossier identique sur deux appareils</span>"
+tagline = "Choisissez un dossier sur chaque appareil, voyez toutes les différences et copiez ce qui manque ou est plus récent directement entre les deux navigateurs de votre réseau. Rien n’est envoyé sur un serveur, et rien n’est jamais supprimé."
+title = "Synchroniser un dossier entre deux appareils &mdash; de navigateur à navigateur, sans envoi sur un serveur"
+description = "Gardez un dossier identique sur deux ordinateurs. Comparez les deux dossiers, examinez chaque changement et copiez les fichiers directement entre les navigateurs de votre réseau. Sans envoi sur un serveur, sans compte et sans rien supprimer."
+og_title = "Gardez un dossier identique sur deux appareils"
+og_description = "Comparez deux dossiers et copiez ce qui manque ou est plus récent, directement entre les navigateurs de votre réseau. Sans envoi sur un serveur, sans compte et sans rien supprimer."
+og_image_alt = "Synchroniser un dossier - gardez un dossier identique sur deux appareils"
+pledge = "Vous choisissez un dossier sur chaque appareil et vous approuvez l’appareil qui vous rejoint. Les deux navigateurs comparent ensuite les noms, tailles et dates des fichiers par une connexion chiffrée établie directement entre eux, puis copient les fichiers que vous acceptez, sans aucun serveur intermédiaire. Il n’y a pas de relais&nbsp;: les deux appareils doivent donc partager un réseau sur lequel ils peuvent se joindre. L’appairage passe par un service de mise en relation sur internet, qui voit les métadonnées d’établissement de la connexion, jamais un fichier, un nom de fichier ni la comparaison. Un fichier reçu ne remplace l’ancien qu’une fois arrivé en entier, et rien n’est jamais supprimé. Arrêtez, ou fermez l’une des deux pages, pour mettre fin à la session."
+pledge_line = "Les fichiers circulent <strong>directement entre vos deux appareils</strong>, chiffrés. Rien n’est envoyé sur un serveur&nbsp;; un service de mise en relation connecte les navigateurs."
+md_note = "Comparaison de dossiers et copie de fichiers directement entre deux navigateurs approuvés, chiffrées et sans relais. La mise en relation par internet transporte des métadonnées d’établissement, jamais de fichiers, de noms de fichiers ni de listes. Rien n’est jamais supprimé."
+live_hint = "Les outils de développement montrent un WebSocket vers le service de mise en relation pour les messages d’établissement de la connexion. Accepter d’apparaître dans la liste ou choisir «&nbsp;Rechercher des connexions&nbsp;» ouvre un WebSocket de découverte distinct. Les listes de fichiers et les fichiers passent par WebRTC chiffré, directement entre les appareils. L’onglet Réseau et la CSP ne suffisent pas à inspecter ce trafic entre pairs. Le cadre du site charge ses ressources tierces habituelles."
+read_first = ", <code>src/plan.js</code> pour la façon dont deux listes deviennent la liste des différences et la raison pour laquelle rien n’est supprimé, <code>src/transfer.js</code> pour le transfert avec accusés de réception qui évite de garder un gros fichier en mémoire, <code>src/folder.js</code> pour les écritures qui ne remplacent un fichier qu’une fois celui-ci complet, et <code>src/session.js</code> pour l’approbation qui précède toute comparaison des dossiers. Le service de mise en relation est publié à côté de l’outil, sous <code>workers/rendezvous/</code>."
+howto_heading = "Comment synchroniser un dossier entre deux appareils"
+card = "Comparez un dossier sur deux appareils et copiez ce qui manque ou est plus récent, directement entre les navigateurs de votre réseau. Rien n’est envoyé sur un serveur, rien n’est supprimé."
+
+[words]
+plural = "dossiers et fichiers"
+choose = "un dossier"
+
+[[facts]]
+text = "Approbation requise"
+
+[[facts]]
+text = "Chiffré, d’appareil à appareil"
+
+[[facts]]
+text = "Aucun envoi sur un serveur"
+
+[[facts]]
+text = "Aucun relais"
+
+[[facts]]
+text = "Aucune suppression"
+
+[[privacy]]
+title = "Vous choisissez les dossiers, puis vous approuvez l’appareil."
+body = " Chaque appareil choisit son propre dossier dans le sélecteur du navigateur lui-même, et cette page ne peut rien atteindre en dehors de ce dossier. L’appareil qui démarre la synchronisation approuve l’appareil qui le rejoint avant que quoi que ce soit concernant l’un ou l’autre dossier soit envoyé&nbsp;: la première connexion entre pairs ne transporte qu’un canal de contrôle chiffré et la demande de cet appareil, accompagnée d’une note facultative. Une note est un texte choisi librement, pas une identité vérifiée. Un seul appareil à la fois peut se synchroniser avec l’hôte, et jusqu’à quatre demandes peuvent attendre. Le navigateur qui a rejoint la synchronisation conserve localement une preuve d’approbation aléatoire et ne la présente que par le canal chiffré entre pairs, ce qui lui permet de se reconnecter à la même session sans nouvelle approbation. Arrêter la synchronisation, ou déconnecter cet appareil, révoque cette preuve."
+
+[[privacy]]
+title = "L’autre appareil voit votre liste de fichiers, et les fichiers que vous synchronisez."
+body = " Une fois l’approbation donnée, chaque appareil envoie à l’autre le chemin, la taille et la date de dernière modification de chaque fichier de son dossier, pour que les deux puissent être comparés. Cela inclut les fichiers qui ne seront pas copiés. Lorsque deux fichiers ont la même taille mais des dates différentes, chaque appareil lit sa propre copie et envoie une empreinte de son contenu, pas le contenu lui-même. Les fichiers eux-mêmes ne sont envoyés que lorsque quelqu’un appuie sur «&nbsp;Synchroniser maintenant&nbsp;», et uniquement ceux du plan que les réglages des deux appareils autorisent. Un appareil réglé sur «&nbsp;Envoyer uniquement&nbsp;» n’accepte aucun fichier&nbsp;; un appareil réglé sur «&nbsp;Recevoir uniquement&nbsp;» n’en envoie aucun. L’autre appareil conserve tout ce qu’il reçoit."
+
+[[privacy]]
+title = "Les fichiers passent directement d’un appareil à l’autre, chiffrés."
+body = " Les listes de fichiers, les empreintes et les fichiers passent par une connexion WebRTC chiffrée, établie directement entre les deux navigateurs. Seules les adresses de connexion d’hôte sont acceptées, aucun serveur STUN public n’est configuré et il n’y a pas de relais&nbsp;: rien ne transite donc par un serveur en chemin. Les deux appareils ont besoin d’un réseau sur lequel ils peuvent se joindre&nbsp;: le même réseau Wi-Fi ou Ethernet, ou le même partage de connexion mobile. L’isolation des réseaux invités, les pare-feu, les routes VPN et les autorisations de réseau local du navigateur peuvent empêcher la connexion. Les adresses d’hôte peuvent inclure des interfaces publiques ou suivre une route VPN&nbsp;: cela ne prouve donc pas que le trafic reste à l’intérieur d’un bâtiment."
+
+[[privacy]]
+title = "L’appairage expose des métadonnées d’établissement au service de mise en relation."
+body = " Démarrer ou rejoindre une synchronisation ouvre un WebSocket vers <code>rendezvous.abox.tools</code>. Le service voit le code de salle aléatoire, les adresses IP, les heures de connexion, les descriptions WebRTC et les candidats ICE&nbsp;; ces messages d’établissement ne lui sont pas cachés. Les noms de fichiers, les listes, les empreintes, les fichiers, les notes et les décisions d’approbation passent par la connexion chiffrée entre pairs. Aucun contenu de salle n’est enregistré dans un stockage. Cloudflare, qui héberge le service, conserve pendant sept jours des journaux de connexion contenant des métadonnées de requête, comme le code, l’adresse et l’heure. Un accès à internet est nécessaire pour la découverte et l’établissement de la connexion."
+
+[[privacy]]
+title = "La découverte est facultative et n’affiche que le code d’invitation."
+body = " L’option «&nbsp;Afficher dans les connexions disponibles&nbsp;» est désactivée par défaut. Cochez-la avant de démarrer pour publier le code d’invitation aléatoire&nbsp;; ce réglage reste fixe jusqu’à ce que vous arrêtiez. Un autre appareil choisit «&nbsp;Rechercher des connexions&nbsp;» pour le voir. Aucun nom de dossier, aucun nom de fichier ni aucun nombre de fichiers n’est affiché. Le service regroupe les pages de cet outil par adresse IPv4 publique ou sous-réseau IPv6 /64 et par origine du site&nbsp;: des passerelles d’opérateur partagées ou des VPN peuvent donc inclure des inconnus, et des routes différentes peuvent masquer des appareils proches. Un groupe privé utilise plutôt le même code de groupe aléatoire sur chaque appareil&nbsp;; le service reçoit ce code pour authentifier l’annuaire correspondant, et cet outil ne l’enregistre ni ne l’inclut dans les liens de synchronisation. Toute personne ayant le code de groupe peut voir les sessions publiées, et l’approbation reste nécessaire."
+
+[[privacy]]
+title = "Les écritures sont complètes ou n’ont pas lieu, et rien n’est supprimé."
+body = " Un fichier reçu est écrit dans une copie temporaire placée à côté, et ne remplace l’ancien fichier qu’une fois le dernier octet arrivé&nbsp;: une synchronisation annulée ou interrompue ne laisse donc aucun fichier à moitié écrit. Un fichier qui n’existait pas avant une écriture interrompue est de nouveau retiré. Rien n’est jamais supprimé dans l’un ou l’autre dossier. L’écriture donne au fichier la date du jour, car une page web ne peut pas fixer la date de modification d’un fichier. Dans les navigateurs qui ne peuvent pas écrire dans un dossier, les fichiers reçus sont réunis dans la mémoire de cette page et enregistrés dans un seul ZIP lorsque vous choisissez de l’enregistrer."
+
+[[privacy]]
+title = "Les invitations sont visibles des scripts de la page."
+body = " Chaque session utilise un nouveau lien aléatoire. Le posséder permet une tentative de connexion, et l’approbation décide toujours de la suite. Cette page comporte les scripts habituels de publicité et de mesure de Google utilisés par le site. L’outil ne leur transmet pas volontairement de noms de fichiers, de listes ni de fichiers, mais les scripts exécutés dans la page peuvent lire son adresse et son état, y compris un code de lien. Considérez la demande de l’appareil attendu et votre approbation comme l’étape d’admission."
+
+[[howto]]
+title = "Ouvrez cet outil sur les deux appareils."
+body = " Utilisez Chrome, Edge ou la plupart des autres navigateurs Chromium sur ordinateur pour un dossier qui peut à la fois envoyer et recevoir. Firefox et Safari peuvent envoyer un dossier et recevoir dans un ZIP. Connectez les deux appareils au même réseau Wi-Fi ou Ethernet, ou au même partage de connexion mobile, et gardez un accès à internet pour la mise en relation."
+
+[[howto]]
+title = "Choisissez le dossier sur chaque appareil."
+body = " Cliquez sur «&nbsp;Choisir un dossier&nbsp;», puis autorisez le navigateur à le modifier si cet appareil doit recevoir des fichiers. Choisissez ce que fait chaque appareil&nbsp;: «&nbsp;Envoyer et recevoir&nbsp;», «&nbsp;Envoyer uniquement&nbsp;» ou «&nbsp;Recevoir uniquement&nbsp;». Les fichiers système, les copies temporaires et les noms que l’un des systèmes Windows, macOS ou Linux ne peut pas enregistrer sont exclus et listés."
+
+[[howto]]
+title = "Démarrez sur un appareil, rejoignez la synchronisation depuis l’autre."
+body = " Cliquez sur «&nbsp;Démarrer une synchronisation&nbsp;», puis ouvrez le lien de synchronisation sur l’autre appareil, ou, si vous avez affiché la synchronisation dans les connexions disponibles, choisissez-y «&nbsp;Rechercher des connexions&nbsp;» puis «&nbsp;Rejoindre&nbsp;». Approuvez la demande que vous reconnaissez&nbsp;; rien de ce qui concerne les dossiers n’est envoyé avant votre approbation."
+
+[[howto]]
+title = "Vérifiez la comparaison."
+body = " Les deux appareils listent chaque différence&nbsp;: les fichiers présents d’un seul côté, les fichiers plus récents d’un côté, et les fichiers qui diffèrent tout en portant la même date. Chaque ligne affiche l’action par défaut, que vous pouvez changer&nbsp;: l’envoyer, le copier ici ou le laisser tel quel. Rien n’est supprimé&nbsp;: un fichier que vous avez retiré volontairement doit donc être laissé tel quel, ou supprimé sur les deux appareils."
+
+[[howto]]
+title = "Synchronisez, puis comparez à nouveau plus tard."
+body = " Cliquez sur «&nbsp;Synchroniser maintenant&nbsp;» sur l’un ou l’autre appareil. Les deux affichent la progression, et un fichier ne remplace sa copie plus ancienne qu’une fois arrivé en entier. Ensuite, les deux dossiers sont relus et comparés. Gardez les deux pages ouvertes pour synchroniser à nouveau plus tard, ou arrêtez et démarrez une nouvelle session quand vous en avez besoin."
+
+[[faq]]
+q = "Mes fichiers sont-ils envoyés sur un serveur&nbsp;?"
+a = "Non. Les fichiers, les noms de fichiers et les listes des dossiers passent par une connexion chiffrée établie directement entre vos deux navigateurs, et il n’y a pas de relais. Le service de mise en relation qui connecte les navigateurs voit des métadonnées d’établissement comme le code de salle et les adresses IP, jamais le contenu de l’un ou l’autre dossier."
+
+[[faq]]
+q = "L’outil supprime-t-il les fichiers que j’ai supprimés sur l’autre appareil&nbsp;?"
+a = "Non, jamais. Sans trace de la dernière synchronisation, un fichier absent d’un appareil ressemble exactement à un nouveau fichier sur l’autre, et se tromper détruirait le travail de quelqu’un. Un fichier absent d’un côté y est proposé&nbsp;; réglez sa ligne sur «&nbsp;Le laisser tel quel&nbsp;», ou supprimez-le sur les deux appareils."
+
+[[faq]]
+q = "Quelle copie l’emporte quand un fichier a changé sur les deux appareils&nbsp;?"
+a = "Par défaut, la copie dont la date de modification est la plus récente remplace l’autre, et la ligne indique dans quel sens. Vous pouvez modifier n’importe quelle ligne avant de synchroniser. Deux copies différentes portant exactement la même date restent telles quelles tant que vous n’avez pas choisi. Les fichiers de même taille mais de dates différentes sont d’abord comparés par leur contenu&nbsp;: des copies identiques ne sont donc jamais renvoyées."
+
+[[faq]]
+q = "Quels navigateurs peuvent l’utiliser&nbsp;?"
+a = "Chrome, Edge et la plupart des autres navigateurs Chromium sur ordinateur peuvent lire un dossier et y écrire. Firefox et Safari peuvent choisir un dossier à partir duquel envoyer, et recevoir des fichiers dans un ZIP à décompresser vous-même, jusqu’à 512&nbsp;Mo. Un navigateur qui ne peut pas du tout choisir de dossier, comme sur la plupart des téléphones, peut seulement recevoir dans un ZIP."
+
+[[faq]]
+q = "Les deux appareils doivent-ils être sur le même réseau&nbsp;?"
+a = "Oui. Les fichiers passent directement entre les appareils, qui ont donc besoin d’un réseau sur lequel ils peuvent se joindre&nbsp;: le même réseau Wi-Fi ou Ethernet, ou le même partage de connexion mobile. Les deux ont aussi besoin d’internet pour la mise en relation. Les réseaux invités, l’isolation des clients, les pare-feu et les VPN peuvent bloquer la connexion. Il n’y a pas de relais pour des appareils sur des réseaux différents."
+
+[[faq]]
+q = "Quelqu’un d’autre peut-il rejoindre ma synchronisation&nbsp;?"
+a = "Seulement avec votre approbation. Un lien de synchronisation ou un code d’invitation publié permet à un appareil de demander à rejoindre votre synchronisation, et vous approuvez ou refusez chaque demande avant que quoi que ce soit concernant votre dossier soit envoyé. Un seul appareil à la fois peut se synchroniser avec le vôtre. La note d’une demande est un texte choisi librement&nbsp;: reconnaissez l’appareil et le moment avant d’approuver."
+
+[[faq]]
+q = "Puis-je empêcher l’autre appareil de modifier mon dossier&nbsp;?"
+a = "Oui. Réglez cet appareil sur «&nbsp;Envoyer uniquement&nbsp;» avant de commencer&nbsp;: l’autre appareil peut copier des fichiers depuis votre dossier, mais ne peut pas y écrire, et cette page refuse tout plan qui le ferait. «&nbsp;Recevoir uniquement&nbsp;» fonctionne dans l’autre sens&nbsp;: des fichiers arrivent et aucun des vôtres n’est envoyé, mais votre liste de fichiers est tout de même comparée."
+
+[[faq]]
+q = "Que se passe-t-il si la connexion est coupée en pleine synchronisation&nbsp;?"
+a = "Les fichiers arrivés en entier sont conservés. Un fichier encore en transit est abandonné, et son ancienne copie, s’il y en avait une, reste exactement telle qu’elle était, car un fichier reçu ne remplace l’ancien qu’une fois le dernier octet arrivé. Reconnectez-vous et comparez&nbsp;: le plan suivant reprend ce qui manque encore."
+
+[[faq]]
+q = "Pourquoi les fichiers synchronisés portent-ils la date du jour&nbsp;?"
+a = "Une page web peut écrire le contenu d’un fichier, mais ne peut pas fixer sa date de dernière modification&nbsp;: un fichier reçu est donc daté du moment où il a été écrit. La comparaison suivante vérifie le contenu des fichiers de même taille mais de dates différentes, et considère les copies identiques comme déjà synchronisées."
+
+[[faq]]
+q = "La taille du dossier est-elle limitée&nbsp;?"
+a = "Chaque dossier peut contenir jusqu’à 50&nbsp;000 fichiers. L’écriture dans un dossier transfère chaque fichier sur le disque au fur et à mesure&nbsp;: les gros fichiers ne posent donc pas de problème. La réception dans un ZIP garde les fichiers en mémoire et s’arrête à 512&nbsp;Mo. Les chemins très profonds ou très longs, et les noms que l’un des systèmes Windows, macOS ou Linux ne peut pas enregistrer, sont exclus et listés."
+
+[[faq]]
+q = "Qu’apprend le service de mise en relation&nbsp;?"
+a = "Le service de mise en relation voit le code d’invitation, les adresses IP, les heures de connexion, les descriptions WebRTC et les candidats. Si l’hôte active la découverte, le réseau ou le groupe privé qu’il a sélectionné peut voir le code d’invitation aléatoire. Les codes de groupe privé sont envoyés au service pour authentifier leur annuaire&nbsp;; les liens de synchronisation ne les contiennent pas. Cloudflare conserve les métadonnées des requêtes de mise en relation pendant sept jours. Les noms de fichiers, les listes, les empreintes, les fichiers, les notes et les approbations passent par la connexion chiffrée entre pairs."
+
+[schema]
+description = "Comparez un dossier sur deux appareils et copiez les fichiers manquants ou plus récents directement entre les navigateurs, par une connexion WebRTC chiffrée, avec approbation et sans envoi sur un serveur."
+features = ["Comparaison de deux dossiers par chemin, taille, date et empreinte du contenu", "Vérification et modification de l’action prévue pour chaque fichier avant la synchronisation", "Transfert chiffré directement entre les deux navigateurs, sans relais", "Approbation obligatoire de l’appareil qui rejoint la synchronisation", "Modes Envoyer uniquement et Recevoir uniquement appliqués sur chaque appareil", "Les fichiers reçus ne remplacent les anciennes copies qu’une fois complets", "Ne supprime jamais aucun fichier", "Réception dans un ZIP pour les navigateurs qui ne peuvent pas écrire dans un dossier"]

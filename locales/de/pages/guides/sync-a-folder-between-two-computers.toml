@@ -1,0 +1,16 @@
+#
+# Ratgeber: Einen Ordner zwischen zwei Computern synchronisieren - German.
+#
+
+nav = "Einen Ordner zwischen zwei Computern synchronisieren"
+title = "Einen Ordner ohne Cloud zwischen zwei Computern synchronisieren"
+description = "Halten Sie einen Ordner auf zwei Computern auf demselben Stand, indem Sie beide im Browser vergleichen und Dateien direkt über Ihr Netzwerk kopieren. Kein Upload, kein Konto, und nichts wird gelöscht."
+
+heading = "So synchronisieren Sie einen Ordner ohne Cloud zwischen zwei Computern"
+lede = "Zwei Computer, ein Ordner, der auf beiden dieselben Dateien enthalten soll. Öffnen Sie auf beiden „Ordner synchronisieren“, wählen Sie den Ordner, genehmigen Sie den anderen Computer und lesen Sie den Vergleich, bevor sich etwas bewegt. Die Dateien laufen über Ihr eigenes Netzwerk direkt zwischen den beiden Browsern, und gelöscht wird nie etwas."
+
+updated = "19. November 2026"
+
+og_title = "Einen Ordner zwischen zwei Computern synchronisieren, ohne Cloud dazwischen"
+og_description = "Vergleichen Sie einen Ordner auf zwei Computern und kopieren Sie, was fehlt oder neuer ist, direkt über Ihr Netzwerk. Kein Upload, und nichts wird gelöscht."
+og_image_alt = "abox.tools - einen Ordner zwischen zwei Computern synchronisieren"

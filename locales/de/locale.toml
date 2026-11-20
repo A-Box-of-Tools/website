@@ -81,6 +81,7 @@ complete = true
 "guides/broadcast-voice-on-a-local-network" = "ratgeber/stimme-im-lokalen-netzwerk-senden"
 "guides/arrange-images" = "ratgeber/bilder-anordnen"
 "guides/watch-camera-from-another-device" = "ratgeber/kamera-von-anderem-geraet-ansehen"
+"guides/sync-a-folder-between-two-computers" = "ratgeber/ordner-zwischen-zwei-computern-synchronisieren"
 # The tools.
 "receipt-invoice-extractor" = "belege-rechnungen-auslesen"
 "protect-pdf" = "pdf-schuetzen"
@@ -151,6 +152,7 @@ complete = true
 # was das Bild am Ende zeigt.
 "compare-heights" = "groessenvergleich-erstellen"
 "number-explorer" = "zahlen-veranschaulichen"
+"folder-sync" = "ordner-synchronisieren"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -320,7 +322,7 @@ note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei
 id = "connect-devices"
 name = "Geräte verbinden"
 short_name = "Geräte verbinden"
-note = "Teilen Sie Text und Dateien, sprechen Sie live oder sehen Sie eine Kamera oder einen Browser-Tab auf einem anderen Gerät. Jedes Tool erklärt, was es überträgt und wie sich die Browser verbinden."
+note = "Teilen Sie Text und Dateien, gleichen Sie einen Ordner ab, sprechen Sie live oder sehen Sie eine Kamera oder einen Browser-Tab auf einem anderen Gerät. Jedes Tool erklärt, was es überträgt und wie sich die Browser verbinden."
 
 #
 # ---------------------------------------------------------------------------
@@ -547,7 +549,7 @@ group_scope = "In diesem Bereich suchen:"
 group_network = "Lokales Netzwerk"
 group_private = "Private Gruppe"
 group_heading = "Private Gruppe verwenden"
-group_help = "Erstellen Sie einen Gruppencode und teilen Sie ihn mit Ihren anderen Geräten, oder geben Sie einen erhaltenen Code ein. Derselbe Code funktioniert in allen fünf Werkzeugen zum Verbinden von Geräten; jede Seite zeigt ihre eigene Verbindungsart."
+group_help = "Erstellen Sie einen Gruppencode und teilen Sie ihn mit Ihren anderen Geräten, oder geben Sie einen erhaltenen Code ein. Derselbe Code funktioniert in allen sechs Werkzeugen zum Verbinden von Geräten; jede Seite zeigt ihre eigene Verbindungsart."
 group_code = "Code der privaten Gruppe"
 group_join = "Gruppe beitreten"
 group_create = "Gruppe erstellen"
@@ -572,7 +574,7 @@ pairing_cached = "Seite gespeichert. Zum Koppeln oder erneuten Verbinden der Ger
 pairing_hotspot_heading = "WLAN oder einen Handy-Hotspot verwenden"
 pairing_hotspot_enable = "Aktivieren Sie in den Einstellungen des Handys den persönlichen Hotspot auf einem iPhone oder den WLAN-Hotspot auf einem Android-Handy."
 pairing_hotspot_join = "Verbinden Sie das andere Gerät über seine WLAN-Einstellungen mit diesem Hotspot. Lassen Sie auf beiden Geräten Internet für die Suche in der Nähe und die Kopplung verfügbar."
-pairing_hotspot_connect = "Öffnen Sie dieses Tool auf beiden Geräten und wählen Sie Join neben der gewünschten Verbindung. Geben Sie bei Bedarf das Passwort ein oder warten Sie auf die Genehmigung des Hosts. Fehlt der Eintrag, nutzen Sie den Link oder Code des Hosts."
+pairing_hotspot_connect = "Öffnen Sie dieses Tool auf beiden Geräten und wählen Sie „Beitreten“ neben der gewünschten Verbindung. Geben Sie bei Bedarf das Passwort ein oder warten Sie auf die Genehmigung des Hosts. Fehlt der Eintrag, nutzen Sie den Link oder Code des Hosts."
 pairing_hotspot_limits = "Das Netzwerk muss direkte Verbindungen zwischen Geräten erlauben. Manche Hotspots, Gastnetze, VPNs und verwalteten Geräte blockieren sie. Ein Eintrag in der Nähe beweist weder Erreichbarkeit noch Vertrauenswürdigkeit. Diese Seite kann keinen Hotspot einschalten."
 pairing_version_help = "Über die Werkzeugversion"
 pairing_version_hint = "Vergleichen Sie diesen Wert auf beiden Geräten. Wenn er unterschiedlich ist, laden Sie beide Seiten neu, bevor Sie eine neue Freigabe starten."

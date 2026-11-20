@@ -1,0 +1,69 @@
+/* The folder card spans the page because both roles need it; the two ways
+   in sit side by side under it, and the comparison appears once linked. */
+.sync-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;min-width:0}
+.sync-card h2{margin-top:0}
+.sync-folder,.sync-compare{margin-bottom:1.5rem}
+.sync-grid{display:grid;gap:1.5rem;grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:1.5rem}
+.sync-grid.sync-joining{grid-template-columns:minmax(0,1fr)}
+.sync-card .field{margin-bottom:1rem}
+.sync-card input[type=text]{width:100%;box-sizing:border-box}
+.sync-status{min-height:1.6em;margin:1rem 0 0;overflow-wrap:anywhere}
+.sync-status[data-error=true]{color:var(--danger,#b42318)}
+.sync-help{font-size:.9rem;color:var(--text-dim);line-height:1.6}
+.sync-invite{margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+.sync-invite input{font-family:var(--mono,monospace);font-size:.85rem}
+.sync-requests{list-style:none;padding:0;margin:.6rem 0}
+.sync-requests li{padding:.8rem 0;border-top:1px solid var(--border);overflow-wrap:anywhere}
+.sync-requests p{margin:0 0 .6rem}
+.sync-requests .run-row{margin:0}
+.sync-option{margin:1rem 0}
+.sync-option label{display:flex;align-items:baseline;gap:.5rem}
+.sync-discovery-controls{margin:0 0 1rem}
+.sync-modes{border:0;padding:0;margin:1.2rem 0 0;display:grid;gap:.6rem;min-width:0}
+.sync-modes legend{font-weight:600;margin-bottom:.4rem;padding:0}
+.sync-modes label{display:flex;align-items:baseline;gap:.6rem;cursor:pointer}
+.sync-modes .field-note{display:block}
+.sync-skipped{margin-top:.6rem}
+.sync-skipped summary{cursor:pointer}
+.sync-skipped ul{max-height:12rem;overflow:auto;margin:.4rem 0 0;padding-inline-start:1.2rem;font-size:.85rem;overflow-wrap:anywhere}
+.sync-sides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0 0 .4rem}
+.sync-sides dt{font-weight:600}
+.sync-sides dd{margin:.2rem 0 0;color:var(--text-dim);overflow-wrap:anywhere}
+.sync-compare progress{width:100%;margin-top:.6rem}
+.sync-summary{margin:.6rem 0}
+.sync-results{margin-top:1rem;padding:1rem;border:1px solid var(--border);border-radius:var(--radius)}
+.sync-results p{margin:0}
+.sync-results ul{margin:.6rem 0 0;padding-inline-start:1.2rem;font-size:.9rem;overflow-wrap:anywhere}
+.sync-results ul:empty{display:none}
+.sync-results button{margin-top:.8rem}
+/* Paths can be long and deep; the table scrolls rather than the page. */
+.sync-table-wrap{margin-top:1.2rem;overflow-x:auto}
+.sync-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.sync-table caption{text-align:start;font-weight:600;padding-bottom:.6rem}
+.sync-table th,.sync-table td{text-align:start;vertical-align:top;padding:.55rem .6rem;border-top:1px solid var(--border)}
+.sync-table thead th{border-top:0;color:var(--text-dim);font-weight:600}
+.sync-table tbody th{font-weight:400;overflow-wrap:anywhere;min-width:12rem}
+.sync-table code{display:block}
+.sync-table select{max-width:100%}
+.sync-kind{display:inline-block;margin-top:.25rem;font-size:.8rem;color:var(--text-dim)}
+.sync-kind[data-kind=conflict],.sync-kind[data-kind=case]{color:var(--danger,#b42318)}
+.sync-details{margin-top:1.5rem}
+.sync-details summary{cursor:pointer;font-weight:600}
+.sync-details p{max-width:75ch}
+@media(max-width:760px){.sync-grid,.sync-sides{grid-template-columns:1fr}.sync-card{padding:1rem}}
+/* Four columns do not fit a phone, and scrolling the table sideways hid the
+   one control on each row. So a narrow screen stacks every difference: the
+   path across the top, the two sides under their column names, the choice
+   last. Some browsers drop a table's semantics once its rows stop being table
+   rows, which is why the markup and main.js spell the roles out. The second
+   content line keeps a screen reader from hearing each name twice, once from
+   the column heading and once from here; a browser that cannot parse it keeps
+   the first. */
+@media(max-width:760px){
+  .sync-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .sync-table tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 1rem;padding:.8rem 0;border-top:1px solid var(--border)}
+  .sync-table tbody th,.sync-table tbody td{display:block;padding:0;border:0;min-width:0;overflow-wrap:anywhere}
+  .sync-table tbody th,.sync-table tbody td:last-child{grid-column:1/-1}
+  .sync-table tbody td::before{content:attr(data-label);content:attr(data-label) / "";display:block;font-size:.8rem;font-weight:600;color:var(--text-dim)}
+  .sync-table select{width:100%}
+}

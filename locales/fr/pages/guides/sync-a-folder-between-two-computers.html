@@ -1,0 +1,161 @@
+  <section>
+    <h2>Choisissez le dossier sur chaque ordinateur</h2>
+    <p>
+      Ouvrez <a href="../../synchroniser-un-dossier/">Synchroniser un dossier</a>
+      sur les deux ordinateurs. Chrome, Edge et la plupart des autres
+      navigateurs Chromium sur ordinateur savent à la fois lire un dossier et y
+      écrire, ce dont une synchronisation dans les deux sens a besoin.
+      Connectez les deux ordinateurs au même réseau Wi-Fi ou Ethernet, ou au
+      même partage de connexion mobile, et gardez l’accès à internet&nbsp;: les
+      navigateurs en ont besoin pour se trouver, même si les fichiers ne
+      passent jamais par internet.
+    </p>
+    <p>
+      Sur chaque ordinateur, cliquez sur <em>Choisir un dossier</em> et
+      sélectionnez le dossier à garder synchronisé. Quand le navigateur demande
+      si la page peut modifier le dossier, acceptez sur un ordinateur qui doit
+      recevoir des fichiers. Choisissez ensuite ce que fait cet
+      ordinateur&nbsp;: <em>Envoyer et recevoir</em>, <em>Envoyer
+      uniquement</em>, pour que l’autre ordinateur puisse copier depuis ce
+      dossier sans jamais le modifier, ou <em>Recevoir uniquement</em>. Chaque
+      ordinateur applique son propre choix, quoi que l’autre demande.
+    </p>
+    <p>
+      Certains fichiers ne sont jamais synchronisés, et la page les liste sous
+      le dossier&nbsp;: les fichiers parasites du système comme
+      <code>Thumbs.db</code> et <code>.DS_Store</code>, les copies temporaires
+      et les fichiers de verrouillage, ainsi que les noms que l’un des systèmes
+      Windows, macOS ou Linux ne peut pas enregistrer, comme un nom contenant
+      deux-points. Les copier créerait des fichiers que l’autre ordinateur
+      altérerait ou lirait mal.
+    </p>
+  </section>
+
+  <section>
+    <h2>Démarrez sur un ordinateur et rejoignez la synchronisation depuis l’autre</h2>
+    <p>
+      Sur le premier ordinateur, cliquez sur <em>Démarrer une
+      synchronisation</em> et copiez le lien de synchronisation. Ouvrez-le sur
+      le second ordinateur, ajoutez une note si vous le souhaitez, puis cliquez
+      sur <em>Demander à synchroniser</em>. Approuvez la demande sur le premier
+      ordinateur. Rien de ce qui concerne les dossiers n’est envoyé avant cette
+      approbation&nbsp;; jusque-là, les deux navigateurs n’ont échangé que le
+      nécessaire pour se connecter.
+    </p>
+    <p>
+      Si copier un lien d’un ordinateur à l’autre n’est pas pratique, cochez
+      <em>Afficher dans les connexions disponibles</em> sur le premier
+      ordinateur avant de démarrer. Sur le second, cliquez sur <em>Rechercher
+      des connexions</em>, puis sur <em>Rejoindre</em> à côté du code
+      correspondant. Seul le code d’invitation aléatoire est affiché, jamais un
+      nom de dossier ou de fichier, et l’approbation reste nécessaire.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lisez la comparaison avant de synchroniser</h2>
+    <p>
+      Une fois l’approbation donnée, chaque ordinateur envoie à l’autre le
+      chemin, la taille et la date de chaque fichier de son dossier, et tous
+      deux affichent la même liste de différences, chacun de son côté. Un
+      fichier présent sur un seul ordinateur est copié sur l’autre. Un fichier
+      présent sur les deux mais modifié sur l’un est remplacé par la copie la
+      plus récente. Deux fichiers de même taille mais de dates différentes sont
+      d’abord comparés par leur contenu, si bien que des copies identiques ne
+      sont pas renvoyées.
+    </p>
+    <p>
+      Deux sortes de lignes restent toujours en l’état jusqu’à ce que vous
+      décidiez. Un fichier qui diffère entre les deux ordinateurs sous
+      exactement la même date n’a pas de copie plus récente&nbsp;: aucune des
+      deux n’est donc choisie à votre place. Les noms qui ne diffèrent que par
+      les majuscules, comme <code>README.md</code> et <code>Readme.md</code>,
+      désignent un seul et même fichier sous Windows et sur Mac, si bien que
+      copier l’un pourrait écraser l’autre&nbsp;; renommez-en un et comparez à
+      nouveau.
+    </p>
+    <p>
+      Toutes les autres lignes affichent leur action par défaut dans un menu
+      que vous pouvez modifier&nbsp;: l’envoyer, le copier ici ou le laisser
+      tel quel. Les totaux au-dessus de la liste suivent vos choix. Quand tout
+      vous semble correct, cliquez sur <em>Synchroniser maintenant</em> sur
+      l’un ou l’autre ordinateur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Rien n’est supprimé, et c’est voulu</h2>
+    <p>
+      Si vous avez supprimé un fichier sur un ordinateur, la comparaison voit
+      un fichier qui n’existe que sur l’autre, et propose de le recopier. Sans
+      trace de la dernière synchronisation, impossible de distinguer un fichier
+      supprimé d’un nouveau fichier, et se tromper détruirait du travail.
+      Réglez cette ligne sur <em>Le laisser tel quel</em>, ou supprimez le
+      fichier sur les deux ordinateurs avant de synchroniser.
+    </p>
+    <p>
+      Un fichier remplacé est d’abord écrit dans une copie temporaire et ne
+      prend la place de l’ancien qu’une fois arrivé en entier. Annulez une
+      synchronisation, fermez une page ou perdez la connexion&nbsp;: chaque
+      fichier est soit l’ancienne version, soit la nouvelle, jamais une moitié
+      de chacune. Les fichiers terminés avant l’interruption sont conservés.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui traverse le réseau</h2>
+    <p>
+      Les listes de fichiers, les empreintes de contenu et les fichiers
+      eux-mêmes passent par une connexion WebRTC chiffrée, établie directement
+      entre les deux navigateurs. Il n’y a ni relais ni envoi sur un serveur, et
+      c’est aussi pour cela que les ordinateurs ont besoin d’un réseau sur
+      lequel ils peuvent se joindre. Le service de mise en relation,
+      <code>rendezvous.abox.tools</code>, voit les messages d’établissement qui
+      connectent les navigateurs, y compris leurs adresses IP et le code
+      d’invitation, mais pas un seul nom de fichier.
+    </p>
+    <p>
+      L’autre ordinateur, en revanche, voit le nom, la taille et la date de
+      chaque fichier du dossier choisi, y compris ceux qui ne seront pas
+      copiés. Choisissez le dossier que vous comptez partager, plutôt que celui
+      qui le contient.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quand un navigateur ne peut pas écrire dans un dossier</h2>
+    <p>
+      Firefox et Safari peuvent choisir un dossier à partir duquel envoyer,
+      mais ne peuvent pas écrire dans un dossier. Les fichiers qu’ils reçoivent
+      sont réunis dans un seul ZIP, jusqu’à 512&nbsp;Mo, que vous enregistrez
+      puis décompressez vous-même par-dessus le dossier. Un navigateur qui ne
+      peut pas du tout choisir de dossier, comme sur la plupart des téléphones,
+      peut tout de même recevoir les fichiers de l’autre ordinateur sous forme
+      de ZIP.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si les ordinateurs n’arrivent pas à se connecter</h2>
+    <p>
+      Vérifiez que les deux sont sur le même réseau et que celui-ci permet aux
+      appareils de se joindre. Un Wi-Fi invité isole souvent ses appareils, et
+      les pare-feu, les VPN et les ordinateurs professionnels gérés peuvent
+      bloquer les connexions directes. Un partage de connexion mobile auquel
+      les deux ordinateurs se connectent permet d’écarter rapidement le réseau
+      comme cause.
+    </p>
+  </section>
+
+  <section>
+    <h2>Synchroniser à nouveau plus tard</h2>
+    <p>
+      Gardez les deux pages ouvertes et cliquez sur <em>Comparer à
+      nouveau</em> chaque fois que les dossiers ont changé, ou arrêtez et
+      démarrez une nouvelle synchronisation un autre jour. Une page web ne peut
+      pas fixer la date de modification d’un fichier&nbsp;: les fichiers reçus
+      portent donc la date à laquelle ils ont été écrits. La comparaison
+      suivante vérifie leur contenu et considère les copies identiques comme
+      déjà synchronisées.
+    </p>
+  </section>

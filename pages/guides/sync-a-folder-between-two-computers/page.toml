@@ -1,0 +1,18 @@
+# The decision a reader has to make is in the comparison, not the connection,
+# so the guide spends its middle on reading the plan, and says plainly that
+# nothing is deleted before somebody expects a deletion to travel.
+slug = "guides/sync-a-folder-between-two-computers"
+kind = "guide"
+nav = "Syncing a folder between two computers"
+group = "doing-the-job"
+tool = "folder-sync"
+title = "How to Sync a Folder Between Two Computers Without the Cloud"
+description = "Keep a folder the same on two computers by comparing them in the browser and copying files directly across your network. No upload, no account, and nothing deleted."
+heading = "How to sync a folder between two computers without the cloud"
+lede = "Two computers, one folder that should hold the same files on both. Open Folder Sync on each, choose the folder, approve the other computer, and read the comparison before anything moves. Files travel directly between the two browsers over your own network, and nothing is ever deleted."
+updated = "19 November 2026"
+published = "2026-11-19"
+lastmod = "2026-11-19"
+og_title = "Sync a folder between two computers, no cloud in between"
+og_description = "Compare a folder on two computers and copy what is missing or newer straight across your network. No upload and nothing deleted."
+og_image_alt = "abox.tools - sync a folder between two computers"

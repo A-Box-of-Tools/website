@@ -1,0 +1,152 @@
+  <section>
+    <h2>Escolha a pasta em cada computador</h2>
+    <p>
+      Abra <a href="../../sincronizar-pasta/">Sincronizar pasta</a> nos dois
+      computadores. O Chrome, o Edge e a maioria dos outros navegadores
+      Chromium em um computador conseguem ler uma pasta e também gravar nela,
+      o que é necessário para sincronizar nos dois sentidos. Coloque os dois
+      computadores no mesmo Wi-Fi, na mesma Ethernet ou no mesmo ponto de
+      acesso do celular, e mantenha a internet disponível: os navegadores
+      precisam dela para se encontrar, embora os arquivos nunca passem pela
+      internet.
+    </p>
+    <p>
+      Em cada computador, pressione <em>Escolher uma pasta</em> e selecione a
+      pasta que deve ficar em sincronia. Quando o navegador perguntar se a
+      página pode alterar a pasta, permita nos computadores que vão receber
+      arquivos. Depois escolha o que esse computador faz: <em>Enviar e
+      receber</em>, <em>Só enviar</em>, para que o outro computador possa
+      copiar desta pasta mas nunca alterá-la, ou <em>Só receber</em>. Cada
+      computador aplica a própria escolha, não importa o que o outro peça.
+    </p>
+    <p>
+      Alguns arquivos nunca são sincronizados, e a página os lista abaixo da
+      pasta: lixo do sistema como <code>Thumbs.db</code> e <code>.DS_Store</code>,
+      cópias temporárias e arquivos de bloqueio, e nomes que o Windows, o macOS
+      ou o Linux não aceita, como um nome com dois-pontos. Copiá-los criaria
+      arquivos que o outro computador corromperia ou leria errado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Inicie em um computador e entre pelo outro</h2>
+    <p>
+      No primeiro computador, pressione <em>Iniciar sincronização</em> e copie
+      o link de sincronização. Abra o link no segundo computador, acrescente
+      uma nota se quiser e pressione <em>Pedir para sincronizar</em>. Aprove a
+      solicitação no primeiro computador. Nada sobre nenhuma das pastas é
+      enviado antes dessa aprovação; até lá, os dois navegadores trocaram só o
+      necessário para se conectar.
+    </p>
+    <p>
+      Se for complicado copiar um link de um computador para o outro, marque
+      <em>Mostrar em Conexões disponíveis</em> no primeiro computador antes de
+      iniciar. O segundo computador escolhe <em>Buscar conexões</em> e depois
+      <em>Entrar</em> ao lado do código correspondente. Só o código aleatório
+      do convite aparece na lista, nunca um nome de pasta ou de arquivo, e a
+      aprovação continua valendo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Leia a comparação antes de sincronizar</h2>
+    <p>
+      Depois da aprovação, cada computador envia ao outro o caminho, o tamanho
+      e a data de cada arquivo da própria pasta, e os dois mostram a mesma lista
+      de diferenças, cada um do seu lado. Um arquivo que só existe em um
+      computador é copiado para o outro. Um arquivo que existe nos dois mas
+      mudou em um deles é substituído pela cópia mais recente. Dois arquivos
+      com o mesmo tamanho mas datas diferentes têm o conteúdo comparado
+      primeiro, então cópias idênticas não são enviadas de novo.
+    </p>
+    <p>
+      Dois tipos de linha ficam sempre como estão até você decidir. Um arquivo
+      que difere nos dois computadores com exatamente a mesma data não tem uma
+      cópia mais recente, então a página não escolhe nenhuma das duas por
+      você. Nomes que só diferem em maiúsculas e minúsculas, como
+      <code>README.md</code> e <code>Readme.md</code>, são um arquivo só no
+      Windows e no Mac, então copiar qualquer um deles poderia sobrescrever o
+      outro; renomeie um deles e compare de novo.
+    </p>
+    <p>
+      Todas as outras linhas mostram o padrão em um menu que você pode mudar:
+      enviar, copiar para cá ou deixar como está. Os totais acima da lista
+      acompanham as suas escolhas. Quando estiver tudo certo, pressione
+      <em>Sincronizar agora</em> em qualquer um dos computadores.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nada é excluído, de propósito</h2>
+    <p>
+      Se você excluiu um arquivo em um computador, a comparação vê um arquivo
+      que só existe no outro e se oferece para copiá-lo de volta. Sem um
+      registro da última sincronização, não há como distinguir um arquivo
+      excluído de um arquivo novo, e adivinhar errado destruiria trabalho.
+      Mude essa linha para <em>Deixar como está</em>, ou exclua o arquivo nos
+      dois computadores antes de sincronizar.
+    </p>
+    <p>
+      Um arquivo substituído é gravado primeiro numa cópia temporária e só
+      toma o lugar do arquivo antigo depois de chegar inteiro. Cancele uma
+      sincronização, feche uma página ou perca a conexão, e cada arquivo
+      continua sendo a versão antiga ou a nova, nunca metade de cada uma. Os
+      arquivos que terminaram de chegar antes da interrupção são mantidos.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que atravessa a rede</h2>
+    <p>
+      As listas de arquivos, as impressões digitais do conteúdo e os próprios
+      arquivos viajam por uma conexão WebRTC criptografada feita diretamente
+      entre os dois navegadores. Não há retransmissão nem upload, e é também
+      por isso que os computadores precisam de uma rede em que consigam se
+      alcançar. O serviço de apresentação, <code>rendezvous.abox.tools</code>,
+      vê as mensagens de preparação que conectam os navegadores, incluindo os
+      endereços IP deles e o código do convite, mas nem um único nome de
+      arquivo.
+    </p>
+    <p>
+      O outro computador vê, sim, o nome, o tamanho e a data de cada arquivo
+      da pasta que você escolheu, inclusive dos arquivos que não serão
+      copiados. Escolha a pasta que você quer compartilhar, e não a pasta que
+      está acima dela.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando um navegador não consegue gravar numa pasta</h2>
+    <p>
+      O Firefox e o Safari conseguem escolher uma pasta de onde enviar
+      arquivos, mas não conseguem gravar numa pasta. Os arquivos que eles recebem são reunidos
+      num único ZIP, de até 512&nbsp;MB, que você salva e descompacta sobre a
+      pasta por conta própria. Um navegador que nem consegue escolher uma
+      pasta, como na maioria dos celulares, ainda pode receber os arquivos do
+      outro computador em um ZIP.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se os computadores não conseguirem se conectar</h2>
+    <p>
+      Confira se os dois estão na mesma rede e se ela permite que os
+      dispositivos se alcancem. O Wi-Fi de visitantes costuma isolar os
+      dispositivos, e firewalls, VPNs e computadores corporativos gerenciados
+      podem bloquear conexões diretas. Um ponto de acesso do celular ao qual os
+      dois computadores se conectam é um jeito rápido de descartar a rede como
+      causa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sincronizar de novo mais tarde</h2>
+    <p>
+      Mantenha as duas páginas abertas e pressione <em>Comparar de novo</em>
+      sempre que as pastas mudarem, ou pare e inicie uma nova sincronização em
+      outro dia. Uma página web não consegue definir a data em que um arquivo
+      foi modificado, então os arquivos recebidos ficam com a data em que foram
+      gravados. A próxima comparação confere o conteúdo deles e trata cópias
+      idênticas como já sincronizadas.
+    </p>
+  </section>

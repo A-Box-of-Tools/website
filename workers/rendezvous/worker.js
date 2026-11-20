@@ -75,7 +75,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/") {
       return new Response(
-        "The rendezvous for abox.tools/share-text/, share-tab/, remote-camera/, walkie-talkie/, and voice-oncall/. "
+        "The rendezvous for abox.tools/share-text/, folder-sync/, share-tab/, remote-camera/, walkie-talkie/, and voice-oncall/. "
         + "It introduces browsers to each other and never sees what they exchange.\n",
         { headers: { "content-type": "text/plain; charset=utf-8" } },
       );

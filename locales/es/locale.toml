@@ -56,6 +56,7 @@ complete = true
 "guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-en-red-local"
 "guides/arrange-images" = "guias/organizar-imagenes"
 "guides/watch-camera-from-another-device" = "guias/ver-camara-de-otro-dispositivo"
+"guides/sync-a-folder-between-two-computers" = "guias/sincronizar-una-carpeta-entre-dos-equipos"
 "receipt-invoice-extractor" = "extraer-recibos-facturas"
 "guides/extract-receipts-and-invoices" = "guias/extraer-recibos-facturas-de-fotos"
 "avif-to-jpg" = "convertir-avif-a-jpg"
@@ -136,6 +137,7 @@ complete = true
 # titulo y no en la direccion.
 "compare-heights" = "comparar-alturas"
 "number-explorer" = "visualizar-numeros"
+"folder-sync" = "sincronizar-carpetas"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -280,7 +282,7 @@ note = "Léelo, compruébalo o créalo aquí. Ningún token, ningún archivo de 
 id = "connect-devices"
 name = "Conectar dispositivos"
 short_name = "Conectar dispositivos"
-note = "Comparte texto y archivos, habla en directo o ve una cámara o una pestaña del navegador desde otro dispositivo. Cada herramienta explica qué envía y cómo se conectan los navegadores."
+note = "Comparte texto y archivos, sincroniza una carpeta, habla en directo o ve una cámara o una pestaña del navegador desde otro dispositivo. Cada herramienta explica qué envía y cómo se conectan los navegadores."
 
 #
 # ---------------------------------------------------------------------------
@@ -493,7 +495,7 @@ group_scope = "Buscar en:"
 group_network = "Red local"
 group_private = "Grupo privado"
 group_heading = "Usar un grupo privado"
-group_help = "Crea un código de grupo y compártelo con tus otros dispositivos, o introduce un código que hayas recibido. El mismo código funciona en las cinco herramientas para conectar dispositivos; cada página muestra su propio tipo de conexión."
+group_help = "Crea un código de grupo y compártelo con tus otros dispositivos, o introduce un código que hayas recibido. El mismo código funciona en las seis herramientas para conectar dispositivos; cada página muestra su propio tipo de conexión."
 group_code = "Código del grupo privado"
 group_join = "Unirse al grupo"
 group_create = "Crear grupo"
@@ -518,7 +520,7 @@ pairing_cached = "Página guardada. Sigue siendo necesario internet para emparej
 pairing_hotspot_heading = "Usar Wi-Fi o un punto de acceso del teléfono"
 pairing_hotspot_enable = "Activa Compartir Internet en un iPhone o el punto de acceso Wi-Fi en un teléfono Android desde sus ajustes."
 pairing_hotspot_join = "Conecta el otro dispositivo a ese punto de acceso desde sus ajustes de Wi-Fi. Mantén internet disponible en ambos dispositivos para la búsqueda cercana y el emparejamiento."
-pairing_hotspot_connect = "Abre esta herramienta en ambos dispositivos y elige Join junto a la conexión deseada. Introduce la contraseña o espera la aprobación del anfitrión si se requiere. Si no aparece, usa su enlace o código."
+pairing_hotspot_connect = "Abre esta herramienta en ambos dispositivos y elige Unirse junto a la conexión deseada. Introduce la contraseña o espera la aprobación del anfitrión si se requiere. Si no aparece, usa su enlace o código."
 pairing_hotspot_limits = "La red debe permitir que los dispositivos se comuniquen entre sí. Algunos puntos de acceso, redes de invitados, VPN y dispositivos administrados bloquean las conexiones directas. Una entrada cercana no demuestra que sea accesible ni de confianza. Esta página no puede activar un punto de acceso."
 pairing_version_help = "Acerca de la versión de la herramienta"
 pairing_version_hint = "Compara este valor en ambos dispositivos. Si es distinto, recarga ambas páginas antes de iniciar una nueva sesión para compartir."

@@ -1,0 +1,286 @@
+<main id="main" class="paired-page">
+  <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head"><h2 id="discovery-heading">Available connections</h2></div>
+    {% include "partials/paired-discovery-group.html" %}
+    <details class="paired-network info-fold">
+      <summary>{{ ui.tool.transport_label }}</summary>
+      <p>Both devices need internet access to find each other, and a network the files can cross directly: the same Wi-Fi, Ethernet or phone hotspot. Folder Sync has no relay, so two devices on different networks cannot sync with it.</p>
+      <h3>{{ ui.tool.pairing_hotspot_heading }}</h3>
+      <ol>
+        <li>{{ ui.tool.pairing_hotspot_enable }}</li>
+        <li>{{ ui.tool.pairing_hotspot_join }}</li>
+        <li>{{ ui.tool.pairing_hotspot_connect }}</li>
+      </ol>
+      <p>{{ ui.tool.pairing_hotspot_limits }}</p>
+      <p class="paired-network-links"><a href="https://support.apple.com/111785">iPhone / iPad</a><a href="https://support.google.com/android/answer/9059108">Android</a></p>
+    </details>
+    <div id="discovery-controls" class="sync-discovery-controls">
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">Find connections</button>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p id="discovery-help" class="field-note">Find syncs started on other devices in the selected network or private group. Each entry is an invitation code and nothing else: no folder or file names are listed. Check the code with the other device before you join.</p>
+      </details>
+    </div>
+    <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
+      <p id="discovery-status" role="status" aria-live="polite"></p>
+      <ul id="discovery-list" class="paired-nearby-list"></ul>
+      <div class="paired-actions">
+        <button type="button" id="discovery-refresh">Refresh connections</button>
+        <button type="button" id="discovery-close">Stop looking</button>
+      </div>
+      <p class="field-note">Choose this device&rsquo;s folder first, then Join. The other device approves you before either folder is compared.</p>
+    </section>
+  </section>
+
+  <section id="folder-panel" class="sync-card sync-folder" aria-labelledby="folder-heading">
+    <h2 id="folder-heading">The folder on this device</h2>
+    <p class="card-lede">Choose the folder to keep in step with the other device. Until you press Sync now, only file names, sizes and dates are compared.</p>
+    <div class="run-row">
+      <button type="button" id="folder-choose" class="big">Choose a folder</button>
+      <input type="file" id="folder-input" class="visually-hidden" tabindex="-1" webkitdirectory multiple aria-label="Choose a folder" data-no-remember>
+    </div>
+    <p id="folder-status" class="sync-status" role="status" aria-live="polite">No folder chosen yet.</p>
+    <details id="folder-skipped" class="sync-skipped" hidden>
+      <summary id="folder-skipped-summary"></summary>
+      <p class="field-note">System files, temporary copies and names that one of Windows, macOS or Linux cannot store are never synced, so a sync cannot create a file the other device would mangle.</p>
+      <ul id="folder-skipped-list"></ul>
+    </details>
+    <p id="folder-support" class="sync-help" hidden></p>
+    <fieldset id="mode-field" class="sync-modes">
+      <legend>What this device does</legend>
+      <label><input type="radio" name="sync-mode" id="mode-both" value="both" checked data-no-remember>
+        <span><strong>Send and receive</strong> <span class="field-note">Copy what is missing or newer, in both directions.</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-send" value="send" data-no-remember>
+        <span><strong>Send only</strong> <span class="field-note">The other device can copy from this folder but never change it.</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-receive" value="receive" data-no-remember>
+        <span><strong>Receive only</strong> <span class="field-note">Bring files into this folder. None of its files are sent, though its file list is still compared.</span></span></label>
+    </fieldset>
+  </section>
+
+  <div class="sync-grid" id="sync-grid" data-pairing-setup>
+    <section id="host-panel" class="sync-card" aria-labelledby="host-heading">
+      <h2 id="host-heading">Start a sync</h2>
+      <p class="card-lede">Open a sync here, then join it from the other device. You approve that device before either folder is compared.</p>
+      <div class="sync-option">
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> Show in Available connections</label>
+        <p id="host-discovery-help" class="field-note">Choose this before starting to list the invitation code in the network or private group selected above. No folder or file names are listed, and you still approve the device that joins.</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="host">
+          <button type="button" id="host-start" class="big">Start a sync</button>
+        </div>
+        <button type="button" id="host-stop" class="big danger" hidden>Stop</button>
+      </div>
+      <p id="host-status" class="sync-status" role="status" aria-live="polite">Choose a folder, then start.</p>
+      <p id="host-publication-status" class="sync-status" role="status" aria-live="polite" hidden></p>
+      {% include "partials/paired-request-sound.html" %}
+      <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
+        <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="guest-requests" class="sync-requests" aria-live="polite"></ul>
+      </div>
+      <div id="host-invitation" class="sync-invite" hidden>
+        <div class="field">
+          <label for="share-link">Sync link</label>
+          <input type="text" id="share-link" readonly spellcheck="false" dir="ltr" data-no-remember>
+        </div>
+        <div class="run-row">
+          <button type="button" id="copy-link">Copy sync link</button>
+          <span id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="sync-help">Open this link on the other device and keep this page open. One device at a time can sync with this one.</p>
+      </div>
+      <section id="partner-panel" hidden aria-labelledby="partner-heading">
+        <h3 id="partner-heading">Syncing with</h3>
+        <ul id="partner-list" class="sync-requests"></ul>
+      </section>
+    </section>
+
+    <section id="guest-panel" class="sync-card" aria-labelledby="guest-heading">
+      <h2 id="guest-heading">Join a sync</h2>
+      <p class="card-lede">Use the link or code from the other device. It approves you before the folders are compared.</p>
+      <div class="field">
+        <label for="guest-code">Sync link or code</label>
+        <input type="text" id="guest-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="sync-abcdefghijklmnop" data-no-remember>
+      </div>
+      <div class="field">
+        <label for="guest-note">A note the other device will recognise (optional)</label>
+        <input type="text" id="guest-note" maxlength="80" autocomplete="off" placeholder="For example, my laptop" data-no-remember>
+        <p class="field-note">Your note goes to the other device over the encrypted connection.</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="join">
+          <button type="button" id="guest-connect" class="big">Request to sync</button>
+        </div>
+        <button type="button" id="guest-stop" class="big danger" hidden>Disconnect</button>
+      </div>
+      <p id="guest-status" class="sync-status" role="status" aria-live="polite">Enter a sync link or code to begin.</p>
+      <button type="button" id="show-host" class="ghost" hidden>Start your own sync instead</button>
+    </section>
+  </div>
+
+  <section id="sync-panel" class="sync-card sync-compare" aria-labelledby="sync-heading" hidden>
+    <h2 id="sync-heading">Compare and sync</h2>
+    <dl class="sync-sides">
+      <div><dt>This device</dt><dd id="side-here"></dd></div>
+      <div><dt id="side-there-label">Other device</dt><dd id="side-there"></dd></div>
+    </dl>
+    <p id="sync-status" class="sync-status" role="status" aria-live="polite"></p>
+    <progress id="sync-progress" max="1" value="0" hidden aria-label="Sync progress"></progress>
+    <p id="sync-summary" class="sync-summary"></p>
+    <div class="run-row">
+      <button type="button" id="sync-start" class="big">Sync now</button>
+      <button type="button" id="sync-compare">Compare again</button>
+      <button type="button" id="sync-cancel" class="danger" hidden>Cancel</button>
+    </div>
+    <div id="sync-results" class="sync-results" hidden>
+      <p id="sync-results-text"></p>
+      <ul id="sync-failures"></ul>
+      <button type="button" id="zip-save" hidden>Save received files as a ZIP</button>
+    </div>
+    <div id="sync-table-wrap" class="sync-table-wrap" hidden>
+      <table class="sync-table" role="table">
+        <caption>Differences between the two folders</caption>
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">File</th><th scope="col" role="columnheader">This device</th><th scope="col" role="columnheader">Other device</th><th scope="col" role="columnheader">What happens</th></tr></thead>
+        <tbody id="sync-rows" role="rowgroup"></tbody>
+      </table>
+      <p id="sync-more" class="field-note" hidden></p>
+    </div>
+  </section>
+
+  <details class="sync-details">
+    <summary>What is shared, and how the connection works</summary>
+    <p>Before you press Sync now, the two devices exchange file lists: every file&rsquo;s path, size and last-modified date in the chosen folders. When two files have the same size but different dates, each device reads its own copy to compare a fingerprint of the contents, and only the fingerprint is exchanged.</p>
+    <p>Sync now copies files over an encrypted WebRTC connection made directly between the two devices. Nothing is uploaded, and there is no relay: both devices must share a network they can reach each other on. The introduction service, rendezvous.abox.tools, carries only the setup messages that connect them.</p>
+    <p>A received file is written to a temporary copy first and replaces the old file only once all of it has arrived, so a cancelled or broken sync never leaves a half-written file. Nothing is ever deleted: a file missing on one side is copied to it, unless you choose to leave it alone.</p>
+    <p>Writing a file gives it today&rsquo;s date, because a web page cannot set the date a file was changed. The next comparison recognises the copies as equal by their contents.</p>
+  </details>
+
+  <div id="phrases" hidden>
+    <span data-phrase="folder.none">No folder chosen yet.</span>
+    <span data-phrase="folder.reading">Reading the folder&hellip; {count} so far.</span>
+    <span data-phrase="folder.ready">{name}: {count}, {size}.</span>
+    <span data-phrase="folder.unnamed">The chosen folder</span>
+    <span data-phrase="count.file">1 file</span>
+    <span data-phrase="count.files">{n} files</span>
+    <span data-phrase="folder.receive-only">No folder: this device can receive the other device&rsquo;s files as a ZIP.</span>
+    <span data-phrase="folder.too-many">This folder holds more than {max} files. Choose a smaller folder, or one of the folders inside it.</span>
+    <span data-phrase="folder.failed">The folder could not be read. Choose it again, or choose another one.</span>
+    <span data-phrase="folder.denied">The browser did not open that folder. Choose another one, or try again.</span>
+    <span data-phrase="folder.write-denied">Without permission to change the folder, this device can only send. Choose the folder again and allow changes to receive.</span>
+    <span data-phrase="folder.skipped">Left out: {count}</span>
+    <span data-phrase="folder.skipped-more">and {count} more</span>
+    <span data-phrase="support.zip">This browser cannot write into folders, so files this device receives are saved as one ZIP for you to unpack, up to {limit}.</span>
+    <span data-phrase="support.none">This browser cannot open folders. It can still receive the other device&rsquo;s files as one ZIP, up to {limit}.</span>
+    <span data-phrase="skip.system">system file</span>
+    <span data-phrase="skip.temporary">temporary copy or lock file</span>
+    <span data-phrase="skip.name">a name Windows, macOS or Linux cannot store</span>
+    <span data-phrase="skip.deep">folders nested too deeply</span>
+    <span data-phrase="skip.long">path too long</span>
+    <span data-phrase="skip.unreadable">could not be read</span>
+    <span data-phrase="skip.duplicate">two names that are the same once accents are composed</span>
+    <span data-phrase="skip.item">{path} &mdash; {reason}</span>
+    <span data-phrase="host.ready">Choose a folder, then start.</span>
+    <span data-phrase="host.need-folder">Choose the folder on this device first.</span>
+    <span data-phrase="host.waiting">Waiting for the other device. Open the sync link there, then approve its request here.</span>
+    <span data-phrase="host.approved">Approved. Connecting the two folders&hellip;</span>
+    <span data-phrase="host.linked">Connected. Compare the folders below.</span>
+    <span data-phrase="host.lost">The other device disconnected. It can join again with the same link.</span>
+    <span data-phrase="host.stopped">Sync stopped. The connection is closed.</span>
+    <span data-phrase="host.unnamed">A device without a note</span>
+    <span data-phrase="host.approve">Approve</span>
+    <span data-phrase="host.deny">Turn away</span>
+    <span data-phrase="host.disconnect">Disconnect</span>
+    <span data-phrase="host.partner-linked">Connected</span>
+    <span data-phrase="host.partner-connecting">Connecting</span>
+    <span data-phrase="approval.limit">This session cannot remember another approval. Stop and start a new sync to approve another device.</span>
+    <span data-phrase="guest.ready">Enter a sync link or code to begin.</span>
+    <span data-phrase="guest.folder-first">Choose the folder on this device first, then request to sync.</span>
+    <span data-phrase="guest.waiting">Your request reached the other device. Waiting for approval; nothing about either folder has been sent yet.</span>
+    <span data-phrase="guest.linked">Approved. Compare the folders below.</span>
+    <span data-phrase="guest.denied">The other device turned away your request. Check with whoever is using it before trying again.</span>
+    <span data-phrase="code.invalid">Enter a complete sync link or code from this tool.</span>
+    <span data-phrase="discovery.idle">Choose Find connections to look for syncs on other devices.</span>
+    <span data-phrase="discovery.connecting">Looking for syncs on other devices&hellip;</span>
+    <span data-phrase="discovery.found">Check the invitation code with the other device, then join it.</span>
+    <span data-phrase="discovery.empty">No syncs found in this network or group. Ask the other device to show its sync in Available connections before starting, or use its link.</span>
+    <span data-phrase="discovery.unavailable">Connection discovery is unavailable. You can still use the other device&rsquo;s sync link.</span>
+    <span data-phrase="discovery.join">Join</span>
+    <span data-phrase="discovery.join-direct">Join {code}</span>
+    <span data-phrase="discovery.publishing">Listing your invitation in Available connections&hellip;</span>
+    <span data-phrase="discovery.published">Your invitation is listed in the selected network or private group. You still approve the device that joins.</span>
+    <span data-phrase="discovery.not-published">Your invitation is not listed yet. You can still use the sync link.</span>
+    <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
+    <span data-phrase="connection.connecting">Connecting to the other device&hellip;</span>
+    <span data-phrase="connection.server-failed">The introduction service could not connect. Check your internet connection and try again.</span>
+    <span data-phrase="connection.not-found">This sync is no longer open. Ask for a new sync link.</span>
+    <span data-phrase="connection.taken">That invitation code is already in use. Stop and start a new sync.</span>
+    <span data-phrase="connection.busy">The other device is already syncing with another device, or too many requests are waiting.</span>
+    <span data-phrase="connection.ended">The other device ended this sync. Ask it to start a new one.</span>
+    <span data-phrase="connection.invalid">The other device sent something this page does not understand. Reload both pages and start again.</span>
+    <span data-phrase="connection.direct-failed">The two devices could not reach each other directly. Put both on the same Wi-Fi, Ethernet or hotspot, and check for guest-network isolation, firewalls and VPNs.</span>
+    <span data-phrase="connection.lost">The connection to the other device was lost. Files that arrived whole were kept.</span>
+    <span data-phrase="connection.stopped">Disconnected.</span>
+    <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
+    <span data-phrase="copy.done">Copied.</span>
+    <span data-phrase="copy.manual">Select and copy the text above.</span>
+    <span data-phrase="side.folder">{name}: {count}, {size}.</span>
+    <span data-phrase="side.zip">{name}: {count}, {size}. Files it receives are saved as a ZIP.</span>
+    <span data-phrase="side.none">No folder. Files it receives are saved as a ZIP.</span>
+    <span data-phrase="side.waiting">Waiting for its file list&hellip;</span>
+    <span data-phrase="side.mode.both">Sends and receives.</span>
+    <span data-phrase="side.mode.send">Sends only.</span>
+    <span data-phrase="side.mode.receive">Receives only.</span>
+    <span data-phrase="side.summary">{folder} {mode}</span>
+    <span data-phrase="side.there">Other device: {note}</span>
+    <span data-phrase="side.other">Other device</span>
+    <span data-phrase="sync.listing">Reading both folders&hellip;</span>
+    <span data-phrase="sync.checking">Comparing the contents of files whose sizes match but dates differ: {done} of {total}.</span>
+    <span data-phrase="sync.same">Both folders hold the same files.</span>
+    <span data-phrase="sync.review">Check what will happen to each file, then choose Sync now. Nothing is deleted.</span>
+    <span data-phrase="sync.idle">The folders differ, but nothing is set to move. Choose an action in the list to sync a file.</span>
+    <span data-phrase="sync.blocked">Everything that can be synced matches. The files listed below cannot be synced as they are; each row says why.</span>
+    <span data-phrase="sync.asking">Waiting for the other device to accept&hellip;</span>
+    <span data-phrase="sync.syncing">Syncing: received {received} of {receiveTotal}, sent {sent} of {sendTotal}.</span>
+    <span data-phrase="sync.summary">To send: {send} ({sendSize}). To receive: {receive} ({receiveSize}). Left alone: {skip}. Already the same: {same}.</span>
+    <span data-phrase="sync.more">Showing the first {shown} of {total} differences. The rest follow the default shown for their kind.</span>
+    <span data-phrase="sync.done">Sync finished. Received here: {copied}. Received there: {delivered}. Not copied: {failed}.</span>
+    <span data-phrase="sync.cancelled">Sync cancelled. Files that arrived whole were kept, and no file was left half-written.</span>
+    <span data-phrase="sync.failed">The sync stopped because the connection failed. Files that arrived whole were kept, and no file was left half-written.</span>
+    <span data-phrase="sync.permission">This page needs your permission to change the folder before it can receive files.</span>
+    <span data-phrase="refused.busy">The other device was busy. Choose Sync now again.</span>
+    <span data-phrase="refused.stale">One of the folders changed. The comparison has been brought up to date; check it and sync again.</span>
+    <span data-phrase="refused.permission">The other device needs permission to change its folder. Choose its folder again there and allow changes.</span>
+    <span data-phrase="refused.invalid">The other device refused that plan. Compare again, then sync.</span>
+    <span data-phrase="error.rescan">This folder could not be read again. Choose it again to keep comparing.</span>
+    <span data-phrase="kind.only-here">Only on this device</span>
+    <span data-phrase="kind.only-there">Only on the other device</span>
+    <span data-phrase="kind.newer-here">Newer on this device</span>
+    <span data-phrase="kind.newer-there">Newer on the other device</span>
+    <span data-phrase="kind.conflict">Different, with the same date</span>
+    <span data-phrase="kind.case">Names differ only in capital letters</span>
+    <span data-phrase="action.send">Send it</span>
+    <span data-phrase="action.send-replace">Send it, replacing theirs</span>
+    <span data-phrase="action.receive">Copy it here</span>
+    <span data-phrase="action.receive-replace">Copy it here, replacing this one</span>
+    <span data-phrase="action.skip">Leave it alone</span>
+    <span data-phrase="row.action">What happens to {path}</span>
+    <span data-phrase="row.absent">Not there</span>
+    <span data-phrase="row.detail">{size}, {date}</span>
+    <span data-phrase="reason.refused">the other device did not send it</span>
+    <span data-phrase="reason.changed">it changed after the comparison; compare again to copy the new version</span>
+    <span data-phrase="reason.missing">it was no longer in the other folder</span>
+    <span data-phrase="reason.unreadable">the other device could not read it</span>
+    <span data-phrase="reason.write">it could not be written here</span>
+    <span data-phrase="reason.limit">the ZIP reached its size limit</span>
+    <span data-phrase="failure.item">{path}: {reason}</span>
+    <span data-phrase="zip.save">Save received files as a ZIP ({size})</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="net.clean">{total} page resources checked. {platform} Connection setup and the encrypted file transfer are disclosed above; this resource list does not inspect WebRTC traffic.</span>
+    <span data-phrase="net.dirty">Unexpected resource hosts: {hosts}. {platform} WebRTC traffic is separate from this resource check.</span>
+  </div>
+  {% include "partials/paired-approval-prompt.html" %}
+</main>

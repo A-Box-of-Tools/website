@@ -1,0 +1,157 @@
+  <section>
+    <h2>Den Ordner auf jedem Computer wählen</h2>
+    <p>
+      Öffnen Sie <a href="../../ordner-synchronisieren/">Ordner synchronisieren</a> auf beiden Computern.
+      Chrome, Edge und die meisten anderen Chromium-Browser auf einem Computer
+      können einen Ordner sowohl lesen als auch in ihn schreiben, und genau das
+      braucht eine Synchronisierung in beide Richtungen. Verbinden Sie beide
+      Computer mit demselben WLAN, Ethernet-Netz oder Handy-Hotspot und halten
+      Sie den Internetzugang verfügbar. Die Browser brauchen ihn, um einander
+      zu finden, auch wenn die Dateien nie über das Internet gehen.
+    </p>
+    <p>
+      Wählen Sie auf jedem Computer <em>Ordner auswählen</em> und suchen Sie
+      den Ordner aus, der auf demselben Stand bleiben soll. Fragt der Browser,
+      ob die Seite den Ordner ändern darf, erlauben Sie es auf einem Computer,
+      der Dateien empfangen soll. Legen Sie dann fest, was dieser Computer tut:
+      <em>Senden und empfangen</em>, <em>Nur senden</em>, damit der andere
+      Computer aus diesem Ordner kopieren, ihn aber nie ändern kann, oder
+      <em>Nur empfangen</em>. Jeder Computer setzt seine eigene Wahl durch,
+      ganz gleich, was der andere verlangt.
+    </p>
+    <p>
+      Manche Dateien werden nie synchronisiert, und die Seite listet sie unter
+      dem Ordner auf: Hilfsdateien des Systems wie <code>Thumbs.db</code> und
+      <code>.DS_Store</code>, temporäre Kopien und Sperrdateien sowie Namen,
+      die eines der Systeme Windows, macOS oder Linux nicht speichern kann,
+      etwa ein Name mit einem Doppelpunkt. Würden sie kopiert, entstünden
+      Dateien, die der andere Computer verstümmelt oder falsch liest.
+    </p>
+  </section>
+
+  <section>
+    <h2>Auf einem Computer starten und vom anderen beitreten</h2>
+    <p>
+      Wählen Sie auf dem ersten Computer <em>Synchronisierung starten</em> und
+      kopieren Sie den Synchronisierungslink. Öffnen Sie ihn auf dem zweiten
+      Computer, fügen Sie bei Bedarf eine Notiz hinzu und wählen Sie
+      <em>Synchronisierung anfragen</em>. Genehmigen Sie die Anfrage auf dem
+      ersten Computer. Vor dieser Genehmigung wird über keinen der beiden
+      Ordner etwas gesendet; bis dahin haben die beiden Browser nur
+      ausgetauscht, was für die Verbindung nötig ist.
+    </p>
+    <p>
+      Ist es umständlich, einen Link zwischen den beiden Computern zu
+      kopieren, aktivieren Sie vor dem Start auf dem ersten Computer
+      <em>In den verfügbaren Verbindungen anzeigen</em>. Der zweite Computer
+      wählt <em>Verbindungen suchen</em> und dann <em>Beitreten</em> neben dem
+      passenden Code. Gelistet wird nur der zufällige Einladungscode, nie ein
+      Ordner- oder Dateiname, und die Genehmigung gilt weiterhin.
+    </p>
+  </section>
+
+  <section>
+    <h2>Den Vergleich lesen, bevor Sie synchronisieren</h2>
+    <p>
+      Nach der Genehmigung sendet jeder Computer dem anderen Pfad, Größe und
+      Datum jeder Datei in seinem Ordner, und beide zeigen dieselbe Liste der
+      Unterschiede aus ihrer eigenen Sicht. Eine Datei, die nur auf einem
+      Computer liegt, wird auf den anderen kopiert. Eine Datei, die auf beiden
+      liegt, aber auf einem geändert wurde, wird durch die neuere Kopie
+      ersetzt. Zwei Dateien mit gleicher Größe, aber verschiedenem Datum werden
+      zuerst nach ihrem Inhalt verglichen, sodass identische Kopien nicht
+      erneut gesendet werden.
+    </p>
+    <p>
+      Zwei Arten von Zeilen bleiben immer unverändert, bis Sie entscheiden.
+      Eine Datei, die sich auf beiden Computern unterscheidet, aber exakt
+      dasselbe Datum trägt, hat keine neuere Kopie, also wird keine für Sie
+      gewählt. Namen, die sich nur in Groß- und Kleinschreibung unterscheiden,
+      etwa <code>README.md</code> und <code>Readme.md</code>, sind unter
+      Windows und auf einem Mac eine einzige Datei. Jede der beiden zu
+      kopieren, könnte die andere überschreiben; benennen Sie eine um und
+      vergleichen Sie erneut.
+    </p>
+    <p>
+      Jede andere Zeile zeigt ihre Voreinstellung in einem Menü, das Sie ändern
+      können: senden, hierher kopieren oder unverändert lassen. Die Summen
+      über der Liste folgen Ihrer Auswahl. Wenn alles stimmt, wählen Sie auf
+      einem der beiden Computer <em>Jetzt synchronisieren</em>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Gelöscht wird nichts, mit Absicht</h2>
+    <p>
+      Haben Sie eine Datei auf einem Computer gelöscht, sieht der Vergleich
+      eine Datei, die nur auf dem anderen existiert, und bietet an, sie
+      zurückzukopieren. Ohne Aufzeichnung der letzten Synchronisierung lässt
+      sich eine gelöschte Datei nicht von einer neuen unterscheiden, und falsch
+      zu raten würde Arbeit zerstören. Stellen Sie diese Zeile auf
+      <em>Unverändert lassen</em>, oder löschen Sie die Datei vor dem
+      Synchronisieren auf beiden Computern.
+    </p>
+    <p>
+      Eine ersetzte Datei wird zuerst in eine temporäre Kopie geschrieben und
+      nimmt den Platz der alten erst ein, wenn sie vollständig angekommen ist.
+      Brechen Sie eine Synchronisierung ab, schließen Sie eine Seite oder
+      reißt die Verbindung ab, ist jede Datei entweder die alte oder die neue
+      Version, nie halb und halb. Dateien, die vor der Unterbrechung fertig
+      waren, bleiben erhalten.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was über das Netzwerk geht</h2>
+    <p>
+      Die Dateilisten, die Inhaltsfingerabdrücke und die Dateien selbst laufen
+      über eine verschlüsselte WebRTC-Verbindung direkt zwischen den beiden
+      Browsern. Es gibt kein Relais und keinen Upload, und auch deshalb
+      brauchen die Computer ein Netzwerk, in dem sie einander erreichen. Der
+      Vermittlungsdienst <code>rendezvous.abox.tools</code> sieht die
+      Einrichtungsnachrichten, mit denen sich die Browser verbinden, darunter
+      ihre IP-Adressen und den Einladungscode, aber keinen einzigen Dateinamen.
+    </p>
+    <p>
+      Der andere Computer sieht dagegen Name, Größe und Datum jeder Datei in
+      Ihrem gewählten Ordner, auch von Dateien, die nicht kopiert werden.
+      Wählen Sie den Ordner, den Sie wirklich teilen möchten, und nicht den
+      darüber.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn ein Browser nicht in einen Ordner schreiben kann</h2>
+    <p>
+      Firefox und Safari können einen Ordner zum Senden wählen, aber in keinen
+      schreiben. Dateien, die sie empfangen, werden in einem einzigen ZIP mit
+      bis zu 512&nbsp;MB gesammelt, das Sie speichern und selbst über den
+      Ordner entpacken. Ein Browser, der überhaupt keinen Ordner wählen kann,
+      wie auf den meisten Handys, kann die Dateien des anderen Computers
+      trotzdem als ZIP empfangen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn die Computer keine Verbindung bekommen</h2>
+    <p>
+      Prüfen Sie, ob beide im selben Netzwerk sind und ob es Geräten erlaubt,
+      einander zu erreichen. Gast-WLANs isolieren ihre Geräte oft, und
+      Firewalls, VPNs und verwaltete Arbeitscomputer können direkte
+      Verbindungen blockieren. Ein Handy-Hotspot, mit dem sich beide Computer
+      verbinden, schließt das Netzwerk schnell als Ursache aus.
+    </p>
+  </section>
+
+  <section>
+    <h2>Später erneut synchronisieren</h2>
+    <p>
+      Lassen Sie beide Seiten geöffnet und wählen Sie <em>Erneut vergleichen</em>,
+      wann immer sich die Ordner geändert haben, oder beenden Sie die Sitzung
+      und starten Sie an einem anderen Tag eine neue Synchronisierung. Eine
+      Webseite kann das Änderungsdatum einer Datei nicht setzen, daher tragen
+      empfangene Dateien das Datum, an dem sie geschrieben wurden. Der nächste
+      Vergleich prüft ihren Inhalt und behandelt identische Kopien als bereits
+      synchron.
+    </p>
+  </section>

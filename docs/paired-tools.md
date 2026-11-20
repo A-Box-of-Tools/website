@@ -1,7 +1,7 @@
 # Pairing tools through shared parts
 
-Share Text & Files, Share a Browser Tab, Local Walkie-Talkie, Voice Oncall and Remote Camera use the
-same pairing primitives. They live under `shared/js/`, have no dependencies,
+Share Text & Files, Folder Sync, Share a Browser Tab, Local Walkie-Talkie, Voice Oncall and Remote
+Camera use the same pairing primitives. They live under `shared/js/`, have no dependencies,
 and are copied into each tool by `js_parts`, so every built tool remains a
 complete folder with versioned imports and its own service-worker cache.
 
@@ -22,13 +22,14 @@ Ordinary copied invitations keep their existing consent flow. Joining does not
 bypass host approval, passwords or explicit microphone transmission. An active
 session cannot be replaced by joining another entry.
 
-The visual order does not alter when discovery is permitted: Share Tab still
-requires Find connections or an explicit private-group selection; the other
-four tools retain their automatic directory browsing. Host discoverability
+The visual order does not alter when discovery is permitted: Share Tab and
+Folder Sync still require Find connections or an explicit private-group
+selection; the other four tools retain their automatic directory browsing. Host discoverability
 defaults and approval rules remain tool-specific and are stated on each page.
-All five tools use internet introductions for pairing. Direct is the default;
+All six tools use internet introductions for pairing. Direct is the default;
 Cloud relay is an explicit alternative chosen before hosting and carried by
-the invitation. The joining browser displays the host's route before its explicit
+the invitation, in every tool but Folder Sync, which offers Direct alone: a
+relay there would forward whole folders through a metered service. The joining browser displays the host's route before its explicit
 Connect, Join or Request action. Direct Walkie-Talkie invitations retain their
 existing automatic receive-only join. Changing a live route requires ending that
 session and creating a new invitation. A saved
@@ -39,7 +40,7 @@ password and media boundaries remain separate requirements.
 
 ## Connection choices
 
-Tools declare `supports_relay = true`, include `partials/paired-transport.html`
+Tools that offer the relay declare `supports_relay = true`, include `partials/paired-transport.html`
 beside their host Start action and ship `peer-transport` and `peer-transport-ui`.
 What each choice means sits behind an
 [information mark](adding-a-tool.md#an-information-mark) beside the switch, which
@@ -90,7 +91,7 @@ password admission or microphone transmission.
 
 ## Private groups and discovery icons
 
-All five tools use `partials/paired-discovery-group.html` with
+All six tools use `partials/paired-discovery-group.html` with
 `peer-discovery-ui.js`, `peer-discovery.js` and the pure
 `discovery-group.js` protocol. The shared UI offers a generated group code,
 entry of an existing code, copying and return to local-network discovery.
@@ -309,6 +310,7 @@ recovery; remembering an identity does not reconnect by itself.
 | Local Walkie-Talkie | Host/listener credentials, room generations, receive-only listeners, pinned Direct/Cloud relay, default-on host approval and explicit Talk. |
 | Voice Oncall | Host/caller credentials, password checks, default-on host approval before capture, generations, moderation, a receive-only host and explicit Talk. |
 | Remote Camera | Per-viewer approval and acknowledgement, media readiness, viewer limits, same-link recovery, admitted-pong checks and atomic camera/microphone replacement. |
+| Folder Sync | Mandatory approval before either folder is described, Direct only with host candidates, opt-in code-only discovery like Share a Browser Tab, and one partner at a time. Listings, fingerprints and files use the admitted peer connection: a control channel, plus one `folder-sync-files:<run>` lane per run and direction, so a cancelled run's frames die with its lane. Either side may start a run; the other checks every action against its own listing and mode. A lost partner aborts the run, and the host keeps waiting for the next. |
 | Share a Browser Tab | A click and browser-tab-only capture, internet introductions with opt-in code/mode discovery, Direct or explicit Cloud relay, and mandatory approval and acknowledgement before video. Discovery opens only after an opted-in host starts or a viewer chooses Find nearby tabs; Join on a result starts the viewer request without an extra selection. One viewer can watch. An ended track requires a new picker choice; returning cannot recapture. |
 
 Recovery must not widen a transport policy, re-enable a microphone, lose an
