@@ -51,12 +51,13 @@ export function bindTransportControl({ onChange = () => {} } = {}) {
     value,
     set(next) {
       if (!controls.length || transportMode(next) === null) return false;
+      if (held !== null) return transportMode(next) === held;
       mode = transportMode(next);
       refresh();
       return true;
     },
     lock(next) { locked = Boolean(next); refresh(); },
-    /** Holds the switch on `next` until called with null; onChange is not called. */
+    /** Holds the switch on `next` until called with null; set() cannot move it meanwhile, and onChange is not called. */
     hold(next, note = '') {
       held = next == null ? null : transportMode(next);
       heldNote = held === null ? '' : note;

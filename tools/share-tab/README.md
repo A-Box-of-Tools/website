@@ -51,7 +51,11 @@ viewer link query and discovery listing. Opening an invitation only selects
 that mode; the viewer explicitly requests to watch after seeing its disclosure.
 A discovery row shows the route before Join and uses any optional note already
 entered in the viewer form. Pasted links also carry the choice. A plain code uses the
-currently indicated mode. The worker rejects mismatched modes instead of changing
+currently indicated mode. While a code that arrived with its mode is in the viewer
+box, the host's switch is held on that mode, disabled, with its tooltip saying to
+clear the code; editing the code releases it. One switch serves both cards, so
+without the hold it could contradict the invitation and Request to watch would
+quietly undo it. The worker rejects mismatched modes instead of changing
 one participant's selection.
 The bounded note travels over the encrypted control channel and is not
 verified identity.
