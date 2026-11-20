@@ -15,10 +15,21 @@ import { createChime } from './shared/chime.js';
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
 const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; renderInvitationType(); } });
-function selectTransport(value) {
+// A code that arrives with its route - an invitation link, or a share picked
+// from Available connections - holds the switch on that route until the code
+// is edited. The switch sits in the host card, so without the hold it could
+// contradict what Connect is about to use, and Connect would quietly undo it.
+function selectTransport(value, held = true) {
+  transportControl.hold(null);
   invalidInvitationTransport = !transportControl.set(value);
+  if (held && !invalidInvitationTransport) transportControl.hold(transportControl.value(), phrase('transport.note.invitation'));
   renderInvitationType();
   if (invalidInvitationTransport) status('viewer-status', 'transport.invalid', true);
+}
+function releaseTransport() {
+  transportControl.hold(null);
+  invalidInvitationTransport = false;
+  renderInvitationType();
 }
 function renderInvitationType() {
   const indicator = $('viewer-connection-type');
@@ -55,7 +66,7 @@ const approvalPrompt = createApprovalPrompt({
 const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
   closeDiscovery();
   $('viewer-code').value = '';
-  selectTransport('direct');
+  selectTransport('direct', false);
   status('viewer-status', 'viewer.ready');
   browsingNearby = true;
   startDiscovery();
@@ -425,7 +436,7 @@ $('viewer-code').addEventListener('input', () => {
   if (role) return;
   const value = $('viewer-code').value.trim();
   if (/^https?:\/\//i.test(value)) selectTransport(readTransport(value));
-  else invalidInvitationTransport = false;
+  else releaseTransport();
 });
 $('viewer-stop').addEventListener('click', () => stopAll());
 $('discovery-start').addEventListener('click', () => {

@@ -19,10 +19,21 @@ import { createRequestSignal } from './shared/peer-request-signal.js';
 const $ = (id) => document.getElementById(id);
 let invalidInvitationTransport = false;
 const transportControl = bindTransportControl({ onChange: () => { invalidInvitationTransport = false; renderInvitationType(); } });
-function selectTransport(value) {
+// A code that arrives with its route - an invitation link, or a camera picked
+// from Available connections - holds the switch on that route until the code
+// is edited. The switch sits in the camera card, so without the hold it could
+// contradict what Connect is about to use, and Connect would quietly undo it.
+function selectTransport(value, held = true) {
+  transportControl.hold(null);
   invalidInvitationTransport = !transportControl.set(value);
+  if (held && !invalidInvitationTransport) transportControl.hold(transportControl.value(), phrase('transport.note.invitation'));
   renderInvitationType();
   if (invalidInvitationTransport) showStatus('transport.invalid', 'viewer');
+}
+function releaseTransport() {
+  transportControl.hold(null);
+  invalidInvitationTransport = false;
+  renderInvitationType();
 }
 function renderInvitationType() {
   const indicator = $('viewer-connection-type');
@@ -79,7 +90,7 @@ const groupControl = createDiscoveryGroupControl({ root: document, onChange() {
   foundCameras = [];
   discoveryState = 'connecting';
   $('viewer-code').value = '';
-  selectTransport('direct');
+  selectTransport('direct', false);
   showStatus('viewer.ready', 'viewer');
   renderDiscovery();
   startDiscovery();
@@ -1203,7 +1214,7 @@ $('viewer-code').addEventListener('input', () => {
   if (activeRole) return;
   const value = $('viewer-code').value.trim();
   if (/^https?:\/\//i.test(value)) selectTransport(readTransport(value));
-  else invalidInvitationTransport = false;
+  else releaseTransport();
 });
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', () => playVideo(true));
