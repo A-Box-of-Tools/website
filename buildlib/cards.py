@@ -96,7 +96,33 @@ STAGE_HINT = re.compile(
     r'[ \t]*<p class="stage-hint"[^>]*>(?:(?!</p>).)*</p>\n?', re.S)
 
 # The label of the field a note belongs to, found by looking back from it.
-LABEL = re.compile(r'<label[^>]*>(?P<text>(?:(?!</label>).)*)</label>', re.S)
+LABEL = re.compile(r'<label(?P<attributes>[^>]*)>(?P<text>(?:(?!</label>).)*)</label>',
+                   re.S)
+
+# A comment is prose about the markup, and prose names the tags it is about.
+# The drop zone's says "A real <label> opens the file picker natively", and
+# LABEL took that for the start of one: it ran on to the next `</label>` it
+# met, the drop zone's own. So a note written straight under the picker was
+# named by the back half of a comment. HEIC to JPG, PNG to WebP and WebP to JPG
+# each have such a note, and each printed it in bold in seven languages, inside
+# a fold that is shut until somebody opens it, which is how it lasted. Nothing
+# failed. It was noticed when a second comment there mentioned a file name,
+# which a check on the built pages takes for the key of a phrase, printed where
+# the phrase should be.
+#
+# The patterns above this one are not given the same treatment, because they
+# cut by offsets into the card as it was written, and because each of them
+# needs a whole element spelled out, class and all, before it finds anything.
+# This one needs five letters.
+COMMENT = re.compile(r'<!--.*?-->', re.S)
+
+# The picker's second way in, "Choose a folder", as the opening tag of its
+# label reads in templates/partials/file-picker.html. It sits between the drop
+# zone and whatever a tool writes under its picker, so it is the nearest label
+# to a note there, and that note was written about the zone: what it takes and
+# what becomes of it. The partial puts the control on every tool that takes
+# several files, and no tool wrote it, so it names nobody's note.
+FOLDER_WAY_IN = re.compile(r'\bfor="folder-input"')
 
 TAGS = re.compile(r'<[^>]+>')
 
@@ -152,8 +178,9 @@ def _named(inner, match):
     right there.
     """
     label = None
-    for found in LABEL.finditer(inner, 0, match.start()):
-        label = found
+    for found in LABEL.finditer(COMMENT.sub('', inner[:match.start()])):
+        if not FOLDER_WAY_IN.search(found.group('attributes')):
+            label = found
     # The name is taken as plain text, because a label may hold the checkbox it
     # names and copying that would put a second element with the same id in the
     # page. The note keeps its markup exactly: several of them contain a <code>
