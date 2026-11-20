@@ -327,11 +327,11 @@
     <div class="pledge-live">
       <p class="live-row">
         <span id="network-dot" class="live-dot" aria-hidden="true"></span>
-        <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count" data-expected="{{ trust_expected }}">{{ ui.tool.checking }}</span></span>
+        <span><strong>{{ ui.tool.live_check }}</strong>{{ space.live_check }}<span id="network-count" data-expected="{{ trust_expected }}">{{ ui.tool.checking }}</span></span>
       </p>
       <p class="live-row">
         <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
-        <span><strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span></span>
+        <span><strong>{{ ui.tool.offline }}</strong>{{ space.offline }}<span id="offline-status">{{ ui.tool.checking }}</span></span>
       </p>
       <p class="live-hint">
 {{ tool.live_hint }}
@@ -343,7 +343,7 @@
 <section id="privacy-panel" class="privacy" hidden>
   <h2>{{ ui.tool.privacy_heading }}</h2>
   <ul>
-{% for point in tool.privacy %}    <li><strong>{{ point.title }}</strong>{{ point.body }}</li>
+{% for point in tool.privacy %}    <li><strong>{{ point.title }}</strong>{{ point.space }}{{ point.body }}</li>
 {% endfor %}  </ul>
   <div class="privacy-status">
     <p>
@@ -398,7 +398,7 @@
     <summary><h2 id="how-to-h">{{ tool.howto_heading }}</h2></summary>
     <ol class="how-to">
 {% for step in tool.howto %}      <li>
-        <strong>{{ step.title }}</strong>{{ step.body }}
+        <strong>{{ step.title }}</strong>{{ step.space }}{{ step.body }}
       </li>
 {% endfor %}    </ol>
   </details>

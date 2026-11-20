@@ -109,6 +109,25 @@ class Summaries(unittest.TestCase):
         self.assertNotIn('All rows', inside)
         self.assertIn('All rows', outside, 'the menu itself must stay put')
 
+    def test_a_chinese_name_runs_straight_on_into_its_note(self):
+        # The fold used to write an ASCII space between the two, which is a
+        # hole in the middle of a Chinese or Japanese line. See i18n.space_after.
+        html = cards.fold_ledes(card(
+            '  <label class="field" for="name">链接名</label><input id="name">\n'
+            '  <p class="field-note">名称就是地址。</p>\n'
+            '  <label><input type="checkbox" id="local"> <strong>仅限局域网</strong>'
+            '<span class="check-note">适用于同一网络中的设备。</span></label>'))
+        inside, _ = folded(html)
+        self.assertIn('<strong>链接名</strong>名称就是地址。', inside)
+        self.assertIn('<strong>仅限局域网</strong><span class="check-note">', inside)
+
+    def test_an_english_name_keeps_its_space_before_a_checkbox_note(self):
+        html = cards.fold_ledes(card(
+            '  <label><input type="checkbox" id="local"> <strong>Local only</strong> '
+            '<span class="check-note">For devices on the same network.</span></label>'))
+        inside, _ = folded(html)
+        self.assertIn('<strong>Local only</strong> <span class="check-note">', inside)
+
 
 class EveryTool(unittest.TestCase):
     def test_no_tool_leaves_a_written_summary_on_the_page(self):

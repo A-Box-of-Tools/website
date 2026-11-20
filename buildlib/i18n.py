@@ -126,6 +126,8 @@ already borrows.
 
 import posixpath
 import re
+import unicodedata
+from html import unescape
 
 from buildlib.site import ConfigError, load_toml
 
@@ -821,6 +823,56 @@ def localize_planned(planned, locale, slug):
                    f'locales/{locale["lang"]}/{PLANNED}',
                    debt, 'planned', PLANNED_STRUCTURE)
     return merged
+
+
+# ---------------------------------------------------------------------------
+# Joining a bold lead-in to the text after it
+
+LEAD_TAGS = re.compile(r'<[^>]+>')
+
+
+def space_after(lead):
+    """What goes between a bold lead-in and the text that follows it: one
+    space, or nothing after a lead-in that ends in Chinese or Japanese.
+
+    A privacy point, a how-to step, a folded note and a live-check row each
+    open with a bold lead-in, and the markup joining it to what follows is the
+    same in every language. What the join needs is not. "browser.This tool"
+    is missing its space; "在浏览器中进行。 此工具" has one too many, a hole in
+    the middle of a line, because a full-width character already carries the
+    room a reader expects after it. East Asian Width is the property that says
+    which characters those are: the full-width punctuation 。 and ：, kana
+    and Han are wide, and every Latin letter and mark is not.
+
+    It used to be left to the text. A body supplied its own leading space, so
+    every body written without one ran into its title - ninety-three in
+    English and nearly all of French - while the folds in buildlib/cards.py
+    wrote a space of their own into every Chinese and Japanese note.
+
+    It is read off the lead-in itself rather than off the page's language,
+    because the two can differ. A list merges entry by entry, so a Chinese page
+    whose translation is behind the English carries English entries among its
+    Chinese ones, and a tool nobody has translated yet is built at /zh/ in
+    English from end to end. Each lead-in is joined the way its own words are.
+    """
+    text = unescape(LEAD_TAGS.sub('', lead)).rstrip()
+    wide = bool(text) and unicodedata.east_asian_width(text[-1]) in ('W', 'F')
+    return '' if wide else ' '
+
+
+def lead_ins(entries):
+    """Privacy points or how-to steps, ready for a template to join: each
+    body without whitespace of its own in front, and the `space` to put
+    there instead.
+
+    Many bodies were written with a leading space, back when the body had to
+    supply it, and some are multi-line strings that open on a blank line. Left
+    on, either would be a second space after an English title and a hole after
+    a Chinese one.
+    """
+    return [dict(entry, body=entry['body'].lstrip(),
+                 space=space_after(entry['title']))
+            for entry in entries]
 
 
 BODY_LINK = re.compile(r'\b(href|src)="([^"]+)"')
