@@ -488,7 +488,7 @@ function sideText(meta, own) {
   if (own && folder.kind === 'none') text = phrase('side.none');
   else if (!own && meta.into === 'zip' && meta.files === 0) text = phrase('side.none');
   else text = phrase(meta.into === 'zip' ? 'side.zip' : 'side.folder', { name, count, size: bytes });
-  return `${text} ${phrase(`side.mode.${meta.mode}`)}`;
+  return phrase('side.summary', { folder: text, mode: phrase(`side.mode.${meta.mode}`) });
 }
 
 function rowDetail(entry) {
