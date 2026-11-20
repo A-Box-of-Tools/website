@@ -1,0 +1,119 @@
+#
+# Vergrößerungsrechner - German.
+#
+# Overrides for tools/magnification-calculator/tool.toml. Only words: the slug,
+# the category, the icon and the list of shared parts stay where they are.
+#
+# What is printed on an instrument is carried over as printed - 8×42, 40×/0.65,
+# 10×/18, 675× - and every other figure by value, with the German decimal comma.
+#
+# "Useful" is "sinnvoll" throughout. The optics textbooks' word is "förderliche
+# Vergrößerung", which a reader who has never opened one would not recognise;
+# the question as it is usually asked is "höchste sinnvolle Vergrößerung", so
+# that is the word the page answers in.
+#
+# The "width" of a lens or a mirror is its "Durchmesser", the word a German
+# listing prints, and a beam is measured in the same word. "Breite" is kept for
+# what has no diameter: a field of view and a strip of specimen.
+#
+
+name = "Vergrößerungsrechner"
+heading = "Vergrößerungsrechner <span class=\"h1-kw\">&mdash; was Teleskop, Mikroskop oder Fernglas wirklich zeigt</span>"
+tagline = "Tippen Sie die Zahlen ein, die auf einem Teleskop, einem Fernglas, einem Mikroskop oder einer Lupe stehen, und sehen Sie maßstabsgetreu das Bild, das sie ergeben."
+
+title = "Vergrößerungsrechner &mdash; Teleskop, Mikroskop, Fernglas &mdash; kostenlos, offline"
+description = "Sehen Sie, was eine Vergrößerung wirklich zeigt. Tippen Sie die Zahlen von Teleskop, Fernglas, Mikroskop oder Lupe ein und erhalten Sie das maßstabsgetreue Bild, das Sehfeld, die Austrittspupille und den Punkt, ab dem mehr Vergrößerung nichts mehr bringt. Kostenlos und offline."
+og_title = "Was zeigt 675× wirklich?"
+og_description = "Machen Sie aus den Zahlen auf Teleskop, Fernglas, Mikroskop oder Lupe das Bild, das sie ergeben, die Grenzen immer im Blick. Ohne Upload und ohne KI."
+og_image_alt = "Vergrößerungsrechner - was die Zahlen auf Teleskop, Mikroskop oder Fernglas wirklich zeigen"
+
+pledge = "Eine Vergrößerung besteht aus ein paar Zahlen von einer Verpackung und etwas Rechnen, und all das steckt in dieser Seite. Es gibt keinen Dienst, den man fragen müsste, und nichts hochzuladen. Die Bilder sind Zeichnungen, die aus diesen Zahlen berechnet werden, und keine Fotos, die von irgendwoher geholt würden, und die Regeln dahinter stehen neben dem Ergebnis."
+live_hint = "Ziehen Sie den Regler bei geöffnetem Tab &bdquo;Netzwerk&ldquo;. Der Rechner stellt keine Anfragen. Laden Sie die Seite einmal, trennen Sie die Verbindung und entdecken Sie weiter."
+read_first = ", <code>src/optics.js</code> für die Berechnungen zu allen vier Instrumenten, <code>src/subjects.js</code> dafür, was es zu sehen gibt und wie groß jedes Ding ist, <code>src/view.js</code> und die Dateien <code>src/scene-*.js</code> für die Bilder und <code>src/main.js</code> dafür, wie die Seite zusammenhängt."
+howto_heading = "So lesen Sie eine Vergrößerungszahl"
+card = "Was zeigen 8×42, 400× und 675× wirklich? Tippen Sie die Zahlen von Teleskop, Fernglas, Mikroskop oder Lupe ein und sehen Sie das maßstabsgetreue Bild, samt dem Punkt, ab dem mehr Vergrößerung nicht mehr hilft."
+
+[words]
+plural = "Zahlen und die Bilder daraus"
+choose = "die Zahlen eines Instruments"
+
+[[facts]]
+text = "Funktioniert offline"
+[[facts]]
+text = "Keine KI- oder API-Kosten"
+[[facts]]
+text = "Klare Annahmen"
+[[facts]]
+text = "Vier Instrumente"
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Der Rechner läuft in diesem Browser."
+body = "Der Verarbeitungscode des Werkzeugs berechnet die Ergebnisse und zeichnet die Bilder lokal. Er schickt keine Eingabe und kein Ergebnis an einen Dienst. Content-Security-Policy beschränkt die Verbindungsziele, prüft aber keine Inhalte; vergleichen Sie den Quelltext mit dem Tab &bdquo;Netzwerk&ldquo; oder nutzen Sie den Rechner ohne Verbindung."
+[[privacy]]
+title = "Es gibt kein Modell, kein Foto und keine Live-Abfrage."
+body = "Die Formeln, die Werte für Mond und Planeten und die Zeichnungen werden alle mit dieser Seite ausgeliefert. Für ein Bild wird nichts abgerufen. Quellenlinks öffnen sich nur, wenn Sie sie lesen möchten."
+[[privacy]]
+title = "Ihre Eingaben bleiben in der Seite."
+body = "Der Rechner schreibt keine Eingaben in einen Speicher oder in die Adresszeile. Neu laden setzt alles zurück. Ein Sprachwechsel trägt Ihre Eingaben auf die andere Seite, innerhalb dieses Browsers und nirgendwohin sonst."
+[[privacy]]
+title = "Die anderen Skripte der Website haben ihre eigenen Grenzen."
+body = "Der Rahmen kann Skripte für Werbung und Messung laden. Der Rechner schickt ihnen weder Eingaben noch Ergebnisse. Die Live-Netzwerkanzeige meldet die Verbindungen der Seite."
+
+[[howto]]
+title = "Wählen Sie das Instrument und tippen Sie ein, was darauf steht."
+body = "Auf einem Teleskop stehen Öffnung und Brennweite, auf jedem Okular dessen eigene Brennweite. Auf einem Fernglas stehen zwei Zahlen, etwa 8×42. Auf einem Mikroskopobjektiv stehen Vergrößerung und numerische Apertur, etwa 40×/0.65. Auf einer Lupe steht eine Vergrößerung, eine Brennweite oder ein Wert in Dioptrien."
+[[howto]]
+title = "Ziehen Sie den Regler durch die Zonen."
+body = "Der Regler ändert die Vergrößerung: bei einem Teleskop oder einem Mikroskop über das Okular und bei einem Fernglas oder einer Lupe über die aufgedruckte Vergrößerung. Seine Skala ist nach den eigenen Grenzen des Instruments eingefärbt. Achten Sie auf das Urteil, wenn Sie vom schärfsten Bereich in den oberen sinnvollen Bereich und dann in die leere Vergrößerung wechseln."
+[[howto]]
+title = "Vergleichen Sie die drei Bilder."
+body = "Das erste ist der ganze Kreis, in den Sie blicken, mit dem Objekt im wahren Maßstab. Das zweite wirft einen genauen Blick auf dessen Mitte, so scharf, wie ein gutes Auge sie sähe. Das dritte ist derselbe genaue Blick ohne Instrument, der Unterschied zwischen den beiden letzten ist also die Vergrößerung."
+[[howto]]
+title = "Lesen Sie, was jede Zahl bedeutet, und prüfen Sie dann die Annahmen."
+body = "Sehfeld, Austrittspupille, feinstes Detail und gesammeltes Licht werden neben dem Ergebnis ausgerechnet. Ändern Sie die Weite Ihrer Pupille, das Gesichtsfeld des Okulars oder die Zählweise der Lupenvergrößerung und lesen Sie nach, woher jede Regel stammt."
+
+[[faq]]
+q = "Was bedeutet 8×42 auf einem Fernglas?"
+a = "Die erste Zahl ist die Vergrößerung: Alles sieht achtmal so breit aus, so als stünden Sie achtmal näher. Die zweite ist der Durchmesser jeder Frontlinse, 42 mm. Die zweite geteilt durch die erste ergibt die Austrittspupille, hier 5,25 mm, also den Durchmesser des Lichtbündels, das Ihr Auge erreicht. Deshalb bleibt ein 8×42 in der Dämmerung hell und ein 8×21 nicht."
+[[faq]]
+q = "Wie berechne ich die Vergrößerung eines Teleskops?"
+a = "Teilen Sie die Brennweite des Teleskops durch die des Okulars. Ein Teleskop mit 700 mm und ein Okular mit 10 mm ergeben 70×, und eine 2-fache Barlowlinse verdoppelt das. Das Teleskop hat keine eigene, feste Vergrößerung. Eine Verpackung, die eine nennt, beschreibt deshalb sein kürzestes Okular und nicht das Bild."
+[[faq]]
+q = "Was ist die höchste sinnvolle Vergrößerung eines Teleskops?"
+a = "Etwa das Doppelte der Öffnung in Millimetern oder 50× pro Zoll: 140× für ein 70-mm-Teleskop und 400× für eines mit 200 mm. Das Detail wird vom Durchmesser der Linse oder des Spiegels bestimmt, und an diesem Punkt ist alles davon bequem zu sehen. Darüber wird das Bild nur noch größer, weicher und dunkler, und das nennt man leere Vergrößerung. Die Luft setzt in den meisten Nächten ihre eigene Obergrenze von etwa 300×, wie groß das Teleskop auch ist."
+[[faq]]
+q = "Ist ein Teleskop mit 675× besser als eines mit 100×?"
+a = "Nicht wegen dieser Zahl. Ein 60-mm-Teleskop, das mit 675× verkauft wird, kann bis etwa 120× echte Details zeigen, und der Rest ist dieselbe Unschärfe, vergrößert und abgedunkelt. Vergleichen Sie stattdessen die Öffnungen: Die größere Linse oder der größere Spiegel zeigt bei jeder Vergrößerung feinere Details und lichtschwächere Objekte."
+[[faq]]
+q = "Welche Vergrößerung zeigt die Saturnringe oder die Jupitermonde?"
+a = "Weniger, als die meisten erwarten. Die vier großen Jupitermonde zeigen sich in einem gewöhnlichen Fernglas bei 7× bis 10× als Punkte. Die Saturnringe erscheinen ab etwa 25× bis 30× als winziges Oval, und 100× oder mehr in einem Teleskop mit mindestens 60 mm Öffnung zeigen sie deutlich vom Planeten getrennt. Probieren Sie oben beides aus: Die Planeten bleiben im Sehfeld klein, und so sehen sie wirklich aus."
+[[faq]]
+q = "Was sehe ich mit einem Mikroskop bei 40×, 100×, 400× und 1000×?"
+a = "Bei 40× ist das Sehfeld etwa 4,5 mm breit: Salzkristalle, die Teile eines Insekts, das Gewebe eines Stoffs. Bei 100× sind es 1,8 mm: Pflanzenzellen wie in der Zwiebelhaut und ein Haar wie ein dickes Kabel. Bei 400× sind es 0,45 mm: einzelne Zellen mit ihren Kernen und rote Blutkörperchen als kleine Scheiben. Bei 1000× mit einem Ölimmersionsobjektiv sind es 0,18 mm: Bakterien als deutlich erkennbare Stäbchen und Punkte. Diese Breiten gelten für ein übliches 10×-Okular mit der Sehfeldzahl 18 mm."
+[[faq]]
+q = "Warum zeigt 1000× manchmal nichts Neues?"
+a = "Weil das Detail eines Mikroskops von der numerischen Apertur des Objektivs bestimmt wird, der Zahl hinter dem Schrägstrich, und nicht von der Gesamtvergrößerung. Der sinnvolle Bereich liegt etwa beim 500- bis 1000-Fachen dieser Zahl, bei einem Objektiv 40×/0.65 also bei 325× bis 650×. Wer damit über ein 25×-Okular auf 1000× kommt, vergrößert nur die Unschärfe. Ein Ölobjektiv 100×/1.25 erreicht dieselben 1000× und trennt etwa halb so große Details."
+[[faq]]
+q = "Was ist die Austrittspupille?"
+a = "Der Durchmesser des Lichtbündels, das aus dem Okular tritt und in Ihr Auge fällt: die Öffnung geteilt durch die Vergrößerung. Ist sie größer als Ihre eigene Pupille, etwa 7 mm im Dunkeln und 2 bis 3 mm bei Tageslicht, geht das zusätzliche Licht am Auge vorbei. Unter etwa 1 mm wird das Bild allmählich weicher und dunkler, und unter einem halben Millimeter sind Sie in der leeren Vergrößerung."
+[[faq]]
+q = "Wie hängt die Vergrößerung einer Lupe mit Dioptrien und Brennweite zusammen?"
+a = "Die Brennweite in Millimetern ist 1000 geteilt durch die Dioptrien, und die Vergrößerung ist 250 mm geteilt durch die Brennweite, eine Einschlaglupe mit 10× hat also 25 mm Brennweite und 40 dpt. Lupenleuchten und Leselupen mit Dioptrienangabe werden meist mit eins mehr gezählt, weil das Auge dabei als nah eingestellt gilt: +3 dpt werden als 1,75× verkauft und eine Linse mit +20 dpt als 6×, oder als 5× von einem Hersteller, der die Eins weglässt. Stärkere Linsen müssen kleiner sein und näher gehalten werden: Eine Einschlaglupe mit 10× arbeitet etwa 25 mm vom Objekt entfernt."
+[[faq]]
+q = "Ist 10× Zoom an einer Kamera dasselbe wie ein Fernglas mit 10×?"
+a = "Nein. Die Zoomangabe einer Kamera ist das Verhältnis zwischen ihrer längsten und ihrer kürzesten Brennweite, ein Objektiv mit 24&ndash;240 mm hat also 10×, was immer es zeigt. Verglichen mit Ihrem Auge, wenn man 50 mm an einer Vollformatkamera als normalen Anblick nimmt, reicht dieses Objektiv von etwa halber natürlicher Größe bis etwa 5×. Ferngläser und Teleskope geben ihre Vergrößerung gegenüber dem Auge selbst an."
+[[faq]]
+q = "Bedeutet 1000× bei einem USB-Mikroskop dasselbe?"
+a = "Das ist eine andere Rechnung. Die Angabe eines Digitalmikroskops ist die Größe des Bildes auf einem Bildschirm geteilt durch die Größe des Objekts, sie wächst also mit dem Monitor und sagt nichts über Details. Was es trennen kann, bestimmt weiterhin seine Linse. Sein Sehfeld ist der bessere Anhaltspunkt: Ein Instrument, das einen etwa 2 mm breiten Bereich zeigt, arbeitet ungefähr auf dem Niveau eines optischen Mikroskops bei 100×, was auch immer auf der Verpackung steht."
+[[faq]]
+q = "Sind die Bilder Fotos?"
+a = "Nein. Es sind Zeichnungen, die in der Seite aus den Zahlen entstehen. Die Größen sind maßstabsgetreu, die Weichheit ist die Unschärfe des Instruments in diesem Maßstab, und die Abdunklung folgt der Austrittspupille. Die Meere und größten Krater des Mondes, die Jupitermonde, die Saturnringe und die hellsten Plejaden sind nach veröffentlichten Werten platziert, und die kleineren Krater, Zellen und Federn sind Illustration. Ein echter Anblick hängt außerdem von der Luft, der Qualität der Optik und Ihren eigenen Augen ab."
+[[faq]]
+q = "Funktioniert das Werkzeug offline?"
+a = "Ja. Nachdem die Seite geladen ist, funktionieren alle Berechnungen und Zeichnungen ohne Verbindung. Nichts, was Sie eintippen, wird hochgeladen oder gespeichert."
+
+[schema]
+description = "Aus den aufgedruckten Zahlen berechnen, was ein Teleskop, ein Fernglas, ein Mikroskop oder eine Lupe wirklich zeigt, mit maßstabsgetreu gezeichnetem Bild, vollständig im Browser."
+features = ["Teleskopvergrößerung aus den Brennweiten, mit Barlowlinsen und der Feldblende des Okulars", "Fernglaszahlen wie 8×42 entschlüsselt: Austrittspupille, Sehfeld, Helligkeit bei Tag und in der Dämmerung", "Mikroskopvergrößerung mit Sehfeld aus der Sehfeldzahl und Detail aus der numerischen Apertur", "Lupenvergrößerung aus Brennweite oder Dioptrien, in beiden Zählweisen", "Ein Regler, dessen Zonen verschenktes Licht, den schärfsten Bereich, den oberen sinnvollen Bereich und leere Vergrößerung zeigen", "Drei Bilder in einem Maßstab: das ganze Sehfeld, ein genauer Blick und das bloße Auge", "Mond, Jupiter, Saturn und die Plejaden nach veröffentlichten Werten gezeichnet", "Einstellbare Augenpupille und einstellbares Gesichtsfeld des Okulars, mit den Formeln und ihren Quellen", "Unterstützung für reduzierte Bewegung", "Funktioniert offline ohne KI-Modell"]

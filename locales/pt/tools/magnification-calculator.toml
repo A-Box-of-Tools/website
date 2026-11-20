@@ -1,0 +1,113 @@
+#
+# Calculadora de aumento - Portuguese (Brazil).
+#
+# Overrides for tools/magnification-calculator/tool.toml. Only words: the slug,
+# the category, the icon and the list of shared parts stay where they are.
+#
+# "Aumento" is the word throughout, because it is what a Brazilian shop writes
+# beside 70x and what observers say; "ampliação" appears once, in the
+# description, for the reader who searches by it. What is engraved on an
+# instrument stays as engraved, decimal point included (40×/0.65), and every
+# figure written as prose takes the decimal comma.
+#
+
+name = "Calculadora de aumento"
+heading = "Calculadora&nbsp;de&nbsp;aumento <span class=\"h1-kw\">&mdash; o que um telescópio, microscópio ou binóculo mostra de verdade</span>"
+tagline = "Digite os números impressos em um telescópio, binóculo, microscópio ou lupa e veja, em escala, a vista que eles dão."
+
+title = "Calculadora de aumento &mdash; telescópio, microscópio, binóculo &mdash; grátis e offline"
+description = "Veja o que um aumento (ou ampliação) mostra de verdade. Digite os números de um telescópio, binóculo, microscópio ou lupa e obtenha a vista em escala, o campo de visão, a pupila de saída e o ponto em que mais aumento não acrescenta nada. Grátis e offline."
+og_title = "O que 675× mostra de verdade?"
+og_description = "Transforme os números de um telescópio, binóculo, microscópio ou lupa na vista que eles dão, com os limites às claras. Sem envio e sem IA."
+og_image_alt = "Calculadora de aumento - o que os números de um telescópio, microscópio ou binóculo mostram de verdade"
+
+pledge = "Um aumento é um punhado de números tirados de uma caixa e um pouco de aritmética, tudo dentro desta página. Não há serviço para consultar nem nada para enviar. As imagens são desenhos calculados a partir desses números, não fotos buscadas em algum lugar, e as regras por trás delas estão escritas ao lado do resultado."
+live_hint = "Arraste o controle com a aba Rede aberta. A calculadora não faz nenhuma requisição. Carregue a página uma vez, desconecte e continue explorando."
+read_first = ", <code>src/optics.js</code> para a aritmética dos quatro instrumentos, <code>src/subjects.js</code> para o que há para observar e o tamanho de cada coisa, <code>src/view.js</code> e os arquivos <code>src/scene-*.js</code> para as imagens, e <code>src/main.js</code> para ver como a página se conecta."
+howto_heading = "Como ler um número de aumento"
+card = "O que 8×42, 400× e 675× mostram de verdade? Digite os números de um telescópio, binóculo, microscópio ou lupa e veja a vista em escala, com o ponto em que mais aumento deixa de ajudar."
+
+[words]
+plural = "números e as vistas que eles dão"
+choose = "os números de um instrumento"
+
+[[facts]]
+text = "Funciona offline"
+[[facts]]
+text = "Sem custo de IA ou API"
+[[facts]]
+text = "Suposições claras"
+[[facts]]
+text = "Quatro instrumentos"
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "A calculadora roda neste navegador."
+body = "O código de processamento da ferramenta calcula os resultados e desenha as imagens localmente. Ele não envia nenhuma entrada nem resultado a nenhum serviço. A Content-Security-Policy restringe os destinos de conexão, mas não inspeciona o conteúdo; compare o código-fonte com a aba Rede, ou use a calculadora desconectado."
+[[privacy]]
+title = "Não há modelo, foto nem consulta em tempo real."
+body = "As fórmulas, os dados da Lua e dos planetas e os desenhos vêm todos com esta página. Nada é buscado para fazer uma imagem. Os links das fontes só abrem quando você decide lê-los."
+[[privacy]]
+title = "O que você digita fica na página."
+body = "A calculadora não grava nenhuma entrada no armazenamento nem na barra de endereços. Recarregar a página a reinicia. Trocar de idioma leva o que você digitou para a outra página, dentro deste navegador e para nenhum outro lugar."
+[[privacy]]
+title = "Os outros scripts do site têm seus próprios limites."
+body = "A estrutura da página pode carregar scripts de anúncios e medição. A calculadora não envia a eles suas entradas nem seus resultados. O painel de rede ao vivo informa as conexões da página."
+
+[[howto]]
+title = "Escolha o instrumento e digite o que está impresso nele."
+body = "Um telescópio traz sua abertura e sua distância focal, e cada ocular, a própria distância focal. Um binóculo traz dois números, como 8×42. A objetiva de um microscópio traz seu aumento e sua abertura numérica, como 40×/0.65. Uma lupa traz um aumento, uma distância focal ou dioptrias."
+[[howto]]
+title = "Arraste o controle pelas zonas."
+body = "O controle muda o aumento: trocando a ocular em um telescópio ou em um microscópio, e mudando o aumento impresso em um binóculo ou em uma lupa. Sua trilha é colorida a partir dos limites do próprio instrumento. Observe o veredito ao passar da zona nítida para o topo útil e depois para o aumento vazio."
+[[howto]]
+title = "Compare as três imagens."
+body = "A primeira é o círculo inteiro para o qual você olha, com o objeto observado em escala real. A segunda mostra de perto o meio desse círculo, com a nitidez que um bom olho teria. A terceira é essa mesma vista de perto sem instrumento nenhum, de modo que a diferença entre as duas últimas é o aumento."
+[[howto]]
+title = "Leia o que cada número significa e depois confira as suposições."
+body = "O campo de visão, a pupila de saída, o detalhe mais fino e a luz captada são calculados ao lado do resultado. Mude a largura da pupila do seu olho, o campo da ocular ou a forma de contar o aumento de uma lupa, e leia de onde vem cada regra."
+
+[[faq]]
+q = "O que significa 8×42 em um binóculo?"
+a = "O primeiro número é o aumento: as coisas parecem oito vezes mais largas, como se você estivesse oito vezes mais perto. O segundo é a largura de cada lente frontal, 42 mm. Dividir o segundo pelo primeiro dá a pupila de saída, aqui 5,25 mm, que é a largura do feixe de luz que chega ao seu olho. É por isso que um 8×42 continua claro ao anoitecer e um 8×21 não."
+[[faq]]
+q = "Como calcular o aumento de um telescópio?"
+a = "Divida a distância focal do telescópio pela da ocular. Um telescópio de 700 mm com uma ocular de 10 mm dá 70×, e uma lente Barlow 2× dobra esse valor. O telescópio não tem um aumento único que seja só dele, então uma caixa que anuncia um está descrevendo a ocular mais curta, e não a vista."
+[[faq]]
+q = "Qual é o aumento máximo útil de um telescópio?"
+a = "Cerca de duas vezes a abertura em milímetros, ou 50× por polegada: 140× para um telescópio de 70 mm e 400× para um de 200 mm. O detalhe é definido pela largura da lente ou do espelho, e nesse ponto ele já está todo confortavelmente visível. Além disso, a imagem só fica maior, menos nítida e mais escura, o que se chama aumento vazio. O ar impõe seu próprio teto de cerca de 300× na maioria das noites, por maior que seja o telescópio."
+[[faq]]
+q = "Um telescópio de 675× é melhor que um de 100×?"
+a = "Não por esse número. Um telescópio de 60 mm vendido como 675× consegue mostrar detalhe de verdade até cerca de 120×, e o resto é o mesmo borrão, ampliado e escurecido. Compare as aberturas: a lente ou o espelho mais largo mostra detalhes mais finos e objetos de brilho mais fraco em qualquer aumento."
+[[faq]]
+q = "Qual aumento é preciso para ver os anéis de Saturno ou as luas de Júpiter?"
+a = "Menos do que a maioria das pessoas imagina. As quatro grandes luas de Júpiter aparecem como pontos em um binóculo comum, de 7× a 10×. Os anéis de Saturno surgem a partir de cerca de 25× a 30× como um oval minúsculo, e 100× ou mais, em um telescópio de 60 mm de largura ou mais, mostram os anéis claramente separados do planeta. Experimente os dois acima: os planetas continuam pequenos na vista, e é assim que eles aparecem de verdade."
+[[faq]]
+q = "O que dá para ver em um microscópio a 40×, 100×, 400× e 1000×?"
+a = "A 40×, a vista tem cerca de 4,5 mm de largura: cristais de sal, as partes de um inseto, a trama de um tecido. A 100×, tem 1,8 mm: células vegetais, como as da película de cebola, e um fio de cabelo parecendo um cabo grosso. A 400×, tem 0,45 mm: células individuais com seus núcleos, e glóbulos vermelhos como pequenos discos. A 1000×, com uma objetiva de imersão em óleo, tem 0,18 mm: bactérias como bastonetes e pontos distintos. Essas larguras supõem uma ocular comum de 10× com número de campo de 18 mm."
+[[faq]]
+q = "Por que 1000× às vezes não mostra nada de novo?"
+a = "Porque o detalhe de um microscópio é definido pela abertura numérica da objetiva, o número depois da barra, e não pelo aumento total. A faixa útil vai de cerca de 500 a 1.000 vezes esse número, ou seja, de 325× a 650× para uma objetiva 40×/0.65. Chegar a 1000× com ela, usando uma ocular de 25×, só amplia o borrão. Uma objetiva de imersão em óleo 100×/1.25 chega aos mesmos 1000× e separa detalhes com cerca de metade do tamanho."
+[[faq]]
+q = "O que é a pupila de saída?"
+a = "A largura do feixe de luz que sai da ocular e entra no seu olho: a abertura dividida pelo aumento. Se ele for mais largo que a sua própria pupila, que tem cerca de 7 mm no escuro e de 2 a 3 mm à luz do dia, a luz que sobra não entra no olho. Abaixo de cerca de 1 mm, a imagem começa a perder nitidez e brilho, e com menos de meio milímetro você já está no aumento vazio."
+[[faq]]
+q = "Qual é a relação entre o aumento de uma lupa, as dioptrias e a distância focal?"
+a = "A distância focal em milímetros é 1.000 dividido pelas dioptrias, e o aumento é 250 mm divididos pela distância focal, então uma lupa de joalheiro de 10× tem distância focal de 25 mm e 40 dioptrias. As luminárias com lupa e as lupas de leitura marcadas em dioptrias costumam ser contadas com um a mais, com o olho focado de perto: +3 dioptrias são vendidas como 1,75×, e uma lente de +20 dioptrias como 6×, ou como 5× por um fabricante que não soma esse um. Lentes mais fortes precisam ser menores e ficar mais perto: uma lupa de 10× trabalha a cerca de 25 mm do objeto."
+[[faq]]
+q = "O zoom de 10× de uma câmera é o mesmo que um binóculo de 10×?"
+a = "Não. O número de zoom de uma câmera é a razão entre a maior e a menor distância focal, então uma lente de 24&ndash;240 mm é 10×, mostre o que mostrar. Em comparação com o seu olho, tomando 50 mm como a visão normal em uma câmera full frame, essa lente vai de cerca de metade do tamanho natural a cerca de 5×. Binóculos e telescópios informam o aumento em relação ao próprio olho."
+[[faq]]
+q = "Os 1000× de um microscópio USB querem dizer a mesma coisa?"
+a = "É outra conta. O número de um microscópio digital é o tamanho da imagem na tela dividido pelo tamanho do objeto, então ele cresce com o monitor e não diz nada sobre o detalhe. O que ele consegue separar continua sendo definido pela lente. O campo de visão é um guia melhor: um instrumento que mostra uma área de cerca de 2 mm de largura está trabalhando mais ou menos no nível de um microscópio óptico de 100×, diga a caixa o que disser."
+[[faq]]
+q = "As imagens são fotos?"
+a = "Não. São desenhos feitos na página a partir dos números. Os tamanhos estão em escala real, a falta de nitidez é o borrão do próprio instrumento nessa escala, e o escurecimento acompanha a pupila de saída. Os mares e as maiores crateras da Lua, as luas de Júpiter, os anéis de Saturno e as Plêiades mais brilhantes são posicionados a partir de valores publicados, e as crateras menores, as células e as penas são ilustração. Uma vista real também depende do ar, da qualidade da óptica e dos seus próprios olhos."
+[[faq]]
+q = "A ferramenta funciona offline?"
+a = "Sim. Depois que a página carrega, todos os cálculos e desenhos funcionam sem conexão. Nada do que você digita é enviado nem armazenado."
+
+[schema]
+description = "Descubra o que um telescópio, um binóculo, um microscópio ou uma lupa mostra de verdade a partir dos números impressos no instrumento, com a vista desenhada em escala, tudo no navegador."
+features = ["Aumento do telescópio a partir das distâncias focais, com lentes Barlow e o diafragma de campo da ocular", "Números de binóculo como 8×42 decifrados: pupila de saída, campo de visão, brilho de dia e ao anoitecer", "Aumento do microscópio com o campo de visão a partir do número de campo e o detalhe a partir da abertura numérica", "Aumento da lupa a partir da distância focal ou das dioptrias, nas duas convenções", "Um controle cujas zonas mostram a luz desperdiçada, a faixa mais nítida, o topo útil e o aumento vazio", "Três imagens em uma única escala: a vista inteira, uma vista de perto e o olho nu", "A Lua, Júpiter, Saturno e as Plêiades desenhados a partir de valores publicados", "Pupila do olho e campo da ocular ajustáveis, com as fórmulas e suas fontes", "Suporte a movimento reduzido", "Funciona offline sem modelo de IA"]

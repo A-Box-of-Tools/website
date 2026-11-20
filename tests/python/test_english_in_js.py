@@ -118,6 +118,7 @@ BASELINE = {
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,
+    'magnification-calculator': 0,
     'merge-pdf': 2,
     # A canvas font shorthand and a colour template, both in paint.js. Neither
     # is a word: everything the scenes draw is handed in from #phrases.

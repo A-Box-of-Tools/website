@@ -1,0 +1,213 @@
+<main id="main" data-world="telescope">
+  <section class="card mc-card" aria-labelledby="start-title">
+    <div class="mc-heading"><span class="mc-eyebrow">包装盒上的数字是什么意思</span><span class="mc-badge">可离线使用 · 不需要 AI</span></div>
+    <h2 id="start-title">这个放大倍率到底能看到什么？</h2>
+    <p class="card-lede">输入天文望远镜、双筒望远镜、显微镜或放大镜上印的数字。页面会按比例画出它们给出的视野，旁边是只凭肉眼看到的样子，还会告诉你，数字大到哪里就再也看不到新东西。</p>
+
+    <div class="mc-worlds" role="radiogroup" aria-label="仪器">
+      <label class="mc-world"><input type="radio" name="world" value="telescope" checked><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 13.5l11-5.5 2 4-11 5.500zM14.500 8l4-2 2 4-4 2M9 16.500L6.500 21M10.500 15.500L13.500 21"/></svg><span class="mc-world-name">天文望远镜</span><span class="mc-world-value" id="tab-telescope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="binoculars"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="16" r="4"/><circle cx="17" cy="16" r="4"/><path d="M4.500 12.500L6.500 5h3l1.500 7.500M12.500 12.500L14 5h3l2.500 7.500M11 15h2"/></svg><span class="mc-world-name">双筒望远镜</span><span class="mc-world-value" id="tab-binoculars"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="microscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3l4.500 8M8 6.500l3.500-2M6 21h12M9 21v-3M8.500 15.500a6 6 0 0 0 8.500-5.500M13 18h5"/></svg><span class="mc-world-name">显微镜</span><span class="mc-world-value" id="tab-microscope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="magnifier"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><span class="mc-world-name">放大镜</span><span class="mc-world-value" id="tab-magnifier"></span></label>
+    </div>
+
+    <fieldset class="mc-form" data-for="telescope">
+      <legend>天文望远镜上的数字</legend>
+      <div class="settings">
+        <div class="field"><label for="tel-aperture">口径（物镜或主镜）</label><div class="inline-pair"><input id="tel-aperture" type="number" inputmode="decimal" min="20" max="2000" step="any" value="70" aria-describedby="input-error"><span>毫米</span></div>
+          <p class="field-note" data-for="telescope">物镜或主镜的宽度，也就是“D = 70 mm”里的 D，或者 70/700 这类型号里的第一个数。1 英寸是 25.4 毫米，所以 8 英寸的望远镜填 203。</p></div>
+        <div class="field"><label for="tel-focal">望远镜焦距</label><div class="inline-pair"><input id="tel-focal" type="number" inputmode="decimal" min="100" max="30000" step="any" value="700" aria-describedby="input-error"><span>毫米</span></div>
+          <p class="field-note" data-for="telescope">也就是“F = 700 mm”里的 F。如果只标了焦比，就用它乘以口径。比如口径 130 毫米、焦比 f/5，焦距就是 650 毫米。</p></div>
+        <div class="field"><label for="tel-eyepiece">目镜焦距</label><div class="inline-pair"><input id="tel-eyepiece" type="number" inputmode="decimal" min="2" max="60" step="any" value="10" aria-describedby="input-error"><span>毫米</span></div>
+          <p class="field-note" data-for="telescope">刻在目镜上，比如 25 mm、10 mm，或者 H20、SR4 这样的字母加数字。下面的滑块会替你改这个数。</p></div>
+        <div class="field"><label for="tel-barlow">巴洛镜</label><select id="tel-barlow"><option value="1" selected>无</option><option value="2">2×</option><option value="3">3×</option></select>
+          <p class="field-note" data-for="telescope">巴洛镜装在望远镜和目镜之间，把放大倍率成倍提高。它本身不增加任何细节。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="binoculars">
+      <legend>双筒望远镜上的数字</legend>
+      <div class="settings">
+        <div class="field"><label for="bin-power">放大倍率（第一个数字）</label><div class="inline-pair"><input id="bin-power" type="number" inputmode="decimal" min="2" max="100" step="any" value="8" aria-describedby="input-error"><span>倍</span></div>
+          <p class="field-note" data-for="binoculars">8×42 里的 8。变倍型号印的是一个范围，比如 10-30×50，两头都可以试试。</p></div>
+        <div class="field"><label for="bin-objective">物镜口径（第二个数字）</label><div class="inline-pair"><input id="bin-objective" type="number" inputmode="decimal" min="10" max="250" step="any" value="42" aria-describedby="input-error"><span>毫米</span></div>
+          <p class="field-note" data-for="binoculars">8×42 里的 42。它决定进多少光，也就决定了黄昏时视野还能有多亮。</p></div>
+        <div class="field mc-wide"><label for="bin-field">视场（如果印了）</label><div class="inline-pair"><input id="bin-field" type="number" inputmode="decimal" min="0.3" max="600" step="any" aria-describedby="bin-field-read input-error"><select id="bin-field-unit" aria-label="视场的标注方式"><option value="degrees" selected>度</option><option value="metres">米（千米视野）</option><option value="feet">英尺（千码视野）</option></select></div>
+          <p id="bin-field-read" class="field-note"></p>
+          <p class="field-note" data-for="binoculars">有的印成角度，比如 7.5°。有的印成一定距离上的宽度，比如千米视野 131 米，也就是 1000 米处宽 131 米，或者千码视野 393 英尺。不填就按常见值算。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="microscope" id="microscope-form">
+      <legend>显微镜上的数字</legend>
+      <div class="mc-turret chips" role="radiogroup" aria-labelledby="objective-label"><span class="chips-label" id="objective-label">物镜</span>
+        <label class="chip"><input type="radio" name="mic-objective" value="4">4×/0.10</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="10" checked>10×/0.25</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="40">40×/0.65</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="100">100×/1.25 油浸</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="custom">其他</label>
+      </div>
+      <div class="settings">
+        <div class="field mc-custom"><label for="mic-power">物镜倍率</label><div class="inline-pair"><input id="mic-power" type="number" inputmode="decimal" min="1" max="250" step="any" value="20" aria-describedby="input-error"><span>倍</span></div></div>
+        <div class="field mc-custom"><label for="mic-na">数值孔径（NA）</label><input id="mic-na" type="number" inputmode="decimal" min="0.02" max="1.6" step="any" value="0.4" aria-describedby="input-error">
+          <p class="field-note" data-for="microscope">物镜上斜杠后面的数，比如 40×/0.65 里的 0.65。决定最小细节的是它，不是放大倍率。</p></div>
+        <div class="field"><label for="mic-eyepiece">目镜倍率</label><div class="inline-pair"><input id="mic-eyepiece" type="number" inputmode="decimal" min="2" max="40" step="any" value="10" aria-describedby="input-error"><span>倍</span></div>
+          <p class="field-note" data-for="microscope">刻在目镜上，通常是 10×。下面的滑块会替你改这个数。</p></div>
+        <div class="field"><label for="mic-fn">视场数（如果刻了）</label><div class="inline-pair"><input id="mic-fn" type="number" inputmode="decimal" min="4" max="30" step="any" aria-describedby="mic-fn-read input-error"><span>毫米</span></div>
+          <p id="mic-fn-read" class="field-note"></p>
+          <p class="field-note" data-for="microscope">标着 10×/18 的目镜上，第二个数就是它。它除以物镜倍率，就是你能看到的标本宽度。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="magnifier">
+      <legend>放大镜上的数字</legend>
+      <div class="settings">
+        <div class="field mc-wide"><label for="mag-value">上面印的数字</label><div class="inline-pair"><input id="mag-value" type="number" inputmode="decimal" min="1.1" max="500" step="any" value="10" aria-describedby="mag-read input-error"><select id="mag-unit" aria-label="这个数字是什么"><option value="power" selected>倍（放大倍率）</option><option value="dioptre">屈光度</option><option value="focal">毫米（焦距）</option></select></div>
+          <p id="mag-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">珠宝放大镜标 10×，阅读放大镜标 2× 或 3×，带灯放大镜常标屈光度，比如 +3 或 +5，单独一片镜片则标焦距。</p></div>
+        <div class="field"><label for="mag-lens">镜片宽度（如果知道）</label><div class="inline-pair"><input id="mag-lens" type="number" inputmode="decimal" min="4" max="250" step="any" aria-describedby="mag-lens-read input-error"><span>毫米</span></div>
+          <p id="mag-lens-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">倍率越高，镜片越小，一次能看到的也越少。不填就按常见宽度算。</p></div>
+      </div>
+    </fieldset>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <div class="mc-dial">
+      <p class="mc-readout"><span class="mc-readout-label">放大倍率</span> <output id="power" for="dial" class="mc-readout-number"></output> <span id="power-how" class="mc-readout-how"></span></p>
+      <input type="range" id="dial" min="0" max="1000" step="1" value="500" aria-label="放大倍率">
+      <div class="mc-ticks" id="dial-ticks" aria-hidden="true"></div>
+      <ul class="mc-legend" id="dial-legend" aria-hidden="true"></ul>
+    </div>
+    <p id="verdict" class="mc-verdict"><strong id="verdict-zone"></strong> <span id="verdict-text"></span></p>
+
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-telescope-label" data-for="telescope"><span class="chips-label" id="look-telescope-label">观察</span>
+      <label class="chip"><input type="radio" name="look-telescope" value="moon" checked>月球</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="jupiter">木星</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="saturn">土星</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="pleiades">昴星团</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-binoculars-label" data-for="binoculars"><span class="chips-label" id="look-binoculars-label">观察</span>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-day" checked>白天的鸟</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-dusk">黄昏的鸟</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="moon">月球</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="pleiades">昴星团</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-microscope-label" data-for="microscope"><span class="chips-label" id="look-microscope-label">观察</span>
+      <label class="chip"><input type="radio" name="look-microscope" value="onion" checked>洋葱表皮</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="blood">血液</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="hair">头发</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="salt">盐</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="bacteria">细菌</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-magnifier-label" data-for="magnifier"><span class="chips-label" id="look-magnifier-label">观察</span>
+      <label class="chip"><input type="radio" name="look-magnifier" value="print" checked>印刷小字</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="ruler">尺子</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="salt">盐</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="hair">头发</label>
+    </div>
+
+    <div class="mc-stage">
+      <figure class="mc-fig mc-whole"><canvas id="view" role="img" aria-label="透过仪器看到的整个视野"></canvas><figcaption>整个视野</figcaption></figure>
+      <figure class="mc-fig mc-close"><canvas id="close" role="img" aria-label="视野中央的特写"></canvas><figcaption>视野中央的特写</figcaption></figure>
+      <figure class="mc-fig mc-bare"><canvas id="bare" role="img" aria-label="只凭肉眼看到的同一处特写"></canvas><figcaption>同一处特写，只凭肉眼</figcaption></figure>
+    </div>
+    <p id="stage-caption" class="mc-caption"></p>
+
+    <div class="mc-answer"><p id="answer-story" class="mc-story"></p><p id="answer-fit" class="mc-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+  </section>
+
+  <section class="card mc-more" aria-labelledby="numbers-title">
+    <div class="mc-numbers">
+      <h3 id="numbers-title">每个数字的含义</h3>
+      <dl class="mc-stats" data-for="telescope">
+        <div><dt>放大倍率</dt><dd><strong id="tel-s-power"></strong> <span>所有东西看起来比只凭肉眼时宽多少倍，等于望远镜的焦距除以目镜的焦距。</span></dd></div>
+        <div><dt>视场</dt><dd><strong id="tel-s-field"></strong> <span>目镜里装得下多宽的一片天空。倍率越高，视场越小。</span></dd></div>
+        <div><dt>出瞳</dt><dd><strong id="tel-s-pupil"></strong> <span>离开目镜的光束宽度，等于口径除以放大倍率。越宽越亮，上限是你自己瞳孔的宽度。</span></dd></div>
+        <div><dt>最小细节</dt><dd><strong id="tel-s-detail"></strong> <span>这个口径能分开的最小细节，倍率多高都一样。只有更宽的物镜或主镜才能让它更小。</span></dd></div>
+        <div><dt>集光力</dt><dd><strong id="tel-s-light"></strong> <span>和你的眼睛在暗处的瞳孔相比。能让暗弱天体现身的是它，不是放大倍率。</span></dd></div>
+        <div><dt>有效倍率</dt><dd><strong id="tel-s-range"></strong> <span>下限是不浪费光的最低倍率，上限是还有帮助的最高倍率。上限大约是口径毫米数的两倍，隔着大气也很少超过 300 倍。</span></dd></div>
+        <div><dt>焦比</dt><dd><strong id="tel-s-ratio"></strong> <span>焦距除以口径。它说明低倍下的视野能有多宽、多亮，和望远镜能放大多少倍无关。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="binoculars">
+        <div><dt>放大倍率</dt><dd><strong id="bin-s-power"></strong> <span>第一个数字。东西看起来宽这么多倍，就像你离它近了这么多倍。</span></dd></div>
+        <div><dt>物镜口径</dt><dd><strong id="bin-s-objective"></strong> <span>第二个数字，也就是前端每片物镜的宽度。镜片越宽，收的光越多，双筒望远镜也越重。</span></dd></div>
+        <div><dt>出瞳</dt><dd><strong id="bin-s-pupil"></strong> <span>第二个数字除以第一个数字，就是到达每只眼睛的光束宽度。你的瞳孔白天是 2 到 3 毫米，黄昏约 5 毫米，暗处最大到 7 毫米。</span></dd></div>
+        <div><dt>这种光线下的亮度</dt><dd><strong id="bin-s-light"></strong> <span>和只凭肉眼看同一场景相比。光束一旦比瞳孔窄，亮度就往下掉。</span></dd></div>
+        <div><dt>视场</dt><dd><strong id="bin-s-field"></strong> <span>视野横向能装下多少景物。它印成角度，或者印成某个固定距离上的宽度。</span></dd></div>
+        <div><dt>黄昏系数</dt><dd><strong id="bin-s-twilight"></strong> <span>两个数字相乘再开平方。厂家把它印出来，提示弱光下能看到多少细节。倍率越高它越大，但黄昏时视野还有多亮，要看出瞳。</span></dd></div>
+        <div><dt>手持</dt><dd><strong id="bin-s-hand"></strong> <span>手抖也会跟着一起被放大。大约 8 倍以内容易端稳，过了大约 12 倍，三脚架比多出来的倍率更管用。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="microscope">
+        <div><dt>总放大倍率</dt><dd><strong id="mic-s-power"></strong> <span>物镜倍率乘以目镜倍率，是和把同一件东西放在离眼睛 25 厘米处相比。</span></dd></div>
+        <div><dt>视场</dt><dd><strong id="mic-s-field"></strong> <span>你能看到的标本宽度，等于目镜的视场数除以物镜倍率。</span></dd></div>
+        <div><dt>最小细节</dt><dd><strong id="mic-s-detail"></strong> <span>这只物镜能分开的最小细节，由它的数值孔径决定。换更高倍的目镜也改变不了。</span></dd></div>
+        <div><dt>有效倍率</dt><dd><strong id="mic-s-range"></strong> <span>从敏锐的眼睛刚好能看清物镜分辨出的一切，到再也没有东西可放大为止，大约是数值孔径的 220 到 1000 倍。厂家说的是它的上半段，500 到 1000 倍。</span></dd></div>
+        <div><dt>出瞳</dt><dd><strong id="mic-s-pupil"></strong> <span>离开目镜的光束宽度。小于大约半毫米时，画面只是被放大而已。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="magnifier">
+        <div><dt>放大倍率</dt><dd><strong id="mag-s-power"></strong> <span>和把东西放在离眼睛 25 厘米处相比，它看起来宽多少倍。</span></dd></div>
+        <div><dt>焦距</dt><dd><strong id="mag-s-focal"></strong> <span>镜片大约要离物体多远。倍率越高的镜片，离得越近。</span></dd></div>
+        <div><dt>屈光度</dt><dd><strong id="mag-s-diopters"></strong> <span>1000 除以焦距的毫米数。眼镜店和带灯放大镜用的是这个数。</span></dd></div>
+        <div><dt>一次能看到的宽度</dt><dd><strong id="mag-s-field"></strong> <span>眼睛贴近镜片时，大约等于镜片的宽度。高倍放大镜一次只能看到一小块，原因就在这里。</span></dd></div>
+        <div><dt>最小细节</dt><dd><strong id="mag-s-detail"></strong> <span>敏锐的眼睛透过它能分开的最小细节，等于眼睛自身的极限除以放大倍率。</span></dd></div>
+      </dl>
+    </div>
+    <div class="mc-side">
+      <h3 id="ladder-title">同一台仪器，换别的倍率</h3>
+      <p class="field-note">每一行都是根据上面的数字算出来的。点一行就能试试。</p>
+      <ol class="mc-ladder" id="ladder" aria-labelledby="ladder-title"></ol>
+      <h3>或者试试</h3>
+      <div class="mc-example-row">
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=4 tel-barlow=3 look-telescope=moon">标称 675× 的 60 毫米望远镜</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=20 tel-barlow=1 look-telescope=moon">同一台望远镜，45 倍</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=130 tel-focal=650 tel-eyepiece=5 tel-barlow=1 look-telescope=saturn">130 毫米望远镜里的土星</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=42 bin-field= look-binoculars=bird-dusk">黄昏时的 8×42 双筒望远镜</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=21 bin-field= look-binoculars=bird-dusk">黄昏时的袖珍 8×21</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=40 mic-eyepiece=25 mic-fn= look-microscope=bacteria">用高倍目镜凑出的 1000 倍</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=100 mic-eyepiece=10 mic-fn= look-microscope=bacteria">用油浸物镜得到的 1000 倍</button>
+        <button type="button" class="ghost" data-example="world=magnifier mag-value=10 mag-unit=power mag-lens= look-magnifier=print">10 倍的珠宝放大镜</button>
+      </div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>这些是怎么算出来的？</summary>
+    <p>你输入的数字按仪器上印的原样采用。其余都是根据下面这些数值做的算术，你可以修改，也可以核对。</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="eye-pupil">暗处的瞳孔大小</label><select id="eye-pupil"><option value="7" selected>7 毫米 · 年轻人的眼睛</option><option value="6">6 毫米</option><option value="5">5 毫米 · 年长者的眼睛</option></select><p class="field-note">瞳孔能张到的最大宽度，用于夜空。年纪越大，它越小。白天按 2.5 毫米算，黄昏按 5 毫米算。</p></div>
+      <div class="field"><label for="apparent-field">目镜里的圆有多宽</label><select id="apparent-field"><option value="40">40° · 简单目镜</option><option value="52" selected>52° · 普洛素目镜（Plössl），最常见的一种</option><option value="68">68° · 广角</option><option value="82">82° · 超广角</option></select><p class="field-note">天文望远镜目镜的表观视场。表观视场越宽，同样倍率下看到的天空越多，视野里的东西并不会变大。</p></div>
+      <div class="field"><label for="barrel">目镜接口</label><select id="barrel"><option value="27" selected>1.25 英寸</option><option value="46">2 英寸</option></select><p class="field-note">接口限制了长焦距目镜的视场能有多宽。1.25 英寸的接口里大约是 27 毫米，2 英寸的是 46 毫米。</p></div>
+      <div class="field"><label for="mag-rule">放大镜的倍率怎么算</label><select id="mag-rule"><option value="auto" selected>按标注的通常含义</option><option value="relaxed">250 毫米 ÷ 焦距</option><option value="close">250 毫米 ÷ 焦距，再加 1</option></select><p class="field-note">两种算法都有人用。用 250 毫米除以焦距，是假定眼睛放松，标着倍率的珠宝放大镜通常这么算。再加 1，是假定眼睛对焦到最近处，标着屈光度的带灯放大镜和阅读放大镜就是这么卖的，比如 +3 屈光度标成 1.75×。只要你没在这里选定一种，页面就按你输入的那类数字选用对应的算法。</p></div>
+    </div>
+    <p><strong>一种模糊，三条经验法则。</strong>任何透镜都会把一个光点摊成一个小圆斑，目镜把这个圆斑和其他一切一起放大。按绿光的瑞利判据，透过 1 毫米的出瞳看，这个圆斑宽约 2.3 角分，出瞳越小，它越宽。敏锐的眼睛能分开 1 角分。所以出瞳大于 2.3 毫米时，限制你所见的是眼睛，不是透镜。出瞳 1 毫米时，透镜分辨出的一切都大得足够看清。出瞳小于 0.5 毫米时，变大的只剩模糊本身。对天文望远镜来说，这三个点对应的倍率是口径毫米数除以 2.3、口径毫米数本身，以及口径毫米数的两倍。对显微镜来说，大约是数值孔径的 217 倍、500 倍和 1000 倍。</p>
+    <p><strong>天文望远镜。</strong>放大倍率是望远镜的焦距除以目镜的焦距，有巴洛镜再乘上它的倍数。出瞳是口径除以放大倍率。最小细节是 138 角秒除以口径的毫米数。道斯更早为分辨双星给出的数字，也就是道斯极限，是 116 除以口径，比它小大约六分之一。视场是目镜的表观视场除以放大倍率，再受目镜接口限制。超过大约 300 倍，大气视宁度通常跟不上，望远镜还能多给的细节会被空气的抖动盖掉。</p>
+    <p><strong>双筒望远镜。</strong>出瞳是物镜口径除以放大倍率。亮度是出瞳与你自己瞳孔之比的平方，最大不超过 1。按宽度给出的视场会精确换算成角度，所以千米视野 131 米和千码视野 393 英尺都是 7.5°。画出来的圆是放大倍率乘以这个角度。一个较新的标准改用正切来算，同一副望远镜会少大约五度。</p>
+    <p><strong>显微镜。</strong>总放大倍率是物镜倍率乘以目镜倍率。最小细节是 0.61 乘以波长再除以数值孔径，在绿光下就是 0.34 微米除以数值孔径。视野里的标本宽度是视场数除以物镜倍率。目镜上没刻视场数时，按 180 毫米除以目镜倍率算，10 倍目镜就是 18 毫米，而且不超过标准目镜筒容得下的 20 毫米。灯总可以调亮，所以这些图不做变暗处理。</p>
+    <p><strong>放大镜。</strong>单片透镜的倍率，是和把同一物体放在离眼睛 250 毫米处相比。眼睛放松时是 250 毫米除以焦距，眼睛对焦在近处时再加 1。它的焦距是 1000 毫米除以屈光度。透过它看到的范围按镜片自身的宽度算，眼睛在镜片后方大约一个焦距处时，这个算法成立。</p>
+    <p><strong>这些图。</strong>三张图都按同一个角度比例画。圆圈是眼睛看到的目镜视场，里面的一切都是放大倍率让它看起来的那个宽度。特写用屏幕上的一个像素表示视野里的 2 角分，在平常的距离上看手机或笔记本电脑，这接近实际看到的大小。特写里的柔化就是上面说的那种模糊。一个表面的亮度按出瞳与瞳孔之比的平方下降，但要等目标富余的光被它用完，画面才会变暗。满月按每平方米 2500 坎德拉算，低于 2 就算昏暗。木星和土星按它们接收并反射的阳光成比例变暗。阳光下的景物按 5000 算，黄昏时按 3 算。恒星是光点，不会这样变暗，暗到集光力不足以显示的那些就不画。</p>
+    <p><strong>画的是什么。</strong>月球宽 3475 公里，距离 384400 公里。月海和大约二十个最大的环形山都在真实的位置上，较小的环形山是按规则撒上去的。木星和土星取冲日时的平均距离，分别是 6.29 亿公里和 12.77 亿公里。木星的卫星和土卫六画在轨道上的常见位置，它们几天就绕完一圈。昴星团是星表里最亮的十一颗星。鸟身长 14 厘米，距离 20 米。载玻片上，一个洋葱细胞长 0.3 毫米，一个红细胞 7.5 微米，一根头发 0.07 毫米，一粒食盐约 0.3 毫米，一个细菌 2 微米。印刷品上是 8 磅和 5 磅的字，下面是几行高四分之一毫米的缩微文字。</p>
+    <p class="source-links">参考资料：<a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASA 行星资料表</a> · <a href="https://www.microscopyu.com/microscopy-basics/useful-magnification-range" target="_blank" rel="noopener noreferrer">尼康 MicroscopyU 谈有效放大倍率范围</a> · <a href="https://www.leica-microsystems.com/science-lab/microscopy-basics/what-is-empty-magnification/" target="_blank" rel="noopener noreferrer">徕卡谈空放大</a> · <a href="https://planetarynames.wr.usgs.gov/" target="_blank" rel="noopener noreferrer">IAU 的月面地名和位置</a>。这些链接只是延伸阅读，计算器不会访问它们。</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="unit.times">{number} 倍</span><span data-phrase="unit.um">{number} 微米</span><span data-phrase="unit.arcsec">{number}″</span><span data-phrase="unit.arcmin">{number}′</span><span data-phrase="unit.diopter">{number} D</span><span data-phrase="unit.ratio">f/{number}</span><span data-phrase="unit.far">{number}{unit}</span>
+    <span data-phrase="how.telescope">{focal} ÷ {eyepiece}</span><span data-phrase="how.telescope.barlow">{focal} × {barlow} ÷ {eyepiece}</span><span data-phrase="how.binoculars">两个数字中的第一个</span><span data-phrase="how.microscope">{objective} × {eyepiece}</span><span data-phrase="how.magnifier">250 毫米 ÷ {focal}</span><span data-phrase="how.magnifier.close">250 毫米 ÷ {focal}，再加 1</span>
+    <span data-phrase="zone.wasted">浪费光线</span><span data-phrase="zone.spare">还有余量</span><span data-phrase="zone.sharp">最清晰</span><span data-phrase="zone.full">有效高倍</span><span data-phrase="zone.empty">空放大</span><span data-phrase="zone.light.full">明亮</span><span data-phrase="zone.light.less">略暗</span><span data-phrase="zone.light.dim">这种光线下偏暗</span><span data-phrase="zone.steady">端得稳</span><span data-phrase="zone.care">手要稳</span><span data-phrase="zone.tripod">需要三脚架</span><span data-phrase="zone.reading">阅读放大镜</span><span data-phrase="zone.inspect">检验放大镜</span><span data-phrase="zone.loupe">珠宝放大镜</span><span data-phrase="zone.beyond">超出单片透镜</span>
+    <span data-phrase="verdict.telescope.wasted">这个倍率低于这台望远镜用得上的范围。离开目镜的光束宽 {pupil}，比你的瞳孔还宽，有一部分光进不了眼睛。低于大约 {low}，倍率再降也没有好处。</span><span data-phrase="verdict.telescope.spare">明亮、开阔，也清晰。在这个倍率下，限制细节的是你的眼睛，不是望远镜，所以倍率再高还能看到更多，直到大约 {sharp}。</span><span data-phrase="verdict.telescope.sharp">这是看起来最清晰的范围。这台望远镜能分辨的一切，现在都大到敏锐的眼睛足以看清，画面也依然锐利。</span><span data-phrase="verdict.telescope.full">这是有效倍率的高段。过了大约 {full}，就没有新细节出现了，只是更大、更容易看，画面也更柔、更暗。</span><span data-phrase="verdict.telescope.empty">过了大约 {high}，这台望远镜就没有更多细节可给了。画面只会更大、更糊、更暗。</span><span data-phrase="verdict.seeing">不管用什么望远镜，大气视宁度很少好到能撑起 300 倍以上。</span>
+    <span data-phrase="verdict.microscope.spare">清晰，看着也轻松。物镜分辨出的细节，比你的眼睛在这个倍率下能认出的还细，所以换更高倍的目镜还能看到更多，直到大约 {sharp}。</span><span data-phrase="verdict.microscope.sharp">这是最锐利的范围。这只物镜分辨出的一切，现在都大到敏锐的眼睛足以看清。</span><span data-phrase="verdict.microscope.full">这是有效倍率的高段，这只物镜是 {full}～{high}。没有新细节出现，只是更大、更容易看。</span><span data-phrase="verdict.microscope.empty">过了大约 {high}，这只物镜就没有更多细节可给了，换更高倍的目镜只是把模糊放大。要更多细节，得靠更高的数值孔径，不是更高的倍率。</span>
+    <span data-phrase="verdict.binoculars.light.full">在这种光线下，已经和眼睛能接收的一样亮。离开每只目镜的光束宽 {pupil}，和你的瞳孔一样宽，或者更宽。</span><span data-phrase="verdict.binoculars.light.less">在这种光线下比肉眼所见略暗，亮度是肉眼的 {share}，因为光束只有 {pupil}，比你的瞳孔窄。</span><span data-phrase="verdict.binoculars.light.dim">在这种光线下偏暗，亮度只有肉眼的 {share}。光束只有 {pupil}，比你的瞳孔窄得多。</span><span data-phrase="verdict.binoculars.hand.steady">很容易端稳。</span><span data-phrase="verdict.binoculars.hand.care">到了这个倍率，手抖开始让细节发糊，把手肘撑稳。</span><span data-phrase="verdict.binoculars.hand.tripod">倍率太高，手持不住。视野抖掉的，比放大换来的还多。请用三脚架，或者换一副防抖的双筒望远镜。</span>
+    <span data-phrase="verdict.magnifier.reading">一片大镜片，举在纸面上方较高处，离纸大约 {focal}，一次能看到的宽度是 {field}。</span><span data-phrase="verdict.magnifier.inspect">把它举在物体上方大约 {focal}。一次能看到的宽度是 {field}。</span><span data-phrase="verdict.magnifier.loupe">把它贴到眼前，再让物体靠近到离镜片大约 {focal}。一次能看到的宽度是 {field}。</span><span data-phrase="verdict.magnifier.beyond">这么高倍的单片透镜非常小，几乎贴着物体，距离只有大约 {focal}。到了这一步，显微镜更合适。</span>
+    <span data-phrase="subject.moon">月球</span><span data-phrase="subject.jupiter">木星</span><span data-phrase="subject.saturn">土星连同光环</span><span data-phrase="subject.pleiades">昴星团</span><span data-phrase="subject.bird-day">一只小鸟</span><span data-phrase="subject.bird-dusk">黄昏时的一只小鸟</span><span data-phrase="subject.onion">一个洋葱细胞</span><span data-phrase="subject.blood">一个红细胞</span><span data-phrase="subject.hair">一根头发</span><span data-phrase="subject.salt">一粒盐</span><span data-phrase="subject.bacteria">一个细菌</span><span data-phrase="subject.print">一行 8 磅的印刷字</span><span data-phrase="subject.ruler">尺子上的一毫米</span>
+    <span data-phrase="story.far">{name}，距离 {far}，看上去就像只隔着 {near}。</span><span data-phrase="story.far.bound">{name}，距离 {far}，大小像只隔着 {near}，细节却只相当于隔着 {detail}。</span><span data-phrase="story.near">{name}，宽 {real}。放大之后，它看上去就像阅读距离（25 厘米）上的一件东西，宽 {lookalike}。</span><span data-phrase="story.near.bound">{name}，宽 {real}。放大之后，它看上去就像阅读距离上的一件东西，宽 {lookalike}，可细节只相当于放大 {power}。</span><span data-phrase="story.tall">{name}，高 {real}。放大之后，它看上去就像阅读距离（25 厘米）上的一件东西，高 {lookalike}。</span><span data-phrase="story.span">{name}，其中的亮星在天空中横跨 {width}。</span>
+    <span data-phrase="fit.share">它占视野宽度的 {share}。</span><span data-phrase="fit.over">它是视野宽度的 {times} 倍，所以只能看到一部分。</span><span data-phrase="fit.speck">它占不到视野宽度的百分之一。</span><span data-phrase="fit.field.sky">视野横跨天空 {field}，是月球宽度的 {moons} 倍。</span><span data-phrase="fit.field.land">在那个距离上，视野宽 {width}。</span><span data-phrase="fit.field.near">视野里能看到的范围宽 {width}。</span>
+    <span data-phrase="caption.scale">三张图共用同一个角度比例，所以屏幕上的大小就是真实的大小。</span><span data-phrase="caption.moon">这是画出来的图。月海和大约二十个大环形山都在真实的位置上，较小的环形山是按规则撒上去的。画面的柔化是这台仪器自身的模糊，变暗的程度跟着出瞳走。</span><span data-phrase="caption.jupiter">这是画出来的图。四颗卫星画在常见的距离上，它们的位置每个小时都在变。画面的柔化是这台仪器自身的模糊，变暗的程度跟着出瞳走。</span><span data-phrase="caption.saturn">这是画出来的图，光环朝我们倾斜 20°，旁边是卫星土卫六（泰坦）。两道亮环之间的暗线就是卡西尼缝。</span><span data-phrase="caption.pleiades">最亮的十一颗星，位置取自星表。更暗的成员星和周围的朦胧星云没有画。</span><span data-phrase="caption.bird">画的是一只麻雀大小的鸟，身长 14 厘米，距离 20 米。羽毛只是示意，大小是真实的。</span><span data-phrase="caption.slide">画的是载玻片上的标本。形状只是示意，大小取的是典型值。</span><span data-phrase="caption.near">这是画出来的图。大小是真实的，纹理只是示意。</span>
+    <span data-phrase="aria.view">整个视野，放大 {power}。{fit}</span><span data-phrase="aria.close">视野中央的特写。{story}</span><span data-phrase="aria.bare">只凭肉眼看到的同一处特写，没有放大。</span><span data-phrase="said.aloud">{power}。{zone}。{verdict}{story}{fit}</span><span data-phrase="dial.value">{power}，{zone}</span>
+    <span data-phrase="stat.field.sky">{field} · 月球宽度的 {moons} 倍</span><span data-phrase="stat.field.land">{field} · 千米视野 {metres} · 千码视野 {feet}</span><span data-phrase="stat.detail.sky">{detail} · 在月面上约 {size}</span><span data-phrase="stat.light">肉眼的 {number} 倍</span><span data-phrase="stat.range">{low}～{high}</span><span data-phrase="stat.focal">{focal} · 工作距离</span>
+    <span data-phrase="read.field">读作 {field}，也就是千米视野 {metres}，千码视野 {feet}。</span><span data-phrase="read.field.typical">视场取 {field}，这是这个倍率的常见值。</span><span data-phrase="read.number.typical">视场数取 {number}，这是常见值，对应的目镜倍率是 {eyepiece}。</span><span data-phrase="read.magnifier">读作 {power}，也就是焦距 {focal}，或者说 {diopters}。</span><span data-phrase="read.lens.typical">镜片宽度取 {width}，这是这个倍率的常见值。</span>
+    <span data-phrase="row.telescope">目镜 {eyepiece}：放大 {power}，视场宽 {field}，出瞳 {pupil}。{zone}。</span><span data-phrase="row.binoculars">{pair}：出瞳 {pupil}，这种光线下亮度是肉眼的 {share}。{zone}。</span><span data-phrase="row.microscope">物镜 {objective}：放大 {power}，视场宽 {field}，最小能分辨 {detail}。{zone}。</span><span data-phrase="row.magnifier">{power}：离物体 {focal}，一次能看到 {field}。{zone}。</span><span data-phrase="row.here">正在使用的就是这一档。{row}</span>
+    <span data-phrase="error.missing">{name}：请输入一个数字。</span><span data-phrase="error.range">{name}：请输入 {low} 到 {high} 之间的数字。</span>
+    <span data-phrase="print.line.1">数字往往就藏在这样的小字里。</span><span data-phrase="print.line.2">签字前请把每一行都读完，再留一份副本。</span><span data-phrase="print.line.3">条款如有变更，恕不另行通知。详情见背面。</span><span data-phrase="print.micro">这一行是高四分之一毫米的缩微文字</span>
+    <span data-phrase="net.clean">你的数字没有去任何地方。加载了 {total} 个文件。{platform}</span><span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span><span data-phrase="net.platform.one">本站自己用于广告和统计的脚本来自 {hosts} 个主机，计算器不会把任何输入或结果发给它们。</span><span data-phrase="net.platform.many">本站自己用于广告和统计的脚本来自 {hosts} 个主机，计算器不会把任何输入或结果发给它们。</span>
+  </div>
+</main>

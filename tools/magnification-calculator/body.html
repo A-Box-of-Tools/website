@@ -1,0 +1,213 @@
+<main id="main" data-world="telescope">
+  <section class="card mc-card" aria-labelledby="start-title">
+    <div class="mc-heading"><span class="mc-eyebrow">What the numbers on the box mean</span><span class="mc-badge">Works offline · No AI needed</span></div>
+    <h2 id="start-title">What will that magnification really show?</h2>
+    <p class="card-lede">Type the numbers printed on a telescope, a pair of binoculars, a microscope or a magnifying glass. The page draws the view they give, to scale, beside what your eye sees alone, and says where a bigger number stops showing anything new.</p>
+
+    <div class="mc-worlds" role="radiogroup" aria-label="Instrument">
+      <label class="mc-world"><input type="radio" name="world" value="telescope" checked><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 13.5l11-5.5 2 4-11 5.500zM14.500 8l4-2 2 4-4 2M9 16.500L6.500 21M10.500 15.500L13.500 21"/></svg><span class="mc-world-name">Telescope</span><span class="mc-world-value" id="tab-telescope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="binoculars"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="16" r="4"/><circle cx="17" cy="16" r="4"/><path d="M4.500 12.500L6.500 5h3l1.500 7.500M12.500 12.500L14 5h3l2.500 7.500M11 15h2"/></svg><span class="mc-world-name">Binoculars</span><span class="mc-world-value" id="tab-binoculars"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="microscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3l4.500 8M8 6.500l3.500-2M6 21h12M9 21v-3M8.500 15.500a6 6 0 0 0 8.500-5.500M13 18h5"/></svg><span class="mc-world-name">Microscope</span><span class="mc-world-value" id="tab-microscope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="magnifier"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><span class="mc-world-name">Magnifier</span><span class="mc-world-value" id="tab-magnifier"></span></label>
+    </div>
+
+    <fieldset class="mc-form" data-for="telescope">
+      <legend>The numbers on the telescope</legend>
+      <div class="settings">
+        <div class="field"><label for="tel-aperture">Aperture (main lens or mirror)</label><div class="inline-pair"><input id="tel-aperture" type="number" inputmode="decimal" min="20" max="2000" step="any" value="70" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">The width of the main lens or mirror: the D in “D = 70 mm”, or the first number in a name such as 70/700. An inch is 25.4 mm, so an 8-inch telescope is 203.</p></div>
+        <div class="field"><label for="tel-focal">Telescope focal length</label><div class="inline-pair"><input id="tel-focal" type="number" inputmode="decimal" min="100" max="30000" step="any" value="700" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">The F in “F = 700 mm”. If only an f-number is given, multiply it by the aperture: 130 mm at f/5 is 650 mm.</p></div>
+        <div class="field"><label for="tel-eyepiece">Eyepiece focal length</label><div class="inline-pair"><input id="tel-eyepiece" type="number" inputmode="decimal" min="2" max="60" step="any" value="10" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">Engraved on the eyepiece: 25 mm, 10 mm, or a letter and a number such as H20 or SR4. The dial below changes this for you.</p></div>
+        <div class="field"><label for="tel-barlow">Barlow lens</label><select id="tel-barlow"><option value="1" selected>None</option><option value="2">2×</option><option value="3">3×</option></select>
+          <p class="field-note" data-for="telescope">A Barlow sits between the telescope and the eyepiece and multiplies the magnification. It adds no detail of its own.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="binoculars">
+      <legend>The numbers on the binoculars</legend>
+      <div class="settings">
+        <div class="field"><label for="bin-power">Magnification (first number)</label><div class="inline-pair"><input id="bin-power" type="number" inputmode="decimal" min="2" max="100" step="any" value="8" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="binoculars">In 8×42 this is the 8. A zoom model prints a range, as in 10-30×50: try each end of it.</p></div>
+        <div class="field"><label for="bin-objective">Front lens (second number)</label><div class="inline-pair"><input id="bin-objective" type="number" inputmode="decimal" min="10" max="250" step="any" value="42" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="binoculars">In 8×42 this is the 42. It decides how much light comes in, and so how the view holds up at dusk.</p></div>
+        <div class="field mc-wide"><label for="bin-field">Field of view, if printed</label><div class="inline-pair"><input id="bin-field" type="number" inputmode="decimal" min="0.3" max="600" step="any" aria-describedby="bin-field-read input-error"><select id="bin-field-unit" aria-label="How the field of view is printed"><option value="degrees" selected>degrees</option><option value="metres">m at 1000 m</option><option value="feet">ft at 1000 yd</option></select></div>
+          <p id="bin-field-read" class="field-note"></p>
+          <p class="field-note" data-for="binoculars">Printed as an angle, such as 7.5°, or as a width at a distance, such as 131 m at 1000 m or 393 ft at 1000 yd. Leave it empty for a typical one.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="microscope" id="microscope-form">
+      <legend>The numbers on the microscope</legend>
+      <div class="mc-turret chips" role="radiogroup" aria-labelledby="objective-label"><span class="chips-label" id="objective-label">Objective</span>
+        <label class="chip"><input type="radio" name="mic-objective" value="4">4×/0.10</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="10" checked>10×/0.25</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="40">40×/0.65</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="100">100×/1.25 oil</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="custom">Another</label>
+      </div>
+      <div class="settings">
+        <div class="field mc-custom"><label for="mic-power">Objective magnification</label><div class="inline-pair"><input id="mic-power" type="number" inputmode="decimal" min="1" max="250" step="any" value="20" aria-describedby="input-error"><span>×</span></div></div>
+        <div class="field mc-custom"><label for="mic-na">Numerical aperture (NA)</label><input id="mic-na" type="number" inputmode="decimal" min="0.02" max="1.6" step="any" value="0.4" aria-describedby="input-error">
+          <p class="field-note" data-for="microscope">The number after the slash on the objective, as in 40×/0.65. It sets the finest detail, and the magnification does not.</p></div>
+        <div class="field"><label for="mic-eyepiece">Eyepiece magnification</label><div class="inline-pair"><input id="mic-eyepiece" type="number" inputmode="decimal" min="2" max="40" step="any" value="10" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="microscope">Engraved on the eyepiece, usually 10×. The dial below changes this for you.</p></div>
+        <div class="field"><label for="mic-fn">Field number, if engraved</label><div class="inline-pair"><input id="mic-fn" type="number" inputmode="decimal" min="4" max="30" step="any" aria-describedby="mic-fn-read input-error"><span>mm</span></div>
+          <p id="mic-fn-read" class="field-note"></p>
+          <p class="field-note" data-for="microscope">The second number on an eyepiece marked 10×/18. Divided by the objective's magnification it is the width of specimen you see.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="magnifier">
+      <legend>The number on the magnifier</legend>
+      <div class="settings">
+        <div class="field mc-wide"><label for="mag-value">The number printed on it</label><div class="inline-pair"><input id="mag-value" type="number" inputmode="decimal" min="1.1" max="500" step="any" value="10" aria-describedby="mag-read input-error"><select id="mag-unit" aria-label="What that number is"><option value="power" selected>× magnification</option><option value="dioptre">diopters</option><option value="focal">mm focal length</option></select></div>
+          <p id="mag-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">A loupe says 10×, a reading glass 2× or 3×, a lamp magnifier often gives diopters, such as +3 or +5, and a bare lens its focal length.</p></div>
+        <div class="field"><label for="mag-lens">Lens width, if known</label><div class="inline-pair"><input id="mag-lens" type="number" inputmode="decimal" min="4" max="250" step="any" aria-describedby="mag-lens-read input-error"><span>mm</span></div>
+          <p id="mag-lens-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">A stronger lens is a smaller one, so it shows less at a time. Leave this empty for a typical width.</p></div>
+      </div>
+    </fieldset>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <div class="mc-dial">
+      <p class="mc-readout"><span class="mc-readout-label">Magnification</span> <output id="power" for="dial" class="mc-readout-number"></output> <span id="power-how" class="mc-readout-how"></span></p>
+      <input type="range" id="dial" min="0" max="1000" step="1" value="500" aria-label="Magnification">
+      <div class="mc-ticks" id="dial-ticks" aria-hidden="true"></div>
+      <ul class="mc-legend" id="dial-legend" aria-hidden="true"></ul>
+    </div>
+    <p id="verdict" class="mc-verdict"><strong id="verdict-zone"></strong> <span id="verdict-text"></span></p>
+
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-telescope-label" data-for="telescope"><span class="chips-label" id="look-telescope-label">Look at</span>
+      <label class="chip"><input type="radio" name="look-telescope" value="moon" checked>The Moon</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="jupiter">Jupiter</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="saturn">Saturn</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="pleiades">The Pleiades</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-binoculars-label" data-for="binoculars"><span class="chips-label" id="look-binoculars-label">Look at</span>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-day" checked>A bird, by day</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-dusk">A bird, at dusk</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="moon">The Moon</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="pleiades">The Pleiades</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-microscope-label" data-for="microscope"><span class="chips-label" id="look-microscope-label">Look at</span>
+      <label class="chip"><input type="radio" name="look-microscope" value="onion" checked>Onion skin</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="blood">Blood</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="hair">A hair</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="salt">Salt</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="bacteria">Bacteria</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-magnifier-label" data-for="magnifier"><span class="chips-label" id="look-magnifier-label">Look at</span>
+      <label class="chip"><input type="radio" name="look-magnifier" value="print" checked>Small print</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="ruler">A ruler</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="salt">Salt</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="hair">A hair</label>
+    </div>
+
+    <div class="mc-stage">
+      <figure class="mc-fig mc-whole"><canvas id="view" role="img" aria-label="The whole view through the instrument"></canvas><figcaption>The whole view</figcaption></figure>
+      <figure class="mc-fig mc-close"><canvas id="close" role="img" aria-label="A close look at the middle of the view"></canvas><figcaption>A close look at the middle of it</figcaption></figure>
+      <figure class="mc-fig mc-bare"><canvas id="bare" role="img" aria-label="The same close look with the eye alone"></canvas><figcaption>The same close look, with your eye alone</figcaption></figure>
+    </div>
+    <p id="stage-caption" class="mc-caption"></p>
+
+    <div class="mc-answer"><p id="answer-story" class="mc-story"></p><p id="answer-fit" class="mc-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+  </section>
+
+  <section class="card mc-more" aria-labelledby="numbers-title">
+    <div class="mc-numbers">
+      <h3 id="numbers-title">What each number means</h3>
+      <dl class="mc-stats" data-for="telescope">
+        <div><dt>Magnification</dt><dd><strong id="tel-s-power"></strong> <span>How many times wider everything looks than to your eye alone: the telescope's focal length divided by the eyepiece's.</span></dd></div>
+        <div><dt>Field of view</dt><dd><strong id="tel-s-field"></strong> <span>How wide a patch of sky fits in the eyepiece. It shrinks as the magnification grows.</span></dd></div>
+        <div><dt>Exit pupil</dt><dd><strong id="tel-s-pupil"></strong> <span>The width of the beam of light leaving the eyepiece: aperture divided by magnification. Wider is brighter, up to the width of your own pupil.</span></dd></div>
+        <div><dt>Finest detail</dt><dd><strong id="tel-s-detail"></strong> <span>The smallest thing this aperture can separate, at any magnification. Only a wider lens or mirror makes it smaller.</span></dd></div>
+        <div><dt>Light gathered</dt><dd><strong id="tel-s-light"></strong> <span>Against your eye's own pupil in the dark. This, and not magnification, is what shows faint things.</span></dd></div>
+        <div><dt>Useful magnifications</dt><dd><strong id="tel-s-range"></strong> <span>From the lowest that wastes no light to the highest that still helps: about twice the aperture in millimeters, and seldom more than 300× through the air.</span></dd></div>
+        <div><dt>Focal ratio</dt><dd><strong id="tel-s-ratio"></strong> <span>Focal length divided by aperture. It says how wide and bright a low-power view can be, and nothing about how much the telescope magnifies.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="binoculars">
+        <div><dt>Magnification</dt><dd><strong id="bin-s-power"></strong> <span>The first number. Things look this many times wider, as if you stood that many times closer.</span></dd></div>
+        <div><dt>Front lens</dt><dd><strong id="bin-s-objective"></strong> <span>The second number: the width of each front lens. A wider lens gathers more light and makes the binoculars heavier.</span></dd></div>
+        <div><dt>Exit pupil</dt><dd><strong id="bin-s-pupil"></strong> <span>The second number divided by the first: the width of the beam reaching each eye. Your pupil is 2 to 3 mm by day, about 5 mm at dusk and up to 7 mm in the dark.</span></dd></div>
+        <div><dt>Brightness in this light</dt><dd><strong id="bin-s-light"></strong> <span>Of what your eye alone would get from the same scene. It falls once the beam is narrower than your pupil.</span></dd></div>
+        <div><dt>Field of view</dt><dd><strong id="bin-s-field"></strong> <span>How much scenery fits across the view. It is printed as an angle or as a width at a set distance.</span></dd></div>
+        <div><dt>Twilight factor</dt><dd><strong id="bin-s-twilight"></strong> <span>The square root of the two numbers multiplied together. Makers print it as a guide to detail in poor light. It rewards magnification, while how bright the view stays at dusk depends on the exit pupil.</span></dd></div>
+        <div><dt>In the hand</dt><dd><strong id="bin-s-hand"></strong> <span>Hand shake is magnified with everything else. Up to about 8× it is easy to hold steady, and past about 12× a tripod does more than the extra power.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="microscope">
+        <div><dt>Total magnification</dt><dd><strong id="mic-s-power"></strong> <span>The objective's magnification times the eyepiece's, counted against the same thing held 25 cm from your eye.</span></dd></div>
+        <div><dt>Field of view</dt><dd><strong id="mic-s-field"></strong> <span>The width of specimen you see: the eyepiece's field number divided by the objective's magnification.</span></dd></div>
+        <div><dt>Finest detail</dt><dd><strong id="mic-s-detail"></strong> <span>The smallest thing this objective can separate, set by its numerical aperture. A stronger eyepiece does not change it.</span></dd></div>
+        <div><dt>Useful magnifications</dt><dd><strong id="mic-s-range"></strong> <span>From where a keen eye first makes out everything the objective resolves to where there is nothing left to enlarge: about 220 to 1000 times the numerical aperture. Makers quote the upper half of it, 500 to 1000.</span></dd></div>
+        <div><dt>Exit pupil</dt><dd><strong id="mic-s-pupil"></strong> <span>The width of the beam leaving the eyepiece. Under about half a millimeter the picture is only being enlarged.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="magnifier">
+        <div><dt>Magnification</dt><dd><strong id="mag-s-power"></strong> <span>How many times wider a thing looks than it would held 25 cm from your eye.</span></dd></div>
+        <div><dt>Focal length</dt><dd><strong id="mag-s-focal"></strong> <span>About how far the lens has to be from the object. A stronger lens works closer.</span></dd></div>
+        <div><dt>Diopters</dt><dd><strong id="mag-s-diopters"></strong> <span>1000 divided by the focal length in millimeters. Opticians and lamp magnifiers use this number.</span></dd></div>
+        <div><dt>Width you see at once</dt><dd><strong id="mag-s-field"></strong> <span>About the width of the lens, with your eye close to it. This is why strong magnifiers show so little at a time.</span></dd></div>
+        <div><dt>Finest detail</dt><dd><strong id="mag-s-detail"></strong> <span>What a keen eye can separate through it: the eye's own limit divided by the magnification.</span></dd></div>
+      </dl>
+    </div>
+    <div class="mc-side">
+      <h3 id="ladder-title">The same instrument at other powers</h3>
+      <p class="field-note">Each row is worked out from the numbers above. Press one to try it.</p>
+      <ol class="mc-ladder" id="ladder" aria-labelledby="ladder-title"></ol>
+      <h3>Or try</h3>
+      <div class="mc-example-row">
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=4 tel-barlow=3 look-telescope=moon">A 60 mm telescope sold as 675×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=20 tel-barlow=1 look-telescope=moon">The same telescope at 45×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=130 tel-focal=650 tel-eyepiece=5 tel-barlow=1 look-telescope=saturn">Saturn in a 130 mm telescope</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=42 bin-field= look-binoculars=bird-dusk">8×42 binoculars at dusk</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=21 bin-field= look-binoculars=bird-dusk">Pocket 8×21 at dusk</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=40 mic-eyepiece=25 mic-fn= look-microscope=bacteria">1000× with a strong eyepiece</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=100 mic-eyepiece=10 mic-fn= look-microscope=bacteria">1000× with an oil objective</button>
+        <button type="button" class="ghost" data-example="world=magnifier mag-value=10 mag-unit=power mag-lens= look-magnifier=print">A jeweler's 10× loupe</button>
+      </div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>How did we work this out?</summary>
+    <p>The numbers you type are taken as printed. Everything else is arithmetic from the figures below, which you can change or check.</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="eye-pupil">Your pupil in the dark</label><select id="eye-pupil"><option value="7" selected>7 mm · young eyes</option><option value="6">6 mm</option><option value="5">5 mm · older eyes</option></select><p class="field-note">The widest your pupil opens, used for the night sky. It narrows with age. By day it is taken as 2.5 mm and at dusk as 5 mm.</p></div>
+      <div class="field"><label for="apparent-field">How wide a circle the eyepiece shows</label><select id="apparent-field"><option value="40">40° · simple eyepieces</option><option value="52" selected>52° · Plössl, the common kind</option><option value="68">68° · wide field</option><option value="82">82° · ultra wide</option></select><p class="field-note">A telescope eyepiece's apparent field. A wider one shows more sky at the same magnification, and nothing in the view gets bigger.</p></div>
+      <div class="field"><label for="barrel">Eyepiece barrel</label><select id="barrel"><option value="27" selected>1.25 inch</option><option value="46">2 inch</option></select><p class="field-note">The barrel limits how wide a long eyepiece's field can be: about 27 mm across in a 1.25 inch barrel and 46 mm in a 2 inch one.</p></div>
+      <div class="field"><label for="mag-rule">How a magnifier's power is counted</label><select id="mag-rule"><option value="auto" selected>The way its label usually means</option><option value="relaxed">250 mm ÷ focal length</option><option value="close">250 mm ÷ focal length, plus 1</option></select><p class="field-note">Two sums are in use. Dividing 250 mm by the focal length has the eye relaxed, and is how a loupe marked with a power is usually counted. Adding one has the eye focused as near as it can, and is how lamp and reading magnifiers marked in diopters are sold: +3 diopters as 1.75×. Unless you choose one of them here, the page takes whichever goes with the kind of number you typed.</p></div>
+    </div>
+    <p><strong>One blur, three rules of thumb.</strong> Any lens spreads a point of light into a small disc, and the eyepiece magnifies that disc with everything else. By Rayleigh's rule for green light, the disc looks about 2.3 arcminutes wide through an exit pupil of 1 mm, and wider as the exit pupil shrinks. A keen eye separates 1 arcminute. So with an exit pupil above 2.3 mm your eye, not the lens, limits what you see; at 1 mm everything the lens resolves is comfortably large; and under 0.5 mm the blur itself is all that grows. For a telescope those are magnifications of the aperture in millimeters divided by 2.3, the aperture itself, and twice the aperture. For a microscope they are about 217, 500 and 1000 times the numerical aperture.</p>
+    <p><strong>Telescopes.</strong> Magnification is the telescope's focal length divided by the eyepiece's, times any Barlow. The exit pupil is the aperture divided by the magnification. The finest detail is 138 arcseconds divided by the aperture in millimeters, and Dawes' older figure for splitting double stars, 116 divided by the aperture, is about a sixth tighter. The field of view is the eyepiece's apparent field divided by the magnification, capped by its barrel. Above about 300× the unsteadiness of the air usually hides whatever the telescope could add.</p>
+    <p><strong>Binoculars.</strong> The exit pupil is the front lens width divided by the magnification, and the brightness is the square of the exit pupil over your own pupil, never more than 1. A field given as a width is turned into an angle exactly, so 131 m at 1000 m and 393 ft at 1000 yd are both 7.5°. The circle drawn is the magnification times that angle; a newer standard that works in tangents gives about five degrees less for the same pair.</p>
+    <p><strong>Microscopes.</strong> Total magnification is objective times eyepiece. The finest detail is 0.61 times the wavelength divided by the numerical aperture, 0.34 µm divided by the numerical aperture in green light. The width of specimen in view is the field number divided by the objective's magnification, and an eyepiece with no number engraved is taken as 180 mm divided by its magnification, which is 18 mm at 10×, and never more than the 20 mm a standard eyepiece tube allows. A lamp can always be turned up, so these pictures are not dimmed.</p>
+    <p><strong>Magnifiers.</strong> A simple lens is counted against the same object held 250 mm from the eye: 250 mm divided by its focal length with the eye relaxed, and one more than that with the eye focused close. Its focal length is 1000 mm divided by its diopters. The patch seen through it is taken as the lens's own width, which holds with the eye about one focal length behind it.</p>
+    <p><strong>The pictures.</strong> All three are drawn to one scale of angle: the circle is the eyepiece's field as your eye meets it, and everything in it is as wide as the magnification makes it. The close look uses one screen pixel for two arcminutes of the view, which on a phone or laptop at its usual distance is close to life size. The softness in it is the blur described above. A surface dims as the square of the exit pupil over your pupil, and the picture darkens only once that has used up the light the subject has to spare: the full Moon is taken as 2,500 candelas per square meter and a view as dull below 2, with Jupiter and Saturn fainter in proportion to the sunlight they receive and reflect, a sunlit scene as 5,000 and one at dusk as 3. Stars are points, so they do not dim this way; those too faint for the light gathered are left out.</p>
+    <p><strong>What the drawings are.</strong> The Moon is 3,475 km wide and 384,400 km away, with its seas and about twenty of its largest craters where they are and smaller ones scattered by rule. Jupiter and Saturn are at their mean distances at opposition, 629 and 1,277 million km, and Jupiter's moons and Titan are at typical places along orbits they travel in days. The Pleiades are the eleven brightest stars from the catalogue. The bird is 14 cm long and 20 m away. On the slide, an onion cell is 0.3 mm long, a red blood cell 7.5 µm, a hair 0.07 mm, a grain of table salt about 0.3 mm and a bacterium 2 µm. The print is 8-point and 5-point type above lines of microprint a quarter of a millimeter high.</p>
+    <p class="source-links">Read the references: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASA planetary fact sheets</a> · <a href="https://www.microscopyu.com/microscopy-basics/useful-magnification-range" target="_blank" rel="noopener noreferrer">Nikon MicroscopyU on the useful range of magnification</a> · <a href="https://www.leica-microsystems.com/science-lab/microscopy-basics/what-is-empty-magnification/" target="_blank" rel="noopener noreferrer">Leica on empty magnification</a> · <a href="https://planetarynames.wr.usgs.gov/" target="_blank" rel="noopener noreferrer">the IAU's names and places on the Moon</a>. These links are optional reading; the calculator does not contact them.</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="unit.times">{number}×</span><span data-phrase="unit.um">{number} µm</span><span data-phrase="unit.arcsec">{number}″</span><span data-phrase="unit.arcmin">{number}′</span><span data-phrase="unit.diopter">{number} D</span><span data-phrase="unit.ratio">f/{number}</span><span data-phrase="unit.far">{number} {unit}</span>
+    <span data-phrase="how.telescope">{focal} ÷ {eyepiece}</span><span data-phrase="how.telescope.barlow">{focal} × {barlow} ÷ {eyepiece}</span><span data-phrase="how.binoculars">the first of the two numbers</span><span data-phrase="how.microscope">{objective} × {eyepiece}</span><span data-phrase="how.magnifier">250 mm ÷ {focal}</span><span data-phrase="how.magnifier.close">250 mm ÷ {focal}, plus 1</span>
+    <span data-phrase="zone.wasted">Wasted light</span><span data-phrase="zone.spare">Room to spare</span><span data-phrase="zone.sharp">Sharpest</span><span data-phrase="zone.full">Useful top</span><span data-phrase="zone.empty">Empty magnification</span><span data-phrase="zone.light.full">Bright</span><span data-phrase="zone.light.less">A little dim</span><span data-phrase="zone.light.dim">Dim in this light</span><span data-phrase="zone.steady">Steady in the hand</span><span data-phrase="zone.care">Needs a steady hand</span><span data-phrase="zone.tripod">Needs a tripod</span><span data-phrase="zone.reading">Reading glass</span><span data-phrase="zone.inspect">Inspection lens</span><span data-phrase="zone.loupe">Loupe</span><span data-phrase="zone.beyond">Past a single lens</span>
+    <span data-phrase="verdict.telescope.wasted">Lower than this telescope can use. The beam leaving the eyepiece is {pupil} wide, wider than your pupil, so part of its light never reaches your eye. Nothing is gained below about {low}.</span><span data-phrase="verdict.telescope.spare">Bright, wide and sharp. At this power your eye, not the telescope, sets the detail, so more magnification would still show more, up to about {sharp}.</span><span data-phrase="verdict.telescope.sharp">The sharpest-looking range. Everything this telescope can resolve is now large enough for a keen eye, and it still looks crisp.</span><span data-phrase="verdict.telescope.full">The useful top. Nothing new has appeared since about {full}, but it is larger and easier to see, in a softer, dimmer picture.</span><span data-phrase="verdict.telescope.empty">Past about {high} this telescope has no more detail to give. The picture only gets bigger, softer and dimmer.</span><span data-phrase="verdict.seeing">The air is seldom steady enough for more than about 300×, whatever the telescope.</span>
+    <span data-phrase="verdict.microscope.spare">Sharp and easy. The objective resolves finer detail than your eye can pick out at this power, so a stronger eyepiece would still show more, up to about {sharp}.</span><span data-phrase="verdict.microscope.sharp">The crisp range. Everything this objective resolves is now large enough for a keen eye.</span><span data-phrase="verdict.microscope.full">The useful top, {full} to {high} for this objective. Nothing new appears, but it is larger and easier to see.</span><span data-phrase="verdict.microscope.empty">Past about {high} this objective has no more detail to give, and a stronger eyepiece only enlarges the blur. More detail takes a higher numerical aperture, not more magnification.</span>
+    <span data-phrase="verdict.binoculars.light.full">As bright as your eye can take in this light: the beam leaving each eyepiece is {pupil} wide, as wide as your pupil or wider.</span><span data-phrase="verdict.binoculars.light.less">A little dimmer than your eye alone in this light, {share} of the brightness, because the {pupil} beam is narrower than your pupil.</span><span data-phrase="verdict.binoculars.light.dim">Dim in this light, {share} of the brightness your eye alone would get. The {pupil} beam is much narrower than your pupil.</span><span data-phrase="verdict.binoculars.hand.steady">Easy to hold steady.</span><span data-phrase="verdict.binoculars.hand.care">At this power the shake of your hands starts to blur fine detail, so brace your elbows.</span><span data-phrase="verdict.binoculars.hand.tripod">Too much to hold by hand: the view shakes more than it gains. Use a tripod or a stabilized pair.</span>
+    <span data-phrase="verdict.magnifier.reading">A big lens held well above the page, about {focal} from it, showing {field} at a time.</span><span data-phrase="verdict.magnifier.inspect">Hold it about {focal} above the object. It shows {field} at a time.</span><span data-phrase="verdict.magnifier.loupe">Bring it right up to your eye and the object to about {focal} from the lens. It shows {field} at a time.</span><span data-phrase="verdict.magnifier.beyond">A single lens this strong is tiny and nearly touches the object, about {focal} away. From here a microscope does the job better.</span>
+    <span data-phrase="subject.moon">The Moon</span><span data-phrase="subject.jupiter">Jupiter</span><span data-phrase="subject.saturn">Saturn, rings included</span><span data-phrase="subject.pleiades">The Pleiades</span><span data-phrase="subject.bird-day">A songbird</span><span data-phrase="subject.bird-dusk">A songbird at dusk</span><span data-phrase="subject.onion">One onion cell</span><span data-phrase="subject.blood">A red blood cell</span><span data-phrase="subject.hair">A hair</span><span data-phrase="subject.salt">A grain of salt</span><span data-phrase="subject.bacteria">A bacterium</span><span data-phrase="subject.print">A line of 8-point print</span><span data-phrase="subject.ruler">One millimeter on the ruler</span>
+    <span data-phrase="story.far">{name}, {far} away, looks as it would from {near}.</span><span data-phrase="story.far.bound">{name}, {far} away, looks as big as it would from {near}, but only as detailed as from {detail}.</span><span data-phrase="story.near">{name}, {real} across, looks as big as something {lookalike} across held at reading distance, 25 cm away.</span><span data-phrase="story.near.bound">{name}, {real} across, looks as big as something {lookalike} across held at reading distance, but shows no finer detail than {power} would.</span><span data-phrase="story.tall">{name}, {real} tall, looks as big as something {lookalike} tall held at reading distance, 25 cm away.</span><span data-phrase="story.span">{name}: the bright stars span {width} of sky.</span>
+    <span data-phrase="fit.share">It spans {share} of the width of the view.</span><span data-phrase="fit.over">It is {times} times wider than the view, so only part of it fits.</span><span data-phrase="fit.speck">It spans less than a hundredth of the width of the view.</span><span data-phrase="fit.field.sky">The view is {field} of sky across, {moons} times the width of the Moon.</span><span data-phrase="fit.field.land">The view is {width} wide at that distance.</span><span data-phrase="fit.field.near">The view shows a patch {width} across.</span>
+    <span data-phrase="caption.scale">All three pictures share one scale of angle, so a size on screen is a true one.</span><span data-phrase="caption.moon">A drawing: the seas and about twenty large craters are where they are, and smaller craters are scattered by rule. The softness is this instrument's own blur and the dimming follows its exit pupil.</span><span data-phrase="caption.jupiter">A drawing: the four moons are at typical distances and change places from hour to hour. The softness is this instrument's own blur and the dimming follows its exit pupil.</span><span data-phrase="caption.saturn">A drawing, with the rings tilted 20° toward us and the moon Titan beside them. The dark line between the two bright rings is Cassini's division.</span><span data-phrase="caption.pleiades">The eleven brightest stars, placed from the catalogue. Fainter members and the haze around them are left out.</span><span data-phrase="caption.bird">A drawing of a small songbird, 14 cm long and 20 m away. Its feathers are illustration; its size is not.</span><span data-phrase="caption.slide">A drawing of a specimen on a glass slide. The shapes are illustration and the sizes are typical ones.</span><span data-phrase="caption.near">A drawing. Sizes are true; the textures are illustration.</span>
+    <span data-phrase="aria.view">The whole view at {power}. {fit}</span><span data-phrase="aria.close">A close look at the middle of that view. {story}</span><span data-phrase="aria.bare">The same close look with the eye alone, not magnified.</span><span data-phrase="said.aloud">{power}. {zone}. {verdict} {story} {fit}</span><span data-phrase="dial.value">{power}, {zone}</span>
+    <span data-phrase="stat.field.sky">{field} · {moons} times the width of the Moon</span><span data-phrase="stat.field.land">{field} · {metres} at 1000 m · {feet} at 1000 yd</span><span data-phrase="stat.detail.sky">{detail} · about {size} on the Moon</span><span data-phrase="stat.light">{number} times your eye's</span><span data-phrase="stat.range">{low} to {high}</span><span data-phrase="stat.focal">{focal} · the working distance</span>
+    <span data-phrase="read.field">Read as {field}: {metres} at 1000 m, or {feet} at 1000 yd.</span><span data-phrase="read.field.typical">Taken as {field}, typical for this magnification.</span><span data-phrase="read.number.typical">Taken as {number}, typical for a {eyepiece} eyepiece.</span><span data-phrase="read.magnifier">Read as {power}: a focal length of {focal}, or {diopters}.</span><span data-phrase="read.lens.typical">Taken as {width}, typical for this power.</span>
+    <span data-phrase="row.telescope">{eyepiece} eyepiece: {power}, a view {field} wide, exit pupil {pupil}. {zone}.</span><span data-phrase="row.binoculars">{pair}: exit pupil {pupil}, {share} of the brightness in this light. {zone}.</span><span data-phrase="row.microscope">{objective} objective: {power}, a view {field} wide, detail down to {detail}. {zone}.</span><span data-phrase="row.magnifier">{power}: held {focal} away, shows {field} at a time. {zone}.</span><span data-phrase="row.here">{row} This is the one in use.</span>
+    <span data-phrase="error.missing">{name}: enter a number.</span><span data-phrase="error.range">{name}: enter a number from {low} to {high}.</span>
+    <span data-phrase="print.line.1">The small print is where the numbers hide.</span><span data-phrase="print.line.2">Read every line of it before you sign, and keep a copy.</span><span data-phrase="print.line.3">Terms may change without notice. See overleaf for details.</span><span data-phrase="print.micro">THIS LINE IS MICROPRINT A QUARTER OF A MILLIMETER HIGH</span>
+    <span data-phrase="net.clean">your numbers have gone nowhere. {total} files loaded. {platform}</span><span data-phrase="net.dirty">something contacted {hosts}, which this tool never does. {platform}</span><span data-phrase="net.platform.one">The page’s ad and measurement scripts loaded from {hosts} host; the calculator sends them no input or result.</span><span data-phrase="net.platform.many">The page’s ad and measurement scripts loaded from {hosts} hosts; the calculator sends them no input or result.</span>
+  </div>
+</main>

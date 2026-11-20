@@ -1,0 +1,213 @@
+<main id="main" data-world="telescope">
+  <section class="card mc-card" aria-labelledby="start-title">
+    <div class="mc-heading"><span class="mc-eyebrow">箱に書かれた数字の意味</span><span class="mc-badge">オフラインで動作・AI不要</span></div>
+    <h2 id="start-title">その倍率で本当に見えるものは？</h2>
+    <p class="card-lede">天体望遠鏡、双眼鏡、顕微鏡、ルーペ（虫眼鏡）に書かれている数字を入力してください。その数字での見え方を、肉眼だけで見た様子と並べて正しい縮尺で描き、数字を大きくしても新しいものが見えなくなる境目を示します。</p>
+
+    <div class="mc-worlds" role="radiogroup" aria-label="機器">
+      <label class="mc-world"><input type="radio" name="world" value="telescope" checked><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 13.5l11-5.5 2 4-11 5.500zM14.500 8l4-2 2 4-4 2M9 16.500L6.500 21M10.500 15.500L13.500 21"/></svg><span class="mc-world-name">望遠鏡</span><span class="mc-world-value" id="tab-telescope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="binoculars"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="16" r="4"/><circle cx="17" cy="16" r="4"/><path d="M4.500 12.500L6.500 5h3l1.500 7.500M12.500 12.500L14 5h3l2.500 7.500M11 15h2"/></svg><span class="mc-world-name">双眼鏡</span><span class="mc-world-value" id="tab-binoculars"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="microscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3l4.500 8M8 6.500l3.500-2M6 21h12M9 21v-3M8.500 15.500a6 6 0 0 0 8.500-5.500M13 18h5"/></svg><span class="mc-world-name">顕微鏡</span><span class="mc-world-value" id="tab-microscope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="magnifier"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><span class="mc-world-name">ルーペ</span><span class="mc-world-value" id="tab-magnifier"></span></label>
+    </div>
+
+    <fieldset class="mc-form" data-for="telescope">
+      <legend>天体望遠鏡に書かれた数字</legend>
+      <div class="settings">
+        <div class="field"><label for="tel-aperture">口径（対物レンズまたは主鏡）</label><div class="inline-pair"><input id="tel-aperture" type="number" inputmode="decimal" min="20" max="2000" step="any" value="70" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">対物レンズまたは主鏡の幅です。「D = 70 mm」のD、または70/700のような名前の最初の数字がこれにあたります。1インチは25.4 mmなので、8インチの望遠鏡なら203です。</p></div>
+        <div class="field"><label for="tel-focal">望遠鏡の焦点距離</label><div class="inline-pair"><input id="tel-focal" type="number" inputmode="decimal" min="100" max="30000" step="any" value="700" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">「F = 700 mm」のFです。口径比（F値）しか書かれていない場合は、それに口径を掛けてください。口径130 mmでf/5なら650 mmです。</p></div>
+        <div class="field"><label for="tel-eyepiece">接眼レンズ（アイピース）の焦点距離</label><div class="inline-pair"><input id="tel-eyepiece" type="number" inputmode="decimal" min="2" max="60" step="any" value="10" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">接眼レンズに刻印されています。25 mm、10 mm、あるいはH20やSR4のような文字と数字の組み合わせです。下のダイヤルを動かすと、この値が変わります。</p></div>
+        <div class="field"><label for="tel-barlow">バローレンズ</label><select id="tel-barlow"><option value="1" selected>なし</option><option value="2">2×</option><option value="3">3×</option></select>
+          <p class="field-note" data-for="telescope">バローレンズは望遠鏡と接眼レンズの間に入れて、倍率を何倍かに上げます。それ自体が細部を増やすことはありません。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="binoculars">
+      <legend>双眼鏡に書かれた数字</legend>
+      <div class="settings">
+        <div class="field"><label for="bin-power">倍率（1つ目の数字）</label><div class="inline-pair"><input id="bin-power" type="number" inputmode="decimal" min="2" max="100" step="any" value="8" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="binoculars">8×42ならこの8です。ズーム式の機種には10-30×50のように範囲が書かれているので、その両端を試してください。</p></div>
+        <div class="field"><label for="bin-objective">対物レンズ（2つ目の数字）</label><div class="inline-pair"><input id="bin-objective" type="number" inputmode="decimal" min="10" max="250" step="any" value="42" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="binoculars">8×42ならこの42です。入ってくる光の量を決め、夕暮れにどれだけ見え方を保てるかを左右します。</p></div>
+        <div class="field mc-wide"><label for="bin-field">実視界（書かれている場合）</label><div class="inline-pair"><input id="bin-field" type="number" inputmode="decimal" min="0.3" max="600" step="any" aria-describedby="bin-field-read input-error"><select id="bin-field-unit" aria-label="実視界の書かれ方"><option value="degrees" selected>度</option><option value="metres">m（1000 m先）</option><option value="feet">ft（1000 yd先）</option></select></div>
+          <p id="bin-field-read" class="field-note"></p>
+          <p class="field-note" data-for="binoculars">7.5°のような角度か、1000 m先で131 m、1000 yd先で393 ftのような、決まった距離での幅として書かれています。空欄にすると一般的な値を使います。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="microscope" id="microscope-form">
+      <legend>顕微鏡に書かれた数字</legend>
+      <div class="mc-turret chips" role="radiogroup" aria-labelledby="objective-label"><span class="chips-label" id="objective-label">対物レンズ</span>
+        <label class="chip"><input type="radio" name="mic-objective" value="4">4×/0.10</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="10" checked>10×/0.25</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="40">40×/0.65</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="100">100×/1.25（油浸）</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="custom">その他</label>
+      </div>
+      <div class="settings">
+        <div class="field mc-custom"><label for="mic-power">対物レンズの倍率</label><div class="inline-pair"><input id="mic-power" type="number" inputmode="decimal" min="1" max="250" step="any" value="20" aria-describedby="input-error"><span>×</span></div></div>
+        <div class="field mc-custom"><label for="mic-na">開口数（NA）</label><input id="mic-na" type="number" inputmode="decimal" min="0.02" max="1.6" step="any" value="0.4" aria-describedby="input-error">
+          <p class="field-note" data-for="microscope">40×/0.65のように、対物レンズのスラッシュの後ろに書かれている数字です。見分けられる細かさを決めるのはこの数字で、倍率ではありません。</p></div>
+        <div class="field"><label for="mic-eyepiece">接眼レンズの倍率</label><div class="inline-pair"><input id="mic-eyepiece" type="number" inputmode="decimal" min="2" max="40" step="any" value="10" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="microscope">接眼レンズに刻印されていて、ふつうは10×です。下のダイヤルを動かすと、この値が変わります。</p></div>
+        <div class="field"><label for="mic-fn">視野数（刻印されている場合）</label><div class="inline-pair"><input id="mic-fn" type="number" inputmode="decimal" min="4" max="30" step="any" aria-describedby="mic-fn-read input-error"><span>mm</span></div>
+          <p id="mic-fn-read" class="field-note"></p>
+          <p class="field-note" data-for="microscope">10×/18と刻印された接眼レンズの2つ目の数字です。これを対物レンズの倍率で割ると、見えている標本の幅になります。</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="magnifier">
+      <legend>ルーペ（虫眼鏡）に書かれた数字</legend>
+      <div class="settings">
+        <div class="field mc-wide"><label for="mag-value">書かれている数字</label><div class="inline-pair"><input id="mag-value" type="number" inputmode="decimal" min="1.1" max="500" step="any" value="10" aria-describedby="mag-read input-error"><select id="mag-unit" aria-label="その数字の種類"><option value="power" selected>×（倍率）</option><option value="dioptre">D（ディオプトリ）</option><option value="focal">mm（焦点距離）</option></select></div>
+          <p id="mag-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">高倍率ルーペには10×、読書用ルーペには2×や3×と書かれています。照明付きルーペは+3や+5のようにディオプトリで示すことが多く、レンズ単体では焦点距離で示されます。</p></div>
+        <div class="field"><label for="mag-lens">レンズの幅（わかる場合）</label><div class="inline-pair"><input id="mag-lens" type="number" inputmode="decimal" min="4" max="250" step="any" aria-describedby="mag-lens-read input-error"><span>mm</span></div>
+          <p id="mag-lens-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">強いレンズほど小さくなるので、一度に見える範囲も狭くなります。空欄にすると一般的な幅を使います。</p></div>
+      </div>
+    </fieldset>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <div class="mc-dial">
+      <p class="mc-readout"><span class="mc-readout-label">倍率</span> <output id="power" for="dial" class="mc-readout-number"></output> <span id="power-how" class="mc-readout-how"></span></p>
+      <input type="range" id="dial" min="0" max="1000" step="1" value="500" aria-label="倍率">
+      <div class="mc-ticks" id="dial-ticks" aria-hidden="true"></div>
+      <ul class="mc-legend" id="dial-legend" aria-hidden="true"></ul>
+    </div>
+    <p id="verdict" class="mc-verdict"><strong id="verdict-zone"></strong> <span id="verdict-text"></span></p>
+
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-telescope-label" data-for="telescope"><span class="chips-label" id="look-telescope-label">見るもの</span>
+      <label class="chip"><input type="radio" name="look-telescope" value="moon" checked>月</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="jupiter">木星</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="saturn">土星</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="pleiades">プレアデス星団（すばる）</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-binoculars-label" data-for="binoculars"><span class="chips-label" id="look-binoculars-label">見るもの</span>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-day" checked>昼間の鳥</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-dusk">夕暮れの鳥</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="moon">月</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="pleiades">プレアデス星団（すばる）</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-microscope-label" data-for="microscope"><span class="chips-label" id="look-microscope-label">見るもの</span>
+      <label class="chip"><input type="radio" name="look-microscope" value="onion" checked>タマネギの表皮</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="blood">血液</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="hair">髪の毛</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="salt">食塩</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="bacteria">細菌</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-magnifier-label" data-for="magnifier"><span class="chips-label" id="look-magnifier-label">見るもの</span>
+      <label class="chip"><input type="radio" name="look-magnifier" value="print" checked>小さな印刷文字</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="ruler">定規</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="salt">食塩</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="hair">髪の毛</label>
+    </div>
+
+    <div class="mc-stage">
+      <figure class="mc-fig mc-whole"><canvas id="view" role="img" aria-label="機器を通して見た視野全体"></canvas><figcaption>視野全体</figcaption></figure>
+      <figure class="mc-fig mc-close"><canvas id="close" role="img" aria-label="視野の中央のクローズアップ"></canvas><figcaption>その中央のクローズアップ</figcaption></figure>
+      <figure class="mc-fig mc-bare"><canvas id="bare" role="img" aria-label="同じクローズアップを肉眼だけで見た様子"></canvas><figcaption>同じクローズアップを、肉眼だけで</figcaption></figure>
+    </div>
+    <p id="stage-caption" class="mc-caption"></p>
+
+    <div class="mc-answer"><p id="answer-story" class="mc-story"></p><p id="answer-fit" class="mc-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+  </section>
+
+  <section class="card mc-more" aria-labelledby="numbers-title">
+    <div class="mc-numbers">
+      <h3 id="numbers-title">それぞれの数字の意味</h3>
+      <dl class="mc-stats" data-for="telescope">
+        <div><dt>倍率</dt><dd><strong id="tel-s-power"></strong> <span>肉眼だけで見たときに比べて、すべてが何倍の幅に見えるかを表します。望遠鏡の焦点距離を接眼レンズの焦点距離で割った値です。</span></dd></div>
+        <div><dt>視野（実視界）</dt><dd><strong id="tel-s-field"></strong> <span>接眼レンズの中に収まる空の広さです。倍率が上がるほど狭くなります。</span></dd></div>
+        <div><dt>射出瞳径（ひとみ径）</dt><dd><strong id="tel-s-pupil"></strong> <span>接眼レンズから出てくる光束の幅で、口径を倍率で割った値です。広いほど明るくなりますが、それも自分の瞳孔の幅までです。</span></dd></div>
+        <div><dt>見分けられる細かさ</dt><dd><strong id="tel-s-detail"></strong> <span>この口径で見分けられる最小のもので、倍率を変えても変わりません。これを小さくできるのは、より広いレンズか鏡だけです。</span></dd></div>
+        <div><dt>集光力</dt><dd><strong id="tel-s-light"></strong> <span>暗闇で開いた自分の瞳孔と比べた値です。暗いものを見せてくれるのは倍率ではなく、この集光力です。</span></dd></div>
+        <div><dt>有効な倍率の範囲</dt><dd><strong id="tel-s-range"></strong> <span>光を無駄にしない最低の倍率から、まだ役に立つ最高の倍率までです。上限は口径（mm）の約2倍で、大気を通して見るかぎり300倍を超えることはめったにありません。</span></dd></div>
+        <div><dt>口径比（F値）</dt><dd><strong id="tel-s-ratio"></strong> <span>焦点距離を口径で割った値です。低倍率での視野をどれだけ広く明るくできるかを表すもので、望遠鏡がどれだけ拡大するかは表しません。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="binoculars">
+        <div><dt>倍率</dt><dd><strong id="bin-s-power"></strong> <span>1つ目の数字です。ものがその倍数の幅に見え、それだけ近づいて見たのと同じになります。</span></dd></div>
+        <div><dt>対物レンズ</dt><dd><strong id="bin-s-objective"></strong> <span>2つ目の数字で、左右それぞれの対物レンズ（前側のレンズ）の幅です。レンズが広いほど多くの光を集めますが、双眼鏡は重くなります。</span></dd></div>
+        <div><dt>射出瞳径（ひとみ径）</dt><dd><strong id="bin-s-pupil"></strong> <span>2つ目の数字を1つ目の数字で割った値で、それぞれの目に届く光束の幅です。瞳孔の幅は昼間で2〜3 mm、夕暮れで約5 mm、暗闇では最大7 mmです。</span></dd></div>
+        <div><dt>この光の下での明るさ</dt><dd><strong id="bin-s-light"></strong> <span>同じ景色から肉眼だけで得られる明るさに対する割合です。光束が瞳孔より狭くなると下がります。</span></dd></div>
+        <div><dt>視野（実視界）</dt><dd><strong id="bin-s-field"></strong> <span>視野の端から端までに収まる景色の広さです。角度か、決まった距離での幅として書かれています。</span></dd></div>
+        <div><dt>薄暮係数</dt><dd><strong id="bin-s-twilight"></strong> <span>2つの数字を掛け合わせた値の平方根です。メーカーは、光が乏しいときにどれだけ細部が見えるかの目安として載せています。この係数は倍率が高いほど大きくなりますが、夕暮れに視野がどれだけ明るさを保てるかは射出瞳径で決まります。</span></dd></div>
+        <div><dt>手持ちでは</dt><dd><strong id="bin-s-hand"></strong> <span>手ぶれも、ほかのすべてと一緒に拡大されます。約8倍までは楽に安定して持てますが、約12倍を超えると、倍率を上げるより三脚を使うほうが効果があります。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="microscope">
+        <div><dt>総合倍率</dt><dd><strong id="mic-s-power"></strong> <span>対物レンズの倍率に接眼レンズの倍率を掛けた値で、同じものを目から25 cmの距離で持ったときと比べた倍率です。</span></dd></div>
+        <div><dt>視野</dt><dd><strong id="mic-s-field"></strong> <span>見えている標本の幅で、接眼レンズの視野数を対物レンズの倍率で割った値です。</span></dd></div>
+        <div><dt>見分けられる細かさ</dt><dd><strong id="mic-s-detail"></strong> <span>この対物レンズで見分けられる最小のもので、開口数で決まります。接眼レンズを強くしても変わりません。</span></dd></div>
+        <div><dt>有効な倍率の範囲</dt><dd><strong id="mic-s-range"></strong> <span>視力のよい目が、対物レンズの捉えた細部をすべて見分けられるようになる倍率から、引き伸ばすものがもう残らない倍率までです。開口数の約220〜1000倍にあたります。メーカーが示すのは、その上半分の500〜1000倍です。</span></dd></div>
+        <div><dt>射出瞳径（ひとみ径）</dt><dd><strong id="mic-s-pupil"></strong> <span>接眼レンズから出てくる光束の幅です。約0.5 mmを下回ると、像はただ引き伸ばされているだけになります。</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="magnifier">
+        <div><dt>倍率</dt><dd><strong id="mag-s-power"></strong> <span>目から25 cmの距離で持ったときに比べて、ものが何倍の幅に見えるかを表します。</span></dd></div>
+        <div><dt>焦点距離</dt><dd><strong id="mag-s-focal"></strong> <span>レンズを対象からどれくらい離す必要があるかの目安です。強いレンズほど近づけて使います。</span></dd></div>
+        <div><dt>ディオプトリ</dt><dd><strong id="mag-s-diopters"></strong> <span>1000を焦点距離（mm）で割った値です。眼鏡店や照明付きルーペで使われる数字です。</span></dd></div>
+        <div><dt>一度に見える幅</dt><dd><strong id="mag-s-field"></strong> <span>目をレンズに近づけたとき、ほぼレンズの幅と同じになります。強いルーペで一度に見える範囲がとても狭いのはこのためです。</span></dd></div>
+        <div><dt>見分けられる細かさ</dt><dd><strong id="mag-s-detail"></strong> <span>視力のよい目がこのレンズを通して見分けられる細かさで、目そのものの限界を倍率で割った値です。</span></dd></div>
+      </dl>
+    </div>
+    <div class="mc-side">
+      <h3 id="ladder-title">同じ機器をほかの倍率で使うと</h3>
+      <p class="field-note">どの行も、上の数字から計算したものです。押すとその設定を試せます。</p>
+      <ol class="mc-ladder" id="ladder" aria-labelledby="ladder-title"></ol>
+      <h3>ほかにも試す</h3>
+      <div class="mc-example-row">
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=4 tel-barlow=3 look-telescope=moon">675×として売られる口径60 mmの望遠鏡</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=20 tel-barlow=1 look-telescope=moon">同じ望遠鏡の45倍</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=130 tel-focal=650 tel-eyepiece=5 tel-barlow=1 look-telescope=saturn">口径130 mmの望遠鏡で見る土星</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=42 bin-field= look-binoculars=bird-dusk">夕暮れの8×42双眼鏡</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=21 bin-field= look-binoculars=bird-dusk">夕暮れのポケット型8×21</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=40 mic-eyepiece=25 mic-fn= look-microscope=bacteria">強い接眼レンズで1000倍</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=100 mic-eyepiece=10 mic-fn= look-microscope=bacteria">油浸対物レンズで1000倍</button>
+        <button type="button" class="ghost" data-example="world=magnifier mag-value=10 mag-unit=power mag-lens= look-magnifier=print">宝石用の10倍ルーペ</button>
+      </div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>どうやって計算したのですか？</summary>
+    <p>入力した数字は、書かれているとおりに扱います。それ以外はすべて下の数値からの計算で、変更や確認ができます。</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="eye-pupil">暗闇での瞳孔の幅</label><select id="eye-pupil"><option value="7" selected>7 mm・若い目</option><option value="6">6 mm</option><option value="5">5 mm・年配の目</option></select><p class="field-note">瞳孔が最も大きく開いたときの幅で、夜空を見るときに使います。年齢とともに狭くなります。昼間は2.5 mm、夕暮れは5 mmとしています。</p></div>
+      <div class="field"><label for="apparent-field">接眼レンズが見せる円の広さ</label><select id="apparent-field"><option value="40">40°・簡易型の接眼レンズ</option><option value="52" selected>52°・プローセル（一般的な型）</option><option value="68">68°・広視界</option><option value="82">82°・超広視界</option></select><p class="field-note">望遠鏡の接眼レンズの見掛け視界です。広いものほど同じ倍率でより広い空が見えますが、視野の中のものが大きくなるわけではありません。</p></div>
+      <div class="field"><label for="barrel">接眼レンズの差し込み径</label><select id="barrel"><option value="27" selected>1.25インチ（31.7 mm）</option><option value="46">2インチ（50.8 mm）</option></select><p class="field-note">差し込み径は、焦点距離の長い接眼レンズで視野をどこまで広げられるかを制限します。視野絞りの直径は、1.25インチで約27 mm、2インチで約46 mmまでです。</p></div>
+      <div class="field"><label for="mag-rule">ルーペの倍率の数え方</label><select id="mag-rule"><option value="auto" selected>表示に合わせた一般的な数え方</option><option value="relaxed">250 mm ÷ 焦点距離</option><option value="close">250 mm ÷ 焦点距離 + 1</option></select><p class="field-note">2通りの計算が使われています。250 mmを焦点距離で割る計算は、目を楽にした状態を前提にしていて、倍率が書かれたルーペはふつうこの方法で数えます。それに1を足す計算は、目のピントをできるだけ近くに合わせた状態を前提にしていて、ディオプトリが書かれた照明付きルーペや読書用ルーペはこの方法で売られています。+3ディオプトリなら1.75×です。ここでどちらかを選ばないかぎり、入力した数字の種類に合うほうを使います。</p></div>
+    </div>
+    <p><strong>1つのぼけと、3つの目安：</strong>どんなレンズも、光の点を小さな円盤に広げてしまい、接眼レンズはその円盤もほかのすべてと一緒に拡大します。緑色の光でのレイリー限界によると、この円盤は、射出瞳径が1 mmのとき約2.3分角の幅に見え、射出瞳径が小さくなるほど広がります。視力のよい目が見分けられるのは1分角です。そのため、射出瞳径が2.3 mmより大きいときは、見えるものを制限しているのはレンズではなく目のほうです。1 mmでは、レンズが捉えた細部のすべてが十分な大きさになります。0.5 mmを下回ると、大きくなるのはぼけそのものだけです。天体望遠鏡の倍率でいうと、これらは口径（mm）を2.3で割った値、口径そのもの、口径の2倍にあたります。顕微鏡では、開口数の約217倍、500倍、1000倍です。</p>
+    <p><strong>天体望遠鏡：</strong>倍率は、望遠鏡の焦点距離を接眼レンズの焦点距離で割り、バローレンズがあればその倍率を掛けた値です。射出瞳径は、口径を倍率で割った値です。見分けられる細かさは、138秒角を口径（mm）で割った値です。二重星を見分ける目安として古くから使われるドーズ限界は116を口径で割った値で、これより6分の1ほど小さくなります。視野は、接眼レンズの見掛け視界を倍率で割った値で、差し込み径による上限があります。約300倍を超えると、望遠鏡が見せられるはずのものも、たいていはシーイング（大気のゆらぎ）に隠れてしまいます。</p>
+    <p><strong>双眼鏡：</strong>射出瞳径は、対物レンズの幅を倍率で割った値です。明るさは、射出瞳径を自分の瞳孔の幅で割った値の2乗で、1を超えることはありません。幅で示された視野は正確に角度へ換算するので、1000 m先で131 mも、1000 yd先で393 ftも、どちらも7.5°になります。描かれる円は、その角度に倍率を掛けたものです。正接（タンジェント）で計算する新しい規格では、同じ双眼鏡で約5度小さくなります。</p>
+    <p><strong>顕微鏡：</strong>総合倍率は、対物レンズの倍率に接眼レンズの倍率を掛けた値です。見分けられる細かさは、波長の0.61倍を開口数で割った値で、緑色の光では0.34 µmを開口数で割った値になります。視野に入る標本の幅は、視野数を対物レンズの倍率で割った値です。数字が刻印されていない接眼レンズの視野数は、180 mmをその倍率で割った値とします。10×なら18 mmで、標準的な接眼筒に収まる20 mmを上限とします。照明はいつでも明るくできるので、顕微鏡の絵は暗くしていません。</p>
+    <p><strong>ルーペ：</strong>単レンズの倍率は、同じものを目から250 mmの距離で持ったときと比べて数えます。目を楽にした状態では250 mmを焦点距離で割った値で、目のピントを近くに合わせた状態ではそれに1を足した値です。焦点距離は、1000 mmをディオプトリで割った値です。レンズを通して見える範囲はレンズそのものの幅としていて、これは目がレンズの後ろ、焦点距離とほぼ同じ距離にあるときに成り立ちます。</p>
+    <p><strong>絵について：</strong>3つの絵はすべて、同じ角度の縮尺で描いています。円は、目に映るとおりの接眼レンズの視野で、その中のものはすべて、倍率で広がったとおりの幅になっています。クローズアップでは、視野の2分角を画面の1ピクセルで表していて、スマートフォンやノートパソコンをふだんの距離で見ると、ほぼ実際の見え方どおりの大きさになります。そこに見える像の甘さは、上で説明したぼけです。面の明るさは、射出瞳径を瞳孔の幅で割った値の2乗に応じて下がりますが、絵が暗くなるのは、対象が持つ光の余裕を使い切ってからです。満月は1平方メートルあたり2,500カンデラ、視野がくすんで見えるのは2未満とし、木星と土星は、受けて反射する太陽光の量に応じてそれより暗くしています。日なたの景色は5,000、夕暮れの景色は3としています。恒星は点なので、このようには暗くなりません。集めた光では暗すぎて見えない星は省いています。</p>
+    <p><strong>絵に描いたもの：</strong>月は幅3,475 km、距離384,400 kmで、海と、最大級のクレーター約20個は実際の位置にあり、小さなクレーターは規則に従って散らしています。木星と土星は、衝のときの平均距離である6億2900万kmと12億7700万kmに置いています。木星の衛星とタイタンは、数日で一周する軌道の上の、典型的な位置にあります。プレアデス星団（すばる）は、星表にある最も明るい11個の星です。鳥は体長14 cmで、20 m先にいます。スライドガラスの上では、タマネギの細胞は長さ0.3 mm、赤血球は7.5 µm、髪の毛は0.07 mm、食塩の粒は約0.3 mm、細菌は2 µmです。印刷物は8ポイントと5ポイントの活字で、その下に高さ0.25 mmのマイクロ文字の行が並んでいます。</p>
+    <p class="source-links">参考資料：<a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASAの惑星ファクトシート</a> · <a href="https://www.microscopyu.com/microscopy-basics/useful-magnification-range" target="_blank" rel="noopener noreferrer">有効倍率の範囲についてのNikon MicroscopyUの解説</a> · <a href="https://www.leica-microsystems.com/science-lab/microscopy-basics/what-is-empty-magnification/" target="_blank" rel="noopener noreferrer">無効倍率についてのLeicaの解説</a> · <a href="https://planetarynames.wr.usgs.gov/" target="_blank" rel="noopener noreferrer">IAUによる月面の地名と位置</a>。これらのリンクは任意の読み物で、計算機が接続することはありません。</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="unit.times">{number}倍</span><span data-phrase="unit.um">{number} µm</span><span data-phrase="unit.arcsec">{number}秒角</span><span data-phrase="unit.arcmin">{number}分角</span><span data-phrase="unit.diopter">{number} D</span><span data-phrase="unit.ratio">f/{number}</span><span data-phrase="unit.far">{number}{unit}</span>
+    <span data-phrase="how.telescope">{focal} ÷ {eyepiece}</span><span data-phrase="how.telescope.barlow">{focal} × {barlow} ÷ {eyepiece}</span><span data-phrase="how.binoculars">2つの数字のうち1つ目</span><span data-phrase="how.microscope">{objective} × {eyepiece}</span><span data-phrase="how.magnifier">250 mm ÷ {focal}</span><span data-phrase="how.magnifier.close">250 mm ÷ {focal} + 1</span>
+    <span data-phrase="zone.wasted">光の無駄</span><span data-phrase="zone.spare">まだ余裕あり</span><span data-phrase="zone.sharp">最も鮮明</span><span data-phrase="zone.full">有効な上限</span><span data-phrase="zone.empty">無効倍率</span><span data-phrase="zone.light.full">明るい</span><span data-phrase="zone.light.less">やや暗い</span><span data-phrase="zone.light.dim">この光の下では暗い</span><span data-phrase="zone.steady">手持ちで安定</span><span data-phrase="zone.care">手ぶれに注意</span><span data-phrase="zone.tripod">三脚が必要</span><span data-phrase="zone.reading">読書用ルーペ</span><span data-phrase="zone.inspect">検査用ルーペ</span><span data-phrase="zone.loupe">高倍率ルーペ</span><span data-phrase="zone.beyond">単レンズの限界超え</span>
+    <span data-phrase="verdict.telescope.wasted">この望遠鏡で生かせる倍率より低い設定です。接眼レンズから出る光束の幅が{pupil}と、瞳孔より広いため、光の一部が目に届きません。約{low}より下げても得るものはありません。</span><span data-phrase="verdict.telescope.spare">明るく、広く、鮮明です。この倍率で細部を決めているのは望遠鏡ではなく目のほうなので、約{sharp}までは、倍率を上げればまだ多くのものが見えてきます。</span><span data-phrase="verdict.telescope.sharp">最も鮮明に見える範囲です。この望遠鏡が捉えられる細部はすべて、視力のよい目なら見分けられる大きさになっていて、像もまだくっきりしています。</span><span data-phrase="verdict.telescope.full">有効な倍率の上限にあたる範囲です。約{full}から先、新しい細部は現れていませんが、像は大きく見やすくなり、そのぶん甘く暗くなっています。</span><span data-phrase="verdict.telescope.empty">約{high}を超えると、この望遠鏡が見せられる細部はもう残っていません。像が大きく、甘く、暗くなるだけです。</span><span data-phrase="verdict.seeing">望遠鏡がどれほど大きくても、シーイング（大気のゆらぎ）が約300倍を超える倍率を許すことはめったにありません。</span>
+    <span data-phrase="verdict.microscope.spare">鮮明で、楽に見えます。対物レンズは、この倍率で目が見分けられるより細かいところまで捉えているので、約{sharp}までは、接眼レンズを強くすればまだ多くのものが見えてきます。</span><span data-phrase="verdict.microscope.sharp">くっきり見える範囲です。この対物レンズが捉えられる細部はすべて、視力のよい目なら見分けられる大きさになっています。</span><span data-phrase="verdict.microscope.full">有効な倍率の上限にあたる範囲で、この対物レンズでは{full}から{high}です。新しい細部は現れませんが、像は大きく見やすくなります。</span><span data-phrase="verdict.microscope.empty">約{high}を超えると、この対物レンズが見せられる細部はもう残っておらず、接眼レンズを強くしてもぼけが大きくなるだけです。もっと細かく見るには、倍率ではなく、より高い開口数が必要です。</span>
+    <span data-phrase="verdict.binoculars.light.full">この光の下で目が受け取れる限りの明るさです。それぞれの接眼レンズから出る光束の幅は{pupil}で、瞳孔と同じかそれより広くなっています。</span><span data-phrase="verdict.binoculars.light.less">この光の下では肉眼より少し暗く、明るさは{share}です。幅{pupil}の光束が瞳孔より狭いためです。</span><span data-phrase="verdict.binoculars.light.dim">この光の下では暗く、肉眼で得られる明るさの{share}です。幅{pupil}の光束は、瞳孔よりずっと狭くなっています。</span><span data-phrase="verdict.binoculars.hand.steady">手持ちでも楽に安定します。</span><span data-phrase="verdict.binoculars.hand.care">この倍率では手ぶれで細部がぼけ始めるので、ひじを固定してください。</span><span data-phrase="verdict.binoculars.hand.tripod">手持ちには倍率が高すぎて、得られるものより視野の揺れのほうが大きくなります。三脚か防振双眼鏡を使ってください。</span>
+    <span data-phrase="verdict.magnifier.reading">紙面から約{focal}と、十分に離して持つ大きなレンズで、一度に{field}の幅が見えます。</span><span data-phrase="verdict.magnifier.inspect">対象から約{focal}離して持ちます。一度に{field}の幅が見えます。</span><span data-phrase="verdict.magnifier.loupe">ルーペを目のすぐ前に当て、対象をレンズから約{focal}まで近づけます。一度に{field}の幅が見えます。</span><span data-phrase="verdict.magnifier.beyond">これほど強い単レンズはとても小さく、対象から約{focal}と、ほとんど触れるほどの距離になります。ここから先は顕微鏡のほうが向いています。</span>
+    <span data-phrase="subject.moon">月</span><span data-phrase="subject.jupiter">木星</span><span data-phrase="subject.saturn">環を含めた土星</span><span data-phrase="subject.pleiades">プレアデス星団（すばる）</span><span data-phrase="subject.bird-day">小鳥</span><span data-phrase="subject.bird-dusk">夕暮れの小鳥</span><span data-phrase="subject.onion">タマネギの細胞1個</span><span data-phrase="subject.blood">赤血球1個</span><span data-phrase="subject.hair">髪の毛1本</span><span data-phrase="subject.salt">食塩の粒1つ</span><span data-phrase="subject.bacteria">細菌1個</span><span data-phrase="subject.print">8ポイントの活字1行</span><span data-phrase="subject.ruler">定規の1目盛り</span>
+    <span data-phrase="story.far">{name}は{far}離れていますが、{near}の距離から見たように見えます。</span><span data-phrase="story.far.bound">{name}は{far}離れていますが、{near}の距離から見たのと同じ大きさに見えます。ただし細部は、{detail}の距離から見た程度です。</span><span data-phrase="story.near">幅{real}の{name}が、読書の距離（25 cm）で持った幅{lookalike}のものと同じ大きさに見えます。</span><span data-phrase="story.near.bound">幅{real}の{name}が、読書の距離で持った幅{lookalike}のものと同じ大きさに見えます。ただし細部は、{power}のときより細かくは見えません。</span><span data-phrase="story.tall">高さ{real}の{name}が、読書の距離（25 cm）で持った高さ{lookalike}のものと同じ大きさに見えます。</span><span data-phrase="story.span">{name}の明るい星は、空で{width}の幅に広がっています。</span>
+    <span data-phrase="fit.share">視野の幅の{share}に相当します。</span><span data-phrase="fit.over">視野の{times}倍の幅があるので、一部しか収まりません。</span><span data-phrase="fit.speck">視野の幅の100分の1にも届きません。</span><span data-phrase="fit.field.sky">視野の幅は空の{field}で、月の幅の{moons}倍にあたります。</span><span data-phrase="fit.field.land">その距離では、視野の幅は{width}です。</span><span data-phrase="fit.field.near">視野には幅{width}の範囲が見えています。</span>
+    <span data-phrase="caption.scale">3つの絵は角度の縮尺をそろえてあるので、画面上の大きさは実際の見え方どおりです。</span><span data-phrase="caption.moon">これは描いた絵です。海と約20個の大きなクレーターは実際の位置にあり、小さなクレーターは規則に従って散らしています。像の甘さはこの機器そのもののぼけで、暗さは射出瞳径に従っています。</span><span data-phrase="caption.jupiter">これは描いた絵です。4つの衛星は典型的な距離に置いていますが、実際には刻々と位置を変えます。像の甘さはこの機器そのもののぼけで、暗さは射出瞳径に従っています。</span><span data-phrase="caption.saturn">これは描いた絵で、環を手前に20°傾け、そばに衛星タイタンを置いています。2つの明るい環の間の暗い線がカッシーニの間隙です。</span><span data-phrase="caption.pleiades">最も明るい11個の星を、星表の位置どおりに置いています。それより暗い星と、周りの淡いもやは省いています。</span><span data-phrase="caption.bird">小鳥を描いた絵で、体長は14 cm、距離は20 mです。羽はイラストですが、大きさは本物です。</span><span data-phrase="caption.slide">スライドガラスに載せた標本を描いた絵です。形はイラストで、大きさは典型的な値です。</span><span data-phrase="caption.near">これは描いた絵です。大きさは本物で、質感はイラストです。</span>
+    <span data-phrase="aria.view">{power}での視野全体。{fit}</span><span data-phrase="aria.close">その視野の中央のクローズアップ。{story}</span><span data-phrase="aria.bare">同じクローズアップを、拡大せずに肉眼だけで見た様子。</span><span data-phrase="said.aloud">{power}。{zone}。{verdict}{story}{fit}</span><span data-phrase="dial.value">{power}、{zone}</span>
+    <span data-phrase="stat.field.sky">{field} · 月の幅の{moons}倍</span><span data-phrase="stat.field.land">{field} · 1000 m先で{metres} · 1000 yd先で{feet}</span><span data-phrase="stat.detail.sky">{detail} · 月面で約{size}</span><span data-phrase="stat.light">肉眼の{number}倍</span><span data-phrase="stat.range">{low}〜{high}</span><span data-phrase="stat.focal">{focal} · 作業距離</span>
+    <span data-phrase="read.field">{field}として読み取りました。1000 m先で{metres}、1000 yd先で{feet}にあたります。</span><span data-phrase="read.field.typical">この倍率で一般的な{field}として計算しています。</span><span data-phrase="read.number.typical">{eyepiece}の接眼レンズで一般的な{number}として計算しています。</span><span data-phrase="read.magnifier">{power}として読み取りました。焦点距離では{focal}、ディオプトリでは{diopters}にあたります。</span><span data-phrase="read.lens.typical">この倍率で一般的な{width}として計算しています。</span>
+    <span data-phrase="row.telescope">{eyepiece}の接眼レンズ：{power}、視野の幅{field}、射出瞳径{pupil}。{zone}。</span><span data-phrase="row.binoculars">{pair}：射出瞳径{pupil}、この光の下での明るさは{share}。{zone}。</span><span data-phrase="row.microscope">{objective}の対物レンズ：{power}、視野の幅{field}、見分けられる細かさは{detail}まで。{zone}。</span><span data-phrase="row.magnifier">{power}：対象から{focal}離して持ち、一度に{field}の幅が見えます。{zone}。</span><span data-phrase="row.here">{row}いま使っている設定です。</span>
+    <span data-phrase="error.missing">{name}：数値を入力してください。</span><span data-phrase="error.range">{name}：{low}から{high}までの数値を入力してください。</span>
+    <span data-phrase="print.line.1">数字は小さな文字の中に隠れています。</span><span data-phrase="print.line.2">署名する前にすべての行を読み、控えを保管してください。</span><span data-phrase="print.line.3">条件は予告なく変更されることがあります。詳細は裏面をご覧ください。</span><span data-phrase="print.micro">この行は高さ4分の1ミリのマイクロ文字です</span>
+    <span data-phrase="net.clean">あなたの数字はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span><span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span><span data-phrase="net.platform.one">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span><span data-phrase="net.platform.many">広告・計測のためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。計算機は入力も結果も渡しません。</span>
+  </div>
+</main>
