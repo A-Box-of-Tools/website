@@ -14,6 +14,34 @@
   <span class="dropzone-title">{{ tool.picker.title }}</span>
   <span class="dropzone-hint">{{ tool.picker.hint }}</span>
 </label>
+{% if tool.picker.multiple %}
+<!--
+  The way in for a whole folder, for a visitor who clicks. Dropping one on the
+  zone above already opens it, but a drop is the one thing a keyboard cannot
+  do and a phone has nothing to drag from. Rendered only where the tool takes
+  several files.
+
+  A second input, because one input offers files or a folder and never both.
+  It opens the way the first does - a <label>, with no script in the path - and
+  it sits outside the drop zone, since a <label> may hold no control but its
+  own.
+
+  The sentence beside it answers what the browser says next. Asked for a
+  folder, Chrome and Firefox both make the visitor confirm an "upload", in
+  that word; see `folder_upload` in config/site.toml.
+
+  `hidden` until shared/js/file-picker.js has found that this browser can
+  choose a folder. In one that cannot, this input would open the ordinary file
+  dialog under a label that promises something else.
+-->
+<div class="dropzone-folder" id="folder-pick" hidden>
+  <input type="file" id="folder-input" class="visually-hidden" webkitdirectory multiple
+         aria-describedby="folder-why">
+  <label for="folder-input" class="as-button ghost">{{ ui.tool.folder_choose }}</label>
+  <span class="dropzone-folder-why" id="folder-why">{{ ui.tool.folder_upload }}</span>
+  <span class="folder-note" id="folder-note" role="status"></span>
+</div>
+{% endif %}
 {% if tool.picker.example %}
 <!--
   For a visitor who wants to see what the tool does before deciding whether to

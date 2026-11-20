@@ -1024,6 +1024,44 @@ error_broke = "Something broke: {detail}. Reload the page to start over."
 # for the same reason `guide_one` and `guide_many` are two keys.
 reading_one = "Reading {count} file&hellip;"
 reading_many = "Reading {count} files&hellip;"
+
+# The way in for a whole folder by clicking: a second control under the drop
+# zone, on every tool that takes several files. Dropping a folder needs none of
+# it - shared/js/file-picker.js opens one - but a drop is the one thing a
+# keyboard cannot do, and a phone has nothing to drag from.
+#
+# `folder_upload` answers what the browser says next, and the sentence it
+# answers is the browser's and not ours. Asked for a folder, Chrome puts up
+# "Upload 148 files to this site? This will upload all files from "disc". Only
+# do this if you trust the site." over a button marked Upload, and Firefox asks
+# "Are you sure you want to upload all files from "disc"?" under the title
+# Confirm Upload. Both were read out of the browsers' own sources in November
+# 2026. That is their word for handing files to a page, it is the same prompt
+# on every site there is, and on this one it lands on the claim the whole page
+# makes. So the answer stands beside the button, where it is read before the
+# question is put. "May", because Safari asks nothing.
+#
+# It says what choosing a folder does and stops there. "None of them leaves
+# this device" would be the stronger sentence and is not this one's to say: the
+# frame says it on every tool that takes several files, and one of those, the
+# receipt extractor, lets a visitor hand its files to their own email app
+# afterwards. That tool words its promise round that on purpose - see the note
+# above `pledge_line` in its tool.toml - and a line from the frame must not
+# make it absolute again from underneath.
+#
+# A translation names the word its own readers will be shown, which is not
+# always the one this site uses for an upload: Chrome says "hochladen",
+# "subir", "fazer upload" and, in French, "télécharger", where Firefox says
+# "enviar" and "envoyer".
+folder_choose = "Choose a folder"
+folder_upload = "Your browser may call this an upload. Choosing a folder sends nothing anywhere: the files are read on this device."
+
+# Said beside that control when the folder held nothing this tool takes. A
+# dropped folder gets the tool's own refusal instead, because the browser hands
+# over something for the tool to refuse. A chosen one arrives as its files and
+# nothing else, so with none of them left there is nobody but the picker to
+# answer.
+folder_none = "Nothing in that folder is a file this tool opens."
 # Why a file was refused, for the tools that begin "That file could not be read:".
 text_encoding = "It is not saved as UTF-8 text. Save it as UTF-8 and try again, or paste its text instead."
 
