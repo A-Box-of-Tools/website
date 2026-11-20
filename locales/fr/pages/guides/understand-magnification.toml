@@ -1,0 +1,25 @@
+#
+# Guide: comprendre le grossissement - French.
+#
+# Overrides for pages/guides/understand-magnification/page.toml. Only words:
+# the slug, the group, the tool the guide belongs to and the two machine dates
+# stay where they are.
+#
+# The title and the heading say chiffres de grossissement, which is what a
+# French reader types when a box quotes 675× at them. Under them the numbers
+# read off an instrument are nombres, as on the tool's own page.
+#
+
+nav = "Comprendre le grossissement"
+
+title = "Ce que signifient les chiffres de grossissement d'un télescope, d'un microscope ou de jumelles"
+description = "Ce que 8×42, 40×/0.65 et 675× vous disent vraiment&nbsp;: la taille apparente des choses, ce qui tient dans le champ, et pourquoi le diamètre de l'objectif décide des détails. Avec les limites calculées pour votre propre instrument."
+
+heading = "Ce que dit un chiffre de grossissement, et ce qu'il passe sous silence"
+lede = "Un télescope 675× ne montre rien de plus que le même télescope à 120×, et des jumelles marquées 8×42 ne surpassent des 8×21 que lorsque la lumière baisse. Le chiffre dit quelle taille les choses paraissent avoir. Ce qu'il y a à voir, ce sont les autres nombres inscrits à côté qui le disent."
+
+updated = "15 novembre 2026"
+
+og_title = "Ce que veulent vraiment dire les chiffres de grossissement"
+og_description = "La taille apparente des choses, ce qui tient dans le champ, et à partir d'où un nombre plus grand ne montre plus rien de nouveau, pour les télescopes, les jumelles, les microscopes et les loupes."
+og_image_alt = "abox.tools - outils du navigateur pour traiter les fichiers localement"

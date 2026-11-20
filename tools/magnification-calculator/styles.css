@@ -1,0 +1,174 @@
+/* One accent per instrument, and one colour per zone of the dial. The zones are the
+   same five on every page that has them, so a reader who has learned that amber is
+   the useful top on a telescope reads a microscope's dial without being told again. */
+#main { --world: #4b4fc4; --z-wasted: #8a93a1; --z-spare: #2f7fc1; --z-sharp: #1e8a5a; --z-full: #b7791f; --z-empty: #b8402f;
+  /* A zone's colour is chosen to be told from its neighbours on the dial, which is
+     not the same as being readable as words. Words in it are written darker. */
+  --zone-ink: color-mix(in srgb, var(--zone, var(--world)) 72%, #000); }
+#main[data-world="binoculars"] { --world: #1c7a55; }
+#main[data-world="microscope"] { --world: #0c7c8c; }
+#main[data-world="magnifier"] { --world: #a05a14; }
+
+/* Everything that belongs to one instrument is in the page from the start, so a
+   language switch can carry what was typed into any of them. Only the chosen
+   instrument's is shown. */
+#main:not([data-world="telescope"]) [data-for="telescope"],
+#main:not([data-world="binoculars"]) [data-for="binoculars"],
+#main:not([data-world="microscope"]) [data-for="microscope"],
+#main:not([data-world="magnifier"]) [data-for="magnifier"] { display: none; }
+
+.mc-card { overflow: hidden; border-top: 4px solid var(--world); transition: border-color .3s ease; }
+.mc-heading { display: flex; justify-content: space-between; gap: .6rem; flex-wrap: wrap; align-items: center; margin-bottom: .55rem; }
+.mc-eyebrow { color: var(--text-dim); font-size: .75rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.mc-badge { padding: .25rem .6rem; border-radius: 20px; background: color-mix(in srgb, var(--ok) 10%, var(--surface)); color: var(--ok); font-size: .72rem; }
+
+.mc-worlds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; }
+.mc-world { position: relative; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: .45rem; align-items: center; justify-items: start; padding: .5rem .6rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); min-width: 0; cursor: pointer; transition: background .15s ease, color .15s ease; }
+.mc-world:hover { border-color: var(--world); }
+.mc-world input, .chip input { position: absolute; opacity: 0; pointer-events: none; }
+.mc-world svg { grid-row: span 2; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mc-world-name { font-weight: 700; font-size: .88rem; }
+.mc-world-value { grid-column: 2; color: var(--text-dim); font-size: .76rem; font-variant-numeric: tabular-nums; }
+.mc-world:has(input:checked) { background: var(--world); border-color: var(--world); color: #fff; }
+.mc-world:has(input:checked) .mc-world-value { color: inherit; }
+.mc-world:has(input:focus-visible), .chip:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.mc-form { margin: 1rem 0 0; padding: 0; border: 0; min-width: 0; }
+.mc-form legend { padding: 0; margin-bottom: .6rem; font-weight: 700; font-size: .95rem; }
+.mc-form label { font-weight: 600; font-size: .86rem; }
+.mc-form .settings { align-items: start; }
+.mc-form input[type="number"] { min-width: 0; width: 100%; font-variant-numeric: tabular-nums; }
+.mc-form .inline-pair > span { color: var(--text-dim); font-size: .9rem; }
+.mc-form .inline-pair input { flex: 1 1 4.5rem; }
+.mc-form .inline-pair select { flex: 0 0 auto; max-width: 62%; }
+.mc-form .field-note:empty { display: none; }
+.mc-turret { margin-bottom: .9rem; }
+.mc-custom { display: none; }
+#microscope-form[data-custom="true"] .mc-custom { display: flex; }
+
+/* A chip here is a label round a radio button, so that a language switch carries the
+   choice; the shared part lights a button by its pressed state, and this is the same
+   look for a checked one. */
+label.chip { position: relative; display: inline-flex; align-items: center; }
+.chip:has(input:checked) { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+
+.mc-dial { position: relative; margin-top: 1.1rem; padding-bottom: .2rem; }
+.mc-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .7rem; margin: 0 0 .2rem; }
+.mc-readout-label { color: var(--text-dim); font-size: .92rem; }
+.mc-readout-number { color: var(--zone-ink); font-size: clamp(2.2rem, 7vw, 3.4rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.mc-readout-how { color: var(--text-dim); font-size: .86rem; font-variant-numeric: tabular-nums; }
+#dial { --track: var(--surface-2); display: block; width: 100%; height: 26px; margin: 0; padding: 0; background: transparent; appearance: none; -webkit-appearance: none; cursor: grab; touch-action: pan-y; border: 0; }
+#dial:active { cursor: grabbing; }
+#dial::-webkit-slider-runnable-track { height: 12px; border-radius: 6px; background: var(--track); box-shadow: inset 0 0 0 1px var(--border); }
+#dial::-moz-range-track { height: 12px; border-radius: 6px; background: var(--track); box-shadow: inset 0 0 0 1px var(--border); }
+#dial::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -7px; border-radius: 50%; background: var(--surface); border: 4px solid var(--zone, var(--world)); box-shadow: 0 2px 8px rgb(0 0 0 / 30%); }
+#dial::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface); border: 4px solid var(--zone, var(--world)); box-shadow: 0 2px 8px rgb(0 0 0 / 30%); }
+#dial:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+.mc-ticks { position: relative; height: 1.25rem; }
+.mc-ticks span { position: absolute; top: .1rem; left: calc(13px + (100% - 26px) * var(--at)); transform: translateX(-50%); color: var(--text-dim); font-size: .7rem; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.mc-legend { display: flex; flex-wrap: wrap; gap: .2rem .9rem; margin: .15rem 0 0; padding: 0; list-style: none; color: var(--text-dim); font-size: .74rem; }
+.mc-legend li { display: inline-flex; align-items: center; gap: .3rem; }
+.mc-legend li::before { content: ""; width: .7rem; height: .7rem; border-radius: 3px; background: var(--dot); }
+.mc-legend li[aria-current="true"] { color: var(--text); font-weight: 700; }
+
+.mc-verdict { max-width: 72ch; margin: .7rem 0 0; padding: .7rem .9rem; border-inline-start: 4px solid var(--zone, var(--world)); border-radius: 0 8px 8px 0; background: color-mix(in srgb, var(--zone, var(--world)) 8%, var(--surface)); font-size: .95rem; line-height: 1.5; }
+/* The zone's name stands over its sentence, as a heading would, so that it is not
+   read as the sentence's first words. */
+.mc-verdict strong { display: block; color: var(--zone-ink); }
+.mc-verdict strong:empty { display: none; }
+
+.mc-look { margin-top: 1rem; }
+.mc-stage { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: .6rem; align-items: start; max-width: 780px; margin: .7rem auto 0; }
+.mc-fig { margin: 0; min-width: 0; }
+.mc-whole { grid-row: span 2; }
+.mc-fig canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; background: #05070d; box-shadow: 0 0 0 1px var(--border); }
+/* A caption under a small picture is two short lines, and balanced so that the second
+   is not one word, or in Chinese and Japanese one character. Where a browser can find
+   the phrases in Japanese it breaks between them, and not inside a word in katakana.
+   The labels above the boxes do not ask for that: a third line there would push one
+   box below its neighbour. */
+.mc-fig figcaption { margin-top: .3rem; color: var(--text-dim); font-size: .76rem; line-height: 1.35; text-wrap: balance; word-break: auto-phrase; }
+.mc-caption { max-width: 780px; margin: .5rem auto 0; color: var(--text-dim); font-size: .78rem; line-height: 1.45; }
+.mc-answer { padding-top: .7rem; }
+.mc-story { max-width: 72ch; margin: .35rem 0 0; font-size: .98rem; line-height: 1.5; }
+.mc-story:empty { display: none; }
+#answer-story { font-weight: 600; }
+
+.mc-more { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.6rem; }
+.mc-more h3 { margin: 0 0 .45rem; font-size: .95rem; }
+.mc-side h3:not(:first-child) { margin-top: 1.2rem; }
+.mc-stats { margin: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.mc-stats > div { padding: .55rem .75rem; }
+.mc-stats > div + div { border-top: 1px solid var(--border); }
+.mc-stats dt { font-size: .8rem; font-weight: 700; color: var(--text-dim); }
+.mc-stats dd { margin: .1rem 0 0; }
+.mc-stats dd strong { display: block; color: var(--world); font-size: 1.1rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.mc-stats dd span { display: block; margin-top: .15rem; color: var(--text-dim); font-size: .8rem; line-height: 1.45; }
+
+.mc-ladder { list-style: none; margin: .5rem 0 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.mc-ladder li + li { border-top: 1px solid var(--border); }
+.mc-rung { display: grid; grid-template-columns: minmax(4.6rem, auto) minmax(0, 1fr) auto; align-items: center; column-gap: .7rem; width: 100%; padding: .45rem .7rem; border: 0; border-radius: 0; background: transparent; color: var(--text); text-align: start; cursor: pointer; box-shadow: none; font-variant-numeric: tabular-nums; }
+.mc-rung:hover { background: var(--surface-2); }
+.mc-rung[aria-current="true"] { background: color-mix(in srgb, var(--world) 12%, var(--surface)); }
+.mc-rung-name { font-weight: 700; font-size: .9rem; }
+.mc-rung-facts { color: var(--text-dim); font-size: .78rem; line-height: 1.3; overflow-wrap: anywhere; }
+.mc-rung-zone { display: inline-flex; align-items: center; gap: .35rem; font-size: .76rem; font-weight: 600; }
+.mc-rung-zone::before { content: ""; width: .7rem; height: .7rem; border-radius: 3px; background: var(--dot); }
+.mc-example-row { display: flex; flex-wrap: wrap; gap: .35rem; }
+.mc-example-row button { padding: .32rem .62rem; font-size: .78rem; border-radius: 16px; }
+
+.model-details summary { cursor: pointer; font-weight: 700; }
+.model-details p { font-size: .85rem; color: var(--text-dim); line-height: 1.55; }
+.model-details p strong { color: var(--text); }
+.assumption-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; padding-block: 1rem; }
+.source-links { border-top: 1px solid var(--border); padding-top: 1rem; }
+
+@media (pointer: coarse) {
+  label.chip, .mc-world { min-height: 44px; }
+}
+@media (prefers-color-scheme: dark) {
+  #main { --world: #8f93f2; --z-wasted: #9aa4b2; --z-spare: #5aa9e6; --z-sharp: #55c08c; --z-full: #dba83f; --z-empty: #ea7a66; --zone-ink: var(--zone, var(--world)); }
+  #main[data-world="binoculars"] { --world: #5cc79a; }
+  #main[data-world="microscope"] { --world: #4fc3d3; }
+  #main[data-world="magnifier"] { --world: #e0a257; }
+  .mc-world:has(input:checked) { color: #10141b; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-card, .mc-world { transition: none; }
+}
+@media (max-width: 760px) {
+  .mc-more { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  /* The frame above already fills most of a phone's first screen, so the pictures are
+     not made to wait behind a heading that only repeats it. */
+  .mc-heading { display: none; }
+  .mc-worlds { gap: .2rem; }
+  .mc-world { grid-template-columns: 1fr; justify-items: center; padding: .4rem .15rem; text-align: center; }
+  .mc-world svg { grid-row: auto; }
+  .mc-world-name { font-size: .72rem; }
+  .mc-world-value { grid-column: 1; font-size: .7rem; }
+  /* Two boxes to a row, so the pictures are not three screens down. A box that
+     shares its row with a menu keeps the whole row, and a label is given room for
+     two lines so the boxes under two labels of different lengths still line up. Those
+     two lines are balanced, because left alone a Japanese label puts its last
+     character and a closing bracket on a line of their own. */
+  .mc-form .settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+  .mc-form .mc-wide { grid-column: 1 / -1; }
+  .mc-form .field:not(.mc-wide) > label { display: flex; align-items: flex-end; min-height: 2.5em; line-height: 1.25; text-wrap: balance; }
+  .mc-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .mc-whole { grid-row: auto; grid-column: span 2; }
+  .mc-rung { grid-template-columns: minmax(4rem, auto) minmax(0, 1fr); }
+  .mc-rung-zone { grid-column: 2; }
+}
+@media (max-width: 480px) {
+  /* Four names in a row fit a phone in English and no further: "Microscopio" is two
+     pixels too wide at 360. Two rows of two have room for any of the seven languages,
+     with the picture beside the name again. The padding is what the five characters
+     of a Chinese telescope need at 320, where they were one pixel short of a line. */
+  .mc-worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mc-world { grid-template-columns: auto 1fr; justify-items: start; column-gap: .35rem; padding: .4rem .45rem; text-align: start; }
+  .mc-world svg { grid-row: span 2; }
+  .mc-world-name { font-size: .84rem; }
+  .mc-world-value { grid-column: 2; }
+}

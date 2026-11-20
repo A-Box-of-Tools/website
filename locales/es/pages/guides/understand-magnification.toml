@@ -1,0 +1,16 @@
+#
+# Guia: entender los aumentos - Spanish.
+#
+
+nav = "Entender los aumentos"
+title = "Qué significan los aumentos de un telescopio, un microscopio o unos prismáticos"
+description = "Lo que de verdad dicen 8×42, 40×/0.65 y 675×: lo grandes que se ven las cosas, cuánto cabe en la vista y por qué el ancho de la lente decide el detalle. Con los límites calculados para tu propio instrumento."
+
+heading = "Lo que te dice un número de aumentos, y lo que se calla"
+lede = "Un telescopio de 675× no muestra más que el mismo telescopio a 120×, y unos prismáticos marcados 8×42 solo superan a unos 8×21 cuando empieza a faltar la luz. El número dice lo grandes que se ven las cosas. Cuánto hay para ver está en los otros números que lo acompañan."
+
+updated = "15 de noviembre de 2026"
+
+og_title = "Qué significan de verdad los aumentos"
+og_description = "Lo grandes que se ven las cosas, cuánto cabe en la vista y a partir de dónde un número mayor deja de mostrar algo nuevo, en telescopios, prismáticos, microscopios y lupas."
+og_image_alt = "abox.tools - herramientas del navegador para procesar archivos localmente"

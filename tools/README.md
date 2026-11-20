@@ -71,6 +71,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |
 | [Password & Passphrase Generator](password-generator/) | `/password-generator/` | Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history. |
 | [Number Explorer](number-explorer/) | `/number-explorer/` | Type any number and watch it grow: a stack of books, a pour of water, a sky of stars, a pile of sand, a very long count. |
+| [Magnification Calculator](magnification-calculator/) | `/magnification-calculator/` | Type the numbers printed on a telescope, binoculars, a microscope or a magnifying glass, and see the view they give, to scale. |
 | [Share Text & Files](share-text/) | `/share-text/` | Share text and files from your open browser, encrypted. Direct is the default; Cloud relay is an optional route when devices cannot connect directly. |
 | [Local Walkie-Talkie](walkie-talkie/) | `/walkie-talkie/` | Start a named channel, then hold to talk or speak hands-free. Connect directly on your local network, or choose Cloud relay for listeners over the internet. |
 | [Voice Oncall](voice-oncall/) | `/voice-oncall/` | Open a pager and hear live voice from people who connect. Use Direct on your local network or choose Cloud relay over the internet, with a password and individual mute or remove controls. |

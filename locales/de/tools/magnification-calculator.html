@@ -1,0 +1,213 @@
+<main id="main" data-world="telescope">
+  <section class="card mc-card" aria-labelledby="start-title">
+    <div class="mc-heading"><span class="mc-eyebrow">Was die Zahlen auf der Verpackung bedeuten</span><span class="mc-badge">Funktioniert offline · Keine KI nötig</span></div>
+    <h2 id="start-title">Was zeigt diese Vergrößerung wirklich?</h2>
+    <p class="card-lede">Tippen Sie die Zahlen ein, die auf einem Teleskop, einem Fernglas, einem Mikroskop oder einer Lupe stehen. Die Seite zeichnet maßstabsgetreu das Bild, das sie ergeben, neben dem, was Ihr Auge allein sieht, und sagt, ab wann eine größere Zahl nichts Neues mehr zeigt.</p>
+
+    <div class="mc-worlds" role="radiogroup" aria-label="Instrument">
+      <label class="mc-world"><input type="radio" name="world" value="telescope" checked><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 13.5l11-5.5 2 4-11 5.500zM14.500 8l4-2 2 4-4 2M9 16.500L6.500 21M10.500 15.500L13.500 21"/></svg><span class="mc-world-name">Teleskop</span><span class="mc-world-value" id="tab-telescope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="binoculars"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="16" r="4"/><circle cx="17" cy="16" r="4"/><path d="M4.500 12.500L6.500 5h3l1.500 7.500M12.500 12.500L14 5h3l2.500 7.500M11 15h2"/></svg><span class="mc-world-name">Fernglas</span><span class="mc-world-value" id="tab-binoculars"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="microscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3l4.500 8M8 6.500l3.500-2M6 21h12M9 21v-3M8.500 15.500a6 6 0 0 0 8.500-5.500M13 18h5"/></svg><span class="mc-world-name">Mikroskop</span><span class="mc-world-value" id="tab-microscope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="magnifier"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><span class="mc-world-name">Lupe</span><span class="mc-world-value" id="tab-magnifier"></span></label>
+    </div>
+
+    <fieldset class="mc-form" data-for="telescope">
+      <legend>Die Zahlen auf dem Teleskop</legend>
+      <div class="settings">
+        <div class="field"><label for="tel-aperture">Öffnung (Hauptlinse oder Spiegel)</label><div class="inline-pair"><input id="tel-aperture" type="number" inputmode="decimal" min="20" max="2000" step="any" value="70" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">Der Durchmesser der Hauptlinse oder des Spiegels: das D in &bdquo;D = 70 mm&ldquo; oder die erste Zahl in einer Bezeichnung wie 70/700. Ein Zoll sind 25,4 mm, ein 8-Zoll-Teleskop hat also 203.</p></div>
+        <div class="field"><label for="tel-focal">Brennweite des Teleskops</label><div class="inline-pair"><input id="tel-focal" type="number" inputmode="decimal" min="100" max="30000" step="any" value="700" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">Das F in &bdquo;F = 700 mm&ldquo;. Ist nur das Öffnungsverhältnis angegeben, multiplizieren Sie dessen Zahl mit der Öffnung: 130 mm bei f/5 sind 650 mm.</p></div>
+        <div class="field"><label for="tel-eyepiece">Brennweite des Okulars</label><div class="inline-pair"><input id="tel-eyepiece" type="number" inputmode="decimal" min="2" max="60" step="any" value="10" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">Auf dem Okular eingraviert: 25 mm, 10 mm oder ein Buchstabe mit einer Zahl wie H20 oder SR4. Der Regler unten ändert das für Sie.</p></div>
+        <div class="field"><label for="tel-barlow">Barlowlinse</label><select id="tel-barlow"><option value="1" selected>Keine</option><option value="2">2×</option><option value="3">3×</option></select>
+          <p class="field-note" data-for="telescope">Eine Barlowlinse sitzt zwischen Teleskop und Okular und vervielfacht die Vergrößerung. Eigene Details fügt sie nicht hinzu.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="binoculars">
+      <legend>Die Zahlen auf dem Fernglas</legend>
+      <div class="settings">
+        <div class="field"><label for="bin-power">Vergrößerung (erste Zahl)</label><div class="inline-pair"><input id="bin-power" type="number" inputmode="decimal" min="2" max="100" step="any" value="8" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="binoculars">Bei 8×42 ist das die 8. Auf einem Zoom-Modell steht ein Bereich, etwa 10-30×50. Probieren Sie beide Enden aus.</p></div>
+        <div class="field"><label for="bin-objective">Frontlinse (zweite Zahl)</label><div class="inline-pair"><input id="bin-objective" type="number" inputmode="decimal" min="10" max="250" step="any" value="42" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="binoculars">Bei 8×42 ist das die 42. Sie entscheidet, wie viel Licht hereinkommt, und damit, wie gut sich das Bild in der Dämmerung hält.</p></div>
+        <div class="field mc-wide"><label for="bin-field">Sehfeld, falls aufgedruckt</label><div class="inline-pair"><input id="bin-field" type="number" inputmode="decimal" min="0.3" max="600" step="any" aria-describedby="bin-field-read input-error"><select id="bin-field-unit" aria-label="Wie das Sehfeld aufgedruckt ist"><option value="degrees" selected>Grad</option><option value="metres">m auf 1000 m</option><option value="feet">ft auf 1000 yd</option></select></div>
+          <p id="bin-field-read" class="field-note"></p>
+          <p class="field-note" data-for="binoculars">Aufgedruckt als Winkel, etwa 7,5°, oder als Breite auf eine Entfernung, etwa 131 m auf 1000 m oder 393 ft auf 1000 yd. Lassen Sie das Feld leer, um einen typischen Wert zu verwenden.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="microscope" id="microscope-form">
+      <legend>Die Zahlen auf dem Mikroskop</legend>
+      <div class="mc-turret chips" role="radiogroup" aria-labelledby="objective-label"><span class="chips-label" id="objective-label">Objektiv</span>
+        <label class="chip"><input type="radio" name="mic-objective" value="4">4×/0.10</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="10" checked>10×/0.25</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="40">40×/0.65</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="100">100×/1.25 Öl</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="custom">Anderes</label>
+      </div>
+      <div class="settings">
+        <div class="field mc-custom"><label for="mic-power">Vergrößerung des Objektivs</label><div class="inline-pair"><input id="mic-power" type="number" inputmode="decimal" min="1" max="250" step="any" value="20" aria-describedby="input-error"><span>×</span></div></div>
+        <div class="field mc-custom"><label for="mic-na">Numerische Apertur (NA)</label><input id="mic-na" type="number" inputmode="decimal" min="0.02" max="1.6" step="any" value="0.4" aria-describedby="input-error">
+          <p class="field-note" data-for="microscope">Die Zahl hinter dem Schrägstrich auf dem Objektiv, wie in 40×/0.65. Sie bestimmt das feinste Detail, die Vergrößerung tut das nicht.</p></div>
+        <div class="field"><label for="mic-eyepiece">Vergrößerung des Okulars</label><div class="inline-pair"><input id="mic-eyepiece" type="number" inputmode="decimal" min="2" max="40" step="any" value="10" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="microscope">Auf dem Okular eingraviert, meist 10×. Der Regler unten ändert das für Sie.</p></div>
+        <div class="field"><label for="mic-fn">Sehfeldzahl, falls eingraviert</label><div class="inline-pair"><input id="mic-fn" type="number" inputmode="decimal" min="4" max="30" step="any" aria-describedby="mic-fn-read input-error"><span>mm</span></div>
+          <p id="mic-fn-read" class="field-note"></p>
+          <p class="field-note" data-for="microscope">Die zweite Zahl auf einem Okular mit der Aufschrift 10×/18. Geteilt durch die Vergrößerung des Objektivs ergibt sie die Breite des Präparats, die Sie sehen.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="magnifier">
+      <legend>Die Zahl auf der Lupe</legend>
+      <div class="settings">
+        <div class="field mc-wide"><label for="mag-value">Die aufgedruckte Zahl</label><div class="inline-pair"><input id="mag-value" type="number" inputmode="decimal" min="1.1" max="500" step="any" value="10" aria-describedby="mag-read input-error"><select id="mag-unit" aria-label="Was diese Zahl angibt"><option value="power" selected>× Vergrößerung</option><option value="dioptre">Dioptrien</option><option value="focal">mm Brennweite</option></select></div>
+          <p id="mag-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">Auf einer Einschlaglupe steht 10×, auf einer Leselupe 2× oder 3×, eine Lupenleuchte nennt oft Dioptrien, etwa +3 oder +5, und eine bloße Linse ihre Brennweite.</p></div>
+        <div class="field"><label for="mag-lens">Linsendurchmesser, falls bekannt</label><div class="inline-pair"><input id="mag-lens" type="number" inputmode="decimal" min="4" max="250" step="any" aria-describedby="mag-lens-read input-error"><span>mm</span></div>
+          <p id="mag-lens-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">Eine stärkere Linse ist eine kleinere und zeigt deshalb weniger auf einmal. Lassen Sie das Feld leer, um einen typischen Durchmesser zu verwenden.</p></div>
+      </div>
+    </fieldset>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <div class="mc-dial">
+      <p class="mc-readout"><span class="mc-readout-label">Vergrößerung</span> <output id="power" for="dial" class="mc-readout-number"></output> <span id="power-how" class="mc-readout-how"></span></p>
+      <input type="range" id="dial" min="0" max="1000" step="1" value="500" aria-label="Vergrößerung">
+      <div class="mc-ticks" id="dial-ticks" aria-hidden="true"></div>
+      <ul class="mc-legend" id="dial-legend" aria-hidden="true"></ul>
+    </div>
+    <p id="verdict" class="mc-verdict"><strong id="verdict-zone"></strong> <span id="verdict-text"></span></p>
+
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-telescope-label" data-for="telescope"><span class="chips-label" id="look-telescope-label">Im Blick</span>
+      <label class="chip"><input type="radio" name="look-telescope" value="moon" checked>Der Mond</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="jupiter">Jupiter</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="saturn">Saturn</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="pleiades">Die Plejaden</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-binoculars-label" data-for="binoculars"><span class="chips-label" id="look-binoculars-label">Im Blick</span>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-day" checked>Ein Vogel bei Tag</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-dusk">Ein Vogel in der Dämmerung</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="moon">Der Mond</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="pleiades">Die Plejaden</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-microscope-label" data-for="microscope"><span class="chips-label" id="look-microscope-label">Im Blick</span>
+      <label class="chip"><input type="radio" name="look-microscope" value="onion" checked>Zwiebelhaut</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="blood">Blut</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="hair">Ein Haar</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="salt">Salz</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="bacteria">Bakterien</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-magnifier-label" data-for="magnifier"><span class="chips-label" id="look-magnifier-label">Im Blick</span>
+      <label class="chip"><input type="radio" name="look-magnifier" value="print" checked>Kleingedrucktes</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="ruler">Ein Lineal</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="salt">Salz</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="hair">Ein Haar</label>
+    </div>
+
+    <div class="mc-stage">
+      <figure class="mc-fig mc-whole"><canvas id="view" role="img" aria-label="Das ganze Sehfeld durch das Instrument"></canvas><figcaption>Das ganze Sehfeld</figcaption></figure>
+      <figure class="mc-fig mc-close"><canvas id="close" role="img" aria-label="Ein genauer Blick auf die Mitte des Sehfelds"></canvas><figcaption>Ein genauer Blick auf seine Mitte</figcaption></figure>
+      <figure class="mc-fig mc-bare"><canvas id="bare" role="img" aria-label="Derselbe genaue Blick mit bloßem Auge"></canvas><figcaption>Derselbe genaue Blick, mit bloßem Auge</figcaption></figure>
+    </div>
+    <p id="stage-caption" class="mc-caption"></p>
+
+    <div class="mc-answer"><p id="answer-story" class="mc-story"></p><p id="answer-fit" class="mc-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+  </section>
+
+  <section class="card mc-more" aria-labelledby="numbers-title">
+    <div class="mc-numbers">
+      <h3 id="numbers-title">Was jede Zahl bedeutet</h3>
+      <dl class="mc-stats" data-for="telescope">
+        <div><dt>Vergrößerung</dt><dd><strong id="tel-s-power"></strong> <span>Wie viel Mal breiter alles aussieht als mit bloßem Auge: die Brennweite des Teleskops geteilt durch die des Okulars.</span></dd></div>
+        <div><dt>Sehfeld</dt><dd><strong id="tel-s-field"></strong> <span>Wie breit das Stück Himmel ist, das ins Okular passt. Es schrumpft, wenn die Vergrößerung wächst.</span></dd></div>
+        <div><dt>Austrittspupille</dt><dd><strong id="tel-s-pupil"></strong> <span>Der Durchmesser des Lichtbündels, das aus dem Okular tritt: Öffnung geteilt durch Vergrößerung. Breiter heißt heller, bis zur Weite Ihrer eigenen Pupille.</span></dd></div>
+        <div><dt>Feinstes Detail</dt><dd><strong id="tel-s-detail"></strong> <span>Das Kleinste, was diese Öffnung trennen kann, bei jeder Vergrößerung. Nur eine größere Linse oder ein größerer Spiegel macht es kleiner.</span></dd></div>
+        <div><dt>Gesammeltes Licht</dt><dd><strong id="tel-s-light"></strong> <span>Verglichen mit Ihrer eigenen Pupille im Dunkeln. Das und nicht die Vergrößerung zeigt lichtschwache Objekte.</span></dd></div>
+        <div><dt>Sinnvolle Vergrößerungen</dt><dd><strong id="tel-s-range"></strong> <span>Von der niedrigsten, die kein Licht verschenkt, bis zur höchsten, die noch hilft: etwa das Doppelte der Öffnung in Millimetern und durch die Luft selten mehr als 300×.</span></dd></div>
+        <div><dt>Öffnungsverhältnis</dt><dd><strong id="tel-s-ratio"></strong> <span>Brennweite geteilt durch Öffnung. Es sagt, wie weit und hell ein Bild bei niedriger Vergrößerung sein kann, und nichts darüber, wie stark das Teleskop vergrößert.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="binoculars">
+        <div><dt>Vergrößerung</dt><dd><strong id="bin-s-power"></strong> <span>Die erste Zahl. Um diesen Faktor sieht alles breiter aus, so als stünden Sie um denselben Faktor näher.</span></dd></div>
+        <div><dt>Frontlinse</dt><dd><strong id="bin-s-objective"></strong> <span>Die zweite Zahl: der Durchmesser jeder Frontlinse. Eine größere Linse sammelt mehr Licht und macht das Fernglas schwerer.</span></dd></div>
+        <div><dt>Austrittspupille</dt><dd><strong id="bin-s-pupil"></strong> <span>Die zweite Zahl geteilt durch die erste: der Durchmesser des Lichtbündels, das jedes Auge erreicht. Ihre Pupille ist bei Tag 2 bis 3 mm weit, in der Dämmerung etwa 5 mm und im Dunkeln bis zu 7 mm.</span></dd></div>
+        <div><dt>Helligkeit bei diesem Licht</dt><dd><strong id="bin-s-light"></strong> <span>Gemessen an dem, was Ihr bloßes Auge von derselben Szene bekäme. Sie sinkt, sobald das Lichtbündel schmaler ist als Ihre Pupille.</span></dd></div>
+        <div><dt>Sehfeld</dt><dd><strong id="bin-s-field"></strong> <span>Wie viel Landschaft quer ins Bild passt. Es wird als Winkel oder als Breite auf eine feste Entfernung aufgedruckt.</span></dd></div>
+        <div><dt>Dämmerungszahl</dt><dd><strong id="bin-s-twilight"></strong> <span>Die Quadratwurzel aus dem Produkt der beiden Zahlen. Hersteller drucken sie als Anhaltspunkt für Details bei schwachem Licht auf. Sie belohnt Vergrößerung, während die Helligkeit des Bildes in der Dämmerung von der Austrittspupille abhängt.</span></dd></div>
+        <div><dt>In der Hand</dt><dd><strong id="bin-s-hand"></strong> <span>Das Zittern der Hände wird mit allem anderen vergrößert. Bis etwa 8× lässt sich ein Fernglas leicht ruhig halten, und über etwa 12× bringt ein Stativ mehr als die zusätzliche Vergrößerung.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="microscope">
+        <div><dt>Gesamtvergrößerung</dt><dd><strong id="mic-s-power"></strong> <span>Die Vergrößerung des Objektivs mal die des Okulars, gemessen am selben Objekt in 25 cm Abstand vom Auge.</span></dd></div>
+        <div><dt>Sehfeld</dt><dd><strong id="mic-s-field"></strong> <span>Die Breite des Präparats, die Sie sehen: die Sehfeldzahl des Okulars geteilt durch die Vergrößerung des Objektivs.</span></dd></div>
+        <div><dt>Feinstes Detail</dt><dd><strong id="mic-s-detail"></strong> <span>Das Kleinste, was dieses Objektiv trennen kann, bestimmt von seiner numerischen Apertur. Ein stärkeres Okular ändert daran nichts.</span></dd></div>
+        <div><dt>Sinnvolle Vergrößerungen</dt><dd><strong id="mic-s-range"></strong> <span>Von dort, wo ein scharfes Auge erstmals alles erkennt, was das Objektiv auflöst, bis dorthin, wo es nichts mehr zu vergrößern gibt: etwa das 220- bis 1000-Fache der numerischen Apertur. Hersteller nennen die obere Hälfte davon, 500 bis 1000.</span></dd></div>
+        <div><dt>Austrittspupille</dt><dd><strong id="mic-s-pupil"></strong> <span>Der Durchmesser des Lichtbündels, das aus dem Okular tritt. Unter etwa einem halben Millimeter wird das Bild nur noch vergrößert.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="magnifier">
+        <div><dt>Vergrößerung</dt><dd><strong id="mag-s-power"></strong> <span>Wie viel Mal breiter etwas aussieht als in 25 cm Abstand vom Auge.</span></dd></div>
+        <div><dt>Brennweite</dt><dd><strong id="mag-s-focal"></strong> <span>Ungefähr der Abstand, den die Linse vom Objekt haben muss. Eine stärkere Linse arbeitet näher.</span></dd></div>
+        <div><dt>Dioptrien</dt><dd><strong id="mag-s-diopters"></strong> <span>1000 geteilt durch die Brennweite in Millimetern. Optiker und Lupenleuchten verwenden diese Zahl.</span></dd></div>
+        <div><dt>Breite, die Sie auf einmal sehen</dt><dd><strong id="mag-s-field"></strong> <span>Etwa der Durchmesser der Linse, wenn Ihr Auge dicht daran ist. Deshalb zeigen starke Lupen so wenig auf einmal.</span></dd></div>
+        <div><dt>Feinstes Detail</dt><dd><strong id="mag-s-detail"></strong> <span>Was ein scharfes Auge durch sie trennen kann: die Grenze des Auges selbst geteilt durch die Vergrößerung.</span></dd></div>
+      </dl>
+    </div>
+    <div class="mc-side">
+      <h3 id="ladder-title">Dasselbe Instrument bei anderen Vergrößerungen</h3>
+      <p class="field-note">Jede Zeile ist aus den Zahlen oben berechnet. Drücken Sie eine, um sie auszuprobieren.</p>
+      <ol class="mc-ladder" id="ladder" aria-labelledby="ladder-title"></ol>
+      <h3>Oder versuchen Sie</h3>
+      <div class="mc-example-row">
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=4 tel-barlow=3 look-telescope=moon">Ein 60-mm-Teleskop, verkauft als 675×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=20 tel-barlow=1 look-telescope=moon">Dasselbe Teleskop bei 45×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=130 tel-focal=650 tel-eyepiece=5 tel-barlow=1 look-telescope=saturn">Saturn in einem 130-mm-Teleskop</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=42 bin-field= look-binoculars=bird-dusk">Ein Fernglas 8×42 in der Dämmerung</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=21 bin-field= look-binoculars=bird-dusk">Ein Taschenfernglas 8×21 in der Dämmerung</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=40 mic-eyepiece=25 mic-fn= look-microscope=bacteria">1000× mit einem starken Okular</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=100 mic-eyepiece=10 mic-fn= look-microscope=bacteria">1000× mit einem Ölobjektiv</button>
+        <button type="button" class="ghost" data-example="world=magnifier mag-value=10 mag-unit=power mag-lens= look-magnifier=print">Eine Juwelierlupe mit 10×</button>
+      </div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>Wie haben wir das berechnet?</summary>
+    <p>Die Zahlen, die Sie eintippen, werden so genommen, wie sie aufgedruckt sind. Alles andere ist Rechnen mit den unten stehenden Werten, die Sie ändern oder nachprüfen können.</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="eye-pupil">Ihre Pupille im Dunkeln</label><select id="eye-pupil"><option value="7" selected>7 mm · junge Augen</option><option value="6">6 mm</option><option value="5">5 mm · ältere Augen</option></select><p class="field-note">So weit öffnet sich Ihre Pupille höchstens, und dieser Wert gilt für den Nachthimmel. Mit dem Alter wird sie enger. Bei Tag wird sie mit 2,5 mm angesetzt und in der Dämmerung mit 5 mm.</p></div>
+      <div class="field"><label for="apparent-field">Wie weit der Kreis ist, den das Okular zeigt</label><select id="apparent-field"><option value="40">40° · einfache Okulare</option><option value="52" selected>52° · Plössl, die gängige Bauart</option><option value="68">68° · Weitwinkel</option><option value="82">82° · Ultraweitwinkel</option></select><p class="field-note">Das scheinbare Gesichtsfeld eines Teleskopokulars. Ein größeres zeigt bei gleicher Vergrößerung mehr Himmel, und nichts im Bild wird dadurch größer.</p></div>
+      <div class="field"><label for="barrel">Steckhülse des Okulars</label><select id="barrel"><option value="27" selected>1,25 Zoll</option><option value="46">2 Zoll</option></select><p class="field-note">Die Steckhülse begrenzt, wie weit das Feld eines Okulars mit langer Brennweite sein kann: etwa 27 mm Durchmesser bei 1,25 Zoll und 46 mm bei 2 Zoll.</p></div>
+      <div class="field"><label for="mag-rule">Wie die Vergrößerung einer Lupe gezählt wird</label><select id="mag-rule"><option value="auto" selected>So, wie die Aufschrift meist gemeint ist</option><option value="relaxed">250 mm ÷ Brennweite</option><option value="close">250 mm ÷ Brennweite, plus 1</option></select><p class="field-note">Zwei Rechnungen sind in Gebrauch. Bei 250 mm geteilt durch die Brennweite ist das Auge entspannt, und so wird eine Einschlaglupe mit aufgedruckter Vergrößerung meist gezählt. Kommt eins dazu, ist das Auge so nah eingestellt, wie es kann, und so werden Lupenleuchten und Leselupen mit Dioptrienangabe verkauft: +3 dpt als 1,75×. Solange Sie hier keine der beiden wählen, nimmt die Seite die Rechnung, die zur Art der eingetippten Zahl passt.</p></div>
+    </div>
+    <p><strong>Eine Unschärfe, drei Faustregeln.</strong> Jede Linse zieht einen Lichtpunkt zu einem kleinen Scheibchen auseinander, und das Okular vergrößert dieses Scheibchen mit allem anderen. Nach dem Rayleigh-Kriterium für grünes Licht erscheint das Scheibchen durch eine Austrittspupille von 1 mm etwa 2,3 Bogenminuten breit, und breiter, wenn die Austrittspupille schrumpft. Ein scharfes Auge trennt 1 Bogenminute. Bei einer Austrittspupille über 2,3 mm begrenzt deshalb Ihr Auge und nicht die Linse, was Sie sehen; bei 1 mm ist alles, was die Linse auflöst, bequem groß; und unter 0,5 mm wächst nur noch die Unschärfe selbst. Bei einem Teleskop sind das Vergrößerungen in Höhe der Öffnung in Millimetern geteilt durch 2,3, der Öffnung selbst und der doppelten Öffnung. Bei einem Mikroskop sind es etwa das 217-, das 500- und das 1000-Fache der numerischen Apertur.</p>
+    <p><strong>Teleskope.</strong> Die Vergrößerung ist die Brennweite des Teleskops geteilt durch die des Okulars, mal den Faktor einer etwaigen Barlowlinse. Die Austrittspupille ist die Öffnung geteilt durch die Vergrößerung. Das feinste Detail sind 138 Bogensekunden geteilt durch die Öffnung in Millimetern, und die ältere Dawes-Grenze für das Trennen von Doppelsternen, 116 geteilt durch die Öffnung, ist etwa ein Sechstel enger. Das Sehfeld ist das scheinbare Gesichtsfeld des Okulars geteilt durch die Vergrößerung, begrenzt durch dessen Steckhülse. Über etwa 300× verdeckt die Luftunruhe (Seeing) meist alles, was das Teleskop noch hinzufügen könnte.</p>
+    <p><strong>Ferngläser.</strong> Die Austrittspupille ist der Durchmesser der Frontlinse geteilt durch die Vergrößerung, und die Helligkeit ist das Quadrat des Verhältnisses von Austrittspupille zu Ihrer eigenen Pupille, nie mehr als 1. Ein als Breite angegebenes Sehfeld wird exakt in einen Winkel umgerechnet, 131 m auf 1000 m und 393 ft auf 1000 yd sind also beide 7,5°. Der gezeichnete Kreis ist die Vergrößerung mal diesen Winkel; eine neuere Norm, die mit dem Tangens rechnet, ergibt für dasselbe Fernglas etwa fünf Grad weniger.</p>
+    <p><strong>Mikroskope.</strong> Die Gesamtvergrößerung ist Objektiv mal Okular. Das feinste Detail ist das 0,61-Fache der Wellenlänge geteilt durch die numerische Apertur, in grünem Licht 0,34 µm geteilt durch die numerische Apertur. Die Breite des Präparats im Sehfeld ist die Sehfeldzahl geteilt durch die Vergrößerung des Objektivs, und ein Okular ohne eingravierte Zahl wird mit 180 mm geteilt durch seine Vergrößerung angesetzt, also mit 18 mm bei 10×, und nie mit mehr als den 20 mm, die ein Standard-Okulartubus zulässt. Eine Lampe lässt sich immer heller drehen, deshalb werden diese Bilder nicht abgedunkelt.</p>
+    <p><strong>Lupen.</strong> Eine einfache Linse wird am selben Objekt in 250 mm Abstand vom Auge gemessen: 250 mm geteilt durch ihre Brennweite bei entspanntem Auge und eins mehr bei nah eingestelltem Auge. Ihre Brennweite ist 1000 mm geteilt durch ihre Dioptrien. Als Ausschnitt, den man durch sie sieht, wird der Durchmesser der Linse selbst angesetzt, und das gilt, wenn das Auge etwa eine Brennweite hinter ihr ist.</p>
+    <p><strong>Die Bilder.</strong> Alle drei sind in einem einzigen Winkelmaßstab gezeichnet: Der Kreis ist das Feld des Okulars, wie Ihr Auge es sieht, und alles darin ist so breit, wie die Vergrößerung es macht. Der genaue Blick verwendet einen Bildschirmpixel für zwei Bogenminuten des Bildes, was auf einem Handy oder Laptop im üblichen Abstand nahezu der natürlichen Größe entspricht. Die Weichheit darin ist die oben beschriebene Unschärfe. Eine Fläche wird mit dem Quadrat des Verhältnisses von Austrittspupille zu Ihrer Pupille dunkler, und das Bild dunkelt erst ab, wenn damit die Lichtreserve des Objekts aufgebraucht ist: Der Vollmond wird mit 2.500 Candela pro Quadratmeter angesetzt, und unter 2 gilt ein Bild als matt. Jupiter und Saturn sind lichtschwächer, entsprechend dem Sonnenlicht, das sie empfangen und zurückwerfen. Eine sonnenbeschienene Szene wird mit 5.000 angesetzt und eine in der Dämmerung mit 3. Sterne sind Punkte und werden deshalb nicht auf diese Weise dunkler; die für das gesammelte Licht zu schwachen sind weggelassen.</p>
+    <p><strong>Was die Zeichnungen sind.</strong> Der Mond ist 3.475 km breit und 384.400 km entfernt, mit seinen Meeren und etwa zwanzig seiner größten Krater an ihrem wirklichen Platz und kleineren, die nach einer Regel verstreut sind. Jupiter und Saturn stehen in ihren mittleren Oppositionsentfernungen, 629 und 1.277 Millionen km, und die Jupitermonde und Titan stehen an typischen Stellen auf Bahnen, die sie in Tagen durchlaufen. Die Plejaden sind die elf hellsten Sterne aus dem Katalog. Der Vogel ist 14 cm lang und 20 m entfernt. Auf dem Objektträger ist eine Zwiebelzelle 0,3 mm lang, ein rotes Blutkörperchen misst 7,5 µm, ein Haar 0,07 mm, ein Korn Speisesalz etwa 0,3 mm und ein Bakterium 2 µm. Das Gedruckte ist 8-Punkt- und 5-Punkt-Schrift über Zeilen in Mikroschrift von einem Viertelmillimeter Höhe.</p>
+    <p class="source-links">Zu den Quellen: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">NASA-Datenblätter zu den Planeten</a> · <a href="https://www.microscopyu.com/microscopy-basics/useful-magnification-range" target="_blank" rel="noopener noreferrer">Nikon MicroscopyU zum sinnvollen Vergrößerungsbereich</a> · <a href="https://www.leica-microsystems.com/science-lab/microscopy-basics/what-is-empty-magnification/" target="_blank" rel="noopener noreferrer">Leica zur leeren Vergrößerung</a> · <a href="https://planetarynames.wr.usgs.gov/" target="_blank" rel="noopener noreferrer">IAU zu Namen und Orten auf dem Mond</a>. Diese Links sind freiwillige Lektüre; der Rechner ruft sie nicht auf.</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="unit.times">{number}×</span><span data-phrase="unit.um">{number} µm</span><span data-phrase="unit.arcsec">{number}″</span><span data-phrase="unit.arcmin">{number}′</span><span data-phrase="unit.diopter">{number} dpt</span><span data-phrase="unit.ratio">f/{number}</span><span data-phrase="unit.far">{number} {unit}</span>
+    <span data-phrase="how.telescope">{focal} ÷ {eyepiece}</span><span data-phrase="how.telescope.barlow">{focal} × {barlow} ÷ {eyepiece}</span><span data-phrase="how.binoculars">die erste der beiden Zahlen</span><span data-phrase="how.microscope">{objective} × {eyepiece}</span><span data-phrase="how.magnifier">250 mm ÷ {focal}</span><span data-phrase="how.magnifier.close">250 mm ÷ {focal}, plus 1</span>
+    <span data-phrase="zone.wasted">Verschenktes Licht</span><span data-phrase="zone.spare">Noch Reserve</span><span data-phrase="zone.sharp">Am schärfsten</span><span data-phrase="zone.full">Oberer sinnvoller Bereich</span><span data-phrase="zone.empty">Leere Vergrößerung</span><span data-phrase="zone.light.full">Hell</span><span data-phrase="zone.light.less">Etwas dunkler</span><span data-phrase="zone.light.dim">Dunkel bei diesem Licht</span><span data-phrase="zone.steady">Ruhig in der Hand</span><span data-phrase="zone.care">Braucht eine ruhige Hand</span><span data-phrase="zone.tripod">Braucht ein Stativ</span><span data-phrase="zone.reading">Leselupe</span><span data-phrase="zone.inspect">Prüflupe</span><span data-phrase="zone.loupe">Einschlaglupe</span><span data-phrase="zone.beyond">Jenseits der Einzellinse</span>
+    <span data-phrase="verdict.telescope.wasted">Weniger Vergrößerung, als dieses Teleskop nutzen kann. Das Lichtbündel aus dem Okular ist {pupil} breit und damit breiter als Ihre Pupille, sodass ein Teil des Lichts Ihr Auge nie erreicht. Unter etwa {low} ist nichts gewonnen.</span><span data-phrase="verdict.telescope.spare">Hell, weit und scharf. Bei dieser Vergrößerung bestimmt Ihr Auge und nicht das Teleskop das Detail, mehr Vergrößerung würde deshalb noch mehr zeigen, bis etwa {sharp}.</span><span data-phrase="verdict.telescope.sharp">Der Bereich, der am schärfsten wirkt. Alles, was dieses Teleskop auflösen kann, ist jetzt groß genug für ein scharfes Auge, und das Bild sieht noch gestochen scharf aus.</span><span data-phrase="verdict.telescope.full">Der obere sinnvolle Bereich. Seit etwa {full} ist nichts Neues hinzugekommen, aber alles ist größer und leichter zu erkennen, in einem weicheren, dunkleren Bild.</span><span data-phrase="verdict.telescope.empty">Über etwa {high} hat dieses Teleskop keine weiteren Details zu bieten. Das Bild wird nur noch größer, weicher und dunkler.</span><span data-phrase="verdict.seeing">Die Luft ist selten ruhig genug für mehr als etwa 300×, mit welchem Teleskop auch immer.</span>
+    <span data-phrase="verdict.microscope.spare">Scharf und mühelos. Das Objektiv löst feinere Details auf, als Ihr Auge bei dieser Vergrößerung erkennen kann, ein stärkeres Okular würde deshalb noch mehr zeigen, bis etwa {sharp}.</span><span data-phrase="verdict.microscope.sharp">Der gestochen scharfe Bereich. Alles, was dieses Objektiv auflöst, ist jetzt groß genug für ein scharfes Auge.</span><span data-phrase="verdict.microscope.full">Der obere sinnvolle Bereich, bei diesem Objektiv {full} bis {high}. Es kommt nichts Neues hinzu, aber alles ist größer und leichter zu erkennen.</span><span data-phrase="verdict.microscope.empty">Über etwa {high} hat dieses Objektiv keine weiteren Details zu bieten, und ein stärkeres Okular vergrößert nur die Unschärfe. Mehr Details verlangen eine höhere numerische Apertur und nicht mehr Vergrößerung.</span>
+    <span data-phrase="verdict.binoculars.light.full">So hell, wie Ihr Auge es bei diesem Licht aufnehmen kann, denn das Lichtbündel aus jedem Okular ist {pupil} breit, so breit wie Ihre Pupille oder breiter.</span><span data-phrase="verdict.binoculars.light.less">Bei diesem Licht etwas dunkler als mit bloßem Auge, {share} der Helligkeit, weil das Lichtbündel mit {pupil} schmaler ist als Ihre Pupille.</span><span data-phrase="verdict.binoculars.light.dim">Dunkel bei diesem Licht, {share} der Helligkeit, die Ihr bloßes Auge bekäme. Das Lichtbündel ist mit {pupil} viel schmaler als Ihre Pupille.</span><span data-phrase="verdict.binoculars.hand.steady">Leicht ruhig zu halten.</span><span data-phrase="verdict.binoculars.hand.care">Bei dieser Vergrößerung beginnt das Zittern Ihrer Hände feine Details zu verwischen, stützen Sie deshalb die Ellbogen auf.</span><span data-phrase="verdict.binoculars.hand.tripod">Zu viel für die freie Hand, denn das Bild wackelt mehr, als es gewinnt. Nehmen Sie ein Stativ oder ein Fernglas mit Bildstabilisator.</span>
+    <span data-phrase="verdict.magnifier.reading">Eine große Linse, die ein gutes Stück über der Seite gehalten wird, etwa {focal} davon entfernt, und {field} auf einmal zeigt.</span><span data-phrase="verdict.magnifier.inspect">Halten Sie die Lupe etwa {focal} über das Objekt. Sie zeigt {field} auf einmal.</span><span data-phrase="verdict.magnifier.loupe">Führen Sie die Lupe dicht ans Auge und das Objekt bis auf etwa {focal} an die Linse heran. Sie zeigt {field} auf einmal.</span><span data-phrase="verdict.magnifier.beyond">Eine einzelne Linse dieser Stärke ist winzig und berührt das Objekt fast, sie ist nur etwa {focal} davon entfernt. Ab hier leistet ein Mikroskop bessere Dienste.</span>
+    <span data-phrase="subject.moon">Der Mond</span><span data-phrase="subject.jupiter">Jupiter</span><span data-phrase="subject.saturn">Saturn samt Ringen</span><span data-phrase="subject.pleiades">Die Plejaden</span><span data-phrase="subject.bird-day">Ein Singvogel</span><span data-phrase="subject.bird-dusk">Ein Singvogel in der Dämmerung</span><span data-phrase="subject.onion">Eine Zwiebelzelle</span><span data-phrase="subject.blood">Ein rotes Blutkörperchen</span><span data-phrase="subject.hair">Ein Haar</span><span data-phrase="subject.salt">Ein Salzkorn</span><span data-phrase="subject.bacteria">Ein Bakterium</span><span data-phrase="subject.print">Eine Zeile in 8-Punkt-Schrift</span><span data-phrase="subject.ruler">Ein Millimeter auf dem Lineal</span>
+    <span data-phrase="story.far">{name}, {far} entfernt, sieht aus wie aus {near} Entfernung.</span><span data-phrase="story.far.bound">{name}, {far} entfernt, sieht so groß aus wie aus {near} Entfernung, zeigt aber nur so viele Details wie aus {detail}.</span><span data-phrase="story.near">{name} misst {real} und sieht so groß aus wie ein {lookalike} großer Gegenstand in Leseabstand, 25 cm vor dem Auge.</span><span data-phrase="story.near.bound">{name} misst {real} und sieht so groß aus wie ein {lookalike} großer Gegenstand in Leseabstand, zeigt aber keine feineren Details als bei {power}.</span><span data-phrase="story.tall">{name} ist {real} hoch und sieht so groß aus wie ein {lookalike} hoher Gegenstand in Leseabstand, 25 cm vor dem Auge.</span><span data-phrase="story.span">{name}: Die hellen Sterne überspannen {width} am Himmel.</span>
+    <span data-phrase="fit.share">Das Objekt überspannt {share} der Breite des Sehfelds.</span><span data-phrase="fit.over">Das Objekt ist {times}-mal so breit wie das Sehfeld, sodass nur ein Teil hineinpasst.</span><span data-phrase="fit.speck">Das Objekt überspannt weniger als ein Hundertstel der Breite des Sehfelds.</span><span data-phrase="fit.field.sky">Das Sehfeld ist am Himmel {field} breit, {moons}-mal so breit wie der Mond.</span><span data-phrase="fit.field.land">Das Sehfeld ist auf diese Entfernung {width} breit.</span><span data-phrase="fit.field.near">Das Sehfeld zeigt einen {width} breiten Ausschnitt.</span>
+    <span data-phrase="caption.scale">Alle drei Bilder haben denselben Winkelmaßstab, eine Größe auf dem Bildschirm ist also eine echte.</span><span data-phrase="caption.moon">Eine Zeichnung: Die Meere und etwa zwanzig große Krater liegen an ihrem wirklichen Platz, und kleinere Krater sind nach einer Regel verstreut. Die Weichheit ist die Unschärfe dieses Instruments, und die Abdunklung folgt seiner Austrittspupille.</span><span data-phrase="caption.jupiter">Eine Zeichnung: Die vier Monde stehen in typischen Abständen und wechseln von Stunde zu Stunde die Plätze. Die Weichheit ist die Unschärfe dieses Instruments, und die Abdunklung folgt seiner Austrittspupille.</span><span data-phrase="caption.saturn">Eine Zeichnung, mit um 20° zu uns geneigten Ringen und dem Mond Titan daneben. Die dunkle Linie zwischen den beiden hellen Ringen ist die Cassinische Teilung.</span><span data-phrase="caption.pleiades">Die elf hellsten Sterne, nach dem Katalog platziert. Schwächere Mitglieder und der Nebel um sie herum sind weggelassen.</span><span data-phrase="caption.bird">Die Zeichnung eines kleinen Singvogels, 14 cm lang und 20 m entfernt. Seine Federn sind Illustration, seine Größe ist es nicht.</span><span data-phrase="caption.slide">Die Zeichnung eines Präparats auf einem Objektträger. Die Formen sind Illustration, und die Größen sind typische Werte.</span><span data-phrase="caption.near">Eine Zeichnung. Die Größen stimmen, die Oberflächen sind Illustration.</span>
+    <span data-phrase="aria.view">Das ganze Sehfeld bei {power}. {fit}</span><span data-phrase="aria.close">Ein genauer Blick auf die Mitte dieses Sehfelds. {story}</span><span data-phrase="aria.bare">Derselbe genaue Blick mit bloßem Auge, ohne Vergrößerung.</span><span data-phrase="said.aloud">{power}. {zone}. {verdict} {story} {fit}</span><span data-phrase="dial.value">{power}, {zone}</span>
+    <span data-phrase="stat.field.sky">{field} · {moons}-fache Mondbreite</span><span data-phrase="stat.field.land">{field} · {metres} auf 1000 m · {feet} auf 1000 yd</span><span data-phrase="stat.detail.sky">{detail} · etwa {size} auf dem Mond</span><span data-phrase="stat.light">das {number}-Fache Ihres Auges</span><span data-phrase="stat.range">{low} bis {high}</span><span data-phrase="stat.focal">{focal} · der Arbeitsabstand</span>
+    <span data-phrase="read.field">Gelesen als {field}: {metres} auf 1000 m oder {feet} auf 1000 yd.</span><span data-phrase="read.field.typical">Angesetzt mit {field}, typisch für diese Vergrößerung.</span><span data-phrase="read.number.typical">Angesetzt mit {number}, typisch für ein {eyepiece}-Okular.</span><span data-phrase="read.magnifier">Gelesen als {power}: eine Brennweite von {focal} oder {diopters}.</span><span data-phrase="read.lens.typical">Angesetzt mit {width}, typisch für diese Stärke.</span>
+    <span data-phrase="row.telescope">Okular {eyepiece}: {power}, Sehfeld {field} breit, Austrittspupille {pupil}. {zone}.</span><span data-phrase="row.binoculars">{pair}: Austrittspupille {pupil}, {share} der Helligkeit bei diesem Licht. {zone}.</span><span data-phrase="row.microscope">Objektiv {objective}: {power}, Sehfeld {field} breit, Details bis hinab zu {detail}. {zone}.</span><span data-phrase="row.magnifier">{power}: in {focal} Abstand gehalten, zeigt {field} auf einmal. {zone}.</span><span data-phrase="row.here">{row} Diese Zeile ist gerade eingestellt.</span>
+    <span data-phrase="error.missing">{name}: Geben Sie eine Zahl ein.</span><span data-phrase="error.range">{name}: Geben Sie eine Zahl von {low} bis {high} ein.</span>
+    <span data-phrase="print.line.1">Im Kleingedruckten verstecken sich die Zahlen.</span><span data-phrase="print.line.2">Lesen Sie jede Zeile, bevor Sie unterschreiben, und behalten Sie eine Kopie.</span><span data-phrase="print.line.3">Änderungen ohne Ankündigung vorbehalten. Einzelheiten siehe Rückseite.</span><span data-phrase="print.micro">DIESE ZEILE IST MIKROSCHRIFT, EINEN VIERTELMILLIMETER HOCH</span>
+    <span data-phrase="net.clean">Ihre Zahlen sind nirgendwohin gegangen. {total} Dateien geladen. {platform}</span><span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut dieses Werkzeug nie. {platform}</span><span data-phrase="net.platform.one">Die Skripte der Seite für Werbung und Messung wurden von {hosts} Host geladen; der Rechner schickt ihnen weder Eingaben noch Ergebnisse.</span><span data-phrase="net.platform.many">Die Skripte der Seite für Werbung und Messung wurden von {hosts} Hosts geladen; der Rechner schickt ihnen weder Eingaben noch Ergebnisse.</span>
+  </div>
+</main>
