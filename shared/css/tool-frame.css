@@ -1312,8 +1312,15 @@ button, .as-button {
 
 .tool-related li { display: grid; }
 
+/* Every tile in a row is as tall as the one with the longest tagline, and an
+   auto-sized grid stretches its rows to fill that height. Unchecked, a tile
+   with a line less to say gave the spare space to its name row, whose icon -
+   centred on that row, see below - then sank half of it below the name.
+   Packing the rows at the top puts the slack under the tagline instead, as the
+   hub's tool cards already do. */
 .tool-related a {
   display: grid;
+  align-content: start;
   gap: 0.3rem;
   height: 100%;
   padding: 0.8rem 0.9rem 0.85rem;
@@ -1342,31 +1349,37 @@ button, .as-button {
   .tool-related a:focus-visible { transform: none; }
 }
 
+/* The size is set on the row rather than on the name so that the mark inherits
+   it too, and `1lh` below means the same line height in both. */
 .tool-related-head {
   display: flex;
   gap: 0.45rem;
-  align-items: baseline;
+  align-items: flex-start;
+  font-size: 0.95rem;
 }
 
 .tool-related-name {
   color: var(--accent);
   font-weight: 600;
-  font-size: 0.95rem;
 }
 
 .tool-related a:hover .tool-related-name,
 .tool-related a:focus-visible .tool-related-name { text-decoration: underline; }
 
-/* The mark carries no meaning the name does not already carry - it is
-   aria-hidden in the markup - so it must not set the line's baseline. That was
-   written when these were emoji and a taller glyph dropped its whole row by a
-   pixel; a drawing is a fixed box and cannot, but the row is still a flex line
-   with a baseline in it, so the mark stays out of the way explicitly. */
+/* The mark sits centred on the name's first line, not on the name. Centring
+   it on the whole name was right while every name fitted one line, but
+   "Redimensionador de imágenes" and its French and Portuguese neighbours take
+   two in a tile this narrow, and the mark then hung between them, lower than
+   the marks in the tiles beside it. The margin is half of what the line has
+   beyond the mark's own height, which is the centre of that line. It used to
+   be kept off the baseline instead, from when these were emoji and a taller
+   glyph dropped its whole row by a pixel; at the start of the row it cannot
+   touch a baseline at all. */
 .tool-related-icon {
   flex: none;
   width: 1rem;
   height: 1rem;
-  align-self: center;
+  margin-block: calc((1lh - 1rem) / 2);
   fill: none;
   stroke: var(--accent);
   stroke-width: 2;
