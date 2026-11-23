@@ -54,9 +54,10 @@ leaves rendezvous's identity alone does not touch it.
 
 THE CREDENTIAL
 
-In CI, `CLOUDFLARE_API_TOKEN` is the `CLOUDFLARE_WORKERS_TOKEN` secret rather
-than the Pages token previews use, so the jobs that deploy previews cannot
-deploy Workers. On a person's machine Wrangler's own login is used, and
+In CI this is the repository's `CLOUDFLARE_API_TOKEN`, the same token that
+uploads the Pages previews. It therefore needs Workers permissions as well,
+which docs/deploying.md lists. On a person's machine Wrangler's own login is
+used, and
 `deploy` refuses a checkout whose Worker sources have uncommitted changes: the
 message would name a commit that is not what was uploaded.
 """
@@ -176,8 +177,15 @@ def bundle(worker, out, site_dir, revision, version):
 
 
 def production_identity(worker):
-    listing = run(['node', WRANGLER, 'deployments', 'list', '--name', worker.name, '--json',
-                   *wrangler_options(worker)], ROOT / worker.folder, capture=True)
+    try:
+        listing = run(['node', WRANGLER, 'deployments', 'list', '--name', worker.name, '--json',
+                       *wrangler_options(worker)], ROOT / worker.folder, capture=True)
+    except SystemExit as failure:
+        # The first thing a Pages-only token is refused, so say what it lacks
+        # rather than leave the reader with Wrangler's error code alone.
+        raise SystemExit(f'{failure}\nCould not read the deployments of {worker.name}. If that is an '
+                         'authentication error, the token lacks Workers Scripts permission on the '
+                         'account: see docs/deploying.md, "The Workers".') from None
     return deployed_identity(listing)
 
 
@@ -207,7 +215,7 @@ def main(argv=None):
     selected = [worker for worker in WORKERS if not args.only or worker.name in args.only]
 
     if os.environ.get('GITHUB_ACTIONS') == 'true' and not os.environ.get('CLOUDFLARE_API_TOKEN'):
-        raise SystemExit('No CLOUDFLARE_WORKERS_TOKEN secret, so this release could not deploy its '
+        raise SystemExit('No CLOUDFLARE_API_TOKEN secret, so this release could not deploy its '
                          'Workers. docs/deploying.md, "The Workers", says what the token needs.')
     if not WRANGLER.exists():
         raise SystemExit('The pinned Wrangler is missing: run `npm ci` in workers/catalogue-mcp.')

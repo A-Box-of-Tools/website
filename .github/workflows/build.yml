@@ -502,9 +502,11 @@ jobs:
       # docstring says how "differs" is decided and why the catalogue Worker
       # is redeployed on every release.
       #
-      # The token is its own secret, not the Pages token the previews hold,
-      # so a job that uploads a preview cannot deploy a Worker. Node 22 is
-      # Wrangler 4's floor; the steps above that parse the build have run.
+      # The token is CLOUDFLARE_API_TOKEN, the one the previews upload with, so
+      # it needs Workers permissions as well as Pages; docs/deploying.md, "The
+      # Workers", lists them, and the `workers` job below proves them before a
+      # release. Node 22 is Wrangler 4's floor; the steps above that parse the
+      # build have run.
       - uses: actions/setup-node@v4
         if: env.DEPLOYS == 'true'
         with:
@@ -518,7 +520,7 @@ jobs:
       - name: Deploy the Workers this release changes
         if: env.DEPLOYS == 'true'
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           VERSION: ${{ steps.release.outputs.version }}
         run: python scripts/deploy_workers.py deploy --site-dir _plain --version "$VERSION"
@@ -1294,13 +1296,16 @@ jobs:
 
   # WHICH WORKERS THE RELEASE WILL DEPLOY, asked on the pull request that is
   # the release. The `build` job deploys them after the merge, before the
-  # pages; this is the same script in `plan` mode, so a missing or refused
-  # CLOUDFLARE_WORKERS_TOKEN turns the release pull request red while the
-  # release can still wait for it, rather than stopping the deploy after the
-  # merge. Its own job, and needed by nothing, so that a missing secret never
-  # holds back the preview and the QA run beside it.
+  # pages; this is the same script in `plan` mode, so a token that cannot
+  # reach the Workers turns the release pull request red while the release can
+  # still wait for it, rather than stopping the deploy after the merge. Its own
+  # job, and needed by nothing, so that a refused token never holds back the
+  # preview and the QA run beside it. A run started by hand does the same on
+  # any branch, which is how to check the token after changing it.
   workers:
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1325,6 +1330,6 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Which Workers this release deploys
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python scripts/deploy_workers.py plan --site-dir _plain

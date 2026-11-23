@@ -216,21 +216,28 @@ it came from, so it is deployed with every release.
 each Worker as unchanged or about to deploy, and it fails if the credential is
 missing or refused. That is the time to fix it, while the release can still
 wait. Nothing else depends on that job, so the preview and QA run go ahead
-regardless.
+regardless. Starting the Build workflow by hand, on any branch, runs the same
+job. That is how to check the token after changing it.
 
-**The credential is a secret of its own.** `CLOUDFLARE_WORKERS_TOKEN` is a
-Cloudflare API token made from the "Edit Cloudflare Workers" template, limited
-to this account and the `abox.tools` zone. That grants Workers Scripts write
-on the account and Workers Routes write on the zone. Together they cover
-deploying a Worker that already exists, with its bindings and migrations, and
-the custom domains and routes the three configurations declare. Creating a new
-Worker needs more than that, so a Worker added to the script's list is deployed
-by hand once before its first release. The token is kept apart from
-`CLOUDFLARE_API_TOKEN`, which only uploads Pages previews and is available to
-every pull request's preview job. `CLOUDFLARE_ACCOUNT_ID` is shared. The
-release pull request's check reads deployments but deploys nothing, so a
-refused permission first shows up in the deploy itself. That still happens
-before anything is published, and Cloudflare's error names the permission.
+**The credential is the token the previews already use.** The release deploys
+with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, the secrets that
+upload the Pages previews. So besides Cloudflare Pages edit, that token needs
+Workers Scripts edit on the account and Workers Routes edit on the `abox.tools`
+zone. Those two are what the "Edit Cloudflare Workers" template grants. They
+cover deploying a Worker that already exists, with its bindings and migrations,
+and the custom domains and routes the three configurations declare. Creating a
+new Worker needs more, so a Worker added to the script's list is deployed by
+hand once before its first release.
+
+One token for both means every pull request's preview job holds a credential
+that can deploy Workers. Previews already ran that way before the release
+deployed anything, so sharing the token adds no exposure. If that ever
+changes, give the deploy steps a secret of their own.
+
+The `plan` check reads deployments but deploys nothing, so a token that can
+read but not write first shows up as a failure in the deploy itself. That still
+happens before anything is published, and Cloudflare's error names the missing
+permission.
 
 **A deploy of `rendezvous` restarts its objects.** Open shares reconnect in
 about five seconds and discovery lists recover within thirty. A release that

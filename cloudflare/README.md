@@ -263,9 +263,10 @@ counter is separate as well. The same source and inherited migration history
 create the same classes without binding them to production objects.
 
 The development Worker is deployed by hand, independently of the Pages upload
-above. Production is deployed by the release, with its own
-`CLOUDFLARE_WORKERS_TOKEN` (see "The Workers" in
-[docs/deploying.md](../docs/deploying.md)). From `workers/rendezvous/`, use:
+above. Production is deployed by the release with the same
+`CLOUDFLARE_API_TOKEN`, which therefore needs Workers permissions as well as
+Pages (see "The Workers" in [docs/deploying.md](../docs/deploying.md)). From
+`workers/rendezvous/`, use:
 
 ```
 npx wrangler deploy --env dev --dry-run
@@ -275,8 +276,8 @@ npx wrangler deploy --env dev
 The development environment explicitly replaces the route list with
 `rendezvous-dev.abox.tools`, so these commands do not deploy the production
 Worker or attach its hostname. A Wrangler login or suitably scoped Worker
-token is required; the Pages-only token described above cannot create a
-Worker or configure its custom domain. Secrets are not inherited from
+token is required. A Pages-only token cannot create a Worker or configure its
+custom domain. Secrets are not inherited from
 production. The [worker documentation](../workers/rendezvous/README.md#development-worker)
 covers bindings, rate-limit isolation and optional development relay secrets.
 

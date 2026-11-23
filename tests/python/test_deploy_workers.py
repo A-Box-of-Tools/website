@@ -154,18 +154,23 @@ class TheWorkflow(unittest.TestCase):
         self.assertIn("if: env.DEPLOYS == 'true'", step)
         self.assertIn('VERSION: ${{ steps.release.outputs.version }}', step)
 
-    def test_the_workers_token_is_not_the_preview_token(self):
+    def test_the_plan_and_the_deploy_use_one_token(self):
+        # The plan is only worth having if it is refused exactly when the
+        # deploy would be, so both have to be handed the same credential.
         for name in ('Deploy the Workers this release changes', 'Which Workers this release deploys'):
             with self.subTest(name):
                 step = self.step(name)
-                self.assertIn('CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}', step)
-        self.assertEqual(self.text.count('secrets.CLOUDFLARE_WORKERS_TOKEN'), 2)
+                self.assertIn('CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}', step)
+                self.assertIn('CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}', step)
 
-    def test_the_release_pull_request_plans(self):
+    def test_the_release_pull_request_plans_and_so_can_a_run_by_hand(self):
         job = self.text.partition('\n  workers:\n')[2]
         self.assertTrue(job, 'build.yml has no workers job')
-        self.assertIn("if: github.event_name == 'pull_request' && github.base_ref == 'main'", job)
+        condition = job.partition('runs-on:')[0]
+        self.assertIn("github.event_name == 'pull_request' && github.base_ref == 'main'", condition)
+        self.assertIn("github.event_name == 'workflow_dispatch'", condition)
         self.assertIn('python scripts/deploy_workers.py plan', job)
+        self.assertNotIn('deploy_workers.py deploy', job)
 
 
 if __name__ == '__main__':
