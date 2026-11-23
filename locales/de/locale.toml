@@ -623,6 +623,12 @@ error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um v
 
 reading_one = "{count} Datei wird gelesen&hellip;"
 reading_many = "{count} Dateien werden gelesen&hellip;"
+# The browser's own word for it, which is the point: Chrome and Firefox both
+# say "hochladen" in the prompt this answers. See folder_upload in
+# config/site.toml.
+folder_choose = "Ordner auswählen"
+folder_upload = "Ihr Browser spricht dabei womöglich von „Hochladen“. Die Auswahl eines Ordners sendet nichts, denn die Dateien werden auf diesem Gerät gelesen."
+folder_none = "In diesem Ordner liegt keine Datei, die dieses Werkzeug öffnet."
 text_encoding = "Sie ist nicht als UTF-8-Text gespeichert. Speichern Sie sie als UTF-8 und versuchen Sie es erneut, oder fügen Sie den Text direkt ein."
 
 check_yourself = """

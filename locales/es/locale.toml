@@ -567,6 +567,12 @@ error_broke = "Algo ha fallado: {detail}. Recarga la página para empezar de nue
 
 reading_one = "Leyendo {count} archivo&hellip;"
 reading_many = "Leyendo {count} archivos&hellip;"
+# Two verbs on purpose, and neither is this site's choice: in the prompt this
+# answers Chrome says "subir" and Firefox says "enviar". See folder_upload in
+# config/site.toml.
+folder_choose = "Elegir una carpeta"
+folder_upload = "Puede que el navegador lo llame subir o enviar archivos. Elegir una carpeta no envía nada a ninguna parte. Los archivos se leen en este dispositivo."
+folder_none = "En esa carpeta no hay ningún archivo que esta herramienta abra."
 text_encoding = "No está guardado como texto UTF-8. Guárdalo como UTF-8 e inténtalo de nuevo, o pega su texto directamente."
 
 check_yourself = """

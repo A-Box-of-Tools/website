@@ -33,6 +33,19 @@
  * `dataTransfer.files` every one of those pages turned the folder away,
  * because that list holds a folder as a single entry no tool can open. See
  * `dropped` and `walkFolder` at the foot of this file.
+ *
+ * WHAT A CHOSEN FOLDER IS
+ *
+ * The same files in the same order, by the other road. A drop is the one way
+ * of handing something over that a keyboard cannot use and a phone does not
+ * have, so on a tool that takes several files the partial renders a second
+ * input beside the drop zone, one that asks for a folder, behind a label of
+ * its own. The file dialog cannot be asked for both: an input offers files or
+ * a folder. See `wireFolder`.
+ *
+ * It costs a sentence on the page. Asked for a folder, Chrome and Firefox both
+ * make the visitor confirm an "upload", in that word, and the answer to that
+ * has to be standing beside the button before the question is put.
  */
 
 import { phrase } from './phrases.js';
@@ -113,6 +126,9 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example })
   const hand = (files) => {
     const picked = Array.from(files ?? []);
     if (!picked.length) return;
+    // Whatever was last said about a folder with nothing in it was about that
+    // folder, and something has arrived since.
+    folder.forget();
     wake();
     onFiles(picked);
   };
@@ -127,6 +143,8 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example })
     input.value = '';
     hand(picked);
   });
+
+  const folder = wireFolder({ input, hand });
 
   for (const type of ['dragenter', 'dragover']) {
     dropzone.addEventListener(type, (event) => {
@@ -373,6 +391,74 @@ function liftToHeading(holder, dropzone) {
 }
 
 /**
+ * The "Choose a folder" control, for the visitor who cannot drag one or would
+ * rather not.
+ *
+ * WHY IT IS HIDDEN UNTIL HERE
+ *
+ * The partial renders it `hidden`, and this is the only place that shows it.
+ * A browser that does not know `webkitdirectory` ignores the attribute and
+ * opens the ordinary file dialog, so the label would promise a folder and
+ * deliver the dialog the drop zone already opens. The property on the input
+ * is the test. Every current browser has it, phones included, and the ones
+ * without it are exactly the ones that would break the promise.
+ *
+ * WHAT ARRIVES
+ *
+ * Every file under the folder, as one flat list, each knowing the path it was
+ * found at. There is no walk to make and nothing to wait for: the browser has
+ * made it, and Chrome and Firefox have already asked the visitor whether they
+ * meant it. What is left is what `openDropped` does for a dropped folder -
+ * hold the files to the picker's `accept`, which a dialog for folders cannot
+ * be given, and put them in the order the folder shows them in - so that the
+ * two roads end in the same place.
+ *
+ * WHAT IS SAID WHEN NOTHING DOES
+ *
+ * A dropped folder with nothing in it for the tool is handed over as the
+ * browser's own unreadable entry, and the tool turns it away in its own
+ * words. A chosen folder leaves no such thing behind. It is its files, and
+ * with none of those left there is nothing to hand to anybody, so the picker
+ * answers for itself in the line beside the control. The line is announced:
+ * the visitor has just come back from a dialog and is looking nowhere in
+ * particular.
+ *
+ * @param {object} options
+ * @param {HTMLInputElement} options.input  the picker's own input, for its `accept`
+ * @param {(files: File[]) => void} options.hand
+ * @returns {{forget: () => void}}  `forget` takes back the last thing said
+ */
+function wireFolder({ input, hand }) {
+  const holder = document.getElementById('folder-pick');
+  const folder = document.getElementById('folder-input');
+  const note = holder?.querySelector('.folder-note');
+  const say = (text) => {
+    if (note) note.textContent = text;
+  };
+  const forget = () => say('');
+
+  if (!holder || !folder || !('webkitdirectory' in folder)) return { forget };
+  holder.hidden = false;
+
+  folder.addEventListener('change', () => {
+    // A live list, and the reset that empties it is what lets the same folder
+    // be chosen twice running: the other input's handler, for the same reasons.
+    const chosen = Array.from(folder.files);
+    folder.value = '';
+
+    // An empty folder comes through here as well, where the browser reports
+    // one: Chromium does, as a change to no files at all, and the same
+    // sentence is true of it. A dialog that was cancelled changes nothing and
+    // is never heard of.
+    const files = inFolderOrder(chosen.filter(accepts(input.accept)));
+    if (files.length) hand(files);
+    else say(phrase('folder.none'));
+  });
+
+  return { forget };
+}
+
+/**
  * "Reading 1 file..." / "Reading 4 files...", said the same way everywhere,
  * and in the language of the page.
  *
@@ -533,6 +619,55 @@ function fileOf(entry) {
       resolve(null);
     }
   });
+}
+
+/**
+ * The files of a chosen folder, in the order `walkFolder` hands over a dropped
+ * one: a folder's own files first, by name, then each folder inside it in the
+ * same way.
+ *
+ * A folder input gives one flat list in whatever order the browser came by
+ * it, and each File carries its place as `webkitRelativePath`, which is
+ * `photos/2019/img2.jpg` with forward slashes on every system. The same
+ * folder has to mean the same pages of a PDF whichever way it came in, so the
+ * order is rebuilt from those paths rather than left to the list.
+ *
+ * @param {File[]} files
+ * @returns {File[]}  a new array; the one given is left as it was
+ */
+export function inFolderOrder(files) {
+  // Split once and not in every comparison: a disc is thousands of files, and
+  // sorting them compares each a dozen times over. Five thousand took 21 ms
+  // in Edge and twenty thousand 115 ms, which is why nothing here says it is
+  // busy.
+  const placed = files.map((file) => ({ file, at: (file.webkitRelativePath || file.name).split('/') }));
+  placed.sort((one, other) => byPlace(one.at, other.at));
+  return placed.map((each) => each.file);
+}
+
+/**
+ * Which of two paths comes first, each a list of names from the chosen folder
+ * down to the file.
+ *
+ * Read level by level. Where one path has reached its file and the other is
+ * still naming a folder, the file is first, whatever either is called: that is
+ * "own files before the folders inside". Otherwise the two names at that level
+ * decide it, and equal names mean the same folder, one level further down.
+ *
+ * Names the collator cannot tell apart - `Scan` and `scan`, on a disk that
+ * can - are then told apart as written, so two such folders stay two runs of
+ * files and are not shuffled into one.
+ */
+function byPlace(one, other) {
+  for (let depth = 0; ; depth += 1) {
+    const oneIsFile = depth === one.length - 1;
+    const otherIsFile = depth === other.length - 1;
+    if (oneIsFile !== otherIsFile) return oneIsFile ? -1 : 1;
+
+    const order = BY_NAME.compare(one[depth], other[depth])
+      || (one[depth] < other[depth] ? -1 : Number(one[depth] > other[depth]));
+    if (order || oneIsFile) return order;
+  }
 }
 
 /**

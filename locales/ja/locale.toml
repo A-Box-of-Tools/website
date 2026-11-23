@@ -394,6 +394,12 @@ error_broke = "問題が起きました：{detail}。最初からやり直すに
 # 他の言語で変わるからで、ここで書き忘れているわけではありません。
 reading_one = "{count}個のファイルを読み込み中&hellip;"
 reading_many = "{count}個のファイルを読み込み中&hellip;"
+# The browser's own word for it, which is the point: Chrome and Firefox both
+# say アップロード in the prompt this answers. See folder_upload in
+# config/site.toml.
+folder_choose = "フォルダを選ぶ"
+folder_upload = "ブラウザには「アップロード」と表示されることがあります。フォルダを選んでも何も送信されません。ファイルは手元の端末で読み込まれます。"
+folder_none = "このフォルダには、このツールで開けるファイルがありません。"
 text_encoding = "UTF-8テキストとして保存されていません。UTF-8で保存し直してもう一度試すか、テキストを直接貼り付けてください。"
 
 check_yourself = """
