@@ -1,0 +1,213 @@
+<main id="main" data-world="telescope">
+  <section class="card mc-card" aria-labelledby="start-title">
+    <div class="mc-heading"><span class="mc-eyebrow">Lo que significan los números de la caja</span><span class="mc-badge">Funciona sin conexión · No necesita IA</span></div>
+    <h2 id="start-title">¿Qué mostrará de verdad ese aumento?</h2>
+    <p class="card-lede">Escribe los números impresos en un telescopio, unos prismáticos, un microscopio o una lupa. La página dibuja la vista que dan, a escala, junto a lo que ve tu ojo por sí solo, y dice a partir de dónde un número mayor deja de mostrar algo nuevo.</p>
+
+    <div class="mc-worlds" role="radiogroup" aria-label="Instrumento">
+      <label class="mc-world"><input type="radio" name="world" value="telescope" checked><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 13.5l11-5.5 2 4-11 5.500zM14.500 8l4-2 2 4-4 2M9 16.500L6.500 21M10.500 15.500L13.500 21"/></svg><span class="mc-world-name">Telescopio</span><span class="mc-world-value" id="tab-telescope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="binoculars"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="16" r="4"/><circle cx="17" cy="16" r="4"/><path d="M4.500 12.500L6.500 5h3l1.500 7.500M12.500 12.500L14 5h3l2.500 7.500M11 15h2"/></svg><span class="mc-world-name">Prismáticos</span><span class="mc-world-value" id="tab-binoculars"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="microscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3l4.500 8M8 6.500l3.500-2M6 21h12M9 21v-3M8.500 15.500a6 6 0 0 0 8.500-5.500M13 18h5"/></svg><span class="mc-world-name">Microscopio</span><span class="mc-world-value" id="tab-microscope"></span></label>
+      <label class="mc-world"><input type="radio" name="world" value="magnifier"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500"/><path d="M15.500 15.500L21 21"/></svg><span class="mc-world-name">Lupa</span><span class="mc-world-value" id="tab-magnifier"></span></label>
+    </div>
+
+    <fieldset class="mc-form" data-for="telescope">
+      <legend>Los números del telescopio</legend>
+      <div class="settings">
+        <div class="field"><label for="tel-aperture">Abertura (lente o espejo principal)</label><div class="inline-pair"><input id="tel-aperture" type="number" inputmode="decimal" min="20" max="2000" step="any" value="70" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">El ancho de la lente o del espejo principal: la D de «D = 70 mm», o el primer número de un nombre como 70/700. Una pulgada son 25,4 mm, así que un telescopio de 8 pulgadas es de 203.</p></div>
+        <div class="field"><label for="tel-focal">Distancia focal del telescopio</label><div class="inline-pair"><input id="tel-focal" type="number" inputmode="decimal" min="100" max="30000" step="any" value="700" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">La F de «F = 700 mm». Si solo se da un número f, multiplícalo por la abertura: 130 mm a f/5 son 650 mm.</p></div>
+        <div class="field"><label for="tel-eyepiece">Distancia focal del ocular</label><div class="inline-pair"><input id="tel-eyepiece" type="number" inputmode="decimal" min="2" max="60" step="any" value="10" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="telescope">Grabada en el ocular: 25 mm, 10 mm, o una letra y un número como H20 o SR4. El dial de abajo la cambia por ti.</p></div>
+        <div class="field"><label for="tel-barlow">Lente de Barlow</label><select id="tel-barlow"><option value="1" selected>Ninguna</option><option value="2">2×</option><option value="3">3×</option></select>
+          <p class="field-note" data-for="telescope">Una Barlow va entre el telescopio y el ocular y multiplica el aumento. Por sí misma no añade ningún detalle.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="binoculars">
+      <legend>Los números de los prismáticos</legend>
+      <div class="settings">
+        <div class="field"><label for="bin-power">Aumento (primer número)</label><div class="inline-pair"><input id="bin-power" type="number" inputmode="decimal" min="2" max="100" step="any" value="8" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="binoculars">En 8×42 es el 8. Un modelo con zoom lleva impreso un intervalo, como 10-30×50: prueba con cada extremo.</p></div>
+        <div class="field"><label for="bin-objective">Lente frontal (segundo número)</label><div class="inline-pair"><input id="bin-objective" type="number" inputmode="decimal" min="10" max="250" step="any" value="42" aria-describedby="input-error"><span>mm</span></div>
+          <p class="field-note" data-for="binoculars">En 8×42 es el 42. Decide cuánta luz entra y, por tanto, cómo aguanta la vista al anochecer.</p></div>
+        <div class="field mc-wide"><label for="bin-field">Campo visual, si está impreso</label><div class="inline-pair"><input id="bin-field" type="number" inputmode="decimal" min="0.3" max="600" step="any" aria-describedby="bin-field-read input-error"><select id="bin-field-unit" aria-label="Cómo está impreso el campo visual"><option value="degrees" selected>grados</option><option value="metres">m a 1000 m</option><option value="feet">ft a 1000 yd</option></select></div>
+          <p id="bin-field-read" class="field-note"></p>
+          <p class="field-note" data-for="binoculars">Impreso como un ángulo, por ejemplo 7,5°, o como un ancho a una distancia, por ejemplo 131 m a 1000 m o 393 ft a 1000 yd. Déjalo vacío para usar uno habitual.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="microscope" id="microscope-form">
+      <legend>Los números del microscopio</legend>
+      <div class="mc-turret chips" role="radiogroup" aria-labelledby="objective-label"><span class="chips-label" id="objective-label">Objetivo</span>
+        <label class="chip"><input type="radio" name="mic-objective" value="4">4×/0.10</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="10" checked>10×/0.25</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="40">40×/0.65</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="100">100×/1.25 aceite</label>
+        <label class="chip"><input type="radio" name="mic-objective" value="custom">Otro</label>
+      </div>
+      <div class="settings">
+        <div class="field mc-custom"><label for="mic-power">Aumento del objetivo</label><div class="inline-pair"><input id="mic-power" type="number" inputmode="decimal" min="1" max="250" step="any" value="20" aria-describedby="input-error"><span>×</span></div></div>
+        <div class="field mc-custom"><label for="mic-na">Apertura numérica (NA)</label><input id="mic-na" type="number" inputmode="decimal" min="0.02" max="1.6" step="any" value="0.4" aria-describedby="input-error">
+          <p class="field-note" data-for="microscope">El número que va tras la barra en el objetivo, como en 40×/0.65. Es el que fija el detalle más fino, y no el aumento.</p></div>
+        <div class="field"><label for="mic-eyepiece">Aumento del ocular</label><div class="inline-pair"><input id="mic-eyepiece" type="number" inputmode="decimal" min="2" max="40" step="any" value="10" aria-describedby="input-error"><span>×</span></div>
+          <p class="field-note" data-for="microscope">Grabado en el ocular, normalmente 10×. El dial de abajo lo cambia por ti.</p></div>
+        <div class="field"><label for="mic-fn">Número de campo, si está grabado</label><div class="inline-pair"><input id="mic-fn" type="number" inputmode="decimal" min="4" max="30" step="any" aria-describedby="mic-fn-read input-error"><span>mm</span></div>
+          <p id="mic-fn-read" class="field-note"></p>
+          <p class="field-note" data-for="microscope">El segundo número de un ocular marcado 10×/18. Dividido entre el aumento del objetivo, es el ancho de muestra que ves.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mc-form" data-for="magnifier">
+      <legend>El número de la lupa</legend>
+      <div class="settings">
+        <div class="field mc-wide"><label for="mag-value">El número que lleva impreso</label><div class="inline-pair"><input id="mag-value" type="number" inputmode="decimal" min="1.1" max="500" step="any" value="10" aria-describedby="mag-read input-error"><select id="mag-unit" aria-label="Qué es ese número"><option value="power" selected>× aumentos</option><option value="dioptre">dioptrías</option><option value="focal">mm de focal</option></select></div>
+          <p id="mag-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">Una lupa de joyero dice 10×; una lupa de lectura, 2× o 3×; una lámpara lupa suele dar dioptrías, como +3 o +5, y una lente suelta, su distancia focal.</p></div>
+        <div class="field"><label for="mag-lens">Ancho de la lente, si lo conoces</label><div class="inline-pair"><input id="mag-lens" type="number" inputmode="decimal" min="4" max="250" step="any" aria-describedby="mag-lens-read input-error"><span>mm</span></div>
+          <p id="mag-lens-read" class="field-note"></p>
+          <p class="field-note" data-for="magnifier">Una lente más potente es más pequeña, así que muestra menos de una vez. Déjalo vacío para usar un ancho habitual.</p></div>
+      </div>
+    </fieldset>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <div class="mc-dial">
+      <p class="mc-readout"><span class="mc-readout-label">Aumento</span> <output id="power" for="dial" class="mc-readout-number"></output> <span id="power-how" class="mc-readout-how"></span></p>
+      <input type="range" id="dial" min="0" max="1000" step="1" value="500" aria-label="Aumento">
+      <div class="mc-ticks" id="dial-ticks" aria-hidden="true"></div>
+      <ul class="mc-legend" id="dial-legend" aria-hidden="true"></ul>
+    </div>
+    <p id="verdict" class="mc-verdict"><strong id="verdict-zone"></strong> <span id="verdict-text"></span></p>
+
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-telescope-label" data-for="telescope"><span class="chips-label" id="look-telescope-label">Observar</span>
+      <label class="chip"><input type="radio" name="look-telescope" value="moon" checked>La Luna</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="jupiter">Júpiter</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="saturn">Saturno</label>
+      <label class="chip"><input type="radio" name="look-telescope" value="pleiades">Las Pléyades</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-binoculars-label" data-for="binoculars"><span class="chips-label" id="look-binoculars-label">Observar</span>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-day" checked>Un pájaro, de día</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="bird-dusk">Un pájaro, al anochecer</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="moon">La Luna</label>
+      <label class="chip"><input type="radio" name="look-binoculars" value="pleiades">Las Pléyades</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-microscope-label" data-for="microscope"><span class="chips-label" id="look-microscope-label">Observar</span>
+      <label class="chip"><input type="radio" name="look-microscope" value="onion" checked>Piel de cebolla</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="blood">Sangre</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="hair">Un cabello</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="salt">Sal</label>
+      <label class="chip"><input type="radio" name="look-microscope" value="bacteria">Bacterias</label>
+    </div>
+    <div class="mc-look chips" role="radiogroup" aria-labelledby="look-magnifier-label" data-for="magnifier"><span class="chips-label" id="look-magnifier-label">Observar</span>
+      <label class="chip"><input type="radio" name="look-magnifier" value="print" checked>Letra pequeña</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="ruler">Una regla</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="salt">Sal</label>
+      <label class="chip"><input type="radio" name="look-magnifier" value="hair">Un cabello</label>
+    </div>
+
+    <div class="mc-stage">
+      <figure class="mc-fig mc-whole"><canvas id="view" role="img" aria-label="La vista completa a través del instrumento"></canvas><figcaption>La vista completa</figcaption></figure>
+      <figure class="mc-fig mc-close"><canvas id="close" role="img" aria-label="Un primer plano del centro de la vista"></canvas><figcaption>Un primer plano de su centro</figcaption></figure>
+      <figure class="mc-fig mc-bare"><canvas id="bare" role="img" aria-label="El mismo primer plano a simple vista"></canvas><figcaption>El mismo primer plano, a simple vista</figcaption></figure>
+    </div>
+    <p id="stage-caption" class="mc-caption"></p>
+
+    <div class="mc-answer"><p id="answer-story" class="mc-story"></p><p id="answer-fit" class="mc-story"></p></div>
+    <p id="announce" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+  </section>
+
+  <section class="card mc-more" aria-labelledby="numbers-title">
+    <div class="mc-numbers">
+      <h3 id="numbers-title">Qué significa cada número</h3>
+      <dl class="mc-stats" data-for="telescope">
+        <div><dt>Aumento</dt><dd><strong id="tel-s-power"></strong> <span>Cuántas veces más ancho se ve todo que a simple vista: la distancia focal del telescopio dividida entre la del ocular.</span></dd></div>
+        <div><dt>Campo visual</dt><dd><strong id="tel-s-field"></strong> <span>El ancho del trozo de cielo que cabe en el ocular. Se reduce a medida que crece el aumento.</span></dd></div>
+        <div><dt>Pupila de salida</dt><dd><strong id="tel-s-pupil"></strong> <span>El ancho del haz de luz que sale del ocular: la abertura dividida entre el aumento. Cuanto más ancho, más brillo, hasta el ancho de tu propia pupila.</span></dd></div>
+        <div><dt>Detalle más fino</dt><dd><strong id="tel-s-detail"></strong> <span>Lo más pequeño que esta abertura puede separar, con cualquier aumento. Solo una lente o un espejo más ancho lo reduce.</span></dd></div>
+        <div><dt>Luz captada</dt><dd><strong id="tel-s-light"></strong> <span>Comparada con la que capta la pupila de tu ojo en la oscuridad. Es esto, y no el aumento, lo que deja ver los objetos débiles.</span></dd></div>
+        <div><dt>Aumentos útiles</dt><dd><strong id="tel-s-range"></strong> <span>Del más bajo que no desperdicia luz al más alto que todavía ayuda: unas dos veces la abertura en milímetros, y rara vez más de 300× a través del aire.</span></dd></div>
+        <div><dt>Relación focal</dt><dd><strong id="tel-s-ratio"></strong> <span>La distancia focal dividida entre la abertura. Dice lo amplia y brillante que puede ser una vista con pocos aumentos, y nada sobre cuánto aumenta el telescopio.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="binoculars">
+        <div><dt>Aumento</dt><dd><strong id="bin-s-power"></strong> <span>El primer número. Las cosas se ven ese número de veces más anchas, como si estuvieras ese mismo número de veces más cerca.</span></dd></div>
+        <div><dt>Lente frontal</dt><dd><strong id="bin-s-objective"></strong> <span>El segundo número: el ancho de cada lente frontal. Una lente más ancha capta más luz y hace más pesados los prismáticos.</span></dd></div>
+        <div><dt>Pupila de salida</dt><dd><strong id="bin-s-pupil"></strong> <span>El segundo número dividido entre el primero: el ancho del haz que llega a cada ojo. Tu pupila mide de 2 a 3 mm de día, unos 5 mm al anochecer y hasta 7 mm en la oscuridad.</span></dd></div>
+        <div><dt>Brillo con esta luz</dt><dd><strong id="bin-s-light"></strong> <span>De lo que recibiría tu ojo por sí solo de la misma escena. Baja en cuanto el haz es más estrecho que tu pupila.</span></dd></div>
+        <div><dt>Campo visual</dt><dd><strong id="bin-s-field"></strong> <span>Cuánto paisaje cabe a lo ancho de la vista. Se imprime como un ángulo o como un ancho a una distancia fija.</span></dd></div>
+        <div><dt>Factor crepuscular</dt><dd><strong id="bin-s-twilight"></strong> <span>La raíz cuadrada del producto de los dos números. Los fabricantes lo imprimen como guía del detalle con poca luz. Premia el aumento, mientras que lo brillante que se mantiene la vista al anochecer depende de la pupila de salida.</span></dd></div>
+        <div><dt>En la mano</dt><dd><strong id="bin-s-hand"></strong> <span>El temblor de las manos se amplía con todo lo demás. Hasta unos 8× es fácil mantenerlos quietos, y a partir de unos 12× un trípode hace más que el aumento extra.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="microscope">
+        <div><dt>Aumento total</dt><dd><strong id="mic-s-power"></strong> <span>El aumento del objetivo multiplicado por el del ocular, contado respecto al mismo objeto sostenido a 25 cm del ojo.</span></dd></div>
+        <div><dt>Campo visual</dt><dd><strong id="mic-s-field"></strong> <span>El ancho de muestra que ves: el número de campo del ocular dividido entre el aumento del objetivo.</span></dd></div>
+        <div><dt>Detalle más fino</dt><dd><strong id="mic-s-detail"></strong> <span>Lo más pequeño que este objetivo puede separar, fijado por su apertura numérica. Un ocular más potente no lo cambia.</span></dd></div>
+        <div><dt>Aumentos útiles</dt><dd><strong id="mic-s-range"></strong> <span>Desde donde una vista aguda empieza a distinguir todo lo que el objetivo resuelve hasta donde ya no queda nada que agrandar: de unas 220 a 1000 veces la apertura numérica. Los fabricantes citan su mitad superior, de 500 a 1000.</span></dd></div>
+        <div><dt>Pupila de salida</dt><dd><strong id="mic-s-pupil"></strong> <span>El ancho del haz que sale del ocular. Por debajo de medio milímetro, más o menos, la imagen solo se agranda.</span></dd></div>
+      </dl>
+      <dl class="mc-stats" data-for="magnifier">
+        <div><dt>Aumento</dt><dd><strong id="mag-s-power"></strong> <span>Cuántas veces más ancho se ve un objeto que sostenido a 25 cm del ojo.</span></dd></div>
+        <div><dt>Distancia focal</dt><dd><strong id="mag-s-focal"></strong> <span>Más o menos la distancia a la que tiene que estar la lente del objeto. Una lente más potente trabaja más cerca.</span></dd></div>
+        <div><dt>Dioptrías</dt><dd><strong id="mag-s-diopters"></strong> <span>1000 dividido entre la distancia focal en milímetros. Los ópticos y las lámparas lupa usan este número.</span></dd></div>
+        <div><dt>Ancho que ves de una vez</dt><dd><strong id="mag-s-field"></strong> <span>Más o menos el ancho de la lente, con el ojo cerca de ella. Por eso las lupas potentes muestran tan poco de una vez.</span></dd></div>
+        <div><dt>Detalle más fino</dt><dd><strong id="mag-s-detail"></strong> <span>Lo que una vista aguda puede separar a través de ella: el límite del propio ojo dividido entre el aumento.</span></dd></div>
+      </dl>
+    </div>
+    <div class="mc-side">
+      <h3 id="ladder-title">El mismo instrumento con otros aumentos</h3>
+      <p class="field-note">Cada fila se calcula a partir de los números de arriba. Pulsa una para probarla.</p>
+      <ol class="mc-ladder" id="ladder" aria-labelledby="ladder-title"></ol>
+      <h3>O prueba con</h3>
+      <div class="mc-example-row">
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=4 tel-barlow=3 look-telescope=moon">Un telescopio de 60 mm vendido como 675×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=60 tel-focal=900 tel-eyepiece=20 tel-barlow=1 look-telescope=moon">El mismo telescopio a 45×</button>
+        <button type="button" class="ghost" data-example="world=telescope tel-aperture=130 tel-focal=650 tel-eyepiece=5 tel-barlow=1 look-telescope=saturn">Saturno en un telescopio de 130 mm</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=42 bin-field= look-binoculars=bird-dusk">Unos prismáticos 8×42 al anochecer</button>
+        <button type="button" class="ghost" data-example="world=binoculars bin-power=8 bin-objective=21 bin-field= look-binoculars=bird-dusk">Unos 8×21 de bolsillo al anochecer</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=40 mic-eyepiece=25 mic-fn= look-microscope=bacteria">1000× con un ocular potente</button>
+        <button type="button" class="ghost" data-example="world=microscope mic-objective=100 mic-eyepiece=10 mic-fn= look-microscope=bacteria">1000× con un objetivo de inmersión en aceite</button>
+        <button type="button" class="ghost" data-example="world=magnifier mag-value=10 mag-unit=power mag-lens= look-magnifier=print">Una lupa de joyero de 10×</button>
+      </div>
+    </div>
+  </section>
+
+  <details class="card model-details" id="assumptions"><summary>¿Cómo lo hemos calculado?</summary>
+    <p>Los números que escribes se toman tal como están impresos. Todo lo demás es aritmética a partir de las cifras de abajo, que puedes cambiar o comprobar.</p>
+    <div class="assumption-grid">
+      <div class="field"><label for="eye-pupil">Tu pupila en la oscuridad</label><select id="eye-pupil"><option value="7" selected>7 mm · ojos jóvenes</option><option value="6">6 mm</option><option value="5">5 mm · ojos mayores</option></select><p class="field-note">Lo máximo que se abre tu pupila, que es lo que se usa para el cielo nocturno. Se estrecha con la edad. De día se toma como 2,5 mm y al anochecer como 5 mm.</p></div>
+      <div class="field"><label for="apparent-field">Ancho del círculo que muestra el ocular</label><select id="apparent-field"><option value="40">40° · oculares sencillos</option><option value="52" selected>52° · Plössl, el más común</option><option value="68">68° · gran angular</option><option value="82">82° · ultra gran angular</option></select><p class="field-note">El campo aparente de un ocular de telescopio. Uno más amplio muestra más cielo con el mismo aumento, y nada de lo que se ve se hace más grande.</p></div>
+      <div class="field"><label for="barrel">Barrilete del ocular</label><select id="barrel"><option value="27" selected>1,25 pulgadas</option><option value="46">2 pulgadas</option></select><p class="field-note">El barrilete limita lo ancho que puede ser el campo de un ocular de focal larga: unos 27 mm en un barrilete de 1,25 pulgadas y 46 mm en uno de 2 pulgadas.</p></div>
+      <div class="field"><label for="mag-rule">Cómo se cuenta el aumento de una lupa</label><select id="mag-rule"><option value="auto" selected>Como suele indicar su etiqueta</option><option value="relaxed">250 mm ÷ distancia focal</option><option value="close">250 mm ÷ distancia focal, más 1</option></select><p class="field-note">Se usan dos cuentas. Dividir 250 mm entre la distancia focal supone el ojo relajado, y es como suele contarse una lupa de joyero marcada con un aumento. Sumar uno supone el ojo enfocado tan cerca como puede, y es como se venden las lámparas lupa y las lupas de lectura marcadas en dioptrías: +3 dioptrías como 1,75×. Si no eliges aquí una de las dos, la página toma la que corresponde al tipo de número que has escrito.</p></div>
+    </div>
+    <p><strong>Una misma borrosidad, tres reglas prácticas.</strong> Cualquier lente extiende un punto de luz en un pequeño disco, y el ocular amplía ese disco con todo lo demás. Según el criterio de Rayleigh para la luz verde, el disco parece medir unos 2,3 minutos de arco de ancho a través de una pupila de salida de 1 mm, y más cuanto más se reduce la pupila de salida. Una vista aguda separa 1 minuto de arco. Así que, con una pupila de salida de más de 2,3 mm, es tu ojo, y no la lente, lo que limita lo que ves; con 1 mm, todo lo que la lente resuelve tiene un tamaño cómodo; y por debajo de 0,5 mm, lo único que crece es la propia borrosidad. En un telescopio, esos puntos son aumentos iguales a la abertura en milímetros dividida entre 2,3, a la propia abertura y al doble de la abertura. En un microscopio son unas 217, 500 y 1000 veces la apertura numérica.</p>
+    <p><strong>Telescopios.</strong> El aumento es la distancia focal del telescopio dividida entre la del ocular, multiplicada por la Barlow si la hay. La pupila de salida es la abertura dividida entre el aumento. El detalle más fino es 138 segundos de arco dividido entre la abertura en milímetros, y el límite de Dawes, una cifra más antigua para separar estrellas dobles, 116 dividido entre la abertura, es aproximadamente una sexta parte menor. El campo visual es el campo aparente del ocular dividido entre el aumento, con el tope que le pone su barrilete. Por encima de unos 300×, la turbulencia del aire (el seeing) suele ocultar lo que el telescopio pudiera añadir.</p>
+    <p><strong>Prismáticos.</strong> La pupila de salida es el ancho de la lente frontal dividido entre el aumento, y el brillo es el cuadrado de la pupila de salida dividida entre tu propia pupila, nunca mayor que 1. Un campo dado como un ancho se convierte en un ángulo de forma exacta, así que 131 m a 1000 m y 393 ft a 1000 yd son ambos 7,5°. El círculo dibujado es el aumento multiplicado por ese ángulo; una norma más reciente que trabaja con tangentes da unos cinco grados menos para los mismos prismáticos.</p>
+    <p><strong>Microscopios.</strong> El aumento total es el del objetivo multiplicado por el del ocular. El detalle más fino es 0,61 veces la longitud de onda dividida entre la apertura numérica: 0,34 µm dividido entre la apertura numérica con luz verde. El ancho de muestra a la vista es el número de campo dividido entre el aumento del objetivo, y un ocular sin número grabado se toma como 180 mm divididos entre su aumento, que son 18 mm a 10×, y nunca más de los 20 mm que permite un tubo de ocular estándar. Una lámpara siempre se puede subir, así que estas imágenes no se oscurecen.</p>
+    <p><strong>Lupas.</strong> Una lente simple se cuenta respecto al mismo objeto sostenido a 250 mm del ojo: 250 mm dividido entre su distancia focal con el ojo relajado, y uno más con el ojo enfocado de cerca. Su distancia focal es 1000 mm dividido entre sus dioptrías. La zona que se ve a través de ella se toma como el ancho de la propia lente, lo que se cumple con el ojo a más o menos una distancia focal por detrás.</p>
+    <p><strong>Las imágenes.</strong> Las tres están dibujadas a una misma escala angular: el círculo es el campo del ocular tal como lo recibe tu ojo, y todo lo que hay en él tiene el ancho que le da el aumento. El primer plano usa un píxel de pantalla por cada dos minutos de arco de la vista, lo que en un teléfono o un portátil a su distancia habitual queda cerca del tamaño real. La falta de nitidez que se ve en él es la borrosidad descrita arriba. Una superficie pierde brillo según el cuadrado de la pupila de salida dividida entre tu pupila, y la imagen solo se oscurece cuando eso ha agotado la luz que le sobra al objeto: la Luna llena se toma como 2500 candelas por metro cuadrado, y una vista se da por apagada por debajo de 2. Júpiter y Saturno son más débiles en proporción a la luz solar que reciben y reflejan; una escena al sol se toma como 5000, y una al anochecer, como 3. Las estrellas son puntos, así que no pierden brillo de este modo; las que son demasiado débiles para la luz captada se dejan fuera.</p>
+    <p><strong>Qué son los dibujos.</strong> La Luna mide 3475 km de ancho y está a 384.400 km, con sus mares y unos veinte de sus cráteres más grandes en su sitio y otros menores repartidos según una regla. Júpiter y Saturno están a sus distancias medias en oposición, 629 y 1277 millones de km, y las lunas de Júpiter y Titán están en lugares típicos de unas órbitas que recorren en días. Las Pléyades son las once estrellas más brillantes del catálogo. El pájaro mide 14 cm de largo y está a 20 m. En el portaobjetos, una célula de cebolla mide 0,3 mm de largo; un glóbulo rojo, 7,5 µm; un cabello, 0,07 mm; un grano de sal de mesa, unos 0,3 mm, y una bacteria, 2 µm. El texto impreso es letra de 8 y de 5 puntos sobre líneas de microimpresión de un cuarto de milímetro de altura.</p>
+    <p class="source-links">Consulta las referencias: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener noreferrer">Las fichas planetarias de la NASA</a> · <a href="https://www.microscopyu.com/microscopy-basics/useful-magnification-range" target="_blank" rel="noopener noreferrer">Nikon MicroscopyU sobre el intervalo útil de aumentos</a> · <a href="https://www.leica-microsystems.com/science-lab/microscopy-basics/what-is-empty-magnification/" target="_blank" rel="noopener noreferrer">Leica sobre el aumento vacío</a> · <a href="https://planetarynames.wr.usgs.gov/" target="_blank" rel="noopener noreferrer">Los nombres y lugares de la Luna según la UAI</a>. Estos enlaces son lectura opcional; la calculadora no se conecta con ellos.</p>
+  </details>
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="unit.times">{number}×</span><span data-phrase="unit.um">{number} µm</span><span data-phrase="unit.arcsec">{number}″</span><span data-phrase="unit.arcmin">{number}′</span><span data-phrase="unit.diopter">{number} D</span><span data-phrase="unit.ratio">f/{number}</span><span data-phrase="unit.far">{number} de {unit}</span>
+    <span data-phrase="how.telescope">{focal} ÷ {eyepiece}</span><span data-phrase="how.telescope.barlow">{focal} × {barlow} ÷ {eyepiece}</span><span data-phrase="how.binoculars">el primero de los dos números</span><span data-phrase="how.microscope">{objective} × {eyepiece}</span><span data-phrase="how.magnifier">250 mm ÷ {focal}</span><span data-phrase="how.magnifier.close">250 mm ÷ {focal}, más 1</span>
+    <span data-phrase="zone.wasted">Luz desperdiciada</span><span data-phrase="zone.spare">Margen de sobra</span><span data-phrase="zone.sharp">Máxima nitidez</span><span data-phrase="zone.full">Tope útil</span><span data-phrase="zone.empty">Aumento vacío</span><span data-phrase="zone.light.full">Brillante</span><span data-phrase="zone.light.less">Algo tenue</span><span data-phrase="zone.light.dim">Tenue con esta luz</span><span data-phrase="zone.steady">Firme en la mano</span><span data-phrase="zone.care">Necesita buen pulso</span><span data-phrase="zone.tripod">Necesita trípode</span><span data-phrase="zone.reading">Lupa de lectura</span><span data-phrase="zone.inspect">Lupa de inspección</span><span data-phrase="zone.loupe">Lupa de joyero</span><span data-phrase="zone.beyond">Más allá de una sola lente</span>
+    <span data-phrase="verdict.telescope.wasted">Menos aumento del que este telescopio puede aprovechar. El haz que sale del ocular mide {pupil} de ancho, más que tu pupila, así que parte de su luz nunca llega a tu ojo. Por debajo de unos {low} no se gana nada.</span><span data-phrase="verdict.telescope.spare">Brillante, amplia y nítida. Con este aumento es tu ojo, y no el telescopio, lo que fija el detalle, así que más aumento todavía mostraría más, hasta unos {sharp}.</span><span data-phrase="verdict.telescope.sharp">La zona que se ve más nítida. Todo lo que este telescopio puede resolver ya es lo bastante grande para una vista aguda, y aún se ve nítido.</span><span data-phrase="verdict.telescope.full">El tope útil. Desde unos {full} no ha aparecido nada nuevo, pero todo es más grande y más fácil de ver, en una imagen menos nítida y más tenue.</span><span data-phrase="verdict.telescope.empty">Más allá de unos {high}, este telescopio no tiene más detalle que dar. La imagen solo se hace más grande, menos nítida y más tenue.</span><span data-phrase="verdict.seeing">El aire rara vez está lo bastante estable para más de unos 300×, sea cual sea el telescopio.</span>
+    <span data-phrase="verdict.microscope.spare">Nítida y cómoda. El objetivo resuelve detalles más finos de los que tu ojo puede distinguir con este aumento, así que un ocular más potente todavía mostraría más, hasta unos {sharp}.</span><span data-phrase="verdict.microscope.sharp">La zona nítida. Todo lo que este objetivo resuelve ya es lo bastante grande para una vista aguda.</span><span data-phrase="verdict.microscope.full">El tope útil, de {full} a {high} para este objetivo. No aparece nada nuevo, pero todo es más grande y más fácil de ver.</span><span data-phrase="verdict.microscope.empty">Más allá de unos {high}, este objetivo no tiene más detalle que dar, y un ocular más potente solo agranda la borrosidad. Para ver más detalle hace falta una apertura numérica mayor, no más aumento.</span>
+    <span data-phrase="verdict.binoculars.light.full">Tan brillante como tu ojo puede aprovechar con esta luz: el haz que sale de cada ocular mide {pupil} de ancho, tanto como tu pupila o más.</span><span data-phrase="verdict.binoculars.light.less">Algo más tenue que a simple vista con esta luz, el {share} del brillo, porque el haz de {pupil} es más estrecho que tu pupila.</span><span data-phrase="verdict.binoculars.light.dim">Tenue con esta luz: el {share} del brillo que tendrías a simple vista. El haz de {pupil} es mucho más estrecho que tu pupila.</span><span data-phrase="verdict.binoculars.hand.steady">Es fácil mantenerlos quietos.</span><span data-phrase="verdict.binoculars.hand.care">Con este aumento, el temblor de las manos empieza a emborronar el detalle fino, así que apoya los codos.</span><span data-phrase="verdict.binoculars.hand.tripod">Demasiado aumento para sostenerlos a pulso: la vista tiembla más de lo que gana. Usa un trípode o unos prismáticos estabilizados.</span>
+    <span data-phrase="verdict.magnifier.reading">Una lente grande que se sostiene bien por encima de la página, a unos {focal} de ella, y muestra {field} de una vez.</span><span data-phrase="verdict.magnifier.inspect">Sostenla a unos {focal} por encima del objeto. Muestra {field} de una vez.</span><span data-phrase="verdict.magnifier.loupe">Pégala al ojo y acerca el objeto hasta unos {focal} de la lente. Muestra {field} de una vez.</span><span data-phrase="verdict.magnifier.beyond">Una sola lente así de potente es diminuta y casi toca el objeto, a unos {focal} de distancia. A partir de aquí, un microscopio hace mejor el trabajo.</span>
+    <span data-phrase="subject.moon">La Luna</span><span data-phrase="subject.jupiter">Júpiter</span><span data-phrase="subject.saturn">Saturno, anillos incluidos</span><span data-phrase="subject.pleiades">Las Pléyades</span><span data-phrase="subject.bird-day">Un pájaro cantor</span><span data-phrase="subject.bird-dusk">Un pájaro cantor al anochecer</span><span data-phrase="subject.onion">Una célula de cebolla</span><span data-phrase="subject.blood">Un glóbulo rojo</span><span data-phrase="subject.hair">Un cabello</span><span data-phrase="subject.salt">Un grano de sal</span><span data-phrase="subject.bacteria">Una bacteria</span><span data-phrase="subject.print">Una línea de texto de 8 puntos</span><span data-phrase="subject.ruler">Un milímetro de la regla</span>
+    <span data-phrase="story.far">{name}, a {far}, se ve como si estuviera a {near}.</span><span data-phrase="story.far.bound">{name}, a {far}, se ve tan grande como si estuviera a {near}, pero solo con el detalle que tendría a {detail}.</span><span data-phrase="story.near">{name}, de {real} de ancho, se ve tan grande como algo de {lookalike} de ancho sostenido a la distancia de lectura, a 25 cm.</span><span data-phrase="story.near.bound">{name}, de {real} de ancho, se ve tan grande como algo de {lookalike} de ancho sostenido a la distancia de lectura, pero no muestra detalles más finos que a {power}.</span><span data-phrase="story.tall">{name}, de {real} de alto, se ve tan grande como algo de {lookalike} de alto sostenido a la distancia de lectura, a 25 cm.</span><span data-phrase="story.span">{name}: las estrellas brillantes abarcan {width} de cielo.</span>
+    <span data-phrase="fit.share">Ocupa el {share} del ancho de la vista.</span><span data-phrase="fit.over">Mide {times} veces el ancho de la vista, así que solo cabe una parte.</span><span data-phrase="fit.speck">Ocupa menos de una centésima parte del ancho de la vista.</span><span data-phrase="fit.field.sky">La vista abarca {field} de cielo, {moons} veces el ancho de la Luna.</span><span data-phrase="fit.field.land">La vista mide {width} de ancho a esa distancia.</span><span data-phrase="fit.field.near">La vista muestra una zona de {width} de ancho.</span>
+    <span data-phrase="caption.scale">Las tres imágenes comparten una misma escala angular, así que un tamaño en pantalla es un tamaño real.</span><span data-phrase="caption.moon">Un dibujo: los mares y unos veinte cráteres grandes están en su sitio, y los cráteres menores se reparten según una regla. La falta de nitidez es la propia de este instrumento, y la pérdida de brillo depende de su pupila de salida.</span><span data-phrase="caption.jupiter">Un dibujo: las cuatro lunas están a distancias típicas y cambian de sitio de una hora a otra. La falta de nitidez es la propia de este instrumento, y la pérdida de brillo depende de su pupila de salida.</span><span data-phrase="caption.saturn">Un dibujo, con los anillos inclinados 20° hacia nosotros y la luna Titán a su lado. La línea oscura entre los dos anillos brillantes es la división de Cassini.</span><span data-phrase="caption.pleiades">Las once estrellas más brillantes, situadas según el catálogo. Las estrellas más débiles del cúmulo y la neblina que las rodea se dejan fuera.</span><span data-phrase="caption.bird">Un dibujo de un pequeño pájaro cantor, de 14 cm de largo y a 20 m. Sus plumas son ilustración; su tamaño, no.</span><span data-phrase="caption.slide">Un dibujo de una muestra sobre un portaobjetos de vidrio. Las formas son ilustración y los tamaños son los típicos.</span><span data-phrase="caption.near">Un dibujo. Los tamaños son reales; las texturas son ilustración.</span>
+    <span data-phrase="aria.view">La vista completa a {power}. {fit}</span><span data-phrase="aria.close">Un primer plano del centro de esa vista. {story}</span><span data-phrase="aria.bare">El mismo primer plano a simple vista, sin aumento.</span><span data-phrase="said.aloud">{power}. {zone}. {verdict} {story} {fit}</span><span data-phrase="dial.value">{power}, {zone}</span>
+    <span data-phrase="stat.field.sky">{field} · {moons} veces el ancho de la Luna</span><span data-phrase="stat.field.land">{field} · {metres} a 1000 m · {feet} a 1000 yd</span><span data-phrase="stat.detail.sky">{detail} · unos {size} en la Luna</span><span data-phrase="stat.light">{number} veces la de tu ojo</span><span data-phrase="stat.range">de {low} a {high}</span><span data-phrase="stat.focal">{focal} · la distancia de trabajo</span>
+    <span data-phrase="read.field">Se lee como {field}: {metres} a 1000 m, o {feet} a 1000 yd.</span><span data-phrase="read.field.typical">Se toma {field}, lo habitual con este aumento.</span><span data-phrase="read.number.typical">Se toma {number}, lo habitual en un ocular de {eyepiece}.</span><span data-phrase="read.magnifier">Se lee como {power}: una distancia focal de {focal}, o {diopters}.</span><span data-phrase="read.lens.typical">Se toma {width}, lo habitual con este aumento.</span>
+    <span data-phrase="row.telescope">Ocular de {eyepiece}: {power}, una vista de {field} de ancho, pupila de salida de {pupil}. {zone}.</span><span data-phrase="row.binoculars">{pair}: pupila de salida de {pupil}, el {share} del brillo con esta luz. {zone}.</span><span data-phrase="row.microscope">Objetivo {objective}: {power}, una vista de {field} de ancho, detalle hasta {detail}. {zone}.</span><span data-phrase="row.magnifier">{power}: sostenida a {focal}, muestra {field} de una vez. {zone}.</span><span data-phrase="row.here">{row} Es la que está en uso.</span>
+    <span data-phrase="error.missing">{name}: escribe un número.</span><span data-phrase="error.range">{name}: escribe un número de {low} a {high}.</span>
+    <span data-phrase="print.line.1">En la letra pequeña se esconden los números.</span><span data-phrase="print.line.2">Léela entera antes de firmar y guarda una copia.</span><span data-phrase="print.line.3">Las condiciones pueden cambiar sin previo aviso. Más detalles al dorso.</span><span data-phrase="print.micro">ESTA LÍNEA ES MICROIMPRESIÓN DE UN CUARTO DE MILÍMETRO DE ALTURA</span>
+    <span data-phrase="net.clean">tus números no han ido a ninguna parte. {total} archivos cargados. {platform}</span><span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta herramienta nunca hace. {platform}</span><span data-phrase="net.platform.one">Los scripts propios de la página para publicidad y medición se cargaron desde {hosts} servidor; la calculadora no les envía ninguna entrada ni resultado.</span><span data-phrase="net.platform.many">Los scripts propios de la página para publicidad y medición se cargaron desde {hosts} servidores; la calculadora no les envía ninguna entrada ni resultado.</span>
+  </div>
+</main>

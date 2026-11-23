@@ -27,6 +27,9 @@ let tallyFrom = 0;
 let clockNow = 0;
 let badgeTimer = 0;
 let announceTimer = 0;
+// Whether the button is offering to stop a journey it started. The stage runs others,
+// the short zoom after a change of world among them, and those are not this button's.
+let growing = false;
 
 const scenes = {
   books: createBooksScene(),
@@ -328,10 +331,13 @@ function update({ moveDial = true, jump = false } = {}) {
   announce(said);
   // Only a new position moves the camera: a setting or a fold changing must not
   // cut short a journey that is on its way to the same number.
+  // A journey this overtakes says so itself, through the stage. The button used to be
+  // set here from whether any journey was running, and the zoom after a change of world
+  // is one: anything that came through here during it turned the button to Stop, and
+  // nothing turned it back when the zoom ended.
   if (jump) stage.jump(position);
   else if (position !== aimed) stage.aim(position, { dragging });
   aimed = position;
-  setPlaying(stage.playing);
 }
 
 function setCount(next) {
@@ -383,19 +389,23 @@ function switchWorld(next) {
 
 function journey(from, seconds) {
   const to = log10Count(count);
-  setPlaying(true);
   stage.travel(from, to, seconds, () => setPlaying(false));
+  // Asked after it has set off, because with motion off the stage goes straight there
+  // and has already said it is done.
+  setPlaying(stage.playing);
 }
 
 function setPlaying(playing) {
+  growing = playing;
   $('play').setAttribute('aria-pressed', String(playing));
   setText('play-label', cached(playing ? 'play.stop' : 'play.start'));
 }
 
 function play() {
-  if (stage.playing) {
+  // By what the button says, not by whether the stage is moving: pressed during the zoom
+  // after a change of world it says Grow from 1, and that is what it should then do.
+  if (growing) {
     stage.jump(log10Count(count));
-    setPlaying(false);
     return;
   }
   previous = null;

@@ -152,6 +152,7 @@ complete = true
 # was das Bild am Ende zeigt.
 "compare-heights" = "groessenvergleich-erstellen"
 "number-explorer" = "zahlen-veranschaulichen"
+"magnification-calculator" = "vergroesserung-berechnen"
 "folder-sync" = "ordner-synchronisieren"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
@@ -237,6 +238,7 @@ complete = true
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
 "guides/make-a-height-comparison-chart" = "ratgeber/groessenvergleich-diagramm-erstellen"
 "guides/understand-big-numbers" = "ratgeber/grosse-zahlen-verstehen"
+"guides/understand-magnification" = "ratgeber/vergroesserung-verstehen"
 "guides/is-it-safe-to-scan-a-qr-code" = "ratgeber/ist-das-scannen-von-qr-codes-sicher"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "ratgeber/ist-das-hochladen-eines-ausweisfotos-sicher"
 "guides/can-blacked-out-text-be-recovered" = "ratgeber/kann-geschwaerzter-text-wiederhergestellt-werden"

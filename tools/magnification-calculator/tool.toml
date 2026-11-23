@@ -1,0 +1,120 @@
+# A magnification is a ratio, and a ratio says nothing about what limits it. So the
+# page never shows the number alone: beside it are the width of the lens that sets
+# the detail, the width of the beam that sets the brightness, and three pictures
+# drawn to one scale. Four instruments are kept as four sets of numbers because
+# that is how they are printed, and one rule about blur is what joins them.
+slug = "magnification-calculator"
+name = "Magnification Calculator"
+heading = "Magnification&nbsp;Calculator <span class=\"h1-kw\">&mdash; what a telescope, microscope or binoculars really show</span>"
+tagline = "Type the numbers printed on a telescope, binoculars, a microscope or a magnifying glass, and see the view they give, to scale."
+icon = "&#128301;"
+favicon = "&#128301;"
+glyph = "telescope"
+category = "text-codes-and-passwords"
+roadmap_group = "beyond"
+css_parts = ["form", "notes", "chips"]
+lastmod = "2026-11-15"
+title = "Magnification Calculator &mdash; Telescope, Microscope, Binoculars &mdash; Free, Offline"
+description = "See what a magnification really shows. Type the numbers on a telescope, binoculars, a microscope or a magnifying glass and get the view to scale, the field of view, the exit pupil and the point where more magnification adds nothing. Free and offline."
+og_title = "What does 675× really show?"
+og_description = "Turn the numbers on a telescope, binoculars, a microscope or a loupe into the view they give, with the limits in plain sight. No upload and no AI."
+og_image_alt = "Magnification Calculator - what the numbers on a telescope, microscope or binoculars really show"
+og_card = "8x42, 400x, 675x: see the view each number really gives."
+csp_note = "The calculator and its canvas drawings run locally. The tool has no network feature and needs no CSP additions. Reference links are optional reading, not requests made by the calculator."
+pledge = "A magnification is a few numbers off a box and some arithmetic, all in this page. There is no service to ask and nothing to upload. The pictures are drawings worked out from those numbers, not photographs fetched from anywhere, and the rules behind them are written beside the result."
+live_hint = "Drag the dial with the Network tab open. The calculator makes no requests. Load the page once, disconnect, and keep exploring."
+read_first = ", <code>src/optics.js</code> for the arithmetic of all four instruments, <code>src/subjects.js</code> for what there is to look at and how big each thing is, <code>src/view.js</code> and the <code>src/scene-*.js</code> files for the pictures, and <code>src/main.js</code> for how the page is wired together."
+howto_heading = "How to read a magnification number"
+card = "What do 8×42, 400× and 675× really show? Type the numbers on a telescope, binoculars, a microscope or a magnifying glass and see the view to scale, with the point where more magnification stops helping."
+
+[words]
+plural = "numbers and the views they give"
+choose = "an instrument's numbers"
+analytics_extra = ", and no number you enter"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+[[facts]]
+mark = "&#10007;"
+text = "No AI or API cost"
+[[facts]]
+mark = "&#10003;"
+text = "Clear assumptions"
+[[facts]]
+mark = "&#10003;"
+text = "Four instruments"
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "The calculator runs in this browser."
+body = "The tool's processing code calculates results and draws pictures locally. It sends no input or result to a service. Content-Security-Policy restricts connection destinations but does not inspect payloads; compare the source with the Network tab, or use the calculator while disconnected."
+[[privacy]]
+title = "There is no model, photograph or live lookup."
+body = "The formulas, the figures for the Moon and planets and the drawings all ship with this page. Nothing is fetched to make a picture. Source links open only when you choose to read them."
+[[privacy]]
+title = "Your entries stay in the page."
+body = "The calculator writes no inputs to storage or to the address bar. Reloading resets it. Changing language carries what you typed to the other page inside this browser and nowhere else."
+[[privacy]]
+title = "The site's other scripts have their own boundaries."
+body = "The frame may load advertising and measurement scripts. The calculator does not send them your inputs or results. The live network panel reports the page's connections."
+
+[[howto]]
+title = "Pick the instrument and type what is printed on it."
+body = "A telescope carries its aperture and focal length, and each eyepiece its own focal length. Binoculars carry two numbers, such as 8×42. A microscope objective carries its magnification and numerical aperture, such as 40×/0.65. A magnifier carries a power, a focal length or diopters."
+[[howto]]
+title = "Drag the dial through the zones."
+body = "The dial changes the magnification: by changing the eyepiece on a telescope or a microscope, and the printed power on binoculars or a magnifier. Its track is colored from the instrument's own limits. Watch the verdict as you cross from sharp into the useful top and then into empty magnification."
+[[howto]]
+title = "Compare the three pictures."
+body = "The first is the whole circle you look into, with its subject at true scale. The second looks closely at its middle, as sharply as a good eye would. The third is that same close look with no instrument, so the difference between the last two is the magnification."
+[[howto]]
+title = "Read what each number means, then check the assumptions."
+body = "Field of view, exit pupil, finest detail and light gathered are worked out beside the result. Change the width of your eye's pupil, the eyepiece's field or the way a magnifier's power is counted, and read where each rule comes from."
+
+[[faq]]
+q = "What does 8×42 mean on binoculars?"
+a = "The first number is the magnification: things look eight times wider, as if you stood eight times closer. The second is the width of each front lens, 42 mm. Dividing the second by the first gives the exit pupil, here 5.25 mm, which is the width of the beam of light reaching your eye. It is why 8×42 stays bright at dusk when 8×21 does not."
+[[faq]]
+q = "How do I work out a telescope's magnification?"
+a = "Divide the telescope's focal length by the eyepiece's. A 700 mm telescope with a 10 mm eyepiece gives 70×, and a 2× Barlow lens doubles it. The telescope has no single magnification of its own, so a box that prints one is describing its shortest eyepiece and not the view."
+[[faq]]
+q = "What is the highest useful magnification of a telescope?"
+a = "About twice the aperture in millimeters, or 50× per inch: 140× for a 70 mm telescope and 400× for a 200 mm one. Detail is set by the width of the lens or mirror, and by that point all of it is comfortably visible. Past it the picture only gets bigger, softer and dimmer, which is called empty magnification. The air adds its own ceiling of about 300× on most nights, however large the telescope."
+[[faq]]
+q = "Is a 675× telescope better than a 100× one?"
+a = "Not by that number. A 60 mm telescope sold as 675× can show real detail up to about 120×, and the rest is the same blur enlarged and dimmed. Compare apertures instead: the wider lens or mirror shows finer detail and fainter things at any magnification."
+[[faq]]
+q = "What magnification shows Saturn's rings or Jupiter's moons?"
+a = "Less than most people expect. Jupiter's four large moons show as points in ordinary binoculars at 7× to 10×. Saturn's rings appear from about 25× to 30× as a tiny oval, and 100× or more in a telescope 60 mm wide or wider shows them clearly apart from the planet. Try both above: the planets stay small in the view, and that is how they really look."
+[[faq]]
+q = "What can I see with a microscope at 40×, 100×, 400× and 1000×?"
+a = "At 40× the view is about 4.5 mm wide: salt crystals, the parts of an insect, the weave of cloth. At 100× it is 1.8 mm: plant cells such as onion skin, and a hair like a thick cable. At 400× it is 0.45 mm: single cells with their nuclei, and red blood cells as small discs. At 1000× with an oil-immersion objective it is 0.18 mm: bacteria as distinct rods and dots. These widths assume a common 10× eyepiece with an 18 mm field number."
+[[faq]]
+q = "Why does 1000× sometimes show nothing new?"
+a = "Because a microscope's detail is set by the objective's numerical aperture, the number after the slash, and not by the total magnification. The useful range is about 500 to 1000 times that number, so 325× to 650× for a 40×/0.65 objective. Reaching 1000× on it with a 25× eyepiece only enlarges the blur. A 100×/1.25 oil objective reaches the same 1000× and separates detail about half the size."
+[[faq]]
+q = "What is the exit pupil?"
+a = "The width of the beam of light that leaves the eyepiece and enters your eye: the aperture divided by the magnification. If it is wider than your own pupil, about 7 mm in the dark and 2 to 3 mm in daylight, the extra light misses your eye. Below about 1 mm the view starts to soften and dim, and under half a millimeter you are into empty magnification."
+[[faq]]
+q = "How does a magnifying glass's power relate to diopters and focal length?"
+a = "The focal length in millimeters is 1000 divided by the diopters, and the magnification is 250 mm divided by the focal length, so a 10× loupe has a 25 mm focal length and 40 diopters. Lamp and reading magnifiers marked in diopters are usually counted with one added, the eye being focused close: +3 diopters is sold as 1.75×, and a +20 diopter lens as 6×, or as 5× by a maker who does not add it. Stronger lenses have to be smaller and held closer: a 10× loupe works about 25 mm from the object."
+[[faq]]
+q = "Is 10× zoom on a camera the same as 10× binoculars?"
+a = "No. A camera's zoom number is the ratio between its longest and shortest focal lengths, so a 24&ndash;240 mm lens is 10× whatever it shows. Compared with your eye, taking 50 mm as a normal view on a full-frame camera, that lens runs from about half life size to about 5×. Binoculars and telescopes state their magnification against the eye itself."
+[[faq]]
+q = "Does a USB microscope's 1000× mean the same thing?"
+a = "It is a different sum. A digital microscope's figure is the size of the picture on a screen divided by the size of the object, so it grows with the monitor and says nothing about detail. What it can separate is still set by its lens. Its field of view is a better guide: an instrument that shows an area about 2 mm wide is working at roughly the level of a 100× optical microscope, whatever the box says."
+[[faq]]
+q = "Are the pictures photographs?"
+a = "No. They are drawings made in the page from the numbers. Sizes are true to scale, the softness is the instrument's own blur at that scale, and the dimming follows the exit pupil. The Moon's seas and largest craters, Jupiter's moons, Saturn's rings and the brightest Pleiades are placed from published figures, and the smaller craters, cells and feathers are illustration. A real view also depends on the air, the quality of the optics and your own eyes."
+[[faq]]
+q = "Does the tool work offline?"
+a = "Yes. After the page has loaded, every calculation and drawing works without a connection. Nothing you type is uploaded or stored."
+
+[schema]
+category = "EducationalApplication"
+description = "Work out what a telescope, binoculars, a microscope or a magnifying glass really shows from the numbers printed on it, with the view drawn to scale, entirely in the browser."
+features = ["Telescope magnification from focal lengths, with Barlow lenses and the eyepiece's field stop", "Binocular numbers such as 8×42 decoded: exit pupil, field of view, brightness by day and at dusk", "Microscope magnification with field of view from the field number and detail from the numerical aperture", "Magnifier power from focal length or diopters, in both conventions", "A dial whose zones show wasted light, the sharpest range, the useful top and empty magnification", "Three pictures to one scale: the whole view, a close look and the eye alone", "The Moon, Jupiter, Saturn and the Pleiades drawn from published figures", "Adjustable eye pupil and eyepiece field, with the formulas and their sources", "Reduced-motion support", "Works offline without an AI model"]
