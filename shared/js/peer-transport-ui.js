@@ -17,13 +17,18 @@ export function bindTransportControl({ onChange = () => {} } = {}) {
   const output = document.getElementById('pairing-route');
   let mode = 'direct';
   let locked = false;
+  // A page option that only works on one route holds the switch there: still
+  // shown, so the route is visible, but disabled, with the tooltip saying which
+  // option to clear. Locking for a session hides it instead.
+  let held = null;
+  let heldNote = '';
   const value = () => mode;
   const refresh = () => {
     for (const { toggle, input, note } of controls) {
       input.checked = mode === 'relay';
-      input.disabled = locked;
+      input.disabled = locked || held !== null;
       toggle.hidden = locked;
-      note.textContent = phrase(`transport.note.${mode}`);
+      note.textContent = held !== null && heldNote ? heldNote : phrase(`transport.note.${mode}`);
     }
     // A locked choice describes this session's selected mode. The separate
     // route output still reports whether a peer connection actually succeeded.
@@ -35,7 +40,7 @@ export function bindTransportControl({ onChange = () => {} } = {}) {
     }
   };
   const changed = event => {
-    if (locked) { refresh(); return; }
+    if (locked || held !== null) { refresh(); return; }
     mode = event.currentTarget.checked ? 'relay' : 'direct';
     refresh();
     onChange(mode);
@@ -46,11 +51,19 @@ export function bindTransportControl({ onChange = () => {} } = {}) {
     value,
     set(next) {
       if (!controls.length || transportMode(next) === null) return false;
+      if (held !== null) return transportMode(next) === held;
       mode = transportMode(next);
       refresh();
       return true;
     },
     lock(next) { locked = Boolean(next); refresh(); },
+    /** Holds the switch on `next` until called with null; set() cannot move it meanwhile, and onChange is not called. */
+    hold(next, note = '') {
+      held = next == null ? null : transportMode(next);
+      heldNote = held === null ? '' : note;
+      if (held !== null) mode = held;
+      refresh();
+    },
     route(mode) {
       if (!output) return;
       output.hidden = mode == null;
