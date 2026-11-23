@@ -30,6 +30,10 @@
 # read its preview and its QA run - and that decision is the one thing
 # everything else is automated in order to leave room for.
 #
+# The pull request from `dev` to `main` also runs the `workers` job at the end
+# of this file. It says which Workers the release will deploy, and it fails
+# while the credential to deploy them is missing.
+#
 # So this workflow has three destinations rather than two. The `build` job
 # names them once in its `env`, because the four steps that read them have to
 # agree with each other:
@@ -40,8 +44,9 @@
 #   a push to `dev`   the same, to a preview at dev.abox-preview.pages.dev -
 #                     one stable address holding the bundle as it currently
 #                     stands, for looking at between releases
-#   a push to `main`  publishes to `dist`, tags the version, and tells
-#                     IndexNow. Nothing else does any of those
+#   a push to `main`  deploys the Workers whose code changed, publishes to
+#                     `dist`, tags the version, and tells IndexNow. Nothing
+#                     else does any of those
 #
 # Anything else - a manual run against a feature branch - builds, is checked,
 # and goes nowhere at all.
@@ -484,6 +489,39 @@ jobs:
           path: _frozen
           sparse-checkout: site
           persist-credentials: false
+
+      # THE WORKERS GO OUT FIRST. The pages about to be published were
+      # previewed and QA-tested against `rendezvous-dev`, which runs whatever
+      # Worker code was being tried, while production's three Workers moved
+      # only when somebody remembered. 2.1.0 shipped on that gap: production's
+      # rendezvous stayed twelve days behind, and Share Text's local shares
+      # went unlisted. So each Worker whose bundle or configuration differs
+      # from what production runs is deployed here, before the pages that
+      # expect it, and a failure stops the release before anything is
+      # published. A rerun skips whatever already went out. The script's
+      # docstring says how "differs" is decided and why the catalogue Worker
+      # is redeployed on every release.
+      #
+      # The token is its own secret, not the Pages token the previews hold,
+      # so a job that uploads a preview cannot deploy a Worker. Node 22 is
+      # Wrangler 4's floor; the steps above that parse the build have run.
+      - uses: actions/setup-node@v4
+        if: env.DEPLOYS == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: workers/catalogue-mcp/package-lock.json
+      - name: Install the Workers' pinned Wrangler
+        if: env.DEPLOYS == 'true'
+        working-directory: workers/catalogue-mcp
+        run: npm ci --no-audit --no-fund
+      - name: Deploy the Workers this release changes
+        if: env.DEPLOYS == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: python scripts/deploy_workers.py deploy --site-dir _plain --version "$VERSION"
 
       - name: Publish to the dist branch
         id: publish
@@ -1253,3 +1291,40 @@ jobs:
               echo '- The QA suite is not run against these. It runs on the pull request from `dev` to `main`, on the same bundle, which is the run that gates production.'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
+  # WHICH WORKERS THE RELEASE WILL DEPLOY, asked on the pull request that is
+  # the release. The `build` job deploys them after the merge, before the
+  # pages; this is the same script in `plan` mode, so a missing or refused
+  # CLOUDFLARE_WORKERS_TOKEN turns the release pull request red while the
+  # release can still wait for it, rather than stopping the deploy after the
+  # merge. Its own job, and needed by nothing, so that a missing secret never
+  # holds back the preview and the QA run beside it.
+  workers:
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      # The catalogue Worker names the highest version tag when it is built
+      # without one, as it is here.
+      - name: Fetch the version tags the checkout leaves behind
+        run: git fetch --depth=1 origin '+refs/tags/*:refs/tags/*'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: workers/catalogue-mcp/package-lock.json
+      - name: Build the site the catalogue Worker carries
+        run: python build.py --out _plain --clean --no-minify --quiet
+      - name: Install the Workers' pinned Wrangler
+        working-directory: workers/catalogue-mcp
+        run: npm ci --no-audit --no-fund
+      - name: Which Workers this release deploys
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python scripts/deploy_workers.py plan --site-dir _plain

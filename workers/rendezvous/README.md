@@ -48,11 +48,20 @@ to its default, so there is no second stream to account for.
 
 ## Deploy
 
+Production is deployed by the release. Before the pages are published, the
+push to `main` runs `scripts/deploy_workers.py`, which deploys this Worker if
+its bundle or production configuration differs from what production runs. The
+release pull request shows whether it will. See "The Workers" in
+[docs/deploying.md](../../docs/deploying.md). To deploy a fix between releases,
+from a clean checkout at the repository root:
+
 ```
-npx wrangler deploy
+python scripts/deploy_workers.py deploy --only rendezvous
 ```
 
-from this directory, logged in to the site's Cloudflare account. The worker
+That records what it deployed, so the next release knows. A plain
+`npx wrangler deploy` from this directory still works, but its deployment
+carries no record, so the next release deploys it again. The worker
 answers at `rendezvous.abox.tools`, a custom domain that `wrangler.toml`
 declares and the deploy creates in the zone - the DNS record and the
 certificate both - so no dashboard step exists. It also still answers at
@@ -64,10 +73,13 @@ while the site's own domain resolves fine. The connected tool pages name the
 hostname in their `connect-src` and client endpoint. If the worker moves again,
 update every connected tool's declarations.
 
-This folder is invisible to `build.py` - the deploy is by hand, and rare,
+This folder is invisible to `build.py`, and most releases leave it alone,
 because nearly every feature the tool has gained since the first version has
-been page-side. The protocol carries introductions, the relay credential
-below and the local discovery directory.
+been page-side. It used to be deployed only by hand. That is how 2.1.0 shipped
+pages tested against `rendezvous-dev` while production stayed twelve days
+behind, until Share Text's local shares stopped being listed. The protocol
+carries introductions, the relay credential below and the local discovery
+directory.
 
 Both voice tools use the same origin check and address connection limit, with
 nearby discovery under separate namespaces. The voice signaling services never carry audio.
@@ -94,8 +106,9 @@ npx wrangler deploy --env dev
 The first command checks and bundles the development configuration without
 deploying it. The second creates or updates only the development Worker and
 its configured custom domain. Future worker changes can be tried there before
-a separately requested production deployment. The static Pages preview
-workflow does not deploy either Worker.
+they are merged. The development Worker stays manual, because it often runs a
+pull request's head ahead of `dev`. The static Pages preview workflow deploys
+neither Worker. Production follows `main` with each release.
 
 Repeat all four Durable Object bindings under `env.dev`, without a
 `script_name` pointing at production. Cloudflare binds those classes to the
@@ -164,8 +177,8 @@ cannot activate it. `wrangler.toml` adds the `DISCOVERY` binding for the
 exported `Discovery` class and migration `v2` with
 `new_sqlite_classes = ["Discovery"]`. Keep the original `v1` Room migration
 and binding: existing share names must keep addressing the same rooms.
-The normal `npx wrangler deploy` from this directory applies the new class
-and binding. An older worker leaves discovery unavailable on the page while
+An ordinary deploy, by the release or by hand, applies the new class and
+binding. An older worker leaves discovery unavailable on the page while
 the ordinary share link and its consent workflow continue to work.
 
 ### Private discovery groups

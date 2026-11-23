@@ -51,11 +51,13 @@ in the lab. Follow the lab's own `AGENTS.md` and experiment README.
 your branch  ->  pull request  ->  dev  ->  pull request  ->  main  ->  live
 ```
 
-`dev` holds everything merged since the last release. `main` is what is live:
-a push to it builds, publishes to the `dist` branch, tags a version and tells
-IndexNow, and nothing else does any of those. Releasing is opening a pull
-request from `dev` to `main` and merging it — that one gets a preview and a
-full QA run on the whole bundle, which is the last gate before production.
+`dev` holds everything merged since the last release. `main` is what is live.
+A push to it builds, deploys the production Workers whose code changed,
+publishes to the `dist` branch, tags a version and tells IndexNow, and nothing
+else does any of those. Releasing is opening a pull request from `dev` to
+`main` and merging it. That pull request gets a preview, a full QA run on the
+whole bundle, and a `workers` check naming the Workers the release will deploy.
+It is the last gate before production.
 
 **Never open or merge the `dev` → `main` pull request unless you were asked
 to, by name.** It is the release, and it is meant to be a person's decision
@@ -146,7 +148,7 @@ are ahead of what is deployed. CI does not run it.
 | `shared/` | the frame, and the CSS and JS parts a tool can ask for |
 | `locales/<lang>/` | one language |
 | `pages/` | the guides and the legal pages |
-| `workers/` | the rendezvous `/share-text/` needs — the one server, deployed by hand, invisible to the build |
+| `workers/` | the rendezvous `/share-text/` needs, the feedback form and the catalogue MCP — invisible to the build; production deployed by the release (`scripts/deploy_workers.py`), the `-dev` Workers by hand |
 
 ## Things that will bite
 

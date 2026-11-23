@@ -262,8 +262,10 @@ discovery and voice Durable Object namespaces and state. Its address rate
 counter is separate as well. The same source and inherited migration history
 create the same classes without binding them to production objects.
 
-Worker deployment remains manual and independent of the Pages upload above.
-From `workers/rendezvous/`, use:
+The development Worker is deployed by hand, independently of the Pages upload
+above. Production is deployed by the release, with its own
+`CLOUDFLARE_WORKERS_TOKEN` (see "The Workers" in
+[docs/deploying.md](../docs/deploying.md)). From `workers/rendezvous/`, use:
 
 ```
 npx wrangler deploy --env dev --dry-run
