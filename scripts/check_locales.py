@@ -477,12 +477,6 @@ def toml_structure(locale, file, en_vals, lo_vals, en_data, lo_data):
         tl = Counter(re.findall(r'<(\w+)', lo_map[k]))
         if te != tl:
             add('TOML_TAG_COUNTS', locale, file, k, f'en={dict(te)} lo={dict(tl)}')
-        # the privacy and howto templates put the body straight after a bold
-        # title with nothing between, so a body that opens with whitespace
-        # ships a visible gap in a language that has no spaces
-        if locale in ('zh', 'ja', 'zh-TW') and k.endswith('.body') and re.match(r'(privacy|howto)\[', k):
-            if lo_map[k][:1].isspace():
-                add('CJK_LEADING_SPACE', locale, file, k, lo_map[k][:60])
 
 
 # -------------------------------------------------------------- built pages

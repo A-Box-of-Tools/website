@@ -1344,6 +1344,11 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     ui_context = {'site': root, 'tool': tool, 'base': '../', 'links': links}
     ui = i18n.render_ui(templates, root['ui'], ui_context,
                         f'ui [{locale["lang"]}]', include=parts)
+    # What follows each of the frame's own lead-ins - `space.live_check` after
+    # `ui.tool.live_check` - by the rule every bold lead-in is joined by: one
+    # space, or none after Chinese or Japanese. See i18n.space_after.
+    space = {key: i18n.space_after(value)
+             for key, value in ui['tool'].items() if isinstance(value, str)}
 
     # body.html goes through the template engine before it is dropped into the
     # page, so a tool can {% include %} a shared partial - the drop zone being
@@ -1352,7 +1357,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         i18n.body_for(locale, 'tools', tool['slug'],
                       body_path.read_text(encoding='utf-8')),
         f'{tool["slug"]}/body.html [{locale["lang"]}]',
-        {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
+        {'site': root, 'tool': tool, 'ui': ui, 'space': space, 'base': '../',
          'links': links, 'js_v': js_v,
          'source_handoff': source_handoff}).rstrip('\n')
     sitelib.refuse_unwired_info_tips(tool, body)
@@ -1398,7 +1403,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
 
     page = emit.html(dest / 'index.html', open_links_elsewhere(templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
-            'tool': tool,
+            # Each privacy point and how-to step carries the space that joins
+            # its bold title to its body, worked out from the title, and the
+            # body arrives without one of its own. See i18n.lead_ins.
+            'tool': dict(tool, privacy=i18n.lead_ins(tool['privacy']),
+                         howto=i18n.lead_ins(tool['howto'])),
+            'space': space,
             'guide': guide,
             'related': related,
             'ui': ui,
