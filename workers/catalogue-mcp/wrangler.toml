@@ -1,5 +1,7 @@
-# This is a separate public discovery service, deployed by hand. The website
-# build does not deploy it, and its routes do not intercept tools or rendezvous.
+# This is a separate public discovery service. This development configuration
+# is deployed by hand; wrangler.production.toml is deployed by the release. The
+# website build does not deploy either, and their routes do not intercept tools
+# or rendezvous.
 name = "catalogue-mcp-dev"
 main = "src/index.mjs"
 compatibility_date = "2026-10-24"

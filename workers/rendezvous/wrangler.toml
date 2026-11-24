@@ -1,5 +1,6 @@
-# The rendezvous for direct browser connections. Deployed by hand with `npx wrangler
-# deploy` from this directory; nothing in build.py reads this folder.
+# The rendezvous for direct browser connections. Production is deployed by the
+# release (scripts/deploy_workers.py) when its bundle or this configuration
+# changes; `env.dev` is deployed by hand. Nothing in build.py reads this folder.
 
 name = "rendezvous"
 main = "worker.js"

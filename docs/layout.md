@@ -81,7 +81,8 @@ pages/
 workers/
   rendezvous/            the one server: /share-text/ introductions and its
                          local link-name directory.
-                         Deployed by hand with wrangler; invisible to build.py,
+                         Deployed by the release when it changes (see
+                         docs/deploying.md, "The Workers"); invisible to build.py,
                          and in this repository so the tool's "the server's
                          whole source is published" claim is checkable
 tests/

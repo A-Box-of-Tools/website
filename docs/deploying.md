@@ -183,6 +183,84 @@ succeeded. Tagging an older commit or adding changes afterwards can produce
 `2.0.1`, or `2.1.0` if those changes add a tool. Pushing the tag after the workflow
 has calculated its version cannot change the saved decision for that run.
 
+## The Workers
+
+The three Workers under [`workers/`](../workers/) go out with the release.
+Before the pages are published, the push to `main` runs
+[`scripts/deploy_workers.py`](../scripts/deploy_workers.py), which deploys
+`rendezvous`, `abox-feedback` and `catalogue-mcp` wherever their bundle or
+production configuration differs from what production runs. If that fails,
+nothing is published. A rerun deploys only the Workers that are still behind.
+
+They used to be deployed by hand, and that went wrong in exactly the way the
+branches above were meant to prevent. Pull request previews and the release's
+QA run use `rendezvous-dev`, which runs whatever Worker code is being tried. So
+a release could pass every check against Worker code that production did not
+have. 2.1.0 went out on 11 November that way. Production's rendezvous stayed on
+its 21 October deploy for twelve more days, the feedback and catalogue Workers
+were a release behind, and Share Text's local shares stopped being listed.
+Nothing failed, because nothing compared the two.
+
+**"Differs" is decided by bytes, not by paths.** The script bundles each Worker
+with `wrangler deploy --dry-run` and hashes what would be uploaded together
+with the parsed production configuration. It writes twelve digits of that hash
+into the deployment's message, as `worker <digits>`, and the next release reads
+them back. A comment, a README or a change to `env.dev` therefore deploys
+nothing. A deployment without those digits, such as one made by hand, counts as
+different, so not knowing what production runs costs one redeploy and can never
+skip one. The catalogue Worker carries the built tool catalogue and the commit
+it came from, so it is deployed with every release.
+
+**The release pull request says what will happen.** On the pull request from
+`dev` to `main`, the `workers` job runs the same script in `plan` mode. It lists
+each Worker as unchanged or about to deploy, and it fails if the credential is
+missing or refused. That is the time to fix it, while the release can still
+wait. Nothing else depends on that job, so the preview and QA run go ahead
+regardless. Starting the Build workflow by hand, on any branch, runs the same
+job. That is how to check the token after changing it.
+
+**The credential is the token the previews already use.** The release deploys
+with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, the secrets that
+upload the Pages previews. So besides Cloudflare Pages edit, that token needs
+Workers Scripts edit on the account and Workers Routes edit on the `abox.tools`
+zone. Those two are what the "Edit Cloudflare Workers" template grants. They
+cover deploying a Worker that already exists, with its bindings and migrations,
+and the custom domains and routes the three configurations declare. Creating a
+new Worker needs more, so a Worker added to the script's list is deployed by
+hand once before its first release.
+
+One token for both means every pull request's preview job holds a credential
+that can deploy Workers. Previews already ran that way before the release
+deployed anything, so sharing the token adds no exposure. If that ever
+changes, give the deploy steps a secret of their own.
+
+The `plan` check reads deployments but deploys nothing, so a token that can
+read but not write first shows up as a failure in the deploy itself. That still
+happens before anything is published, and Cloudflare's error names the missing
+permission.
+
+**A deploy of `rendezvous` restarts its objects.** Open shares reconnect in
+about five seconds and discovery lists recover within thirty. A release that
+leaves its bundle alone does not touch it.
+
+**The development Workers stay manual.** `rendezvous-dev` and
+`catalogue-mcp-dev` are deployed by hand while a change is being tried, often
+from a pull request's own head ahead of `dev`. Deploying them from `dev`
+automatically would undo exactly that. Their instructions are in each Worker's
+README.
+
+To see what the next release would deploy, from a checkout with the site built
+into `_plain` and `npm ci` run in `workers/catalogue-mcp`:
+
+```bash
+python scripts/deploy_workers.py plan
+```
+
+`deploy` runs the same way and uses your own Wrangler login. Give it
+`--only <name>` to deploy one Worker between releases, for example a fix that
+cannot wait. It refuses a checkout whose `workers/` or `shared/` has
+uncommitted changes, because the message it writes names a commit.
+
 ## GitHub Pages
 
 *Settings → Pages → Deploy from a branch → `dist` → `/ (root)`.* The
@@ -633,9 +711,10 @@ canonical HTTPS `/mcp/server-card` address on the configured site's `mcp`
 subdomain, without credentials, a port, a query or a fragment. It does not
 fetch that address or establish availability. Deploy and verify the separate
 [catalogue Worker](../workers/catalogue-mcp/README.md), its real protocol calls
-and App rendering before releasing discovery that advertises it. Its manual
-deployment and Free-plan checks are separate from the static site workflow;
-publishing the site does not deploy or update the Worker.
+and App rendering before releasing discovery that advertises it. The release
+deploys it with every version, carrying that version's catalogue, before the
+pages are published (see "The Workers" above). Its Free-plan checks are still
+separate from the static site workflow.
 
 The A2A entry comes from `[agents.a2a]` and points to the canonical HTTPS
 `/.well-known/agent-card.json` address on that same `mcp` subdomain. It uses

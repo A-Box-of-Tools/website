@@ -5,10 +5,13 @@ rendezvous Worker. It lets an agent find a real browser tool and lets a person
 browse those results inside an MCP Apps host. It does not process files.
 
 The development endpoint is `https://mcp-dev.abox.tools/mcp`, configured by
-`wrangler.toml`. The separate `wrangler.production.toml` configures
-`https://mcp.abox.tools/mcp`. Each service needs its own authorized deployment
-and live verification. Site discovery links must describe the production
-endpoint only after its actual protocol and app have been verified.
+`wrangler.toml`, and is deployed by hand. The separate
+`wrangler.production.toml` configures `https://mcp.abox.tools/mcp`, which the
+release deploys with every version, before the pages are published. Its bundle
+carries that build's catalogue and commit, so it is never left listing an older
+set of tools. See "The Workers" in [docs/deploying.md](../../docs/deploying.md).
+Site discovery links must describe the production endpoint only after its
+actual protocol and app have been verified.
 
 ## What crosses the network
 
@@ -245,13 +248,17 @@ before adding truthful discovery links in a separately reviewed site change.
 
 ## Production deployment
 
-After an authorized production decision and verification of the reviewed build:
+The release deploys production, before the pages are published, from the
+release's own site build and version. To deploy it between releases, from a
+clean checkout at the repository root with the site built into `_plain`:
 
 ```powershell
-npm run deploy:production
+python scripts/deploy_workers.py deploy --only catalogue-mcp
 ```
 
-This explicitly selects `wrangler.production.toml`: Worker `catalogue-mcp`,
+That records what it deployed, so the next release knows. `npm run
+deploy:production` still works, but its deployment carries no record. Either
+way, the configuration is `wrangler.production.toml`: Worker `catalogue-mcp`,
 custom domain `mcp.abox.tools`, and rate namespace 1003. It cannot replace
 the development route or namespace. Its browser-origin allowlist contains
 only `https://abox.tools` and the two exact loopback origins on port 8788 used
@@ -261,8 +268,8 @@ from each request's environment.
 
 Verify the first production requests and broader public searches, actual App
 integrity and host interaction, text fallback, and rate/security boundaries
-before advertising the endpoint. A service deployment does not release the
-static website; the authorized `dev` to `main` release remains separate.
+before advertising the endpoint. A deploy between releases does not release
+the static website; the authorized `dev` to `main` release remains separate.
 
 ## References
 

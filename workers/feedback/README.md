@@ -124,16 +124,24 @@ enforces the remaining restrictions itself. Responses are never cached.
 
 ## Deploy and verify
 
-The static website's build does not deploy this service. The pinned Wrangler
-already used by `workers/catalogue-mcp` can deploy it; no dependency is added
-to the static site or this Worker. From the repository root, after installing
-that service's pinned tooling:
+The static website's build does not deploy this service; the release does.
+Before the pages are published, the push to `main` runs
+`scripts/deploy_workers.py`, which deploys this Worker when its bundle or
+configuration differs from what production runs. See "The Workers" in
+[docs/deploying.md](../../docs/deploying.md). It uses the pinned Wrangler
+already used by `workers/catalogue-mcp`; no dependency is added to the static
+site or this Worker. The two secrets are set by hand, once, and survive every
+deploy. From the repository root, after installing that service's pinned
+tooling:
 
 ```powershell
 workers/catalogue-mcp/node_modules/.bin/wrangler.cmd secret put FEEDBACK_TO --config workers/feedback/wrangler.toml
 workers/catalogue-mcp/node_modules/.bin/wrangler.cmd secret put FEEDBACK_HASH_KEY --config workers/feedback/wrangler.toml
-workers/catalogue-mcp/node_modules/.bin/wrangler.cmd deploy --config workers/feedback/wrangler.toml
+python scripts/deploy_workers.py deploy --only abox-feedback
 ```
+
+The last line deploys between releases, and records what it deployed so that
+the next release does not deploy it again.
 
 Set `FEEDBACK_TO` to the existing verified destination behind the public
 contact address. Do not commit a private destination or credentials. This
