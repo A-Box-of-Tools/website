@@ -475,6 +475,7 @@ transport_direct = "Direta"
 transport_relay = "Retransmissão na nuvem"
 transport_note_direct = "O conteúdo passa diretamente entre seus dispositivos. Esta opção nunca muda automaticamente para uma retransmissão."
 transport_note_relay = "O conteúdo criptografado passa pelo servidor de retransmissão da Cloudflare. Os dois dispositivos precisam de internet. Escolha esta opção quando a conexão direta não alcançar o outro dispositivo."
+transport_note_invitation = "O código inserido para assistir define esta opção de conexão. Apague-o para escolher outra."
 transport_route_direct = "Conectado diretamente"
 transport_route_relay = "Conectado por retransmissão na nuvem"
 transport_route_unknown = "Verificando o caminho da conexão."
@@ -569,6 +570,12 @@ error_broke = "Algo deu errado: {detail}. Recarregue a página para começar de 
 
 reading_one = "Lendo {count} arquivo&hellip;"
 reading_many = "Lendo {count} arquivos&hellip;"
+# Two words on purpose, and neither is this site's choice: in the prompt this
+# answers Chrome says "fazer upload" and Firefox says "enviar". See
+# folder_upload in config/site.toml.
+folder_choose = "Escolher uma pasta"
+folder_upload = "O navegador pode chamar isso de upload ou de envio. Escolher uma pasta não envia nada a lugar nenhum. Os arquivos são lidos neste dispositivo."
+folder_none = "Nessa pasta não há nenhum arquivo que esta ferramenta abra."
 text_encoding = "Ele não está salvo como texto UTF-8. Salve-o como UTF-8 e tente novamente, ou cole o texto diretamente."
 
 check_yourself = """

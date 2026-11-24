@@ -105,44 +105,77 @@ with the steps that bite marked.
 1. **Gate the idea** against `docs/what-can-be-built-here.md`. That file holds
    the test a tool has to pass, which jobs need a vendored engine, and the
    ideas already ruled out with their reasons — do not re-litigate those.
-2. **Copy the nearest existing tool** under `tools/<slug>/` and edit. Five
+2. **Survey the field before writing anything.** Find the tools that already
+   do this job, on the internet as well as here, and decide how this one beats
+   them. A tool is worth adding only if a visitor who finds it has no reason to
+   prefer what they already know, so the survey settles the feature set and the
+   pitch before any code does.
+   - **Outside the site**, search for the job the way a visitor would phrase
+     it, and cover all three kinds: paid services and apps, free web tools
+     (often upload-based, with ads, quotas or a sign-up wall), and open-source
+     projects, command-line tools, libraries and extensions. For the leading
+     few of each, note what they do, what they cost, whether files leave the
+     device, their limits — size caps, watermarks, quotas, accounts — the
+     quality of what they produce, and what their users complain about in
+     reviews, forums and issue trackers.
+   - **Inside it**, read every `tools/*/tool.toml` for a tool whose job
+     overlaps.
+   - **The plan** says, for each competitor, what this tool must match, where
+     it does better, and where it still loses. The site's usual edges are that
+     nothing is uploaded, nothing costs money or needs an account, nothing is
+     watermarked, and the tool works offline once installed and in all seven
+     languages; look as well for something the whole field lacks. When a
+     competitor wins on something a browser cannot do, say so rather than
+     build a lesser copy of it. The survey and the plan go in the pull request
+     description. Never copy a competitor's wording, branding or design.
+   - **Open source is a possible source as well as a rival**: check the
+     licence before porting or vendoring any of it.
+   - **An overlapping tool of ours can be retired into the new one.**
+     `[redirects]` in `config/site.toml` leaves a noindex stub at the old
+     address, as it did when `bank-statement-to-csv` became `pdf-to-csv`.
+     Retiring takes a live page down, so propose it and let the person who
+     asked decide. No tool folder has been deleted outright yet: trace every
+     reference to one — its locale files, its guide, the hub `order`, its spec
+     in the QA repository — before removing it.
+3. **Copy the nearest existing tool** under `tools/<slug>/` and edit. Five
    things are yours to write: `tool.toml` (commented throughout; every key
    required, so nothing can be silently forgotten), `body.html` (the `<main>`
    of the page and only that), `styles.css`, `src/` with a `main.js`, and
-   `README.md`. The share card and icons come in step 5. The frame — header,
+   `README.md`. The share card and icons come in step 6. The frame — header,
    pledge, live network check, privacy panel, footer, CSP, service worker —
    is not yours to write; the template provides it.
-3. **Register it** in `config/site.toml`: add the slug to the `order` of the
+4. **Register it** in `config/site.toml`: add the slug to the `order` of the
    matching `[[hub.categories]]`, set the same category id in the tool's
    `category`, and set `roadmap_group` to a group in `config/planned.toml`.
    The hub card, sitemap entry, structured data, footer link and the "Also in
    the box" ring on other tool pages all follow from this; there is no second
    place to remember.
-4. **If the tool was on the roadmap**, delete its line from
+5. **If the tool was on the roadmap**, delete its line from
    `config/planned.toml` **and** from every `locales/*/planned.toml`, at the
    same position. Those lists are plain strings merged positionally: a locale
    list longer than English fails the build, and a line removed at the wrong
    index silently shifts every translation after it onto the wrong entry.
-5. **Draw the card and icons**: `.\og-image.ps1 -Only <slug>` (PowerShell). It
+6. **Draw the card and icons**: `.\og-image.ps1 -Only <slug>` (PowerShell). It
    reads the heading from `name`, the subtitle from `og_card` and the icons
    from `icon` in `tool.toml`, so set those first. Never run it without
    `-Only` — that redraws every tool's card, and the redraws are not
    byte-identical because the logo is rasterised through headless Edge, which
    flakes. `-Icons -Only <slug>` redraws one tool's icons alone.
-6. **Meet the accessibility floor.** The `<main>` opens as `<main id="main">`
+7. **Meet the accessibility floor.** The `<main>` opens as `<main id="main">`
    (the skip link on every page points at that id), and every control, canvas
    and bare `<video>` needs a name a screen reader can say.
    `tests/python/test_accessibility.py` spells out the rules and fails the
    suite on a body that breaks one.
-7. **Write it a guide** under `pages/guides/` — see "Job: write or edit a
+8. **Write it a guide** under `pages/guides/` — see "Job: write or edit a
    guide" below. Every tool has one.
-8. **Write `tools/<slug>/README.md`** — how the tool works and why, for
+9. **Write `tools/<slug>/README.md`** — how the tool works and why, for
    someone reading the code. The build refuses to finish without it. Do not
    add the tool to the repository README or `tools/README.md`; the first
    covers the site, the second is generated.
-9. **Build it and open it in a browser** — see "Verify" below. Write the tests
-   it owes and leave the running of them to CI; a tool that only passed its
-   tests has not been used yet, and that is the half nothing else can check.
+10. **Build it and open it in a browser** — see "Verify" below. Write the
+    tests it owes and leave the running of them to CI; a tool that only passed
+    its tests has not been used yet, and that is the half nothing else can
+    check.
 
 ## Job: update an existing tool
 
@@ -249,7 +282,7 @@ them:
   heading or a link that reached English alone, and a sentence changed in place
   is yours to carry across because no test can see it;
 - a line removed from `config/planned.toml` comes out of
-  every `locales/*/planned.toml` at the same index (see step 4 above). Lists whose
+  every `locales/*/planned.toml` at the same index (see step 5 above). Lists whose
   English entries carry an `id` merge by id and need no such care;
 - a `zh` phrase stays on one line — Chinese has no spaces between words, so a
   wrapped phrase ships a visible hole mid-sentence;

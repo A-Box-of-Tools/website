@@ -534,6 +534,7 @@ transport_direct = "Direkt"
 transport_relay = "Cloud-Relais"
 transport_note_direct = "Inhalte werden direkt zwischen Ihren Geräten übertragen. Diese Auswahl wechselt niemals automatisch zu einem Relais."
 transport_note_relay = "Verschlüsselte Inhalte werden über das Relais von Cloudflare übertragen. Beide Geräte benötigen Internet. Wählen Sie dies, wenn eine direkte Verbindung das andere Gerät nicht erreicht."
+transport_note_invitation = "Der zum Zuschauen eingegebene Code legt diese Verbindungsart fest. Löschen Sie den Code, um eine andere zu wählen."
 transport_route_direct = "Direkt verbunden"
 transport_route_relay = "Über das Cloud-Relais verbunden"
 transport_route_unknown = "Der Verbindungsweg wird geprüft."
@@ -625,6 +626,12 @@ error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um v
 
 reading_one = "{count} Datei wird gelesen&hellip;"
 reading_many = "{count} Dateien werden gelesen&hellip;"
+# The browser's own word for it, which is the point: Chrome and Firefox both
+# say "hochladen" in the prompt this answers. See folder_upload in
+# config/site.toml.
+folder_choose = "Ordner auswählen"
+folder_upload = "Ihr Browser spricht dabei womöglich von „Hochladen“. Die Auswahl eines Ordners sendet nichts, denn die Dateien werden auf diesem Gerät gelesen."
+folder_none = "In diesem Ordner liegt keine Datei, die dieses Werkzeug öffnet."
 text_encoding = "Sie ist nicht als UTF-8-Text gespeichert. Speichern Sie sie als UTF-8 und versuchen Sie es erneut, oder fügen Sie den Text direkt ein."
 
 check_yourself = """

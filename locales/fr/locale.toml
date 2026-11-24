@@ -321,6 +321,7 @@ transport_direct = "Directe"
 transport_relay = "Relais cloud"
 transport_note_direct = "Le contenu circule directement entre vos appareils. Ce choix ne passe jamais automatiquement par un relais."
 transport_note_relay = "Le contenu chiffré passe par le relais de Cloudflare. Les deux appareils ont besoin d’internet. Choisissez cette option lorsqu’une connexion directe ne peut pas atteindre l’autre appareil."
+transport_note_invitation = "Le code saisi pour regarder fixe ce choix de connexion. Effacez-le pour en choisir un autre."
 transport_route_direct = "Connexion directe établie"
 transport_route_relay = "Connexion établie par le relais cloud"
 transport_route_unknown = "Le chemin de connexion est en cours de vérification."
@@ -400,6 +401,12 @@ net_platform_many = "Les scripts de publicité et de mesure propres à la page o
 error_broke = "Quelque chose a échoué&nbsp;: {detail}. Rechargez la page pour repartir de zéro."
 reading_one = "Lecture de {count} fichier&hellip;"
 reading_many = "Lecture de {count} fichiers&hellip;"
+# Two words on purpose, and neither is this site's choice: in the prompt this
+# answers Firefox says "envoyer" and Chrome says "télécharger", which it uses
+# for both directions. See folder_upload in config/site.toml.
+folder_choose = "Choisir un dossier"
+folder_upload = "Votre navigateur parlera peut-être d’envoi ou de téléchargement. Choisir un dossier n’envoie rien nulle part. Les fichiers sont lus sur cet appareil."
+folder_none = "Ce dossier ne contient aucun fichier que cet outil ouvre."
 text_encoding = "Il n’est pas enregistré en texte UTF-8. Enregistrez-le en UTF-8 puis réessayez, ou collez directement son texte."
 check_yourself = "<strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur parole. Cette page est produite à partir des gabarits et de la configuration du dépôt par un script de compilation que vous pouvez lire et exécuter vous-même, et le résultat est publié sur la branche <code>dist</code>, ce qui vous permet de comparer ce qui est servi avec ce que produit une compilation des sources&nbsp;:"
 read_first_lead = "Les fichiers à lire en premier sont <code>config/site.toml</code> pour la Content-Security-Policy"

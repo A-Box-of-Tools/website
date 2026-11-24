@@ -451,7 +451,15 @@ function startDiscovery() {
 }
 $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 
+// Local network is Direct restricted to host candidates, so it and Cloud relay
+// exclude each other both ways: Cloud relay hides the Local option, and a
+// checked Local holds the switch on Direct until it is unchecked.
+function holdLocalRoute() {
+  transportControl.hold($('local').checked ? 'direct' : null, phrase('share.local-direct'));
+}
+
 $('local').addEventListener('change', () => {
+  holdLocalRoute();
   $('discoverable').disabled = transportControl.value() === 'direct' && !$('local').checked && !groupControl.id();
 });
 
@@ -1721,6 +1729,7 @@ $('local').checked = isLocal;
 if (CODE_PATTERN.test(code)) view(code);
 else {
   $('discoverable').disabled = !isLocal;
+  holdLocalRoute();
   suggest();
   restore();
   startDiscovery();

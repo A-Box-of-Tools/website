@@ -309,6 +309,7 @@ transport_direct = "直连"
 transport_relay = "云中转"
 transport_note_direct = "内容直接在你的设备之间传输。此选项绝不会自动切换到中转。"
 transport_note_relay = "加密内容通过 Cloudflare 中转传输。两台设备都需要互联网。直连无法到达另一台设备时，可选择此选项。"
+transport_note_invitation = "用于观看的代码已决定此连接选项。清除该代码即可选择其他选项。"
 transport_route_direct = "已直接连接"
 transport_route_relay = "已通过云中转连接"
 transport_route_unknown = "正在检查连接路径。"
@@ -400,6 +401,11 @@ error_broke = "出错了：{detail}。重新加载页面即可从头开始。"
 # 语言里它们不一样，不是这里漏了什么。
 reading_one = "正在读取 {count} 个文件&hellip;"
 reading_many = "正在读取 {count} 个文件&hellip;"
+# The browser's own word for it, which is the point: Chrome and Firefox both
+# say 上传 in the prompt this answers. See folder_upload in config/site.toml.
+folder_choose = "选择文件夹"
+folder_upload = "浏览器可能把这一步叫作“上传”。选择文件夹不会发送任何东西，文件只在这台设备上读取。"
+folder_none = "文件夹里没有这个工具能打开的文件。"
 text_encoding = "它不是以 UTF-8 保存的文本。请另存为 UTF-8 后重试，或直接粘贴其中的文本。"
 
 check_yourself = """

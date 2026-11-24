@@ -304,6 +304,7 @@ transport_direct = "直接接続"
 transport_relay = "クラウド中継"
 transport_note_direct = "コンテンツは端末間で直接送信されます。この選択から中継に自動で切り替わることはありません。"
 transport_note_relay = "暗号化されたコンテンツはCloudflareの中継を通ります。両方の端末にインターネットが必要です。直接接続で相手の端末に届かない場合に選択してください。"
+transport_note_invitation = "視聴用に入力したコードがこの接続方式を決めています。別の接続方式を選ぶには、そのコードを消してください。"
 transport_route_direct = "直接接続しました"
 transport_route_relay = "クラウド中継で接続しました"
 transport_route_unknown = "接続経路を確認しています。"
@@ -394,6 +395,12 @@ error_broke = "問題が起きました：{detail}。最初からやり直すに
 # 他の言語で変わるからで、ここで書き忘れているわけではありません。
 reading_one = "{count}個のファイルを読み込み中&hellip;"
 reading_many = "{count}個のファイルを読み込み中&hellip;"
+# The browser's own word for it, which is the point: Chrome and Firefox both
+# say アップロード in the prompt this answers. See folder_upload in
+# config/site.toml.
+folder_choose = "フォルダを選ぶ"
+folder_upload = "ブラウザには「アップロード」と表示されることがあります。フォルダを選んでも何も送信されません。ファイルは手元の端末で読み込まれます。"
+folder_none = "このフォルダには、このツールで開けるファイルがありません。"
 text_encoding = "UTF-8テキストとして保存されていません。UTF-8で保存し直してもう一度試すか、テキストを直接貼り付けてください。"
 
 check_yourself = """

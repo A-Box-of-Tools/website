@@ -270,13 +270,33 @@ tool. A file dropped by itself is still handed over whatever it is. A folder
 with nothing in it for the tool arrives as the one unreadable entry the browser
 makes of it, and is turned away by whatever the tool already says about a file
 it cannot read. A picker without `multiple` gets the first file it asks for.
-None of this needs anything from the tool. The file dialog is not part of it:
-without a second input it cannot choose a folder at all.
+None of this needs anything from the tool.
 
 One limit: a drop of more than a hundred things at once is taken to be loose
 files and handed over as it always was, folders and all. Finding out which of
 them are folders is a synchronous question to the browser for each one, and on
 five thousand loose slices it froze the page for 1.3 s.
+
+**`multiple = true` also puts a "Choose a folder" control under the drop
+zone.** A drop is the one way of handing something over that a keyboard cannot
+use and a phone does not have, and the file dialog offers files or a folder,
+never both, so the partial renders a second input for the folder behind a label
+of its own. A chosen folder reaches `onFiles` as a dropped one does: the same
+files, held to the same `accept`, in the same order. Two things differ, and
+neither needs anything from the tool:
+
+- a chosen folder with nothing in it for the tool never reaches the tool. There
+  is no unreadable entry to hand over, so the picker says so itself, in a line
+  beside the control;
+- the browser asks first. Chrome and Firefox make the visitor confirm an
+  "upload", in that word, before the page is given a folder, and on a site
+  whose claim is that nothing is uploaded the answer has to be on the page
+  already. It is the sentence beside the control, `folder_upload` in
+  `config/site.toml`, where the comment gives both browsers' wording and says
+  why the sentence promises no more than it does.
+
+A tool that takes one file has no folder control. The control stays hidden in a
+browser that cannot choose a folder, which no current one is.
 
 **Shared JavaScript is copied, not linked.** It lands in the tool's own
 `src/shared/`, so every tool folder in `dist/` is still complete on its own,

@@ -128,8 +128,9 @@ pixels came back eight bits deep.
 ## A folder off a disc
 
 The drop zone is the shared one, and it is `shared/js/file-picker.js` that
-opens a dropped folder. `accept` here is everything, so the viewer is handed
-every file under it: a folder's own files first, then each folder inside it.
+opens a dropped folder, or one chosen with the control under the zone. `accept`
+here is everything, so either way the viewer is handed every file under it: a
+folder's own files first, then each folder inside it.
 A disc is mostly not scans. Beside the series sit a `DICOMDIR`, an
 `autorun.inf` and the viewer program the hospital burned on with them, and all
 of it arrives.

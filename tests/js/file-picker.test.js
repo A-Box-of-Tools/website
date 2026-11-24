@@ -15,20 +15,33 @@
  * Chromium does or all at once as Firefox does. What the stub cannot say is
  * that a real browser hands a folder over in this shape; that was checked by
  * dropping real folders on the built pages in Edge.
+ *
+ * A folder can be chosen as well as dropped, through a second input beside the
+ * drop zone, and then it arrives the other way about: no walk, every file at
+ * once in one flat list, each knowing its path. The rule those tests hold is
+ * that the road makes no difference - the same folder is the same files in the
+ * same order - and that a folder with nothing in it for the tool is answered
+ * by the picker, because nothing is left for the tool to refuse.
  */
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { accepts, walkFolder, wireFilePicker } from '../../shared/js/file-picker.js';
+import { accepts, inFolderOrder, walkFolder, wireFilePicker } from '../../shared/js/file-picker.js';
 
 const PHRASES = {
   'reading.one': 'Reading {count} file',
   'reading.many': 'Reading {count} files',
+  'folder.none': 'Nothing in that folder',
 };
 
-/** The two things on a page the picker reaches for outside its own markup. */
-function page() {
+/**
+ * The things on a page the picker reaches for outside its own markup: the
+ * frame's phrases, and whatever `parts` says is there by id. A page has no
+ * folder control unless a test puts one on it, which is every tool that takes
+ * one file.
+ */
+function page(parts = {}) {
   globalThis.document = {
     querySelector(selector) {
       const match = /^#(phrases|frame-phrases) \[data-phrase="(.+)"\]$/.exec(selector);
@@ -37,6 +50,7 @@ function page() {
         ? { textContent: PHRASES[match[2]] } : null;
     },
     querySelectorAll: () => [],
+    getElementById: (id) => parts[id] ?? null,
   };
   globalThis.window = { addEventListener() {} };
 }
@@ -79,8 +93,9 @@ const soon = (handOver) => Promise.race([
  * `handed` is every call to onFiles so far, so a test can say that nothing has
  * arrived yet as easily as what did.
  */
-function picker({ accept = '', multiple = true } = {}) {
-  page();
+function picker({ accept = '', multiple = true, folder } = {}) {
+  const control = folder ? folderControl(folder) : null;
+  page(control ? { 'folder-pick': control.holder, 'folder-input': control.input } : {});
   const title = { textContent: 'Drop files here' };
   const dropzone = element({ querySelector: () => title });
   const input = element({ accept, multiple, files: [], value: '' });
@@ -95,7 +110,21 @@ function picker({ accept = '', multiple = true } = {}) {
     },
   });
   const next = () => soon(new Promise((resolve) => { arrived = resolve; }));
-  return { dropzone, input, title, handed, next };
+  return { dropzone, input, title, handed, next, folder: control };
+}
+
+/**
+ * The folder control as the partial renders it: hidden, an input of its own,
+ * and an empty line to answer in.
+ *
+ * `supported: false` is the browser that does not know `webkitdirectory`. It
+ * keeps the attribute in the markup and has no such property on the input.
+ */
+function folderControl({ supported = true } = {}) {
+  const note = { textContent: '' };
+  const holder = { hidden: true, querySelector: (selector) => (selector === '.folder-note' ? note : null) };
+  const input = element({ files: [], value: '', ...(supported ? { webkitdirectory: true } : {}) });
+  return { holder, input, note };
 }
 
 /**
@@ -344,6 +373,126 @@ test('the drop zone counts the files the tool will be given, and rests before it
     busy: false,
     said: ['Reading 1 file', 'Reading 2 files', 'Drop files here'],
   });
+});
+
+/* ---------------------------------------------------------- a folder chosen */
+
+/** A file as a folder input reports it: its name, and the path it was found at. */
+const inFolder = (path, type = '') => ({ name: path.split('/').at(-1), type, webkitRelativePath: path });
+
+/** Choose these in the folder dialog, as the browser would report it. */
+function choose(control, files) {
+  control.input.files = files;
+  control.input.dispatch('change');
+}
+
+/**
+ * One folder in both of the shapes it can arrive in. `tree` maps a name to 0
+ * for a file and to another tree for a folder, in the order the disk keeps
+ * them, which is no order at all.
+ */
+const asDropped = (name, tree) => folderEntry(name, Object.entries(tree)
+  .map(([child, inside]) => (inside ? asDropped(child, inside) : fileEntry(child))));
+const asChosen = (path, tree) => Object.entries(tree)
+  .flatMap(([child, inside]) => (inside ? asChosen(`${path}/${child}`, inside) : [inFolder(`${path}/${child}`)]));
+
+test('the folder control is shown only where the browser can choose a folder', () => {
+  const able = picker({ folder: {} });
+  assert.equal(able.folder.holder.hidden, false);
+
+  // A browser without the property ignores the attribute and opens the
+  // ordinary file dialog, under a label that promises a folder.
+  const unable = picker({ folder: { supported: false } });
+  assert.equal(unable.folder.holder.hidden, true);
+  choose(unable.folder, [inFolder('photos/a.png', 'image/png')]);
+  assert.deepEqual(unable.handed, []);
+});
+
+test('a chosen folder is its files, held to the accept list and put in the order the folder shows', () => {
+  const { folder, handed } = picker({ accept: 'image/*,.avif', folder: {} });
+  folder.input.value = 'C:\\fakepath\\page10.png';
+  choose(folder, [
+    inFolder('scans/page10.png', 'image/png'),
+    inFolder('scans/appendix/b.png', 'image/png'),
+    inFolder('scans/Thumbs.db'),
+    inFolder('scans/page2.png', 'image/png'),
+    inFolder('scans/appendix/a.avif'),
+    inFolder('scans/notes.txt', 'text/plain'),
+    inFolder('scans/Page1.png', 'image/png'),
+  ]);
+
+  // In the same turn: the browser had read the folder before it said a word.
+  assert.equal(handed.length, 1);
+  assert.deepEqual(names(handed[0]), ['Page1.png', 'page2.png', 'page10.png', 'a.avif', 'b.png']);
+  assert.equal(folder.input.value, '', 'so the same folder can be chosen twice running');
+  assert.equal(folder.note.textContent, '');
+});
+
+test('a folder is the same files in the same order whether it was dropped or chosen', async () => {
+  const disc = {
+    IM10: 0,
+    IM2: 0,
+    'series b': { 'b2.png': 0, 'b10.png': 0, deep: { z1: 0 } },
+    'readme.TXT': 0,
+    'Series A': { a1: 0 },
+  };
+
+  const dropped = picker();
+  const arriving = dropped.next();
+  drop(dropped.dropzone, [asDropped('disc', disc)]);
+
+  const chosen = picker({ folder: {} });
+  choose(chosen.folder, asChosen('disc', disc).reverse());
+
+  const order = ['IM2', 'IM10', 'readme.TXT', 'a1', 'b2.png', 'b10.png', 'z1'];
+  assert.deepEqual(names(await arriving), order);
+  assert.deepEqual(names(chosen.handed[0]), order);
+});
+
+test('a chosen folder with nothing in it for this tool is answered beside the control', () => {
+  // An empty folder, and one that holds only what the tool does not take.
+  for (const inside of [[], [inFolder('letters/notes.txt', 'text/plain')]]) {
+    const { folder, dropzone, handed } = picker({ accept: 'image/*', folder: {} });
+    choose(folder, inside);
+    assert.deepEqual(handed, [], 'there is nothing to hand to the tool, not even something to refuse');
+    assert.equal(folder.note.textContent, 'Nothing in that folder');
+
+    // The answer was about that folder. It goes when something does arrive,
+    // by whichever road.
+    drop(dropzone, [fileEntry('a.png', 'image/png')]);
+    assert.equal(handed.length, 1);
+    assert.equal(folder.note.textContent, '');
+  }
+});
+
+test('what was said about one folder is not left standing over the next', () => {
+  const { folder, handed } = picker({ accept: '.pdf', folder: {} });
+  choose(folder, [inFolder('notes/a.txt')]);
+  assert.equal(folder.note.textContent, 'Nothing in that folder');
+
+  choose(folder, [inFolder('letters/letter.pdf')]);
+  assert.equal(folder.note.textContent, '');
+  assert.deepEqual(names(handed[0]), ['letter.pdf']);
+});
+
+test('the order of a chosen folder is read from where each file was found', () => {
+  const order = (paths) => inFolderOrder(paths.map((path) => inFolder(path)))
+    .map((each) => each.webkitRelativePath);
+
+  // A file ahead of the folder beside it, whatever either is called.
+  assert.deepEqual(order(['d/a/z.png', 'd/b.png']), ['d/b.png', 'd/a/z.png']);
+  // Folders by name, each finished before the next is begun.
+  assert.deepEqual(order(['d/s10/1', 'd/s2/2', 'd/s2/1', 'd/s10/sub/0']),
+    ['d/s2/1', 'd/s2/2', 'd/s10/1', 'd/s10/sub/0']);
+  // Two folders a collator cannot tell apart are two folders all the same.
+  assert.deepEqual(order(['d/scan/2', 'd/Scan/1', 'd/scan/1', 'd/Scan/3']),
+    ['d/Scan/1', 'd/Scan/3', 'd/scan/1', 'd/scan/2']);
+});
+
+test('files that do not say where they were found are put in name order', () => {
+  const files = [file('b10.png'), file('b2.png'), file('a.png')];
+  assert.deepEqual(names(inFolderOrder(files)), ['a.png', 'b2.png', 'b10.png']);
+  assert.deepEqual(names(files), ['b10.png', 'b2.png', 'a.png'], 'and the list given is left as it was');
 });
 
 /* ----------------------------------------------------------------- the walk */

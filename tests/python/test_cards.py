@@ -27,6 +27,11 @@ TOOLS = ROOT / 'tools'
 LOCALES = ROOT / 'locales'
 
 PICKER = '{% include "partials/file-picker.html" %}'
+PICKER_PARTIAL = ROOT / 'templates' / 'partials' / 'file-picker.html'
+
+# The name the fold puts in front of a field's note, as cards._named writes it.
+NOTE_NAME = re.compile(r'<p class="field-note"[^>]*><strong>((?:(?!</strong>).)*)</strong>',
+                       re.S)
 
 # A <details> and everything in it, so what is left is the card's own children.
 DETAILS = re.compile(r'<details\b.*?</details>', re.S)
@@ -128,6 +133,35 @@ class Summaries(unittest.TestCase):
         self.assertNotIn('All rows', inside)
         self.assertIn('All rows', outside, 'the menu itself must stay put')
 
+    def test_a_label_named_in_a_comment_is_not_taken_for_one(self):
+        # The drop zone's comment says "A real <label> opens the file picker
+        # natively". Read as markup, that opened a label which ran to the drop
+        # zone's own closing tag, and three tools printed the back half of the
+        # comment in bold in front of a note.
+        html = cards.fold_ledes(card(
+            '  <!-- A real <label> opens the dialog natively. -->\n'
+            '  <label for="x">Drop pictures here</label><input id="x">\n'
+            '  <p class="field-note">Only the first frame is read.</p>'))
+        inside, outside = folded(html)
+        self.assertIn('<strong>Drop pictures here</strong> Only the first frame is read.',
+                      inside)
+        self.assertIn('<!-- A real <label> opens the dialog natively. -->', outside,
+                      'the comment itself is not the fold\'s to remove')
+
+    def test_a_note_under_the_picker_is_about_the_drop_zone(self):
+        # "Choose a folder" stands between the zone and the tool's own markup,
+        # so it is the nearest label to a note written under the picker, and
+        # the note was never about it.
+        html = cards.fold_ledes(card(
+            '  <label id="dropzone" class="dropzone" for="file-input">Drop pictures here</label>\n'
+            '  <div class="dropzone-folder" hidden>\n'
+            '    <label for="folder-input" class="as-button ghost">Choose a folder</label>\n'
+            '  </div>\n'
+            '  <p class="field-note">AVIF is read too.</p>'))
+        inside, outside = folded(html)
+        self.assertIn('<strong>Drop pictures here</strong> AVIF is read too.', inside)
+        self.assertIn('Choose a folder</label>', outside, 'the control itself must stay put')
+
 
 class EveryTool(unittest.TestCase):
     def test_no_tool_leaves_a_written_summary_on_the_page(self):
@@ -176,6 +210,51 @@ class EveryTool(unittest.TestCase):
                 astray.append(f'{slug}: {body.name} - no heading the button can reach')
 
         self.assertEqual([], astray, '\n' + '\n'.join(astray))
+
+    def test_no_note_is_named_by_a_comment_or_by_the_folder_control(self):
+        """Run the real bodies with the real picker in them.
+
+        The cases above read a body as it is written, where the picker is one
+        line of `{% include %}`. What went wrong here went wrong inside that
+        line. The partial's comments name the tags they are about, and its
+        folder control is a label no tool wrote, so both reach the fold only
+        once the partial is where the build puts it. Three tools have a note
+        straight under their picker, and for as long as nothing read the names
+        back, each was named by half a comment.
+
+        Every language, for the reason the case above gives.
+        """
+        partial = PICKER_PARTIAL.read_text(encoding='utf-8')
+        ways_in = [found.group('text').strip()
+                   for found in cards.LABEL.finditer(cards.COMMENT.sub('', partial))
+                   if cards.FOLDER_WAY_IN.search(found.group('attributes'))]
+        self.assertEqual(1, len(ways_in),
+                         'cards.FOLDER_WAY_IN no longer finds the one folder label in '
+                         'the picker partial, so that label would name a note again')
+
+        wrong, by_the_zone = [], 0
+        for slug, body in _every_body():
+            html = cards.fold_ledes(body.read_text(encoding='utf-8').replace(PICKER, partial))
+            for name in NOTE_NAME.findall(html):
+                if '-->' in name or '<!--' in name:
+                    wrong.append(f'{slug}: {body.name} - a comment: {" ".join(name.split())[:90]}')
+                elif ways_in[0] in name:
+                    wrong.append(f'{slug}: {body.name} - the folder control')
+                elif 'tool.picker.title' in name:
+                    by_the_zone += 1
+
+        self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
+        self.assertGreater(by_the_zone, 0,
+                           'no note sits under a picker any more, so this read nothing; '
+                           'see test_a_note_under_the_picker_is_about_the_drop_zone')
+
+
+def _every_body():
+    """Every tool's body, English and translated."""
+    for body in sorted(TOOLS.glob('*/body.html')):
+        yield body.parent.name, body
+    for body in sorted(LOCALES.glob('*/tools/*.html')):
+        yield body.stem, body
 
 
 def _bodies_with_an_example():

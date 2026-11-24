@@ -4,7 +4,11 @@ The shared Direct / Cloud relay switch sits beside the host's Start control,
 with Direct initially selected. Viewers use the route in the invitation or
 listing and see read-only route and access icons beside Connect. Choosing a
 route alone never connects or captures. Actual route status remains visible
-outside setup panels that disappear after connecting.
+outside setup panels that disappear after connecting. One switch serves both
+cards, so while a code that arrived with its route is in the viewer box, the
+host's switch is held on that route, disabled, with its tooltip saying to clear
+the code; editing the code releases it. Without the hold, moving the switch
+contradicted the invitation and Connect quietly undid it.
 
 Cameras appear in Available connections at the top of the idle page, above sharing and manual
 connection, with the shared Wi-Fi and hotspot guidance. Join on a listed camera
