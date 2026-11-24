@@ -1,0 +1,151 @@
+  <section>
+    <h2>Elige la carpeta en cada equipo</h2>
+    <p>
+      Abre <a href="../../sincronizar-carpetas/">Sincronizar carpetas</a> en los
+      dos equipos. Chrome, Edge y la mayoría de los demás navegadores Chromium
+      en un equipo pueden leer una carpeta y también escribir en ella, que es
+      lo que necesita una sincronización en los dos sentidos. Conecta los dos
+      equipos a la misma red Wi-Fi o Ethernet, o al mismo punto de acceso del
+      teléfono, y mantén el acceso a internet: los navegadores lo necesitan
+      para encontrarse, aunque los archivos nunca pasan por internet.
+    </p>
+    <p>
+      En cada equipo, pulsa <em>Elegir una carpeta</em> y selecciona la carpeta
+      que quieres mantener sincronizada. Cuando el navegador pregunte si la
+      página puede modificar la carpeta, permítelo en el equipo que deba
+      recibir archivos. Después elige qué hace ese equipo: <em>Enviar y
+      recibir</em>; <em>Solo enviar</em>, para que el otro equipo pueda copiar
+      de esta carpeta pero nunca cambiarla; o <em>Solo recibir</em>. Cada
+      equipo hace cumplir su propia elección, pida lo que pida el otro.
+    </p>
+    <p>
+      Algunos archivos nunca se sincronizan, y la página los enumera bajo la
+      carpeta: restos del sistema como <code>Thumbs.db</code> y
+      <code>.DS_Store</code>, copias temporales y archivos de bloqueo, y
+      nombres que no admite alguno de los sistemas Windows, macOS o Linux, como
+      uno que contenga dos puntos. Copiarlos crearía archivos que el otro
+      equipo estropearía o leería mal.
+    </p>
+  </section>
+
+  <section>
+    <h2>Inicia en un equipo y únete desde el otro</h2>
+    <p>
+      En el primer equipo, pulsa <em>Iniciar una sincronización</em> y copia el
+      enlace de sincronización. Ábrelo en el segundo equipo, añade una nota si
+      quieres y pulsa <em>Solicitar sincronización</em>. Aprueba la solicitud
+      en el primer equipo. No se envía nada de ninguna de las dos carpetas
+      antes de esa aprobación; hasta entonces, los dos navegadores solo han
+      intercambiado lo necesario para conectarse.
+    </p>
+    <p>
+      Si te resulta incómodo copiar un enlace de un equipo al otro, marca
+      <em>Mostrar en Conexiones disponibles</em> en el primer equipo antes de
+      empezar. En el segundo, pulsa <em>Buscar conexiones</em> y después
+      <em>Unirse</em> junto al código que coincida. Solo aparece el código
+      aleatorio de invitación, nunca un nombre de carpeta ni de archivo, y la
+      aprobación sigue siendo necesaria.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lee la comparación antes de sincronizar</h2>
+    <p>
+      Tras la aprobación, cada equipo envía al otro la ruta, el tamaño y la
+      fecha de cada archivo de su carpeta, y los dos muestran la misma lista
+      de diferencias, cada uno desde su lado. Un archivo que solo está en un
+      equipo se copia al otro. Un archivo que está en ambos pero ha cambiado en
+      uno se reemplaza por la copia más reciente. Dos archivos con el mismo
+      tamaño pero fechas distintas se comparan primero por su contenido, así
+      que las copias idénticas no se vuelven a enviar.
+    </p>
+    <p>
+      Dos tipos de fila se dejan siempre como están hasta que decidas. Un
+      archivo distinto en los dos equipos pero con exactamente la misma fecha
+      no tiene una copia más reciente, así que no se elige ninguna por ti. Los
+      nombres que solo difieren en las mayúsculas, como
+      <code>README.md</code> y <code>Readme.md</code>, son un mismo archivo en
+      Windows y en un Mac, así que copiar cualquiera de los dos podría
+      sobrescribir el otro; cambia el nombre de uno y vuelve a comparar.
+    </p>
+    <p>
+      Cada una de las demás filas muestra su opción predeterminada en un menú
+      que puedes cambiar: enviarlo, copiarlo aquí o dejarlo como está. Los
+      totales sobre la lista siguen tus elecciones. Cuando todo esté bien,
+      pulsa <em>Sincronizar ahora</em> en cualquiera de los dos equipos.
+    </p>
+  </section>
+
+  <section>
+    <h2>No se borra nada, a propósito</h2>
+    <p>
+      Si borraste un archivo en un equipo, la comparación ve un archivo que
+      solo existe en el otro y propone volver a copiarlo. Sin un registro de la
+      última sincronización no hay forma de distinguir un archivo borrado de
+      uno nuevo, y adivinar mal destruiría trabajo. Elige <em>Dejarlo como
+      está</em> en esa fila, o borra el archivo en los dos equipos antes de
+      sincronizar.
+    </p>
+    <p>
+      Un archivo que se reemplaza se escribe primero en una copia temporal y
+      solo ocupa el lugar del antiguo cuando ha llegado entero. Si cancelas una
+      sincronización, cierras una página o se pierde la conexión, cada archivo
+      queda en su versión antigua o en la nueva, nunca a medias. Los archivos
+      que terminaron antes de la interrupción se conservan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué pasa por la red</h2>
+    <p>
+      Las listas de archivos, las huellas del contenido y los propios archivos
+      viajan por una conexión WebRTC cifrada establecida directamente entre los
+      dos navegadores. No hay retransmisor ni subida, y por eso mismo los
+      equipos necesitan una red en la que puedan comunicarse entre sí. El
+      servicio de presentación, <code>rendezvous.abox.tools</code>, ve los
+      mensajes de preparación que conectan los navegadores, incluidas sus
+      direcciones IP y el código de invitación, pero ni un solo nombre de
+      archivo.
+    </p>
+    <p>
+      El otro equipo sí ve el nombre, el tamaño y la fecha de cada archivo de
+      la carpeta que elijas, incluidos los que no se van a copiar. Elige la
+      carpeta que de verdad quieres compartir, y no la que la contiene.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cuando un navegador no puede escribir en una carpeta</h2>
+    <p>
+      Firefox y Safari pueden elegir una carpeta desde la que enviar, pero no
+      pueden escribir en ninguna. Los archivos que reciben se reúnen en un
+      único ZIP, de hasta 512&nbsp;MB, que guardas y descomprimes por tu cuenta
+      sobre la carpeta. Un navegador que no puede elegir ninguna carpeta, como
+      en la mayoría de los teléfonos, aun así puede recibir en un ZIP los
+      archivos del otro equipo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si los equipos no consiguen conectarse</h2>
+    <p>
+      Comprueba que los dos están en la misma red y que esta permite que los
+      dispositivos se comuniquen entre sí. Las redes Wi-Fi de invitados suelen
+      aislar a sus dispositivos, y los cortafuegos, las VPN y los equipos de
+      trabajo administrados pueden bloquear las conexiones directas. Un punto
+      de acceso del teléfono al que se conecten los dos equipos es una forma
+      rápida de descartar la red.
+    </p>
+  </section>
+
+  <section>
+    <h2>Volver a sincronizar más adelante</h2>
+    <p>
+      Mantén abiertas las dos páginas y pulsa <em>Volver a comparar</em> cuando
+      las carpetas hayan cambiado, o detén la sincronización e inicia una nueva
+      otro día. Una página web no puede fijar la fecha en que se modificó un
+      archivo, así que los archivos recibidos llevan la fecha en que se
+      escribieron. La siguiente comparación revisa su contenido y trata las
+      copias idénticas como ya sincronizadas.
+    </p>
+  </section>

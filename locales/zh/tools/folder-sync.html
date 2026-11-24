@@ -1,0 +1,289 @@
+<main id="main" class="paired-page">
+  <section id="nearby-section" class="paired-nearby" data-pairing-nearby aria-labelledby="discovery-heading">
+    <div class="paired-nearby-head"><h2 id="discovery-heading">可用连接</h2></div>
+    {% include "partials/paired-discovery-group.html" %}
+    <details class="paired-network info-fold">
+      <summary>{{ ui.tool.transport_label }}</summary>
+      <p>两台设备都需要联网才能找到彼此，还需要一个能让文件直接通过的网络，比如同一个 Wi-Fi、以太网或手机热点。文件夹同步没有中转，所以不在同一网络的两台设备无法用它同步。</p>
+      <h3>{{ ui.tool.pairing_hotspot_heading }}</h3>
+      <ol>
+        <li>{{ ui.tool.pairing_hotspot_enable }}</li>
+        <li>{{ ui.tool.pairing_hotspot_join }}</li>
+        <li>{{ ui.tool.pairing_hotspot_connect }}</li>
+      </ol>
+      <p>{{ ui.tool.pairing_hotspot_limits }}</p>
+      <p class="paired-network-links"><a href="https://support.apple.com/111785">iPhone / iPad</a><a href="https://support.google.com/android/answer/9059108">Android</a></p>
+    </details>
+    <div id="discovery-controls" class="sync-discovery-controls">
+      <button type="button" id="discovery-start" aria-describedby="discovery-help">查找连接</button>
+      <details class="paired-discovery-details">
+        <summary>{{ ui.tool.pairing_discovery_help }}</summary>
+        <p id="discovery-help" class="field-note">查找其他设备在所选网络或私密群组中发起的同步。每个条目只有一个邀请码，不会列出文件夹名或文件名。加入前，请先与另一台设备核对邀请码。</p>
+      </details>
+    </div>
+    <section id="discovery-panel" aria-labelledby="discovery-heading" hidden>
+      <p id="discovery-status" role="status" aria-live="polite"></p>
+      <ul id="discovery-list" class="paired-nearby-list"></ul>
+      <div class="paired-actions">
+        <button type="button" id="discovery-refresh">刷新连接</button>
+        <button type="button" id="discovery-close">停止查找</button>
+      </div>
+      <p class="field-note">先选择这台设备的文件夹，再选择“加入”。另一台设备会先批准你，然后才比较文件夹。</p>
+    </section>
+  </section>
+
+  <section id="folder-panel" class="sync-card sync-folder" aria-labelledby="folder-heading">
+    <h2 id="folder-heading">这台设备上的文件夹</h2>
+    <p class="card-lede">选择要与另一台设备保持一致的文件夹。按下“立即同步”之前，只比较文件名、大小和日期。</p>
+    <div class="run-row">
+      <button type="button" id="folder-choose" class="big">选择文件夹</button>
+      <input type="file" id="folder-input" class="visually-hidden" tabindex="-1" webkitdirectory multiple aria-label="选择文件夹" data-no-remember>
+    </div>
+    <p id="folder-status" class="sync-status" role="status" aria-live="polite">尚未选择文件夹。</p>
+    <details id="folder-skipped" class="sync-skipped" hidden>
+      <summary id="folder-skipped-summary"></summary>
+      <p class="field-note">系统文件、临时副本，以及 Windows、macOS 或 Linux 中任何一个无法保存的名称，都不会同步。这样，同步就不会生成另一台设备无法正确保存的文件。</p>
+      <ul id="folder-skipped-list"></ul>
+    </details>
+    <p id="folder-support" class="sync-help" hidden></p>
+    <fieldset id="mode-field" class="sync-modes">
+      <legend>这台设备做什么</legend>
+      <label><input type="radio" name="sync-mode" id="mode-both" value="both" checked data-no-remember>
+        <span><strong>发送和接收</strong> <span class="field-note">双向复制缺少或较新的文件。</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-send" value="send" data-no-remember>
+        <span><strong>仅发送</strong> <span class="field-note">另一台设备可以从这个文件夹复制文件，但永远不能修改它。</span></span></label>
+      <label><input type="radio" name="sync-mode" id="mode-receive" value="receive" data-no-remember>
+        <span><strong>仅接收</strong> <span class="field-note">把文件接收到这个文件夹。它的文件一个也不会发出，但文件列表仍会参与比较。</span></span></label>
+    </fieldset>
+  </section>
+
+  <div class="sync-grid" id="sync-grid" data-pairing-setup>
+    <section id="host-panel" class="sync-card" aria-labelledby="host-heading">
+      <h2 id="host-heading">发起同步</h2>
+      <p class="card-lede">在这里发起同步，再从另一台设备加入。比较文件夹之前，要先由你批准那台设备。</p>
+      <div class="sync-option">
+        <label><input type="checkbox" id="host-discoverable" aria-describedby="host-discovery-help" data-no-remember> 在可用连接中显示</label>
+        <p id="host-discovery-help" class="field-note">发起前勾选此项，邀请码就会列在上方所选的网络或私密群组中。不会列出文件夹名或文件名，加入的设备仍要由你批准。</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="host">
+          <button type="button" id="host-start" class="big">发起同步</button>
+        </div>
+        <button type="button" id="host-stop" class="big danger" hidden>停止</button>
+      </div>
+      <p id="host-status" class="sync-status" role="status" aria-live="polite">先选择文件夹，再发起同步。</p>
+      <p id="host-publication-status" class="sync-status" role="status" aria-live="polite" hidden></p>
+      {% include "partials/paired-request-sound.html" %}
+      <div role="region" id="request-panel" class="paired-requests paired-host-requests" hidden aria-labelledby="request-heading" data-pairing-requests>
+        <h3 id="request-heading">{{ ui.tool.approval_pending }}</h3>
+        <p class="paired-approval-note">{{ ui.tool.approval_session }}</p>
+        <ul id="guest-requests" class="sync-requests" aria-live="polite"></ul>
+      </div>
+      <div id="host-invitation" class="sync-invite" hidden>
+        <div class="field">
+          <label for="share-link">同步链接</label>
+          <input type="text" id="share-link" readonly spellcheck="false" dir="ltr" data-no-remember>
+        </div>
+        <div class="run-row">
+          <button type="button" id="copy-link">复制同步链接</button>
+          <span id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="sync-help">在另一台设备上打开这个链接，并保持本页开启。同一时间只能有一台设备与这台设备同步。</p>
+      </div>
+      <section id="partner-panel" hidden aria-labelledby="partner-heading">
+        <h3 id="partner-heading">同步对象</h3>
+        <ul id="partner-list" class="sync-requests"></ul>
+      </section>
+    </section>
+
+    <section id="guest-panel" class="sync-card" aria-labelledby="guest-heading">
+      <h2 id="guest-heading">加入同步</h2>
+      <p class="card-lede">使用另一台设备给出的链接或邀请码。比较文件夹之前，对方会先批准你。</p>
+      <div class="field">
+        <label for="guest-code">同步链接或邀请码</label>
+        <input type="text" id="guest-code" maxlength="2048" autocomplete="off" spellcheck="false" dir="ltr" placeholder="sync-abcdefghijklmnop" data-no-remember>
+      </div>
+      <div class="field">
+        <label for="guest-note">另一台设备认得出的备注（可选）</label>
+        <input type="text" id="guest-note" maxlength="80" autocomplete="off" placeholder="例如：我的笔记本电脑" data-no-remember>
+        <p class="field-note">你的备注会通过加密连接发给另一台设备。</p>
+      </div>
+      <div class="run-row">
+        <div class="paired-start-row" data-pairing-actions="join">
+          <button type="button" id="guest-connect" class="big">请求同步</button>
+        </div>
+        <button type="button" id="guest-stop" class="big danger" hidden>断开连接</button>
+      </div>
+      <p id="guest-status" class="sync-status" role="status" aria-live="polite">输入同步链接或邀请码即可开始。</p>
+      <button type="button" id="show-host" class="ghost" hidden>改为发起自己的同步</button>
+    </section>
+  </div>
+
+  <section id="sync-panel" class="sync-card sync-compare" aria-labelledby="sync-heading" hidden>
+    <h2 id="sync-heading">比较与同步</h2>
+    <dl class="sync-sides">
+      <div><dt>这台设备</dt><dd id="side-here"></dd></div>
+      <div><dt id="side-there-label">另一台设备</dt><dd id="side-there"></dd></div>
+    </dl>
+    <p id="sync-status" class="sync-status" role="status" aria-live="polite"></p>
+    <progress id="sync-progress" max="1" value="0" hidden aria-label="同步进度"></progress>
+    <p id="sync-summary" class="sync-summary"></p>
+    <div class="run-row">
+      <button type="button" id="sync-start" class="big">立即同步</button>
+      <button type="button" id="sync-compare">重新比较</button>
+      <button type="button" id="sync-cancel" class="danger" hidden>取消</button>
+    </div>
+    <div id="sync-results" class="sync-results" hidden>
+      <p id="sync-results-text"></p>
+      <ul id="sync-failures"></ul>
+      <button type="button" id="zip-save" hidden>将收到的文件存为 ZIP</button>
+    </div>
+    <div id="sync-table-wrap" class="sync-table-wrap" hidden>
+      <table class="sync-table" role="table">
+        <caption>两个文件夹之间的差异</caption>
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">文件</th><th scope="col" role="columnheader">这台设备</th><th scope="col" role="columnheader">另一台设备</th><th scope="col" role="columnheader">处理方式</th></tr></thead>
+        <tbody id="sync-rows" role="rowgroup"></tbody>
+      </table>
+      <p id="sync-more" class="field-note" hidden></p>
+    </div>
+  </section>
+
+  <details class="sync-details">
+    <summary>会共享哪些内容，连接如何工作</summary>
+    <p>按下“立即同步”之前，两台设备会交换文件列表，列出所选文件夹里每个文件的路径、大小和最后修改日期。两个文件大小相同、日期不同时，每台设备读取自己的副本，比较内容指纹，交换的只有指纹。</p>
+    <p>“立即同步”通过两台设备之间直接建立的加密 WebRTC 连接复制文件。不上传任何东西，也没有中转，所以两台设备必须处在能互相访问的同一网络中。引介服务 rendezvous.abox.tools 只传递让两台设备连上的准备消息。</p>
+    <p>收到的文件先写入临时副本，全部到达后才替换旧文件，所以同步被取消或中断，都不会留下写了一半的文件。任何文件都不会被删除。一侧缺少的文件会复制过去，除非你选择保持原样。</p>
+    <p>写入会把文件的日期改成今天，因为网页无法设置文件的修改日期。下次比较时，会根据内容认出这些副本相同。</p>
+  </details>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
+       One line per phrase: phrase() collapses a wrap into a space, and in
+       Chinese that space shows. -->
+  <div id="phrases" hidden>
+    <span data-phrase="folder.none">尚未选择文件夹。</span>
+    <span data-phrase="folder.reading">正在读取文件夹&hellip;已找到 {count}。</span>
+    <span data-phrase="folder.ready">{name}：{count}，{size}。</span>
+    <span data-phrase="folder.unnamed">所选文件夹</span>
+    <span data-phrase="count.file">1 个文件</span>
+    <span data-phrase="count.files">{n} 个文件</span>
+    <span data-phrase="folder.receive-only">没有文件夹。这台设备可以把另一台设备的文件接收为一个 ZIP。</span>
+    <span data-phrase="folder.too-many">这个文件夹里的文件超过 {max} 个。请选择小一些的文件夹，或者其中的某个子文件夹。</span>
+    <span data-phrase="folder.failed">无法读取这个文件夹。请重新选择，或换一个文件夹。</span>
+    <span data-phrase="folder.denied">浏览器没有打开那个文件夹。请换一个，或者再试一次。</span>
+    <span data-phrase="folder.write-denied">没有修改文件夹的权限，这台设备只能发送。要接收文件，请重新选择文件夹并允许修改。</span>
+    <span data-phrase="folder.skipped">已排除 {count} 项</span>
+    <span data-phrase="folder.skipped-more">另有 {count} 项</span>
+    <span data-phrase="support.zip">这个浏览器无法写入文件夹，所以这台设备收到的文件会存成一个 ZIP，由你自己解压，上限 {limit}。</span>
+    <span data-phrase="support.none">这个浏览器无法打开文件夹，但仍可以把另一台设备的文件接收为一个 ZIP，上限 {limit}。</span>
+    <span data-phrase="skip.system">系统文件</span>
+    <span data-phrase="skip.temporary">临时副本或锁文件</span>
+    <span data-phrase="skip.name">Windows、macOS 或 Linux 无法保存的名称</span>
+    <span data-phrase="skip.deep">文件夹嵌套过深</span>
+    <span data-phrase="skip.long">路径过长</span>
+    <span data-phrase="skip.unreadable">无法读取</span>
+    <span data-phrase="skip.duplicate">与另一个名称在合成重音字母后相同</span>
+    <span data-phrase="skip.item">{path}（{reason}）</span>
+    <span data-phrase="host.ready">先选择文件夹，再发起同步。</span>
+    <span data-phrase="host.need-folder">请先选择这台设备上的文件夹。</span>
+    <span data-phrase="host.waiting">正在等待另一台设备。请在那台设备上打开同步链接，再在这里批准它的请求。</span>
+    <span data-phrase="host.approved">已批准。正在连接两个文件夹&hellip;</span>
+    <span data-phrase="host.linked">已连接。请在下方比较两个文件夹。</span>
+    <span data-phrase="host.lost">另一台设备已断开。它可以用同一个链接重新加入。</span>
+    <span data-phrase="host.stopped">同步已停止，连接已关闭。</span>
+    <span data-phrase="host.unnamed">未留备注的设备</span>
+    <span data-phrase="host.approve">批准</span>
+    <span data-phrase="host.deny">拒绝</span>
+    <span data-phrase="host.disconnect">断开连接</span>
+    <span data-phrase="host.partner-linked">已连接</span>
+    <span data-phrase="host.partner-connecting">正在连接</span>
+    <span data-phrase="approval.limit">本次会话无法再保存新的批准。请停止，再发起新的同步，才能批准另一台设备。</span>
+    <span data-phrase="guest.ready">输入同步链接或邀请码即可开始。</span>
+    <span data-phrase="guest.folder-first">请先选择这台设备上的文件夹，再请求同步。</span>
+    <span data-phrase="guest.waiting">请求已送达另一台设备，正在等待批准。两个文件夹的任何信息都还没有发送。</span>
+    <span data-phrase="guest.linked">已获批准。请在下方比较两个文件夹。</span>
+    <span data-phrase="guest.denied">另一台设备拒绝了你的请求。请先与那台设备的使用者确认，再重试。</span>
+    <span data-phrase="code.invalid">请输入本工具生成的完整同步链接或邀请码。</span>
+    <span data-phrase="discovery.idle">选择“查找连接”，查看其他设备上发起的同步。</span>
+    <span data-phrase="discovery.connecting">正在查找其他设备上的同步&hellip;</span>
+    <span data-phrase="discovery.found">先与另一台设备核对邀请码，再加入。</span>
+    <span data-phrase="discovery.empty">这个网络或群组里没有找到同步。请让另一台设备在发起前勾选“在可用连接中显示”，或者使用它的链接。</span>
+    <span data-phrase="discovery.unavailable">连接发现暂不可用。你仍可使用另一台设备的同步链接。</span>
+    <span data-phrase="discovery.join">加入</span>
+    <span data-phrase="discovery.join-direct">加入 {code}</span>
+    <span data-phrase="discovery.publishing">正在把你的邀请列入可用连接&hellip;</span>
+    <span data-phrase="discovery.published">你的邀请已列在所选网络或私密群组中。加入的设备仍要由你批准。</span>
+    <span data-phrase="discovery.not-published">你的邀请尚未列出。你仍可使用同步链接。</span>
+    <span data-phrase="connection.starting">正在连接引介服务&hellip;</span>
+    <span data-phrase="connection.connecting">正在连接另一台设备&hellip;</span>
+    <span data-phrase="connection.server-failed">无法连接引介服务。请检查互联网连接后重试。</span>
+    <span data-phrase="connection.not-found">这个同步已不再开放。请索取新的同步链接。</span>
+    <span data-phrase="connection.taken">这个邀请码已被占用。请停止，再发起新的同步。</span>
+    <span data-phrase="connection.busy">另一台设备正在与别的设备同步，或者等待中的请求太多。</span>
+    <span data-phrase="connection.ended">另一台设备结束了这次同步。请让它发起新的同步。</span>
+    <span data-phrase="connection.invalid">另一台设备发来了本页无法识别的内容。请重新加载两边的页面，再从头开始。</span>
+    <span data-phrase="connection.direct-failed">两台设备无法直接互通。请把它们连到同一个 Wi-Fi、以太网或热点，并检查访客网络隔离、防火墙和 VPN。</span>
+    <span data-phrase="connection.lost">与另一台设备的连接已中断。已完整收到的文件都已保留。</span>
+    <span data-phrase="connection.stopped">已断开连接。</span>
+    <span data-phrase="connection.unsupported">本页需要受信任的 HTTPS 连接和支持 WebRTC 的浏览器。</span>
+    <span data-phrase="copy.done">已复制。</span>
+    <span data-phrase="copy.manual">请选中上面的文字并复制。</span>
+    <span data-phrase="side.folder">{name}：{count}，{size}。</span>
+    <span data-phrase="side.zip">{name}：{count}，{size}。收到的文件存为 ZIP。</span>
+    <span data-phrase="side.none">没有文件夹。收到的文件存为 ZIP。</span>
+    <span data-phrase="side.waiting">正在等待对方的文件列表&hellip;</span>
+    <span data-phrase="side.mode.both">发送和接收。</span>
+    <span data-phrase="side.mode.send">仅发送。</span>
+    <span data-phrase="side.mode.receive">仅接收。</span>
+    <span data-phrase="side.summary">{folder}{mode}</span>
+    <span data-phrase="side.there">另一台设备：{note}</span>
+    <span data-phrase="side.other">另一台设备</span>
+    <span data-phrase="sync.listing">正在读取两个文件夹&hellip;</span>
+    <span data-phrase="sync.checking">正在比较大小相同、日期不同的文件内容，已完成 {done} 个，共 {total} 个。</span>
+    <span data-phrase="sync.same">两个文件夹里的文件完全相同。</span>
+    <span data-phrase="sync.review">检查每个文件的处理方式，然后选择“立即同步”。不会删除任何文件。</span>
+    <span data-phrase="sync.idle">两个文件夹有差异，但没有设置要传输的文件。在列表中为文件选择处理方式，即可同步。</span>
+    <span data-phrase="sync.blocked">能同步的文件都已一致。下面列出的文件按现状无法同步，每一行都写明了原因。</span>
+    <span data-phrase="sync.asking">正在等待另一台设备接受&hellip;</span>
+    <span data-phrase="sync.syncing">正在同步：已接收 {received}（共 {receiveTotal}），已发送 {sent}（共 {sendTotal}）。</span>
+    <span data-phrase="sync.summary">待发送：{send} 个（{sendSize}）。待接收：{receive} 个（{receiveSize}）。保持原样：{skip} 个。已经相同：{same} 个。</span>
+    <span data-phrase="sync.more">共 {total} 处差异，这里只显示前 {shown} 处。其余的按各自类型的默认方式处理。</span>
+    <span data-phrase="sync.done">同步完成。这台设备收到 {copied} 个，另一台设备收到 {delivered} 个，未复制 {failed} 个。</span>
+    <span data-phrase="sync.cancelled">同步已取消。已完整收到的文件都已保留，没有留下写了一半的文件。</span>
+    <span data-phrase="sync.failed">连接失败，同步已停止。已完整收到的文件都已保留，没有留下写了一半的文件。</span>
+    <span data-phrase="sync.permission">本页需要你允许修改文件夹，才能接收文件。</span>
+    <span data-phrase="refused.busy">另一台设备正忙。请再次选择“立即同步”。</span>
+    <span data-phrase="refused.stale">有一个文件夹发生了变化。比较结果已经更新，请检查后再同步。</span>
+    <span data-phrase="refused.permission">另一台设备需要修改其文件夹的权限。请在那台设备上重新选择文件夹并允许修改。</span>
+    <span data-phrase="refused.invalid">另一台设备拒绝了这份同步计划。请重新比较，然后再同步。</span>
+    <span data-phrase="error.rescan">无法再次读取这个文件夹。请重新选择它，才能继续比较。</span>
+    <span data-phrase="kind.only-here">仅在这台设备上</span>
+    <span data-phrase="kind.only-there">仅在另一台设备上</span>
+    <span data-phrase="kind.newer-here">这台设备上的版本较新</span>
+    <span data-phrase="kind.newer-there">另一台设备上的版本较新</span>
+    <span data-phrase="kind.conflict">内容不同，日期相同</span>
+    <span data-phrase="kind.case">名称只有大小写不同</span>
+    <span data-phrase="action.send">发送过去</span>
+    <span data-phrase="action.send-replace">发送过去，替换对方的副本</span>
+    <span data-phrase="action.receive">复制到这里</span>
+    <span data-phrase="action.receive-replace">复制到这里，替换这边的副本</span>
+    <span data-phrase="action.skip">保持原样</span>
+    <span data-phrase="row.action">{path} 的处理方式</span>
+    <span data-phrase="row.absent">无此文件</span>
+    <span data-phrase="row.detail">{size}，{date}</span>
+    <span data-phrase="reason.refused">另一台设备没有发送</span>
+    <span data-phrase="reason.changed">比较之后文件又有改动，请重新比较以复制新版本</span>
+    <span data-phrase="reason.missing">另一个文件夹里已经没有这个文件</span>
+    <span data-phrase="reason.unreadable">另一台设备无法读取</span>
+    <span data-phrase="reason.write">无法写入这台设备</span>
+    <span data-phrase="reason.limit">ZIP 已达到大小上限</span>
+    <span data-phrase="failure.item">{path}：{reason}</span>
+    <span data-phrase="zip.save">将收到的文件存为 ZIP（{size}）</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="net.clean">已检查 {total} 个页面资源。连接准备和加密文件传输已在上文说明，这份资源列表不检查 WebRTC 流量。{platform}</span>
+    <span data-phrase="net.dirty">出现了意料之外的资源主机：{hosts}。WebRTC 流量不在这项资源检查之内。{platform}</span>
+  </div>
+  {% include "partials/paired-approval-prompt.html" %}
+</main>

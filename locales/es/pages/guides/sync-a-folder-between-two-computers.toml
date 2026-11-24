@@ -1,0 +1,21 @@
+#
+# Guía: sincronizar una carpeta entre dos equipos - Spanish.
+#
+# "Equipo" for the English "computer", as the tool's own description has it:
+# it names a desktop or a laptop on both sides of the Atlantic without
+# choosing between "ordenador" and "computadora". "Dispositivo" stays for what
+# the English calls a device, which is also what the tool's labels say.
+#
+
+nav = "Sincronizar una carpeta entre dos equipos"
+title = "Cómo sincronizar una carpeta entre dos equipos sin la nube"
+description = "Mantén una carpeta igual en dos equipos: compara ambas versiones en el navegador y copia los archivos directamente por tu red. Sin subidas, sin cuenta y sin borrar nada."
+
+heading = "Cómo sincronizar una carpeta entre dos equipos sin la nube"
+lede = "Dos equipos y una carpeta que debería contener los mismos archivos en ambos. Abre Sincronizar carpetas en cada uno, elige la carpeta, aprueba el otro equipo y lee la comparación antes de que se mueva nada. Los archivos viajan directamente entre los dos navegadores por tu propia red, y nunca se borra nada."
+
+updated = "19 de noviembre de 2026"
+
+og_title = "Sincroniza una carpeta entre dos equipos, sin nube de por medio"
+og_description = "Compara una carpeta en dos equipos y copia lo que falta o es más reciente directamente por tu red. Sin subidas y sin borrar nada."
+og_image_alt = "abox.tools - sincronizar una carpeta entre dos equipos"

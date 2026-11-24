@@ -88,6 +88,10 @@ BASELINE = {
     'edit-audio': 2,
     'exif-editor': 20,
     'extract-audio-from-video': 0,
+    # None is a sentence: the prefix of a file lane's channel name, the random
+    # invitation-code template and a fingerprint cache key. Every word the
+    # page shows comes from #phrases.
+    'folder-sync': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
     'gif-to-mp4': 0,

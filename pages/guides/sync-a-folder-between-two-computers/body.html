@@ -1,0 +1,139 @@
+  <section>
+    <h2>Choose the folder on each computer</h2>
+    <p>
+      Open <a href="../../folder-sync/">Folder Sync</a> on both computers.
+      Chrome, Edge and most other Chromium browsers on a computer can both read
+      a folder and write into it, which is what a sync in both directions needs.
+      Put both computers on the same Wi-Fi, Ethernet or phone hotspot, and keep
+      internet access available: the browsers need it to find each other,
+      although the files never pass through the internet.
+    </p>
+    <p>
+      On each computer choose <em>Choose a folder</em> and pick the folder to
+      keep in step. When the browser asks whether the page may change the
+      folder, allow it on a computer that should receive files. Then choose
+      what that computer does: <em>Send and receive</em>, <em>Send only</em>
+      so the other computer can copy from this folder but never change it, or
+      <em>Receive only</em>. Each computer enforces its own choice, whatever the
+      other one asks for.
+    </p>
+    <p>
+      Some files are never synced, and the page lists them under the folder:
+      system litter such as <code>Thumbs.db</code> and <code>.DS_Store</code>,
+      temporary copies and lock files, and names that one of Windows, macOS or
+      Linux cannot store, such as a name containing a colon. Copying those
+      would create files the other computer mangles or misreads.
+    </p>
+  </section>
+
+  <section>
+    <h2>Start on one computer and join from the other</h2>
+    <p>
+      On the first computer choose <em>Start a sync</em> and copy the sync
+      link. Open it on the second computer, add a note if you like, and choose
+      <em>Request to sync</em>. Approve the request on the first computer.
+      Nothing about either folder is sent before that approval; until then the
+      two browsers have exchanged only what it takes to connect.
+    </p>
+    <p>
+      If copying a link between the two computers is awkward, check <em>Show in
+      Available connections</em> on the first computer before starting. The
+      second computer chooses <em>Find connections</em> and then
+      <em>Join</em> beside the matching code. Only the random invitation code
+      is listed, never a folder or file name, and the approval still applies.
+    </p>
+  </section>
+
+  <section>
+    <h2>Read the comparison before you sync</h2>
+    <p>
+      Once approved, each computer sends the other the path, size and date of
+      every file in its folder, and both show the same list of differences
+      from their own side. A file only on one computer is copied to the
+      other. A file on both but changed on one is replaced by the newer copy.
+      Two files with the same size but different dates are compared by their
+      contents first, so identical copies are not sent again.
+    </p>
+    <p>
+      Two rows are always left alone until you decide. A file that differs on
+      both computers under exactly the same date has no newer copy, so neither
+      is chosen for you. Names that differ only in capital letters, such as
+      <code>README.md</code> and <code>Readme.md</code>, are one file on
+      Windows and a Mac, so copying either could overwrite the other; rename
+      one and compare again.
+    </p>
+    <p>
+      Every other row shows its default in a menu you can change: send it,
+      copy it here, or leave it alone. The totals above the list follow your
+      choices. When it looks right, choose <em>Sync now</em> on either
+      computer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nothing is deleted, on purpose</h2>
+    <p>
+      If you deleted a file on one computer, the comparison sees a file that
+      exists only on the other, and offers to copy it back. Without a record
+      of the last sync there is no way to tell a deleted file from a new one,
+      and guessing wrong would destroy work. Set that row to <em>Leave it
+      alone</em>, or delete the file on both computers before you sync.
+    </p>
+    <p>
+      A replaced file is written to a temporary copy first and takes the old
+      file's place only once all of it has arrived. Cancel a sync, close a
+      page or lose the connection and every file is either the old version or
+      the new one, never half of each. Files that finished before the
+      interruption are kept.
+    </p>
+  </section>
+
+  <section>
+    <h2>What crosses the network</h2>
+    <p>
+      The file lists, the content fingerprints and the files themselves travel
+      an encrypted WebRTC connection made directly between the two browsers.
+      There is no relay and no upload, which is also why the computers need a
+      network on which they can reach each other. The introduction service,
+      <code>rendezvous.abox.tools</code>, sees the setup messages that connect
+      the browsers, including their IP addresses and the invitation code, but
+      not a single file name.
+    </p>
+    <p>
+      The other computer does see the name, size and date of every file in
+      your chosen folder, including files that will not be copied. Choose the
+      folder you mean to share, rather than the one above it.
+    </p>
+  </section>
+
+  <section>
+    <h2>When a browser cannot write into a folder</h2>
+    <p>
+      Firefox and Safari can choose a folder to send from but cannot write
+      into one. Files they receive are collected into a single ZIP, up to
+      512&nbsp;MB, which you save and unpack over the folder yourself. A
+      browser that cannot choose a folder at all, as on most phones, can still
+      receive the other computer's files as a ZIP.
+    </p>
+  </section>
+
+  <section>
+    <h2>If the computers cannot connect</h2>
+    <p>
+      Check that both are on the same network and that it lets devices reach
+      each other. Guest Wi-Fi often isolates its devices, and firewalls, VPNs
+      and managed work computers can block direct connections. A phone hotspot
+      that both computers join is a quick way to rule the network out.
+    </p>
+  </section>
+
+  <section>
+    <h2>Syncing again later</h2>
+    <p>
+      Keep both pages open and choose <em>Compare again</em> whenever the
+      folders have changed, or stop and start a new sync another day. A web
+      page cannot set the date a file was changed, so received files carry the
+      date they were written. The next comparison checks their contents and
+      treats identical copies as already in step.
+    </p>
+  </section>

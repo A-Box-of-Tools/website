@@ -1,0 +1,255 @@
+#
+# Sincronizar carpetas - Spanish.
+#
+# Overrides for tools/folder-sync/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon, the shared parts and the
+# CSP stay where they are.
+#
+# The name is plural because "sincronizar carpetas" is what Spanish search
+# types, and because what the page keeps in step is two folders, one on each
+# device. Every control is named exactly as body.html labels it, since the
+# steps and the answers send the reader looking for it. The description's
+# "computers" is "equipos", which keeps "ordenador" and "computadora" out of
+# the page as the house style asks.
+#
+
+name = "Sincronizar carpetas"
+heading = "Sincronizar carpetas <span class=\"h1-kw\">&mdash; mantén una carpeta igual en dos dispositivos</span>"
+tagline = "Elige una carpeta en cada dispositivo, revisa cada diferencia y copia lo que falta o es más reciente directamente entre los dos navegadores de tu red. No se sube nada y nunca se borra nada."
+
+title = "Sincronizar una carpeta entre dos dispositivos &mdash; de navegador a navegador, sin subir nada"
+description = "Mantén una carpeta igual en dos equipos. Compara las dos carpetas, revisa cada cambio y copia los archivos directamente entre los navegadores de tu red. Sin subidas, sin cuenta y sin borrar nada."
+og_title = "Mantén una carpeta igual en dos dispositivos"
+og_description = "Compara dos carpetas y copia lo que falta o es más reciente, directamente entre los navegadores de tu red. Sin subidas, sin cuenta y sin borrar nada."
+og_image_alt = "Sincronizar carpetas: mantén una carpeta igual en dos dispositivos"
+
+pledge = """
+    Tú eliges una carpeta en cada dispositivo y apruebas el dispositivo que se
+    une. Después, los dos navegadores comparan los nombres, los tamaños y las
+    fechas de los archivos mediante una conexión cifrada establecida
+    directamente entre ellos, y copian los archivos que aceptes, sin ningún
+    servidor de por medio. No hay retransmisor, así que los dos dispositivos
+    tienen que compartir una red en la que puedan comunicarse entre sí. El
+    emparejamiento usa un servicio de presentación en internet que ve los
+    metadatos de preparación, nunca un archivo, un nombre de archivo ni la
+    comparación. Un archivo recibido solo reemplaza al antiguo cuando ha
+    llegado entero, y nunca se borra nada. Detén la sincronización, o cierra
+    cualquiera de las dos páginas, para terminar la sesión."""
+pledge_line = "Los archivos viajan <strong>directamente entre tus dos dispositivos</strong>, cifrados. No se sube nada; un servicio de presentación conecta los navegadores."
+md_note = "Comparación de carpetas y copia de archivos directamente entre dos navegadores aprobados, con cifrado y sin retransmisor. Las presentaciones por internet llevan metadatos de preparación, nunca archivos, nombres de archivo ni listados. Nunca se borra nada."
+live_hint = """
+      Las herramientas de desarrollo muestran un WebSocket al servicio de
+      presentación, por el que pasan los mensajes que presentan a los
+      navegadores. Marcar Mostrar en Conexiones disponibles o pulsar Buscar
+      conexiones abre otro WebSocket, aparte, para la búsqueda. Las listas de
+      archivos y los archivos viajan por WebRTC cifrado directamente entre los
+      dispositivos. Ni la pestaña Red ni la CSP inspeccionan por sí solas ese
+      tráfico entre pares. El marco del sitio carga sus recursos de terceros
+      habituales."""
+read_first = """
+, <code>src/plan.js</code> para ver cómo dos listados se convierten en la
+      lista de diferencias y por qué no se borra nada,
+      <code>src/transfer.js</code> para la transferencia con acuses de recibo
+      que no carga en memoria un archivo grande entero,
+      <code>src/folder.js</code> para las escrituras que solo reemplazan un
+      archivo cuando está completo, y <code>src/session.js</code> para la
+      aprobación que precede a cualquier comparación de las carpetas. El
+      servicio de presentación está publicado junto a la herramienta, en
+      <code>workers/rendezvous/</code>."""
+howto_heading = "Cómo sincronizar una carpeta entre dos dispositivos"
+card = "Compara una carpeta en dos dispositivos y copia lo que falta o es más reciente, directamente entre los navegadores de tu red. Sin subir nada y sin borrar nada."
+
+[words]
+plural = "carpetas y archivos"
+choose = "una carpeta"
+
+[[facts]]
+text = "Aprobación obligatoria"
+[[facts]]
+text = "Cifrado, de dispositivo a dispositivo"
+[[facts]]
+text = "Sin subidas"
+[[facts]]
+text = "Sin retransmisor"
+[[facts]]
+text = "Nunca borra nada"
+
+[[privacy]]
+title = "Tú eliges las carpetas y después apruebas el dispositivo."
+body = """
+      Cada dispositivo elige su propia carpeta en el selector del propio
+      navegador, y esta página no puede acceder a nada fuera de ella. El
+      dispositivo que inicia la sincronización aprueba el dispositivo que se
+      une antes de que se envíe nada sobre ninguna de las dos carpetas: la
+      primera conexión entre pares solo lleva un canal de control cifrado y la
+      solicitud del dispositivo que se une, con una nota opcional. Una nota es
+      un texto que elige quien la escribe, no una identidad verificada. Solo
+      un dispositivo a la vez puede sincronizarse con el anfitrión, con hasta
+      cuatro solicitudes en espera. El navegador que se une guarda en local un
+      comprobante aleatorio de aprobación y solo lo presenta por el canal
+      cifrado entre pares, para poder volver a conectarse a la misma sesión
+      sin otra aprobación. Detener la sincronización, o desconectar ese
+      dispositivo, lo revoca."""
+[[privacy]]
+title = "El otro dispositivo ve tu lista de archivos y los archivos que sincronizas."
+body = """
+      Tras la aprobación, cada dispositivo envía al otro la ruta, el tamaño y
+      la fecha de última modificación de cada archivo de la carpeta elegida,
+      para que se puedan comparar las dos carpetas. Eso incluye los archivos
+      que no se van a copiar. Cuando dos archivos tienen el mismo tamaño pero fechas
+      distintas, cada dispositivo lee su propia copia y envía una huella de su
+      contenido, no el contenido. Los archivos en sí solo se envían cuando se
+      pulsa Sincronizar ahora, y solo los del plan que permiten los ajustes de
+      los dos dispositivos. Un dispositivo en Solo enviar no acepta ningún
+      archivo; uno en Solo recibir no envía ninguno. El otro dispositivo se
+      queda con todo lo que recibe."""
+[[privacy]]
+title = "Los archivos pasan directamente entre los dispositivos, cifrados."
+body = """
+      Los listados, las huellas y los archivos viajan por una conexión WebRTC
+      cifrada establecida directamente entre los dos navegadores. Solo se
+      aceptan direcciones de conexión de host, no se configura ningún servidor
+      STUN público y no hay retransmisor, así que nada pasa por un servidor
+      por el camino. Los dos dispositivos necesitan una red en la que puedan
+      comunicarse entre sí: la misma red Wi-Fi o Ethernet, o el mismo punto de
+      acceso del teléfono. El aislamiento de las redes de invitados, los
+      cortafuegos, las rutas VPN y los permisos de red local del navegador
+      pueden impedir la conexión. Las direcciones de host pueden incluir
+      interfaces públicas o seguir una ruta VPN, así que esto no demuestra que
+      el tráfico permanezca dentro de un edificio."""
+[[privacy]]
+title = "El emparejamiento expone metadatos de preparación al servicio de presentación."
+body = """
+      Iniciar una sincronización o unirse a ella abre un WebSocket a
+      <code>rendezvous.abox.tools</code>. El servicio ve el código aleatorio
+      de la sala, las direcciones IP, las horas de conexión, las descripciones
+      WebRTC y los candidatos ICE; estos mensajes de preparación no quedan
+      ocultos para él. Los nombres de archivo, los listados, las huellas, los
+      archivos, las notas y las decisiones de aprobación viajan por la
+      conexión cifrada entre pares. No se escribe en almacenamiento ningún
+      contenido de las salas. Cloudflare, que ejecuta el servicio, guarda
+      durante siete días registros de conexión con metadatos de las
+      solicitudes, como el código, la dirección y la hora. Hace falta internet
+      para la búsqueda y para preparar la conexión."""
+[[privacy]]
+title = "La búsqueda es opcional y solo muestra el código de invitación."
+body = """
+      Mostrar en Conexiones disponibles está desactivado de forma
+      predeterminada. Márcalo antes de empezar para publicar el código
+      aleatorio de invitación; el ajuste queda fijo hasta que detengas la
+      sincronización. Otro dispositivo pulsa Buscar conexiones para verlo. No
+      se muestra ningún nombre de carpeta, nombre de archivo ni número de
+      archivos. El servicio agrupa las páginas de esta herramienta por
+      dirección IPv4 pública o subred IPv6 /64 y por origen del sitio web, así
+      que las pasarelas compartidas de un operador o las VPN pueden incluir a
+      desconocidos, y las rutas distintas pueden ocultar dispositivos
+      cercanos. Un grupo privado, en cambio, usa el mismo código aleatorio de
+      grupo en cada dispositivo; el servicio recibe el código para autenticar
+      ese directorio, y esta herramienta ni lo guarda ni lo pone en los
+      enlaces de sincronización. Cualquiera con el código del grupo puede ver
+      las sesiones de la lista, y la aprobación sigue siendo necesaria."""
+[[privacy]]
+title = "Cada escritura se completa o no se hace, y no se borra nada."
+body = """
+      Un archivo recibido se escribe en una copia temporal a su lado, y solo
+      reemplaza al antiguo cuando ha llegado hasta el último byte, así que una
+      sincronización cancelada o interrumpida no deja ningún archivo a medio
+      escribir. Un archivo que no existía antes de una escritura interrumpida
+      se vuelve a quitar. Nunca se borra nada de ninguna de las dos carpetas.
+      Al escribirse, un archivo toma la fecha de hoy, porque una página web no
+      puede fijar la fecha en que se modificó un archivo. En los navegadores
+      que no pueden escribir en una carpeta, los archivos recibidos se reúnen
+      en la memoria de esta página y se guardan como un solo ZIP cuando
+      decides guardarlo."""
+[[privacy]]
+title = "Las invitaciones son visibles para los scripts de la página."
+body = """
+      Cada sesión usa un enlace aleatorio nuevo. Tenerlo permite intentar una
+      conexión, y la aprobación sigue controlando lo que pasa después. Esta
+      página carga los scripts de publicidad y medición de Google habituales
+      en el sitio. La herramienta no les pasa deliberadamente nombres de
+      archivo, listados ni archivos, pero los scripts que se ejecutan en la
+      página pueden leer su dirección y el estado de la propia página,
+      incluido el código de un enlace. Considera la solicitud del dispositivo
+      que esperas y tu aprobación como el paso de admisión."""
+
+[[howto]]
+title = "Abre esta herramienta en los dos dispositivos."
+body = """
+      Para que una carpeta pueda enviar y recibir, usa Chrome, Edge o la
+      mayoría de los demás navegadores Chromium en un equipo de escritorio o
+      portátil. Firefox y Safari pueden enviar una carpeta y recibir en un
+      ZIP. Conecta los dos dispositivos a la misma red Wi-Fi o Ethernet, o al
+      mismo punto de acceso del teléfono, y mantén internet disponible para la
+      presentación."""
+[[howto]]
+title = "Elige la carpeta en cada dispositivo."
+body = """
+      Elige una carpeta y, si este dispositivo debe recibir archivos, permite
+      que el navegador la modifique. Decide qué hace cada dispositivo:
+      Enviar y recibir, Solo enviar o Solo recibir. Los archivos del sistema,
+      las copias temporales y los nombres que no admite alguno de los sistemas
+      Windows, macOS o Linux se dejan fuera y aparecen en una lista."""
+[[howto]]
+title = "Inicia en un dispositivo y únete desde el otro."
+body = """
+      Pulsa Iniciar una sincronización y abre el enlace de sincronización en
+      el otro dispositivo. Si mostraste la sincronización en Conexiones
+      disponibles, en el otro dispositivo también puedes pulsar Buscar
+      conexiones y después Unirse. Aprueba la solicitud que reconozcas; no se
+      envía nada de ninguna de las dos carpetas hasta que lo hagas."""
+[[howto]]
+title = "Revisa la comparación."
+body = """
+      Los dos dispositivos muestran cada diferencia: archivos que solo están
+      en un lado, archivos más recientes en un lado y archivos distintos con
+      la misma fecha. Cada fila muestra la opción predeterminada, que puedes
+      cambiar: enviarlo, copiarlo aquí o dejarlo como está. No se borra nada,
+      así que un archivo que eliminaste a propósito debe dejarse como está o
+      eliminarse en los dos dispositivos."""
+[[howto]]
+title = "Sincroniza y vuelve a comparar más adelante."
+body = """
+      Pulsa Sincronizar ahora en cualquiera de los dos dispositivos. Los dos
+      muestran el progreso, y un archivo solo reemplaza a su copia anterior
+      cuando ha llegado entero. Después, las dos carpetas se vuelven a leer y
+      a comparar. Mantén las dos páginas abiertas para volver a sincronizar
+      más adelante, o detén la sesión e inicia una nueva cuando la necesites."""
+
+[[faq]]
+q = "¿Se suben mis archivos a algún sitio?"
+a = "No. Los archivos, los nombres de archivo y los listados de las carpetas viajan por una conexión cifrada establecida directamente entre tus dos navegadores, y no hay retransmisor. El servicio de presentación que conecta los navegadores ve metadatos de preparación, como el código de la sala y las direcciones IP, nunca lo que hay en ninguna de las dos carpetas."
+[[faq]]
+q = "¿Borra los archivos que borré en el otro dispositivo?"
+a = "No, nunca. Sin un registro de la última sincronización, un archivo que falta en un dispositivo se ve exactamente igual que un archivo nuevo en el otro, y adivinar mal destruiría el trabajo de alguien. Cuando a un lado le falta un archivo, se le ofrece una copia; elige Dejarlo como está en su fila, o borra el archivo en los dos dispositivos."
+[[faq]]
+q = "¿Qué copia gana cuando un archivo cambió en los dos dispositivos?"
+a = "De forma predeterminada, la copia con la fecha de modificación más reciente reemplaza a la más antigua, y la fila indica en qué sentido va. Puedes cambiar cualquier fila antes de sincronizar. Dos copias distintas con exactamente la misma fecha se dejan como están hasta que elijas. Los archivos con el mismo tamaño y fechas distintas se comparan primero por su contenido, así que las copias idénticas nunca se vuelven a enviar."
+[[faq]]
+q = "¿Qué navegadores pueden usarla?"
+a = "Chrome, Edge y la mayoría de los demás navegadores Chromium en un equipo de escritorio o portátil pueden leer una carpeta y escribir en ella. Firefox y Safari pueden elegir una carpeta desde la que enviar, y recibir los archivos en un ZIP de hasta 512 MB que descomprimes por tu cuenta. Un navegador que no puede elegir carpetas en absoluto, como en la mayoría de los teléfonos, solo puede recibir en un ZIP."
+[[faq]]
+q = "¿Los dos dispositivos tienen que estar en la misma red?"
+a = "Sí. Los archivos pasan directamente entre los dispositivos, así que necesitan una red en la que puedan comunicarse entre sí: la misma red Wi-Fi o Ethernet, o el mismo punto de acceso del teléfono. Los dos necesitan además internet para la presentación. Las redes de invitados, el aislamiento de clientes, los cortafuegos y las VPN pueden bloquear la conexión. No hay retransmisor para dispositivos en redes distintas."
+[[faq]]
+q = "¿Puede otra persona unirse a mi sincronización?"
+a = "Solo con tu aprobación. Un enlace de sincronización o un código de invitación de la lista permiten que un dispositivo pida unirse, y tú apruebas o rechazas cada solicitud antes de que se envíe nada sobre tu carpeta. Solo un dispositivo a la vez puede sincronizarse con el tuyo. La nota de una solicitud es un texto que elige quien la envía, así que asegúrate de reconocer el dispositivo y el momento antes de aprobarla."
+[[faq]]
+q = "¿Puedo impedir que el otro dispositivo cambie mi carpeta?"
+a = "Sí. Elige Solo enviar en este dispositivo antes de empezar: el otro dispositivo puede copiar archivos de tu carpeta, pero no escribir en ella, y esta página rechaza cualquier plan que intente hacerlo. Solo recibir funciona al revés: entran archivos y no se envía ninguno de los tuyos, aunque tu lista de archivos sí se compara."
+[[faq]]
+q = "¿Qué pasa si la conexión se corta a mitad de la sincronización?"
+a = "Los archivos que llegaron completos se conservan. Un archivo que aún estaba en camino se descarta, y su copia anterior, si la había, queda exactamente como estaba, porque un archivo recibido solo reemplaza al antiguo cuando ha llegado hasta el último byte. Vuelve a conectar y compara: el siguiente plan recoge lo que todavía falta."
+[[faq]]
+q = "¿Por qué los archivos sincronizados muestran la fecha de hoy?"
+a = "Una página web puede escribir el contenido de un archivo, pero no puede fijar la fecha de su última modificación, así que un archivo recibido lleva la fecha en que se escribió. La siguiente comparación revisa el contenido de los archivos que coinciden en tamaño pero no en fecha, y trata las copias idénticas como ya sincronizadas."
+[[faq]]
+q = "¿Hay un límite de tamaño para la carpeta?"
+a = "Cada carpeta puede contener hasta 50.000 archivos. Al escribir en una carpeta, cada archivo se va guardando en el disco a medida que llega, así que los archivos grandes no son un problema. Recibir en un ZIP mantiene los archivos en memoria y se detiene en 512 MB. Las rutas muy profundas o muy largas, y los nombres que no admite alguno de los sistemas Windows, macOS o Linux, se dejan fuera y aparecen en una lista."
+[[faq]]
+q = "¿Qué llega a saber el servicio de presentación?"
+a = "El servicio de presentación ve el código de invitación, las direcciones IP, las horas de conexión, y las descripciones y los candidatos WebRTC. Si el anfitrión activa Mostrar en Conexiones disponibles, la red o el grupo privado que tenga seleccionado puede ver el código aleatorio de invitación. Los códigos de los grupos privados se envían al servicio para autenticar su directorio; los enlaces de sincronización no los incluyen. Cloudflare conserva durante siete días los metadatos de las solicitudes de presentación. Los nombres de archivo, los listados, las huellas, los archivos, las notas y las aprobaciones usan la conexión cifrada entre pares."
+
+[schema]
+description = "Compara una carpeta en dos dispositivos y copia los archivos que faltan o son más recientes directamente entre los navegadores, por una conexión WebRTC cifrada, con aprobación y sin subidas."
+features = ["Compara dos carpetas por ruta, tamaño, fecha y huella del contenido", "Revisa y cambia la acción de cada archivo antes de sincronizar", "Transferencia cifrada directamente entre los dos navegadores, sin retransmisor", "Aprobación obligatoria del dispositivo que se une", "Modos Solo enviar y Solo recibir aplicados en cada dispositivo", "Los archivos recibidos solo reemplazan las copias antiguas cuando están completos", "Nunca borra un archivo", "Recepción en un ZIP en los navegadores que no pueden escribir en carpetas"]

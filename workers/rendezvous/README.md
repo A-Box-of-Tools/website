@@ -1,7 +1,8 @@
 # The rendezvous
 
-The one server component anything on this site has. `/share-text/`, `/share-tab/`,
-`/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect browsers over WebRTC.
+The one server component anything on this site has. `/share-text/`, `/folder-sync/`,
+`/share-tab/`, `/remote-camera/`, `/walkie-talkie/`, and `/voice-oncall/` connect
+browsers over WebRTC.
 Direct is the default. An explicit Cloud relay option routes encrypted peer
 traffic through Cloudflare TURN, using short-lived credentials from this Worker.
 Text and files, tab video, camera frames, and voice stay on the peer connection. A direct
@@ -160,6 +161,21 @@ The page uses the same verified nearby listing and online signaling as Camera.
 Direct uses host-only ICE without public STUN or TURN; Cloud relay requests
 credentials through the shared protocol below. Approval and acknowledgement stay
 on the encrypted control channel; the worker carries neither them nor video.
+
+### The folder-sync namespace
+
+Folder Sync uses the same room protocol with `tool=folder-sync`, and its
+`folder-sync:<code>` rooms stay apart from every other tool's in the same way.
+It is Direct only: the page never asks for a relay room, and `relay.js` leaves
+the slug out of its own allowlist, so a relay request for it is refused with
+4413 like any tool a deployment has not enabled. A relay would forward whole
+folders, which is a different cost from a few kilobytes of text or a picture.
+File lists, fingerprints and files travel the encrypted peer connection after
+the host's approval; the worker carries none of them.
+
+As with the tab namespace, deploy this allowlist update before publishing the
+static page. It adds no class, binding, migration, storage or secret, and an
+older worker refuses the unknown tool with 400 before any socket opens.
 
 ### The host digest
 

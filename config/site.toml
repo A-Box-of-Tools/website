@@ -465,8 +465,8 @@ order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "stitch
 id = "connect-devices"
 name = "Connect devices"
 short_name = "Connect devices"
-note = "Share text and files, talk live, or watch a camera or browser tab on another device. Each tool explains what it sends and how the browsers connect."
-order = ["share-text", "walkie-talkie", "voice-oncall", "remote-camera", "share-tab"]
+note = "Share text and files, keep a folder in step, talk live, or watch a camera or browser tab on another device. Each tool explains what it sends and how the browsers connect."
+order = ["share-text", "folder-sync", "walkie-talkie", "voice-oncall", "remote-camera", "share-tab"]
 
 # Addresses that moved. Each key is a slug a tool used to answer at, each
 # value the slug of the tool that answers now; build.py writes a stub at the
@@ -643,6 +643,7 @@ order = [
   "format-json-without-uploading-it",
   "stitch-two-tables",
   "share-text-between-devices",
+  "sync-a-folder-between-two-computers",
   "watch-camera-from-another-device",
   "share-a-browser-tab",
   "broadcast-voice-on-a-local-network",
@@ -873,7 +874,7 @@ group_scope = "Discovering in:"
 group_network = "Local network"
 group_private = "Private group"
 group_heading = "Use a private group"
-group_help = "Create a group code and share it with your other devices, or enter a code you received. The same code works across all five Connect Devices tools; each page lists its own kind of connection."
+group_help = "Create a group code and share it with your other devices, or enter a code you received. The same code works across all six Connect Devices tools; each page lists its own kind of connection."
 group_code = "Private group code"
 group_join = "Join group"
 group_create = "Create group"
