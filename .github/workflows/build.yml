@@ -1073,23 +1073,51 @@ jobs:
             echo "::warning::$url has not answered yet. The deployment is made; Cloudflare usually catches the alias up within a few minutes."
           fi
 
-      # The alias takes a moment to answer after the first upload for a
-      # branch. Waiting here, as QA (post-deploy) waits for production, keeps
-      # the qa repository's workflow honest about what it tests.
-      - name: Wait until it answers
+      # THE ALIAS ANSWERING IS NOT THIS BUILD ANSWERING. The first upload for a
+      # branch takes a moment to answer at all, and that is all this step used
+      # to wait for, at the front page. An alias that exists already - every
+      # pull request's after its first push - answers at once, and for a while
+      # after an upload some of its other pages answer HTTP 500 with an empty
+      # body. Website#668's preview did that on 2026-11-24: this step passed at
+      # once, and the QA run it then started met 500s on /dicom-viewer/ and
+      # /pt/comparar-alturas/ for half a minute, three cases failing every try.
+      # The same pages served the new build a minute later.
+      #
+      # So it waits until a sample of pages comes back exactly as uploaded,
+      # which Pages does byte for byte. That also rules out the previous build,
+      # since a page still served from it differs. The sample is the front page
+      # and every 25th page in a fixed order, about seventy requests a round
+      # across tools, guides and languages. Waiting here, as QA (post-deploy)
+      # waits for production, keeps the qa repository's workflow honest about
+      # what it tests: its result is about the pages, not about the moment it
+      # started.
+      - name: Wait until it serves this build
         if: steps.gate.outputs.ready == 'true'
         env:
           URL: ${{ steps.upload.outputs.url }}
         run: |
           set -euo pipefail
-          for _ in $(seq 1 30); do
-            if curl -fsS -o /dev/null "$URL"; then
-              echo "Answering: $URL"
+          mapfile -t pages < <(
+            echo ./index.html
+            cd _site && find . -name index.html | LC_ALL=C sort | awk 'NR % 25 == 0'
+          )
+          for round in $(seq 1 30); do
+            waiting=()
+            for page in "${pages[@]}"; do
+              path=${page#./}
+              path=${path%index.html}
+              want=$(sha256sum < "_site/$page" | cut -d' ' -f1)
+              got=$(curl -fsS --max-time 20 "$URL$path" | sha256sum | cut -d' ' -f1) || got=''
+              if [ "$got" != "$want" ]; then waiting+=("/$path"); fi
+            done
+            if [ "${#waiting[@]}" -eq 0 ]; then
+              echo "Serving this build: all ${#pages[@]} sampled pages match what was uploaded (round $round)."
               exit 0
             fi
+            echo "Round $round: ${#waiting[@]} of ${#pages[@]} sampled pages are not this build yet, for example ${waiting[0]}"
             sleep 10
           done
-          echo "::error::$URL never answered after five minutes."
+          echo "::error::$URL was not serving this build after 30 rounds, about five minutes. Still different: ${waiting[*]}"
           exit 1
 
       # One comment per pull request, edited on every push rather than added
