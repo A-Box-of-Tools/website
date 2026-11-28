@@ -1,0 +1,354 @@
+<main id="main">
+  <!-- Step 1 &mdash; the photographs -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a photo of each side</h2>
+
+    <p class="card-lede">
+      One photo of the front of the card and one of the back, taken from above
+      with the whole card in the frame. It does not have to be square-on or
+      cropped: finding the card and straightening it is what this tool is for.
+      Drop both at once and the first is taken as the front.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the corners of each side -->
+  <section class="card">
+    <h2><span class="step">2</span> Put the corners on the card</h2>
+
+    <p class="stage-hint">
+      Press anywhere on a photo and the nearest corner comes to your finger;
+      drag it onto the corner of the card. <kbd>Tab</kbd> reaches a corner from
+      the keyboard, the arrow keys move it one pixel and <kbd>Shift</kbd> ten.
+      For a card with rounded corners, put each corner where its two edges
+      would meet.
+    </p>
+
+    <div class="side-actions">
+      <button type="button" id="swap" class="ghost" disabled>Swap front and back</button>
+    </div>
+
+    <div class="sides" id="sides">
+      <div class="side" id="front-panel" role="group" aria-labelledby="front-heading">
+        <h3 id="front-heading">Front</h3>
+
+        <div class="side-empty" id="front-empty">
+          <p class="side-note">No photo of the front yet.</p>
+          <input type="file" id="front-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="front-input" class="as-button ghost">Choose the front</label>
+        </div>
+
+        <div id="front-editor" hidden>
+          <!-- A canvas rather than an <img>, because the photo is drawn at
+               screen size from the decoded picture, and the outline over it
+               is an SVG polygon in percentages that needs no redraw when the
+               window changes. -->
+          <div class="stage-wrap">
+            <div class="stage" id="front-stage">
+              <canvas id="front-photo" role="img" aria-label="Photo of the front"></canvas>
+            </div>
+          </div>
+          <p id="front-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="front-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="front-detect" class="ghost">Find the card again</button>
+            <button type="button" id="front-whole" class="ghost">Use the whole photo</button>
+            <button type="button" id="front-left" class="ghost turn" aria-label="Turn the front left">↺</button>
+            <button type="button" id="front-right" class="ghost turn" aria-label="Turn the front right">↻</button>
+            <button type="button" id="front-undo" class="ghost" disabled>Undo</button>
+            <button type="button" id="front-remove" class="ghost danger">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side" id="back-panel" role="group" aria-labelledby="back-heading">
+        <h3 id="back-heading">Back</h3>
+
+        <div class="side-empty" id="back-empty">
+          <p class="side-note">No photo of the back yet.</p>
+          <input type="file" id="back-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="back-input" class="as-button ghost">Choose the back</label>
+        </div>
+
+        <div id="back-editor" hidden>
+          <div class="stage-wrap">
+            <div class="stage" id="back-stage">
+              <canvas id="back-photo" role="img" aria-label="Photo of the back"></canvas>
+            </div>
+          </div>
+          <p id="back-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="back-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="back-detect" class="ghost">Find the card again</button>
+            <button type="button" id="back-whole" class="ghost">Use the whole photo</button>
+            <button type="button" id="back-left" class="ghost turn" aria-label="Turn the back left">↺</button>
+            <button type="button" id="back-right" class="ghost turn" aria-label="Turn the back right">↻</button>
+            <button type="button" id="back-undo" class="ghost" disabled>Undo</button>
+            <button type="button" id="back-remove" class="ghost danger">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the layout -->
+  <section class="card">
+    <h2><span class="step">3</span> Lay out the copy</h2>
+
+    <div class="layout">
+      <div class="layout-preview">
+        <p id="preview-empty" class="empty-note">
+          The copy appears here, at its real proportions, as soon as there is a
+          photo of either side.
+        </p>
+
+        <div id="preview-box" hidden>
+          <div class="sheet-wrap">
+            <canvas id="sheet-preview" class="sheet-preview" role="img"
+                    aria-label="Preview of the finished copy"></canvas>
+          </div>
+          <p id="one-side" class="hint-line warn-line" hidden></p>
+          <ul id="preview-facts" class="result-facts"></ul>
+        </div>
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="field">
+          <label for="card-size">Card size</label>
+          <select id="card-size">
+            <option value="id1" selected>Bank-card size (ID-1) &mdash; &#x2066;85.6 &times; 54&#x2069; mm</option>
+            <option value="id2">ID-2 &mdash; &#x2066;105 &times; 74&#x2069; mm</option>
+            <option value="id3">Passport page (ID-3) &mdash; &#x2066;125 &times; 88&#x2069; mm</option>
+          </select>
+          <p class="field-note">
+            Nearly every identity card, driving licence, residence permit and
+            health card is the size of a bank card. Each side is printed at
+            exactly this size.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="paper">Paper</label>
+          <select id="paper">
+            <option value="a4" selected>A4 &mdash; &#x2066;210 &times; 297&#x2069; mm</option>
+            <option value="letter">Letter &mdash; &#x2066;8.5 &times; 11&#x2069; in</option>
+            <option value="cards">No sheet &mdash; just the two sides</option>
+          </select>
+          <p class="field-note">
+            A sheet to print, or one picture of both sides for a form that asks
+            you to upload them together.
+          </p>
+        </div>
+
+        <fieldset class="field choices">
+          <legend>Arrangement</legend>
+          <label class="check"><input type="radio" name="arrange" value="stack" checked> One above the other</label>
+          <label class="check"><input type="radio" name="arrange" value="side"> Side by side</label>
+        </fieldset>
+
+        <fieldset class="field choices" id="place-row">
+          <legend>Where on the sheet</legend>
+          <label class="check"><input type="radio" name="place" value="middle" checked> In the middle</label>
+          <label class="check"><input type="radio" name="place" value="top"> At the top</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Colour</legend>
+          <label class="check"><input type="radio" name="colour" value="colour" checked> Colour</label>
+          <label class="check"><input type="radio" name="colour" value="grey"> Black and white</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Edges</legend>
+          <label class="check"><input type="checkbox" id="round" checked> Round the corners</label>
+          <label class="check"><input type="checkbox" id="outline" checked> Draw a fine outline</label>
+        </fieldset>
+
+        <div class="field wide">
+          <label for="words">Words across the card <span class="optional">(optional)</span></label>
+          <input type="text" id="words" maxlength="80" autocomplete="off"
+                 placeholder="For example: Copy for the tenancy application only">
+          <p class="field-note">
+            Written over both sides, slanting and repeated, into the pixels of
+            the copy itself. A copy that says what it was given for is a poor
+            copy to steal.
+          </p>
+          <div class="words-extra" id="words-extra" hidden>
+            <label for="ink">Ink</label>
+            <select id="ink">
+              <option value="grey" selected>Grey</option>
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+              <option value="black">Black</option>
+            </select>
+            <label for="strength">Strength</label>
+            <div class="inline-pair">
+              <input type="range" id="strength" min="15" max="80" step="5" value="35">
+              <output id="strength-value" for="strength">35%</output>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Save the copy</h2>
+
+    <div class="settings" id="save-settings">
+      <fieldset class="field choices">
+        <legend>File</legend>
+        <label class="check"><input type="radio" name="format" value="pdf" checked> PDF</label>
+        <label class="check"><input type="radio" name="format" value="jpeg"> JPEG</label>
+        <label class="check"><input type="radio" name="format" value="png"> PNG</label>
+        <p class="field-note" id="format-note"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="dpi">Resolution</label>
+        <select id="dpi">
+          <option value="200">200 DPI &mdash; a smaller file</option>
+          <option value="300" selected>300 DPI &mdash; what a copier prints</option>
+          <option value="600">600 DPI &mdash; the sharpest</option>
+        </select>
+        <p class="field-note">
+          More dots per inch than the photo holds adds size and no detail. Step 2
+          says how much detail each photo has.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Make the copy</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>The finished copy</h3>
+        <a id="download" class="primary as-button" href="#" download>Download</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Print it at <strong>100%</strong> or &ldquo;actual size&rdquo;, never
+        &ldquo;fit to page&rdquo;, and lay the card on the paper to check: the
+        two should be the same size.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into every language and
+    a sentence written there would be English in all of them but one. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">The card was found. Check the four corners,
+      and drag any that landed wrong.</span>
+    <span data-phrase="detect.unsure">The edges of the card were not clear enough
+      to be sure of. These corners are a guess &mdash; drag them onto the card.</span>
+    <span data-phrase="detect.nothing">No card could be picked out of this photo,
+      so the corners are at its edges. Drag them onto the card.</span>
+    <span data-phrase="detect.flat">There is nothing to find in this picture
+      &mdash; it has no edges in it at all.</span>
+    <span data-phrase="detect.tiny">This picture is too small to find a card
+      in.</span>
+    <span data-phrase="detect.edited">These corners are yours now. &ldquo;Find the
+      card again&rdquo; measures the photo afresh.</span>
+
+    <span data-phrase="quality.good">About {dpi} DPI at the card&rsquo;s real size
+      &mdash; plenty for a sharp copy.</span>
+    <span data-phrase="quality.fair">About {dpi} DPI at the card&rsquo;s real size
+      &mdash; readable, a little soft on paper.</span>
+    <span data-phrase="quality.low">Only about {dpi} DPI at the card&rsquo;s real
+      size, so small print will blur. Take the photo closer if you can.</span>
+
+    <span data-phrase="corner.tl">Top left corner</span>
+    <span data-phrase="corner.tr">Top right corner</span>
+    <span data-phrase="corner.br">Bottom right corner</span>
+    <span data-phrase="corner.bl">Bottom left corner</span>
+    <span data-phrase="corner.at.front">Front: {corner}, at {x} across and {y}
+      down. The arrow keys move it, and Shift with them moves it ten pixels at a
+      time.</span>
+    <span data-phrase="corner.at.back">Back: {corner}, at {x} across and {y}
+      down. The arrow keys move it, and Shift with them moves it ten pixels at a
+      time.</span>
+
+    <span data-phrase="hint.nofront">Only the back so far. Add a photo of the
+      front to put both sides on one copy.</span>
+    <span data-phrase="hint.noback">Only the front so far. Add a photo of the
+      back to put both sides on one copy.</span>
+
+    <span data-phrase="paper.a4">A4</span>
+    <span data-phrase="paper.letter">Letter</span>
+    <span data-phrase="sheet.portrait">A sheet of {paper}, upright.</span>
+    <span data-phrase="sheet.landscape">A sheet of {paper}, turned on its side
+      so the two sides fit next to each other.</span>
+    <span data-phrase="sheet.cards">One picture of {width} &times; {height} mm,
+      with a narrow white border.</span>
+    <span data-phrase="sheet.size">Each side measures {width} &times; {height}
+      mm, the size of the card itself.</span>
+
+    <span data-phrase="format.pdf">The one to print: a PDF keeps the card at its
+      real size on any printer set to 100%.</span>
+    <span data-phrase="format.jpeg">A small picture, for uploading or
+      emailing. The file records its resolution, for the programs that print by
+      it.</span>
+    <span data-phrase="format.png">A lossless picture: larger than a JPEG, with
+      no compression blur round the small print.</span>
+
+    <span data-phrase="busy.side">Straightening side {done} of {total}&hellip;</span>
+    <span data-phrase="busy.writing">Writing the file&hellip;</span>
+
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="result.file">{name} &mdash; {size}.</span>
+    <span data-phrase="result.paper">On {paper}, each side measures {width}
+      &times; {height} mm when printed at 100%.</span>
+    <span data-phrase="result.cards">Each side measures {width} &times; {height}
+      mm when printed at its recorded resolution.</span>
+    <span data-phrase="result.pdf">Each side is a {dpi} DPI picture, placed at
+      its real size by the PDF itself.</span>
+    <span data-phrase="result.image">{width} &times; {height} pixels at {dpi}
+      DPI, and the file says so.</span>
+    <span data-phrase="result.capped">Made at {dpi} DPI rather than the
+      resolution you chose: a picture of the whole sheet any larger is more than
+      some phones will draw. The PDF has no such limit.</span>
+    <span data-phrase="result.clean">No date, no author and nothing from your
+      photos&rsquo; metadata: the PDF records only this tool&rsquo;s name.</span>
+
+    <span data-phrase="build.nocards">There is no card to put on the copy.</span>
+    <span data-phrase="encode.failed">This browser could not write the
+      picture.</span>
+    <span data-phrase="error.none">Choose a photo of the card first.</span>
+    <span data-phrase="error.more">, and {count} more</span>
+    <span data-phrase="error.notphoto">Not a photo this page can open: {names}.</span>
+    <span data-phrase="error.extra">Only two photos are used, a front and a
+      back. Left out: {names}.</span>
+    <span data-phrase="error.decode">This browser could not open {name}. If it
+      is a HEIC photo from an iPhone, convert it first.</span>
+    <span data-phrase="error.failed">Something went wrong making the copy:
+      {detail}</span>
+    <span data-phrase="warp.degenerate">Those four corners do not make a
+      card.</span>
+
+    <span data-phrase="net.clean">your card has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad and measurement
+      scripts loaded from {hosts} host; not one of them was given
+      a photo or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad and measurement
+      scripts loaded from {hosts} hosts; not one of them was given
+      a photo or a byte of one.</span>
+  </div>
+</main>

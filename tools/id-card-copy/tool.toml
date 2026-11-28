@@ -1,0 +1,338 @@
+#
+# ID Card Copy
+#
+# Two photographs of a card - the front and the back - straightened and put on
+# one sheet at the card's real size, or into one picture for a form that asks
+# for both sides together. It is the document scanner's job applied to a smaller
+# rectangle and a fixed shape: the corner finder, the straightening and the
+# corner handles are that tool's, shared through shared/js/, and what is this
+# tool's own is that the shape is known (85.6 by 53.98 mm) rather than worked
+# out, that there are two of them, and where they go on the paper.
+#
+# What people photograph for this is the single most sensitive thing anybody
+# puts through a tool on this site, which is why it has no network feature at
+# all, not even the carry-on row: connect-src stays shut.
+#
+
+slug = "id-card-copy"
+name = "ID Card Copy"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "ID&nbsp;Card&nbsp;Copy <span class=\"h1-kw\">&mdash; front and back on one page</span>"
+tagline = "Both sides of the card, on one sheet, at its real size."
+icon = "&#129706;"          # the identification card, beside the heading
+favicon = "&#129706;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons.
+glyph = "id-card"
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "documents"
+
+css_parts = ["form", "checks", "notes", "corner-handles"]
+
+# The corner finder, the straightening and the handles are the document
+# scanner's, shared rather than copied. crc32 is for the pHYs chunk that tells a
+# PNG's reader how many pixels make an inch; pdf-page-writer is the same writer
+# the scanner and Images to PDF use. example-mark is the made-up emblem on the
+# example card, and example-photo turns its canvases into files.
+js_parts = ["document-detect", "document-geometry", "document-warp", "corner-handles", "file-picker", "image-input", "message-box", "pdf-page-writer", "crc32", "example-mark", "example-photo"]
+# No carry-on row. It would need connect-src to read the finished file back out
+# of a blob: URL, and this is the one tool on the site where keeping that
+# directive shut is worth more than saving somebody a download.
+handoff = []
+lastmod = "2026-11-27"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "ID Card Copy &mdash; Front and Back on One Page, Real Size, No Upload"
+description = "Put both sides of an ID card or driving licence on one A4 or Letter page at its real size, or in one image. The card is found, straightened and cropped in your browser: nothing is uploaded."
+og_title = "Copy both sides of an ID card onto one page, without uploading it"
+og_description = "Two phone photos in; one sheet out, with the front and the back at exactly the card's size, ready to print. The card is found and straightened in your own browser, because an identity card is the last thing to upload."
+og_image_alt = "ID Card Copy - the front and back of a card on one page at real size, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png.
+og_card = "Two photos of a card in. One sheet out, front and back at the card's real size."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing is widened for this tool. connect-src is not opened even for blob:,
+  because there is no carry-on row: the copy of an identity card is saved, not
+  passed along."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Both photos are decoded, straightened, laid out and written into the copy by
+    your own browser, with arithmetic and the codecs it already ships with. This
+    tool has no network feature of any kind &mdash; nothing to fetch, nothing to
+    send, not even a hand-off to another tool &mdash; because what it is given
+    is an identity card, and a copy of one is everything somebody needs to
+    pretend to be you."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make
+      a copy. Not one request carries a photo, a thumbnail, a filename, the words
+      you typed or the position of a single corner. Or turn on airplane mode
+      and make one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/shared/document-detect.js</code> for how the card is found
+      without a model of any kind, <code>src/layout.js</code> for where each side
+      goes on the paper, <code>src/card.js</code> for the corners and the words
+      written across the card, and <code>src/document.js</code> for the PDF."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to copy both sides of an ID card onto one page"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            The front and the back of an ID card or licence on one page, at the
+            card's real size, or in one image to upload. Found, straightened and
+            cropped from two phone photos."""
+
+[words]
+plural = "cards"
+choose = "a photo of each side of the card"
+analytics_extra = """, and nothing about
+  the card, the words written across it or where its corners were"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark of ours"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
+
+[[privacy]]
+title = "There is no model, so there is nothing to download."
+body = """
+ Finding the
+      card is done with arithmetic &mdash; the gradient of the photo, a vote for
+      the straight lines in it, and a check of what is under each side of the
+      rectangle that wins. It is the document scanner's corner finder, shared
+      with it: no weights, no inference runtime, nothing fetched on first use
+      &mdash; see <code>src/shared/document-detect.js</code>."""
+
+[[privacy]]
+title = "The copy carries nothing from your photos but the card."
+body = """
+ Each side
+      is redrawn from the pixels, so the location, the camera and the time a
+      phone writes into a photo are not in the copy. The PDF records the name of
+      this tool and nothing else: no date, no author, no machine name &mdash;
+      see <code>src/document.js</code>."""
+
+[[privacy]]
+title = "The words across the card are in the picture, not on top of it."
+body = """
+ What
+      you type is drawn into the pixels of each side before it is saved, so it
+      cannot be lifted off the copy the way a layer or an annotation in a PDF
+      can &mdash; see <code>src/card.js</code>."""
+
+[[privacy]]
+title = "Nothing here fetches anything, and it works offline."
+body = """
+ There
+      is no <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>, and this page does
+      not open <code>connect-src</code> for anything. Disconnect from the
+      network and the tool is unchanged &mdash; the proof worth running before
+      you photograph a passport."""
+
+[[howto]]
+title = "Photograph both sides."
+body = """
+ Lay the card on something darker
+      or lighter than itself, hold the phone above it so the whole card is in
+      the frame, and fill as much of the frame as you can. Tilt it a little if
+      the light shines off the card: a reflection hides what is under it, and
+      nothing afterwards can bring that back."""
+
+[[howto]]
+title = "Add the two photos."
+body = """
+ Drop both at once and the first is
+      taken as the front, or use the button on each side. &ldquo;Swap front and
+      back&rdquo; puts them the other way round."""
+
+[[howto]]
+title = "Check the corners."
+body = """
+ The card is found in each photo and
+      outlined. Press anywhere on a photo and the nearest corner comes to your
+      finger, or reach one with <kbd>Tab</kbd> and move it with the arrow keys.
+      The turn buttons put a card the right way up."""
+
+[[howto]]
+title = "Lay out the copy."
+body = """
+ Choose the paper &mdash; A4, Letter,
+      or no sheet at all for one picture of both sides &mdash; and whether the
+      two sit one above the other or side by side. Type the purpose of the copy
+      to have it written across the card, if you want it there."""
+
+[[howto]]
+title = "Save it, and print it at 100%."
+body = """
+ The PDF is the file to
+      print: set the printer to &ldquo;actual size&rdquo; or 100%, not
+      &ldquo;fit to page&rdquo;, and lay the card on the paper to check. A JPEG
+      or PNG is for uploading or emailing."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head.
+
+[[faq]]
+q = "Are my ID card photos uploaded anywhere?"
+a = """
+        No. Both photos are decoded, straightened, laid out and written into the
+        copy by your own browser on your own hardware. This tool has no network
+        feature of any kind &mdash; it never fetches anything and never sends
+        anything &mdash; and the page's <code>Content-Security-Policy</code> does
+        not let it open a connection even to read its own result back. Load the
+        page once, turn on airplane mode, and it still works."""
+
+[[faq]]
+q = "Will the card come out the right size when I print it?"
+a = """
+        Yes, if the printer is told to print at 100%. The PDF places each side
+        at exactly the card's size &mdash; 85.6 by 53.98 millimetres for a
+        bank-card sized card &mdash; in the file's own measurements, not by
+        scaling a picture of a page. What makes copies come out small is the
+        print dialog's &ldquo;fit to page&rdquo; or &ldquo;shrink to
+        fit&rdquo;, which scales the whole sheet down a few per cent; choose
+        &ldquo;actual size&rdquo; instead, and lay the card on the printed copy
+        to check that the two match."""
+
+[[faq]]
+q = "Why does the card come out the right shape and not squashed?"
+a = """
+        Because the shape is not measured off the photo at all: it is the card's
+        own. A card photographed at an angle looks shorter at the far end, and a
+        tool that crops the rectangle it sees and stretches it into a box
+        produces a card that is visibly squat or tall. Here the four corners are
+        mapped through a perspective transform onto a rectangle of exactly the
+        card's proportions, so every line that is straight on the card is
+        straight on the copy and the card is its own shape whatever angle it was
+        photographed from."""
+
+[[faq]]
+q = "What does &ldquo;words across the card&rdquo; do, and should I use it?"
+a = """
+        It writes whatever you type &mdash; usually what the copy is for and the
+        date, like &ldquo;Copy for the tenancy at 12 Elm Street only,
+        March 2027&rdquo; &mdash; in slanting, repeated rows across both sides,
+        in the ink and strength you choose. It is drawn into the pixels before
+        the file is saved, so it cannot be removed from the copy the way a note
+        on top of a PDF can. A copy of an identity card that says what it was
+        handed over for is much less use to anybody who wants to reuse it for
+        something else, which is the advice some governments give for copies
+        of identity documents. Keep it light enough that the card underneath
+        can still be read."""
+
+[[faq]]
+q = "The corners it found are wrong. What now?"
+a = """
+        Drag them. The corners are a starting position, not a decision: each
+        side is taken from wherever its four corners end up. Press anywhere on
+        the photo and the nearest corner jumps to your finger, and the arrow
+        keys move a focused corner one pixel at a time. The card is hardest to
+        find on a surface of nearly its own colour, so a white card on a white
+        desk is the usual reason &mdash; put it on something darker and take
+        the photo again, or place the corners yourself. Cards have rounded
+        corners: put each corner where its two straight edges would meet."""
+
+[[faq]]
+q = "Which cards does it work for?"
+a = """
+        Any card whose two sides are worth copying together. Nearly every
+        identity card, driving licence, residence permit, health insurance card,
+        student card and bank card is the same size &mdash; the ISO ID-1 size
+        of a bank card &mdash; which is the default. The larger ID-2 size of
+        some older identity cards is there too, and a passport's photo page
+        (ID-3) can be put on a sheet on its own. Some licences are printed
+        upright rather than across; turn that side with the turn buttons and it
+        is laid out upright."""
+
+[[faq]]
+q = "Can I get one image of both sides instead of a page?"
+a = """
+        Yes. Choose &ldquo;No sheet &mdash; just the two sides&rdquo; as the
+        paper and JPEG or PNG as the file, and the copy is one picture of the
+        two sides with a narrow white border, which is what an online form that
+        asks for both sides in one upload wants. The picture records its own
+        resolution, so a program that prints by it prints the card at its real
+        size; many simply fit a picture to the paper, which is why the PDF is
+        the file for printing."""
+
+[[faq]]
+q = "The download does nothing. Why?"
+a = """
+        Usually because the page is open inside another app &mdash; a messaging
+        app or a social network &mdash; whose built-in browser does not save
+        downloads. Open the page in your phone's own browser instead and the
+        same steps will save the file. It needs nothing from the network once
+        it has loaded, so it works there offline too."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial, no limit on
+        how many copies you make and no watermark of ours on them &mdash; the
+        only words written across a card are the ones you type. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your card."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Combine the front and back of an ID card into one copy in the browser: the card is found in each photo, the perspective is undone, and both sides are placed at their real size on an A4 or Letter page, or in one image. Optional words are written across the card. Nothing is uploaded."
+features = [
+  "Finds the card in each photo with no model, nothing downloaded and nothing fetched",
+  "Straightens each side to the card's exact proportions, so an angled photo is not squashed",
+  "Prints at the card's real size: 85.6 by 53.98 mm on A4 or Letter in the PDF",
+  "One image of both sides for forms that ask for a single upload",
+  "Bank-card (ID-1), ID-2 and passport page (ID-3) sizes",
+  "One above the other or side by side, in the middle or at the top of the sheet",
+  "Optional words written across the card, burned into the pixels",
+  "Rounded corners, a fine outline, colour or black and white",
+  "Corners can be dragged, or moved from the keyboard a pixel at a time",
+  "Writes no date, author or photo metadata into the copy",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which body.html
+# includes, and driven by src/shared/file-picker.js. Several files are allowed
+# so that both sides can be dropped at once; main.js uses the first two.
+[picker]
+accept = "image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
+multiple = true
+title = "Drop the photos of the front and back here"
+hint = "or click to browse &mdash; front first, then back (JPEG, PNG, WebP, AVIF)"
+# A made-up specimen card photographed front and back on a desk, at an angle
+# and in uneven light: what this tool exists to undo.
+example = true

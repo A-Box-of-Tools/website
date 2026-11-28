@@ -57,6 +57,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Receipt & Invoice Extractor](receipt-invoice-extractor/) | `/receipt-invoice-extractor/` | Read photos, review fields and crops, then prepare compressed attachments and totals for your email app. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
 | [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
+| [ID Card Copy](id-card-copy/) | `/id-card-copy/` | Both sides of the card, on one sheet, at its real size. |
 | [Extract Audio from Video](extract-audio-from-video/) | `/extract-audio-from-video/` | Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
