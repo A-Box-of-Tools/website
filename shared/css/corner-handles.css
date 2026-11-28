@@ -1,0 +1,81 @@
+/*
+  The four corner handles over a photograph, and the stage they sit on: the
+  rules shared/js/corner-handles.js draws into. Asked for with
+  `css_parts = ["corner-handles"]` by the tools that put a quadrilateral over a
+  photograph - the document scanner and the ID card copier - and put before
+  each tool's own rules, so a tool that wants the stage framed differently
+  keeps its own.
+*/
+
+/* The stage is given the photograph's own shape by main.js, so the outline and
+   the four handles can be positioned in percentages and need no recalculating
+   when the window is resized or a phone is turned. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* `fill` rather than `contain`: the stage already has the picture's own shape,
+     and any other value would put letterboxing inside the coordinate space the
+     corners are measured in. */
+  object-fit: fill;
+}
+
+.quad {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+  Two strokes, one dark and one light, because this outline is drawn over a
+  photograph and a photograph can be any colour at all. A single stroke that
+  reads clearly against a white page vanishes against a dark desk.
+*/
+.quad-outline {
+  fill: rgb(43 108 176 / 12%);
+  stroke: #fff;
+  stroke-width: 2;
+  paint-order: stroke;
+  vector-effect: non-scaling-stroke;
+}
+
+.quad-outline.unsure {
+  fill: rgb(178 106 0 / 14%);
+  stroke-dasharray: 6 4;
+}
+
+.corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 80%, transparent);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 45%);
+  cursor: grab;
+  touch-action: none;
+}
+
+/* Bigger where the pointer is a finger. A 26 pixel target is comfortable with a
+   mouse and is under the 44 pixel floor a thumb wants, and this is the gesture
+   the whole result depends on. */
+@media (pointer: coarse) {
+  .corner { width: 34px; height: 34px; margin: -17px 0 0 -17px; }
+}
+
+.corner:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}

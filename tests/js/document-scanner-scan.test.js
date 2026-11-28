@@ -1,6 +1,6 @@
 /**
  * The two passes over the pixels: straightening the page out of the photograph
- * (tools/document-scanner/src/warp.js), and dividing the light out of it
+ * (shared/js/document-warp.js), and dividing the light out of it
  * afterwards (src/clean.js). The bit packing that turns the result into a
  * document is at the bottom (src/encode.js).
  *
@@ -24,7 +24,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { turnQuad, warpPage } from '../../tools/document-scanner/src/warp.js';
+import { turnQuad, warpPage } from '../../shared/js/document-warp.js';
 import { cleanPage, levels, sauvola, toLuma } from '../../tools/document-scanner/src/clean.js';
 import { deflate, packMono } from '../../tools/document-scanner/src/encode.js';
 import { homography, project } from '../../shared/js/document-geometry.js';

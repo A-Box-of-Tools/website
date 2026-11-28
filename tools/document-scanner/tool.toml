@@ -27,12 +27,14 @@ roadmap_group = "documents"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["checks", "notes", "form"]
+css_parts = ["checks", "notes", "form", "corner-handles"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone; zip is
 # for saving several pages as pictures rather than as a document, and needs crc32
-# beside it because the archive stores a checksum per entry.
-js_parts = ["document-detect", "document-geometry", "file-picker", "zip", "crc32", "pdf-page-writer", "message-box", "example-document", "example-statement", "example-photo", "image-input", "errors", "ordered-loads"]
+# beside it because the archive stores a checksum per entry. The corner finder,
+# the straightening and the corner handles are shared with the ID card copier,
+# which does the same to the two sides of a card.
+js_parts = ["document-detect", "document-geometry", "document-warp", "corner-handles", "file-picker", "zip", "crc32", "pdf-page-writer", "message-box", "example-document", "example-statement", "example-photo", "image-input", "errors", "ordered-loads"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
@@ -83,7 +85,7 @@ live_hint = """
 
 read_first = """
 , <code>src/shared/document-detect.js</code> for how the corners are
-      found without a model of any kind, <code>src/warp.js</code> for the
+      found without a model of any kind, <code>src/shared/document-warp.js</code> for the
       straightening, and <code>src/clean.js</code> for how the uneven light is
       divided out."""
 

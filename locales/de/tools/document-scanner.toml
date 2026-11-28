@@ -37,7 +37,7 @@ live_hint = """
 
 read_first = """
 , <code>src/shared/document-detect.js</code> dafür, wie die Ecken
-      ohne jedes Modell gefunden werden, <code>src/warp.js</code> für das
+      ohne jedes Modell gefunden werden, <code>src/shared/document-warp.js</code> für das
       Geraderücken und <code>src/clean.js</code> dafür, wie das ungleichmäßige
       Licht herausgeteilt wird."""
 

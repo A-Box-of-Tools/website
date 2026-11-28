@@ -1,6 +1,13 @@
 /**
  * Taking the page out of the photograph: the perspective resample.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/document-warp.js and
+ * the build copies it to <tool>/src/shared/ for the tools that ask for it with
+ * `js_parts = ["document-warp", "document-geometry"]`: the document scanner,
+ * which straightens a page, and the ID card copier, which straightens the two
+ * sides of a card. Both take a quadrilateral out of a photograph and neither
+ * has any reason to do it differently.
+ *
  * One function of any consequence. For every pixel of the flat page that is
  * being produced, work out where that point was in the photograph, and read the
  * colour there. Going in this direction - destination first, source second - is
@@ -28,7 +35,7 @@
  * exactly how much of a problem there is.
  */
 
-import { homography, project } from './shared/document-geometry.js';
+import { homography, project } from './document-geometry.js';
 
 /** Sub-samples per output pixel, per axis, however far it is being shrunk. */
 const MAX_SAMPLES = 2;

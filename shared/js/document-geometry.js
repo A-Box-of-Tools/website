@@ -78,6 +78,30 @@ export function orderCorners(points) {
   return [0, 1, 2, 3].map((step) => around[(first + step) % 4]);
 }
 
+/**
+ * Four corners put back in order after one of them has moved, still led by the
+ * corner that led before.
+ *
+ * orderCorners starts from the corner nearest the top left of the photograph,
+ * which is right for corners that have just been found and wrong for corners
+ * somebody has turned: a quarter turn is nothing but a different corner at the
+ * front of the list, so starting from the top left again undoes it. Nudging
+ * one corner of a page turned on its side used to turn it back under the
+ * finger. The order around the quad is still taken from orderCorners - which
+ * is what lets a corner be dragged past its neighbours - and only where the
+ * list starts is kept.
+ *
+ * @param {{x: number, y: number}[]} points  the leading corner first, as it
+ *   was before the move
+ */
+export function reorderCorners(points) {
+  const lead = points[0];
+  const around = orderCorners(points);
+  const start = around.indexOf(lead);
+  if (start <= 0) return around;
+  return [0, 1, 2, 3].map((step) => around[(start + step) % 4]);
+}
+
 /** Twice the signed area, by the shoelace formula. */
 function shoelace(quad) {
   let sum = 0;

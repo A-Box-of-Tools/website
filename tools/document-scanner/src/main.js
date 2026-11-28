@@ -7,15 +7,15 @@ import { throwIfAborted } from './shared/errors.js';
 import { orderedLoads } from './shared/ordered-loads.js';
 import { WORKING_EDGE, findPageQuad } from './shared/document-detect.js';
 import {
-  clampPoint, copyQuad, orderCorners, outputSize, pageAspect, scaleQuad, wholeFrame,
+  clampPoint, copyQuad, outputSize, pageAspect, reorderCorners, scaleQuad, wholeFrame,
 } from './shared/document-geometry.js';
-import { turnQuad, warpPage } from './warp.js';
+import { turnQuad, warpPage } from './shared/document-warp.js';
 import { cleanPage } from './clean.js';
 import { writeScan } from './write-scan.js';
 import {
   coverage, errorDetail, fileSummary, matchPaper, photoBatch, ratioText, scanQuality, sizeText, snapshotPages,
 } from './pages.js';
-import { Corners } from './stage.js';
+import { Corners } from './shared/corner-handles.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -450,9 +450,10 @@ function moveCorner(index, point) {
   // Re-ordered every time, so that dragging a corner past its neighbours swaps
   // which corner it is rather than turning the page inside out. The alternative
   // - refusing the drag - is worse: it is not obvious from the picture which
-  // corner is being refused or why.
+  // corner is being refused or why. The corner that led still leads, so a page
+  // that has been turned stays turned.
   outputChanged();
-  page.quad = orderCorners(quad);
+  page.quad = reorderCorners(quad);
   page.edited = true;
 
   // Only the outline, and not the rest of the page. This runs on every pointer

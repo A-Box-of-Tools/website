@@ -103,6 +103,9 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |
 | `shared/css/modes.css` | `css_parts = ["modes"]` | a choice between two ways of working, as radio rows with a title and an explanation |
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
+| `shared/css/corner-handles.css` | `css_parts = ["corner-handles"]` | the stage a photograph is drawn on and the four corner grips and outline `corner-handles.js` puts over it |
+| `shared/js/corner-handles.js` | `js_parts = ["corner-handles"]` | four corners over a photograph, dragged or moved from the keyboard, reported in the photograph's own pixels; the caller holds the corners |
+| `shared/js/document-warp.js` | `js_parts = ["document-warp", "document-geometry"]` | a quadrilateral taken out of a photograph and resampled flat at a given size; imports `document-geometry` |
 | `shared/js/connection-diagnostics.js` | `js_parts = ["connection-diagnostics"]` | bounded, redacted connection reports shared by text sharing and Remote Camera; captures states and counters without addresses, credentials or content |
 | `shared/js/peer-pairing.js` | `js_parts = ["peer-pairing"]` | owned signaling sockets, guarded sends, deadlines, heartbeats and probes; [paired tool adapters](paired-tools.md) keep their own protocol and permissions |
 | `shared/js/peer-request-signal.js` | `js_parts = ["peer-request-signal"]` | what a host is told about a join request while the popup is not in front: a count in the tab's title, a mark on the list on returning, and a sound with its switch for a tool that also names `chime` and includes `paired-request-sound.html`; fed by `peer-approval-ui` or by a tool's own approval controller |

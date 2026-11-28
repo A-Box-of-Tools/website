@@ -35,7 +35,7 @@ live_hint = """
 
 read_first = """
 , <code>src/shared/document-detect.js</code> para como os cantos
-      são encontrados sem modelo algum, <code>src/warp.js</code> para o
+      são encontrados sem modelo algum, <code>src/shared/document-warp.js</code> para o
       endireitamento, e <code>src/clean.js</code> para como a luz irregular é
       dividida para fora."""
 
