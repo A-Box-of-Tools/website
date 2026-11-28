@@ -103,6 +103,11 @@ BASELINE = {
     'hash-checksum': 3,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
+    # Not one of these is shown on the page. Two canvas font shorthands, two
+    # lines of PDF syntax, a phrase key template, the output filename, and a
+    # field label printed on the made-up example card, which is part of a
+    # picture of a specimen rather than a sentence anybody is asked to read.
+    'id-card-copy': 7,
     # A filename template, a dimension pair, a CSS percentage, a phrase key
     # and the note written into a padded JPEG. It was thirteen until the eight
     # published citations moved to src/sources.js, which is exempt below - a

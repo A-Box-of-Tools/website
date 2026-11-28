@@ -1,0 +1,307 @@
+<!--
+  tools/id-card-copy/body.html, in Simplified Chinese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main id="main">
+  <!-- 第 1 步 | 照片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 正反面各选一张照片</h2>
+
+    <p class="card-lede">
+      证件正面一张、反面一张，从上方拍，整张证件都在画面里。不用正对，也不用裁好，找出证件、把它摆正，正是这个工具要干的活。两张一起拖进来的话，第一张当正面。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 | 每一面的四个角 -->
+  <section class="card">
+    <h2><span class="step">2</span> 把角对到证件上</h2>
+
+    <p class="stage-hint">
+      在照片上随便按一下，最近的那个角就到你手指这儿来，把它拖到证件的角上。用 <kbd>Tab</kbd> 可以从键盘选中一个角，方向键挪一个像素，按住 <kbd>Shift</kbd> 挪十个。证件是圆角的话，把每个角放在它两条边延长后相交的地方。
+    </p>
+
+    <div class="side-actions">
+      <button type="button" id="swap" class="ghost" disabled>正反面对调</button>
+    </div>
+
+    <div class="sides" id="sides">
+      <div class="side" id="front-panel" role="group" aria-labelledby="front-heading">
+        <h3 id="front-heading">正面</h3>
+
+        <div class="side-empty" id="front-empty">
+          <p class="side-note">还没有正面照片。</p>
+          <input type="file" id="front-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="front-input" class="as-button ghost">选正面照片</label>
+        </div>
+
+        <div id="front-editor" hidden>
+          <!-- A canvas rather than an <img>, because the photo is drawn at
+               screen size from the decoded picture, and the outline over it
+               is an SVG polygon in percentages that needs no redraw when the
+               window changes. -->
+          <div class="stage-wrap">
+            <div class="stage" id="front-stage">
+              <canvas id="front-photo" role="img" aria-label="正面照片"></canvas>
+            </div>
+          </div>
+          <p id="front-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="front-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="front-detect" class="ghost">重新找证件</button>
+            <button type="button" id="front-whole" class="ghost">用整张照片</button>
+            <button type="button" id="front-left" class="ghost turn" aria-label="把正面向左转">↺</button>
+            <button type="button" id="front-right" class="ghost turn" aria-label="把正面向右转">↻</button>
+            <button type="button" id="front-undo" class="ghost" disabled>撤销</button>
+            <button type="button" id="front-remove" class="ghost danger">移除</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side" id="back-panel" role="group" aria-labelledby="back-heading">
+        <h3 id="back-heading">反面</h3>
+
+        <div class="side-empty" id="back-empty">
+          <p class="side-note">还没有反面照片。</p>
+          <input type="file" id="back-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="back-input" class="as-button ghost">选反面照片</label>
+        </div>
+
+        <div id="back-editor" hidden>
+          <div class="stage-wrap">
+            <div class="stage" id="back-stage">
+              <canvas id="back-photo" role="img" aria-label="反面照片"></canvas>
+            </div>
+          </div>
+          <p id="back-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="back-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="back-detect" class="ghost">重新找证件</button>
+            <button type="button" id="back-whole" class="ghost">用整张照片</button>
+            <button type="button" id="back-left" class="ghost turn" aria-label="把反面向左转">↺</button>
+            <button type="button" id="back-right" class="ghost turn" aria-label="把反面向右转">↻</button>
+            <button type="button" id="back-undo" class="ghost" disabled>撤销</button>
+            <button type="button" id="back-remove" class="ghost danger">移除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 3 步 | 排版 -->
+  <section class="card">
+    <h2><span class="step">3</span> 排好复印件</h2>
+
+    <div class="layout">
+      <div class="layout-preview">
+        <p id="preview-empty" class="empty-note">
+          只要有任何一面的照片，复印件就会按真实比例出现在这里。
+        </p>
+
+        <div id="preview-box" hidden>
+          <div class="sheet-wrap">
+            <canvas id="sheet-preview" class="sheet-preview" role="img"
+                    aria-label="做好的复印件预览"></canvas>
+          </div>
+          <p id="one-side" class="hint-line warn-line" hidden></p>
+          <ul id="preview-facts" class="result-facts"></ul>
+        </div>
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="field">
+          <label for="card-size">证件尺寸</label>
+          <select id="card-size">
+            <option value="id1" selected>银行卡大小（ID-1） | &#x2066;85.6 &times; 54&#x2069; mm</option>
+            <option value="id2">ID-2 | &#x2066;105 &times; 74&#x2069; mm</option>
+            <option value="id3">护照资料页（ID-3） | &#x2066;125 &times; 88&#x2069; mm</option>
+          </select>
+          <p class="field-note">
+            身份证、驾驶证、居留许可和医保卡，几乎都是银行卡大小。每一面都按这个尺寸精确打印。
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="paper">纸张</label>
+          <select id="paper">
+            <option value="a4" selected>A4 | &#x2066;210 &times; 297&#x2069; mm</option>
+            <option value="letter">Letter | &#x2066;8.5 &times; 11&#x2069; in</option>
+            <option value="cards">不要纸张，只要两面</option>
+          </select>
+          <p class="field-note">
+            一张拿去打印的纸，或者把两面合成一张图片，给要求一起上传的表单用。
+          </p>
+        </div>
+
+        <fieldset class="field choices">
+          <legend>排列</legend>
+          <label class="check"><input type="radio" name="arrange" value="stack" checked> 上下排列</label>
+          <label class="check"><input type="radio" name="arrange" value="side"> 左右并排</label>
+        </fieldset>
+
+        <fieldset class="field choices" id="place-row">
+          <legend>放在纸上哪里</legend>
+          <label class="check"><input type="radio" name="place" value="middle" checked> 居中</label>
+          <label class="check"><input type="radio" name="place" value="top"> 靠上</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>颜色</legend>
+          <label class="check"><input type="radio" name="colour" value="colour" checked> 彩色</label>
+          <label class="check"><input type="radio" name="colour" value="grey"> 黑白</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>边角</legend>
+          <label class="check"><input type="checkbox" id="round" checked> 把角修圆</label>
+          <label class="check"><input type="checkbox" id="outline" checked> 加一道细轮廓线</label>
+        </fieldset>
+
+        <div class="field wide">
+          <label for="words">写在证件上的字<span class="optional">（可选）</span></label>
+          <input type="text" id="words" maxlength="80" autocomplete="off"
+                 placeholder="例如：仅供办理租房手续使用，他用无效">
+          <p class="field-note">
+            斜着、一行行重复地写在两面上，写进复印件本身的像素里。一份写明了做什么用的复印件，偷去也没多大用。
+          </p>
+          <div class="words-extra" id="words-extra" hidden>
+            <label for="ink">墨色</label>
+            <select id="ink">
+              <option value="grey" selected>灰色</option>
+              <option value="red">红色</option>
+              <option value="blue">蓝色</option>
+              <option value="black">黑色</option>
+            </select>
+            <label for="strength">浓淡</label>
+            <div class="inline-pair">
+              <input type="range" id="strength" min="15" max="80" step="5" value="35">
+              <output id="strength-value" for="strength">35%</output>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 4 步 | 文件 -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> 保存复印件</h2>
+
+    <div class="settings" id="save-settings">
+      <fieldset class="field choices">
+        <legend>文件</legend>
+        <label class="check"><input type="radio" name="format" value="pdf" checked> PDF</label>
+        <label class="check"><input type="radio" name="format" value="jpeg"> JPEG</label>
+        <label class="check"><input type="radio" name="format" value="png"> PNG</label>
+        <p class="field-note" id="format-note"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="dpi">分辨率</label>
+        <select id="dpi">
+          <option value="200">200 DPI | 文件小一些</option>
+          <option value="300" selected>300 DPI | 跟复印机打的一样</option>
+          <option value="600">600 DPI | 最清晰</option>
+        </select>
+        <p class="field-note">
+          每英寸点数超过照片本身含有的，只会让文件变大，不会多出细节。每张照片有多少细节，第 2 步会写。
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>做复印件</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>做好的复印件</h3>
+        <a id="download" class="primary as-button" href="#" download>下载</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        打印时选 <strong>100%</strong> 或「实际大小」，千万别选「适合页面」。然后把证件放在纸上比一比，两者应该一样大。
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into every language and
+    a sentence written there would be English in all of them but one. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">找到证件了。核对一下四个角，偏了的拖回去。</span>
+    <span data-phrase="detect.unsure">证件的边缘不够清楚，没法确定。这四个角是猜的，把它们拖到证件上。</span>
+    <span data-phrase="detect.nothing">这张照片里认不出证件，所以角放在照片的边上。把它们拖到证件上。</span>
+    <span data-phrase="detect.flat">这张图里没有可找的东西，它根本没有边缘。</span>
+    <span data-phrase="detect.tiny">这张图太小了，在里面找不出证件。</span>
+    <span data-phrase="detect.edited">这四个角现在归你了。「重新找证件」会把照片从头量一遍。</span>
+
+    <span data-phrase="quality.good">按证件原大，大约 {dpi} DPI，足够做一份清晰的复印件。</span>
+    <span data-phrase="quality.fair">按证件原大，大约 {dpi} DPI，看得清，印在纸上略微发虚。</span>
+    <span data-phrase="quality.low">按证件原大，只有大约 {dpi} DPI，小字会糊。可以的话，靠近一点重拍。</span>
+
+    <span data-phrase="corner.tl">左上角</span>
+    <span data-phrase="corner.tr">右上角</span>
+    <span data-phrase="corner.br">右下角</span>
+    <span data-phrase="corner.bl">左下角</span>
+    <span data-phrase="corner.at.front">正面：{corner}，横向 {x}，纵向 {y}。方向键可以挪它，按住 Shift 一次挪十个像素。</span>
+    <span data-phrase="corner.at.back">反面：{corner}，横向 {x}，纵向 {y}。方向键可以挪它，按住 Shift 一次挪十个像素。</span>
+
+    <span data-phrase="hint.nofront">目前只有反面。再加一张正面照片，两面就能放进同一份复印件。</span>
+    <span data-phrase="hint.noback">目前只有正面。再加一张反面照片，两面就能放进同一份复印件。</span>
+
+    <span data-phrase="paper.a4">A4</span>
+    <span data-phrase="paper.letter">Letter</span>
+    <span data-phrase="sheet.portrait">一张竖放的 {paper} 纸。</span>
+    <span data-phrase="sheet.landscape">一张横放的 {paper} 纸，好让两面并排放得下。</span>
+    <span data-phrase="sheet.cards">一张 {width} &times; {height} mm 的图片，带一圈窄白边。</span>
+    <span data-phrase="sheet.size">每一面 {width} &times; {height} mm，就是证件本身的大小。</span>
+
+    <span data-phrase="format.pdf">打印就用这个。只要打印机设为 100%，PDF 在哪台打印机上都能让证件保持原大。</span>
+    <span data-phrase="format.jpeg">一张小图片，用来上传或者发邮件。文件里记着自己的分辨率，按分辨率打印的程序会用到它。</span>
+    <span data-phrase="format.png">一张无损图片。比 JPEG 大，小字周围没有压缩造成的模糊。</span>
+
+    <span data-phrase="busy.side">正在摆正第 {done} 面，共 {total} 面&hellip;</span>
+    <span data-phrase="busy.writing">正在写文件&hellip;</span>
+
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="result.file">{name} | {size}。</span>
+    <span data-phrase="result.paper">在 {paper} 纸上按 100% 打印，每一面 {width} &times; {height} mm。</span>
+    <span data-phrase="result.cards">按文件记录的分辨率打印，每一面 {width} &times; {height} mm。</span>
+    <span data-phrase="result.pdf">每一面是一张 {dpi} DPI 的图片，由 PDF 本身按原大摆放。</span>
+    <span data-phrase="result.image">{width} &times; {height} 像素，{dpi} DPI，文件里也是这么写的。</span>
+    <span data-phrase="result.capped">实际按 {dpi} DPI 做的，不是你选的分辨率。整张纸的图片再大，有些手机就画不出来了。PDF 没有这个限制。</span>
+    <span data-phrase="result.clean">没有日期，没有作者，也没有照片元数据里的任何东西。PDF 只记录这个工具的名字。</span>
+
+    <span data-phrase="build.nocards">没有可以放进复印件的证件。</span>
+    <span data-phrase="encode.failed">这个浏览器没能把图片写出来。</span>
+    <span data-phrase="error.none">先选一张证件照片。</span>
+    <span data-phrase="error.more">，以及另外 {count} 个</span>
+    <span data-phrase="error.notphoto">这个页面打不开这些文件，它们不是照片：{names}。</span>
+    <span data-phrase="error.extra">只用两张照片，一正一反。没用上的：{names}。</span>
+    <span data-phrase="error.decode">这个浏览器打不开 {name}。如果是 iPhone 的 HEIC 照片，请先转换。</span>
+    <span data-phrase="error.failed">做复印件的时候出了岔子：{detail}</span>
+    <span data-phrase="warp.degenerate">这四个角构不成一张证件。</span>
+
+    <span data-phrase="net.clean">你的证件没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到照片，或照片里的一个字节。</span>
+    <span data-phrase="net.platform.many">本站自己用于广告和统计的脚本来自 {hosts} 个主机，它们谁也没拿到照片，或照片里的一个字节。</span>
+  </div>
+</main>

@@ -1,0 +1,26 @@
+#
+# Ratgeber: Vorder- und Rückseite eines Ausweises auf ein Blatt kopieren - German.
+#
+# "Beidseitig kopieren" ist die Wendung, mit der das im Deutschen gesucht und
+# im Copyshop verlangt wird. Das Beispiel für den Vermerk ist eine deutsche
+# Wohnungsbewerbung, und die Druckeinstellungen tragen die Namen, die deutsche
+# Druckdialoge ihnen geben.
+#
+
+nav = "Ausweis beidseitig kopieren"
+title = "Ausweis beidseitig auf ein Blatt kopieren, in Originalgröße und ohne Upload"
+description = "Jemand möchte eine Kopie Ihres Ausweises, Vorder- und Rückseite auf einem Blatt. Wie Sie die beiden Seiten fotografieren, in Originalgröße auf A4 oder Letter bringen, ohne Schrumpfen drucken und vermerken, wofür die Kopie ist."
+
+heading = "So kopieren Sie Vorder- und Rückseite eines Ausweises auf ein Blatt"
+lede = """
+    Ein Vermieter, ein Arbeitgeber oder eine Bank hat um &bdquo;eine Kopie
+    Ihres Ausweises, Vorder- und Rückseite&ldquo; gebeten, und Sie haben ein
+    Handy und keinen Kopierer. Zwei Fotos genügen. Hier steht, wie Sie sie
+    machen, wie beide Seiten in Originalgröße auf ein Blatt kommen und wie Sie
+    verhindern, dass die Kopie für irgendetwas anderes taugt."""
+
+updated = "27. November 2026"
+
+og_title = "So kopieren Sie Vorder- und Rückseite eines Ausweises auf ein Blatt"
+og_description = "Zwei Handyfotos, ein Blatt, die Karte in Originalgröße. Und warum &bdquo;An Seite anpassen&ldquo;, ein schräger Zuschnitt und eine Spiegelung die Kopie verderben."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

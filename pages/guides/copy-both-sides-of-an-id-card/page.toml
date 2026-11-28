@@ -1,0 +1,37 @@
+#
+# Guide: copying both sides of an ID card onto one page.
+#
+# Written for the person a landlord, an employer, a bank or a school has asked
+# for "a copy of your ID, front and back", who has a phone and no photocopier.
+# The parts nobody warns them about: that "fit to page" is what makes the copy
+# the wrong size, that a tilted photo cropped into a box comes out squashed,
+# that a reflection cannot be fixed afterwards, and that a copy which says what
+# it was handed over for is a much poorer thing to steal.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/copy-both-sides-of-an-id-card"
+kind = "guide"
+nav = "Copying both sides of an ID card"
+group = "doing-the-job"
+tool = "id-card-copy"
+
+title = "How to Copy Both Sides of an ID Card Onto One Page (Real Size, No Upload)"
+description = "Somebody wants a copy of your ID card, front and back, on one page. How to photograph the two sides, get them onto A4 or Letter at the card's real size, print it without it shrinking, and mark what the copy is for."
+
+heading = "How to copy both sides of an ID card onto one page"
+lede = """
+    A landlord, an employer or a bank has asked for &ldquo;a copy of your ID,
+    front and back&rdquo;, and you have a phone rather than a photocopier. Two
+    photos are enough &mdash; this is how to take them, how to get both sides
+    onto one sheet at the card's real size, and how to keep the copy from being
+    useful for anything else."""
+
+updated = "27 November 2026"
+published = "2026-11-27"
+lastmod = "2026-11-27"
+
+og_title = "How to copy both sides of an ID card onto one page"
+og_description = "Two phone photos, one sheet, the card at its real size - and why fit to page, a tilted crop and a reflection are what ruin the copy."
+og_image_alt = "abox.tools - tools that never touch a server"

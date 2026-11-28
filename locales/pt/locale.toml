@@ -138,6 +138,7 @@ complete = true
 # entrega, e ninguem a procura traduzida.
 "dicom-viewer" = "visualizador-dicom"
 "document-scanner" = "digitalizar-documentos"
+"id-card-copy" = "copia-documento-frente-e-verso"
 # O mesmo verbo de tarjar-imagem, porque e a mesma promessa: o texto sai do
 # arquivo, nao fica coberto por um retangulo.
 "redact-pdf" = "tarjar-pdf"
@@ -182,6 +183,7 @@ complete = true
 "guides/open-a-dicom-file" = "guias/abrir-um-arquivo-dicom"
 "guides/redact-a-pdf" = "guias/tarjar-um-pdf"
 "guides/scan-a-document-with-your-phone" = "guias/digitalizar-um-documento-com-o-celular"
+"guides/copy-both-sides-of-an-id-card" = "guias/copiar-documento-frente-e-verso-em-uma-folha"
 # Quem empilha nao procura "empilhar": procura o ruido, que e o problema.
 "guides/stack-photos-to-reduce-noise" = "guias/empilhar-fotos-para-reduzir-ruido"
 "guides/make-a-gif-from-part-of-a-video" = "guias/gif-de-um-trecho-de-video"

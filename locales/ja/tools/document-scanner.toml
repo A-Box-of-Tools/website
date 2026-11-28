@@ -33,7 +33,7 @@ live_hint = """
 
 read_first = """
 、四隅がどうやってモデルなしで見つかるのかは\
-      <code>src/shared/document-detect.js</code>、まっすぐにする処理は<code>src/warp.js</code>、\
+      <code>src/shared/document-detect.js</code>、まっすぐにする処理は<code>src/shared/document-warp.js</code>、\
       むらのある明るさを割って取り除く処理は<code>src/clean.js</code>です。"""
 
 howto_heading = "スマホのカメラで書類をスキャンする方法"

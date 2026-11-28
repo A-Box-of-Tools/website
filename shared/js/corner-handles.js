@@ -1,6 +1,12 @@
 /**
  * The four corner handles over the photograph.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/corner-handles.js and
+ * the build copies it to <tool>/src/shared/ for the tools that ask for it with
+ * `js_parts = ["corner-handles"]`, along with `css_parts = ["corner-handles"]`
+ * for the outline and the grips: the document scanner, and the ID card copier,
+ * which puts one set of these over each side of the card.
+ *
  * This layer draws no pixels of the page. What it draws is an outline and four
  * grips over a canvas that already has the photograph on it, and it reports
  * where they were dragged to. All the state lives with the caller: this never

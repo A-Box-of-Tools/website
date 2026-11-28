@@ -1,0 +1,121 @@
+name = "Copie de carte d'identité"
+heading = "Copie&nbsp;de&nbsp;carte&nbsp;d'identité <span class=\"h1-kw\">&mdash; recto et verso sur une page</span>"
+tagline = "Les deux faces de la carte, sur une seule feuille, à sa taille réelle."
+title = "Copie de carte d'identité &mdash; recto verso sur une page, taille réelle, sans envoi"
+description = "Mettez les deux faces d'une carte d'identité ou d'un permis de conduire sur une page A4 ou Letter à la taille réelle de la carte, ou dans une seule image. La carte est trouvée, redressée et recadrée dans votre navigateur&nbsp;: rien n'est envoyé."
+og_title = "Copier le recto et le verso d'une carte d'identité sur une page, sans l'envoyer"
+og_description = "Deux photos prises au téléphone d'un côté, une feuille de l'autre, avec le recto et le verso exactement à la taille de la carte, prête à imprimer. La carte est trouvée et redressée dans votre propre navigateur, parce qu'une carte d'identité est bien la dernière chose à envoyer."
+og_image_alt = "Copie de carte d'identité - le recto et le verso d'une carte sur une page à taille réelle, sans l'envoyer"
+pledge = "Les deux photos sont décodées, redressées, mises en page et écrites dans la copie par votre propre navigateur, avec du calcul et les codecs qu'il embarque déjà. Cet outil n'a aucune fonction réseau d'aucune sorte &mdash; rien à récupérer, rien à envoyer, pas même un passage de relais vers un autre outil &mdash; parce que ce qu'on lui confie est une pièce d'identité, et que la copie d'une pièce d'identité est tout ce dont quelqu'un a besoin pour se faire passer pour vous."
+live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez l'onglet Réseau et faites une copie. Aucune requête ne transporte une photo, une vignette, un nom de fichier, les mots que vous avez saisis ou la position d'un seul coin. Ou passez en mode avion et faites-en une quand même."
+read_first = ", <code>src/shared/document-detect.js</code> pour la façon dont la carte est trouvée sans le moindre modèle, <code>src/layout.js</code> pour la place de chaque face sur le papier, <code>src/card.js</code> pour les coins et la mention écrite en travers de la carte, et <code>src/document.js</code> pour le PDF."
+howto_heading = "Comment copier le recto et le verso d'une carte d'identité sur une page"
+card = "Le recto et le verso d'une carte d'identité ou d'un permis sur une page, à la taille réelle de la carte, ou dans une seule image pour un formulaire en ligne. Trouvés, redressés et recadrés à partir de deux photos prises au téléphone."
+
+[words]
+plural = "cartes"
+choose = "une photo de chaque face de la carte"
+
+[[facts]]
+mark = "&#10007;"
+text = "Aucun envoi"
+
+[[facts]]
+mark = "&#10007;"
+text = "Aucun compte"
+
+[[facts]]
+mark = "&#10007;"
+text = "Aucun filigrane de notre part"
+
+[[facts]]
+mark = "&#10003;"
+text = "Fonctionne hors ligne"
+
+[[facts]]
+mark = "&#10003;"
+text = "Code ouvert"
+
+[[privacy]]
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
+
+[[privacy]]
+title = "Il n'y a pas de modèle, donc rien à télécharger."
+body = "Trouver la carte est du calcul&nbsp;: le gradient de la photo, un vote pour les droites qu'elle contient, et une vérification de ce qui se trouve sous chaque côté du rectangle gagnant. C'est la recherche de coins du scanner de documents, partagée avec lui&nbsp;: aucun poids, aucun moteur d'inférence, rien qui se télécharge à la première utilisation &mdash; voir <code>src/shared/document-detect.js</code>."
+
+[[privacy]]
+title = "La copie ne garde de vos photos que la carte."
+body = "Chaque face est redessinée à partir des pixels&nbsp;: le lieu, l'appareil et l'heure qu'un téléphone écrit dans une photo ne sont donc pas dans la copie. Le PDF enregistre le nom de cet outil et rien d'autre&nbsp;: ni date, ni auteur, ni nom de machine &mdash; voir <code>src/document.js</code>."
+
+[[privacy]]
+title = "La mention en filigrane est dans l'image, pas par-dessus."
+body = "Ce que vous saisissez est dessiné dans les pixels de chaque face avant l'enregistrement&nbsp;: on ne peut donc pas l'ôter de la copie comme on le ferait d'un calque ou d'une annotation dans un PDF &mdash; voir <code>src/card.js</code>."
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit, et il fonctionne hors ligne."
+body = "Il n'y a aucun <code>fetch</code>, aucun <code>XMLHttpRequest</code> et aucun <code>sendBeacon</code> nulle part dans <code>src/</code>, et cette page n'ouvre <code>connect-src</code> pour rien du tout. Débranchez-vous du réseau et l'outil ne change pas &mdash; la preuve qu'il vaut la peine de faire avant de photographier un passeport."
+
+[[howto]]
+title = "Photographiez les deux faces."
+body = "Posez la carte sur quelque chose de plus sombre ou de plus clair qu'elle, tenez le téléphone au-dessus de façon que la carte entière soit dans le cadre, et remplissez le cadre autant que possible. Inclinez un peu le téléphone si la lumière se reflète sur la carte&nbsp;: un reflet cache ce qu'il y a dessous, et rien ne peut le récupérer après coup."
+
+[[howto]]
+title = "Ajoutez les deux photos."
+body = "Déposez-les toutes les deux d'un coup et la première est prise pour le recto, ou utilisez le bouton de chaque face. &laquo;&nbsp;Inverser recto et verso&nbsp;&raquo; les met dans l'autre sens."
+
+[[howto]]
+title = "Vérifiez les coins."
+body = "La carte est trouvée sur chaque photo et entourée d'un contour. Appuyez n'importe où sur une photo et le coin le plus proche vient sous votre doigt, ou atteignez-en un avec <kbd>Tab</kbd> et déplacez-le avec les flèches. Les boutons de rotation remettent une carte dans le bon sens."
+
+[[howto]]
+title = "Mettez la copie en page."
+body = "Choisissez le papier &mdash; A4, Letter, ou pas de feuille du tout pour une seule image des deux faces &mdash; et si les deux se placent l'une au-dessus de l'autre ou côte à côte. Saisissez l'objet de la copie pour le faire écrire en travers de la carte, si vous le souhaitez."
+
+[[howto]]
+title = "Enregistrez-la, et imprimez-la à 100&nbsp;%."
+body = "Le PDF est le fichier à imprimer&nbsp;: réglez l'imprimante sur &laquo;&nbsp;taille réelle&nbsp;&raquo; ou 100&nbsp;%, pas sur &laquo;&nbsp;ajuster à la page&nbsp;&raquo;, et posez la carte sur le papier pour vérifier. Un JPEG ou un PNG sert à joindre la copie à un formulaire en ligne ou à un courriel."
+
+[[faq]]
+q = "Les photos de ma carte d'identité sont-elles envoyées quelque part&nbsp;?"
+a = "Non. Les deux photos sont décodées, redressées, mises en page et écrites dans la copie par votre propre navigateur, sur votre propre matériel. Cet outil n'a aucune fonction réseau d'aucune sorte &mdash; il ne va jamais rien chercher et n'envoie jamais rien &mdash; et la <code>Content-Security-Policy</code> de la page ne le laisse même pas ouvrir une connexion pour relire son propre résultat. Chargez la page une fois, passez en mode avion&nbsp;: elle fonctionne toujours."
+
+[[faq]]
+q = "La carte sortira-t-elle à la bonne taille à l'impression&nbsp;?"
+a = "Oui, si l'imprimante est réglée pour imprimer à 100&nbsp;%. Le PDF place chaque face exactement à la taille de la carte &mdash; 85,6 sur 53,98 millimètres pour une carte au format carte bancaire &mdash; dans les mesures propres au fichier, et non en mettant à l'échelle l'image d'une page. Ce qui fait sortir les copies trop petites, c'est l'option &laquo;&nbsp;ajuster à la page&nbsp;&raquo; ou &laquo;&nbsp;réduire pour ajuster&nbsp;&raquo; de la boîte de dialogue d'impression, qui réduit toute la feuille de quelques pour cent&nbsp;; choisissez plutôt &laquo;&nbsp;taille réelle&nbsp;&raquo;, et posez la carte sur la copie imprimée pour vérifier que les deux correspondent."
+
+[[faq]]
+q = "Pourquoi la carte sort-elle à la bonne forme et non écrasée&nbsp;?"
+a = "Parce que la forme n'est pas du tout mesurée sur la photo&nbsp;: c'est celle de la carte elle-même. Une carte photographiée de biais paraît plus courte du côté le plus éloigné, et un outil qui recadre le rectangle qu'il voit et l'étire dans une boîte produit une carte visiblement trapue ou allongée. Ici, les quatre coins sont projetés par une transformation de perspective sur un rectangle ayant exactement les proportions de la carte&nbsp;: chaque ligne droite sur la carte est donc droite sur la copie, et la carte garde sa propre forme quel que soit l'angle sous lequel elle a été photographiée."
+
+[[faq]]
+q = "Que fait la &laquo;&nbsp;mention en filigrane&nbsp;&raquo;, et faut-il l'utiliser&nbsp;?"
+a = "Elle écrit ce que vous saisissez &mdash; en général l'objet de la copie et la date, comme &laquo;&nbsp;Copie uniquement pour la location au 12 rue des Lilas, mars 2027&nbsp;&raquo; &mdash; en lignes obliques répétées sur les deux faces, dans l'encre et l'intensité que vous choisissez. Elle est dessinée dans les pixels avant l'enregistrement du fichier&nbsp;: on ne peut donc pas l'ôter de la copie comme on retire une note posée sur un PDF. Une copie de pièce d'identité qui dit pourquoi elle a été remise est bien moins utile à quiconque voudrait la réutiliser pour autre chose, et c'est le conseil que donnent certains gouvernements pour les copies de pièces d'identité. Gardez-la assez légère pour que la carte reste lisible dessous."
+
+[[faq]]
+q = "Les coins trouvés sont faux. Et maintenant&nbsp;?"
+a = "Faites-les glisser. Les coins sont une position de départ, pas une décision&nbsp;: chaque face est prise là où ses quatre coins finissent. Appuyez n'importe où sur la photo et le coin le plus proche saute sous votre doigt, et les flèches déplacent le coin sélectionné pixel par pixel. La carte est plus difficile à trouver sur une surface presque de sa couleur, et une carte blanche sur un bureau blanc en est la raison habituelle &mdash; posez-la sur quelque chose de plus sombre et reprenez la photo, ou placez les coins vous-même. Les cartes ont des coins arrondis&nbsp;: placez chaque coin là où ses deux bords droits se rejoindraient."
+
+[[faq]]
+q = "Avec quelles cartes fonctionne-t-il&nbsp;?"
+a = "Avec toute carte dont les deux faces valent d'être copiées ensemble. Presque toutes les cartes d'identité, permis de conduire, titres de séjour, cartes d'assurance maladie, cartes d'étudiant et cartes bancaires ont la même taille &mdash; le format ISO ID-1 d'une carte bancaire &mdash; et c'est le réglage par défaut. Le format ID-2, plus grand, de certaines anciennes cartes d'identité est aussi proposé, et la page photo d'un passeport (ID-3) peut être placée seule sur une feuille. Certains permis sont imprimés en hauteur plutôt qu'en largeur&nbsp;; tournez cette face avec les boutons de rotation et elle est mise en page en hauteur."
+
+[[faq]]
+q = "Puis-je obtenir une seule image des deux faces plutôt qu'une page&nbsp;?"
+a = "Oui. Choisissez &laquo;&nbsp;Pas de feuille &mdash; juste les deux faces&nbsp;&raquo; comme papier et JPEG ou PNG comme fichier&nbsp;: la copie est alors une seule image des deux faces avec une étroite bordure blanche, ce que demande un formulaire en ligne qui veut les deux faces en un seul envoi. L'image enregistre sa propre résolution, si bien qu'un programme qui imprime d'après elle imprime la carte à sa taille réelle&nbsp;; beaucoup se contentent d'ajuster une image au papier, et c'est pourquoi le PDF est le fichier à imprimer."
+
+[[faq]]
+q = "Le téléchargement ne fait rien. Pourquoi&nbsp;?"
+a = "En général parce que la page est ouverte dans une autre application &mdash; une messagerie ou un réseau social &mdash; dont le navigateur intégré n'enregistre pas les téléchargements. Ouvrez plutôt la page dans le navigateur de votre téléphone, et les mêmes étapes enregistreront le fichier. Une fois chargée, elle n'a plus besoin du réseau&nbsp;: elle y fonctionne donc aussi hors ligne."
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = "C'est gratuit, et il n'y a ni compte, ni connexion, ni période d'essai, ni limite au nombre de copies, ni filigrane de notre part &mdash; les seuls mots écrits sur une carte sont ceux que vous saisissez. Le site porte de la publicité, et c'est elle qui le paie&nbsp;; on ne donne rien aux annonces sur votre carte."
+
+[schema]
+description = "Réunir le recto et le verso d'une carte d'identité en une seule copie dans le navigateur&nbsp;: la carte est trouvée sur chaque photo, la perspective est défaite, et les deux faces sont placées à leur taille réelle sur une page A4 ou Letter, ou dans une seule image. Une mention facultative est écrite en travers de la carte. Rien n'est envoyé."
+features = ["Trouve la carte sur chaque photo sans modèle, sans téléchargement et sans requête", "Redresse chaque face aux proportions exactes de la carte, si bien qu'une photo de biais ne sort pas écrasée", "Imprime à la taille réelle de la carte&nbsp;: 85,6 sur 53,98 mm sur A4 ou Letter dans le PDF", "Une seule image des deux faces pour les formulaires qui demandent un envoi unique", "Formats carte bancaire (ID-1), ID-2 et page de passeport (ID-3)", "L'une au-dessus de l'autre ou côte à côte, au milieu ou en haut de la feuille", "Mention facultative écrite en travers de la carte, incrustée dans les pixels", "Coins arrondis, contour fin, couleur ou noir et blanc", "Les coins se déplacent à la souris, ou au clavier pixel par pixel", "N'écrit ni date, ni auteur, ni métadonnées de photo dans la copie", "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte"]
+
+[picker]
+title = "Déposez ici les photos du recto et du verso"
+hint = "ou cliquez pour parcourir &mdash; le recto d'abord, puis le verso (JPEG, PNG, WebP, AVIF)"

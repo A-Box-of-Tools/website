@@ -1,0 +1,23 @@
+#
+# Guia: copiar a frente e o verso de um documento numa página - Portuguese.
+#
+# O senhorio do inglês vira a imobiliária, que é quem pede a cópia no Brasil.
+#
+
+nav = "Copiar frente e verso do documento"
+title = "Como copiar a frente e o verso de um documento de identidade numa página (tamanho real, sem envio)"
+description = "Alguém quer uma cópia do seu documento de identidade, frente e verso, numa página. Como fotografar os dois lados, levá-los a uma folha A4 ou Letter no tamanho real do cartão, imprimir sem que encolha, e marcar para que serve a cópia."
+
+heading = "Como copiar a frente e o verso de um documento de identidade numa página"
+lede = """
+    Uma imobiliária, um empregador ou um banco pediu &ldquo;uma cópia do seu
+    documento, frente e verso&rdquo;, e você tem um celular e não uma copiadora.
+    Duas fotos bastam &mdash; isto é como tirá-las, como pôr os dois lados numa
+    folha no tamanho real do cartão, e como impedir que a cópia sirva para
+    qualquer outra coisa."""
+
+updated = "27 de novembro de 2026"
+
+og_title = "Como copiar a frente e o verso de um documento numa página"
+og_description = "Duas fotos do celular, uma folha, o cartão no tamanho real - e por que o ajustar à página, um recorte torto e um reflexo são o que estragam a cópia."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

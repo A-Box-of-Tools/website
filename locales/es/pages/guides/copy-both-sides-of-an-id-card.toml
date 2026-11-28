@@ -1,0 +1,21 @@
+#
+# Guía: copiar las dos caras de un documento de identidad en una hoja - Spanish.
+#
+
+nav = "Copiar las dos caras de un documento"
+title = "Cómo copiar las dos caras de un documento de identidad en una hoja (a tamaño real y sin subirlo)"
+description = "Te piden una copia de tu documento de identidad por las dos caras en una sola hoja. Cómo fotografiar el anverso y el reverso, ponerlos en A4 o Carta al tamaño real de la tarjeta, imprimir la copia sin que encoja y dejar escrito para qué es."
+
+heading = "Cómo copiar las dos caras de un documento de identidad en una hoja"
+lede = """
+    Una inmobiliaria, una empresa o un banco te ha pedido &laquo;una copia de
+    tu documento, por las dos caras&raquo;, y tienes un teléfono y ninguna
+    fotocopiadora. Bastan dos fotos: esto es cómo hacerlas, cómo poner las dos
+    caras en una hoja al tamaño real de la tarjeta y cómo evitar que la copia
+    sirva para cualquier otra cosa."""
+
+updated = "27 de noviembre de 2026"
+
+og_title = "Cómo copiar las dos caras de un documento de identidad en una hoja"
+og_description = "Dos fotos con el teléfono, una hoja y la tarjeta a su tamaño real. Y por qué ajustar a la página, un recorte torcido y un reflejo son lo que estropea la copia."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

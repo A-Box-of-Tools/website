@@ -8,7 +8,7 @@ og_description = "Les coins de la page sont trouvés, l'inclinaison est défaite
 og_image_alt = "Scanner de documents - une photo de page, redressée et nettoyée, sans envoi"
 pledge = "La photo est décodée, redressée, nettoyée et écrite dans un PDF par votre propre navigateur, avec rien d'autre que du calcul et les codecs qu'il embarque déjà. Cet outil n'a aucune fonction réseau, ni pour récupérer ni pour envoyer, et la raison pour laquelle cela compte ici tient à ce dont les gens photographient les pages&nbsp;: un passeport, une fiche de paie, un bail, un formulaire qu'une administration a demandé &laquo;&nbsp;scanné&nbsp;&raquo;."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez l'onglet Réseau et scannez une page. Aucune requête ne transporte une photo, une vignette, un nom de fichier ou la position d'un seul coin. Ou débranchez-vous d'internet et scannez-en une quand même."
-read_first = ", <code>src/shared/document-detect.js</code> pour la façon dont les coins sont trouvés sans le moindre modèle, <code>src/warp.js</code> pour le redressement, et <code>src/clean.js</code> pour la façon dont la lumière inégale est divisée."
+read_first = ", <code>src/shared/document-detect.js</code> pour la façon dont les coins sont trouvés sans le moindre modèle, <code>src/shared/document-warp.js</code> pour le redressement, et <code>src/clean.js</code> pour la façon dont la lumière inégale est divisée."
 howto_heading = "Comment scanner un document avec l'appareil photo du téléphone"
 card = "Une photo de page, redressée et nettoyée jusqu'à devenir un document. Les coins sont trouvés pour vous, l'inclinaison est défaite et l'ombre est divisée."
 

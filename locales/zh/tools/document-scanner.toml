@@ -30,7 +30,7 @@ live_hint = """
 
 read_first = """
 ，四个角是怎么在没有模型的情况下找出来的，\
-      看 <code>src/shared/document-detect.js</code>；摆正在 <code>src/warp.js</code>；不匀的光是\
+      看 <code>src/shared/document-detect.js</code>；摆正在 <code>src/shared/document-warp.js</code>；不匀的光是\
       怎么被除掉的，看 <code>src/clean.js</code>。"""
 
 howto_heading = "怎么用手机摄像头扫描文档"

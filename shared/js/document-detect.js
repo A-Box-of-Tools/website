@@ -354,12 +354,29 @@ function thresholds(magnitude) {
  * it votes into three bins around that angle rather than into all 180. What
  * comes out is not merely thirty times cheaper - it is far cleaner, because the
  * 177 votes each pixel is no longer casting were all noise.
+ *
+ * THERE ARE TWO ACCUMULATORS, one for each way the picture can step across a
+ * line: brighter along the line's normal, or darker. Folding a gradient into
+ * half a turn throws that away, and with one accumulator two parallel edges a
+ * few pixels apart that step in opposite directions met in one peak and only
+ * the stronger survived. That is the shape of most identity cards - a light
+ * border and then a dark band printed just inside it - and what survived was
+ * the band's top edge, which steps the wrong way to be the card's; the band's
+ * lower edge then made a tidy rectangle on its own, and the card was found with
+ * its top fifth cut off. Kept apart, the card's own edge is a line of its own.
+ *
+ * The polarity is taken per vote, against the normal of the bin being voted
+ * into, rather than once per pixel. A line near vertical lives at both ends of
+ * the angle range at once - at one degree, and at a hundred and seventy-nine
+ * with its distance negated - and the same edge is "brighter along the normal"
+ * at one end and "darker" at the other. Deciding it per bin keeps each physical
+ * edge in one accumulator at each place it is written, so it is still one line.
  */
 function accumulate({ gx, gy, magnitude }, width, height, bar) {
   const diagonal = Math.hypot(width, height) / 2;
   const rhoBins = Math.ceil((2 * diagonal) / RHO_STEP) + 2;
   const centre = rhoBins / 2;
-  const votes = new Float32Array(THETA_STEPS * rhoBins);
+  const votes = [new Float32Array(THETA_STEPS * rhoBins), new Float32Array(THETA_STEPS * rhoBins)];
 
   const cos = new Float32Array(THETA_STEPS);
   const sin = new Float32Array(THETA_STEPS);
@@ -402,7 +419,8 @@ function accumulate({ gx, gy, magnitude }, width, height, bar) {
         const rho = px * cos[t] + py * sin[t];
         const bin = Math.round(centre + rho / RHO_STEP);
         if (bin < 0 || bin >= rhoBins) continue;
-        votes[t * rhoBins + bin] += strength * SMEAR_WEIGHT[Math.abs(step)];
+        const darker = gx[at] * cos[t] + gy[at] * sin[t] < 0 ? 1 : 0;
+        votes[darker][t * rhoBins + bin] += strength * SMEAR_WEIGHT[Math.abs(step)];
       }
     }
   }
@@ -418,38 +436,45 @@ function accumulate({ gx, gy, magnitude }, width, height, bar) {
  * search then has six copies of one side and nothing to pair them with.
  */
 function strongLines(edges, width, height, bar) {
-  const { votes, rhoBins, centre } = accumulate(edges, width, height, bar);
+  const { votes: both, rhoBins, centre } = accumulate(edges, width, height, bar);
 
+  // Each accumulator is searched on its own, so a peak is only ever suppressed
+  // by a stronger peak that steps the same way.
   const peaks = [];
-  for (let t = 0; t < THETA_STEPS; t += 1) {
-    for (let r = 1; r < rhoBins - 1; r += 1) {
-      const value = votes[t * rhoBins + r];
-      if (value <= 0) continue;
+  both.forEach((votes, darker) => {
+    for (let t = 0; t < THETA_STEPS; t += 1) {
+      for (let r = 1; r < rhoBins - 1; r += 1) {
+        const value = votes[t * rhoBins + r];
+        if (value <= 0) continue;
 
-      // A local maximum over a window a good deal wider in distance than in
-      // angle, which is the shape a single edge's votes actually make.
-      let top = true;
-      for (let dt = -PEAK_THETA; dt <= PEAK_THETA && top; dt += 1) {
-        const tt = ((t + dt) % THETA_STEPS + THETA_STEPS) % THETA_STEPS;
-        for (let dr = -PEAK_RHO; dr <= PEAK_RHO; dr += 1) {
-          const rr = r + dr;
-          if (rr < 0 || rr >= rhoBins) continue;
-          if (votes[tt * rhoBins + rr] > value) {
-            top = false;
-            break;
+        // A local maximum over a window a good deal wider in distance than in
+        // angle, which is the shape a single edge's votes actually make.
+        let top = true;
+        for (let dt = -PEAK_THETA; dt <= PEAK_THETA && top; dt += 1) {
+          const tt = ((t + dt) % THETA_STEPS + THETA_STEPS) % THETA_STEPS;
+          for (let dr = -PEAK_RHO; dr <= PEAK_RHO; dr += 1) {
+            const rr = r + dr;
+            if (rr < 0 || rr >= rhoBins) continue;
+            if (votes[tt * rhoBins + rr] > value) {
+              top = false;
+              break;
+            }
           }
         }
-      }
-      if (!top) continue;
+        if (!top) continue;
 
-      peaks.push({
-        theta: t * RADIANS,
-        rho: (r - centre) * RHO_STEP,
-        votes: value,
-        border: false,
-      });
+        peaks.push({
+          theta: t * RADIANS,
+          rho: (r - centre) * RHO_STEP,
+          votes: value,
+          // +1 where the picture gets brighter along the line's normal, -1
+          // where it gets darker.
+          polarity: darker ? -1 : 1,
+          border: false,
+        });
+      }
     }
-  }
+  });
 
   peaks.sort((a, b) => b.votes - a.votes);
 
@@ -529,9 +554,17 @@ function medianVotes(lines) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-/** Two lines that would draw on top of each other across this picture. */
+/**
+ * Two lines that would draw on top of each other across this picture, and
+ * step the same way.
+ *
+ * Two edges four per cent of the frame apart that step in opposite directions
+ * are not one line found twice: they are the two sides of a band, and on a card
+ * one of them is the card's own edge. Merging them is what lost it.
+ */
 function nearlyTheSameLine(a, b, width, height) {
-  const { angle, gap } = relate(a, b);
+  const { angle, gap, flipped } = relate(a, b);
+  if (a.polarity !== (flipped ? -b.polarity : b.polarity)) return false;
   return Math.abs(angle) < 4 && Math.abs(gap) < Math.min(width, height) * 0.04;
 }
 
@@ -544,19 +577,24 @@ function nearlyTheSameLine(a, b, width, height) {
  * compared that way round, one of the two distances has to change sign with it.
  *
  * The angle comes back signed, because the caller that pairs two sides of a page
- * needs it to say which direction the pair as a whole runs in.
+ * needs it to say which direction the pair as a whole runs in. `flipped` says the
+ * second line was turned half way round to compare it, which turns its normal
+ * round too, and with it which way it steps.
  */
 function relate(a, b) {
   let difference = (b.theta - a.theta) / RADIANS;
   let rho = b.rho;
+  let flipped = false;
   if (difference > 90) {
     difference -= 180;
     rho = -rho;
+    flipped = true;
   } else if (difference < -90) {
     difference += 180;
     rho = -rho;
+    flipped = true;
   }
-  return { angle: difference, gap: rho - a.rho };
+  return { angle: difference, gap: rho - a.rho, flipped };
 }
 
 /** Where two lines cross, in picture coordinates, or null if they are parallel. */

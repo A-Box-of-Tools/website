@@ -21,7 +21,7 @@ remains a scanned PDF rather than an AVIF file.
               document-geometry.js ──▶ the page's real aspect ratio, and the size to
                    │           resample it at
                    ▼
-               warp.js ──▶ a flat rectangle of pixels
+      document-warp.js ──▶ a flat rectangle of pixels
                    │
                    ▼
               clean.js ──▶ the light divided out; optionally thresholded
@@ -36,8 +36,14 @@ The corner finder and geometry live in
 [`shared/js/document-detect.js`](../../shared/js/document-detect.js) and
 [`shared/js/document-geometry.js`](../../shared/js/document-geometry.js). The
 receipt extractor uses the same corner finder for its suggested crop, so fixes
-to page detection reach both tools. The build copies them into each tool's
-`src/shared/` folder to keep either tool complete offline.
+to page detection reach both tools. The straightening and the corner handles
+over the photo are shared too, as
+[`shared/js/document-warp.js`](../../shared/js/document-warp.js) and
+[`shared/js/corner-handles.js`](../../shared/js/corner-handles.js) with
+[`shared/css/corner-handles.css`](../../shared/css/corner-handles.css), because
+the [ID card copier](../id-card-copy/) takes the two sides of a card out of
+their photos the same way. The build copies each part into a tool's
+`src/shared/` folder to keep every tool complete offline.
 
 Every one of those but `encode.js` is a pure function on a pixel array or on
 numbers, which is why most of this tool is tested without a browser:
@@ -103,6 +109,16 @@ the top of the page for its top edge and a line of text for its bottom edge
 disagrees with itself and is marked down. This is also what a photograph of pure
 noise fails: every rectangle in one has gradient along all four sides, and not
 one of those sides can say which side of itself the page is on.
+
+**And one in step 3: lines that step opposite ways are never merged.** The
+votes are kept in two accumulators, by whether the picture gets brighter or
+darker across the line, and two lines are taken for one only if they step the
+same way. Folded into one accumulator, the two sides of a dark band printed a
+couple of millimetres inside a light border - the top of most identity cards
+- met in one peak, the band's top edge survived instead of the card's own, and
+the band's lower edge then made a rectangle that cut the top fifth off the
+card. The [ID card copier](../id-card-copy/) found it; the case is in
+`tests/js/document-scanner-detect.test.js`.
 
 ### 3. The aspect ratio comes from the perspective, not from the edges
 

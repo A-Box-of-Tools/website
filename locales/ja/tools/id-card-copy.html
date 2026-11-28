@@ -1,0 +1,305 @@
+<!--
+  tools/id-card-copy/body.html, in Japanese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main id="main">
+  <!-- 手順1｜写真 -->
+  <section class="card">
+    <h2><span class="step">1</span> 各面の写真を選ぶ</h2>
+
+    <p class="card-lede">
+      カードの表面の写真を1枚、裏面の写真を1枚、カード全体が画面に入るように上から撮ってください。正面からである必要も、切り抜いてある必要もありません。カードを見つけてまっすぐにすることこそ、この道具の役目です。2枚を一度にドロップすると、1枚目が表面になります。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 手順2｜各面の四隅 -->
+  <section class="card">
+    <h2><span class="step">2</span> 四隅をカードに合わせる</h2>
+
+    <p class="stage-hint">
+      写真のどこかを押すといちばん近い隅が指のところへ来ます。それをカードの角までドラッグしてください。<kbd>Tab</kbd>でキーボードから隅に移れ、矢印キーで1画素、<kbd>Shift</kbd>と一緒なら10画素動きます。角の丸いカードでは、各隅を2本の縁が交わるはずの場所に置いてください。
+    </p>
+
+    <div class="side-actions">
+      <button type="button" id="swap" class="ghost" disabled>表と裏を入れ替える</button>
+    </div>
+
+    <div class="sides" id="sides">
+      <div class="side" id="front-panel" role="group" aria-labelledby="front-heading">
+        <h3 id="front-heading">表面</h3>
+
+        <div class="side-empty" id="front-empty">
+          <p class="side-note">表面の写真はまだありません。</p>
+          <input type="file" id="front-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="front-input" class="as-button ghost">表面を選ぶ</label>
+        </div>
+
+        <div id="front-editor" hidden>
+          <!-- A canvas rather than an <img>, because the photo is drawn at
+               screen size from the decoded picture, and the outline over it
+               is an SVG polygon in percentages that needs no redraw when the
+               window changes. -->
+          <div class="stage-wrap">
+            <div class="stage" id="front-stage">
+              <canvas id="front-photo" role="img" aria-label="表面の写真"></canvas>
+            </div>
+          </div>
+          <p id="front-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="front-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="front-detect" class="ghost">カードを探し直す</button>
+            <button type="button" id="front-whole" class="ghost">写真全体を使う</button>
+            <button type="button" id="front-left" class="ghost turn" aria-label="表面を左に回す">↺</button>
+            <button type="button" id="front-right" class="ghost turn" aria-label="表面を右に回す">↻</button>
+            <button type="button" id="front-undo" class="ghost" disabled>元に戻す</button>
+            <button type="button" id="front-remove" class="ghost danger">削除</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side" id="back-panel" role="group" aria-labelledby="back-heading">
+        <h3 id="back-heading">裏面</h3>
+
+        <div class="side-empty" id="back-empty">
+          <p class="side-note">裏面の写真はまだありません。</p>
+          <input type="file" id="back-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="back-input" class="as-button ghost">裏面を選ぶ</label>
+        </div>
+
+        <div id="back-editor" hidden>
+          <div class="stage-wrap">
+            <div class="stage" id="back-stage">
+              <canvas id="back-photo" role="img" aria-label="裏面の写真"></canvas>
+            </div>
+          </div>
+          <p id="back-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="back-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="back-detect" class="ghost">カードを探し直す</button>
+            <button type="button" id="back-whole" class="ghost">写真全体を使う</button>
+            <button type="button" id="back-left" class="ghost turn" aria-label="裏面を左に回す">↺</button>
+            <button type="button" id="back-right" class="ghost turn" aria-label="裏面を右に回す">↻</button>
+            <button type="button" id="back-undo" class="ghost" disabled>元に戻す</button>
+            <button type="button" id="back-remove" class="ghost danger">削除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 手順3｜並べ方 -->
+  <section class="card">
+    <h2><span class="step">3</span> コピーを並べる</h2>
+
+    <div class="layout">
+      <div class="layout-preview">
+        <p id="preview-empty" class="empty-note">
+          どちらかの面の写真ができ次第、コピーがここに本来の縦横比で出ます。
+        </p>
+
+        <div id="preview-box" hidden>
+          <div class="sheet-wrap">
+            <canvas id="sheet-preview" class="sheet-preview" role="img"
+                    aria-label="できあがるコピーのプレビュー"></canvas>
+          </div>
+          <p id="one-side" class="hint-line warn-line" hidden></p>
+          <ul id="preview-facts" class="result-facts"></ul>
+        </div>
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="field">
+          <label for="card-size">カードの大きさ</label>
+          <select id="card-size">
+            <option value="id1" selected>クレジットカードサイズ（ID-1）｜&#x2066;85.6 &times; 54&#x2069; mm</option>
+            <option value="id2">ID-2｜&#x2066;105 &times; 74&#x2069; mm</option>
+            <option value="id3">パスポートのページ（ID-3）｜&#x2066;125 &times; 88&#x2069; mm</option>
+          </select>
+          <p class="field-note">
+            身分証明書、運転免許証、在留カード、健康保険証は、ほぼどれもクレジットカードと同じ大きさです。各面はちょうどこの大きさで印刷されます。
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="paper">用紙</label>
+          <select id="paper">
+            <option value="a4" selected>A4｜&#x2066;210 &times; 297&#x2069; mm</option>
+            <option value="letter">Letter｜&#x2066;8.5 &times; 11&#x2069; in</option>
+            <option value="cards">用紙なし｜両面の画像だけ</option>
+          </select>
+          <p class="field-note">
+            印刷するための用紙か、両面をまとめてアップロードするよう求めるフォーム向けに、両面を1枚にした画像です。
+          </p>
+        </div>
+
+        <fieldset class="field choices">
+          <legend>並べ方</legend>
+          <label class="check"><input type="radio" name="arrange" value="stack" checked> 上下に</label>
+          <label class="check"><input type="radio" name="arrange" value="side"> 左右に</label>
+        </fieldset>
+
+        <fieldset class="field choices" id="place-row">
+          <legend>用紙のどこに置くか</legend>
+          <label class="check"><input type="radio" name="place" value="middle" checked> 中央に</label>
+          <label class="check"><input type="radio" name="place" value="top"> 上寄せ</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>色</legend>
+          <label class="check"><input type="radio" name="colour" value="colour" checked> カラー</label>
+          <label class="check"><input type="radio" name="colour" value="grey"> 白黒</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>縁</legend>
+          <label class="check"><input type="checkbox" id="round" checked> 角を丸くする</label>
+          <label class="check"><input type="checkbox" id="outline" checked> 細い輪郭線を描く</label>
+        </fieldset>
+
+        <div class="field wide">
+          <label for="words">カードに重ねる文字<span class="optional">（任意）</span></label>
+          <input type="text" id="words" maxlength="80" autocomplete="off"
+                 placeholder="例：賃貸契約の申込以外への使用禁止">
+          <p class="field-note">
+            両面に斜めに繰り返し、コピーそのものの画素に書き込みます。何のために渡したかが書かれたコピーは、盗んでも使いにくいコピーです。
+          </p>
+          <div class="words-extra" id="words-extra" hidden>
+            <label for="ink">インク</label>
+            <select id="ink">
+              <option value="grey" selected>グレー</option>
+              <option value="red">赤</option>
+              <option value="blue">青</option>
+              <option value="black">黒</option>
+            </select>
+            <label for="strength">濃さ</label>
+            <div class="inline-pair">
+              <input type="range" id="strength" min="15" max="80" step="5" value="35">
+              <output id="strength-value" for="strength">35%</output>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 手順4｜ファイル -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> コピーを保存する</h2>
+
+    <div class="settings" id="save-settings">
+      <fieldset class="field choices">
+        <legend>ファイル</legend>
+        <label class="check"><input type="radio" name="format" value="pdf" checked> PDF</label>
+        <label class="check"><input type="radio" name="format" value="jpeg"> JPEG</label>
+        <label class="check"><input type="radio" name="format" value="png"> PNG</label>
+        <p class="field-note" id="format-note"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="dpi">解像度</label>
+        <select id="dpi">
+          <option value="200">200 DPI｜小さめのファイル</option>
+          <option value="300" selected>300 DPI｜コピー機と同じ</option>
+          <option value="600">600 DPI｜いちばん鮮明</option>
+        </select>
+        <p class="field-note">
+          写真が持っている以上のDPIにしても、大きくなるだけで細部は増えません。各写真にどれだけの細部があるかは手順2に出ています。
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>コピーを作る</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>できあがったコピー</h3>
+        <a id="download" class="primary as-button" href="#" download>ダウンロード</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        <strong>100%</strong>か「実際のサイズ」で印刷し、「用紙に合わせる」は使わずに、紙の上にカードを置いて確かめてください。両者は同じ大きさのはずです。
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into every language and
+    a sentence written there would be English in all of them but one. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">カードが見つかりました。4つの隅を確かめて、外れているものはドラッグして直してください。</span>
+    <span data-phrase="detect.unsure">カードの縁が、確信できるほどはっきりしていませんでした。この四隅は推測なので、カードの上までドラッグしてください。</span>
+    <span data-phrase="detect.nothing">この写真ではカードを見分けられなかったので、四隅は写真の縁に置いてあります。カードの上までドラッグしてください。</span>
+    <span data-phrase="detect.flat">この画像には見つけるものがありません。縁がそもそもありません。</span>
+    <span data-phrase="detect.tiny">この画像は、中からカードを見つけるには小さすぎます。</span>
+    <span data-phrase="detect.edited">この四隅はもうあなたのものです。「カードを探し直す」は写真を最初から測り直します。</span>
+
+    <span data-phrase="quality.good">カードの実物大でおよそ{dpi} DPI。鮮明なコピーに十分です。</span>
+    <span data-phrase="quality.fair">カードの実物大でおよそ{dpi} DPI。読めますが、紙では少し眠く見えます。</span>
+    <span data-phrase="quality.low">カードの実物大でおよそ{dpi} DPIしかないので、小さな文字はぼやけます。できればもっと近づいて撮ってください。</span>
+
+    <span data-phrase="corner.tl">左上の隅</span>
+    <span data-phrase="corner.tr">右上の隅</span>
+    <span data-phrase="corner.br">右下の隅</span>
+    <span data-phrase="corner.bl">左下の隅</span>
+    <span data-phrase="corner.at.front">表面：{corner}、横{x}・縦{y}の位置。矢印キーで動き、Shiftを押しながらなら一度に10画素動きます。</span>
+    <span data-phrase="corner.at.back">裏面：{corner}、横{x}・縦{y}の位置。矢印キーで動き、Shiftを押しながらなら一度に10画素動きます。</span>
+
+    <span data-phrase="hint.nofront">いまは裏面だけです。両面を1枚のコピーにするには、表面の写真を足してください。</span>
+    <span data-phrase="hint.noback">いまは表面だけです。両面を1枚のコピーにするには、裏面の写真を足してください。</span>
+
+    <span data-phrase="paper.a4">A4</span>
+    <span data-phrase="paper.letter">Letter</span>
+    <span data-phrase="sheet.portrait">{paper}の用紙、縦向き。</span>
+    <span data-phrase="sheet.landscape">{paper}の用紙を横向きにして、2つの面が隣り合って収まるようにします。</span>
+    <span data-phrase="sheet.cards">{width}&times;{height}ミリの1枚の画像で、細い白い縁がつきます。</span>
+    <span data-phrase="sheet.size">各面は{width}&times;{height}ミリで、カードそのものの大きさです。</span>
+
+    <span data-phrase="format.pdf">印刷するならこれです。PDFなら、100%に設定したどのプリンターでもカードは実物大のままです。</span>
+    <span data-phrase="format.jpeg">アップロードやメール向けの小さな画像です。ファイルには解像度が記録されていて、それに従って印刷するソフトに役立ちます。</span>
+    <span data-phrase="format.png">可逆の画像です。JPEGより大きくなりますが、小さな文字の周りに圧縮のにじみが出ません。</span>
+
+    <span data-phrase="busy.side">{total}面中{done}面目をまっすぐにしています&hellip;</span>
+    <span data-phrase="busy.writing">ファイルを書いています&hellip;</span>
+
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="result.file">{name}｜{size}。</span>
+    <span data-phrase="result.paper">{paper}の上で、100%で印刷すると各面は{width}&times;{height}ミリになります。</span>
+    <span data-phrase="result.cards">記録された解像度で印刷すると、各面は{width}&times;{height}ミリになります。</span>
+    <span data-phrase="result.pdf">各面は{dpi} DPIの画像で、PDF自身が実物大に置いています。</span>
+    <span data-phrase="result.image">{width}&times;{height}画素、{dpi} DPIで、ファイルにもそう書いてあります。</span>
+    <span data-phrase="result.capped">選んだ解像度ではなく{dpi} DPIで作りました。用紙全体の画像をこれ以上大きくすると、描けないスマホがあるからです。PDFにはその制限はありません。</span>
+    <span data-phrase="result.clean">日付も作成者も、写真のメタデータから来たものも何もありません。PDFに記録されるのはこの道具の名前だけです。</span>
+
+    <span data-phrase="build.nocards">コピーに載せるカードがありません。</span>
+    <span data-phrase="encode.failed">このブラウザは画像を書き出せませんでした。</span>
+    <span data-phrase="error.none">まずカードの写真を選んでください。</span>
+    <span data-phrase="error.more">、ほか{count}件</span>
+    <span data-phrase="error.notphoto">このページで開ける写真ではありません：{names}。</span>
+    <span data-phrase="error.extra">使うのは表面と裏面の2枚だけです。外したもの：{names}。</span>
+    <span data-phrase="error.decode">このブラウザは{name}を開けませんでした。iPhoneのHEIC写真なら、先に変換してください。</span>
+    <span data-phrase="error.failed">コピーを作る途中で問題が起きました。{detail}</span>
+    <span data-phrase="warp.degenerate">その4つの隅ではカードになりません。</span>
+
+    <span data-phrase="net.clean">カードはどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのページ自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測のためのページ自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測のためのページ自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
+  </div>
+</main>
