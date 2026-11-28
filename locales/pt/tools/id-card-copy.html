@@ -1,0 +1,364 @@
+<!--
+  tools/id-card-copy/body.html, in Portuguese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main id="main">
+  <!-- Passo 1 &mdash; as fotos -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha uma foto de cada lado</h2>
+
+    <p class="card-lede">
+      Uma foto da frente do cartão e uma do verso, tiradas de cima e com o cartão
+      inteiro no enquadramento. Não precisa estar alinhada nem recortada:
+      encontrar o cartão e endireitá-lo é o motivo pelo qual esta ferramenta
+      existe. Arraste as duas de uma vez e a primeira é tomada como a frente.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; os cantos de cada lado -->
+  <section class="card">
+    <h2><span class="step">2</span> Ponha os cantos no cartão</h2>
+
+    <p class="stage-hint">
+      Toque em qualquer ponto de uma foto e o canto mais próximo vem até o seu
+      dedo; arraste-o até o canto do cartão. Com <kbd>Tab</kbd> você alcança um
+      canto pelo teclado, as setas o movem um pixel e com <kbd>Shift</kbd> dez.
+      Num cartão de cantos arredondados, ponha cada canto onde as suas duas
+      bordas se encontrariam.
+    </p>
+
+    <div class="side-actions">
+      <button type="button" id="swap" class="ghost" disabled>Trocar frente e verso</button>
+    </div>
+
+    <div class="sides" id="sides">
+      <div class="side" id="front-panel" role="group" aria-labelledby="front-heading">
+        <h3 id="front-heading">Frente</h3>
+
+        <div class="side-empty" id="front-empty">
+          <p class="side-note">Ainda não há foto da frente.</p>
+          <input type="file" id="front-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="front-input" class="as-button ghost">Escolher a frente</label>
+        </div>
+
+        <div id="front-editor" hidden>
+          <!-- A canvas rather than an <img>, because the photo is drawn at
+               screen size from the decoded picture, and the outline over it
+               is an SVG polygon in percentages that needs no redraw when the
+               window changes. -->
+          <div class="stage-wrap">
+            <div class="stage" id="front-stage">
+              <canvas id="front-photo" role="img" aria-label="Foto da frente"></canvas>
+            </div>
+          </div>
+          <p id="front-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="front-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="front-detect" class="ghost">Procurar o cartão de novo</button>
+            <button type="button" id="front-whole" class="ghost">Pegar a foto inteira</button>
+            <button type="button" id="front-left" class="ghost turn" aria-label="Girar a frente para a esquerda">↺</button>
+            <button type="button" id="front-right" class="ghost turn" aria-label="Girar a frente para a direita">↻</button>
+            <button type="button" id="front-undo" class="ghost" disabled>Desfazer</button>
+            <button type="button" id="front-remove" class="ghost danger">Remover</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side" id="back-panel" role="group" aria-labelledby="back-heading">
+        <h3 id="back-heading">Verso</h3>
+
+        <div class="side-empty" id="back-empty">
+          <p class="side-note">Ainda não há foto do verso.</p>
+          <input type="file" id="back-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="back-input" class="as-button ghost">Escolher o verso</label>
+        </div>
+
+        <div id="back-editor" hidden>
+          <div class="stage-wrap">
+            <div class="stage" id="back-stage">
+              <canvas id="back-photo" role="img" aria-label="Foto do verso"></canvas>
+            </div>
+          </div>
+          <p id="back-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="back-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="back-detect" class="ghost">Procurar o cartão de novo</button>
+            <button type="button" id="back-whole" class="ghost">Pegar a foto inteira</button>
+            <button type="button" id="back-left" class="ghost turn" aria-label="Girar o verso para a esquerda">↺</button>
+            <button type="button" id="back-right" class="ghost turn" aria-label="Girar o verso para a direita">↻</button>
+            <button type="button" id="back-undo" class="ghost" disabled>Desfazer</button>
+            <button type="button" id="back-remove" class="ghost danger">Remover</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; a disposição -->
+  <section class="card">
+    <h2><span class="step">3</span> Monte a cópia</h2>
+
+    <div class="layout">
+      <div class="layout-preview">
+        <p id="preview-empty" class="empty-note">
+          A cópia aparece aqui, nas proporções reais, assim que houver uma foto de
+          qualquer um dos lados.
+        </p>
+
+        <div id="preview-box" hidden>
+          <div class="sheet-wrap">
+            <canvas id="sheet-preview" class="sheet-preview" role="img"
+                    aria-label="Pré-visualização da cópia pronta"></canvas>
+          </div>
+          <p id="one-side" class="hint-line warn-line" hidden></p>
+          <ul id="preview-facts" class="result-facts"></ul>
+        </div>
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="field">
+          <label for="card-size">Tamanho do cartão</label>
+          <select id="card-size">
+            <option value="id1" selected>Tamanho de cartão bancário (ID-1) &mdash; &#x2066;85,6 &times; 54&#x2069; mm</option>
+            <option value="id2">ID-2 &mdash; &#x2066;105 &times; 74&#x2069; mm</option>
+            <option value="id3">Página do passaporte (ID-3) &mdash; &#x2066;125 &times; 88&#x2069; mm</option>
+          </select>
+          <p class="field-note">
+            Quase todo documento de identidade, carteira de motorista, autorização
+            de residência e carteirinha de saúde tem o tamanho de um cartão
+            bancário. Cada lado é impresso exatamente neste tamanho.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="paper">Papel</label>
+          <select id="paper">
+            <option value="a4" selected>A4 &mdash; &#x2066;210 &times; 297&#x2069; mm</option>
+            <option value="letter">Letter &mdash; &#x2066;8,5 &times; 11&#x2069; pol</option>
+            <option value="cards">Sem folha &mdash; só os dois lados</option>
+          </select>
+          <p class="field-note">
+            Uma folha para imprimir, ou uma imagem só dos dois lados para um
+            formulário que pede que você os envie juntos.
+          </p>
+        </div>
+
+        <fieldset class="field choices">
+          <legend>Disposição</legend>
+          <label class="check"><input type="radio" name="arrange" value="stack" checked> Um acima do outro</label>
+          <label class="check"><input type="radio" name="arrange" value="side"> Lado a lado</label>
+        </fieldset>
+
+        <fieldset class="field choices" id="place-row">
+          <legend>Posição na folha</legend>
+          <label class="check"><input type="radio" name="place" value="middle" checked> No meio</label>
+          <label class="check"><input type="radio" name="place" value="top"> No alto</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Cor</legend>
+          <label class="check"><input type="radio" name="colour" value="colour" checked> Colorido</label>
+          <label class="check"><input type="radio" name="colour" value="grey"> Preto e branco</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Bordas</legend>
+          <label class="check"><input type="checkbox" id="round" checked> Arredondar os cantos</label>
+          <label class="check"><input type="checkbox" id="outline" checked> Desenhar um contorno fino</label>
+        </fieldset>
+
+        <div class="field wide">
+          <label for="words">Texto sobre o cartão <span class="optional">(opcional)</span></label>
+          <input type="text" id="words" maxlength="80" autocomplete="off"
+                 placeholder="Por exemplo: Cópia apenas para a ficha de locação">
+          <p class="field-note">
+            Escrito sobre os dois lados, inclinado e repetido, nos próprios pixels
+            da cópia. Uma cópia que diz para que foi entregue é uma cópia ruim de
+            roubar.
+          </p>
+          <div class="words-extra" id="words-extra" hidden>
+            <label for="ink">Tinta</label>
+            <select id="ink">
+              <option value="grey" selected>Cinza</option>
+              <option value="red">Vermelho</option>
+              <option value="blue">Azul</option>
+              <option value="black">Preto</option>
+            </select>
+            <label for="strength">Intensidade</label>
+            <div class="inline-pair">
+              <input type="range" id="strength" min="15" max="80" step="5" value="35">
+              <output id="strength-value" for="strength">35%</output>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 4 &mdash; o arquivo -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Salve a cópia</h2>
+
+    <div class="settings" id="save-settings">
+      <fieldset class="field choices">
+        <legend>Arquivo</legend>
+        <label class="check"><input type="radio" name="format" value="pdf" checked> PDF</label>
+        <label class="check"><input type="radio" name="format" value="jpeg"> JPEG</label>
+        <label class="check"><input type="radio" name="format" value="png"> PNG</label>
+        <p class="field-note" id="format-note"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="dpi">Resolução</label>
+        <select id="dpi">
+          <option value="200">200 DPI &mdash; um arquivo menor</option>
+          <option value="300" selected>300 DPI &mdash; o que uma copiadora imprime</option>
+          <option value="600">600 DPI &mdash; o mais nítido</option>
+        </select>
+        <p class="field-note">
+          Mais pontos por polegada do que a foto tem só aumentam o arquivo, sem
+          acrescentar detalhe. O passo 2 diz quanto detalhe cada foto tem.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Fazer a cópia</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>A cópia pronta</h3>
+        <a id="download" class="primary as-button" href="#" download>Baixar</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Imprima em <strong>100%</strong> ou &ldquo;tamanho real&rdquo;, nunca em
+        &ldquo;ajustar à página&rdquo;, e ponha o cartão sobre o papel para
+        conferir: os dois devem ter o mesmo tamanho.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into every language and
+    a sentence written there would be English in all of them but one. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">O cartão foi encontrado. Confira os quatro
+      cantos e arraste os que ficaram fora do lugar.</span>
+    <span data-phrase="detect.unsure">As bordas do cartão não estavam nítidas o
+      bastante para haver certeza. Estes cantos são um palpite &mdash; arraste-os
+      até o cartão.</span>
+    <span data-phrase="detect.nothing">Nesta foto não foi possível distinguir um
+      cartão, então os cantos estão nas bordas dela. Arraste-os até o
+      cartão.</span>
+    <span data-phrase="detect.flat">Nesta imagem não há o que encontrar &mdash;
+      ela não tem borda alguma.</span>
+    <span data-phrase="detect.tiny">Esta imagem é pequena demais para se encontrar
+      um cartão nela.</span>
+    <span data-phrase="detect.edited">Estes cantos agora são seus. &ldquo;Procurar
+      o cartão de novo&rdquo; mede a foto do começo.</span>
+
+    <span data-phrase="quality.good">Cerca de {dpi} DPI no tamanho real do cartão
+      &mdash; o bastante para uma cópia nítida.</span>
+    <span data-phrase="quality.fair">Cerca de {dpi} DPI no tamanho real do cartão
+      &mdash; legível, um pouco mole no papel.</span>
+    <span data-phrase="quality.low">Só cerca de {dpi} DPI no tamanho real do
+      cartão, então as letras pequenas vão borrar. Tire a foto mais de perto, se
+      puder.</span>
+
+    <span data-phrase="corner.tl">Canto superior esquerdo</span>
+    <span data-phrase="corner.tr">Canto superior direito</span>
+    <span data-phrase="corner.br">Canto inferior direito</span>
+    <span data-phrase="corner.bl">Canto inferior esquerdo</span>
+    <span data-phrase="corner.at.front">Frente: {corner}, a {x} na horizontal e
+      {y} na vertical. As setas o movem, e com Shift o movem dez pixels de uma
+      vez.</span>
+    <span data-phrase="corner.at.back">Verso: {corner}, a {x} na horizontal e {y}
+      na vertical. As setas o movem, e com Shift o movem dez pixels de uma
+      vez.</span>
+
+    <span data-phrase="hint.nofront">Por enquanto só o verso. Acrescente uma foto
+      da frente para pôr os dois lados numa cópia só.</span>
+    <span data-phrase="hint.noback">Por enquanto só a frente. Acrescente uma foto
+      do verso para pôr os dois lados numa cópia só.</span>
+
+    <span data-phrase="paper.a4">A4</span>
+    <span data-phrase="paper.letter">Letter</span>
+    <span data-phrase="sheet.portrait">Uma folha {paper}, na vertical.</span>
+    <span data-phrase="sheet.landscape">Uma folha {paper} deitada, para que os
+      dois lados caibam um ao lado do outro.</span>
+    <span data-phrase="sheet.cards">Uma imagem de {width} &times; {height} mm,
+      com uma borda branca estreita.</span>
+    <span data-phrase="sheet.size">Cada lado mede {width} &times; {height} mm, o
+      tamanho do próprio cartão.</span>
+
+    <span data-phrase="format.pdf">O arquivo para imprimir: um PDF mantém o
+      cartão no tamanho real em qualquer impressora ajustada para 100%.</span>
+    <span data-phrase="format.jpeg">Uma imagem pequena, para enviar por um site
+      ou por e-mail. O arquivo registra a sua resolução, para os programas que
+      imprimem por ela.</span>
+    <span data-phrase="format.png">Uma imagem sem perdas: maior do que um JPEG,
+      sem o borrão da compressão em volta das letras pequenas.</span>
+
+    <span data-phrase="busy.side">Endireitando o lado {done} de {total}&hellip;</span>
+    <span data-phrase="busy.writing">Escrevendo o arquivo&hellip;</span>
+
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="result.file">{name} &mdash; {size}.</span>
+    <span data-phrase="result.paper">Numa folha {paper}, cada lado mede {width}
+      &times; {height} mm quando impresso em 100%.</span>
+    <span data-phrase="result.cards">Cada lado mede {width} &times; {height} mm
+      quando impresso na resolução registrada.</span>
+    <span data-phrase="result.pdf">Cada lado é uma imagem de {dpi} DPI, posta no
+      tamanho real pelo próprio PDF.</span>
+    <span data-phrase="result.image">{width} &times; {height} pixels a {dpi}
+      DPI, e o arquivo diz isso.</span>
+    <span data-phrase="result.capped">Feita a {dpi} DPI em vez da resolução que
+      você escolheu: uma imagem da folha inteira maior do que isso é mais do que
+      alguns celulares conseguem desenhar. O PDF não tem esse limite.</span>
+    <span data-phrase="result.clean">Sem data, sem autor e nada dos metadados das
+      suas fotos: o PDF registra só o nome desta ferramenta.</span>
+
+    <span data-phrase="build.nocards">Não há cartão para pôr na cópia.</span>
+    <span data-phrase="encode.failed">Este navegador não conseguiu escrever a
+      imagem.</span>
+    <span data-phrase="error.none">Escolha antes uma foto do cartão.</span>
+    <span data-phrase="error.more">, e mais {count}</span>
+    <span data-phrase="error.notphoto">Não é uma foto que esta página consiga abrir: {names}.</span>
+    <span data-phrase="error.extra">Só duas fotos são usadas, uma da frente e uma
+      do verso. Ficaram de fora: {names}.</span>
+    <span data-phrase="error.decode">Este navegador não conseguiu abrir {name}. Se
+      for uma foto HEIC de um iPhone, converta antes.</span>
+    <span data-phrase="error.failed">Algo deu errado ao fazer a cópia:
+      {detail}</span>
+    <span data-phrase="warp.degenerate">Esses quatro cantos não formam um
+      cartão.</span>
+
+    <span data-phrase="net.clean">O seu cartão não foi a lugar nenhum. {total}
+      arquivos carregados, todos do próprio site. {platform}</span>
+    <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta
+      ferramenta nunca faz isso. Vale a pena ir ver. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts do próprio site para
+      publicidade e medição vieram de {hosts} host; nenhum
+      deles recebeu uma foto ou um byte de uma.</span>
+    <span data-phrase="net.platform.many">Os scripts do próprio site para
+      publicidade e medição vieram de {hosts} hosts; nenhum
+      deles recebeu uma foto ou um byte de uma.</span>
+  </div>
+</main>

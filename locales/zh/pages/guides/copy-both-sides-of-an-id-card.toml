@@ -1,0 +1,23 @@
+#
+# 指南：把身份证正反面复印到一页上 - 简体中文。
+#
+# Overrides for pages/guides/copy-both-sides-of-an-id-card/page.toml. Prose in
+# the .html beside this file. Written in Chinese rather than translated out of
+# the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "身份证正反面复印到一页"
+title = "怎么把身份证正反面复印到一页上（原大，不用上传）"
+description = "有人要你的身份证复印件，正反面在一页上。两面怎么拍，怎么按原大放到 A4 或 Letter 纸上，怎么打印才不会缩小，以及怎么写明复印件的用途。"
+
+heading = "怎么把身份证正反面复印到一页上"
+lede = """
+    房东、单位或者银行要一份「身份证复印件，正反面」，而你手上只有手机，没有\
+    复印机。两张照片就够了。下面说怎么拍，怎么把两面按原大放到一张纸上，以及\
+    怎么让这份复印件挪不了别的用处。"""
+
+updated = "2026年11月27日"
+
+og_title = "怎么把身份证正反面复印到一页上"
+og_description = "两张手机照片，一张纸，证件按原大。以及为什么「适合页面」、斜着裁和反光会毁掉一份复印件。"
+og_image_alt = "abox.tools - 从不碰服务器的工具"

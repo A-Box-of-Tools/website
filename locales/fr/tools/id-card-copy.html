@@ -1,0 +1,370 @@
+<!--
+  tools/id-card-copy/body.html, in French.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main id="main">
+  <!-- Étape 1 &mdash; les photos -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez une photo de chaque face</h2>
+
+    <p class="card-lede">
+      Une photo du recto de la carte et une du verso, prises d'au-dessus avec la
+      carte entière dans le cadre. Elles n'ont pas besoin d'être prises bien en
+      face ni recadrées&nbsp;: trouver la carte et la redresser, c'est
+      précisément ce à quoi sert cet outil. Déposez-les toutes les deux d'un
+      coup et la première est prise pour le recto.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; les coins de chaque face -->
+  <section class="card">
+    <h2><span class="step">2</span> Placez les coins sur la carte</h2>
+
+    <p class="stage-hint">
+      Appuyez n'importe où sur une photo et le coin le plus proche vient sous
+      votre doigt&nbsp;; faites-le glisser jusqu'au coin de la carte.
+      <kbd>Tab</kbd> atteint un coin au clavier, les flèches le déplacent d'un
+      pixel et <kbd>Shift</kbd> de dix. Pour une carte aux coins arrondis,
+      placez chaque coin là où ses deux bords se rejoindraient.
+    </p>
+
+    <div class="side-actions">
+      <button type="button" id="swap" class="ghost" disabled>Inverser recto et verso</button>
+    </div>
+
+    <div class="sides" id="sides">
+      <div class="side" id="front-panel" role="group" aria-labelledby="front-heading">
+        <h3 id="front-heading">Recto</h3>
+
+        <div class="side-empty" id="front-empty">
+          <p class="side-note">Pas encore de photo du recto.</p>
+          <input type="file" id="front-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="front-input" class="as-button ghost">Choisir le recto</label>
+        </div>
+
+        <div id="front-editor" hidden>
+          <!-- A canvas rather than an <img>, because the photo is drawn at
+               screen size from the decoded picture, and the outline over it
+               is an SVG polygon in percentages that needs no redraw when the
+               window changes. -->
+          <div class="stage-wrap">
+            <div class="stage" id="front-stage">
+              <canvas id="front-photo" role="img" aria-label="Photo du recto"></canvas>
+            </div>
+          </div>
+          <p id="front-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="front-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="front-detect" class="ghost">Rechercher à nouveau la carte</button>
+            <button type="button" id="front-whole" class="ghost">Prendre la photo entière</button>
+            <button type="button" id="front-left" class="ghost turn" aria-label="Tourner le recto à gauche">↺</button>
+            <button type="button" id="front-right" class="ghost turn" aria-label="Tourner le recto à droite">↻</button>
+            <button type="button" id="front-undo" class="ghost" disabled>Annuler</button>
+            <button type="button" id="front-remove" class="ghost danger">Retirer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side" id="back-panel" role="group" aria-labelledby="back-heading">
+        <h3 id="back-heading">Verso</h3>
+
+        <div class="side-empty" id="back-empty">
+          <p class="side-note">Pas encore de photo du verso.</p>
+          <input type="file" id="back-input" class="visually-hidden"
+                 accept="image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif">
+          <label for="back-input" class="as-button ghost">Choisir le verso</label>
+        </div>
+
+        <div id="back-editor" hidden>
+          <div class="stage-wrap">
+            <div class="stage" id="back-stage">
+              <canvas id="back-photo" role="img" aria-label="Photo du verso"></canvas>
+            </div>
+          </div>
+          <p id="back-note" class="hint-line" role="status" aria-live="polite"></p>
+          <p id="back-quality" class="hint-line"></p>
+          <div class="frame-actions">
+            <button type="button" id="back-detect" class="ghost">Rechercher à nouveau la carte</button>
+            <button type="button" id="back-whole" class="ghost">Prendre la photo entière</button>
+            <button type="button" id="back-left" class="ghost turn" aria-label="Tourner le verso à gauche">↺</button>
+            <button type="button" id="back-right" class="ghost turn" aria-label="Tourner le verso à droite">↻</button>
+            <button type="button" id="back-undo" class="ghost" disabled>Annuler</button>
+            <button type="button" id="back-remove" class="ghost danger">Retirer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; la mise en page -->
+  <section class="card">
+    <h2><span class="step">3</span> Mettez la copie en page</h2>
+
+    <div class="layout">
+      <div class="layout-preview">
+        <p id="preview-empty" class="empty-note">
+          La copie apparaît ici, à ses proportions réelles, dès qu'il y a une
+          photo de l'une ou l'autre face.
+        </p>
+
+        <div id="preview-box" hidden>
+          <div class="sheet-wrap">
+            <canvas id="sheet-preview" class="sheet-preview" role="img"
+                    aria-label="Aperçu de la copie terminée"></canvas>
+          </div>
+          <p id="one-side" class="hint-line warn-line" hidden></p>
+          <ul id="preview-facts" class="result-facts"></ul>
+        </div>
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="field">
+          <label for="card-size">Format de la carte</label>
+          <select id="card-size">
+            <option value="id1" selected>Format carte bancaire (ID-1) &mdash; &#x2066;85,6 &times; 54&#x2069; mm</option>
+            <option value="id2">ID-2 &mdash; &#x2066;105 &times; 74&#x2069; mm</option>
+            <option value="id3">Page de passeport (ID-3) &mdash; &#x2066;125 &times; 88&#x2069; mm</option>
+          </select>
+          <p class="field-note">
+            Presque toutes les cartes d'identité, permis de conduire, titres de
+            séjour et cartes d'assurance maladie ont la taille d'une carte
+            bancaire. Chaque face est imprimée exactement à cette taille.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="paper">Papier</label>
+          <select id="paper">
+            <option value="a4" selected>A4 &mdash; &#x2066;210 &times; 297&#x2069; mm</option>
+            <option value="letter">Letter &mdash; &#x2066;8,5 &times; 11&#x2069; po</option>
+            <option value="cards">Pas de feuille &mdash; juste les deux faces</option>
+          </select>
+          <p class="field-note">
+            Une feuille à imprimer, ou une seule image des deux faces pour un
+            formulaire qui vous demande de les envoyer ensemble.
+          </p>
+        </div>
+
+        <fieldset class="field choices">
+          <legend>Disposition</legend>
+          <label class="check"><input type="radio" name="arrange" value="stack" checked> L'une au-dessus de l'autre</label>
+          <label class="check"><input type="radio" name="arrange" value="side"> Côte à côte</label>
+        </fieldset>
+
+        <fieldset class="field choices" id="place-row">
+          <legend>Position sur la feuille</legend>
+          <label class="check"><input type="radio" name="place" value="middle" checked> Au milieu</label>
+          <label class="check"><input type="radio" name="place" value="top"> En haut</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Couleur</legend>
+          <label class="check"><input type="radio" name="colour" value="colour" checked> Couleur</label>
+          <label class="check"><input type="radio" name="colour" value="grey"> Noir et blanc</label>
+        </fieldset>
+
+        <fieldset class="field choices">
+          <legend>Bords</legend>
+          <label class="check"><input type="checkbox" id="round" checked> Arrondir les coins</label>
+          <label class="check"><input type="checkbox" id="outline" checked> Tracer un contour fin</label>
+        </fieldset>
+
+        <div class="field wide">
+          <label for="words">Mention en filigrane <span class="optional">(facultative)</span></label>
+          <input type="text" id="words" maxlength="80" autocomplete="off"
+                 placeholder="Par exemple&nbsp;: Copie uniquement pour le dossier de location">
+          <p class="field-note">
+            Écrite sur les deux faces, en oblique et répétée, dans les pixels de
+            la copie elle-même. Une copie qui dit pourquoi elle a été remise est
+            une piètre copie à voler.
+          </p>
+          <div class="words-extra" id="words-extra" hidden>
+            <label for="ink">Encre</label>
+            <select id="ink">
+              <option value="grey" selected>Gris</option>
+              <option value="red">Rouge</option>
+              <option value="blue">Bleu</option>
+              <option value="black">Noir</option>
+            </select>
+            <label for="strength">Intensité</label>
+            <div class="inline-pair">
+              <input type="range" id="strength" min="15" max="80" step="5" value="35">
+              <output id="strength-value" for="strength">35%</output>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 4 &mdash; le fichier -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Enregistrez la copie</h2>
+
+    <div class="settings" id="save-settings">
+      <fieldset class="field choices">
+        <legend>Fichier</legend>
+        <label class="check"><input type="radio" name="format" value="pdf" checked> PDF</label>
+        <label class="check"><input type="radio" name="format" value="jpeg"> JPEG</label>
+        <label class="check"><input type="radio" name="format" value="png"> PNG</label>
+        <p class="field-note" id="format-note"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="dpi">Résolution</label>
+        <select id="dpi">
+          <option value="200">200 DPI &mdash; un fichier plus léger</option>
+          <option value="300" selected>300 DPI &mdash; ce qu'imprime un copieur</option>
+          <option value="600">600 DPI &mdash; le plus net</option>
+        </select>
+        <p class="field-note">
+          Plus de points par pouce que la photo n'en contient ajoute du poids et
+          aucun détail. L'étape 2 indique combien de détail contient chaque photo.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Faire la copie</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>La copie terminée</h3>
+        <a id="download" class="primary as-button" href="#" download>Télécharger</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Imprimez-la à <strong>100&nbsp;%</strong> ou en &laquo;&nbsp;taille
+        réelle&nbsp;&raquo;, jamais en &laquo;&nbsp;ajuster à la page&nbsp;&raquo;,
+        et posez la carte sur le papier pour vérifier&nbsp;: les deux doivent
+        avoir la même taille.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into every language and
+    a sentence written there would be English in all of them but one. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">La carte a été trouvée. Vérifiez les quatre
+      coins et faites glisser ceux qui sont tombés à côté.</span>
+    <span data-phrase="detect.unsure">Les bords de la carte n'étaient pas assez
+      nets pour en être sûr. Ces coins sont une supposition&nbsp;: faites-les
+      glisser sur la carte.</span>
+    <span data-phrase="detect.nothing">Aucune carte n'a pu être distinguée sur
+      cette photo&nbsp;: les coins sont donc sur ses bords. Faites-les glisser
+      sur la carte.</span>
+    <span data-phrase="detect.flat">Il n'y a rien à trouver sur cette
+      image&nbsp;: elle n'a aucun bord.</span>
+    <span data-phrase="detect.tiny">Cette image est trop petite pour y trouver
+      une carte.</span>
+    <span data-phrase="detect.edited">Ces coins sont désormais les vôtres.
+      &laquo;&nbsp;Rechercher à nouveau la carte&nbsp;&raquo; remesure la photo
+      depuis le début.</span>
+
+    <span data-phrase="quality.good">Environ {dpi} DPI à la taille réelle de la
+      carte &mdash; largement assez pour une copie nette.</span>
+    <span data-phrase="quality.fair">Environ {dpi} DPI à la taille réelle de la
+      carte &mdash; lisible, un peu mou sur papier.</span>
+    <span data-phrase="quality.low">Seulement environ {dpi} DPI à la taille
+      réelle de la carte&nbsp;: les petits caractères seront flous.
+      Rapprochez-vous pour la photo si vous le pouvez.</span>
+
+    <span data-phrase="corner.tl">Coin supérieur gauche</span>
+    <span data-phrase="corner.tr">Coin supérieur droit</span>
+    <span data-phrase="corner.br">Coin inférieur droit</span>
+    <span data-phrase="corner.bl">Coin inférieur gauche</span>
+    <span data-phrase="corner.at.front">Recto&nbsp;: {corner}, à {x} en largeur
+      et {y} en hauteur. Les flèches le déplacent, et Shift avec elles le
+      déplace de dix pixels à la fois.</span>
+    <span data-phrase="corner.at.back">Verso&nbsp;: {corner}, à {x} en largeur
+      et {y} en hauteur. Les flèches le déplacent, et Shift avec elles le
+      déplace de dix pixels à la fois.</span>
+
+    <span data-phrase="hint.nofront">Seulement le verso pour l'instant. Ajoutez
+      une photo du recto pour mettre les deux faces sur une même copie.</span>
+    <span data-phrase="hint.noback">Seulement le recto pour l'instant. Ajoutez
+      une photo du verso pour mettre les deux faces sur une même copie.</span>
+
+    <span data-phrase="paper.a4">A4</span>
+    <span data-phrase="paper.letter">Letter</span>
+    <span data-phrase="sheet.portrait">Une feuille {paper}, en portrait.</span>
+    <span data-phrase="sheet.landscape">Une feuille {paper}, en paysage, pour
+      que les deux faces tiennent côte à côte.</span>
+    <span data-phrase="sheet.cards">Une seule image de {width} &times; {height}
+      mm, avec une étroite bordure blanche.</span>
+    <span data-phrase="sheet.size">Chaque face mesure {width} &times; {height}
+      mm, la taille de la carte elle-même.</span>
+
+    <span data-phrase="format.pdf">Celui à imprimer&nbsp;: un PDF garde la carte
+      à sa taille réelle sur toute imprimante réglée à 100&nbsp;%.</span>
+    <span data-phrase="format.jpeg">Une image légère, à joindre à un formulaire
+      en ligne ou à un courriel. Le fichier enregistre sa résolution, pour les
+      programmes qui impriment d'après elle.</span>
+    <span data-phrase="format.png">Une image sans perte&nbsp;: plus lourde qu'un
+      JPEG, sans flou de compression autour des petits caractères.</span>
+
+    <span data-phrase="busy.side">Redressement de la face {done} sur {total}&hellip;</span>
+    <span data-phrase="busy.writing">Écriture du fichier&hellip;</span>
+
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="result.file">{name} &mdash; {size}.</span>
+    <span data-phrase="result.paper">Sur une feuille {paper}, chaque face mesure
+      {width} &times; {height} mm une fois imprimée à 100&nbsp;%.</span>
+    <span data-phrase="result.cards">Chaque face mesure {width} &times; {height}
+      mm une fois imprimée à sa résolution enregistrée.</span>
+    <span data-phrase="result.pdf">Chaque face est une image à {dpi} DPI, placée
+      à sa taille réelle par le PDF lui-même.</span>
+    <span data-phrase="result.image">{width} &times; {height} pixels à {dpi}
+      DPI, et le fichier l'indique.</span>
+    <span data-phrase="result.capped">Faite à {dpi} DPI plutôt qu'à la
+      résolution choisie&nbsp;: une image de la feuille entière plus grande
+      dépasse ce que certains téléphones savent dessiner. Le PDF n'a pas cette
+      limite.</span>
+    <span data-phrase="result.clean">Aucune date, aucun auteur et rien des
+      métadonnées de vos photos&nbsp;: le PDF n'enregistre que le nom de cet
+      outil.</span>
+
+    <span data-phrase="build.nocards">Il n'y a aucune carte à mettre sur la
+      copie.</span>
+    <span data-phrase="encode.failed">Ce navigateur n'a pas pu écrire
+      l'image.</span>
+    <span data-phrase="error.none">Choisissez d'abord une photo de la carte.</span>
+    <span data-phrase="error.more">, et {count} autres</span>
+    <span data-phrase="error.notphoto">Pas une photo que cette page sait ouvrir&nbsp;: {names}.</span>
+    <span data-phrase="error.extra">Seules deux photos sont utilisées, un recto
+      et un verso. Laissées de côté&nbsp;: {names}.</span>
+    <span data-phrase="error.decode">Ce navigateur n'a pas pu ouvrir {name}.
+      S'il s'agit d'une photo HEIC d'iPhone, convertissez-la d'abord.</span>
+    <span data-phrase="error.failed">Quelque chose s'est mal passé pendant la
+      création de la copie&nbsp;: {detail}</span>
+    <span data-phrase="warp.degenerate">Ces quatre coins ne font pas une
+      carte.</span>
+
+    <span data-phrase="net.clean">votre carte n'est allée nulle part. {total}
+      fichiers chargés, tous appartenant à cette page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité et de mesure
+      propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu une photo ou un octet d'une photo.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité et de
+      mesure propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu une photo ou un octet d'une photo.</span>
+  </div>
+</main>

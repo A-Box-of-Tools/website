@@ -1,0 +1,290 @@
+#
+# Ausweiskopie - German.
+#
+# Overrides for tools/id-card-copy/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Scheckkartenformat" ist das deutsche Wort für ID-1 und das, was auf einer
+# deutschen Kopiervorlage steht; die Normnamen ID-1, ID-2 und ID-3 bleiben
+# daneben stehen, weil sie auf den Karten selbst und in jeder Norm so heißen.
+# Die Namen der Druckeinstellungen, "Tatsächliche Größe" und "An Seite
+# anpassen", sind die, die deutsche Druckdialoge zeigen.
+# Das Beispiel für den Vermerk ist eine deutsche Wohnungsbewerbung, weil die
+# englische Mietadresse hier niemandem etwas sagt.
+#
+
+name = "Ausweiskopie"
+heading = "Ausweis&shy;kopie <span class=\"h1-kw\">&mdash; Vorder- und Rückseite auf einem Blatt</span>"
+tagline = "Beide Seiten der Karte auf einem Blatt, in Originalgröße."
+
+title = "Ausweiskopie &mdash; Vorder- und Rückseite auf einem Blatt, Originalgröße, ohne Upload"
+description = "Kopieren Sie Vorder- und Rückseite eines Personalausweises oder Führerscheins in Originalgröße auf ein Blatt A4 oder Letter oder in ein einziges Bild. Die Karte wird in Ihrem Browser gefunden, geradegerückt und zugeschnitten; hochgeladen wird nichts."
+og_title = "Beide Seiten eines Ausweises auf ein Blatt kopieren, ohne ihn hochzuladen"
+og_description = "Zwei Handyfotos hinein, ein Blatt heraus, mit Vorder- und Rückseite in genau der Größe der Karte, fertig zum Drucken. Die Karte wird in Ihrem eigenen Browser gefunden und geradegerückt, denn ein Ausweis ist das Letzte, was man hochladen sollte."
+og_image_alt = "Ausweiskopie - Vorder- und Rückseite einer Karte auf einem Blatt in Originalgröße, ohne Upload"
+
+pledge = """
+    Beide Fotos werden von Ihrem eigenen Browser dekodiert, geradegerückt,
+    angeordnet und in die Kopie geschrieben, mit nichts als Rechnen und den
+    Codecs, die er ohnehin mitbringt. Netzfunktionen hat dieses Werkzeug
+    keine, nichts zum Abrufen, nichts zum Senden, nicht einmal eine Übergabe an
+    ein anderes Werkzeug. Was es bekommt, ist ein Ausweis, und eine Kopie davon
+    ist alles, was jemand braucht, um sich als Sie auszugeben."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und erstellen Sie eine Kopie. Keine einzige
+      Anfrage trägt ein Foto, ein Vorschaubild, einen Dateinamen, den Text, den
+      Sie eingegeben haben, oder die Position einer einzigen Ecke. Oder schalten
+      Sie den Flugmodus ein und erstellen Sie trotzdem eine."""
+
+read_first = """
+, <code>src/shared/document-detect.js</code> dafür, wie die Karte ohne
+      jedes Modell gefunden wird, <code>src/layout.js</code> dafür, wohin jede
+      Seite auf dem Papier kommt, <code>src/card.js</code> für die Ecken und den
+      Vermerk quer über die Karte und <code>src/document.js</code> für das PDF."""
+
+howto_heading = "So kopieren Sie Vorder- und Rückseite eines Ausweises auf ein Blatt"
+
+card = """
+            Vorder- und Rückseite eines Ausweises oder Führerscheins auf einem
+            Blatt in Originalgröße oder in einem Bild zum Hochladen. Aus zwei
+            Handyfotos gefunden, geradegerückt und zugeschnitten."""
+
+[words]
+plural = "Karten"
+choose = "ein Foto von jeder Seite der Karte"
+
+[[facts]]
+mark = "&#10007;"
+text = "Kein Upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "Kein Konto"
+
+[[facts]]
+mark = "&#10007;"
+text = "Kein Wasserzeichen von uns"
+
+[[facts]]
+mark = "&#10003;"
+text = "Läuft offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Quelloffen"
+
+[[privacy]]
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
+
+[[privacy]]
+title = "Es gibt kein Modell, also nichts herunterzuladen."
+body = """
+ Die Karte zu
+      finden ist Rechnen: der Gradient des Fotos, eine Abstimmung über die
+      geraden Linien darin und eine Prüfung, was unter jeder Seite des
+      siegreichen Rechtecks liegt. Es ist die Eckensuche des
+      Dokumentenscanners, mit ihm geteilt. Keine Gewichte, keine
+      Inferenz-Laufzeit, nichts, was beim ersten Gebrauch nachgeladen wird.
+      Siehe <code>src/shared/document-detect.js</code>."""
+
+[[privacy]]
+title = "Die Kopie trägt nichts aus Ihren Fotos außer der Karte."
+body = """
+ Jede Seite wird
+      aus den Pixeln neu gezeichnet, sodass der Ort, die Kamera und die
+      Uhrzeit, die ein Handy in ein Foto schreibt, nicht in der Kopie stehen.
+      Das PDF enthält den Namen dieses Werkzeugs und sonst nichts, kein Datum,
+      keinen Autor und keinen Rechnernamen. Siehe <code>src/document.js</code>."""
+
+[[privacy]]
+title = "Der Vermerk quer über die Karte steckt im Bild und liegt nicht darauf."
+body = """
+ Was Sie
+      eingeben, wird vor dem Speichern in die Pixel jeder Seite gezeichnet, und
+      deshalb lässt es sich nicht von der Kopie abheben, wie es bei einer Ebene
+      oder einer Anmerkung in einem PDF geht. Siehe <code>src/card.js</code>."""
+
+[[privacy]]
+title = "Hier ruft nichts irgendetwas ab, und es läuft offline."
+body = """
+ Es gibt kein
+      <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>, nirgends in <code>src/</code>, und diese Seite
+      öffnet <code>connect-src</code> für nichts. Trennen Sie die
+      Netzverbindung, und das Werkzeug bleibt, wie es ist. Das ist der Beweis,
+      den man führen sollte, bevor man einen Reisepass fotografiert."""
+
+[[howto]]
+title = "Fotografieren Sie beide Seiten."
+body = """
+ Legen Sie die Karte auf etwas, das
+      dunkler oder heller ist als sie selbst, halten Sie das Handy darüber,
+      sodass die ganze Karte im Bild ist, und füllen Sie das Bild so weit wie
+      möglich. Ändern Sie den Winkel ein wenig, wenn sich das Licht auf der
+      Karte spiegelt. Eine Spiegelung verdeckt, was darunter liegt, und nichts
+      kann das hinterher zurückholen."""
+
+[[howto]]
+title = "Fügen Sie die beiden Fotos hinzu."
+body = """
+ Legen Sie beide auf einmal ab, dann
+      gilt das erste als Vorderseite, oder nehmen Sie die Schaltfläche an jeder
+      Seite. &bdquo;Vorder- und Rückseite tauschen&ldquo; dreht die Zuordnung
+      um."""
+
+[[howto]]
+title = "Prüfen Sie die Ecken."
+body = """
+ Die Karte wird in jedem Foto gefunden
+      und umrandet. Tippen Sie irgendwo auf ein Foto, und die nächste Ecke
+      kommt zu Ihrem Finger, oder gehen Sie mit <kbd>Tab</kbd> zu einer und
+      bewegen Sie sie mit den Pfeiltasten. Die Schaltflächen zum Drehen bringen
+      eine Karte in die richtige Lage."""
+
+[[howto]]
+title = "Ordnen Sie die Kopie an."
+body = """
+ Wählen Sie das Papier (A4, Letter
+      oder gar kein Blatt, für ein einziges Bild beider Seiten) und ob die
+      beiden untereinander oder nebeneinander stehen. Geben Sie den Zweck der
+      Kopie ein, wenn er quer über der Karte stehen soll."""
+
+[[howto]]
+title = "Speichern Sie die Kopie und drucken Sie sie mit 100%."
+body = """
+ Das PDF ist die Datei zum Drucken.
+      Stellen Sie den Drucker auf &bdquo;Tatsächliche Größe&ldquo; oder 100%,
+      nicht auf &bdquo;An Seite anpassen&ldquo;, und legen Sie die Karte zur
+      Probe auf das Papier. Ein JPEG oder PNG ist zum Hochladen oder Mailen
+      da."""
+
+[[faq]]
+q = "Werden meine Ausweisfotos irgendwohin hochgeladen?"
+a = """
+        Nein. Beide Fotos werden von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware dekodiert, geradegerückt, angeordnet und in die Kopie
+        geschrieben. Netzfunktionen hat dieses Werkzeug keine, es ruft nie etwas
+        ab und sendet nie etwas, und die <code>Content-Security-Policy</code>
+        der Seite lässt es nicht einmal eine Verbindung öffnen, um sein eigenes
+        Ergebnis zurückzulesen. Laden Sie die Seite einmal, schalten Sie den
+        Flugmodus ein, und sie funktioniert weiter."""
+
+[[faq]]
+q = "Hat die Karte beim Drucken die richtige Größe?"
+a = """
+        Ja, wenn der Drucker mit 100% druckt. Das PDF setzt jede Seite in genau
+        die Größe der Karte, 85,6 mal 53,98 Millimeter bei einer Karte im
+        Scheckkartenformat, und zwar in den eigenen Maßen der Datei und nicht
+        durch das Skalieren eines Bildes einer Seite. Was Kopien zu klein
+        herauskommen lässt, ist &bdquo;An Seite anpassen&ldquo; oder &bdquo;Auf
+        Seitengröße verkleinern&ldquo; im Druckdialog, denn das verkleinert das
+        ganze Blatt um ein paar Prozent. Wählen Sie stattdessen
+        &bdquo;Tatsächliche Größe&ldquo; und legen Sie die Karte auf die
+        gedruckte Kopie, um zu prüfen, ob beide übereinstimmen."""
+
+[[faq]]
+q = "Warum kommt die Karte in der richtigen Form heraus und nicht gestaucht?"
+a = """
+        Weil die Form gar nicht am Foto gemessen wird. Es ist die der Karte
+        selbst. Eine schräg fotografierte Karte wirkt am entfernten Ende kürzer,
+        und ein Werkzeug, das einfach das sichtbare Rechteck ausschneidet und in einen
+        Kasten streckt, liefert eine Karte, die sichtbar gedrungen oder zu hoch
+        ist. Hier werden die vier Ecken über eine perspektivische Transformation
+        auf ein Rechteck mit genau den Proportionen der Karte abgebildet, sodass
+        jede Linie, die auf der Karte gerade ist, auch auf der Kopie gerade ist
+        und die Karte ihre eigene Form hat, aus welchem Winkel sie auch
+        fotografiert wurde."""
+
+[[faq]]
+q = "Was macht der &bdquo;Vermerk quer über die Karte&ldquo;, und sollte ich ihn nutzen?"
+a = """
+        Er schreibt, was Sie eingeben, meist wofür die Kopie ist und das Datum,
+        etwa &bdquo;Kopie nur für die Wohnungsbewerbung Musterstraße 12,
+        März 2027&ldquo;, in schrägen, wiederholten Zeilen über beide Seiten, in
+        der Schriftfarbe und Stärke, die Sie wählen. Er wird vor dem Speichern
+        in die Pixel gezeichnet und lässt sich deshalb nicht von der Kopie
+        entfernen, wie es bei einer Notiz auf einem PDF geht. Eine Ausweiskopie,
+        auf der steht, wofür sie übergeben wurde, nützt jemandem, der sie für
+        etwas anderes wiederverwenden will, viel weniger, und genau das raten
+        manche Behörden für Kopien von Ausweisdokumenten. Halten Sie ihn so
+        hell, dass die Karte darunter lesbar bleibt."""
+
+[[faq]]
+q = "Die gefundenen Ecken stimmen nicht. Was jetzt?"
+a = """
+        Ziehen Sie sie. Die Ecken sind eine Ausgangslage und keine
+        Entscheidung: Jede Seite wird von dort genommen, wo ihre vier Ecken am
+        Ende stehen. Tippen Sie irgendwo auf das Foto, und die nächste Ecke
+        springt zu Ihrem Finger, und die Pfeiltasten bewegen eine fokussierte
+        Ecke pixelweise. Am schwersten ist die Karte auf einer Unterlage von
+        fast ihrer eigenen Farbe zu finden, deshalb ist eine weiße Karte auf
+        einem weißen Schreibtisch der übliche Grund. Legen Sie sie auf etwas
+        Dunkleres und fotografieren Sie neu, oder setzen Sie die Ecken selbst.
+        Karten haben abgerundete Ecken, setzen Sie also jede Ecke dorthin, wo
+        sich ihre beiden geraden Kanten treffen würden."""
+
+[[faq]]
+q = "Für welche Karten funktioniert das?"
+a = """
+        Für jede Karte, deren beide Seiten sich zusammen zu kopieren lohnen.
+        Fast alle Personalausweise, Führerscheine, Aufenthaltstitel,
+        Krankenkassenkarten, Studierendenausweise und Bankkarten haben dieselbe
+        Größe, das Scheckkartenformat ISO ID-1, und das ist die Voreinstellung.
+        Das größere Format ID-2 mancher älterer Ausweise gibt es ebenfalls, und
+        die Datenseite eines Reisepasses (ID-3) lässt sich allein auf ein Blatt
+        setzen. Manche Führerscheine sind hochkant statt quer bedruckt; drehen
+        Sie diese Seite mit den Schaltflächen zum Drehen, dann wird sie hochkant
+        angeordnet."""
+
+[[faq]]
+q = "Kann ich statt eines Blatts ein einziges Bild beider Seiten bekommen?"
+a = """
+        Ja. Wählen Sie &bdquo;Kein Blatt &mdash; nur die beiden Seiten&ldquo;
+        als Papier und JPEG oder PNG als Datei, dann wird die Kopie ein Bild der
+        beiden Seiten mit einem schmalen weißen Rand. Genau das will ein
+        Onlineformular, das beide Seiten in einem Upload verlangt. Das Bild hält
+        seine eigene Auflösung fest, sodass ein Programm, das danach druckt, die
+        Karte in Originalgröße druckt. Viele passen ein Bild aber einfach an das
+        Papier an, und deshalb ist das PDF die Datei zum Drucken."""
+
+[[faq]]
+q = "Der Download tut nichts. Warum?"
+a = """
+        Meist, weil die Seite in einer anderen App geöffnet ist, einem Messenger
+        oder einem sozialen Netzwerk, deren eingebauter Browser keine Downloads
+        speichert. Öffnen Sie die Seite stattdessen im eigenen Browser Ihres
+        Handys, und dieselben Schritte speichern die Datei. Einmal geladen,
+        braucht sie nichts mehr aus dem Netz, also funktioniert sie dort auch
+        offline."""
+
+[[faq]]
+q = "Ist das kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase, keine Grenze dafür, wie viele Kopien Sie erstellen, und kein
+        Wasserzeichen von uns darauf. Der einzige Text quer über einer Karte ist
+        der, den Sie eingeben. Die Seite trägt Werbung, und die bezahlt sie; die
+        Werbung bekommt nichts über Ihre Karte."""
+
+[schema]
+description = "Vorder- und Rückseite eines Ausweises im Browser zu einer Kopie zusammenfügen: Die Karte wird in jedem Foto gefunden, die Perspektive herausgerechnet, und beide Seiten werden in Originalgröße auf ein Blatt A4 oder Letter oder in ein einziges Bild gesetzt. Ein optionaler Vermerk wird quer über die Karte geschrieben. Nichts wird hochgeladen."
+features = [
+  "Findet die Karte in jedem Foto ohne Modell, ohne Download und ohne Abruf",
+  "Rückt jede Seite auf die genauen Proportionen der Karte gerade, sodass ein schräges Foto nicht gestaucht herauskommt",
+  "Druckt in Originalgröße der Karte: 85,6 mal 53,98 mm auf A4 oder Letter im PDF",
+  "Ein Bild beider Seiten für Formulare, die einen einzigen Upload verlangen",
+  "Scheckkartenformat (ID-1), ID-2 und Reisepass-Datenseite (ID-3)",
+  "Untereinander oder nebeneinander, in der Mitte oder oben auf dem Blatt",
+  "Optionaler Vermerk quer über die Karte, fest in die Pixel eingezeichnet",
+  "Abgerundete Ecken, eine feine Umrandung, farbig oder schwarzweiß",
+  "Ecken lassen sich ziehen oder mit der Tastatur pixelweise bewegen",
+  "Schreibt kein Datum, keinen Autor und keine Foto-Metadaten in die Kopie",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Fotos von Vorder- und Rückseite hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; zuerst die Vorderseite, dann die Rückseite (JPEG, PNG, WebP, AVIF)"

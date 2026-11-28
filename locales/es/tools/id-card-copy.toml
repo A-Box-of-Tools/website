@@ -1,0 +1,280 @@
+#
+# Copia de documento de identidad - Spanish.
+#
+# Overrides for tools/id-card-copy/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Anverso" y "reverso" porque son las palabras de los formularios a los dos
+# lados del Atlantico; "tarjeta" para el objeto fisico y "documento de
+# identidad" para lo que es. "Permiso de conducir" como en el resto del sitio.
+# Las medidas llevan coma decimal, igual que las que escribe el JavaScript con
+# toLocaleString en una pagina con lang="es".
+#
+
+name = "Copia de documento de identidad"
+heading = "Copia&nbsp;de&nbsp;documento de&nbsp;identidad <span class=\"h1-kw\">&mdash; anverso y reverso en una sola hoja</span>"
+tagline = "Las dos caras de la tarjeta, en una hoja, a su tamaño real."
+
+title = "Copia de documento de identidad &mdash; anverso y reverso en una hoja, a tamaño real y sin subir nada"
+description = "Pon el anverso y el reverso de un DNI, una cédula o un permiso de conducir en una sola hoja A4 o Carta a su tamaño real, o en una sola imagen. La tarjeta se encuentra, se endereza y se recorta en el navegador: no se sube nada."
+og_title = "Copia las dos caras de un documento de identidad en una hoja, sin subirlo"
+og_description = "Entran dos fotos hechas con el teléfono; sale una hoja con el anverso y el reverso exactamente al tamaño de la tarjeta, lista para imprimir. La tarjeta se encuentra y se endereza en tu propio navegador, porque un documento de identidad es lo último que conviene subir."
+og_image_alt = "Copia de documento de identidad - el anverso y el reverso de una tarjeta en una hoja a tamaño real, sin subirla"
+
+pledge = """
+    El navegador decodifica las dos fotos, las endereza, las coloca y las
+    escribe en la copia, sin más que aritmética y los códecs que ya trae. Esta
+    herramienta no tiene ninguna función de red &mdash; nada que pedir, nada que
+    enviar, ni siquiera un paso a otra herramienta &mdash;, porque lo que recibe
+    es un documento de identidad, y una copia de uno es todo lo que alguien
+    necesita para hacerse pasar por ti."""
+
+live_hint = """
+      No hace falta que nos creas: abre las DevTools, mira la pestaña Red y haz
+      una copia. Ninguna petición lleva una foto, una miniatura, un nombre de
+      archivo, el texto que hayas escrito ni la posición de una sola esquina. O
+      activa el modo avión y hazla igualmente."""
+
+read_first = """
+, <code>src/shared/document-detect.js</code> para cómo se
+      encuentra la tarjeta sin ningún modelo, <code>src/layout.js</code> para
+      dónde va cada cara en el papel, <code>src/card.js</code> para las esquinas
+      y el texto escrito sobre la tarjeta, y <code>src/document.js</code> para el
+      PDF."""
+
+howto_heading = "Cómo copiar las dos caras de un documento de identidad en una hoja"
+
+card = """
+            El anverso y el reverso de un documento de identidad o un permiso de
+            conducir en una hoja, al tamaño real de la tarjeta, o en una sola
+            imagen para subir. Encontrados, enderezados y recortados a partir de
+            dos fotos hechas con el teléfono."""
+
+[words]
+plural = "tarjetas"
+choose = "una foto de cada cara de la tarjeta"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sin subidas"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sin cuenta"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sin marca de agua nuestra"
+
+[[facts]]
+mark = "&#10003;"
+text = "Funciona sin conexión"
+
+[[facts]]
+mark = "&#10003;"
+text = "Código abierto"
+
+[[privacy]]
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
+
+[[privacy]]
+title = "No hay modelo, así que no hay nada que descargar."
+body = """
+ Encontrar la
+      tarjeta es aritmética: el gradiente de la foto, una votación de las rectas
+      que hay en ella y una comprobación de qué hay debajo de cada lado del
+      rectángulo que gana. Es el buscador de esquinas del escáner de documentos,
+      compartido con él: sin pesos, sin motor de inferencia, sin nada que se
+      descargue la primera vez. Mira <code>src/shared/document-detect.js</code>."""
+
+[[privacy]]
+title = "La copia no lleva nada de tus fotos salvo la tarjeta."
+body = """
+ Cada cara se
+      vuelve a dibujar a partir de los píxeles, así que la ubicación, la cámara y
+      la hora que un teléfono escribe en una foto no están en la copia. El PDF
+      registra el nombre de esta herramienta y nada más: ni fecha, ni autor, ni
+      nombre de equipo. Mira <code>src/document.js</code>."""
+
+[[privacy]]
+title = "El texto sobre la tarjeta está dentro de la imagen, no encima."
+body = """
+ Lo que
+      escribes se dibuja en los píxeles de cada cara antes de guardarla, así que
+      no se puede despegar de la copia como una capa o una anotación de un PDF.
+      Mira <code>src/card.js</code>."""
+
+[[privacy]]
+title = "Aquí nada pide nada, y funciona sin conexión."
+body = """
+ No hay
+      ningún <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> en ninguna parte de <code>src/</code>, y esta
+      página no abre <code>connect-src</code> para nada. Desconéctate de la red y
+      la herramienta no cambia: es la prueba que conviene hacer antes de
+      fotografiar un pasaporte."""
+
+[[howto]]
+title = "Fotografía las dos caras."
+body = """
+ Pon la tarjeta sobre algo más oscuro o
+      más claro que ella, sujeta el teléfono encima de modo que la tarjeta
+      entera quede en el encuadre, y llena todo el encuadre que puedas. Inclínalo
+      un poco si la luz se refleja en la tarjeta: un reflejo tapa lo que hay
+      debajo, y nada puede recuperarlo después."""
+
+[[howto]]
+title = "Añade las dos fotos."
+body = """
+ Suéltalas las dos a la vez y la primera
+      se toma como anverso, o usa el botón de cada cara. &laquo;Intercambiar
+      anverso y reverso&raquo; las pone al revés."""
+
+[[howto]]
+title = "Comprueba las esquinas."
+body = """
+ La tarjeta se busca en cada foto y se
+      marca con un contorno. Pulsa en cualquier punto de una foto y la esquina
+      más cercana viene a tu dedo, o llega a una con <kbd>Tab</kbd> y muévela
+      con las flechas. Los botones de girar ponen una tarjeta del derecho."""
+
+[[howto]]
+title = "Prepara la copia."
+body = """
+ Elige el papel &mdash; A4, Carta o
+      ninguna hoja, para una sola imagen de las dos caras &mdash; y si van una
+      encima de la otra o una al lado de la otra. Escribe para qué es la copia
+      si quieres que aparezca escrito sobre la tarjeta."""
+
+[[howto]]
+title = "Guárdala e imprímela al 100%."
+body = """
+ El PDF es el archivo para imprimir:
+      pon la impresora en &laquo;tamaño real&raquo; o al 100%, no en
+      &laquo;ajustar a la página&raquo;, y pon la tarjeta sobre el papel para
+      comprobarlo. Un JPEG o un PNG es para subir o mandar por correo."""
+
+[[faq]]
+q = "¿Se suben a alguna parte las fotos de mi documento?"
+a = """
+        No. Las dos fotos las decodifica, endereza, coloca y escribe en la copia
+        tu propio navegador, en tu propio equipo. Esta herramienta no tiene
+        ninguna función de red &mdash; nunca pide nada y nunca envía nada
+        &mdash;, y la <code>Content-Security-Policy</code> de la página no le
+        deja abrir una conexión ni siquiera para leer su propio resultado. Carga
+        la página una vez, activa el modo avión y sigue funcionando."""
+
+[[faq]]
+q = "¿La tarjeta saldrá del tamaño correcto al imprimirla?"
+a = """
+        Sí, si a la impresora se le dice que imprima al 100%. El PDF coloca cada
+        cara exactamente al tamaño de la tarjeta &mdash; 85,6 por 53,98
+        milímetros si tiene el tamaño de una tarjeta bancaria &mdash; con las
+        propias medidas del archivo, y no escalando la imagen de una página. Lo
+        que hace que las copias salgan pequeñas es el &laquo;ajustar a la
+        página&raquo; o el &laquo;reducir para ajustar&raquo; del cuadro de
+        impresión, que encoge la hoja entera un pequeño porcentaje; elige
+        &laquo;tamaño real&raquo; en su lugar, y pon la tarjeta sobre la copia
+        impresa para comprobar que coinciden."""
+
+[[faq]]
+q = "¿Por qué la tarjeta sale con su forma y no achatada?"
+a = """
+        Porque la forma no se mide en la foto: es la de la propia tarjeta. Una
+        tarjeta fotografiada en ángulo se ve más corta por el extremo lejano, y
+        una herramienta que recorta el rectángulo que ve y lo estira hasta
+        llenar un recuadro produce una tarjeta visiblemente achatada o alargada.
+        Aquí las cuatro esquinas se llevan, mediante una transformación de
+        perspectiva, a un rectángulo con exactamente las proporciones de la
+        tarjeta, así que cada línea recta en la tarjeta es recta en la copia, y
+        la tarjeta conserva su forma sea cual sea el ángulo desde el que se
+        fotografió."""
+
+[[faq]]
+q = "¿Qué hace &laquo;Texto sobre la tarjeta&raquo; y debería usarlo?"
+a = """
+        Escribe lo que teclees &mdash; normalmente para qué es la copia y la
+        fecha, como &laquo;Copia solo para el alquiler de Calle Mayor 12, marzo
+        de 2027&raquo; &mdash; en filas inclinadas y repetidas sobre las dos
+        caras, con la tinta y la intensidad que elijas. Se dibuja en los píxeles
+        antes de guardar el archivo, así que no se puede quitar de la copia como
+        una nota puesta encima de un PDF. Una copia de un documento de identidad
+        que dice para qué se entregó le sirve de mucho menos a quien quiera
+        reutilizarla para otra cosa, y es lo que aconsejan algunos gobiernos
+        para las copias de documentos de identidad. Que sea lo bastante tenue
+        como para que la tarjeta de debajo se pueda seguir leyendo."""
+
+[[faq]]
+q = "Las esquinas que ha encontrado están mal. ¿Y ahora?"
+a = """
+        Arrástralas. Las esquinas son una posición de partida, no una decisión:
+        cada cara se toma de donde acaben sus cuatro esquinas. Pulsa en
+        cualquier punto de la foto y la esquina más cercana salta a tu dedo, y
+        las flechas mueven la esquina enfocada píxel a píxel. La tarjeta es más
+        difícil de encontrar sobre una superficie casi de su mismo color, así que
+        una tarjeta blanca sobre una mesa blanca es el motivo habitual: ponla
+        sobre algo más oscuro y repite la foto, o coloca tú las esquinas. Las
+        tarjetas tienen las esquinas redondeadas: pon cada esquina donde se
+        cortarían sus dos bordes rectos."""
+
+[[faq]]
+q = "¿Con qué tarjetas funciona?"
+a = """
+        Con cualquier tarjeta cuyas dos caras merezca la pena copiar juntas.
+        Casi todos los documentos de identidad, permisos de conducir, permisos
+        de residencia, tarjetas sanitarias, tarjetas de estudiante y tarjetas
+        bancarias tienen el mismo tamaño &mdash; el tamaño ISO ID-1 de una
+        tarjeta bancaria &mdash;, que es el predeterminado. También está el
+        tamaño ID-2, más grande, de algunos documentos de identidad antiguos, y
+        la página de la foto de un pasaporte (ID-3) se puede poner sola en una
+        hoja. Algunos permisos se imprimen en vertical y no en horizontal; gira
+        esa cara con los botones de girar y se coloca en vertical."""
+
+[[faq]]
+q = "¿Puedo obtener una sola imagen de las dos caras en vez de una hoja?"
+a = """
+        Sí. Elige &laquo;Sin hoja &mdash; solo las dos caras&raquo; como papel y
+        JPEG o PNG como archivo, y la copia es una sola imagen de las dos caras
+        con un borde blanco estrecho, que es lo que quiere un formulario en línea
+        que pide las dos caras en una sola subida. La imagen registra su propia
+        resolución, así que un programa que imprima según ella imprime la
+        tarjeta a su tamaño real; muchos simplemente ajustan la imagen al papel,
+        y por eso el PDF es el archivo para imprimir."""
+
+[[faq]]
+q = "La descarga no hace nada. ¿Por qué?"
+a = """
+        Normalmente porque la página está abierta dentro de otra app &mdash; una
+        de mensajería o una red social &mdash; cuyo navegador integrado no
+        guarda descargas. Abre la página en el navegador del propio teléfono y
+        los mismos pasos guardarán el archivo. Una vez cargada no necesita nada
+        de la red, así que ahí también funciona sin conexión."""
+
+[[faq]]
+q = "¿Es gratis y hace falta cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni registro, ni prueba, ni límite de copias,
+        ni marca de agua nuestra en ellas: el único texto escrito sobre una
+        tarjeta es el que tú escribas. El sitio lleva publicidad, que es lo que
+        lo paga; a los anuncios no se les da nada sobre tu tarjeta."""
+
+[schema]
+description = "Combina el anverso y el reverso de un documento de identidad en una sola copia en el navegador: la tarjeta se encuentra en cada foto, se deshace la perspectiva y las dos caras se colocan a su tamaño real en una hoja A4 o Carta, o en una sola imagen. Se puede escribir un texto opcional sobre la tarjeta. No se sube nada."
+features = [
+  "Encuentra la tarjeta en cada foto sin modelo, sin descargas y sin peticiones",
+  "Endereza cada cara con las proporciones exactas de la tarjeta, así que una foto en ángulo no sale achatada",
+  "Imprime al tamaño real de la tarjeta: 85,6 por 53,98 mm en A4 o Carta en el PDF",
+  "Una sola imagen de las dos caras para los formularios que piden una única subida",
+  "Tamaños de tarjeta bancaria (ID-1), ID-2 y página de pasaporte (ID-3)",
+  "Una encima de la otra o una al lado de la otra, en el centro o arriba de la hoja",
+  "Texto opcional escrito sobre la tarjeta, grabado en los píxeles",
+  "Esquinas redondeadas, contorno fino, color o blanco y negro",
+  "Las esquinas se pueden arrastrar, o mover con el teclado píxel a píxel",
+  "No escribe fecha, autor ni metadatos de la foto en la copia",
+  "Funciona sin conexión; sin subidas y sin cuenta",
+]
+
+[picker]
+title = "Suelta aquí las fotos del anverso y el reverso"
+hint = "o pulsa para elegir &mdash; primero el anverso, luego el reverso (JPEG, PNG, WebP, AVIF)"

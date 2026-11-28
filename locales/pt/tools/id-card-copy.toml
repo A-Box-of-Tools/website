@@ -1,0 +1,280 @@
+#
+# ID Card Copy - Portuguese.
+#
+# Overrides for tools/id-card-copy/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Documento" é como o Brasil chama o RG, a CNH e os outros documentos com
+# foto, e é o que se digita na busca ("cópia do documento frente e verso").
+# O objeto físico é "o cartão", para não confundir com o PDF que sai daqui.
+# "Frente" e "verso" são os dois lados; por isso nunca "de frente" no sentido
+# de "sem inclinação". Letter fica Letter, como no Digitalizador de
+# documentos; ID-1, ID-2, ID-3, ISO, DPI e os nomes de código ficam como são.
+#
+
+name = "Cópia de documento"
+heading = "Cópia&nbsp;de&nbsp;documento <span class=\"h1-kw\">&mdash; frente e verso numa página só</span>"
+tagline = "Os dois lados do cartão, numa folha só, no tamanho real."
+
+title = "Cópia de documento &mdash; frente e verso numa página, tamanho real, sem enviar nada"
+description = "Ponha os dois lados de um RG, uma CNH ou outro documento de identidade numa página A4 ou Letter no tamanho real, ou numa só imagem. O cartão é encontrado, endireitado e recortado no seu navegador: nada é enviado."
+og_title = "Copie os dois lados de um documento de identidade numa página, sem enviá-lo"
+og_description = "Entram duas fotos do celular; sai uma folha com a frente e o verso exatamente no tamanho do cartão, pronta para imprimir. O cartão é encontrado e endireitado no seu próprio navegador, porque um documento de identidade é a última coisa que se deveria enviar."
+og_image_alt = "Cópia de documento - a frente e o verso de um cartão numa página, no tamanho real, sem enviá-lo"
+
+pledge = """
+    As duas fotos são decodificadas, endireitadas, dispostas e escritas na cópia
+    pelo seu próprio navegador, com aritmética e os codecs que ele já traz. Esta
+    ferramenta não tem função de rede de espécie alguma &mdash; nada a buscar,
+    nada a enviar, nem mesmo uma passagem para outra ferramenta &mdash; porque o
+    que ela recebe é um documento de identidade, e uma cópia de um é tudo de que
+    alguém precisa para se passar por você."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas do desenvolvedor, olhe a
+      aba Rede e faça uma cópia. Nenhuma requisição carrega uma foto, uma
+      miniatura, um nome de arquivo, o texto que você digitou ou a posição de um
+      único canto. Ou ative o modo avião e faça uma mesmo assim."""
+
+read_first = """
+, <code>src/shared/document-detect.js</code> para como o cartão é
+      encontrado sem modelo algum, <code>src/layout.js</code> para onde cada lado
+      vai no papel, <code>src/card.js</code> para os cantos e o texto escrito
+      sobre o cartão, e <code>src/document.js</code> para o PDF."""
+
+howto_heading = "Como copiar os dois lados de um documento de identidade numa página"
+
+card = """
+            A frente e o verso de um RG, uma CNH ou outro cartão numa página, no
+            tamanho real do cartão, ou numa só imagem para enviar. Encontrados,
+            endireitados e recortados a partir de duas fotos do celular."""
+
+[words]
+plural = "cartões"
+choose = "uma foto de cada lado do cartão"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem envio"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem conta"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem marca-d'água nossa"
+
+[[facts]]
+mark = "&#10003;"
+text = "Funciona offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Código aberto"
+
+[[privacy]]
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
+
+[[privacy]]
+title = "Não há modelo algum, então não há nada a baixar."
+body = """
+ Encontrar o
+      cartão é feito com aritmética &mdash; o gradiente da foto, um voto para as
+      linhas retas nela, e uma conferência do que está embaixo de cada lado do
+      retângulo vencedor. É o localizador de cantos do Digitalizador de
+      documentos, compartilhado com ele: sem pesos, sem runtime de inferência,
+      sem nada buscado no primeiro uso &mdash; veja
+      <code>src/shared/document-detect.js</code>."""
+
+[[privacy]]
+title = "A cópia não carrega nada das suas fotos além do cartão."
+body = """
+ Cada lado é
+      redesenhado a partir dos pixels, então a localização, a câmera e a hora que
+      um celular grava numa foto não estão na cópia. O PDF registra o nome desta
+      ferramenta e mais nada: sem data, sem autor, sem nome do computador &mdash;
+      veja <code>src/document.js</code>."""
+
+[[privacy]]
+title = "O texto sobre o cartão está na imagem, e não por cima dela."
+body = """
+ O que você
+      digita é desenhado nos pixels de cada lado antes de o arquivo ser salvo,
+      então não pode ser tirado da cópia como uma camada ou uma anotação num PDF
+      pode &mdash; veja <code>src/card.js</code>."""
+
+[[privacy]]
+title = "Aqui nada busca nada, e funciona offline."
+body = """
+ Não há
+      <code>fetch</code>, não há <code>XMLHttpRequest</code> e não há
+      <code>sendBeacon</code> em lugar algum de <code>src/</code>, e esta página
+      não abre <code>connect-src</code> para nada. Desconecte da rede e a
+      ferramenta continua a mesma &mdash; a prova que vale a pena fazer antes de
+      fotografar um passaporte."""
+
+[[howto]]
+title = "Fotografe os dois lados."
+body = """
+ Ponha o cartão sobre algo mais escuro
+      ou mais claro do que ele, segure o celular por cima de modo que o cartão
+      inteiro caiba no enquadramento, e preencha o enquadramento o quanto puder.
+      Incline um pouco se a luz refletir no cartão: um reflexo esconde o que está
+      embaixo dele, e nada depois consegue trazer isso de volta."""
+
+[[howto]]
+title = "Acrescente as duas fotos."
+body = """
+ Arraste as duas de uma vez e a primeira
+      é tomada como a frente, ou use o botão de cada lado. &ldquo;Trocar frente e
+      verso&rdquo; inverte as duas."""
+
+[[howto]]
+title = "Confira os cantos."
+body = """
+ O cartão é encontrado em cada foto e
+      contornado. Toque em qualquer ponto de uma foto e o canto mais próximo vem
+      até o seu dedo, ou alcance um com <kbd>Tab</kbd> e mova-o com as setas. Os
+      botões de girar põem um cartão na posição certa."""
+
+[[howto]]
+title = "Monte a cópia."
+body = """
+ Escolha o papel &mdash; A4, Letter, ou
+      nenhuma folha, para uma só imagem dos dois lados &mdash; e se os dois ficam
+      um acima do outro ou lado a lado. Digite a finalidade da cópia para que ela
+      seja escrita sobre o cartão, se quiser."""
+
+[[howto]]
+title = "Salve, e imprima em 100%."
+body = """
+ O PDF é o arquivo para imprimir:
+      ajuste a impressora para &ldquo;tamanho real&rdquo; ou 100%, e não para
+      &ldquo;ajustar à página&rdquo;, e ponha o cartão sobre o papel para
+      conferir. Um JPEG ou PNG é para enviar por um site ou por e-mail."""
+
+[[faq]]
+q = "As fotos do meu documento são enviadas para algum lugar?"
+a = """
+        Não. As duas fotos são decodificadas, endireitadas, dispostas e escritas
+        na cópia pelo seu próprio navegador, no seu próprio hardware. Esta
+        ferramenta não tem função de rede de espécie alguma &mdash; nunca busca
+        nada e nunca envia nada &mdash; e a <code>Content-Security-Policy</code>
+        da página não a deixa abrir uma conexão nem para ler de volta o seu
+        próprio resultado. Carregue a página uma vez, ative o modo avião, e ela
+        continua funcionando."""
+
+[[faq]]
+q = "O cartão sai no tamanho certo quando eu imprimo?"
+a = """
+        Sim, se a impressora for ajustada para imprimir em 100%. O PDF põe cada
+        lado exatamente no tamanho do cartão &mdash; 85,6 por 53,98 milímetros,
+        para um cartão do tamanho de um cartão bancário &mdash; nas medidas do
+        próprio arquivo, e não redimensionando a imagem de uma página. O que faz
+        as cópias saírem pequenas é o &ldquo;ajustar à página&rdquo; ou o
+        &ldquo;reduzir para caber&rdquo; da janela de impressão, que encolhe a
+        folha inteira em alguns por cento; escolha &ldquo;tamanho real&rdquo; em
+        vez disso, e ponha o cartão sobre a cópia impressa para conferir se os
+        dois batem."""
+
+[[faq]]
+q = "Por que o cartão sai na forma certa, e não achatado?"
+a = """
+        Porque a forma não é medida na foto: é a do próprio cartão. Um cartão
+        fotografado de viés parece mais curto na ponta distante, e uma ferramenta
+        que recorta o retângulo que vê e o estica numa caixa produz um cartão
+        visivelmente atarracado ou espichado. Aqui os quatro cantos são levados,
+        por uma transformação de perspectiva, a um retângulo com exatamente as
+        proporções do cartão, então toda linha que é reta no cartão é reta na
+        cópia, e o cartão tem a sua própria forma qualquer que seja o ângulo em
+        que foi fotografado."""
+
+[[faq]]
+q = "O que faz o &ldquo;texto sobre o cartão&rdquo;, e devo usá-lo?"
+a = """
+        Ele escreve o que você digitar em linhas inclinadas e repetidas sobre os
+        dois lados, na tinta e na intensidade que você escolher. Em geral é para
+        que serve a cópia e a data, como &ldquo;Cópia apenas para a locação na
+        Rua das Flores, 12 &mdash; março de 2027&rdquo;. Ele é desenhado nos pixels
+        antes de o arquivo ser salvo, então não pode ser removido da cópia como
+        uma nota por cima de um PDF pode. Uma cópia de documento de identidade que
+        diz para que foi entregue serve muito menos a quem quiser reaproveitá-la
+        para outra coisa, e esse é o conselho que alguns governos dão para cópias
+        de documentos de identidade. Mantenha-o leve o bastante para que o cartão
+        por baixo continue legível."""
+
+[[faq]]
+q = "Os cantos que ele encontrou estão errados. E agora?"
+a = """
+        Arraste-os. Os cantos são uma posição de partida, e não uma decisão: cada
+        lado é tirado de onde os seus quatro cantos terminarem. Toque em qualquer
+        ponto da foto e o canto mais próximo salta para o seu dedo, e as setas
+        movem o canto em foco um pixel por vez. O cartão é mais difícil de
+        encontrar sobre uma superfície quase da mesma cor que ele, então um
+        cartão branco sobre uma mesa branca é o motivo de sempre &mdash; ponha-o
+        sobre algo mais escuro e tire a foto de novo, ou posicione você mesmo os
+        cantos. Os cartões têm cantos arredondados: ponha cada canto onde as suas
+        duas bordas retas se encontrariam."""
+
+[[faq]]
+q = "Com quais cartões ele funciona?"
+a = """
+        Com qualquer cartão cujos dois lados valha a pena copiar juntos. Quase
+        todo documento de identidade, carteira de motorista, autorização de
+        residência, carteirinha de plano de saúde, carteirinha de estudante e
+        cartão de banco tem o mesmo tamanho &mdash; o tamanho ISO ID-1, de um
+        cartão bancário &mdash; e é esse o padrão. O tamanho maior ID-2, de
+        algumas carteiras de identidade mais antigas, também está lá, e a página
+        de dados de um passaporte (ID-3) pode ir sozinha numa folha. Algumas
+        carteiras de motorista são impressas na vertical, e não na horizontal;
+        gire esse lado com os botões de girar e ele é disposto na vertical."""
+
+[[faq]]
+q = "Posso ter uma só imagem dos dois lados em vez de uma página?"
+a = """
+        Sim. Escolha &ldquo;Sem folha &mdash; só os dois lados&rdquo; como papel
+        e JPEG ou PNG como arquivo, e a cópia é uma imagem só dos dois lados com
+        uma borda branca estreita, que é o que quer um formulário on-line que
+        pede os dois lados num único envio. A imagem registra a sua própria
+        resolução, então um programa que imprime por ela imprime o cartão no
+        tamanho real; muitos simplesmente ajustam a imagem ao papel, e é por isso
+        que o PDF é o arquivo para imprimir."""
+
+[[faq]]
+q = "O download não faz nada. Por quê?"
+a = """
+        Geralmente porque a página está aberta dentro de outro app &mdash; um app
+        de mensagens ou uma rede social &mdash; cujo navegador embutido não salva
+        downloads. Abra a página no navegador do próprio celular e os mesmos
+        passos salvam o arquivo. Ela não precisa de nada da rede depois de
+        carregada, então ali também funciona offline."""
+
+[[faq]]
+q = "É grátis, e eu preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem teste, nem limite de cópias, nem
+        marca-d'água nossa nelas &mdash; o único texto escrito sobre um cartão é o
+        que você digitar. O site exibe publicidade, e é ela que o paga; os
+        anúncios não recebem nada sobre o seu cartão."""
+
+[schema]
+description = "Junte a frente e o verso de um documento de identidade numa só cópia no navegador: o cartão é encontrado em cada foto, a perspectiva é desfeita, e os dois lados são postos no tamanho real numa página A4 ou Letter, ou numa só imagem. Um texto opcional é escrito sobre o cartão. Nada é enviado."
+features = [
+  "Encontra o cartão em cada foto sem modelo, sem baixar nada e sem buscar nada",
+  "Endireita cada lado nas proporções exatas do cartão, para que uma foto de viés não saia achatada",
+  "Imprime no tamanho real do cartão: 85,6 por 53,98 mm em A4 ou Letter, no PDF",
+  "Uma só imagem dos dois lados, para formulários que pedem um único envio",
+  "Tamanhos de cartão bancário (ID-1), ID-2 e página de passaporte (ID-3)",
+  "Um acima do outro ou lado a lado, no meio ou no alto da folha",
+  "Texto opcional escrito sobre o cartão, gravado nos pixels",
+  "Cantos arredondados, contorno fino, colorido ou preto e branco",
+  "Os cantos podem ser arrastados, ou movidos pelo teclado um pixel por vez",
+  "Não escreve data, autor nem metadados das fotos na cópia",
+  "Funciona offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste para cá as fotos da frente e do verso"
+hint = "ou clique para procurar &mdash; primeiro a frente, depois o verso (JPEG, PNG, WebP, AVIF)"

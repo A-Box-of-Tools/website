@@ -181,11 +181,13 @@ complete = true
 # "computadora": ninguna de las dos suena ajena a ningun lado del Atlantico.
 "dicom-viewer" = "visor-dicom"
 "document-scanner" = "escanear-documentos"
+"id-card-copy" = "copiar-documento-de-identidad"
 "redact-pdf" = "censurar-pdf"
 "stack-images" = "apilar-imagenes"
 "guides/open-a-dicom-file" = "guias/abrir-un-archivo-dicom"
 "guides/redact-a-pdf" = "guias/censurar-un-pdf"
 "guides/scan-a-document-with-your-phone" = "guias/escanear-un-documento-con-el-telefono"
+"guides/copy-both-sides-of-an-id-card" = "guias/copiar-las-dos-caras-de-un-documento-de-identidad"
 "guides/stack-photos-to-reduce-noise" = "guias/apilar-fotos-para-reducir-el-ruido"
 "guides/make-a-gif-from-part-of-a-video" = "guias/gif-de-una-parte-de-un-video"
 "guides/make-a-boomerang-video" = "guias/hacer-un-video-boomerang"

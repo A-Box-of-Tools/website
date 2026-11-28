@@ -220,11 +220,13 @@ complete = true
 # gelaeufige Verb und steht deshalb da statt "stapeln".
 "dicom-viewer" = "dicom-viewer"
 "document-scanner" = "dokumente-scannen"
+"id-card-copy" = "ausweis-kopieren"
 "redact-pdf" = "pdf-schwaerzen"
 "stack-images" = "bilder-stacken"
 "guides/open-a-dicom-file" = "ratgeber/dicom-datei-oeffnen"
 "guides/redact-a-pdf" = "ratgeber/pdf-schwaerzen"
 "guides/scan-a-document-with-your-phone" = "ratgeber/dokument-mit-handy-scannen"
+"guides/copy-both-sides-of-an-id-card" = "ratgeber/ausweis-beidseitig-kopieren"
 "guides/stack-photos-to-reduce-noise" = "ratgeber/fotos-stacken-gegen-bildrauschen"
 "guides/make-a-gif-from-part-of-a-video" = "ratgeber/gif-aus-videoausschnitt"
 "guides/make-a-boomerang-video" = "ratgeber/boomerang-video-erstellen"
