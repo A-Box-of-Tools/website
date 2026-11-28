@@ -25,6 +25,8 @@
  *     does to it;
  *   - the page that runs off the side of the frame, where the edge that is not
  *     in the photograph is the edge of the photograph;
+ *   - the card with a dark band printed just inside its light border, whose
+ *     inner edge used to be taken for the edge of the card;
  *   - and the pictures where the honest answer is "no idea", which have to come
  *     back as a guess rather than as four confident corners.
  */
@@ -70,6 +72,7 @@ function photo({
   seed = 7,
   table = null,
   ragged = false,
+  band = null,
 } = {}) {
   const random = noise(seed);
   const data = new Uint8ClampedArray(width * height * 4);
@@ -113,6 +116,11 @@ function photo({
             Math.abs(p.y - table[1]), Math.abs(p.y - table[3]),
           );
           if (edge < 0.004) rgb = [20, 20, 20];
+        }
+        // A band of solid colour printed on the sheet, in the sheet's own
+        // coordinates: [left, top, right, bottom, colour].
+        if (band && p.x > band[0] && p.x < band[2] && p.y > band[1] && p.y < band[3]) {
+          rgb = [...band[4]];
         }
       } else {
         rgb = desk.map((c) => c + (random() - 0.5) * 24);
@@ -252,6 +260,32 @@ test('findPageQuad: a page running off the side uses the edge of the frame', () 
   assert.equal(found.found, true);
   near(found, clipped(quad), 1.5, 'a page off the edge');
   assert.ok(found.quad[1].x > 470, 'the right hand corners belong at the frame');
+});
+
+test('findPageQuad: a dark band just inside the light border of a card is not its edge', () => {
+  // The shape of most identity cards and licences: a light card with a dark
+  // header band a couple of millimetres in from its top edge, on a dark desk.
+  // At the working size the card's own edge and the band's top edge are about
+  // eight pixels apart and step in opposite directions, and while every vote
+  // was folded into half a turn they met in one peak and only one survived.
+  // The band's lower edge, which steps the same way as the card's, then made a
+  // tidy rectangle on its own: a card found with its top fifth missing.
+  // Two places for the band: eight pixels in, inside the window a peak
+  // suppresses its neighbours over, and twelve, past that window but inside the
+  // distance at which two lines were taken for one.
+  const quad = quadOf([[92, 82], [402, 68], [410, 262], [86, 278]]);
+  for (const top of [0.041, 0.06]) {
+    const found = findPageQuad(photo({
+      quad,
+      paper: [228, 240, 236],
+      desk: [107, 80, 56],
+      rows: 10,
+      band: [0.026, top, 0.974, 0.19, [31, 95, 107]],
+    }));
+
+    assert.equal(found.found, true, `band at ${top}`);
+    near(found, quad, 1, `a card with a dark band at ${top}`);
+  }
 });
 
 test('findPageQuad: a small page on a big desk is still found', () => {

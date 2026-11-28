@@ -88,13 +88,12 @@ function stamp(ctx) {
 function drawFront(ctx) {
   ground(ctx, '#e4f1ee', '#ece6f4', 'rgba(40, 110, 120, 0.10)');
 
-  // A pale band, inset from the edge. A dark one meets a dark desk with almost
-  // no edge between them, and a dark band a few millimetres inside a light
-  // border blurs into the border at the corner finder's working size; either
-  // way the finder takes the band's lower edge for the top of the card. Real
-  // cards do that too, and the corners are draggable for them - but the
-  // example is meant to show the card being found.
-  ctx.fillStyle = '#cfe5e8';
+  // A dark band a couple of millimetres inside a light border, as on most real
+  // cards. It is in the example on purpose: the corner finder used to take the
+  // band's lower edge for the top of the card, because the border and the
+  // band's top edge step in opposite directions a few pixels apart, and the
+  // example is where that would show first if it came back.
+  ctx.fillStyle = '#1f5f6b';
   ctx.beginPath();
   ctx.roundRect(22, 22, CARD_W - 44, 80, 14);
   ctx.fill();
@@ -102,7 +101,7 @@ function drawFront(ctx) {
   ctx.translate(36, 30);
   drawMark(ctx, 64);
   ctx.restore();
-  label(ctx, 'EXAMPLE CARD', 120, 76, 38, '#1f5f6b', 700);
+  label(ctx, 'EXAMPLE CARD', 120, 76, 38, '#ffffff', 700);
 
   // The portrait: a head and shoulders, nobody in particular.
   ctx.fillStyle = '#c9d6e3';

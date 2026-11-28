@@ -110,6 +110,16 @@ disagrees with itself and is marked down. This is also what a photograph of pure
 noise fails: every rectangle in one has gradient along all four sides, and not
 one of those sides can say which side of itself the page is on.
 
+**And one in step 3: lines that step opposite ways are never merged.** The
+votes are kept in two accumulators, by whether the picture gets brighter or
+darker across the line, and two lines are taken for one only if they step the
+same way. Folded into one accumulator, the two sides of a dark band printed a
+couple of millimetres inside a light border - the top of most identity cards
+- met in one peak, the band's top edge survived instead of the card's own, and
+the band's lower edge then made a rectangle that cut the top fifth off the
+card. The [ID card copier](../id-card-copy/) found it; the case is in
+`tests/js/document-scanner-detect.test.js`.
+
 ### 3. The aspect ratio comes from the perspective, not from the edges
 
 The obvious way to size the straightened page is to take the longest pair of
